@@ -1,4 +1,6 @@
 # flake8: noqa
+from datetime import datetime
+
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -148,6 +150,26 @@ from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
+
+
+def generate_lab_report(df: DataFrame, current_date=F.current_timestamp()) -> DataFrame:
+    """
+    Generate lab report of latest 7 days of results
+    """
+    df = df.filter(F.date_sub(current_date, 7) < F.col("survey_completed_datetime"))
+    swab_df = df.select("swab_sample_barcode", "swab_taken_datetime", "survey_completed_datetime").filter(
+        ~(
+            ((F.col("swab_taken_datetime").isNull()) & (F.col("survey_completed_datetime").isNull()))
+            | F.col("swab_sample_barcode").isNull()
+        )
+    )
+    blood_df = df.select("blood_sample_barcode", "blood_taken_datetime", "survey_completed_datetime").filter(
+        ~(
+            ((F.col("blood_taken_datetime").isNull()) & (F.col("survey_completed_datetime").isNull()))
+            | F.col("blood_sample_barcode").isNull()
+        )
+    )
+    return swab_df, blood_df
 
 
 def transform_cis_soc_data(df: DataFrame) -> DataFrame:
@@ -1202,6 +1224,9 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "Janssen / Johnson&Johnson": "Janssen/Johnson&Johnson",
         "Another vaccine please specify": "Other / specify",
         "I don't know the type": "Don't know type",
+        "Or Another vaccine please specify": "Other / specify",  # changed from "Other /specify"
+        "I do not know the type": "Don't know Type",
+        "Or do you not know which one you had?": "Don't know Type",
     }
     column_editing_map = {
         "participant_survey_status": {"Complete": "Completed"},
@@ -1441,11 +1466,10 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     return df
 
 
-def derive_age_columns(df: DataFrame, column_name_to_assign: str) -> DataFrame:
+def derive_age_based_columns(df: DataFrame, column_name_to_assign: str) -> DataFrame:
     """
     Transformations involving participant age.
     """
-    df = assign_age_at_date(df, column_name_to_assign, base_date="visit_datetime", date_of_birth="date_of_birth")
     df = assign_named_buckets(
         df,
         reference_column=column_name_to_assign,
@@ -1821,6 +1845,11 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         ],
         max_value=7,
     )
+    df = derive_work_status_columns(df)
+    return df
+
+
+def assign_has_been_columns(df):
     df = derive_household_been_columns(
         df=df,
         column_name_to_assign="household_been_care_home_last_28_days",
@@ -1833,7 +1862,6 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         individual_response_column="hospital_last_28_days",
         household_response_column="other_household_member_hospital_last_28_days",
     )
-    df = derive_work_status_columns(df)
     return df
 
 
@@ -2048,7 +2076,6 @@ def union_dependent_derivations(df):
         order_list=["visit_datetime", "visit_id"],
     )
     df = symptom_column_transformations(df)
-    df = derive_age_columns(df, "age_at_visit")
     if "survey_completion_status" in df.columns:
         df = df.withColumn(
             "participant_visit_status", F.coalesce(F.col("participant_visit_status"), F.col("survey_completion_status"))
@@ -2739,6 +2766,7 @@ def reclassify_work_variables(
         positive_regex_pattern=at_university_pattern.positive_regex_pattern,
         negative_regex_pattern=at_university_pattern.negative_regex_pattern,
     )
+
     age_under_16 = F.col("age_at_visit") < F.lit(16)
     age_four_or_over = F.col("age_at_visit") >= F.lit(4)
     age_over_four = F.col("age_at_visit") > F.lit(4)
