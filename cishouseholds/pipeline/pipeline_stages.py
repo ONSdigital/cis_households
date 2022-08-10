@@ -574,49 +574,6 @@ def lookup_based_editing(
     update_table(df, edited_table, write_mode="overwrite")
 
 
-@register_pipeline_stage("imputation_depdendent_transformations")
-def imputation_depdendent_transformations(
-    input_table_name: str,
-    rural_urban_lookup_path: str,
-    output_table_name: str,
-):
-    """
-    Processing that depends on geographies and and imputed demographic infromation.
-
-    Parameters
-    ----------
-    input_table
-        name of the table containing data to be processed
-    rural_urban_lookup_path
-        path to the rural urban lookup to be joined onto responses
-    edited_table
-        name of table to write processed data to
-    """
-    df = extract_from_table(input_table_name)
-    rural_urban_lookup_df = (
-        get_or_create_spark_session()
-        .read.csv(
-            rural_urban_lookup_path,
-            header=True,
-            schema="""
-            lower_super_output_area_code_11 string,
-            cis_rural_urban_classification string,
-            rural_urban_classification_11 string
-        """,
-        )
-        .drop("rural_urban_classification_11")
-    )  # Prefer version from sample
-
-    check_lookup_table_joined_columns_unique(df, "lower_super_output_area_code_11", "rural_urban_lookup")
-    df = df.join(
-        F.broadcast(rural_urban_lookup_df),
-        how="left",
-        on="lower_super_output_area_code_11",
-    )
-    df = create_formatted_datetime_string_columns(df)
-    update_table(df, output_table_name, write_mode="overwrite")
-
-
 @register_pipeline_stage("join_vaccination_data")
 def join_vaccination_data(participant_records_table, nims_table, vaccination_data_table):
     """
@@ -779,6 +736,7 @@ def geography_and_imputation_dependent_processing(
     )  # Includes school year and age_at_visit derivations
 
     df = derive_age_based_columns(df, "age_at_visit")
+    df = create_formatted_datetime_string_columns(df)
     update_table(df, output_table_name, write_mode="overwrite")
 
 
