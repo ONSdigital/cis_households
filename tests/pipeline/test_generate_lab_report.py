@@ -2,7 +2,7 @@ import pyspark.sql.functions as F
 import pytest
 from chispa import assert_df_equality
 
-from cishouseholds.pipeline.high_level_transformations import generate_lab_report
+from cishouseholds.pipeline.reporting import generate_lab_report
 
 
 def test_generate_lab_report(spark_session):
