@@ -29,6 +29,9 @@ at_school_pattern = RegexPattern(
             "CATERING",
             "MASTER",
             "MISTRESS",
+            "SUPERVISE",
+            "CHIEF",
+            "INVIGILATOR",
         ]
     ),
 )
@@ -52,6 +55,9 @@ at_university_pattern = RegexPattern(
             "CATERING",
             "PROFESSOR",
             "LECTURER",
+            "SUPERVISE",
+            "CHIEF",
+            "INVIGILATOR",
         ]
     ),
 )
@@ -85,5 +91,17 @@ in_college_or_further_education_pattern = RegexPattern(
     positive_regex_pattern="|".join(
         ["[AT].?LEVELS?", "YEAR \\d{2}", "APPRENTICE", "VOCATION", "QUALIFICATION", "SIXTH FORM", "COLLEGE"]
     ),
-    negative_regex_pattern="|".join(["ASSISTANT", "LECTURER", "PROFESSOR" "SCHOOL", "INTERN", "TEACHER", "WORKER"]),
+    negative_regex_pattern="|".join(
+        [
+            "ASSISTANT",
+            "LECTURER",
+            "PROFESSOR" "SCHOOL",
+            "INTERN",
+            "TEACHER",
+            "WORKER",
+            "SUPERVISE",
+            "CHIEF",
+            "INVIGILATOR",
+        ]
+    ),
 )

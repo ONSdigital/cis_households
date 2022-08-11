@@ -28,10 +28,7 @@ def school_year_lookup(spark_session):
         ("2021-08-31", "2014-09-01", "England",             1), # new reference cutoff not started and child born after start date
         ("2021-09-01", "2014-08-31", "England",             3), # new reference cutoff started and child born before start date
         ("2021-08-31", "2014-08-31", "England",             2), # new reference cutoff not started and child born after before date
-
-
         ("2021-09-01", "2017-08-31", "England",             0),
-
         ("2021-09-01", "2017-09-01", "England",             None),  # too young to start school
 
         ("2021-08-15", "2014-08-15", "Scotland",            2), # testing edge case after school start
