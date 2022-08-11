@@ -1930,6 +1930,7 @@ column_name_maps = {
         "ons_household_id": "ons_household_id",
         "hh_enrol_date": "enrolment_date",
         "tranche": "tranche_number_indicator",
+        "cis20_samp": "cis_area_code_20",
     },
     "population_projection_previous_column_map": {
         "laname_21": "local_authority_unitary_authority_name",
