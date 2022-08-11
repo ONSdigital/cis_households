@@ -74,6 +74,10 @@ def calculate_design_weights(
         tranche_df = assign_filename_column(tranche_df, "tranche_source_file")
         tranche_df = tranche_df.withColumn("tranche_eligible_households", F.lit("Yes"))
 
+        tranche_window = Window.partitionBy("tranche_number_indicator", *tranche_strata_columns)
+        latest_tranche_households_by_strata = F.count(F.col("ons_household_id")).over(tranche_window)
+        df = df.withColumn("households_by_tranche_and_strata_count", latest_tranche_households_by_strata)
+
         df = join_on_existing(df=df, df_to_join=tranche_df, on=["ons_household_id"])
         df = df.withColumn(
             "tranche_eligible_households",
@@ -83,6 +87,7 @@ def calculate_design_weights(
             df=df,
             tranche_factor_column_name_to_assign="tranche_factor",
             eligibility_percentage_column_name_to_assign="tranche_eligibility_percentage",
+            sampled_households_count="households_by_tranche_and_strata_count",
             household_id_column="ons_household_id",
             tranche_column="tranche_number_indicator",
             elibility_column="tranche_eligible_households",
