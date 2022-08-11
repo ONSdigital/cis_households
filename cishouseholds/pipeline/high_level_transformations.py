@@ -4,6 +4,7 @@ from typing import List
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
+from pyspark.sql import SparkSession
 from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
@@ -72,6 +73,7 @@ from cishouseholds.derive import flag_records_for_work_from_home_rules
 from cishouseholds.derive import get_keys_by_value
 from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.derive import mean_across_columns
+from cishouseholds.derive import regex_match_result
 from cishouseholds.derive import translate_column_regex_replace
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import assign_from_map
@@ -139,6 +141,8 @@ from cishouseholds.pipeline.mapping import _welsh_yes_no_categories
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.regex_patterns import at_school_pattern
 from cishouseholds.pipeline.regex_patterns import at_university_pattern
+from cishouseholds.pipeline.regex_patterns import furloughed_pattern
+from cishouseholds.pipeline.regex_patterns import in_college_or_further_education_pattern
 from cishouseholds.pipeline.regex_patterns import not_working_pattern
 from cishouseholds.pipeline.regex_patterns import retired_regex_pattern
 from cishouseholds.pipeline.regex_patterns import self_employed_regex
@@ -1211,6 +1215,9 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "Janssen / Johnson&Johnson": "Janssen/Johnson&Johnson",
         "Another vaccine please specify": "Other / specify",
         "I don't know the type": "Don't know type",
+        "Or Another vaccine please specify": "Other / specify",  # changed from "Other /specify"
+        "I do not know the type": "Don't know Type",
+        "Or do you not know which one you had?": "Don't know Type",
     }
     column_editing_map = {
         "participant_survey_status": {"Complete": "Completed"},
@@ -1450,11 +1457,10 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     return df
 
 
-def derive_age_columns(df: DataFrame, column_name_to_assign: str) -> DataFrame:
+def derive_age_based_columns(df: DataFrame, column_name_to_assign: str) -> DataFrame:
     """
     Transformations involving participant age.
     """
-    df = assign_age_at_date(df, column_name_to_assign, base_date="visit_datetime", date_of_birth="date_of_birth")
     df = assign_named_buckets(
         df,
         reference_column=column_name_to_assign,
@@ -1830,6 +1836,11 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         ],
         max_value=7,
     )
+    df = derive_work_status_columns(df)
+    return df
+
+
+def assign_has_been_columns(df):
     df = derive_household_been_columns(
         df=df,
         column_name_to_assign="household_been_care_home_last_28_days",
@@ -1842,7 +1853,6 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         individual_response_column="hospital_last_28_days",
         household_response_column="other_household_member_hospital_last_28_days",
     )
-    df = derive_work_status_columns(df)
     return df
 
 
@@ -2057,7 +2067,6 @@ def union_dependent_derivations(df):
         order_list=["visit_datetime", "visit_id"],
     )
     df = symptom_column_transformations(df)
-    df = derive_age_columns(df, "age_at_visit")
     if "survey_completion_status" in df.columns:
         df = df.withColumn(
             "participant_visit_status", F.coalesce(F.col("participant_visit_status"), F.col("survey_completion_status"))
@@ -2656,3 +2665,297 @@ def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
     df = df.withColumn("college_rules_v2", flag_records_for_college_v2_rules())
 
     return df
+
+
+def reclassify_work_variables(
+    df: DataFrame, spark_session: SparkSession, drop_original_variables: bool = True
+) -> DataFrame:
+    """
+    Reclassify work-related variables based on rules & regex patterns
+
+    Parameters
+    ----------
+    df
+        The dataframe containing the work-status related variables we want to edit
+    spark_session
+        A active spark session - this is used to break lineage since the code generated
+        in this function is very verbose, you may encounter memory error if we don't break
+        lineage.
+    drop_original_variables
+        Set this to False if you want to retain the original variables so you can compare
+        before & after edits.
+    """
+    # Work from Home
+    update_work_location = flag_records_for_work_from_home_rules() & regex_match_result(
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=work_from_home_pattern.positive_regex_pattern,
+        negative_regex_pattern=work_from_home_pattern.negative_regex_pattern,
+    )
+
+    # Furlough
+    furlough_regex_hit = regex_match_result(
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=furloughed_pattern.positive_regex_pattern,
+        negative_regex_pattern=furloughed_pattern.negative_regex_pattern,
+    )
+
+    update_work_status_furlough_v0 = furlough_regex_hit & flag_records_for_furlough_rules_v0()
+    update_work_status_furlough_v1_a = furlough_regex_hit & flag_records_for_furlough_rules_v1_a()
+    update_work_status_furlough_v1_b = furlough_regex_hit & flag_records_for_furlough_rules_v1_b()
+    update_work_status_furlough_v2_a = furlough_regex_hit & flag_records_for_furlough_rules_v2_a()
+    update_work_status_furlough_v2_b = furlough_regex_hit & flag_records_for_furlough_rules_v2_b()
+
+    # Self-Employed
+    self_employed_regex_hit = regex_match_result(
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=self_employed_regex.positive_regex_pattern,
+        negative_regex_pattern=self_employed_regex.negative_regex_pattern,
+    )
+
+    update_work_status_self_employed_v1_a = self_employed_regex_hit & flag_records_for_self_employed_rules_v1_a()
+    update_work_status_self_employed_v1_b = self_employed_regex_hit & flag_records_for_self_employed_rules_v1_b()
+    update_work_status_self_employed_v2_a = self_employed_regex_hit & flag_records_for_self_employed_rules_v2_a()
+    update_work_status_self_employed_v2_b = self_employed_regex_hit & flag_records_for_self_employed_rules_v2_b()
+
+    # Retired
+    retired_regex_hit = regex_match_result(
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=retired_regex_pattern.positive_regex_pattern,
+        negative_regex_pattern=retired_regex_pattern.negative_regex_pattern,
+    )
+
+    update_work_status_retired = retired_regex_hit | flag_records_for_retired_rules()
+
+    # Not-working
+    not_working_regex_hit = regex_match_result(
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=not_working_pattern.positive_regex_pattern,
+        negative_regex_pattern=not_working_pattern.negative_regex_pattern,
+    )
+
+    update_work_status_not_working_v0 = not_working_regex_hit & flag_records_for_not_working_rules_v0()
+    update_work_status_not_working_v1_a = not_working_regex_hit & flag_records_for_not_working_rules_v1_a()
+    update_work_status_not_working_v1_b = not_working_regex_hit & flag_records_for_not_working_rules_v1_b()
+    update_work_status_not_working_v2_a = not_working_regex_hit & flag_records_for_not_working_rules_v2_a()
+    update_work_status_not_working_v2_b = not_working_regex_hit & flag_records_for_not_working_rules_v2_b()
+
+    # School/Student
+    school_regex_hit = regex_match_result(
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=at_school_pattern.positive_regex_pattern,
+        negative_regex_pattern=at_school_pattern.negative_regex_pattern,
+    )
+
+    college_regex_hit = regex_match_result(
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=in_college_or_further_education_pattern.positive_regex_pattern,
+        negative_regex_pattern=in_college_or_further_education_pattern.negative_regex_pattern,
+    )
+
+    university_regex_hit = regex_match_result(
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=at_university_pattern.positive_regex_pattern,
+        negative_regex_pattern=at_university_pattern.negative_regex_pattern,
+    )
+
+    age_under_16 = F.col("age_at_visit") < F.lit(16)
+    age_four_or_over = F.col("age_at_visit") >= F.lit(4)
+    age_over_four = F.col("age_at_visit") > F.lit(4)
+
+    update_work_status_student_v0 = (
+        (school_regex_hit & flag_records_for_student_v0_rules())
+        | (university_regex_hit & flag_records_for_student_v0_rules())
+        | (college_regex_hit & flag_records_for_student_v0_rules())
+        | (age_four_or_over & age_under_16)
+    )
+
+    update_work_status_student_v1 = (
+        (school_regex_hit & flag_records_for_student_v1_rules())
+        | (university_regex_hit & flag_records_for_student_v1_rules())
+        | (college_regex_hit & flag_records_for_student_v1_rules())
+        | (age_over_four & age_under_16)
+    )
+
+    update_work_status_student_v2_a = (school_regex_hit & flag_records_for_student_v2_rules()) | (
+        age_four_or_over & age_under_16
+    )
+
+    update_work_status_student_v2_b = college_regex_hit & flag_records_for_college_v2_rules()
+
+    update_work_status_student_v2_c = university_regex_hit & flag_records_for_uni_v2_rules()
+
+    update_work_location_general = F.col("work_location").isNull() & (
+        F.col("work_status_v0").isin(
+            "Furloughed (temporarily not working)",
+            "Not working (unemployed, retired, long-term sick etc.)",
+            "Student",
+        )
+    )
+
+    # Please note the order of *_edited columns, these must come before the in-place updates
+
+    # first start by taking a copy of the original work variables
+    _df = (
+        df.withColumn("work_location_original", F.col("work_location"))
+        .withColumn("work_status_v0_original", F.col("work_status_v0"))
+        .withColumn("work_status_v1_original", F.col("work_status_v1"))
+        .withColumn("work_status_v2_original", F.col("work_status_v2"))
+        .withColumn(
+            "work_location",
+            F.when(update_work_location, F.lit("Working from home")).otherwise(F.col("work_location")),
+        )
+        .withColumn(
+            "work_status_v0",
+            F.when(self_employed_regex_hit, F.lit("Self-employed")).otherwise(F.col("work_status_v0")),
+        )
+        .withColumn(
+            "work_status_v1",
+            F.when(update_work_status_self_employed_v1_a, F.lit("Self-employed and currently working")).otherwise(
+                F.col("work_status_v1")
+            ),
+        )
+        .withColumn(
+            "work_status_v1",
+            F.when(update_work_status_self_employed_v1_b, F.lit("Self-employed and currently not working")).otherwise(
+                F.col("work_status_v1")
+            ),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(
+                update_work_status_self_employed_v2_a,
+                F.lit("Self-employed and currently working"),
+            ).otherwise(F.col("work_status_v2")),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(update_work_status_self_employed_v2_b, F.lit("Self-employed and currently not working")).otherwise(
+                F.col("work_status_v2")
+            ),
+        )
+        .withColumn(
+            "work_status_v0",
+            F.when(update_work_status_student_v0, F.lit("Student")).otherwise(F.col("work_status_v0")),
+        )
+        .withColumn(
+            "work_status_v1",
+            F.when(update_work_status_student_v1, F.lit("5y and older in full-time education")).otherwise(
+                F.col("work_status_v1")
+            ),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(update_work_status_student_v2_a, F.lit("4-5y and older at school/home-school")).otherwise(
+                F.col("work_status_v2")
+            ),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(
+                update_work_status_student_v2_b, F.lit("Attending college or FE (including if temporarily absent)")
+            ).otherwise(F.col("work_status_v2")),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(
+                update_work_status_student_v2_c, F.lit("Attending university (including if temporarily absent)")
+            ).otherwise(F.col("work_status_v2")),
+        )
+    )
+
+    _df2 = spark_session.createDataFrame(_df.rdd, schema=_df.schema)  # breaks lineage
+
+    _df3 = (
+        _df2.withColumn(
+            "work_status_v0",
+            F.when(
+                update_work_status_retired, F.lit("Not working (unemployed, retired, long-term sick etc.)")
+            ).otherwise(F.col("work_status_v0")),
+        )
+        .withColumn(
+            "work_status_v1",
+            F.when(update_work_status_retired, F.lit("Retired")).otherwise(F.col("work_status_v1")),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(update_work_status_retired, F.lit("Retired")).otherwise(F.col("work_status_v2")),
+        )
+        .withColumn(
+            "work_status_v0",
+            F.when(
+                update_work_status_not_working_v0, F.lit("Not working (unemployed, retired, long-term sick etc.)")
+            ).otherwise(F.col("work_status_v0")),
+        )
+        .withColumn(
+            "work_status_v1",
+            F.when(update_work_status_not_working_v1_a, F.lit("Employed and currently not working")).otherwise(
+                F.col("work_status_v1")
+            ),
+        )
+        .withColumn(
+            "work_status_v1",
+            F.when(update_work_status_not_working_v1_b, F.lit("Self-employed and currently not working")).otherwise(
+                F.col("work_status_v1")
+            ),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(update_work_status_not_working_v2_a, F.lit("Employed and currently not working")).otherwise(
+                F.col("work_status_v2")
+            ),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(update_work_status_not_working_v2_b, F.lit("Self-employed and currently not working")).otherwise(
+                F.col("work_status_v2")
+            ),
+        )
+        .withColumn(
+            "work_status_v0",
+            F.when(update_work_status_furlough_v0, F.lit("Furloughed (temporarily not working)")).otherwise(
+                F.col("work_status_v0")
+            ),
+        )
+        .withColumn(
+            "work_status_v1",
+            F.when(update_work_status_furlough_v1_a, F.lit("Employed and currently not working")).otherwise(
+                F.col("work_status_v1")
+            ),
+        )
+        .withColumn(
+            "work_status_v1",
+            F.when(update_work_status_furlough_v1_b, F.lit("Self-employed and currently not working")).otherwise(
+                F.col("work_status_v1")
+            ),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(update_work_status_furlough_v2_a, F.lit("Employed and currently not working")).otherwise(
+                F.col("work_status_v2")
+            ),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(update_work_status_furlough_v2_b, F.lit("Self-employed and currently not working")).otherwise(
+                F.col("work_status_v2")
+            ),
+        )
+        .withColumn(
+            "work_location",
+            F.when(
+                update_work_location_general,
+                F.lit("Not applicable, not currently working"),
+            ).otherwise(F.col("work_location")),
+        )
+    )
+
+    if drop_original_variables:
+        # replace original versions with their cleaned versions
+        _df3 = _df3.drop(
+            "work_location_original",
+            "work_status_v0_original",
+            "work_status_v1_original",
+            "work_status_v2_original",
+        )
+
+    return _df3

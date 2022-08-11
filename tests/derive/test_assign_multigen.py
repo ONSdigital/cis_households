@@ -1,7 +1,7 @@
 from chispa import assert_df_equality
 from pyspark.sql import functions as F
 
-from cishouseholds.derive import assign_multigeneration
+from cishouseholds.derive import assign_multigenerational
 
 # fmt:  off
 
@@ -33,7 +33,7 @@ def test_assign_multigeneration(spark_session):
         ],
         schema="id integer, visit_date string, hh_id integer, dob string, country string, age_at_visit integer, school_year integer, multigen integer",
     )
-    output_df = assign_multigeneration(
+    output_df = assign_multigenerational(
         df=input_df,
         column_name_to_assign="multigen",
         household_id_column="hh_id",
