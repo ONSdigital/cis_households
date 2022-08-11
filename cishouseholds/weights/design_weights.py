@@ -78,7 +78,9 @@ def calculate_design_weights(
         latest_tranche_households_by_strata = F.count(F.col("ons_household_id")).over(tranche_window)
         tranche_df = tranche_df.withColumn(
             "households_by_tranche_and_strata_count", latest_tranche_households_by_strata
-        )
+        ).drop(
+            "cis_area_code_20"
+        )  # Prefer the one on the survey responses
 
         df = join_on_existing(df=df, df_to_join=tranche_df, on=["ons_household_id"])
         df = df.withColumn(
