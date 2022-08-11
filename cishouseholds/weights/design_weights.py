@@ -74,6 +74,14 @@ def calculate_design_weights(
         tranche_df = assign_filename_column(tranche_df, "tranche_source_file")
         tranche_df = tranche_df.withColumn("tranche_eligible_households", F.lit("Yes"))
 
+        tranche_window = Window.partitionBy("tranche_number_indicator", *tranche_strata_columns)
+        latest_tranche_households_by_strata = F.count(F.col("ons_household_id")).over(tranche_window)
+        tranche_df = tranche_df.withColumn(
+            "households_by_tranche_and_strata_count", latest_tranche_households_by_strata
+        ).drop(
+            "cis_area_code_20"
+        )  # Prefer the one on the survey responses
+
         df = join_on_existing(df=df, df_to_join=tranche_df, on=["ons_household_id"])
         df = df.withColumn(
             "tranche_eligible_households",
@@ -81,7 +89,9 @@ def calculate_design_weights(
         )
         df = assign_tranche_factor(
             df=df,
-            column_name_to_assign="tranche_factor",
+            tranche_factor_column_name_to_assign="tranche_factor",
+            eligibility_percentage_column_name_to_assign="remaining_eligible_percentage_of_sample",
+            sampled_households_count="households_by_tranche_and_strata_count",
             household_id_column="ons_household_id",
             tranche_column="tranche_number_indicator",
             elibility_column="tranche_eligible_households",
@@ -100,14 +110,13 @@ def calculate_design_weights(
 
     higher_eligibility = False
     if tranche_provided:
-        higher_eligibility = df.where(F.col("tranche_factor") > 1.0).count() > 0
-    new_migration_to_antibody = higher_eligibility and tranche_provided
+        higher_eligibility = df.where(F.col("remaining_eligible_percentage_of_sample") > 0.0).count() > 0
     df = calculate_scaled_antibody_design_weights(
         df,
         "scaled_design_weight_antibodies_non_adjusted",
         "scaled_design_weight_swab_non_adjusted",
         cis_area_window,
-        new_migration_to_antibody,
+        higher_eligibility,
     )
 
     validate_design_weights(
@@ -131,6 +140,7 @@ def calculate_scaled_antibody_design_weights(
 ):
     design_weight_column = "intermediate_antibody_design_weight"
     if new_migration_to_antibody:
+        print("     Calculating antibody design weights with new migration to antibody group")  # functional
         df = calculate_raw_antibody_design_weights_with_migration(
             df=df,
             column_name_to_assign="raw_antibody_design_weight",
@@ -151,6 +161,7 @@ def calculate_scaled_antibody_design_weights(
         )
 
     else:
+        print("     Calculating antibody design weights with no new migration to antibody group")  # functional
         df = calculate_antibody_design_weights_without_migration(
             df=df,
             column_name_to_assign=design_weight_column,
@@ -568,7 +579,7 @@ def scale_antibody_design_weights(
     window = Window.partitionBy(groupby_column)
     sum_carry_forward_design_weight = F.sum(F.col(design_weight_column_to_scale)).over(window)
     scaling_factor = F.col(household_population_column) / sum_carry_forward_design_weight
-    df.withColumn("antibody_design_weight_scaling_factor", scaling_factor)
+    df = df.withColumn("antibody_design_weight_scaling_factor", scaling_factor)
     df = df.withColumn(
         column_name_to_assign,
         (scaling_factor * F.col(design_weight_column_to_scale)).cast(DecimalType(38, 20)),
