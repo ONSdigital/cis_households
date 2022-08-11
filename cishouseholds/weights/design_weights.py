@@ -90,7 +90,7 @@ def calculate_design_weights(
         df = assign_tranche_factor(
             df=df,
             tranche_factor_column_name_to_assign="tranche_factor",
-            eligibility_percentage_column_name_to_assign="tranche_eligibility_percentage",
+            eligibility_percentage_column_name_to_assign="remaining_eligible_percentage_of_sample",
             sampled_households_count="households_by_tranche_and_strata_count",
             household_id_column="ons_household_id",
             tranche_column="tranche_number_indicator",
@@ -110,7 +110,7 @@ def calculate_design_weights(
 
     higher_eligibility = False
     if tranche_provided:
-        higher_eligibility = df.where(F.col("tranche_eligibility_percentage") > 0.0).count() > 0
+        higher_eligibility = df.where(F.col("remaining_eligible_percentage_of_sample") > 0.0).count() > 0
     df = calculate_scaled_antibody_design_weights(
         df,
         "scaled_design_weight_antibodies_non_adjusted",
