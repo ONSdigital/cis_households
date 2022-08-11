@@ -881,15 +881,22 @@ def impute_demographic_columns(
     survey_responses_table: str, imputed_values_table: str, survey_responses_imputed_table: str
 ):
     """
-    Imputes values for key demographic columns.
-    Applies filling forward for listed columns. Specific imputations are then used for sex, ethnicity and date of birth.
+    Impute values for sex, ethnicity and date of birth.
+
+    Assumes that columns to be imputed have been filled forwards, as the latest value from each participant is used.
+    Specific imputations are carried out for for each key demographic column. The resulting columns should have no
+    missing values.
+
+    Stores imputed values in a lookup table, for reuse in subsequent imputation rounds. This table is also backed up
+    with a datetime suffix.
+    Also outputs a table of survey response records with imputed values.
 
     Parameters
     ----------
     survey_responses_table
         name of HIVE table containing survey responses for imputation, containing `key_columns`
     imputed_values_table
-        name of HIVE table containing previously imputed values
+        name of HIVE table containing previously imputed values by participant
     survey_responses_imputed_table
         name of HIVE table to write survey responses following imputation
     """
@@ -915,6 +922,25 @@ def calculate_household_level_populations(
     country_lookup_table,
     household_level_populations_table,
 ):
+    """
+    Calculate counts of households by CIS area 20 and country code 12 geographical groups.
+
+    Combines several lookup tables to get the necessary geographies linked to households, then sums households by
+    CIS area and country code.
+
+    Parameters
+    ----------
+    address_lookup_table
+        addressbase HIVE table name
+    postcode_lookup_table
+        APS postcode lookup HIVE table name to join onto addressbase to get LSOA 11 and country code 12
+    lsoa_cis_lookup_table
+        LSOA to CIS lookup HIVE table name to get CIS area codes
+    country_lookup_table
+        country lookup HIVE table name to get country names from country code 12
+    household_level_populations_table
+        HIVE table to write household level populations to
+    """
     address_lookup_df = extract_from_table(address_lookup_table).select("unique_property_reference_code", "postcode")
     postcode_lookup_df = (
         extract_from_table(postcode_lookup_table)
@@ -1496,10 +1522,10 @@ def tables_to_csv(
 
 @register_pipeline_stage("sample_file_ETL")
 def sample_file_ETL(
-    household_level_populations_table,
-    old_sample_file,
-    new_sample_file,
-    new_sample_source_name,
+    household_level_populations_table: str,
+    old_sample_file: str,
+    new_sample_file: str,
+    new_sample_source_name: str,
     postcode_lookup,
     master_sample_file,
     design_weight_table,
@@ -1508,6 +1534,50 @@ def sample_file_ETL(
     tranche_file_path=None,
     tranche_strata_columns=None,
 ):
+    """
+    Process a new sample file, to union it with previous sample data and calculate new swab and antibody design weights.
+    Creates a table of geographies and design weights per household.
+
+    ``old_sample_file`` may point to the same table as ``design_weight_table``, to reuse the values from the previous
+    sample file processing run.
+
+    To process a new sample file, the following *must* be updated:
+    - ``new_sample_file``
+    - ``new_sample_source_name``
+    - ``tranche_file_path``
+
+    The output ``design_weight_table`` is also stored as a backup table with the current datetime.
+
+    Notes
+    -----
+    Lookup tables are referenced here to resolve and issue with missing data on the addressbase and new sample files.
+    Once these issues are resolved, this part of the code may be simplified.
+
+    Paramaters
+    ----------
+    household_level_populations_table
+        HIVE table create by household level population calculation, containing population by CIS area and country
+    old_sample_file
+        HIVE table containing the previously processed sample files, including design weights
+    new_sample_file
+        CSV file or HIVE table containing the new sample to be processed
+    new_sample_source_name
+        string constant to be stored as the sample source name for the new sample records
+    postcode_lookup
+        HIVE table containing the APS postcode lookup
+    master_sample_file
+        HIVE table containing the master sample
+    design_weight_table
+        HIVE table to write household geographies and design weights to
+    country_lookup
+        HIVE table containing country code 12 to country name lookup
+    lsoa_cis_lookup
+        HIVE table containing LSOA 11 to CIS area 20 lookup
+    tranche_file_path
+        path to tranche CSV file, if a tranche is required for the current sample file, otherwise leave empty
+    tranche_strata_columns
+        list of column names to be used as strata in tranche factor calculations
+    """
     first_run = not check_table_exists(design_weight_table)
 
     postcode_lookup_df = extract_from_table(postcode_lookup)
