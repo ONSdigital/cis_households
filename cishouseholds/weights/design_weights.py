@@ -1,5 +1,6 @@
 import re
 from typing import List
+from typing import Optional
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -27,8 +28,8 @@ def calculate_design_weights(
     postcode_lookup_df: DataFrame,
     country_lookup_df: DataFrame,
     lsoa_cis_lookup_df: DataFrame,
-    tranche_strata_columns: List[str],
     first_run: bool,
+    tranche_strata_columns: Optional[List[str]] = None,
 ):
     """
     Wrapper for calling each of the functions necessary to generate the design weights
@@ -71,6 +72,8 @@ def calculate_design_weights(
 
     tranche_provided = tranche_df is not None
     if tranche_provided:
+        if tranche_strata_columns is None:
+            raise ValueError("`tranche_strata_columns` must be provided when a tranche is used")
         tranche_df = assign_filename_column(tranche_df, "tranche_source_file")
         tranche_df = tranche_df.withColumn("tranche_eligible_households", F.lit("Yes"))
 

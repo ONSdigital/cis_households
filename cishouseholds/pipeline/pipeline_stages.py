@@ -5,6 +5,7 @@ from io import BytesIO
 from operator import and_
 from pathlib import Path
 from typing import List
+from typing import Optional
 from typing import Union
 
 import pandas as pd
@@ -1526,13 +1527,13 @@ def sample_file_ETL(
     old_sample_file: str,
     new_sample_file: str,
     new_sample_source_name: str,
-    postcode_lookup,
-    master_sample_file,
-    design_weight_table,
-    country_lookup,
-    lsoa_cis_lookup,
-    tranche_file_path=None,
-    tranche_strata_columns=None,
+    postcode_lookup: str,
+    master_sample_file: str,
+    design_weight_table: str,
+    country_lookup: str,
+    lsoa_cis_lookup: str,
+    tranche_file_path: Optional[str] = None,
+    tranche_strata_columns: Optional[List[str]] = None,
 ):
     """
     Process a new sample file, to union it with previous sample data and calculate new swab and antibody design weights.
@@ -1611,8 +1612,8 @@ def sample_file_ETL(
         postcode_lookup_df,
         country_lookup_df,
         lsoa_cis_lookup_df,
-        tranche_strata_columns,
         first_run,
+        tranche_strata_columns,
     )
     update_table(design_weights, design_weight_table, write_mode="overwrite", archive=True)
 
