@@ -142,7 +142,8 @@ def run_pipeline_stages(
         attempt = 0
         complete_status_string = "successfully"
         stage_name = stage_config.pop("function")
-        stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name}"
+        stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name} at {stage_start}"
+
         print(stage_text)  # functional
         if check_conditions(stage_responses=stage_responses, stage_config=stage_config):
             stage_config.pop("when", None)
