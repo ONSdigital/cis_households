@@ -152,6 +152,26 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
 
 
+def generate_lab_report(df: DataFrame, current_date=F.current_timestamp()) -> DataFrame:
+    """
+    Generate lab report of latest 7 days of results
+    """
+    df = df.filter(F.date_sub(current_date, 7) < F.col("survey_completed_datetime"))
+    swab_df = df.select("swab_sample_barcode", "swab_taken_datetime", "survey_completed_datetime").filter(
+        ~(
+            ((F.col("swab_taken_datetime").isNull()) & (F.col("survey_completed_datetime").isNull()))
+            | F.col("swab_sample_barcode").isNull()
+        )
+    )
+    blood_df = df.select("blood_sample_barcode", "blood_taken_datetime", "survey_completed_datetime").filter(
+        ~(
+            ((F.col("blood_taken_datetime").isNull()) & (F.col("survey_completed_datetime").isNull()))
+            | F.col("blood_sample_barcode").isNull()
+        )
+    )
+    return swab_df, blood_df
+
+
 def transform_cis_soc_data(df: DataFrame) -> DataFrame:
     """
     transform and process cis soc data
@@ -2746,23 +2766,28 @@ def reclassify_work_variables(
         positive_regex_pattern=at_university_pattern.positive_regex_pattern,
         negative_regex_pattern=at_university_pattern.negative_regex_pattern,
     )
-    under_16 = F.col("age_at_visit") < F.lit(16)
+
+    age_under_16 = F.col("age_at_visit") < F.lit(16)
+    age_four_or_over = F.col("age_at_visit") >= F.lit(4)
+    age_over_four = F.col("age_at_visit") > F.lit(4)
 
     update_work_status_student_v0 = (
         (school_regex_hit & flag_records_for_student_v0_rules())
         | (university_regex_hit & flag_records_for_student_v0_rules())
         | (college_regex_hit & flag_records_for_student_v0_rules())
-        | under_16
+        | (age_four_or_over & age_under_16)
     )
 
     update_work_status_student_v1 = (
         (school_regex_hit & flag_records_for_student_v1_rules())
         | (university_regex_hit & flag_records_for_student_v1_rules())
         | (college_regex_hit & flag_records_for_student_v1_rules())
-        | under_16
+        | (age_over_four & age_under_16)
     )
 
-    update_work_status_student_v2_a = (school_regex_hit & flag_records_for_student_v2_rules()) | under_16
+    update_work_status_student_v2_a = (school_regex_hit & flag_records_for_student_v2_rules()) | (
+        age_four_or_over & age_under_16
+    )
 
     update_work_status_student_v2_b = college_regex_hit & flag_records_for_college_v2_rules()
 
