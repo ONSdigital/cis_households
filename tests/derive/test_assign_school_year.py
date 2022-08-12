@@ -30,6 +30,22 @@ def school_year_lookup(spark_session):
         ("2021-08-31", "2014-08-31", "England",             2), # new reference cutoff not started and child born before start date
         ("2021-09-01", "2017-08-31", "England",             0), # reception
 
+        ("2016-09-01", "1999-07-20", "England",             13), # stefens date
+        ("2016-09-01", "1999-08-31", "Wales",             13), # stefens date
+        ("2016-09-01", "1998-09-01", "Wales",             13), # stefens date
+
+        ("2020-09-01", "2003-08-31", "Wales",             13), # leap
+        ("2020-09-01", "2002-09-01", "Wales",             13),
+
+        ("2021-09-01", "2004-08-31", "Wales",             13), # non leap
+        ("2021-09-01", "2003-09-01", "Wales",             13),
+
+        ("2022-09-01", "2003-08-31", "Wales",             13), # non leap
+        ("2022-09-01", "2004-09-01", "Wales",             13),
+
+        ("2024-09-01", "2005-08-31", "Wales",             13), # leap
+        ("2024-09-01", "2006-09-01", "Wales",             13),
+
         ("2021-09-01", "2017-09-01", "England",             None),  # too young to start school
 
         ("2021-08-15", "2014-08-15", "Scotland",            2), # testing edge case after school start
@@ -45,14 +61,17 @@ def school_year_lookup(spark_session):
         ("2021-08-15", "2014-02-28", "Scotland",            3), # new school year started and child born before reference cutoff date
         ("2021-08-15", "2014-03-01", "Scotland",            2), # new school year started and child born after reference cutoff date
 
-        ("2021-09-01", "2015-09-01", "Northern Ireland",    0), # too young to start school
+        ("2021-09-01", "2015-09-01", "Northern Ireland",    0), # reception
 
         ("2021-07-02", "2014-07-02", "Northern Ireland",    1), # testing edge case after date allocation cut off
         ("2021-07-01", "2014-07-02", "Northern Ireland",    1), # new reference cutoff not started and child born after reference date
         ("2021-07-02", "2014-07-01", "Northern Ireland",    2), # new reference cutoff started and child born before reference date
         ("2021-07-01", "2014-07-01", "Northern Ireland",    2), # new reference cutoff not started and child born before reference date
 
+        ("2021-07-01", "2003-09-01", "Northern Ireland",    13), # new reference cutoff not started and child born before reference date
+
         ("2021-09-01", "2003-09-01", "Wales",               12), # max age to be in school
+        ("2021-09-01", "2003-09-02", "Wales",               13), # max age to be in school
         ("2021-09-01", "2003-08-30", "Wales",               None), # one day older to be in school
     ],
     # fmt: on
