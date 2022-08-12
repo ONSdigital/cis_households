@@ -1329,9 +1329,6 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
                 "Sinovac",
                 "Sputnik",
                 "Valneva",
-                "Or Another vaccine please specify",
-                "I do not know the type",
-                "Or do you not know which one you had?",
                 None,
             ],
         ),
@@ -1463,6 +1460,9 @@ type_of_vaccination = [
     "From a research study/trial",
     "Another vaccine please specify",
     "I don't know the type",
+    "Or Another vaccine please specify",
+    "I do not know the type",
+    "Or do you not know which one you had?",
     None,
 ]
 
