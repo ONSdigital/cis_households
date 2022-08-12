@@ -1539,6 +1539,10 @@ def sample_file_ETL(
     Process a new sample file, to union it with previous sample data and calculate new swab and antibody design weights.
     Creates a table of geographies and design weights per household.
 
+    Carries out different scenarios for antibody design weight for either:
+    1. Where no tranche is provided, or no new households have been sampled
+    2. Where a tranche has been provided and new households have been sampled
+
     ``old_sample_file`` may point to the same table as ``design_weight_table``, to reuse the values from the previous
     sample file processing run.
 
