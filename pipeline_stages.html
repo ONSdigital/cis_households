@@ -294,12 +294,6 @@ Applies filling forward for listed columns. Specific imputations are then used f
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.lab_report">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">lab_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swab_report_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blood_report_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pyspark.sql.dataframe.DataFrame</span></span></span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.lab_report" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate reports of most recent 7 days of swab and blood data</p>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.lookup_based_editing">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">lookup_based_editing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cohort_lookup_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">travel_countries_lookup_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tenure_group_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edited_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.lookup_based_editing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Edit columns based on mappings from lookup files. Often used to correct data quality issues.</p>
@@ -310,97 +304,6 @@ Applies filling forward for listed columns. Specific imputations are then used f
 <li><p><strong>cohort_lookup_path</strong> – input file path name for cohort corrections lookup file</p></li>
 <li><p><strong>travel_countries_lookup_path</strong> – input file path name for travel_countries corrections lookup file</p></li>
 <li><p><strong>edited_table</strong> – </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.merge_blood_ETL">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">merge_blood_ETL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_responses_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_antibody_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blood_files_to_exclude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merged_1to1_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joined_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtox_flagged_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validated_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merged_responses_antibody_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">antibody_merge_residuals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">antibody_merge_failed_records</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.merge_blood_ETL" title="Permalink to this definition">¶</a></dt>
-<dd><p>High level function for joining antibody/blood test result data to survey responses.
-Should be run before the PCR/swab result merge.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>survey_responses_table</strong> – name of HIVE table containing survey response records</p></li>
-<li><p><strong>antibody_table</strong> – name of HIVE table containing antibody/blood result records</p></li>
-<li><p><strong>swab_files_to_exclude</strong> – antibody/blood result files that should be excluded from the merge.
-Used to remove files that are found to contain invalid data.</p></li>
-<li><p><strong>swab_output_tables</strong> – <dl class="simple">
-<dt>names of the three output tables:</dt><dd><ol class="arabic simple">
-<li><p>survey responses and successfully joined results</p></li>
-<li><p>residual antibody/blood result records, where there was no barcode match to join on</p></li>
-<li><p>antibody/blood result records that failed to meet the criteria for joining</p></li>
-</ol>
-</dd>
-</dl>
-</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.merge_swab_ETL">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">merge_swab_ETL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_responses_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_swab_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swab_files_to_exclude</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merged_1to1_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joined_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtox_flagged_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validated_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">merged_responses_antibody_swab_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swab_merge_residuals</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swab_merge_failed_records</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.merge_swab_ETL" title="Permalink to this definition">¶</a></dt>
-<dd><p>High level function for joining PCR test result data to survey responses.
-Should be run following the antibody/blood result merge.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>survey_responses_table</strong> – name of HIVE table containing survey response records</p></li>
-<li><p><strong>swab_table</strong> – name of HIVE table containing PCR/swab result records</p></li>
-<li><p><strong>swab_files_to_exclude</strong> – PCR/swab result files that should be excluded from the merge.
-Used to remove files that are found to contain invalid data.</p></li>
-<li><p><strong>swab_output_tables</strong> – <dl class="simple">
-<dt>names of the three output tables:</dt><dd><ol class="arabic simple">
-<li><p>survey responses and successfully joined results</p></li>
-<li><p>residual PCR/swab result records, where there was no barcode match to join on</p></li>
-<li><p>PCR/swab result records that failed to meet the criteria for joining</p></li>
-</ol>
-</dd>
-</dl>
-</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.outer_join_antibody_results">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">outer_join_antibody_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">antibody_test_result_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joined_antibody_test_result_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">failed_join_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.outer_join_antibody_results" title="Permalink to this definition">¶</a></dt>
-<dd><p>Outer join of data for two antibody/blood test targets (S and N protein antibodies).
-Creates a single record per blood sample.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>antibody_test_result_table</strong> – name of HIVE table to read antibody/blood test results from, where blood samples may have more than one record</p></li>
-<li><p><strong>joined_antibody_test_result_table</strong> – name of HIVE table to write successfully joined records, where each blood sample has one record</p></li>
-<li><p><strong>failed_join_table</strong> – name of HIVE table to write antibody/blood test results that failed to merge.
-Specifically, those with more than two records in the unjoined data.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.pre_calibration">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">pre_calibration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">design_weight_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">individual_level_populations_for_non_response_adjustment_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">survey_response_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">responses_pre_calibration_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_calibration_config_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.pre_calibration" title="Permalink to this definition">¶</a></dt>
-<dd><p>Survey data broken down in different datasets is merged with household_samples_dataset
-Non-response adjustment is calculated and the design weights
-are adjusted by the non-response rates producing desgin weights adjusted.
-Calibration variables are calculated and all the files(dataframes) are written to HIVE
-for the weight calibration
-At the end of this processing stage 24 datasets (files will be produced): 6 datasets for each country</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>design_weight_table</strong> – name of HIVE table containing household level design weights</p></li>
-<li><p><strong>individual_level_populations_for_non_response_adjustment_table</strong> – name of HIVE table containing populations for non-response adjustment</p></li>
-<li><p><strong>survey_response_table</strong> – name of HIVE table containing survey responses</p></li>
-<li><p><strong>responses_pre_calibration_table</strong> – name of HIVE table to write data for weight calibration</p></li>
-<li><p><strong>pre_calibration_config_path</strong> – path to YAML pre-calibration config file</p></li>
 </ul>
 </dd>
 </dl>
