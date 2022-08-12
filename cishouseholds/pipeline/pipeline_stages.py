@@ -1515,7 +1515,7 @@ def sample_file_ETL(
     postcode_lookup_df = extract_from_table(postcode_lookup)
     lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup)
     country_lookup_df = extract_from_table(country_lookup)
-    old_sample_df = extract_from_table(old_sample_file)
+    old_sample_df = extract_from_table(old_sample_file, break_lineage=True)
     master_sample_df = extract_from_table(master_sample_file)
 
     new_sample_df = extract_lookup_csv(
