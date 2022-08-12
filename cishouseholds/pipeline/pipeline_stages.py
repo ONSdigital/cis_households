@@ -905,7 +905,7 @@ def impute_demographic_columns(
     )
     df_with_imputed_values, new_imputed_value_lookup = post_imputation_wrapper(df, key_columns_imputed_df)
 
-    update_table(new_imputed_value_lookup, imputed_values_table, "overwrite")
+    update_table(new_imputed_value_lookup, imputed_values_table, "overwrite", archive=True)
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
 
 
