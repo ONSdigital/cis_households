@@ -11,6 +11,9 @@ def prepare_for_union(tables: List[DataFrame]):
     spark_session = get_or_create_spark_session()
     dataframes = []
 
+    if len(tables) == 0:
+        raise ValueError("Tried to execute union with no tables to union")  # functional
+
     for table in tables:
         if type(table) == str:
             dataframes.append(spark_session.read.parquet(table))

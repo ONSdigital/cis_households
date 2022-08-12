@@ -418,14 +418,15 @@ def process_soc_deltas(
         error_message, validation_schema, column_name_map, drop_list = normalise_schema(
             file_path, soc_schema, soc_regex_map
         )
-        if error_message is not None:
+        if error_message is None:
             df = extract_input_data(file_path, validation_schema, ",").drop(*drop_list)
             df = assign_filename_column(df, source_file_column)
             for actual_column, normalised_column in column_name_map.items():
                 df = df.withColumnRenamed(actual_column, normalised_column)
+            dfs.append(df)
         else:
             add_error_file_log_entry(file_path, error_message)  # type: ignore
-            raise ValueError(error_message)
+            print(error_message)  # functional
     if include_processed:
         union_dataframes_to_hive(unioned_soc_lookup_table, dfs)
     else:
@@ -436,7 +437,7 @@ def process_soc_deltas(
 def process_soc_data(
     survey_responses_table: str,
     soc_coded_survey_responses_table: str,
-    inconsistances_resolution_table: str,
+    inconsistences_resolution_table: str,
     unioned_soc_lookup_table: str,
     transformed_soc_lookup_table: str,
     duplicate_soc_rows_table: str,
@@ -446,13 +447,13 @@ def process_soc_data(
     """
     join_on_columns = ["work_main_job_title", "work_main_job_role"]
     window = Window.partitionBy(*join_on_columns)
-    inconsistances_resolution_df = extract_from_table(inconsistances_resolution_table).withColumnRenamed(
+    inconsistences_resolution_df = extract_from_table(inconsistences_resolution_table).withColumnRenamed(
         "Gold SOC2010 code", "resolved_soc_code"
     )
     soc_lookup_df = extract_from_table(unioned_soc_lookup_table)
     survey_responses_df = extract_from_table(survey_responses_table)
     soc_lookup_df = soc_lookup_df.join(
-        inconsistances_resolution_df.withColumnRenamed(
+        inconsistences_resolution_df.withColumnRenamed(
             "standard_occupational_classification_code", "resolved_soc_code"
         ),
         on=join_on_columns,
@@ -462,13 +463,14 @@ def process_soc_data(
         "standard_occupational_classification_code",
         F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
     ).drop("resolved_soc_code")
-    filter_condition = F.count(*join_on_columns).over(window) > 1
-    duplicate_rows_df = soc_lookup_df.filter(filter_condition)
-    soc_lookup_df = soc_lookup_df.filter(~filter_condition)
 
-    update_table(duplicate_soc_rows_table, duplicate_rows_df, "overwrite", archive=True)
+    soc_lookup_df = soc_lookup_df.withColumn("FILTER_CONDITION", F.count("*").over(window) > 1)
+    duplicate_rows_df = soc_lookup_df.filter(F.col("FILTER_CONDITION")).drop("FILTER_CONDITION")
+    soc_lookup_df = soc_lookup_df.filter(~F.col("FILTER_CONDITION")).drop("FILTER_CONDITION")
 
-    soc_lookup_df = transform_cis_soc_data(soc_lookup_df)
+    update_table(duplicate_rows_df, duplicate_soc_rows_table, "overwrite", archive=True)
+
+    soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
     survey_responses_df = survey_responses_df.join(soc_lookup_df, on=join_on_columns, how="left")
     update_table(survey_responses_df, soc_coded_survey_responses_table, "overwrite")
     update_table(soc_lookup_df, transformed_soc_lookup_table, "overwrite")
@@ -1513,7 +1515,7 @@ def sample_file_ETL(
     postcode_lookup_df = extract_from_table(postcode_lookup)
     lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup)
     country_lookup_df = extract_from_table(country_lookup)
-    old_sample_df = extract_from_table(old_sample_file)
+    old_sample_df = extract_from_table(old_sample_file, break_lineage=True)
     master_sample_df = extract_from_table(master_sample_file)
 
     new_sample_df = extract_lookup_csv(
