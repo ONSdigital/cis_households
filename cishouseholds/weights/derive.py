@@ -119,9 +119,7 @@ def assign_sample_new_previous(df: DataFrame, column_name_to_assign: str, date_c
 
 def assign_tranche_factor(
     df: DataFrame,
-    tranche_factor_column_name_to_assign: str,
-    eligibility_percentage_column_name_to_assign: str,
-    sampled_households_count: str,
+    column_name_to_assign: str,
     household_id_column: str,
     tranche_column: str,
     eligibility_column: str,
@@ -136,19 +134,13 @@ def assign_tranche_factor(
     eligible_window = Window.partitionBy(eligibility_column, *strata_columns)
     eligible_households_by_strata = F.count(F.col(household_id_column)).over(eligible_window)
 
-    df = df.withColumn("households_by_eligibility_and_strata", eligible_households_by_strata)
+    tranche_window = Window.partitionBy(elibility_column, tranche_column, *strata_columns)
+    latest_tranche_households_by_strata = F.count(F.col(household_id_column)).over(tranche_window)
 
     df = df.withColumn("MAX_TRANCHE_NUMBER", F.max(tranche_column).over(Window.partitionBy(F.lit(0))))
     latest_tranche = (F.col(eligibility_column) == "Yes") & (F.col(tranche_column) == F.col("MAX_TRANCHE_NUMBER"))
     df = df.withColumn(
-        tranche_factor_column_name_to_assign,
-        F.when(latest_tranche, eligible_households_by_strata / F.col(sampled_households_count)),
-    )
-    df = df.withColumn(
-        eligibility_percentage_column_name_to_assign,
-        F.when(
-            latest_tranche,
-            ((eligible_households_by_strata - F.col(sampled_households_count)) / F.col(sampled_households_count)) * 100,
-        ),
+        column_name_to_assign,
+        F.when(latest_tranche, eligible_households_by_strata / latest_tranche_households_by_strata),
     )
     return df.drop("MAX_TRANCHE_NUMBER")
