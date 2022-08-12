@@ -71,6 +71,7 @@ from cishouseholds.pipeline.mapping import soc_regex_map
 from cishouseholds.pipeline.merge_process_combination import merge_process_validation
 from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
 from cishouseholds.pipeline.reporting import generate_error_table
+from cishouseholds.pipeline.reporting import generate_lab_report
 from cishouseholds.pipeline.reporting import multiple_visit_1_day
 from cishouseholds.pipeline.reporting import unmatching_antibody_to_swab_viceversa
 from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
@@ -417,14 +418,15 @@ def process_soc_deltas(
         error_message, validation_schema, column_name_map, drop_list = normalise_schema(
             file_path, soc_schema, soc_regex_map
         )
-        if error_message is not None:
+        if error_message is None:
             df = extract_input_data(file_path, validation_schema, ",").drop(*drop_list)
             df = assign_filename_column(df, source_file_column)
             for actual_column, normalised_column in column_name_map.items():
                 df = df.withColumnRenamed(actual_column, normalised_column)
+            dfs.append(df)
         else:
             add_error_file_log_entry(file_path, error_message)  # type: ignore
-            raise ValueError(error_message)
+            print(error_message)  # functional
     if include_processed:
         union_dataframes_to_hive(unioned_soc_lookup_table, dfs)
     else:
@@ -435,7 +437,7 @@ def process_soc_deltas(
 def process_soc_data(
     survey_responses_table: str,
     soc_coded_survey_responses_table: str,
-    inconsistances_resolution_table: str,
+    inconsistences_resolution_table: str,
     unioned_soc_lookup_table: str,
     transformed_soc_lookup_table: str,
     duplicate_soc_rows_table: str,
@@ -445,13 +447,13 @@ def process_soc_data(
     """
     join_on_columns = ["work_main_job_title", "work_main_job_role"]
     window = Window.partitionBy(*join_on_columns)
-    inconsistances_resolution_df = extract_from_table(inconsistances_resolution_table).withColumnRenamed(
+    inconsistences_resolution_df = extract_from_table(inconsistences_resolution_table).withColumnRenamed(
         "Gold SOC2010 code", "resolved_soc_code"
     )
     soc_lookup_df = extract_from_table(unioned_soc_lookup_table)
     survey_responses_df = extract_from_table(survey_responses_table)
     soc_lookup_df = soc_lookup_df.join(
-        inconsistances_resolution_df.withColumnRenamed(
+        inconsistences_resolution_df.withColumnRenamed(
             "standard_occupational_classification_code", "resolved_soc_code"
         ),
         on=join_on_columns,
@@ -461,13 +463,14 @@ def process_soc_data(
         "standard_occupational_classification_code",
         F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
     ).drop("resolved_soc_code")
-    filter_condition = F.count(*join_on_columns).over(window) > 1
-    duplicate_rows_df = soc_lookup_df.filter(filter_condition)
-    soc_lookup_df = soc_lookup_df.filter(~filter_condition)
 
-    update_table(duplicate_soc_rows_table, duplicate_rows_df, "overwrite", archive=True)
+    soc_lookup_df = soc_lookup_df.withColumn("FILTER_CONDITION", F.count("*").over(window) > 1)
+    duplicate_rows_df = soc_lookup_df.filter(F.col("FILTER_CONDITION")).drop("FILTER_CONDITION")
+    soc_lookup_df = soc_lookup_df.filter(~F.col("FILTER_CONDITION")).drop("FILTER_CONDITION")
 
-    soc_lookup_df = transform_cis_soc_data(soc_lookup_df)
+    update_table(duplicate_rows_df, duplicate_soc_rows_table, "overwrite", archive=True)
+
+    soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
     survey_responses_df = survey_responses_df.join(soc_lookup_df, on=join_on_columns, how="left")
     update_table(survey_responses_df, soc_coded_survey_responses_table, "overwrite")
     update_table(soc_lookup_df, transformed_soc_lookup_table, "overwrite")
@@ -644,49 +647,6 @@ def lookup_based_editing(
 
     df = transform_from_lookups(df, cohort_lookup, travel_countries_lookup, tenure_group)
     update_table(df, edited_table, write_mode="overwrite")
-
-
-@register_pipeline_stage("imputation_depdendent_transformations")
-def imputation_depdendent_transformations(
-    input_table_name: str,
-    rural_urban_lookup_path: str,
-    output_table_name: str,
-):
-    """
-    Processing that depends on geographies and and imputed demographic infromation.
-
-    Parameters
-    ----------
-    input_table
-        name of the table containing data to be processed
-    rural_urban_lookup_path
-        path to the rural urban lookup to be joined onto responses
-    edited_table
-        name of table to write processed data to
-    """
-    df = extract_from_table(input_table_name)
-    rural_urban_lookup_df = (
-        get_or_create_spark_session()
-        .read.csv(
-            rural_urban_lookup_path,
-            header=True,
-            schema="""
-            lower_super_output_area_code_11 string,
-            cis_rural_urban_classification string,
-            rural_urban_classification_11 string
-        """,
-        )
-        .drop("rural_urban_classification_11")
-    )  # Prefer version from sample
-
-    check_lookup_table_joined_columns_unique(df, "lower_super_output_area_code_11", "rural_urban_lookup")
-    df = df.join(
-        F.broadcast(rural_urban_lookup_df),
-        how="left",
-        on="lower_super_output_area_code_11",
-    )
-    df = create_formatted_datetime_string_columns(df)
-    update_table(df, output_table_name, write_mode="overwrite")
 
 
 @register_pipeline_stage("outer_join_antibody_results")
@@ -1056,6 +1016,7 @@ def geography_and_imputation_dependent_processing(
     )  # Includes school year and age_at_visit derivations
 
     df = derive_age_based_columns(df, "age_at_visit")
+    df = create_formatted_datetime_string_columns(df)
     update_table(df, output_table_name, write_mode="overwrite")
 
 
@@ -1160,6 +1121,17 @@ def report(
     write_string_to_file(
         output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
     )
+
+
+@register_pipeline_stage("lab_report")
+def lab_report(survey_responses_table: str, swab_report_table: str, blood_report_table: str) -> DataFrame:
+    """
+    Generate reports of most recent 7 days of swab and blood data
+    """
+    survey_responses_df = extract_from_table(survey_responses_table).orderBy("file_date")
+    swab_df, blood_df = generate_lab_report(survey_responses_df)
+    update_table(swab_df, swab_report_table, "overwrite")
+    update_table(blood_df, blood_report_table, "overwrite")
 
 
 @register_pipeline_stage("report_iqvia")

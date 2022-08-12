@@ -1,4 +1,6 @@
 # flake8: noqa
+from typing import List
+
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -150,7 +152,7 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
 
 
-def transform_cis_soc_data(df: DataFrame) -> DataFrame:
+def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFrame:
     """
     transform and process cis soc data
     """
@@ -166,10 +168,21 @@ def transform_cis_soc_data(df: DataFrame) -> DataFrame:
     # remove nulls and deduplicate on all columns
     df = df.filter(F.col("work_main_job_title").isNotNull() & F.col("work_main_job_role").isNotNull()).distinct()
 
-    window = Window.partitionBy("work_main_job_title", "work_main_job_role")
-    df = df.withColumn("COUNT", F.count("*").over(window))
-    df = df.filter(~((F.col("COUNT") > 1) & (F.col("standard_occupational_classification_code") == "uncodeable")))
-    return df.drop("COUNT")
+    df = df.withColumn(
+        "LENGTH",
+        F.length(
+            F.when(
+                F.col("standard_occupational_classification_code") != "uncodeable",
+                F.col("standard_occupational_classification_code"),
+            )
+        ),
+    ).orderBy(F.desc("LENGTH"))
+
+    window = Window.partitionBy(*join_on_columns)
+    df = df.withColumn("DROP", F.col("LENGTH") != F.max("LENGTH").over(window))
+    df = df.filter((F.col("standard_occupational_classification_code") != "uncodeable") & (~F.col("DROP")))
+
+    return df.drop("DROP", "LENGTH")
 
 
 def transform_blood_delta(df: DataFrame) -> DataFrame:
@@ -1202,6 +1215,9 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "Janssen / Johnson&Johnson": "Janssen/Johnson&Johnson",
         "Another vaccine please specify": "Other / specify",
         "I don't know the type": "Don't know type",
+        "Or Another vaccine please specify": "Other / specify",  # changed from "Other /specify"
+        "I do not know the type": "Don't know Type",
+        "Or do you not know which one you had?": "Don't know Type",
     }
     column_editing_map = {
         "participant_survey_status": {"Complete": "Completed"},
@@ -2741,23 +2757,28 @@ def reclassify_work_variables(
         positive_regex_pattern=at_university_pattern.positive_regex_pattern,
         negative_regex_pattern=at_university_pattern.negative_regex_pattern,
     )
-    under_16 = F.col("age_at_visit") < F.lit(16)
+
+    age_under_16 = F.col("age_at_visit") < F.lit(16)
+    age_four_or_over = F.col("age_at_visit") >= F.lit(4)
+    age_over_four = F.col("age_at_visit") > F.lit(4)
 
     update_work_status_student_v0 = (
         (school_regex_hit & flag_records_for_student_v0_rules())
         | (university_regex_hit & flag_records_for_student_v0_rules())
         | (college_regex_hit & flag_records_for_student_v0_rules())
-        | under_16
+        | (age_four_or_over & age_under_16)
     )
 
     update_work_status_student_v1 = (
         (school_regex_hit & flag_records_for_student_v1_rules())
         | (university_regex_hit & flag_records_for_student_v1_rules())
         | (college_regex_hit & flag_records_for_student_v1_rules())
-        | under_16
+        | (age_over_four & age_under_16)
     )
 
-    update_work_status_student_v2_a = (school_regex_hit & flag_records_for_student_v2_rules()) | under_16
+    update_work_status_student_v2_a = (school_regex_hit & flag_records_for_student_v2_rules()) | (
+        age_four_or_over & age_under_16
+    )
 
     update_work_status_student_v2_b = college_regex_hit & flag_records_for_college_v2_rules()
 
