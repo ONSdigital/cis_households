@@ -1939,15 +1939,13 @@ def derive_patient_facing_variables(
     work_status_column_name: str,
     patient_facing_column_name: str,
     work_direct_contact_patients_column_name: str,
-    job_title_column_name: str,
-    job_role_column_name: str,
+    job_main_resp_column_name: str,
 ) -> DataFrame:
     """
     Creates regex logic to infer columns health_care_classification, patient_facing_classification,
     patient_facing_over_20_percent, work_status_classification based on spark column object logic.
     """
-    job_main_resp = F.concat(F.col(job_title_column_name), F.col(job_role_column_name))
-
+    job_main_resp = F.col(job_main_resp_column_name)
     flag_vet = job_main_resp.rlike(
         r"\bVETS*\b|\bVEN?T[A-Z]*(RY|IAN)\b|EQUIN|\b(DOG|CAT)\b|HEDGEHOG|ANIMAL"
     ) & ~job_main_resp.rlike(r"VET PEOPLE")
@@ -1989,7 +1987,7 @@ def derive_patient_facing_variables(
                 job_main_resp.rlike(
                     r"SCHOOL|LOCAL *GOVERNMENT|CIVIL *SERV(ANT|ICE)|\bCHURCH\b|\bHOTEL|\bCARE *HOME|\bVET[A-Z]*RY\b|HAIR *(SALON|DRESS)+|EDUCATION|SPORT[S ]*CENT|LEISURE|BEAUTY|COLLEGE"  # noqa: E501
                 )
-                | job_main_resp.rlike(r"\bSPA\b|RETAIL|\b\LAW\b\|\bLEGAL|\bBAR WORK|GARAGE|\bVET[S]*\b")
+                | job_main_resp.rlike(r"\bSPA\b|RETAIL|\bLAW\b\|\bLEGAL|\bBAR WORK|GARAGE|\bVET[S]*\b")
             )
         )
         | (
@@ -2173,9 +2171,7 @@ def derive_patient_facing_variables(
     flag_apprentice = job_main_resp.rlike(r"AP*RENTI[CS]")
     flag_unemployed = job_main_resp.rlike(r"[AEIOU]N.?EMPLOYED|NOT WORKING|LOOKING FOR WORK|JOB.?SEEKING")
 
-    flag_unemployed_ind_columns = (F.col(job_title_column_name).rlike(r"^NO?NE$|^N(O$|O\s)")) | (
-        F.col(job_role_column_name).rlike(r"^NO?NE$")
-    )
+    flag_unemployed_ind_columns = (job_main_resp.rlike(r"^NO?NE$|^N(O$|O\s)")) | (job_main_resp.rlike(r"^NO?NE$"))
 
     # Patient Facing Flags
     flag_non_patient_facing = (
@@ -2278,8 +2274,8 @@ def derive_patient_facing_variables(
             | flag_physiotherapist,
             "Yes",
         )
-        .when(F.col(patient_facing_column_name) == "Not patient-facing", "No")
-        .when(F.col(patient_facing_column_name) == "Patient-facing", "Yes")
+        .when(F.col(patient_facing_column_name) == "non-patient-facing", "No")
+        .when(F.col(patient_facing_column_name) == "patient-facing", "Yes")
         .when(F.col(work_direct_contact_patients_column_name) == "No", "No")
         .when(F.col(work_direct_contact_patients_column_name) == "Yes", "Yes")
     )
@@ -2293,35 +2289,39 @@ def derive_patient_facing_variables(
                 | flag_unemployed
                 | flag_unemployed_ind_columns
             ),
-            "not_working",
+            "Not working",
         )
-        .when(flag_student | (F.col(work_status_column_name) == "Student"), "student")  # noqa: E501
+        .when(flag_student | (F.col(work_status_column_name) == "Student"), "Student")  # noqa: E501
         .when(
             (F.col(work_status_column_name) == "Employed")
             | (F.col(work_status_column_name) == "Self-employed")
             | flag_apprentice,
-            "working",
+            "Working",
         )
         .when(
             (F.col(work_status_column_name) == "Furloughed (temporarily not working)")
             | (F.col(work_status_column_name) == "Not working (unemployed, retired, long-term sick etc.)"),
-            "not_working",
+            "Not working",
         )
         .otherwise(None)
     )
     window = Window.partitionBy(id_column_name)
 
-    pacient_facing_binary = F.when(patient_facing_final == "Yes", "Yes").otherwise("No")
-    pacient_facing_yes = F.when(pacient_facing_binary == "Yes", F.count(pacient_facing_binary).over(window))
-    pacient_facing_no = F.when(pacient_facing_binary == "No", F.count(pacient_facing_binary).over(window))
+    patient_facing_yes = F.when(patient_facing_final == "Yes", F.lit(1)).otherwise(0)
+    patient_facing_no = F.when(patient_facing_final != "Yes", F.lit(1)).otherwise(0)
 
-    pacient_facing_yes_percent = pacient_facing_yes / (pacient_facing_yes + pacient_facing_no)
-    pacient_facing_ever_never_20_perc = pacient_facing_yes_percent >= 0.2
+    patient_facing_yes = F.sum(patient_facing_yes).over(window)
+    patient_facing_no = F.sum(patient_facing_no).over(window)
+
+    patient_facing_yes_percent = patient_facing_yes / (patient_facing_yes + patient_facing_no)
+    participant_patient_facing_more_than_20_percent = F.when(
+        (patient_facing_yes_percent >= 0.2) & (patient_facing_yes > 1), "Yes"
+    ).otherwise("No")
 
     col_object_map = {
         "health_care_classification": healthcare_binary,
         "patient_facing_classification": patient_facing_final,
-        "patient_facing_over_20_percent": pacient_facing_ever_never_20_perc,  # fix
+        "participant_patient_facing_more_than_20_percent": participant_patient_facing_more_than_20_percent,
         "work_status_classification": work_status_final,
     }
     for column_name, column_object in col_object_map.items():

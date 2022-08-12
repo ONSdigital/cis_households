@@ -177,18 +177,7 @@ def transform_cis_soc_data(df: DataFrame) -> DataFrame:
     transform and process cis soc data
     """
     # clean columns
-    for column in [
-        # TODO: is this the best place to clean columns?
-        "work_main_job_role",
-        "work_main_job_title",
-        "work_health_care_patient_facing",
-        "work_direct_contact_patients_or_clients",
-        "work_status_v0",
-        "work_status_v1",
-        "work_status_v2",
-        "work_status_digital",
-    ]:
-        df = clean_work_main_job_role(df, column)
+    df = clean_work_main_job_role(df, "work_main_job_role")
 
     df = df.withColumn(
         "standard_occupational_classification_code",
