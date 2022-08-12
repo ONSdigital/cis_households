@@ -14,7 +14,7 @@ from cishouseholds.weights.edit import reformat_calibration_df_simple
 from cishouseholds.weights.edit import update_population_values
 
 
-def proccess_population_projection_df(
+def process_population_projection_df(
     previous_projection_df: DataFrame,
     population_projection_current_df: DataFrame,
     aps_lookup_df: DataFrame,
@@ -23,6 +23,16 @@ def proccess_population_projection_df(
 ):
     """
     process and format population projections tables by reshaping new dataframe and recalculating predicted values
+
+    Parameters
+    ----------
+    previous_projection_df
+    population_projection_current_df
+    aps_lookup_df
+    month
+        reference month number from 1 to 12. may need to be set to current month
+    year
+        reference year value
     """
     individual_level_populations_for_non_response_adjustment = population_projection_current_df
 
@@ -185,8 +195,22 @@ def calibarate_df(
     additional_columns: List[str] = [],
 ):
     """
-    Execute reformat_calibration_df_simple function depending upon whether any rows in the dataframe
-    meet a certain criteria.
+        Execute reformat_calibration_df_simple function depending upon whether any rows in the dataframe
+        meet a certain criteria.
+
+        Parameters
+        ----------
+        df
+        groupby_columns
+        country
+            country that participants must reside in on the calibrated dataset
+        country_column
+        min_age
+            minimum age of participants to be included in the calibrated dataset
+        age_column
+        additional_columns
+            additional columns to select as part of the calibrated dataset
+    ):
     """
     df = df.filter((F.col(country_column) == country) & (F.col(age_column) >= min_age))
     if "p1_for_swab_longcovid" in groupby_columns:

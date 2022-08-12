@@ -28,7 +28,7 @@ def test_assign_tranche_factor(spark_session):
         sampled_households_count="sampled_count",
         household_id_column="id",
         tranche_column="tranche_number_indicator",
-        elibility_column="tranche_eligible_households",
+        eligibility_column="tranche_eligible_households",
         strata_columns=["stratum"],
     )
     assert_df_equality(
