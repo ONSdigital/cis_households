@@ -2277,7 +2277,7 @@ def derive_patient_facing_variables(
             "Yes",
         )
         .when(F.col(patient_facing_column_name) == "Not patient-facing", "No")
-        .when(F.col(patient_facing_column_name) == "patient-facing", "Yes")
+        .when(F.col(patient_facing_column_name) == "Patient-facing", "Yes")
         .when(F.col(work_direct_contact_patients_column_name) == "No", "No")
         .when(F.col(work_direct_contact_patients_column_name) == "Yes", "Yes")
     )
