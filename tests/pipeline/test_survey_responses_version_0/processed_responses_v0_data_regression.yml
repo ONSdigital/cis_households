@@ -140,11 +140,12 @@
   work_health_care_patient_facing_raw: 'No'
   work_location: Its main implementation is the Glasgow Haskell Compiler.
   work_location_raw: Its main implementation is the Glasgow Haskell Compiler.
-  work_main_job_role: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are
-    D1, D2, ... Dn.
+  work_main_job_role: THE SYNTAX D1D2DN DENOTES A TUPLE WHOSE ARGUMENTS ARE D1 D2  DN
   work_main_job_role_raw: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
     are D1, D2, ... Dn.
-  work_main_job_title: Type classes first appeared in the Haskell programming language.
+  work_main_job_title: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
+  work_main_job_title_and_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING
+    LANGUAGE THE SYNTAX D1D2DN DENOTES A TUPLE WHOSE ARGUMENTS ARE D1 D2  DN
   work_main_job_title_raw: Type classes first appeared in the Haskell programming
     language.
   work_not_from_home_days_per_week: '4'
@@ -294,11 +295,14 @@
   work_health_care_patient_facing_raw: 'Yes'
   work_location: I don't even care.
   work_location_raw: I don't even care.
-  work_main_job_role: Initially composing light-hearted and irreverent works, he also
-    wrote serious, sombre and religious pieces beginning in the 1930s.
+  work_main_job_role: INITIALLY COMPOSING LIGHT HEARTED AND IRREVERENT WORKS HE ALSO
+    WROTE SERIOUS SOMBRE AND RELIGIOUS PIECES BEGINNING IN THE 1930S
   work_main_job_role_raw: Initially composing light-hearted and irreverent works,
     he also wrote serious, sombre and religious pieces beginning in the 1930s.
-  work_main_job_title: It is also a garbage-collected runtime system.
+  work_main_job_title: IT IS ALSO A GARBAGE COLLECTED RUNTIME SYSTEM
+  work_main_job_title_and_role: IT IS ALSO A GARBAGE COLLECTED RUNTIME SYSTEM INITIALLY
+    COMPOSING LIGHT HEARTED AND IRREVERENT WORKS HE ALSO WROTE SERIOUS SOMBRE AND
+    RELIGIOUS PIECES BEGINNING IN THE 1930S
   work_main_job_title_raw: It is also a garbage-collected runtime system.
   work_not_from_home_days_per_week: '5'
   work_not_from_home_days_per_week_raw: '5'
@@ -449,10 +453,13 @@
     station with the power to destroy entire planets.
   work_location_raw: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
-  work_main_job_role: Type classes first appeared in the Haskell programming language.
+  work_main_job_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
-  work_main_job_title: They are written as strings of consecutive alphanumeric characters,
-    the first character being lowercase.
+  work_main_job_title: THEY ARE WRITTEN AS STRINGS OF CONSECUTIVE ALPHANUMERIC CHARACTERS
+    THE FIRST CHARACTER BEING LOWERCASE
+  work_main_job_title_and_role: THEY ARE WRITTEN AS STRINGS OF CONSECUTIVE ALPHANUMERIC
+    CHARACTERS THE FIRST CHARACTER BEING LOWERCASE TYPE CLASSES FIRST APPEARED IN
+    THE HASKELL PROGRAMMING LANGUAGE
   work_main_job_title_raw: They are written as strings of consecutive alphanumeric
     characters, the first character being lowercase.
   work_not_from_home_days_per_week: '7'
@@ -607,10 +614,13 @@
   work_health_care_patient_facing_raw: null
   work_location: Tuples are containers for a fixed number of Erlang data types.
   work_location_raw: Tuples are containers for a fixed number of Erlang data types.
-  work_main_job_role: Its main implementation is the Glasgow Haskell Compiler.
+  work_main_job_role: ITS MAIN IMPLEMENTATION IS THE GLASGOW HASKELL COMPILER
   work_main_job_role_raw: Its main implementation is the Glasgow Haskell Compiler.
-  work_main_job_title: Haskell is a standardized, general-purpose purely functional
-    programming language, with non-strict semantics and strong static typing.
+  work_main_job_title: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL
+    PROGRAMMING LANGUAGE WITH NON STRICT SEMANTICS AND STRONG STATIC TYPING
+  work_main_job_title_and_role: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL
+    PROGRAMMING LANGUAGE WITH NON STRICT SEMANTICS AND STRONG STATIC TYPING ITS MAIN
+    IMPLEMENTATION IS THE GLASGOW HASKELL COMPILER
   work_main_job_title_raw: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
   work_not_from_home_days_per_week: '1'
@@ -762,9 +772,11 @@
   work_health_care_patient_facing_raw: 'Yes'
   work_location: Do you come here often?
   work_location_raw: Do you come here often?
-  work_main_job_role: Ports are created with the built-in function open_port.
+  work_main_job_role: PORTS ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
   work_main_job_role_raw: Ports are created with the built-in function open_port.
-  work_main_job_title: Erlang is known for its designs that are well suited for systems.
+  work_main_job_title: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
+  work_main_job_title_and_role: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED
+    FOR SYSTEMS PORTS ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
   work_main_job_title_raw: Erlang is known for its designs that are well suited for
     systems.
   work_not_from_home_days_per_week: '0'
@@ -917,11 +929,13 @@
   work_health_care_patient_facing_raw: 'No'
   work_location: Atoms are used within a program to denote distinguished values.
   work_location_raw: Atoms are used within a program to denote distinguished values.
-  work_main_job_role: Erlang is a general-purpose, concurrent, functional programming
-    language.
+  work_main_job_role: ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL PROGRAMMING
+    LANGUAGE
   work_main_job_role_raw: Erlang is a general-purpose, concurrent, functional programming
     language.
-  work_main_job_title: Any element of a tuple can be accessed in constant time.
+  work_main_job_title: ANY ELEMENT OF A TUPLE CAN BE ACCESSED IN CONSTANT TIME
+  work_main_job_title_and_role: ANY ELEMENT OF A TUPLE CAN BE ACCESSED IN CONSTANT
+    TIME ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL PROGRAMMING LANGUAGE
   work_main_job_title_raw: Any element of a tuple can be accessed in constant time.
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
@@ -1073,10 +1087,12 @@
   work_health_care_patient_facing_raw: null
   work_location: Where are my pants?
   work_location_raw: Where are my pants?
-  work_main_job_role: He looked inquisitively at his keyboard and wrote another sentence.
+  work_main_job_role: HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
   work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
     sentence.
-  work_main_job_title: Type classes first appeared in the Haskell programming language.
+  work_main_job_title: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
+  work_main_job_title_and_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING
+    LANGUAGE HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
   work_main_job_title_raw: Type classes first appeared in the Haskell programming
     language.
   work_not_from_home_days_per_week: '6'
@@ -1228,10 +1244,13 @@
   work_health_care_patient_facing_raw: null
   work_location: Make me a sandwich.
   work_location_raw: Make me a sandwich.
-  work_main_job_role: Make me a sandwich.
+  work_main_job_role: MAKE ME A SANDWICH
   work_main_job_role_raw: Make me a sandwich.
-  work_main_job_title: Haskell is a standardized, general-purpose purely functional
-    programming language, with non-strict semantics and strong static typing.
+  work_main_job_title: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL
+    PROGRAMMING LANGUAGE WITH NON STRICT SEMANTICS AND STRONG STATIC TYPING
+  work_main_job_title_and_role: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL
+    PROGRAMMING LANGUAGE WITH NON STRICT SEMANTICS AND STRONG STATIC TYPING MAKE ME
+    A SANDWICH
   work_main_job_title_raw: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
   work_not_from_home_days_per_week: '2'
@@ -1380,11 +1399,12 @@
   work_health_care_patient_facing_raw: 'Yes'
   work_location: Where are my pants?
   work_location_raw: Where are my pants?
-  work_main_job_role: Atoms are used within a program to denote distinguished values.
+  work_main_job_role: ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
   work_main_job_role_raw: Atoms are used within a program to denote distinguished
     values.
-  work_main_job_title: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are
-    D1, D2, ... Dn.
+  work_main_job_title: THE SYNTAX D1D2DN DENOTES A TUPLE WHOSE ARGUMENTS ARE D1 D2  DN
+  work_main_job_title_and_role: THE SYNTAX D1D2DN DENOTES A TUPLE WHOSE ARGUMENTS
+    ARE D1 D2  DN ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
   work_main_job_title_raw: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
     are D1, D2, ... Dn.
   work_not_from_home_days_per_week: '0'
@@ -1536,12 +1556,15 @@
   work_health_care_patient_facing_raw: 'Yes'
   work_location: Make me a sandwich.
   work_location_raw: Make me a sandwich.
-  work_main_job_role: In 1989 the building was heavily damaged by fire, but it has
-    since been restored.
+  work_main_job_role: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE BUT IT HAS
+    SINCE BEEN RESTORED
   work_main_job_role_raw: In 1989 the building was heavily damaged by fire, but it
     has since been restored.
-  work_main_job_title: '"Messages can be sent to and received from ports, but these
-    messages must obey the so-called ""port protocol."""'
+  work_main_job_title: MESSAGES CAN BE SENT TO AND RECEIVED FROM PORTS BUT THESE MESSAGES
+    MUST OBEY THE SO CALLED PORT PROTOCOL
+  work_main_job_title_and_role: MESSAGES CAN BE SENT TO AND RECEIVED FROM PORTS BUT
+    THESE MESSAGES MUST OBEY THE SO CALLED PORT PROTOCOL IN 1989 THE BUILDING WAS
+    HEAVILY DAMAGED BY FIRE BUT IT HAS SINCE BEEN RESTORED
   work_main_job_title_raw: '"Messages can be sent to and received from ports, but
     these messages must obey the so-called ""port protocol."""'
   work_not_from_home_days_per_week: '4'
