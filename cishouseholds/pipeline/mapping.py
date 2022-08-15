@@ -11,6 +11,24 @@ _times_in_last_7_day_categories = {
     "7 times or more": 7,
 }
 
+consolidation_categories = {
+    "box_empty": 1,
+    "box_multipacked": 2,
+    "exception_undefined": 3,
+    "kpa_overpacked": 4,
+    "kpa_overpacked_different_ref_different_type": 5,
+    "kpa_overpacked_different_ref_same_type": 6,
+    "kpa_unboxed": 7,
+    "kpa_unscanned": 8,
+    "sample_bagged_ziplock": 9,
+    "sample_leaked": 10,
+    "sample_mismatched": 11,
+    "sample_unbagged": 12,
+    "sample_unbagged_no_kpa": 13,
+    "sample_uncompleted": 14,
+    "tube_carrier_unbagged": 15,
+    "tube_carrier_unbagged_unboxed": 16,
+}
 _yes_no_categories = {"No": 0, "Yes": 1}
 
 category_maps = {
@@ -143,6 +161,8 @@ category_maps = {
             "QNR - Questionnaire No Return": 1,
             "TNR - Test Not Returned": 2,
         },
+        "blood_consolidation_point_error": consolidation_categories,
+        "swab_consolidation_point_error": consolidation_categories,
         "participant_visit_status": {
             "Cancelled": 0,
             "Completed": 1,
