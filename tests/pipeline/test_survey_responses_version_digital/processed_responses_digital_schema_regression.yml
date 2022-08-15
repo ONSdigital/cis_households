@@ -1328,6 +1328,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: work_main_job_title_and_role
+  nullable: false
+  type: string
+- metadata: {}
   name: work_in_additional_paid_employment_raw
   nullable: true
   type: string
