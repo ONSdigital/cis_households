@@ -1,6 +1,5 @@
 from io import BytesIO
 from typing import Dict
-from typing import List
 
 import pandas as pd
 from pyspark.sql import DataFrame
@@ -8,9 +7,29 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 from cishouseholds.edit import update_column_values_from_map
-from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import get_run_id
+
+
+def generate_lab_report(df: DataFrame) -> DataFrame:
+    """
+    Generate lab report of latest 7 days of results
+    """
+    current_date = F.lit(df.orderBy(F.desc("file_date")).head().file_date)
+    df = df.filter(F.date_sub(current_date, 7) < F.col("survey_completed_datetime"))
+    swab_df = df.select("swab_sample_barcode", "swab_taken_datetime", "survey_completed_datetime").filter(
+        ~(
+            ((F.col("swab_taken_datetime").isNull()) & (F.col("survey_completed_datetime").isNull()))
+            | F.col("swab_sample_barcode").isNull()
+        )
+    )
+    blood_df = df.select("blood_sample_barcode", "blood_taken_datetime", "survey_completed_datetime").filter(
+        ~(
+            ((F.col("blood_taken_datetime").isNull()) & (F.col("survey_completed_datetime").isNull()))
+            | F.col("blood_sample_barcode").isNull()
+        )
+    )
+    return swab_df, blood_df
 
 
 def dfs_to_bytes_excel(sheet_df_map: Dict[str, DataFrame]) -> BytesIO:
@@ -33,7 +52,7 @@ def dfs_to_bytes_excel(sheet_df_map: Dict[str, DataFrame]) -> BytesIO:
 
 def multiple_visit_1_day(df: DataFrame, participant_id: str, visit_id: str, date_column: str, datetime_column: str):
     """
-    Tracks multiple visits by a participant
+    Returns a dataframe containing participants reported to have been visited multiple times in 1 day.
 
     Parameters
     ----------
@@ -59,32 +78,11 @@ def multiple_visit_1_day(df: DataFrame, participant_id: str, visit_id: str, date
     return df_multiple_visit.drop("FLAG")
 
 
-def unmatching_antibody_to_swab_viceversa(
-    swab_df: DataFrame, antibody_df: DataFrame, column_list: List[str]
-) -> DataFrame:
-    """
-    Identifies participants who are present in Swab dataframe but not in Antibody
-    dataframe and vice versa.
-
-    Parameters
-    ----------
-    swab_df
-        The Swabs dataframe
-    antibody_df
-        The Antibody dataframe
-    column_list
-        A list of columns to return in the resulting dataframe
-    """
-    unmatched_swab_df = swab_df.join(antibody_df, on="barcode", how="left_anti").select(*column_list)
-    unmatched_antibody_df = antibody_df.join(swab_df, on="barcode", how="left_anti").select(*column_list)
-
-    df = union_multiple_tables(tables=[unmatched_swab_df, unmatched_antibody_df])
-    return df
-
-
 def generate_error_table(table_name: str, error_priority_map: dict) -> DataFrame:
     """
-    Generates error tables
+    Generates tables of errors and their respective counts present in
+    current and previous pipeline run ordered by a custome priorty ranking
+    set in pipeline config.
 
     Parameters
     ----------

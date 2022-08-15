@@ -74,6 +74,14 @@ def calculate_design_weights(
         tranche_df = assign_filename_column(tranche_df, "tranche_source_file")
         tranche_df = tranche_df.withColumn("tranche_eligible_households", F.lit("Yes"))
 
+        tranche_window = Window.partitionBy("tranche_number_indicator", *tranche_strata_columns)
+        latest_tranche_households_by_strata = F.count(F.col("ons_household_id")).over(tranche_window)
+        tranche_df = tranche_df.withColumn(
+            "households_by_tranche_and_strata_count", latest_tranche_households_by_strata
+        ).drop(
+            "cis_area_code_20"
+        )  # Prefer the one on the survey responses
+
         df = join_on_existing(df=df, df_to_join=tranche_df, on=["ons_household_id"])
         df = df.withColumn(
             "tranche_eligible_households",
@@ -81,10 +89,12 @@ def calculate_design_weights(
         )
         df = assign_tranche_factor(
             df=df,
-            column_name_to_assign="tranche_factor",
+            tranche_factor_column_name_to_assign="tranche_factor",
+            eligibility_percentage_column_name_to_assign="remaining_eligible_percentage_of_sample",
+            sampled_households_count="households_by_tranche_and_strata_count",
             household_id_column="ons_household_id",
             tranche_column="tranche_number_indicator",
-            elibility_column="tranche_eligible_households",
+            eligibility_column="tranche_eligible_households",
             strata_columns=tranche_strata_columns,
         )
     else:
@@ -95,26 +105,25 @@ def calculate_design_weights(
         df=df,
         column_name_to_assign="scaled_design_weight_swab_non_adjusted",
         household_level_populations_df=household_level_populations_df,
-        cis_window=cis_area_window,
+        cis_area_window=cis_area_window,
     )
 
     higher_eligibility = False
     if tranche_provided:
-        higher_eligibility = df.where(F.col("tranche_factor") > 1.0).count() > 0
-    new_migration_to_antibody = higher_eligibility and tranche_provided
+        higher_eligibility = df.where(F.col("remaining_eligible_percentage_of_sample") > 0.0).count() > 0
     df = calculate_scaled_antibody_design_weights(
         df,
         "scaled_design_weight_antibodies_non_adjusted",
         "scaled_design_weight_swab_non_adjusted",
         cis_area_window,
-        new_migration_to_antibody,
+        higher_eligibility,
     )
 
     validate_design_weights(
         df=df,
         num_households_by_cis_column="number_of_households_by_cis_area",
         num_households_by_country_column="number_of_households_by_country",
-        swab_desing_weight_column="scaled_design_weight_swab_non_adjusted",
+        swab_design_weight_column="scaled_design_weight_swab_non_adjusted",
         antibody_design_weight_column="scaled_design_weight_antibodies_non_adjusted",
         cis_area_column="cis_area_code_20",
         country_column="country_code_12",
@@ -129,8 +138,23 @@ def calculate_scaled_antibody_design_weights(
     cis_area_window: Window,
     new_migration_to_antibody: bool,
 ):
+    """
+    Wrapper to calculate raw design weight and scale result to total population
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    scaled_swab_design_weight_column
+        column containing existing scaled swab design weights
+    cis_area_window
+        window object partitioned by cis area
+    new_migration_to_antibody
+        boolean indicator of whether this is the first execution of this data i.e some relevant hdfs tables
+        do not yet exist
+    """
     design_weight_column = "antibody_design_weight"
     if new_migration_to_antibody:
+        print("     Calculating antibody design weights with new migration to antibody group")  # functional
         df = calculate_raw_antibody_design_weights_with_migration(
             df=df,
             column_name_to_assign="raw_antibody_design_weight",
@@ -151,6 +175,7 @@ def calculate_scaled_antibody_design_weights(
         )
 
     else:
+        print("     Calculating antibody design weights with no new migration to antibody group")  # functional
         df = calculate_antibody_design_weights_without_migration(
             df=df,
             column_name_to_assign=design_weight_column,
@@ -167,7 +192,7 @@ def calculate_scaled_antibody_design_weights(
         household_population_column="number_of_households_by_cis_area",
     )
 
-    return df.drop(design_weight_column, "raw_antibody_design_weight")
+    return df  # .drop(design_weight_column, "raw_antibody_design_weight")
 
 
 def join_and_process_lookups(
@@ -183,6 +208,20 @@ def join_and_process_lookups(
 ) -> DataFrame:
     """
     Add data from the additional lookup files to main dataset
+
+    Parameters
+    ----------
+    household_level_populations_df
+    master_sample_df
+    old_sample_df
+    new_sample_df
+    new_sample_source_name
+    postcode_lookup_df
+    country_lookup_df
+    lsoa_cis_lookup_df
+    first_run
+        boolean indicator of whether this is the first execution of this data i.e some relevant hdfs tables
+        do not yet exist
     """
     master_sample_df = clean_postcode(master_sample_df, "postcode").withColumn(
         "ons_household_id", F.regexp_replace(F.col("ons_household_id"), r"\D", "")
@@ -256,7 +295,14 @@ def derive_country_code(df, column_name_to_assign: str, region_code_column: str)
 def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) -> DataFrame:
     """
     Recode and rename old column values in sample data if change detected in new sample data
-    Paramaters
+
+    Parameters
+    ----------
+    old_df
+        dataframe with previously sampled data
+    new_df
+        dataframe with newly sampled data
+    hh_info_df
     """
     old_lsoa = list(filter(re.compile(r"^lower_super_output_area_code_\d{1,}$").match, old_df.columns))[0]
     new_lsoa = list(filter(re.compile(r"^lower_super_output_area_code_\d{1,}$").match, new_df.columns))[0]
@@ -299,10 +345,10 @@ def household_level_populations(
 
 
 def calculate_scaled_swab_design_weights(
-    df: DataFrame, column_name_to_assign: str, household_level_populations_df: DataFrame, cis_window: Window
+    df: DataFrame, column_name_to_assign: str, household_level_populations_df: DataFrame, cis_area_window: Window
 ):
     """
-    Wrapper function to calculate swab design weights
+    Wrapper to calculate raw design weight and scale result to total population
     """
     df = calculate_raw_design_weight_swabs(
         df=df,
@@ -320,14 +366,14 @@ def calculate_scaled_swab_design_weights(
         design_weight_column="raw_design_weights_swab",
         eligible_household_count_column="number_eligible_household_sample",
         groupby_columns=["cis_area_code_20", "sample_new_previous"],
-        cis_window=cis_window,
+        cis_window=cis_area_window,
     )
     df = scale_swab_design_weight(
         df=df,
         column_name_to_assign=column_name_to_assign,
         design_weight_column="combined_antibody_design_weight",
         household_count_column="number_of_households_by_cis_area",
-        cis_window=cis_window,
+        cis_window=cis_area_window,
     )
     df = df.withColumn(
         column_name_to_assign,
@@ -348,6 +394,19 @@ def calculate_raw_design_weight_swabs(
     """
     Assign design weight for swabs sample by applying the ratio between number_of_households_population_by_cis and
     number_eligible_household_sample when the sample type is "new"
+
+    Parameters
+    ----------
+    df
+    household_level_populations_df
+    column_name_to_assign
+    sample_type_column
+        column denoting whether is sample new or previous
+    group_by_columns
+        columns by which to partition the data
+    barcode_column
+    previous_design_weight_column
+        design weight values already present on the data
     """
     df = df.drop("number_of_households_by_cis_area").join(
         household_level_populations_df.select(
@@ -382,6 +441,19 @@ def calculate_combined_design_weights(
 ) -> DataFrame:
     """
     Calculate combined design weight for either swab or antibody.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    design_weight_column
+        uncombined design weight column
+    eligible_household_count_column
+        column denoting if the household is eligible for the study
+    groupby_column
+        column by which to partition the data
+    cis_window
+        Window object partitioned by cis_area
     """
     window = Window.partitionBy(*groupby_columns)
     standard_deviation_raw_design_weight = F.stddev(design_weight_column).over(window)
@@ -422,7 +494,7 @@ def validate_design_weights(
     df: DataFrame,
     num_households_by_cis_column: str,
     num_households_by_country_column: str,
-    swab_desing_weight_column: str,
+    swab_design_weight_column: str,
     antibody_design_weight_column: str,
     cis_area_column: str,
     country_column: str,
@@ -434,6 +506,19 @@ def validate_design_weights(
     - no design weights are negative
     - no design weights are missing
     - design weights consistent by group
+
+    Parameters
+    -----------
+    num_households_by_cis_column
+        column containing number of households in each cis area
+    num_households_by_country_column
+        column containing number of households in each country
+    swab_design_weight_column
+    antibody_design_weight_column
+    cis_area_column
+    country_column
+    rounding_value
+        number of decimal places to which to round
     """
     cis_area_window = Window.partitionBy(cis_area_column)
     country_window = Window.partitionBy(country_column)
@@ -441,7 +526,7 @@ def validate_design_weights(
     df = df.withColumn(
         "SWAB_DESIGN_WEIGHT_SUM_CHECK_FAILED",
         F.when(
-            F.round(F.sum(swab_desing_weight_column).over(cis_area_window), rounding_value)
+            F.round(F.sum(swab_design_weight_column).over(cis_area_window), rounding_value)
             == F.col(num_households_by_cis_column),
             False,
         ).otherwise(True),
@@ -461,9 +546,9 @@ def validate_design_weights(
         True if df.filter(F.col("ANTIBODY_DESIGN_WEIGHT_SUM_CHECK_FAILED")).count() == 0 else False
     )
 
-    negative_design_weights = df.filter(F.least(swab_desing_weight_column, antibody_design_weight_column) < 0).count()
+    negative_design_weights = df.filter(F.least(swab_design_weight_column, antibody_design_weight_column) < 0).count()
     null_design_weights = df.filter(
-        F.col(swab_desing_weight_column).isNull() | F.col(antibody_design_weight_column).isNull()
+        F.col(swab_design_weight_column).isNull() | F.col(antibody_design_weight_column).isNull()
     ).count()
 
     df.drop(
@@ -494,6 +579,18 @@ def calculate_antibody_design_weights_without_migration(
     """
     Use the sample_new_previous column value to either select the hh_design_weight_antibodies_column or
     scaled_design_weight_swab_non_adjusted_column as the scenario A/B design weight value.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    hh_design_weight_antibodies_column
+        column containing existing antibody design weights
+    sample_new_previous_column
+        column indicating if the sample is considered part of the new or
+        previous set of samples
+    scaled_swab_design_weight_column
+        column containing existing scaled swab design weights
     """
 
     df = df.withColumn(
@@ -525,6 +622,20 @@ def calculate_raw_antibody_design_weights_with_migration(
     previous design_weight antibodies
     3 step: for cases with sample_new_previous = new, calculate  raw design weights antibodies
     by using  design weights for swab
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    sample_new_previous_column
+    tranche_eligible_column
+    tranche_number_column
+    scaled_swab_design_weight_column
+        column containing an unaltered representation of scaled design weights
+    tranche_factor_column
+        column containing
+    previous_design_weight_column
+        design weight values already present on the data
     """
     df = df.withColumn("MAX_TRANCHE_NUMBER", F.max(tranche_number_column).over(Window.partitionBy(F.lit(0))))
 
@@ -568,7 +679,7 @@ def scale_antibody_design_weights(
     window = Window.partitionBy(groupby_column)
     sum_carry_forward_design_weight = F.sum(F.col(design_weight_column_to_scale)).over(window)
     scaling_factor = F.col(household_population_column) / sum_carry_forward_design_weight
-
+    df = df.withColumn("antibody_design_weight_scaling_factor", scaling_factor)
     df = df.withColumn(
         column_name_to_assign,
         (scaling_factor * F.col(design_weight_column_to_scale)).cast(DecimalType(38, 20)),

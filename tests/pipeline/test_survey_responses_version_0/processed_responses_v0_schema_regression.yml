@@ -544,10 +544,6 @@ fields:
   nullable: true
   type: boolean
 - metadata: {}
-  name: outward_postcode
-  nullable: true
-  type: string
-- metadata: {}
   name: consent_summary
   nullable: true
   type: double
@@ -562,6 +558,10 @@ fields:
 - metadata: {}
   name: hh_id
   nullable: true
+  type: string
+- metadata: {}
+  name: work_main_job_title_and_role
+  nullable: false
   type: string
 - metadata: {}
   name: swab_taken

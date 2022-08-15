@@ -1,7 +1,10 @@
 # flake8: noqa
+from typing import List
+
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
+from pyspark.sql import SparkSession
 from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
@@ -26,7 +29,6 @@ from cishouseholds.derive import assign_household_under_2_count
 from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
-from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.derive import assign_school_year_september_start
@@ -71,13 +73,15 @@ from cishouseholds.derive import flag_records_for_work_from_home_rules
 from cishouseholds.derive import get_keys_by_value
 from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.derive import mean_across_columns
+from cishouseholds.derive import regex_match_result
+from cishouseholds.derive import translate_column_regex_replace
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_barcode_simple
+from cishouseholds.edit import clean_job_description_string
 from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import clean_within_range
-from cishouseholds.edit import clean_work_main_job_role
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
@@ -110,9 +114,35 @@ from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
+from cishouseholds.pipeline.mapping import _welsh_ability_to_socially_distance_at_work_or_education_categories
+from cishouseholds.pipeline.mapping import _welsh_blood_kit_missing_categories
+from cishouseholds.pipeline.mapping import _welsh_blood_not_taken_reason_categories
+from cishouseholds.pipeline.mapping import _welsh_blood_sample_not_taken_categories
+from cishouseholds.pipeline.mapping import _welsh_cis_covid_vaccine_number_of_doses_categories
+from cishouseholds.pipeline.mapping import _welsh_contact_type_by_age_group_categories
+from cishouseholds.pipeline.mapping import _welsh_currently_smokes_or_vapes_description_categories
+from cishouseholds.pipeline.mapping import _welsh_face_covering_categories
+from cishouseholds.pipeline.mapping import _welsh_live_with_categories
+from cishouseholds.pipeline.mapping import _welsh_lot_little_not_categories
+from cishouseholds.pipeline.mapping import _welsh_number_of_types_categories
+from cishouseholds.pipeline.mapping import _welsh_other_covid_infection_test_result_categories
+from cishouseholds.pipeline.mapping import _welsh_self_isolating_reason_detailed_categories
+from cishouseholds.pipeline.mapping import _welsh_swab_kit_missing_categories
+from cishouseholds.pipeline.mapping import _welsh_swab_sample_not_taken_categories
+from cishouseholds.pipeline.mapping import _welsh_transport_to_work_education_categories
+from cishouseholds.pipeline.mapping import _welsh_vaccination_type_categories
+from cishouseholds.pipeline.mapping import _welsh_work_location_categories
+from cishouseholds.pipeline.mapping import _welsh_work_sector_categories
+from cishouseholds.pipeline.mapping import _welsh_work_status_digital_categories
+from cishouseholds.pipeline.mapping import _welsh_work_status_education_categories
+from cishouseholds.pipeline.mapping import _welsh_work_status_employment_categories
+from cishouseholds.pipeline.mapping import _welsh_work_status_unemployment_categories
+from cishouseholds.pipeline.mapping import _welsh_yes_no_categories
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.regex_patterns import at_school_pattern
 from cishouseholds.pipeline.regex_patterns import at_university_pattern
+from cishouseholds.pipeline.regex_patterns import furloughed_pattern
+from cishouseholds.pipeline.regex_patterns import in_college_or_further_education_pattern
 from cishouseholds.pipeline.regex_patterns import not_working_pattern
 from cishouseholds.pipeline.regex_patterns import retired_regex_pattern
 from cishouseholds.pipeline.regex_patterns import self_employed_regex
@@ -122,12 +152,10 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
 
 
-def transform_cis_soc_data(df: DataFrame) -> DataFrame:
+def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFrame:
     """
     transform and process cis soc data
     """
-    # clean columns
-    df = clean_work_main_job_role(df, "work_main_job_role")
     df = df.withColumn(
         "standard_occupational_classification_code",
         F.when(F.substring(F.col("standard_occupational_classification_code"), 1, 2) == "un", "uncodeable").otherwise(
@@ -138,102 +166,21 @@ def transform_cis_soc_data(df: DataFrame) -> DataFrame:
     # remove nulls and deduplicate on all columns
     df = df.filter(F.col("work_main_job_title").isNotNull() & F.col("work_main_job_role").isNotNull()).distinct()
 
-    window = Window.partitionBy("work_main_job_title", "work_main_job_role")
-    df = df.withColumn("COUNT", F.count("*").over(window))
-    df = df.filter(~((F.col("COUNT") > 1) & (F.col("standard_occupational_classification_code") == "uncodeable")))
-    return df.drop("COUNT")
+    df = df.withColumn(
+        "LENGTH",
+        F.length(
+            F.when(
+                F.col("standard_occupational_classification_code") != "uncodeable",
+                F.col("standard_occupational_classification_code"),
+            )
+        ),
+    ).orderBy(F.desc("LENGTH"))
 
+    window = Window.partitionBy(*join_on_columns)
+    df = df.withColumn("DROP", F.col("LENGTH") != F.max("LENGTH").over(window))
+    df = df.filter((F.col("standard_occupational_classification_code") != "uncodeable") & (~F.col("DROP")))
 
-def transform_blood_delta(df: DataFrame) -> DataFrame:
-    """
-    Call functions to process input for blood deltas.
-    """
-    df = assign_test_target(df, "antibody_test_target", "blood_test_source_file")
-    df = assign_substring(
-        df,
-        column_name_to_assign="antibody_test_plate_common_id",
-        column_to_substring="antibody_test_plate_id",
-        start_position=5,
-        substring_length=5,
-    )
-    df = assign_unique_id_column(
-        df=df,
-        column_name_to_assign="unique_antibody_test_id",
-        concat_columns=["blood_sample_barcode", "antibody_test_plate_common_id", "antibody_test_well_id"],
-    )
-    df = clean_barcode(
-        df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_in_bloods_dataset_flag"
-    )
-    return df
-
-
-def add_historical_fields(df: DataFrame):
-    """
-    Add empty values for union with historical data. Also adds constant
-    values for continuation with historical data.
-    """
-    historical_columns = {
-        "siemens_antibody_test_result_classification": "string",
-        "siemens_antibody_test_result_value": "float",
-        "antibody_test_tdi_result_value": "float",
-        "lims_id": "string",
-        "plate_storage_method": "string",
-    }
-    for column, type in historical_columns.items():
-        if column not in df.columns:
-            df = df.withColumn(column, F.lit(None).cast(type))
-    if "antibody_assay_category" not in df.columns:
-        df = assign_column_uniform_value(df, "antibody_assay_category", "Post 2021-03-01")
-    df = df.select(sorted(df.columns))
-    return df
-
-
-def add_fields(df: DataFrame):
-    """Add fields that might be missing in example data."""
-    new_columns = {
-        "antibody_test_undiluted_result_value": "float",
-        "antibody_test_bounded_result_value": "float",
-    }
-    for column, type in new_columns.items():
-        if column not in df.columns:
-            df = df.withColumn(column, F.lit(None).cast(type))
-    df = df.select(sorted(df.columns))
-    return df
-
-
-def transform_swab_delta(df: DataFrame) -> DataFrame:
-    """
-    Transform swab delta - derive new fields that do not depend on merging with survey responses.
-    """
-    spark_session = get_or_create_spark_session()
-    df = clean_barcode(
-        df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_in_swab_dataset_flag"
-    )
-    df = assign_column_to_date_string(df, "pcr_result_recorded_date_string", "pcr_result_recorded_datetime")
-    df = derive_cq_pattern(
-        df, ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"], spark_session
-    )
-    df = assign_unique_id_column(
-        df, "unique_pcr_test_id", ["swab_sample_barcode", "pcr_result_recorded_datetime", "cq_pattern"]
-    )
-
-    df = mean_across_columns(
-        df, "mean_pcr_cq_value", ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"]
-    )
-    df = assign_isin_list(
-        df=df,
-        column_name_to_assign="one_positive_pcr_target_only",
-        reference_column="cq_pattern",
-        values_list=["N only", "OR only", "S only"],
-        true_false_values=[1, 0],
-    )
-    return df
-
-
-def transform_swab_delta_testKit(df: DataFrame):
-    df = df.drop("testKit")
-
-    return df
+    return df.drop("DROP", "LENGTH")
 
 
 def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
@@ -456,6 +403,188 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
         "Telephone",
         ["20-05-2022T21:30:00", "25-05-2022 11:00:00"],
     )
+    return df
+
+
+def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame:
+    """
+    Call functions to translate welsh survey responses from the cis digital questionnaire
+    """
+    digital_yes_no_columns = [
+        "household_invited_to_digital",
+        "household_members_under_2_years_count",
+        "consent_nhs_data_share_yn",
+        "consent_contact_extra_research_yn",
+        "consent_use_of_surplus_blood_samples_yn",
+        "consent_blood_samples_if_positive_yn",
+        "participant_invited_to_digital",
+        "participant_enrolled_digital",
+        "opted_out_of_next_window",
+        "opted_out_of_blood_next_window",
+        "swab_taken",
+        "questionnaire_started_no_incentive",
+        "swab_returned",
+        "blood_taken",
+        "blood_returned",
+        "work_in_additional_paid_employment",
+        "work_nursing_or_residential_care_home",
+        "work_direct_contact_patients_or_clients",
+        "think_have_covid_symptom_fever",
+        "think_have_covid_symptom_headache",
+        "think_have_covid_symptom_muscle_ache",
+        "think_have_covid_symptom_fatigue",
+        "think_have_covid_symptom_nausea_or_vomiting",
+        "think_have_covid_symptom_abdominal_pain",
+        "think_have_covid_symptom_diarrhoea",
+        "think_have_covid_symptom_sore_throat",
+        "think_have_covid_symptom_cough",
+        "think_have_covid_symptom_shortness_of_breath",
+        "think_have_covid_symptom_loss_of_taste",
+        "think_have_covid_symptom_loss_of_smell",
+        "think_have_covid_symptom_more_trouble_sleeping",
+        "think_have_covid_symptom_loss_of_appetite",
+        "think_have_covid_symptom_runny_nose_or_sneezing",
+        "think_have_covid_symptom_noisy_breathing",
+        "think_have_covid_symptom_chest_pain",
+        "think_have_covid_symptom_palpitations",
+        "think_have_covid_symptom_vertigo_or_dizziness",
+        "think_have_covid_symptom_anxiety",
+        "think_have_covid_symptom_low_mood",
+        "think_have_covid_symptom_memory_loss_or_confusion",
+        "think_have_covid_symptom_difficulty_concentrating",
+        "self_isolating",
+        "think_have_covid",
+        "illness_lasting_over_12_months",
+        "ever_smoked_regularly",
+        "currently_smokes_or_vapes",
+        "cis_covid_vaccine_received",
+        "cis_covid_vaccine_type_1",
+        "cis_covid_vaccine_type_2",
+        "cis_covid_vaccine_type_3",
+        "cis_covid_vaccine_type_4",
+        "cis_covid_vaccine_type_5",
+        "cis_covid_vaccine_type_6",
+        "cis_flu_vaccine_received",
+        "been_outside_uk",
+        "think_had_covid",
+        "think_had_covid_any_symptoms",
+        "think_had_covid_symptom_fever",
+        "think_had_covid_symptom_headache",
+        "think_had_covid_symptom_muscle_ache",
+        "think_had_covid_symptom_fatigue",
+        "think_had_covid_symptom_nausea_or_vomiting",
+        "think_had_covid_symptom_abdominal_pain",
+        "think_had_covid_symptom_diarrhoea",
+        "think_had_covid_symptom_sore_throat",
+        "think_had_covid_symptom_cough",
+        "think_had_covid_symptom_shortness_of_breath",
+        "think_had_covid_symptom_loss_of_taste",
+        "think_had_covid_symptom_loss_of_smell",
+        "think_had_covid_symptom_more_trouble_sleeping",
+        "think_had_covid_symptom_loss_of_appetite",
+        "think_had_covid_symptom_runny_nose_or_sneezing",
+        "think_had_covid_symptom_noisy_breathing",
+        "think_had_covid_symptom_chest_pain",
+        "think_had_covid_symptom_palpitations",
+        "think_had_covid_symptom_vertigo_or_dizziness",
+        "think_had_covid_symptom_anxiety",
+        "think_had_covid_symptom_low_mood",
+        "think_had_covid_symptom_memory_loss_or_confusion",
+        "think_had_covid_symptom_difficulty_concentrating",
+        "think_had_covid_contacted_nhs",
+        "think_had_covid_admitted_to_hospital",
+        "other_covid_infection_test",
+        "regularly_lateral_flow_testing",
+        "other_antibody_test",
+        "think_have_long_covid",
+        "think_have_long_covid_symptom_fever",
+        "think_have_long_covid_symptom_headache",
+        "think_have_long_covid_symptom_muscle_ache",
+        "think_have_long_covid_symptom_fatigue",
+        "think_have_long_covid_symptom_nausea_or_vomiting",
+        "think_have_long_covid_symptom_abdominal_pain",
+        "think_have_long_covid_symptom_diarrhoea",
+        "think_have_long_covid_symptom_loss_of_taste",
+        "think_have_long_covid_symptom_loss_of_smell",
+        "think_have_long_covid_symptom_sore_throat",
+        "think_have_long_covid_symptom_cough",
+        "think_have_long_covid_symptom_shortness_of_breath",
+        "think_have_long_covid_symptom_loss_of_appetite",
+        "think_have_long_covid_symptom_chest_pain",
+        "think_have_long_covid_symptom_palpitations",
+        "think_have_long_covid_symptom_vertigo_or_dizziness",
+        "think_have_long_covid_symptom_anxiety",
+        "think_have_long_covid_symptom_low_mood",
+        "think_have_long_covid_symptom_more_trouble_sleeping",
+        "think_have_long_covid_symptom_memory_loss_or_confusion",
+        "think_have_long_covid_symptom_difficulty_concentrating",
+        "think_have_long_covid_symptom_runny_nose_or_sneezing",
+        "think_have_long_covid_symptom_noisy_breathing",
+        "contact_known_positive_covid_last_28_days",
+        "hospital_last_28_days",
+        "other_household_member_hospital_last_28_days",
+        "care_home_last_28_days",
+        "other_household_member_care_home_last_28_days",
+        "work_main_job_changed",
+        "swab_sample_barcode_correct",
+        "blood_sample_barcode_correct",
+        "think_have_covid_symptoms",
+    ]
+    df = apply_value_map_multiple_columns(
+        df,
+        {k: _welsh_yes_no_categories for k in digital_yes_no_columns},
+    )
+    column_editing_map = {
+        "physical_contact_under_18_years": _welsh_contact_type_by_age_group_categories,
+        "physical_contact_18_to_69_years": _welsh_contact_type_by_age_group_categories,
+        "physical_contact_over_70_years": _welsh_contact_type_by_age_group_categories,
+        "social_distance_contact_under_18_years": _welsh_contact_type_by_age_group_categories,
+        "social_distance_contact_18_to_69_years": _welsh_contact_type_by_age_group_categories,
+        "social_distance_contact_over_70_years": _welsh_contact_type_by_age_group_categories,
+        "times_hour_or_longer_another_home_last_7_days": _welsh_number_of_types_categories,
+        "times_hour_or_longer_another_person_your_home_last_7_days": _welsh_number_of_types_categories,
+        "times_shopping_last_7_days": _welsh_number_of_types_categories,
+        "times_socialising_last_7_days": _welsh_number_of_types_categories,
+        "cis_covid_vaccine_type": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_number_of_doses": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_1": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_2": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_3": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_4": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_5": _welsh_vaccination_type_categories,
+        "cis_covid_vaccine_type_6": _welsh_vaccination_type_categories,
+        "illness_reduces_activity_or_ability": _welsh_lot_little_not_categories,
+        "think_have_long_covid_symptom_reduced_ability": _welsh_lot_little_not_categories,
+        "last_covid_contact_type": _welsh_live_with_categories,
+        "last_suspected_covid_contact_type": _welsh_live_with_categories,
+        "face_covering_work_or_education": _welsh_face_covering_categories,
+        "face_covering_other_enclosed_places": _welsh_face_covering_categories,
+        "swab_not_taken_reason": _welsh_swab_sample_not_taken_categories,
+        "blood_not_taken_reason": _welsh_blood_sample_not_taken_categories,
+        "work_status_digital": _welsh_work_status_digital_categories,
+        "work_status_employment": _welsh_work_status_employment_categories,
+        "work_status_unemployment": _welsh_work_status_unemployment_categories,
+        "work_status_education": _welsh_work_status_education_categories,
+        "work_sector": _welsh_work_sector_categories,
+        "work_location": _welsh_work_location_categories,
+        "transport_to_work_or_education": _welsh_transport_to_work_education_categories,
+        "ability_to_socially_distance_at_work_or_education": _welsh_ability_to_socially_distance_at_work_or_education_categories,
+        "self_isolating_reason_detailed": _welsh_self_isolating_reason_detailed_categories,
+        "cis_covid_vaccine_number_of_doses": _welsh_cis_covid_vaccine_number_of_doses_categories,
+        "other_covid_infection_test_results": _welsh_other_covid_infection_test_result_categories,
+        "other_antibody_test_results": _welsh_other_covid_infection_test_result_categories,  # TODO Check translation values in test file
+    }
+    df = apply_value_map_multiple_columns(df, column_editing_map)
+
+    df = translate_column_regex_replace(
+        df, "currently_smokes_or_vapes_description", _welsh_currently_smokes_or_vapes_description_categories
+    )
+    df = translate_column_regex_replace(df, "blood_not_taken_missing_parts", _welsh_blood_kit_missing_categories)
+    df = translate_column_regex_replace(
+        df, "blood_not_taken_could_not_reason", _welsh_blood_not_taken_reason_categories
+    )
+    df = translate_column_regex_replace(df, "swab_not_taken_missing_parts", _welsh_swab_kit_missing_categories)
+
     return df
 
 
@@ -754,7 +883,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     ["In education", None],
                     None,
                     None,
-                    "A child below school age and attending a nursery or pre-school or childminder",
+                    "A child below school age and attending a nursery or a pre-school or childminder",
                 ],
             ],
             [
@@ -860,7 +989,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                     None,
                     [
                         "A child below school age and not attending a nursery or pre-school or childminder",
-                        "A child below school age and attending a nursery or pre-school or childminder",
+                        "A child below school age and attending a nursery or a pre-school or childminder",
                         "A child aged 4 or over at school",
                         "A child aged 4 or over at home-school",
                         "Attending a college or other further education provider including apprenticeships",
@@ -883,6 +1012,50 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Pipe": "smokes_pipe",
             "Vape or E-cigarettes": "smokes_vape_e_cigarettes",
             "Hookah or shisha pipes": "smokes_hookah_shisha_pipes",
+        },
+        ";",
+    )
+    df = map_options_to_bool_columns(
+        df,
+        "blood_not_taken_missing_parts",
+        {
+            "Small sample test tube. This is the tube that is used to collect the blood.": "blood_not_taken_missing_parts_small_sample_tube",  # noqa: E501
+            "Large sample carrier tube with barcode on. This is the tube that you put the small sample test tube in to after collecting blood.": "blood_not_taken_missing_parts_large_sample_carrier",  # noqa: E501
+            "Re-sealable biohazard bag with absorbent pad": "blood_not_taken_missing_parts_biohazard_bag",
+            "Copy of your blood barcode": "blood_not_taken_missing_parts_blood_barcode",
+            "Lancets": "blood_not_taken_missing_parts_lancets",
+            "Plasters": "blood_not_taken_missing_parts_plasters",
+            "Alcohol wipes": "blood_not_taken_missing_parts_alcohol_wipes",
+            "Cleansing wipe": "blood_not_taken_missing_parts_cleansing_wipe",
+            "Sample box": "blood_not_taken_missing_parts_sample_box",
+            "Sample return bag with a return label on": "blood_not_taken_missing_parts_sample_return_bag",
+            "Other please specify": "blood_not_taken_missing_parts_other",
+        },
+        ";",
+    )
+    df = map_options_to_bool_columns(
+        df,
+        "blood_not_taken_could_not_reason",
+        {
+            "I couldn't get enough blood into the pot": "blood_not_taken_could_not_reason_not_enough_blood",
+            "The pot spilled": "blood_not_taken_could_not_reason_pot_spilled",
+            "I had bruising or pain": "blood_not_taken_could_not_reason_had_bruising",
+            "I felt unwell": "blood_not_taken_could_not_reason_unwell",
+            "Other please specify": "blood_not_taken_could_not_reason_other",
+        },
+        ";",
+    )
+    df = map_options_to_bool_columns(
+        df,
+        "swab_not_taken_missing_parts",
+        {
+            "Sample pot with fluid in the bottom and barcode on": "swab_not_taken_missing_parts_sample_pot",
+            "Swab stick": "swab_not_taken_missing_parts_swab_stick",
+            "Re-sealable biohazard bag with absorbent pad": "swab_not_taken_missing_parts_biohazard_bag",
+            "Copy of your swab barcode": "swab_not_taken_missing_parts_swab_barcode",
+            "Sample box": "swab_not_taken_missing_parts_sample_box",
+            "Sample return bag with a return label on": "swab_not_taken_missing_parts_return_bag",
+            "Other please specify": "swab_not_taken_missing_parts_other",
         },
         ";",
     )
@@ -948,6 +1121,9 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "Janssen / Johnson&Johnson": "Janssen/Johnson&Johnson",
         "Another vaccine please specify": "Other / specify",
         "I don't know the type": "Don't know type",
+        "Or Another vaccine please specify": "Other / specify",  # changed from "Other /specify"
+        "I do not know the type": "Don't know Type",
+        "Or do you not know which one you had?": "Don't know Type",
     }
     column_editing_map = {
         "participant_survey_status": {"Complete": "Completed"},
@@ -1137,7 +1313,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i",
     )
     df = clean_postcode(df, "postcode")
-    df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
 
     consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     if all(col in df.columns for col in consent_cols):
@@ -1161,6 +1336,10 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "study_cohort", F.when(F.col("study_cohort").isNull(), "Original").otherwise(F.col("study_cohort"))
     )
+
+    df = clean_job_description_string(df, "work_main_job_title")
+    df = clean_job_description_string(df, "work_main_job_role")
+    df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
     return df
 
 
@@ -1188,11 +1367,10 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
     return df
 
 
-def derive_age_columns(df: DataFrame, column_name_to_assign: str) -> DataFrame:
+def derive_age_based_columns(df: DataFrame, column_name_to_assign: str) -> DataFrame:
     """
     Transformations involving participant age.
     """
-    df = assign_age_at_date(df, column_name_to_assign, base_date="visit_datetime", date_of_birth="date_of_birth")
     df = assign_named_buckets(
         df,
         reference_column=column_name_to_assign,
@@ -1568,6 +1746,11 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         ],
         max_value=7,
     )
+    df = derive_work_status_columns(df)
+    return df
+
+
+def assign_has_been_columns(df):
     df = derive_household_been_columns(
         df=df,
         column_name_to_assign="household_been_care_home_last_28_days",
@@ -1580,7 +1763,6 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
         individual_response_column="hospital_last_28_days",
         household_response_column="other_household_member_hospital_last_28_days",
     )
-    df = derive_work_status_columns(df)
     return df
 
 
@@ -1805,13 +1987,12 @@ def union_dependent_derivations(df):
         order_list=["visit_datetime", "visit_id"],
     )
     df = symptom_column_transformations(df)
-    df = derive_age_columns(df, "age_at_visit")
     if "survey_completion_status" in df.columns:
         df = df.withColumn(
             "participant_visit_status", F.coalesce(F.col("participant_visit_status"), F.col("survey_completion_status"))
         )
     ethnicity_map = {
-        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveler", "Any other white background"],
+        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
         "Asian": [
             "Asian or Asian British-Indian",
             "Asian or Asian British-Pakistani",
@@ -2404,3 +2585,297 @@ def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
     df = df.withColumn("college_rules_v2", flag_records_for_college_v2_rules())
 
     return df
+
+
+def reclassify_work_variables(
+    df: DataFrame, spark_session: SparkSession, drop_original_variables: bool = True
+) -> DataFrame:
+    """
+    Reclassify work-related variables based on rules & regex patterns
+
+    Parameters
+    ----------
+    df
+        The dataframe containing the work-status related variables we want to edit
+    spark_session
+        A active spark session - this is used to break lineage since the code generated
+        in this function is very verbose, you may encounter memory error if we don't break
+        lineage.
+    drop_original_variables
+        Set this to False if you want to retain the original variables so you can compare
+        before & after edits.
+    """
+    # Work from Home
+    update_work_location = flag_records_for_work_from_home_rules() & regex_match_result(
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=work_from_home_pattern.positive_regex_pattern,
+        negative_regex_pattern=work_from_home_pattern.negative_regex_pattern,
+    )
+
+    # Furlough
+    furlough_regex_hit = regex_match_result(
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=furloughed_pattern.positive_regex_pattern,
+        negative_regex_pattern=furloughed_pattern.negative_regex_pattern,
+    )
+
+    update_work_status_furlough_v0 = furlough_regex_hit & flag_records_for_furlough_rules_v0()
+    update_work_status_furlough_v1_a = furlough_regex_hit & flag_records_for_furlough_rules_v1_a()
+    update_work_status_furlough_v1_b = furlough_regex_hit & flag_records_for_furlough_rules_v1_b()
+    update_work_status_furlough_v2_a = furlough_regex_hit & flag_records_for_furlough_rules_v2_a()
+    update_work_status_furlough_v2_b = furlough_regex_hit & flag_records_for_furlough_rules_v2_b()
+
+    # Self-Employed
+    self_employed_regex_hit = regex_match_result(
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=self_employed_regex.positive_regex_pattern,
+        negative_regex_pattern=self_employed_regex.negative_regex_pattern,
+    )
+
+    update_work_status_self_employed_v1_a = self_employed_regex_hit & flag_records_for_self_employed_rules_v1_a()
+    update_work_status_self_employed_v1_b = self_employed_regex_hit & flag_records_for_self_employed_rules_v1_b()
+    update_work_status_self_employed_v2_a = self_employed_regex_hit & flag_records_for_self_employed_rules_v2_a()
+    update_work_status_self_employed_v2_b = self_employed_regex_hit & flag_records_for_self_employed_rules_v2_b()
+
+    # Retired
+    retired_regex_hit = regex_match_result(
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=retired_regex_pattern.positive_regex_pattern,
+        negative_regex_pattern=retired_regex_pattern.negative_regex_pattern,
+    )
+
+    update_work_status_retired = retired_regex_hit | flag_records_for_retired_rules()
+
+    # Not-working
+    not_working_regex_hit = regex_match_result(
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=not_working_pattern.positive_regex_pattern,
+        negative_regex_pattern=not_working_pattern.negative_regex_pattern,
+    )
+
+    update_work_status_not_working_v0 = not_working_regex_hit & flag_records_for_not_working_rules_v0()
+    update_work_status_not_working_v1_a = not_working_regex_hit & flag_records_for_not_working_rules_v1_a()
+    update_work_status_not_working_v1_b = not_working_regex_hit & flag_records_for_not_working_rules_v1_b()
+    update_work_status_not_working_v2_a = not_working_regex_hit & flag_records_for_not_working_rules_v2_a()
+    update_work_status_not_working_v2_b = not_working_regex_hit & flag_records_for_not_working_rules_v2_b()
+
+    # School/Student
+    school_regex_hit = regex_match_result(
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=at_school_pattern.positive_regex_pattern,
+        negative_regex_pattern=at_school_pattern.negative_regex_pattern,
+    )
+
+    college_regex_hit = regex_match_result(
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=in_college_or_further_education_pattern.positive_regex_pattern,
+        negative_regex_pattern=in_college_or_further_education_pattern.negative_regex_pattern,
+    )
+
+    university_regex_hit = regex_match_result(
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=at_university_pattern.positive_regex_pattern,
+        negative_regex_pattern=at_university_pattern.negative_regex_pattern,
+    )
+
+    age_under_16 = F.col("age_at_visit") < F.lit(16)
+    age_four_or_over = F.col("age_at_visit") >= F.lit(4)
+    age_over_four = F.col("age_at_visit") > F.lit(4)
+
+    update_work_status_student_v0 = (
+        (school_regex_hit & flag_records_for_student_v0_rules())
+        | (university_regex_hit & flag_records_for_student_v0_rules())
+        | (college_regex_hit & flag_records_for_student_v0_rules())
+        | (age_four_or_over & age_under_16)
+    )
+
+    update_work_status_student_v1 = (
+        (school_regex_hit & flag_records_for_student_v1_rules())
+        | (university_regex_hit & flag_records_for_student_v1_rules())
+        | (college_regex_hit & flag_records_for_student_v1_rules())
+        | (age_over_four & age_under_16)
+    )
+
+    update_work_status_student_v2_a = (school_regex_hit & flag_records_for_student_v2_rules()) | (
+        age_four_or_over & age_under_16
+    )
+
+    update_work_status_student_v2_b = college_regex_hit & flag_records_for_college_v2_rules()
+
+    update_work_status_student_v2_c = university_regex_hit & flag_records_for_uni_v2_rules()
+
+    update_work_location_general = F.col("work_location").isNull() & (
+        F.col("work_status_v0").isin(
+            "Furloughed (temporarily not working)",
+            "Not working (unemployed, retired, long-term sick etc.)",
+            "Student",
+        )
+    )
+
+    # Please note the order of *_edited columns, these must come before the in-place updates
+
+    # first start by taking a copy of the original work variables
+    _df = (
+        df.withColumn("work_location_original", F.col("work_location"))
+        .withColumn("work_status_v0_original", F.col("work_status_v0"))
+        .withColumn("work_status_v1_original", F.col("work_status_v1"))
+        .withColumn("work_status_v2_original", F.col("work_status_v2"))
+        .withColumn(
+            "work_location",
+            F.when(update_work_location, F.lit("Working from home")).otherwise(F.col("work_location")),
+        )
+        .withColumn(
+            "work_status_v0",
+            F.when(self_employed_regex_hit, F.lit("Self-employed")).otherwise(F.col("work_status_v0")),
+        )
+        .withColumn(
+            "work_status_v1",
+            F.when(update_work_status_self_employed_v1_a, F.lit("Self-employed and currently working")).otherwise(
+                F.col("work_status_v1")
+            ),
+        )
+        .withColumn(
+            "work_status_v1",
+            F.when(update_work_status_self_employed_v1_b, F.lit("Self-employed and currently not working")).otherwise(
+                F.col("work_status_v1")
+            ),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(
+                update_work_status_self_employed_v2_a,
+                F.lit("Self-employed and currently working"),
+            ).otherwise(F.col("work_status_v2")),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(update_work_status_self_employed_v2_b, F.lit("Self-employed and currently not working")).otherwise(
+                F.col("work_status_v2")
+            ),
+        )
+        .withColumn(
+            "work_status_v0",
+            F.when(update_work_status_student_v0, F.lit("Student")).otherwise(F.col("work_status_v0")),
+        )
+        .withColumn(
+            "work_status_v1",
+            F.when(update_work_status_student_v1, F.lit("5y and older in full-time education")).otherwise(
+                F.col("work_status_v1")
+            ),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(update_work_status_student_v2_a, F.lit("4-5y and older at school/home-school")).otherwise(
+                F.col("work_status_v2")
+            ),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(
+                update_work_status_student_v2_b, F.lit("Attending college or FE (including if temporarily absent)")
+            ).otherwise(F.col("work_status_v2")),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(
+                update_work_status_student_v2_c, F.lit("Attending university (including if temporarily absent)")
+            ).otherwise(F.col("work_status_v2")),
+        )
+    )
+
+    _df2 = spark_session.createDataFrame(_df.rdd, schema=_df.schema)  # breaks lineage
+
+    _df3 = (
+        _df2.withColumn(
+            "work_status_v0",
+            F.when(
+                update_work_status_retired, F.lit("Not working (unemployed, retired, long-term sick etc.)")
+            ).otherwise(F.col("work_status_v0")),
+        )
+        .withColumn(
+            "work_status_v1",
+            F.when(update_work_status_retired, F.lit("Retired")).otherwise(F.col("work_status_v1")),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(update_work_status_retired, F.lit("Retired")).otherwise(F.col("work_status_v2")),
+        )
+        .withColumn(
+            "work_status_v0",
+            F.when(
+                update_work_status_not_working_v0, F.lit("Not working (unemployed, retired, long-term sick etc.)")
+            ).otherwise(F.col("work_status_v0")),
+        )
+        .withColumn(
+            "work_status_v1",
+            F.when(update_work_status_not_working_v1_a, F.lit("Employed and currently not working")).otherwise(
+                F.col("work_status_v1")
+            ),
+        )
+        .withColumn(
+            "work_status_v1",
+            F.when(update_work_status_not_working_v1_b, F.lit("Self-employed and currently not working")).otherwise(
+                F.col("work_status_v1")
+            ),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(update_work_status_not_working_v2_a, F.lit("Employed and currently not working")).otherwise(
+                F.col("work_status_v2")
+            ),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(update_work_status_not_working_v2_b, F.lit("Self-employed and currently not working")).otherwise(
+                F.col("work_status_v2")
+            ),
+        )
+        .withColumn(
+            "work_status_v0",
+            F.when(update_work_status_furlough_v0, F.lit("Furloughed (temporarily not working)")).otherwise(
+                F.col("work_status_v0")
+            ),
+        )
+        .withColumn(
+            "work_status_v1",
+            F.when(update_work_status_furlough_v1_a, F.lit("Employed and currently not working")).otherwise(
+                F.col("work_status_v1")
+            ),
+        )
+        .withColumn(
+            "work_status_v1",
+            F.when(update_work_status_furlough_v1_b, F.lit("Self-employed and currently not working")).otherwise(
+                F.col("work_status_v1")
+            ),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(update_work_status_furlough_v2_a, F.lit("Employed and currently not working")).otherwise(
+                F.col("work_status_v2")
+            ),
+        )
+        .withColumn(
+            "work_status_v2",
+            F.when(update_work_status_furlough_v2_b, F.lit("Self-employed and currently not working")).otherwise(
+                F.col("work_status_v2")
+            ),
+        )
+        .withColumn(
+            "work_location",
+            F.when(
+                update_work_location_general,
+                F.lit("Not applicable, not currently working"),
+            ).otherwise(F.col("work_location")),
+        )
+    )
+
+    if drop_original_variables:
+        # replace original versions with their cleaned versions
+        _df3 = _df3.drop(
+            "work_location_original",
+            "work_status_v0_original",
+            "work_status_v1_original",
+            "work_status_v2_original",
+        )
+
+    return _df3
