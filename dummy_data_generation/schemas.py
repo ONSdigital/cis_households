@@ -14,7 +14,7 @@ consolidation_points = [
     "Consolidation.kpa_overpacked",
     "Consolidation.kpa_overpacked_different_ref_same_type",
     "Consolidation.sample_mismatched",
-    "Consolidation.sample_bagged_ziplock",
+    "Consolidation.sample_bagged_zip",
     "Consolidation.sample_unbagged",
     "Consolidation.sample_unbagged_no_kpa",
     "Consolidation.box_multipacked",

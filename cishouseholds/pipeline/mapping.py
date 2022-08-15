@@ -20,7 +20,7 @@ consolidation_categories = {
     "kpa_overpacked_different_ref_same_type": 6,
     "kpa_unboxed": 7,
     "kpa_unscanned": 8,
-    "sample_bagged_ziplock": 9,
+    "sample_bagged_zip": 9,
     "sample_leaked": 10,
     "sample_mismatched": 11,
     "sample_unbagged": 12,
