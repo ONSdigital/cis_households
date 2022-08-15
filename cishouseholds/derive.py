@@ -1168,7 +1168,9 @@ def assign_school_year(
         )
         .withColumn(
             column_name_to_assign,
-            F.floor(F.datediff(F.col(reference_date_column), F.col("school_start_date")) / 365.25).cast("integer"),
+            F.floor(F.round(F.datediff(F.col(reference_date_column), F.col("school_start_date")) / 365.2425, 3)).cast(
+                "integer"
+            ),
         )
         .withColumn(
             column_name_to_assign,
