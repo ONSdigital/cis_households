@@ -8,6 +8,7 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 from cishouseholds.edit import update_column_values_from_map
+from cishouseholds.expressions import current_date_from_file_date
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import get_run_id
@@ -17,7 +18,7 @@ def generate_lab_report(df: DataFrame) -> DataFrame:
     """
     Generate lab report of latest 7 days of results
     """
-    current_date = F.lit(df.orderBy(F.desc("file_date")).head().file_date)
+    current_date = current_date_from_file_date(df)
     df = df.filter(F.date_sub(current_date, 7) < F.col("survey_completed_datetime"))
     swab_df = df.select("swab_sample_barcode", "swab_taken_datetime", "survey_completed_datetime").filter(
         ~(

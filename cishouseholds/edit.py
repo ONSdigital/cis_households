@@ -13,7 +13,25 @@ from pyspark.sql import DataFrame
 
 from cishouseholds.expressions import all_columns_null
 from cishouseholds.expressions import any_column_not_null
+from cishouseholds.expressions import any_column_null
+from cishouseholds.expressions import current_date_from_file_date
 from cishouseholds.expressions import sum_within_row
+
+
+def update_survey_completion_status(
+    df: DataFrame, column_name_to_update: str, window_end_date_column: str, exclusion_columns: List[str]
+):
+    """
+    Assign statuses for Never completed and Not yet completed when survey responses are not filled in on the survey
+    """
+    filled_survey_data = ~any_column_null([col for col in df.columns if col not in exclusion_columns])
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(filled_survey_data, F.col(column_name_to_update))
+        .when(F.col(window_end_date_column) < current_date_from_file_date(df), "Never completed")
+        .otherwise("Not yet completed"),
+    )
+    return df
 
 
 def clean_work_main_job_role(df: DataFrame, column_name_to_update: str):

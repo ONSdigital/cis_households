@@ -5,6 +5,12 @@ from operator import or_
 from typing import Any
 
 import pyspark.sql.functions as F
+from pyspark.sql import DataFrame
+
+
+def current_date_from_file_date(df: DataFrame):
+    "Use file date column to derive a latest date"
+    return F.lit(df.orderBy(F.desc("file_date")).head().file_date)
 
 
 def any_column_not_null(column_list: list):
