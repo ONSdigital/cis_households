@@ -7,11 +7,6 @@ from typing import Any
 import pyspark.sql.functions as F
 
 
-def exact_year_diff(earlier_date, later_date):
-    date_diff = F.datediff(F.col(later_date), F.col(earlier_date))
-    return F.floor(F.when(F.year(later_date) % 4 == 0, date_diff / 365.25).otherwise(date_diff / 365)).cast("integer")
-
-
 def any_column_not_null(column_list: list):
     "Expression that evaluates true if any column is not null."
     return reduce(or_, [F.col(column).isNotNull() for column in column_list])
