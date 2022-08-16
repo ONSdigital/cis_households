@@ -1987,7 +1987,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
-        "form_started_datetime": _(
+        "form_start_datetime": _(
             "discrete_distribution",
             population=[
                 _(

@@ -1180,7 +1180,7 @@ validation_schemas = {
         "blood_sample_received_consolidation_point_datetime": string_dict,
         "swab_sample_received_lab_datetime": string_dict,
         "blood_sample_received_lab_datetime": string_dict,
-        "form_started_datetime": string_dict,
+        "form_start_datetime": string_dict,
         "blood_consolidation_point_error": string_dict,
         "swab_consolidation_point_error_datetime": string_dict,
         "swab_consolidation_point_error": string_dict,
