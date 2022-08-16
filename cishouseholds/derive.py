@@ -23,6 +23,14 @@ from cishouseholds.expressions import any_column_null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def classify_healthcare_patient_facing_status(
+    df: DataFrame, work_health_care_patient_facing_column: str, job_role_column: str, job_title_column: str
+):
+    """ """
+    df = df.withColumn("job_role_title", F.concat(F.col(job_title_column), F.col(job_role_column)))
+    return df
+
+
 def assign_datetime_from_coalesced_columns_and_log_source(
     df: DataFrame,
     column_name_to_assign: str,

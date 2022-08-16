@@ -5,8 +5,32 @@ from collections import namedtuple
 
 RegexPattern = namedtuple("RegexPattern", ["positive_regex_pattern", "negative_regex_pattern"])
 
+patient_facing_pattern = RegexPattern(
+    positive_regex_pattern="|".join(
+        [
+            "(COVID (TEST|SWAB|VAC+INAT|IM+UNIS|SCREEN|WARD) (?!(LAB|AN[AY]LIST|SCHOOL|MANAGER)))",  # patient facing covid tester
+            "PALLIATIVE CARE|(?<!NOT )PATI[EA]NT FACING|(LOOK(S|ING)? AFTER|SEES?|CAR(E|ING) (OF|FOR)) PATI[EA]NTS|(?<!NO )FACE TO FACE|(?<!NOT )FACE TO FACE",  # patient facing healthcare
+            "(?<!NO )(?<!NO DIRECT )CONTACT WITH PATI[EA]NTS|\w+ COME TO \w+ HOUSE",  # patients come to house
+            "PARA *MEDIC|AMBUL[AE]NCE",  # ambulance worker
+            "SONOGRAPHER|RADIO(GRAPHER|LOGIST)|VAC+INAT[OE]R|(ORTHO(PAEDIC)?|\\bENT CONSULTANT|ORAL|EYE)+ SURGEON|SURGEON SURGERY|(DIABETIC EYE|RETINAL) SCRE+NER|(PH|F)LEBOTOM|CLINICAL SCIEN",
+            "MEDICAL PHYSICIST|CARDIAC PHYSIOLOG|OSTEOPATH|OPTOMOTRIST|PODIATRIST|OBSTETRI|GYNACOLOG|ORTHO[DOENT]+|OPTI[TC]I[AO]N|CRITICAL CARE PRACTITIONER|HOSPITAL PORTER|AN[AE]STHET[IST|IC|IA]",
+            "PALLIATIVE|DISTRICT NURS|PAEDIATRI[CT]I[AO]N|HAEMATOLOGIST",
+        ]
+    ),
+    negative_regex_pattern="|".join(
+        [
+            "ADMIN(?!IST[EO]R)|ADM[A-Z]{2,}RAT[EO]R|CLERICAL|CLERK",  # administrative worker
+            "S.?C+R+.?T+.?R+Y|\\sPA\\s|P.?RS+.?N+.?L AS+IS+T+AN+",  # secretary or pa
+            "(ADVI[SC][OE]R|RESPONSE|OPERAT|CALL (HANDLER|CENT(RE|ER)|TAKE)|(TELE)?PHONE)",  # phone work
+            "ONLINE|ZOOM|MICROSOFT|MS TEAMS|SKYPE|GOOGLE HANGOUTS?|REMOTE|VIRTUAL|(ONLY|OVER THE) (TELE)?PHONE|((TELE)?PHONE|VIDEO) (CONSULT|CALL|WORK|SUPPORT)",
+            "(NO[TN]( CURRENTLY)?|NEVER) (IN PERSON|FACE TO FACE)|SH[EI]+LDING|WORK(ING)? (FROM|AT) HOME|HOME ?BASED|DELIVER(Y|ING)? (PRE|PER)SCRI",
+            "(?<!NOT )OFFICE BASED",
+        ]
+    ),
+)
+
 work_from_home_pattern = RegexPattern(
-    positive_regex_pattern="(W(K|ORK.*?) F(ROM?) H(OME?))|(WFH)",
+    positive_regex_pattern="(W(K|ORK.*?) F(ROM?) H(OME?))|(WFH)|HOME BASED",
     negative_regex_pattern=None,
 )
 
