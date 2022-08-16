@@ -1987,21 +1987,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
-        "form_start_datetime": _(
-            "discrete_distribution",
-            population=[
-                _(
-                    "custom_random.random_date",
-                    start=start_date_list,
-                    end=end_date_list,
-                    format=digital_datetime_format,
-                ),
-                None,
-            ],
-            weights=[0.9, 0.1],
-        ),
-        "blood_consolidation_point_error": _("choice", items=consolidation_points),
-        "blood_consolidation_point_error_datetime": _(
+        "form_started_datetime": _(
             "discrete_distribution",
             population=[
                 _(
@@ -2015,6 +2001,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             weights=[0.9, 0.1],
         ),
         "swab_consolidation_point_error": _("choice", items=consolidation_points),
+        "blood_consolidation_point_error": _("choice", items=consolidation_points),
         "swab_consolidation_point_error_datetime": _(
             "discrete_distribution",
             population=[
@@ -2028,7 +2015,19 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
-        "form_language": _("choice", items=["Welsh", "English"]),
+        "blood_consolidation_point_error_datetime": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
         "digital_survey_collection_mode": _("choice", items=["Online", "Telephone", None]),
         "swab_taken": _("choice", items=yes_no_none_choice),
         "swab_not_taken_reason": _(
@@ -2870,4 +2869,5 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         ),
         "other_antibody_test_positive_date": _("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021),
         "other_antibody_test_negative_date": _("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021),
+        "form_language": _("choice", items=["Welsh", "English"]),
     }
