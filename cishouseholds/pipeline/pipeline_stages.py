@@ -1,5 +1,4 @@
 from datetime import datetime
-from datetime import timedelta
 from functools import reduce
 from io import BytesIO
 from operator import and_
@@ -17,8 +16,6 @@ from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_multigenerational
 from cishouseholds.derive import assign_outward_postcode
-from cishouseholds.derive import assign_visits_in_day
-from cishouseholds.derive import count_barcode_cleaned
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import get_files_to_be_processed
@@ -29,25 +26,16 @@ from cishouseholds.hdfs_utils import isdir
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.impute import post_imputation_wrapper
-from cishouseholds.merge import join_assayed_bloods
 from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
-from cishouseholds.pipeline.high_level_merge import load_to_data_warehouse_tables
-from cishouseholds.pipeline.high_level_merge import merge_blood_process_filtering
-from cishouseholds.pipeline.high_level_merge import merge_blood_process_preparation
-from cishouseholds.pipeline.high_level_merge import merge_blood_xtox_flag
-from cishouseholds.pipeline.high_level_merge import merge_swab_process_filtering
-from cishouseholds.pipeline.high_level_merge import merge_swab_process_preparation
-from cishouseholds.pipeline.high_level_merge import merge_swab_xtox_flag
 from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.high_level_transformations import derive_age_based_columns
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
-from cishouseholds.pipeline.high_level_transformations import generate_lab_report
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
 from cishouseholds.pipeline.high_level_transformations import transform_cis_soc_data
@@ -69,11 +57,7 @@ from cishouseholds.pipeline.manifest import Manifest
 from cishouseholds.pipeline.mapping import category_maps
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import soc_regex_map
-from cishouseholds.pipeline.merge_process_combination import merge_process_validation
-from cishouseholds.pipeline.reporting import dfs_to_bytes_excel
 from cishouseholds.pipeline.reporting import generate_error_table
-from cishouseholds.pipeline.reporting import multiple_visit_1_day
-from cishouseholds.pipeline.reporting import unmatching_antibody_to_swab_viceversa
 from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
@@ -84,22 +68,13 @@ from cishouseholds.validate import normalise_schema
 from cishouseholds.validate import validate_files
 from cishouseholds.weights.design_weights import calculate_design_weights
 from cishouseholds.weights.design_weights import household_level_populations
-from cishouseholds.weights.edit import aps_value_map
-from cishouseholds.weights.edit import recode_column_values
-from cishouseholds.weights.population_projections import proccess_population_projection_df
-from cishouseholds.weights.pre_calibration import pre_calibration_high_level
 from dummy_data_generation.generate_data import generate_cis_soc_data
 from dummy_data_generation.generate_data import generate_digital_data
-from dummy_data_generation.generate_data import generate_historic_bloods_data
 from dummy_data_generation.generate_data import generate_nims_table
-from dummy_data_generation.generate_data import generate_ons_gl_report_data
 from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
-from dummy_data_generation.generate_data import generate_unioxf_medtest_data
 
-# from cishouseholds.pipeline.input_variable_names import cis_phase_lookup_column_map
-# from cishouseholds.pipeline.validation_schema import cis_phase_schema
 
 pipeline_stages = {}
 
@@ -233,69 +208,21 @@ def generate_dummy_data(output_directory):
         directory.mkdir(parents=True, exist_ok=True)
 
     file_datetime = datetime.now()
-    lab_date_1 = datetime.strftime(file_datetime - timedelta(days=1), format="%Y%m%d")
-    lab_date_2 = datetime.strftime(file_datetime - timedelta(days=2), format="%Y%m%d")
     file_date = datetime.strftime(file_datetime, format="%Y%m%d")
-
-    # Historic files
-    # historic_bloods = generate_historic_bloods_data(historic_bloods_dir, file_date, 30)
-    # historic_swabs = generate_ons_gl_report_data(historic_swabs_dir, file_date, 30)
-
-    # historic_v2 = generate_survey_v2_data(
-    #     directory=historic_survey_dir,
-    #     file_date=file_date,
-    #     records=100,
-    #     swab_barcodes=historic_swabs["Sample"].unique().tolist(),
-    #     blood_barcodes=historic_bloods["blood_barcode_OX"].unique().tolist(),
-    # )
-
-    # Delta files
-    lab_swabs_1 = generate_ons_gl_report_data(swab_dir, file_date, 10)
-    lab_swabs_2 = generate_ons_gl_report_data(swab_dir, lab_date_1, 10)
-    lab_swabs_3 = generate_ons_gl_report_data(swab_dir, lab_date_2, 10)
-    lab_swabs = pd.concat([lab_swabs_1, lab_swabs_2, lab_swabs_3])
-
-    lab_bloods_s_1, lab_bloods_n_1 = generate_unioxf_medtest_data(blood_dir, file_date, 10)
-    lab_bloods_s_2, lab_bloods_n_2 = generate_unioxf_medtest_data(blood_dir, lab_date_1, 10)
-    lab_bloods_s_3, lab_bloods_n_3 = generate_unioxf_medtest_data(blood_dir, lab_date_2, 10)
-
-    lab_bloods = pd.concat(
-        [lab_bloods_n_1, lab_bloods_n_2, lab_bloods_n_3, lab_bloods_s_1, lab_bloods_s_2, lab_bloods_s_3]
-    )
-
-    historic_blood_n = generate_historic_bloods_data(historic_bloods_dir, file_date, 10, "N")
-    historic_blood_s = generate_historic_bloods_data(historic_bloods_dir, file_date, 10, "S")
-
-    # unprocessed_bloods_data = generate_unprocessed_bloods_data(unprocessed_bloods_dir, file_date, 20)
-    # northern_ireland_data = generate_northern_ireland_data(northern_ireland_dir, file_date, 20)
-    # sample_direct_data = generate_sample_direct_data(sample_direct_dir, file_date, 20)
-
-    # swab/blood barcode lists
-    swab_barcode = lab_swabs["Sample"].unique().tolist()
-    blood_barcode = lab_bloods["Serum Source ID"].unique().tolist()
-    blood_barcode += historic_blood_n["blood_barcode_OX"].unique().tolist()
-    blood_barcode += historic_blood_s["blood_barcode_OX"].unique().tolist()
-
-    swab_barcode = swab_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
-    blood_barcode = blood_barcode[int(round(len(swab_barcode) / 10)) :]  # noqa: E203
 
     generate_cis_soc_data(directory=cis_soc_direcory, file_date=file_date, records=50)
 
-    generate_survey_v0_data(
-        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
-    )
-    generate_survey_v1_data(
-        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
-    )
+    generate_survey_v0_data(directory=survey_dir, file_date=file_date, records=50, swab_barcodes=[], blood_barcodes=[])
+    generate_survey_v1_data(directory=survey_dir, file_date=file_date, records=50, swab_barcodes=[], blood_barcodes=[])
     v2 = generate_survey_v2_data(
-        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=swab_barcode, blood_barcodes=blood_barcode
+        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=[], blood_barcodes=[]
     )
     generate_digital_data(
         directory=digital_survey_dir,
         file_date=file_date,
         records=50,
-        swab_barcodes=swab_barcode,
-        blood_barcodes=blood_barcode,
+        swab_barcodes=[],
+        blood_barcodes=[],
     )
 
     participant_ids = v2["Participant_id"].unique().tolist()
@@ -418,14 +345,15 @@ def process_soc_deltas(
         error_message, validation_schema, column_name_map, drop_list = normalise_schema(
             file_path, soc_schema, soc_regex_map
         )
-        if error_message is not None:
+        if error_message is None:
             df = extract_input_data(file_path, validation_schema, ",").drop(*drop_list)
             df = assign_filename_column(df, source_file_column)
             for actual_column, normalised_column in column_name_map.items():
                 df = df.withColumnRenamed(actual_column, normalised_column)
+            dfs.append(df)
         else:
             add_error_file_log_entry(file_path, error_message)  # type: ignore
-            raise ValueError(error_message)
+            print(error_message)  # functional
     if include_processed:
         union_dataframes_to_hive(unioned_soc_lookup_table, dfs)
     else:
@@ -436,7 +364,7 @@ def process_soc_deltas(
 def process_soc_data(
     survey_responses_table: str,
     soc_coded_survey_responses_table: str,
-    inconsistances_resolution_table: str,
+    inconsistences_resolution_table: str,
     unioned_soc_lookup_table: str,
     transformed_soc_lookup_table: str,
     duplicate_soc_rows_table: str,
@@ -446,13 +374,13 @@ def process_soc_data(
     """
     join_on_columns = ["work_main_job_title", "work_main_job_role"]
     window = Window.partitionBy(*join_on_columns)
-    inconsistances_resolution_df = extract_from_table(inconsistances_resolution_table).withColumnRenamed(
+    inconsistences_resolution_df = extract_from_table(inconsistences_resolution_table).withColumnRenamed(
         "Gold SOC2010 code", "resolved_soc_code"
     )
     soc_lookup_df = extract_from_table(unioned_soc_lookup_table)
     survey_responses_df = extract_from_table(survey_responses_table)
     soc_lookup_df = soc_lookup_df.join(
-        inconsistances_resolution_df.withColumnRenamed(
+        inconsistences_resolution_df.withColumnRenamed(
             "standard_occupational_classification_code", "resolved_soc_code"
         ),
         on=join_on_columns,
@@ -462,13 +390,14 @@ def process_soc_data(
         "standard_occupational_classification_code",
         F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
     ).drop("resolved_soc_code")
-    filter_condition = F.count(*join_on_columns).over(window) > 1
-    duplicate_rows_df = soc_lookup_df.filter(filter_condition)
-    soc_lookup_df = soc_lookup_df.filter(~filter_condition)
 
-    update_table(duplicate_soc_rows_table, duplicate_rows_df, "overwrite", archive=True)
+    soc_lookup_df = soc_lookup_df.withColumn("FILTER_CONDITION", F.count("*").over(window) > 1)
+    duplicate_rows_df = soc_lookup_df.filter(F.col("FILTER_CONDITION")).drop("FILTER_CONDITION")
+    soc_lookup_df = soc_lookup_df.filter(~F.col("FILTER_CONDITION")).drop("FILTER_CONDITION")
 
-    soc_lookup_df = transform_cis_soc_data(soc_lookup_df)
+    update_table(duplicate_rows_df, duplicate_soc_rows_table, "overwrite", archive=True)
+
+    soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
     survey_responses_df = survey_responses_df.join(soc_lookup_df, on=join_on_columns, how="left")
     update_table(survey_responses_df, soc_coded_survey_responses_table, "overwrite")
     update_table(soc_lookup_df, transformed_soc_lookup_table, "overwrite")
@@ -647,211 +576,6 @@ def lookup_based_editing(
     update_table(df, edited_table, write_mode="overwrite")
 
 
-@register_pipeline_stage("outer_join_antibody_results")
-def outer_join_antibody_results(
-    antibody_test_result_table: str, joined_antibody_test_result_table: str, failed_join_table: str
-):
-    """
-    Outer join of data for two antibody/blood test targets (S and N protein antibodies).
-    Creates a single record per blood sample.
-
-    Parameters
-    ----------
-    antibody_test_result_table
-        name of HIVE table to read antibody/blood test results from, where blood samples may have more than one record
-    joined_antibody_test_result_table
-        name of HIVE table to write successfully joined records, where each blood sample has one record
-    failed_join_table
-        name of HIVE table to write antibody/blood test results that failed to merge.
-        Specifically, those with more than two records in the unjoined data.
-    """
-    blood_df = extract_from_table(antibody_test_result_table)
-    blood_df = blood_df.dropDuplicates(
-        subset=[column for column in blood_df.columns if column != "blood_test_source_file"]
-    )
-
-    blood_df, failed_blood_join_df = join_assayed_bloods(
-        blood_df,
-        test_target_column="antibody_test_target",
-        join_on_columns=[
-            "unique_antibody_test_id",
-            "blood_sample_barcode",
-            "antibody_test_plate_common_id",
-            "antibody_test_well_id",
-        ],
-    )
-    blood_df = blood_df.withColumn(
-        "combined_blood_sample_received_date",
-        F.coalesce(F.col("blood_sample_received_date_s_protein"), F.col("blood_sample_received_date_n_protein")),
-    )
-
-    update_table(blood_df, joined_antibody_test_result_table, write_mode="overwrite")
-    update_table(failed_blood_join_df, failed_join_table, write_mode="overwrite")
-
-
-@register_pipeline_stage("merge_blood_ETL")
-def merge_blood_ETL(
-    input_survey_responses_table,
-    input_antibody_table,
-    blood_files_to_exclude,
-    merged_1to1_table,
-    joined_table,
-    xtox_flagged_table,
-    validated_table,
-    merged_responses_antibody_data,
-    antibody_merge_residuals,
-    antibody_merge_failed_records,
-):
-    """
-    High level function for joining antibody/blood test result data to survey responses.
-    Should be run before the PCR/swab result merge.
-
-    Parameters
-    ----------
-    survey_responses_table
-        name of HIVE table containing survey response records
-    antibody_table
-        name of HIVE table containing antibody/blood result records
-    swab_files_to_exclude
-        antibody/blood result files that should be excluded from the merge.
-        Used to remove files that are found to contain invalid data.
-    swab_output_tables
-        names of the three output tables:
-            1. survey responses and successfully joined results
-            2. residual antibody/blood result records, where there was no barcode match to join on
-            3. antibody/blood result records that failed to meet the criteria for joining
-    """
-    survey_df = extract_from_table(input_survey_responses_table).where(
-        F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
-    )
-    antibody_df = extract_from_table(input_antibody_table).where(
-        F.col("unique_antibody_test_id").isNotNull() & F.col("blood_sample_barcode").isNotNull()
-    )
-    df_1to1, df = merge_blood_process_preparation(
-        survey_df,
-        antibody_df,
-        blood_files_to_exclude,
-    )
-    update_table(df, joined_table, write_mode="overwrite")
-    update_table(df_1to1, merged_1to1_table, write_mode="overwrite")  # Fastforward 1to1 succesful matches
-
-    df = extract_from_table(joined_table)
-    df = merge_blood_xtox_flag(df)
-    update_table(df=df, table_name=xtox_flagged_table, write_mode="overwrite")
-
-    df = extract_from_table(xtox_flagged_table)
-    df = merge_process_validation(
-        df=df,
-        merge_type="antibody",
-        barcode_column_name="blood_sample_barcode",
-    )
-    update_table(df=df, table_name=validated_table, write_mode="overwrite")
-
-    df = extract_from_table(validated_table)
-
-    (
-        merged_responses_antibody_df,
-        antibody_merge_residuals_df,
-        antibody_merge_failed_records_df,
-    ) = merge_blood_process_filtering(df)
-
-    # load back 1to1 fastforwarded matches
-    merged_1to1_df = extract_from_table(merged_1to1_table)
-    merged_responses_antibody_df = union_multiple_tables([merged_1to1_df, merged_responses_antibody_df])
-
-    load_to_data_warehouse_tables(
-        [
-            merged_responses_antibody_df,
-            antibody_merge_residuals_df,
-            antibody_merge_failed_records_df,
-        ],
-        [merged_responses_antibody_data, antibody_merge_residuals, antibody_merge_failed_records],
-    )
-
-
-@register_pipeline_stage("merge_swab_ETL")
-def merge_swab_ETL(
-    input_survey_responses_table,
-    input_swab_table,
-    swab_files_to_exclude,
-    merged_1to1_table,
-    joined_table,
-    xtox_flagged_table,
-    validated_table,
-    merged_responses_antibody_swab_data,
-    swab_merge_residuals,
-    swab_merge_failed_records,
-):
-    """
-    High level function for joining PCR test result data to survey responses.
-    Should be run following the antibody/blood result merge.
-
-    Parameters
-    ----------
-    survey_responses_table
-        name of HIVE table containing survey response records
-    swab_table
-        name of HIVE table containing PCR/swab result records
-    swab_files_to_exclude
-        PCR/swab result files that should be excluded from the merge.
-        Used to remove files that are found to contain invalid data.
-    swab_output_tables
-        names of the three output tables:
-            1. survey responses and successfully joined results
-            2. residual PCR/swab result records, where there was no barcode match to join on
-            3. PCR/swab result records that failed to meet the criteria for joining
-    """
-    survey_df = extract_from_table(input_survey_responses_table).where(
-        F.col("unique_participant_response_id").isNotNull() & (F.col("unique_participant_response_id") != "")
-    )
-    swab_df = extract_from_table(input_swab_table).where(
-        F.col("unique_pcr_test_id").isNotNull() & F.col("swab_sample_barcode").isNotNull()
-    )
-    df_1to1, df = merge_swab_process_preparation(
-        survey_df,
-        swab_df,
-        swab_files_to_exclude,
-    )
-    update_table(df=df_1to1, table_name=merged_1to1_table, write_mode="overwrite")
-    update_table(df=df, table_name=joined_table, write_mode="overwrite")
-
-    df = extract_from_table(joined_table)
-    df = merge_swab_xtox_flag(df)
-    update_table(df=df, table_name=xtox_flagged_table, write_mode="overwrite")
-
-    df = extract_from_table(xtox_flagged_table)
-    df = merge_process_validation(
-        df=df,
-        merge_type="swab",
-        barcode_column_name="swab_sample_barcode",
-    )
-    update_table(df=df, table_name=validated_table, write_mode="overwrite")
-
-    df = extract_from_table(validated_table)
-    (
-        merged_responses_antibody_swab_df,
-        swab_merge_residuals_df,
-        swab_merge_failed_records_df,
-    ) = merge_swab_process_filtering(df)
-
-    # load back 1to1 fastforwarded matches
-    merged_1to1_df = extract_from_table(merged_1to1_table)
-    merged_responses_antibody_swab_df = union_multiple_tables([merged_1to1_df, merged_responses_antibody_swab_df])
-
-    load_to_data_warehouse_tables(
-        [
-            merged_responses_antibody_swab_df,
-            swab_merge_residuals_df,
-            swab_merge_failed_records_df,
-        ],
-        [
-            merged_responses_antibody_swab_data,
-            swab_merge_residuals,
-            swab_merge_failed_records,
-        ],
-    )
-
-
 @register_pipeline_stage("join_vaccination_data")
 def join_vaccination_data(participant_records_table, nims_table, vaccination_data_table):
     """
@@ -903,7 +627,7 @@ def impute_demographic_columns(
     )
     df_with_imputed_values, new_imputed_value_lookup = post_imputation_wrapper(df, key_columns_imputed_df)
 
-    update_table(new_imputed_value_lookup, imputed_values_table, "overwrite")
+    update_table(new_imputed_value_lookup, imputed_values_table, "overwrite", archive=True)
     update_table(df_with_imputed_values, survey_responses_imputed_table, "overwrite")
 
 
@@ -1121,273 +845,6 @@ def report(
     )
 
 
-@register_pipeline_stage("lab_report")
-def lab_report(survey_responses_table: str, swab_report_table: str, blood_report_table: str) -> DataFrame:
-    """
-    Generate reports of most recent 7 days of swab and blood data
-    """
-    survey_responses_df = extract_from_table(survey_responses_table).orderBy("file_date")
-    swab_df, blood_df = generate_lab_report(survey_responses_df)
-    update_table(swab_df, swab_report_table, "overwrite")
-    update_table(blood_df, blood_report_table, "overwrite")
-
-
-@register_pipeline_stage("report_iqvia")
-def report_iqvia(
-    swab_residuals_table: str,
-    blood_residuals_table: str,
-    survey_repsonse_table: str,
-    merged_result_table: str,
-    output_directory: str,
-    swab_table: str,
-):
-    """ """
-    swab_residuals_df = extract_from_table(swab_residuals_table)
-    # Unlinked_blood
-    blood_residuals_df = extract_from_table(blood_residuals_table)
-    survey_repsonse_df = extract_from_table(survey_repsonse_table)
-    merge_result_df = extract_from_table(merged_result_table)
-    swab_df = extract_from_table(swab_table)
-
-    pariticipant_visit_date_group_df = assign_visits_in_day(
-        survey_repsonse_df, "visits_in_day", "visit_datetime", "participant_id"
-    )
-
-    # Swab_matches_not_exact
-    non_exact_swab_df = merge_result_df.filter(
-        (~F.col("1to1_swab").eqNullSafe(1)) & (F.col("visit_date") > F.date_sub(datetime.now(), 30))
-    ).select(
-        "mto1_swab",
-        "1tom_swab",
-        "1to1_swab",
-        "swab_sample_barcode",
-        # "Swab_barcode_IQ"
-        # "Swab_barcode_mk"
-        "pcr_result_classification",
-        "pcr_result_recorded_datetime",
-        "visit_datetime",
-        "visit_id",
-        "participant_id",
-    )
-    # only swabs non_exact match is requested but uncomment the following lines if the blood is wanted.
-    # non_exact_antibody_df = merge_result_df.filter(~ F.col("1to1_antibody").eqNullSafe(1)).select(
-    #     "mto1_antibody",
-    #     "1tom_antibody",
-    #     "1to1_antibody",
-    #     "swab_sample_barcode",
-    #     # "Swab_barcode_IQ"
-    #     # "Swab_barcode_mk"
-    #     "pcr_result_classification",
-    #     "pcr_result_recorded_datetime",
-    #     "visit_datetime",
-    #     "visit_id",
-    #     "participant_id",
-    # )
-
-    # Sample_taken_out_of_range
-    out_of_range_df = merge_result_df.filter(
-        (F.col("out_of_date_range_swab") == 1) | (F.col("out_of_date_range_antibody") == 1)
-    ).select(
-        "participant_id",
-        "visit_id",
-        "visit_datetime",
-        "samples_taken_datetime",
-        "survey_response_dataset_major_version",
-    )
-
-    # Unlinked_lab_swab_results
-    swab_residuals_not_positive_df = swab_residuals_df.filter(F.col("pcr_result_classification") != "positive")
-
-    # out_of_age_range
-    out_of_age_range_df = survey_repsonse_df.filter((F.col("age_at_visit") < 2) | (F.col("age_at_visit") > 105)).select(
-        "participant_id",
-        "visit_id",
-        "visit_datetime",
-        "age_at_visit",
-        "work_main_job_title",
-        "work_main_job_role",
-        "work_status_v0",
-        "work_status_v1",
-        "work_status_v2",
-        "survey_response_dataset_major_version",
-    )
-
-    too_early_too_late_list = [
-        "swab_sample_barcode",
-        "visit_id",
-        "participant_id",
-        "visit_date_time",
-        "visit_date",
-        "pcr_result_recorded_datetime",
-        "pcr_result_recorded_date",
-        "pcr_result_classification",
-        "diff_vs_visit_hr",
-        "diff_vs_visit",
-        # count_cleaned_swab,
-        # count_cleaned_mk,
-        "samples_taken_date_time",
-    ]
-
-    # Swab_match_too_early
-    swab_too_early_df = (
-        swab_df.filter(
-            F.col("pcr_result_recorded_datetime").isNotNull()
-            & (F.col("visit_date_time") >= F.col("pcr_result_recorded_datetime"))
-        )
-        .select(*too_early_too_late_list)
-        .withColumnRenamed("diff_vs_visit", "diff_vs_visit_day")
-    )
-
-    # Swab_match_late
-    swab_too_late_df = (
-        swab_df.filter(
-            (F.col("diff_vs_visit") > 10)
-            & F.col("pcr_result_recorded_datetime").isNotNull()
-            & (F.col("visit_date_time") < F.col("pcr_result_recorded_datetime"))
-        )
-        .select(*too_early_too_late_list)
-        .withColumnRenamed("diff_vs_visit", "diff_vs_visit_day")
-    )
-
-    # Multiple_participant_in_1_day
-    multiple_visit_1_day_df = multiple_visit_1_day(
-        survey_repsonse_df, "participant_id", "visit_id", "visit_date", "visit_datetime"
-    )
-    # Unlinked_positive_swab
-    swab_residuals_positive_df = swab_residuals_df.filter(F.col("pcr_result_classification") == "positive").select(
-        "swab_sample_barcode",
-        "pcr_result_classification",
-        "pcr_lab_id",
-        "pcr_result_recorded_date",
-        "pcr_result_recorded_datetime",
-    )
-    # Blood_taken_under_8y
-    under_8_bloods_df = survey_repsonse_df.filter(
-        (F.col("age_at_visit") <= 8)
-        & ((F.col("blood_sample_barcode").isNotNull() | (F.col("blood_taken") == "Yes")))
-        & (F.col("survey_response_dataset_major_version") == 2)
-    ).select("age_at_visit", "blood_sample_barcode", "blood_taken", "survey_response_dataset_major_version")
-
-    # Duplicate_swab_barcodes
-    duplicate_barcodes_swab_df = count_barcode_cleaned(
-        survey_repsonse_df,
-        "swab_barcode_cleaned_count",
-        "swab_sample_barcode",
-        "samples_taken_datetime",
-        "visit_datetime",
-    )
-    # Duplicate blood barcodes
-    duplicate_barcodes_blood_df = count_barcode_cleaned(
-        duplicate_barcodes_swab_df,
-        "blood_barcode_cleaned_count",
-        "blood_sample_barcode",
-        "samples_taken_datetime",
-        "visit_datetime",
-    )
-    duplicate_barcodes_df = duplicate_barcodes_blood_df.filter(
-        (F.col("swab_barcode_cleaned_count") > 1) | (F.col("blood_barcode_cleaned_count") > 1)
-    ).select(
-        "swab_sample_barcode",
-        "swab_sample_barcode_raw",
-        "blood_sample_barcode",
-        "blood_sample_barcode_raw",
-        "visit_id",
-        "visit_datetime",
-        "participant_id",
-        "samples_taken_datetime",
-        "survey_response_dataset_major_version",
-    )
-    # Missing_sex_age_ethnicity
-    missing_age_sex_ethnicity_df = survey_repsonse_df.filter(
-        F.col("participant_visit_status").isin(["completed", "partially completed", "new"])
-        | (
-            (F.col("swab_sample_barcode").isNotNull())
-            & (F.col("participant_survey_status") != "withdrawn")
-            & (F.col("survey_response_dataset_major_version") == 2)
-            & ((F.col("sex").isNotNull()) | (F.col("age_at_visit").isNotNull()) | (F.col("ethnicity").isNotNull()))
-        )
-    ).select(
-        "participant_visit_status",
-        "swab_sample_barcode",
-        "participant_survey_status",
-        "survey_response_dataset_major_version",
-        "sex",
-        "age_at_visit",
-        "ethnicity",
-    )
-    # Swab_barcode_wrong_format
-    modified_swab_barcodes_df = survey_repsonse_df.filter(F.col("swab_sample_barcode_edited_flag") == 1).select(
-        "swab_sample_barcode",
-        "swabs_taken",
-        "visit_datetime",
-        "samples_taken_datetime",
-        "visit_id",
-        "survey_response_dataset_major_version",
-    )
-    # Blood_barcode_wrong_format
-    modified_blood_barcodes_df = survey_repsonse_df.filter(F.col("blood_sample_barcode_edited_flag") == 1).select(
-        "blood_sample_barcode",
-        "bloods_taken",
-        "visit_datetime",
-        "samples_taken_datetime",
-        "visit_id",
-        "survey_response_dataset_major_version",
-    )
-
-    pariticipant_visit_date_group_df = pariticipant_visit_date_group_df.filter(F.col("visits_in_day") > 1).select(
-        "participant_id",
-        "visit_datetime",
-        "visit_id",
-        "visits_in_day",
-        "work_main_job_title",
-        "work_main_job_role",
-        "sex",
-        "ethnicity",
-        "age_at_visit",
-        "samples_taken_datetime",
-        "swab_sample_barcode",
-        "blood_sample_barcode",
-        "survey_response_dataset_major_version",
-    )
-
-    # Swab_barcode_blood_switched
-    swab_barcode_blood_switched_df = unmatching_antibody_to_swab_viceversa(
-        swab_df=swab_residuals_table,
-        antibody_df=blood_residuals_df,
-        column_list=[
-            "participant_id",
-            "visit_id",
-            "visit_date",
-            "swab_sample_barcode",
-            "blood_sample_barcode",
-        ],
-    )
-
-    sheet_df_map = {
-        "unlinked swabs": swab_residuals_not_positive_df,
-        "non exact swabs": non_exact_swab_df,
-        "out of range": out_of_range_df,
-        "out of age range": out_of_age_range_df,
-        "unlinked positive swabs": swab_residuals_positive_df,
-        "unlinked bloods": blood_residuals_df,
-        "modified bloods": modified_blood_barcodes_df,
-        "duplicate barcodes": duplicate_barcodes_df,
-        "modified swabs": modified_swab_barcodes_df,
-        "missing values": missing_age_sex_ethnicity_df,
-        "under 8 bloods": under_8_bloods_df,
-        "same day visits": pariticipant_visit_date_group_df,
-        "multiple visits 1-day": multiple_visit_1_day_df,
-        "swab match too early": swab_too_early_df,
-        "swab match late": swab_too_late_df,
-        "swab blood barcode switched": swab_barcode_blood_switched_df,
-    }
-    output = dfs_to_bytes_excel(sheet_df_map)
-    write_string_to_file(
-        output.getbuffer(),
-        f"{output_directory}/iqvia_report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx",
-    )
-
-
 @register_pipeline_stage("record_level_interface")
 def record_level_interface(
     survey_responses_table: str,
@@ -1513,7 +970,7 @@ def sample_file_ETL(
     postcode_lookup_df = extract_from_table(postcode_lookup)
     lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup)
     country_lookup_df = extract_from_table(country_lookup)
-    old_sample_df = extract_from_table(old_sample_file)
+    old_sample_df = extract_from_table(old_sample_file, break_lineage=True)
     master_sample_df = extract_from_table(master_sample_file)
 
     new_sample_df = extract_lookup_csv(
@@ -1545,99 +1002,6 @@ def sample_file_ETL(
         first_run,
     )
     update_table(design_weights, design_weight_table, write_mode="overwrite", archive=True)
-
-
-@register_pipeline_stage("calculate_individual_level_population_totals")
-def population_projection(
-    population_projection_previous: str,
-    population_projection_current: str,
-    month: int,
-    year: int,
-    aps_lookup: str,
-    population_totals_table: str,
-    population_projections_table: str,
-):
-    if check_table_exists(population_projections_table):
-        population_projection_previous_df = extract_from_table(population_projections_table)
-    else:
-        population_projection_previous_df = extract_lookup_csv(
-            population_projection_previous,
-            validation_schemas["population_projection_previous_schema"],
-            column_name_maps["population_projection_previous_column_map"],
-        )
-    population_projection_current_df = extract_lookup_csv(
-        population_projection_current,
-        validation_schemas["population_projection_current_schema"],
-        column_name_maps["population_projection_current_column_map"],
-    )
-    aps_lookup_df = extract_lookup_csv(
-        aps_lookup, validation_schemas["aps_schema"], column_name_maps["aps_column_map"], True
-    )
-    aps_lookup_df = recode_column_values(aps_lookup_df, aps_value_map)
-    populations_for_calibration, population_projections = proccess_population_projection_df(
-        population_projection_previous_df, population_projection_current_df, aps_lookup_df, month, year
-    )
-    update_table(populations_for_calibration, population_totals_table, write_mode="overwrite")
-    update_table(population_projections, population_projections_table, write_mode="append")
-
-
-@register_pipeline_stage("pre_calibration")
-def pre_calibration(
-    design_weight_table,
-    individual_level_populations_for_non_response_adjustment_table,
-    survey_response_table,
-    responses_pre_calibration_table,
-    pre_calibration_config_path,
-):
-    """
-    Survey data broken down in different datasets is merged with household_samples_dataset
-    Non-response adjustment is calculated and the design weights
-    are adjusted by the non-response rates producing desgin weights adjusted.
-    Calibration variables are calculated and all the files(dataframes) are written to HIVE
-    for the weight calibration
-    At the end of this processing stage 24 datasets (files will be produced): 6 datasets for each country
-
-    Parameters
-    ----------
-    design_weight_table
-        name of HIVE table containing household level design weights
-    individual_level_populations_for_non_response_adjustment_table
-        name of HIVE table containing populations for non-response adjustment
-    survey_response_table
-        name of HIVE table containing survey responses
-    responses_pre_calibration_table
-        name of HIVE table to write data for weight calibration
-    pre_calibration_config_path
-        path to YAML pre-calibration config file
-    """
-    pre_calibration_config = get_secondary_config(pre_calibration_config_path)
-    household_level_with_design_weights = extract_from_table(design_weight_table)
-    population_by_country = extract_from_table(individual_level_populations_for_non_response_adjustment_table)
-
-    survey_response = extract_from_table(survey_response_table)
-
-    survey_response = survey_response.select(
-        "ons_household_id",
-        "participant_id",
-        "sex",
-        "age_at_visit",
-        "ethnicity_white",
-    )
-
-    population_by_country = population_by_country.select(
-        # "region_code",
-        "country_name_12",
-        "population_country_swab",
-        "population_country_antibodies",
-    ).distinct()
-
-    df_for_calibration = pre_calibration_high_level(
-        df_survey=survey_response,
-        df_design_weights=household_level_with_design_weights,
-        df_country=population_by_country,
-        pre_calibration_config=pre_calibration_config,
-    )
-    update_table(df_for_calibration, responses_pre_calibration_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("aggregated_output")

@@ -1,5 +1,5 @@
 # flake8: noqa
-from datetime import datetime
+from typing import List
 
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
@@ -79,9 +79,9 @@ from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_barcode_simple
+from cishouseholds.edit import clean_job_description_string
 from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import clean_within_range
-from cishouseholds.edit import clean_work_main_job_role
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
@@ -152,32 +152,10 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
 
 
-def generate_lab_report(df: DataFrame, current_date=F.current_timestamp()) -> DataFrame:
-    """
-    Generate lab report of latest 7 days of results
-    """
-    df = df.filter(F.date_sub(current_date, 7) < F.col("survey_completed_datetime"))
-    swab_df = df.select("swab_sample_barcode", "swab_taken_datetime", "survey_completed_datetime").filter(
-        ~(
-            ((F.col("swab_taken_datetime").isNull()) & (F.col("survey_completed_datetime").isNull()))
-            | F.col("swab_sample_barcode").isNull()
-        )
-    )
-    blood_df = df.select("blood_sample_barcode", "blood_taken_datetime", "survey_completed_datetime").filter(
-        ~(
-            ((F.col("blood_taken_datetime").isNull()) & (F.col("survey_completed_datetime").isNull()))
-            | F.col("blood_sample_barcode").isNull()
-        )
-    )
-    return swab_df, blood_df
-
-
-def transform_cis_soc_data(df: DataFrame) -> DataFrame:
+def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFrame:
     """
     transform and process cis soc data
     """
-    # clean columns
-    df = clean_work_main_job_role(df, "work_main_job_role")
     df = df.withColumn(
         "standard_occupational_classification_code",
         F.when(F.substring(F.col("standard_occupational_classification_code"), 1, 2) == "un", "uncodeable").otherwise(
@@ -188,102 +166,21 @@ def transform_cis_soc_data(df: DataFrame) -> DataFrame:
     # remove nulls and deduplicate on all columns
     df = df.filter(F.col("work_main_job_title").isNotNull() & F.col("work_main_job_role").isNotNull()).distinct()
 
-    window = Window.partitionBy("work_main_job_title", "work_main_job_role")
-    df = df.withColumn("COUNT", F.count("*").over(window))
-    df = df.filter(~((F.col("COUNT") > 1) & (F.col("standard_occupational_classification_code") == "uncodeable")))
-    return df.drop("COUNT")
+    df = df.withColumn(
+        "LENGTH",
+        F.length(
+            F.when(
+                F.col("standard_occupational_classification_code") != "uncodeable",
+                F.col("standard_occupational_classification_code"),
+            )
+        ),
+    ).orderBy(F.desc("LENGTH"))
 
+    window = Window.partitionBy(*join_on_columns)
+    df = df.withColumn("DROP", F.col("LENGTH") != F.max("LENGTH").over(window))
+    df = df.filter((F.col("standard_occupational_classification_code") != "uncodeable") & (~F.col("DROP")))
 
-def transform_blood_delta(df: DataFrame) -> DataFrame:
-    """
-    Call functions to process input for blood deltas.
-    """
-    df = assign_test_target(df, "antibody_test_target", "blood_test_source_file")
-    df = assign_substring(
-        df,
-        column_name_to_assign="antibody_test_plate_common_id",
-        column_to_substring="antibody_test_plate_id",
-        start_position=5,
-        substring_length=5,
-    )
-    df = assign_unique_id_column(
-        df=df,
-        column_name_to_assign="unique_antibody_test_id",
-        concat_columns=["blood_sample_barcode", "antibody_test_plate_common_id", "antibody_test_well_id"],
-    )
-    df = clean_barcode(
-        df=df, barcode_column="blood_sample_barcode", edited_column="blood_sample_barcode_edited_in_bloods_dataset_flag"
-    )
-    return df
-
-
-def add_historical_fields(df: DataFrame):
-    """
-    Add empty values for union with historical data. Also adds constant
-    values for continuation with historical data.
-    """
-    historical_columns = {
-        "siemens_antibody_test_result_classification": "string",
-        "siemens_antibody_test_result_value": "float",
-        "antibody_test_tdi_result_value": "float",
-        "lims_id": "string",
-        "plate_storage_method": "string",
-    }
-    for column, type in historical_columns.items():
-        if column not in df.columns:
-            df = df.withColumn(column, F.lit(None).cast(type))
-    if "antibody_assay_category" not in df.columns:
-        df = assign_column_uniform_value(df, "antibody_assay_category", "Post 2021-03-01")
-    df = df.select(sorted(df.columns))
-    return df
-
-
-def add_fields(df: DataFrame):
-    """Add fields that might be missing in example data."""
-    new_columns = {
-        "antibody_test_undiluted_result_value": "float",
-        "antibody_test_bounded_result_value": "float",
-    }
-    for column, type in new_columns.items():
-        if column not in df.columns:
-            df = df.withColumn(column, F.lit(None).cast(type))
-    df = df.select(sorted(df.columns))
-    return df
-
-
-def transform_swab_delta(df: DataFrame) -> DataFrame:
-    """
-    Transform swab delta - derive new fields that do not depend on merging with survey responses.
-    """
-    spark_session = get_or_create_spark_session()
-    df = clean_barcode(
-        df=df, barcode_column="swab_sample_barcode", edited_column="swab_sample_barcode_edited_in_swab_dataset_flag"
-    )
-    df = assign_column_to_date_string(df, "pcr_result_recorded_date_string", "pcr_result_recorded_datetime")
-    df = derive_cq_pattern(
-        df, ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"], spark_session
-    )
-    df = assign_unique_id_column(
-        df, "unique_pcr_test_id", ["swab_sample_barcode", "pcr_result_recorded_datetime", "cq_pattern"]
-    )
-
-    df = mean_across_columns(
-        df, "mean_pcr_cq_value", ["orf1ab_gene_pcr_cq_value", "n_gene_pcr_cq_value", "s_gene_pcr_cq_value"]
-    )
-    df = assign_isin_list(
-        df=df,
-        column_name_to_assign="one_positive_pcr_target_only",
-        reference_column="cq_pattern",
-        values_list=["N only", "OR only", "S only"],
-        true_false_values=[1, 0],
-    )
-    return df
-
-
-def transform_swab_delta_testKit(df: DataFrame):
-    df = df.drop("testKit")
-
-    return df
+    return df.drop("DROP", "LENGTH")
 
 
 def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
@@ -1439,6 +1336,10 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "study_cohort", F.when(F.col("study_cohort").isNull(), "Original").otherwise(F.col("study_cohort"))
     )
+
+    df = clean_job_description_string(df, "work_main_job_title")
+    df = clean_job_description_string(df, "work_main_job_role")
+    df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
     return df
 
 
