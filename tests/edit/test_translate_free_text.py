@@ -1,7 +1,5 @@
 import os as os
 import pdb
-
-pdb.set_trace()
 from datetime import datetime
 
 import pandas as pd
@@ -15,34 +13,6 @@ from cishouseholds.pipeline.high_level_transformations import transform_translat
 
 # from cishouseholds.derive import translate_column_regex_replace
 # from cishouseholds.pipeline.high_level_transformations import update_free_text_responses_from_lookup
-
-
-def test_transform_translated_responses_into_lookup(spark_session):
-    expected_df = spark_session.createDataFrame(
-        data=[
-            # fmt: off
-            # input,
-            ("id5win5",  None, "free_text_1",   "Test text",    "Translate text"  ),      #id1/win1 is testing english only choices - this is beyond the scope of expected data
-            ("id5win5",  None, "form_language", "Welsh",        "Translated"  ),
-            # id1/win1 is testing english only choices - this is beyond the scope of expected data
-            # fmt: on
-        ],
-        schema="id string, \
-                dataset_name string, \
-                target_column_name string, \
-                old_value string, \
-                new_value string",
-    )
-
-    # import pdb; pdb.set_trace()
-    output_df = transform_translated_responses_into_lookup(spark_session)
-
-    assert_df_equality(
-        output_df,
-        expected_df,
-        ignore_row_order=False,
-        ignore_column_order=False,
-    )
 
 
 def test_export_responses_to_be_translated(spark_session):
@@ -76,10 +46,38 @@ def test_export_responses_to_be_translated(spark_session):
                 translated string",
     )
     # import pdb; pdb.set_trace()
+
     output_df = export_responses_to_be_translated(input_df)
     output_df = spark_session.createDataFrame(data=output_df, schema="original string, translated string")
-    list_of_file_paths = [os.path.join(os.getcwd(), _) for _ in os.listdir(os.getcwd()) if _.endswith(".xlsx")]
-    # os.remove(f"to_be_translated_{formatted_time}.xlsx")
+
+    assert_df_equality(
+        output_df,
+        expected_df,
+        ignore_row_order=False,
+        ignore_column_order=False,
+    )
+
+
+def test_transform_translated_responses_into_lookup(spark_session):
+    expected_df = spark_session.createDataFrame(
+        data=[
+            # fmt: off
+            # input,
+            ("id5win5",  None, "free_text_1",   "Test text",    "Translated text"  ),      #id1/win1 is testing english only choices - this is beyond the scope of expected data
+            ("id5win5",  None, "form_language", "Welsh",        "Translated"  ),
+            # id1/win1 is testing english only choices - this is beyond the scope of expected data
+            # fmt: on
+        ],
+        schema="id string, \
+                dataset_name string, \
+                target_column_name string, \
+                old_value string, \
+                new_value string",
+    )
+
+    # import pdb; pdb.set_trace()
+    output_df = transform_translated_responses_into_lookup(spark_session)
+
     assert_df_equality(
         output_df,
         expected_df,
@@ -243,3 +241,10 @@ def test_get_responses_to_be_translated(spark_session):
         ignore_row_order=False,
         ignore_column_order=True,
     )
+
+    # import pdb; pdb.set_trace()
+    list_of_xlsx_file_paths = [os.path.join(os.getcwd(), _) for _ in os.listdir(os.getcwd()) if _.endswith(".xlsx")]
+    list_of_csv_file_paths = [os.path.join(os.getcwd(), _) for _ in os.listdir(os.getcwd()) if _.endswith(".csv")]
+    list_of_file_paths = list_of_xlsx_file_paths + list_of_csv_file_paths
+    for path in list_of_file_paths:
+        os.remove(path)

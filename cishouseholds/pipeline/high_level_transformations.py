@@ -509,17 +509,20 @@ def transform_translated_responses_into_lookup(
         if os.path.exists(os.path.join(completed_translations_directory, "processed/")):
             shutil.move(path, os.path.join(completed_translations_directory, "processed/"))
 
-    filtered_translations = new_translations[~new_translations["id"].isin(translation_lookup_df["id"])]
     if os.path.exists(translation_lookup_path):
         shutil.copy(translation_lookup_path, translation_backup_path)
-    updated_translation_lookup = translation_lookup_df.append(filtered_translations)
+        filtered_translations = new_translations[~new_translations["id"].isin(translation_lookup_df["id"])]
+        updated_translation_lookup = translation_lookup_df.append(filtered_translations)
+    else:
+        updated_translation_lookup = new_translations
+
     updated_translation_lookup.to_csv(translation_lookup_path, sep=",", index=False)
-    new_translations_df = spark_session.createDataFrame(
-        new_translations,
-        schema="id string,dataset_name string,target_column_name string,old_value string, new_value string",
+    translations_df = spark_session.createDataFrame(
+        updated_translation_lookup,
+        schema="id string, dataset_name string, target_column_name string, old_value string, new_value string",
     )
 
-    return updated_translation_lookup
+    return translations_df
 
 
 def export_responses_to_be_translated(
@@ -607,7 +610,7 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame, spark_sessio
     to_be_translated_df = get_free_text_responses_to_be_translated(
         df, digital_unique_identifiers, digital_free_text_columns
     )
-    exported_to_be_translated_df = export_responses_to_be_translated(to_be_translated_df, translation_directory)
+    export_responses_to_be_translated(to_be_translated_df, translation_directory)
     df = df.drop("id")
 
     digital_yes_no_columns = [
