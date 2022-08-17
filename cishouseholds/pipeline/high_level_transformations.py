@@ -70,6 +70,7 @@ from cishouseholds.derive import flag_records_for_student_v1_rules
 from cishouseholds.derive import flag_records_for_student_v2_rules
 from cishouseholds.derive import flag_records_for_uni_v2_rules
 from cishouseholds.derive import flag_records_for_work_from_home_rules
+from cishouseholds.derive import flag_records_for_work_location_null
 from cishouseholds.derive import get_keys_by_value
 from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.derive import mean_across_columns
@@ -2676,7 +2677,7 @@ def reclassify_work_variables(
         (school_regex_hit & flag_records_for_student_v0_rules())
         | (university_regex_hit & flag_records_for_student_v0_rules())
         | (college_regex_hit & flag_records_for_student_v0_rules())
-        | (age_four_or_over & age_under_16)
+        | (age_over_four & age_under_16)
     )
 
     update_work_status_student_v1 = (
@@ -2694,13 +2695,7 @@ def reclassify_work_variables(
 
     update_work_status_student_v2_c = university_regex_hit & flag_records_for_uni_v2_rules()
 
-    update_work_location_general = F.col("work_location").isNull() & (
-        F.col("work_status_v0").isin(
-            "Furloughed (temporarily not working)",
-            "Not working (unemployed, retired, long-term sick etc.)",
-            "Student",
-        )
-    )
+    update_work_location_general = flag_records_for_work_location_null()
 
     # Please note the order of *_edited columns, these must come before the in-place updates
 
