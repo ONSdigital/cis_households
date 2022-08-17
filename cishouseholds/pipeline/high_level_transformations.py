@@ -417,18 +417,13 @@ def get_free_text_responses_to_be_translated(
     df: DataFrame, unique_id_cols: List[str], free_text_cols: List[str]
 ) -> DataFrame:
     """
-    1. Checks if translated_values_lookup_df already exists
-    2. If 1 is True then overwrites existing values with translated_values_lookup
-    3. Add an _is_translated column and set to True where translated_values_lookup has overwritten existing values
-    4. Select non-null free-text fields where the survey language mode = "Welsh" and _is_translated is not True
-    5. Export selected non-null free-text fields requiring translation with unique identifier columns as needs_translation_df
+    drops values where all free_text_cols are null and where the form_language = "Welsh" from a subset df
 
-    translated_values_lookup_df
-        is a lookup in the same location as the other lookups specified in the pipeline_config file
-        contains the translated non-null digital_free_text_columns with unique_identifiers  (participant_id, participant_completion_window_id)
-
-    needs_translation_df
-        contains the non-null digital_free_text_columns requiring translation by unique_identifiers (participant_id, participant_completion_window_id)
+    parameters
+        unique_id_cols
+            list of columns to be used as unique identifiers
+        free_text_cols
+            list of free-text columns to be used for na.drop logic
     """
 
     df = (
@@ -445,18 +440,10 @@ def transform_translated_responses_into_lookup(
     formatted_time: str = datetime.now().strftime("%Y%m%d_%H%M"),
 ) -> DataFrame:
     """
-    1. Checks if translated_values_lookup_df already exists
-    2. If 1 is True then overwrites existing values with translated_values_lookup
-    3. Add an _is_translated column and set to True where translated_values_lookup has overwritten existing values
-    4. Select non-null free-text fields where the survey language mode = "Welsh" and _is_translated is not True
-    5. Export selected non-null free-text fields requiring translation with unique identifier columns as needs_translation_df
-
-    translated_values_lookup_df
-        is a lookup in the same location as the other lookups specified in the pipeline_config file
-        contains the translated non-null digital_free_text_columns with unique_identifiers  (participant_id, participant_completion_window_id)
-
-    needs_translation_df
-        contains the non-null digital_free_text_columns requiring translation by unique_identifiers (participant_id, participant_completion_window_id)
+    checks for new translations in completed_translations_directory and builds a pandas df from excel files it finds
+    there.
+    checks if the translation_lookup_path already exists, and if it does, checks new translations against existing
+    updates translation_lookup_df with new translations, backs up existing lookup df, replaces with updated lookup df
     """
     if os.environ["deployment"] != "local":
         translation_config = get_config()["translation"]
@@ -529,18 +516,20 @@ def export_responses_to_be_translated(
     df: DataFrame, translations_directory: str = None, formatted_time: str = datetime.now().strftime("%Y%m%d_%H%M")
 ) -> DataFrame:
     """
-    1. Checks if translated_values_lookup_df already exists
-    2. If 1 is True then overwrites existing values with translated_values_lookup
-    3. Add an _is_translated column and set to True where translated_values_lookup has overwritten existing values
-    4. Select non-null free-text fields where the survey language mode = "Welsh" and _is_translated is not True
-    5. Export selected non-null free-text fields requiring translation with unique identifier columns as needs_translation_df
+    loads to_be_translated df and converts it into pandas df for transformation into an excel workbook format
+    for translator facing processes
 
-    translated_values_lookup_df
-        is a lookup in the same location as the other lookups specified in the pipeline_config file
-        contains the translated non-null digital_free_text_columns with unique_identifiers  (participant_id, participant_completion_window_id)
+    parameters
+        translations_directory
+            path of translations_directory, assumes this is supplied from the config
+        formatted_time
+            YYYYMMDD_HHMM
 
-    needs_translation_df
-        contains the non-null digital_free_text_columns requiring translation by unique_identifiers (participant_id, participant_completion_window_id)
+    outputs
+        exports excel files to the translations_directory
+
+    returns
+        pandas df for last participant that was translated
     """
     df = df.withColumn(
         "id", F.concat(F.lit(F.col("participant_id")), F.lit(F.col("participant_completion_window_id")))
