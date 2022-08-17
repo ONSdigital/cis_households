@@ -724,7 +724,6 @@ def geography_and_imputation_dependent_processing(
         how="left",
         on="lower_super_output_area_code_11",
     )
-
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
 
     df = assign_multigenerational(

@@ -5,6 +5,22 @@ from collections import namedtuple
 
 RegexPattern = namedtuple("RegexPattern", ["positive_regex_pattern", "negative_regex_pattern"])
 
+social_care_positive_regex = [
+    "COUNS|COUNC",  # counsellor
+    "(?<!BUSINESS )SUP+ORT *WORKER",  # non-business support
+    "CHILD *(CARE|MIND)|NANN[YIE]+|AU PAIR",  # child carer
+    "(((CAR(ER|ING)+|NURSE) (FOR|OF))|LOOKS* *AFTER) *(MUM|MOTHER|DAD|FATHER|SON|D[AU]+GHT|WIFE|HUSB|PARTNER|CHILD|FAM|T*H*E* ELDERLY)",  # general carer
+    "^CAE?RE*R *(CARE*|NA)*$|(CARE|NURSING) *HOME|(SOCIAL|COMMUNITY|DOMICIL[IA]*RY)* *CARE|CARE *(WORK|ASSISTANT)|ASS(T|ISTED) CARING|CARE SUPPORT WORK|SUPPORT *WORKER *CARE|INDEPEND[EA]NT LIVING",
+    "SOCIAL.*WORK|FOSTER CARE",  # social worker
+]
+
+healthcare_positive_regex
+
+social_care_pattern = RegexPattern(
+    positive_regex_pattern="|".join(social_care_positive_regex),
+    negative_regex_pattern="|".join(healthcare_positive_regex),
+)
+
 patient_facing_pattern = RegexPattern(
     positive_regex_pattern="|".join(
         [

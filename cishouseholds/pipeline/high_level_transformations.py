@@ -179,7 +179,6 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     window = Window.partitionBy(*join_on_columns)
     df = df.withColumn("DROP", F.col("LENGTH") != F.max("LENGTH").over(window))
     df = df.filter((F.col("standard_occupational_classification_code") != "uncodeable") & (~F.col("DROP")))
-
     return df.drop("DROP", "LENGTH")
 
 
