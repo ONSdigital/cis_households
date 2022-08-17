@@ -58,6 +58,7 @@ from cishouseholds.pipeline.mapping import category_maps
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import soc_regex_map
 from cishouseholds.pipeline.reporting import generate_error_table
+from cishouseholds.pipeline.reporting import generate_lab_report
 from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
@@ -844,6 +845,15 @@ def report(
     write_string_to_file(
         output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
     )
+
+
+@register_pipeline_stage("lab_report")
+def lab_report(survey_responses_table: str, swab_report_table: str, blood_report_table: str) -> DataFrame:
+    """Generate reports of most recent 7 days of swab and blood data"""
+    survey_responses_df = extract_from_table(survey_responses_table).orderBy("file_date")
+    swab_df, blood_df = generate_lab_report(survey_responses_df)
+    update_table(swab_df, swab_report_table, "overwrite")
+    update_table(blood_df, blood_report_table, "overwrite")
 
 
 @register_pipeline_stage("record_level_interface")
