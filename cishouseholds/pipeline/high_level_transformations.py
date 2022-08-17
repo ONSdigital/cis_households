@@ -1,7 +1,11 @@
 # flake8: noqa
+import os
+import shutil
+from datetime import datetime
 from typing import List
 
 import pyspark.sql.functions as F
+from pandas import pandas as pd
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import SparkSession
@@ -92,6 +96,7 @@ from cishouseholds.edit import update_column_if_ref_in_list
 from cishouseholds.edit import update_column_in_time_window
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
+from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.edit import update_person_count_from_ages
 from cishouseholds.edit import update_strings_to_sentence_case
 from cishouseholds.edit import update_think_have_covid_symptom_any
@@ -115,6 +120,7 @@ from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
+from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.mapping import _welsh_ability_to_socially_distance_at_work_or_education_categories
 from cishouseholds.pipeline.mapping import _welsh_blood_kit_missing_categories
 from cishouseholds.pipeline.mapping import _welsh_blood_not_taken_reason_categories
@@ -407,7 +413,9 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
     return df
 
 
-def translate_freetext_columns(df: DataFrame, translated_values_lookup_df: DataFrame) -> DataFrame:
+def get_free_text_responses_to_be_translated(
+    df: DataFrame, unique_id_cols: List[str], free_text_cols: List[str]
+) -> DataFrame:
     """
     1. Checks if translated_values_lookup_df already exists
     2. If 1 is True then overwrites existing values with translated_values_lookup
@@ -423,7 +431,152 @@ def translate_freetext_columns(df: DataFrame, translated_values_lookup_df: DataF
         contains the non-null digital_free_text_columns requiring translation by unique_identifiers (participant_id, participant_completion_window_id)
     """
 
-    unique_identifiers = ["participant_id", "digital_free_text_columns"]
+    df = (
+        df.select(unique_id_cols + free_text_cols + ["form_language"])
+        .filter(F.col("form_language") == "Welsh")
+        .na.drop(how="all", subset=free_text_cols)
+    )
+
+    return df
+
+
+def transform_translated_responses_into_lookup(
+    spark_session: SparkSession,
+    formatted_time: str = datetime.now().strftime("%Y%m%d_%H%M"),
+) -> DataFrame:
+    """
+    1. Checks if translated_values_lookup_df already exists
+    2. If 1 is True then overwrites existing values with translated_values_lookup
+    3. Add an _is_translated column and set to True where translated_values_lookup has overwritten existing values
+    4. Select non-null free-text fields where the survey language mode = "Welsh" and _is_translated is not True
+    5. Export selected non-null free-text fields requiring translation with unique identifier columns as needs_translation_df
+
+    translated_values_lookup_df
+        is a lookup in the same location as the other lookups specified in the pipeline_config file
+        contains the translated non-null digital_free_text_columns with unique_identifiers  (participant_id, participant_completion_window_id)
+
+    needs_translation_df
+        contains the non-null digital_free_text_columns requiring translation by unique_identifiers (participant_id, participant_completion_window_id)
+    """
+    if os.environ["deployment"] != "local":
+        translation_config = get_config()["translation"]
+        translation_directory = translation_config["translation_directory"]
+        completed_translations_directory = os.path.join(translation_directory, "completed/")
+        translation_lookup_path = translation_config["translation_lookup_path"]
+        translation_lookup_df = pd.DataFrame(translation_lookup_path)
+        translation_backup_directory = translation_config["translation_backup_directory"]
+    else:
+        completed_translations_directory = os.getcwd()
+        translation_lookup_path = os.path.join(os.getcwd(), "all_translated_responses.csv")
+        translation_lookup_df = pd.DataFrame(
+            columns=["id", "dataset_name", "target_column_name", "old_value", "new_value"]
+        )
+        translation_backup_directory = os.getcwd()
+
+    translation_backup_path = os.path.join(
+        translation_backup_directory, f"all_translated_responses_{formatted_time}.csv"
+    )
+    list_of_file_paths = [
+        os.path.join(completed_translations_directory, _)
+        for _ in os.listdir(completed_translations_directory)
+        if _.endswith(".xlsx")
+    ]
+
+    new_translations = pd.DataFrame()
+    for path in list_of_file_paths:
+        translated_workbook = pd.ExcelFile(path, engine="openpyxl")
+        translated_sheets = translated_workbook.sheet_names
+        workbook_translations = pd.DataFrame()
+        for sheet in translated_sheets:
+            sheet_translation = pd.read_excel(
+                path, sheet_name=sheet, engine="openpyxl", names=["target_column_name", "old_value", "new_value"]
+            )
+            sheet_translation = (
+                sheet_translation.dropna()
+                .assign(id=sheet, dataset_name=None)
+                .reindex(columns=["id", "dataset_name", "target_column_name", "old_value", "new_value"])
+            )
+            if len(sheet_translation) > 0:
+                sheet_translation.loc[sheet_translation.index.max() + 1] = [
+                    sheet,
+                    None,
+                    "form_language",
+                    "Welsh",
+                    "Translated",
+                ]
+            workbook_translations = workbook_translations.append(sheet_translation)
+        new_translations = new_translations.append(workbook_translations)
+        if os.path.exists(os.path.join(completed_translations_directory, "processed/")):
+            shutil.move(path, os.path.join(completed_translations_directory, "processed/"))
+
+    filtered_translations = new_translations[~new_translations["id"].isin(translation_lookup_df["id"])]
+    if os.path.exists(translation_lookup_path):
+        shutil.copy(translation_lookup_path, translation_backup_path)
+    updated_translation_lookup = translation_lookup_df.append(filtered_translations)
+    updated_translation_lookup.to_csv(translation_lookup_path, sep=",", index=False)
+    new_translations_df = spark_session.createDataFrame(
+        new_translations,
+        schema="id string,dataset_name string,target_column_name string,old_value string, new_value string",
+    )
+
+    return updated_translation_lookup
+
+
+def export_responses_to_be_translated(
+    df: DataFrame, translations_directory: str = None, formatted_time: str = datetime.now().strftime("%Y%m%d_%H%M")
+) -> DataFrame:
+    """
+    1. Checks if translated_values_lookup_df already exists
+    2. If 1 is True then overwrites existing values with translated_values_lookup
+    3. Add an _is_translated column and set to True where translated_values_lookup has overwritten existing values
+    4. Select non-null free-text fields where the survey language mode = "Welsh" and _is_translated is not True
+    5. Export selected non-null free-text fields requiring translation with unique identifier columns as needs_translation_df
+
+    translated_values_lookup_df
+        is a lookup in the same location as the other lookups specified in the pipeline_config file
+        contains the translated non-null digital_free_text_columns with unique_identifiers  (participant_id, participant_completion_window_id)
+
+    needs_translation_df
+        contains the non-null digital_free_text_columns requiring translation by unique_identifiers (participant_id, participant_completion_window_id)
+    """
+    df = df.withColumn(
+        "id", F.concat(F.lit(F.col("participant_id")), F.lit(F.col("participant_completion_window_id")))
+    ).drop("participant_id", "participant_completion_window_id", "form_language")
+    to_be_translated_df = df.toPandas()
+    unique_id_list = to_be_translated_df["id"].unique()
+
+    if translations_directory is not None:
+        translations_workbook = translations_directory + f"to_be_translated_{formatted_time}.xlsx"
+    else:
+        translations_workbook = f"to_be_translated_{formatted_time}.xlsx"
+
+    with pd.ExcelWriter(translations_workbook, engine="openpyxl") as writer:
+        for unique_id in unique_id_list:
+            participant_to_be_translated_df = (
+                to_be_translated_df.query(f'id == "{unique_id}"')
+                .transpose()
+                .assign(translated=([None] * len(to_be_translated_df.columns)))
+            )
+            participant_to_be_translated_df.columns = ["original", "translated"]
+            # participant_to_be_translated_df.columns.name = ["header"]
+            participant_to_be_translated_df.to_excel(writer, sheet_name=unique_id)
+            writer.sheets[unique_id].column_dimensions["A"].width = 35
+            writer.sheets[unique_id].column_dimensions["B"].width = 35
+            writer.sheets[unique_id].column_dimensions["C"].width = 35
+    return participant_to_be_translated_df
+
+
+def translate_welsh_survey_responses_version_digital(df: DataFrame, spark_session: SparkSession) -> DataFrame:
+    """
+    Call functions to translate welsh survey responses from the cis digital questionnaire
+    """
+
+    if os.environ["deployment"] != "local":
+        translation_config = get_config()["translation"]
+        translation_directory = translation_config["translation_directory"]
+        translation_lookup_path = translation_config["translation_lookup_path"]
+
+    digital_unique_identifiers = ["participant_id", "participant_completion_window_id"]
 
     digital_free_text_columns = [
         "reason_for_not_consenting_1",
@@ -445,14 +598,18 @@ def translate_freetext_columns(df: DataFrame, translated_values_lookup_df: DataF
         "work_sector_other",
         "cis_covid_vaccine_type_other",
     ]
-    # if translated_values_lookup_df is not None:
-    #    translated_df = update_column_if_ref_in_list(df, translated_values_lookup_df, unique_id_column)
 
+    df = df.withColumn("id", F.concat(F.lit(F.col("participant_id")), F.lit(F.col("participant_completion_window_id"))))
+    if os.path.exists(translation_lookup_path):
+        translation_lookup_df = transform_translated_responses_into_lookup(spark_session)
+        df = update_from_lookup_df(df, translation_lookup_df, id_column="id")
 
-def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame:
-    """
-    Call functions to translate welsh survey responses from the cis digital questionnaire
-    """
+    to_be_translated_df = get_free_text_responses_to_be_translated(
+        df, digital_unique_identifiers, digital_free_text_columns
+    )
+    exported_to_be_translated_df = export_responses_to_be_translated(to_be_translated_df, translation_directory)
+    df = df.drop("id")
+
     digital_yes_no_columns = [
         "household_invited_to_digital",
         "household_members_under_2_years_count",
