@@ -100,23 +100,19 @@ in_college_or_further_education_pattern = RegexPattern(
 childcare_pattern = RegexPattern(
     positive_regex_pattern="|".join(
         [
-            "NURSREY",
-            "NURSERY",
-            "NUSERY",
-            "NURSARY",
-            "NURSEY",
+            "NU[RS].+[RE]Y",
+            "DAY.?CARE",
+            "CHILD.?CARE",
+            "CHILD.?MINDER",
+            "PLAY.?GROUP",
             "CRECHE",
-            "DAY CARE",
-            "DAYCARE",
-            "CHILDMINDER",  # TODO: isn't this an occupation
-            "PLAYGROUP",
-            "PLAY GROUP",
-            "STUDENT",
-            "EDUCATION",
-            "PRE SCHOOL",
+            "PRE.?SCHOOL",
             "LEARNER",
-            "CHILDCARE",
+            "EDUCATION",
+            "STUDENT",
         ]
     ),
-    negative_regex_pattern=None,
+    # below MINDER is in the list of occupations but we want that not to match with
+    # CHILDMINDER that's why we are excluding MINDER from the -ve pattern list
+    negative_regex_pattern="|".join([i for i in occupations if i not in ["MINDER"]]),
 )
