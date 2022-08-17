@@ -1168,17 +1168,14 @@ def assign_school_year(
         )
         .withColumn(
             column_name_to_assign,
-            F.floor(F.datediff(F.col(reference_date_column), F.col("school_start_date")) / 365.25).cast("integer"),
+            F.floor(F.round(F.datediff(F.col(reference_date_column), F.col("school_start_date")) / 365.2425, 3)).cast(
+                "integer"
+            ),
         )
-        # Below statement is to recreate Stata code (school years in DAs don't follow the same pattern),
-        #  though need to confirm if this is accurate
-        # .withColumn(column_name_to_assign, F.when((F.col(country_column)==F.lit("Northern Ireland")) /
-        # | (F.col(country_column)==F.lit("Scotland")), F.col(column_name_to_assign)+1)
-        #                                     .otherwise(F.col(column_name_to_assign)))
         .withColumn(
             column_name_to_assign,
             F.when(
-                (F.col(column_name_to_assign) >= F.lit(14)) | (F.col(column_name_to_assign) <= F.lit(0)), None
+                (F.col(column_name_to_assign) >= F.lit(14)) | (F.col(column_name_to_assign) < F.lit(0)), None
             ).otherwise(F.col(column_name_to_assign)),
         )
         .drop(
