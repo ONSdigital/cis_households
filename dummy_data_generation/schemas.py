@@ -6,6 +6,18 @@ yes_no_prefer_not_to_say = ["Yes", "No", "Prefer not to say"]
 yes_no_unknown_choice = ["Yes", "No", "Don't know", None]
 people_count = ["0", "1 to 5", "6 to 10", "11 to 20", "21 or more", "Don't know", "Prefer not to say", None]
 times_count = ["1", "2", "3", "4", "5", "6", "7 times or more", "Don't know", "None", "Prefer not to say", None]
+void_reasons = [
+    "Leaked sample",
+    "Low VTM/dry tube",
+    "Multiple swabs",
+    "No swab",
+    "Empty or Insufficient volume",
+    "Leaked",
+    "Unused Kits",
+    "Delay due to mis-delivery",
+    "No LP5 tube",
+    "No LP5",
+]
 consolidation_points = [
     "Consolidation.box_empty",
     "Consolidation.sample_leaked",
@@ -1935,6 +1947,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "allocated_blood_barcode_not_used_reason": _(
             "text.sentence"
         ),  # Previously Blood_Barcode_Status_Error TODO check not pick list
+        "blood_barcode_void_reason": _("choice", items=void_reasons),
+        "swab_barcode_void_reason": _("choice", items=void_reasons),
         "swab_sample_received_consolidation_point_datetime": _(
             "discrete_distribution",
             population=[
