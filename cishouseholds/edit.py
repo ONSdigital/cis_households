@@ -105,6 +105,38 @@ def update_column_if_ref_in_list(
     return df
 
 
+def update_value_if_multiple_and_ref_in_list(
+    df: DataFrame,
+    column_name_to_update: str,
+    check_list: List[str],
+    new_value_if_in_list: str,
+    new_value_if_not_in_list: str,
+    separator: str,
+):
+    """
+    update column value with new value if multiple strings found, separated by separator e.g. ','
+    and based on whether column contains value in check_list or not
+    Parameters
+    -----------
+    df
+    column_name_to_update
+    check_list
+    new_value_if_in_list
+    new_value_if_not_in_list
+    separator
+    """
+    if df.column_name_to_update.rlike(separator):
+        if df.column_name.rlike(check_list):
+            df.withColumn(column_name_to_update, new_value_if_in_list)
+        else:
+            df.withColumn(column_name_to_update, new_value_if_not_in_list)
+
+    else:
+        df.withColumnAs(column_name_to_update, column_name_to_update)
+
+    return df
+
+
 # SUBSTITUTED by update_column_values_from_map()
 # def update_column_values_from_column_reference(
 #     df: DataFrame, column_name_to_update: str, reference_column: str, map: Mapping

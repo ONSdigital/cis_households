@@ -95,6 +95,7 @@ from cishouseholds.edit import update_person_count_from_ages
 from cishouseholds.edit import update_strings_to_sentence_case
 from cishouseholds.edit import update_think_have_covid_symptom_any
 from cishouseholds.edit import update_to_value_if_any_not_null
+from cishouseholds.edit import update_value_if_multiple_and_ref_in_list
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import sum_within_row
@@ -1277,6 +1278,25 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "loss_of_smell",
         ],
     )
+
+    df = update_value_if_multiple_and_ref_in_list(
+        df,
+        "swab_consolidation_point_error",
+        ["sample_leaked", "sample_uncompleted"],
+        "multiple errors, sample discarded",
+        "multiple errors, sample_retained",
+        ",",
+    )
+
+    df = update_value_if_multiple_and_ref_in_list(
+        df,
+        "blood_consolidation_point_error",
+        ["sample_leaked", "sample_uncompleted"],
+        "multiple errors sample discarded",
+        "multiple errors sample_retained",
+        ",",
+    )
+
     return df
 
 
