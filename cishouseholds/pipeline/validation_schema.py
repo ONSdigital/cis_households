@@ -1176,10 +1176,17 @@ validation_schemas = {
         "blood_sample_barcode_user_entered": string_dict,
         "allocated_swab_barcode_not_used_reason": string_dict,  # Previously Swab_Barcode_Status_Error
         "allocated_blood_barcode_not_used_reason": string_dict,  # Previously Blood_Barcode_Status_Error
+        "blood_barcode_void_reason": string_dict,
+        "swab_barcode_void_reason": string_dict,
         "swab_sample_received_consolidation_point_datetime": string_dict,
         "blood_sample_received_consolidation_point_datetime": string_dict,
         "swab_sample_received_lab_datetime": string_dict,
         "blood_sample_received_lab_datetime": string_dict,
+        "form_started_datetime": string_dict,
+        "swab_consolidation_point_error": string_dict,
+        "blood_consolidation_point_error": string_dict,
+        "swab_consolidation_point_error_datetime": string_dict,
+        "blood_consolidation_point_error_datetime": string_dict,
         "digital_survey_collection_mode": string_dict,
         "swab_taken": string_dict,
         "swab_not_taken_reason": string_dict,
@@ -1372,5 +1379,6 @@ validation_schemas = {
         "other_covid_infection_test_negative_date": string_dict,
         "other_antibody_test_positive_date": string_dict,
         "other_antibody_test_negative_date": string_dict,
+        "form_language": string_dict,
     },
 }
