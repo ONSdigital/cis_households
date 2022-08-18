@@ -15,6 +15,7 @@ test_data = {
         "NO WORKING",
         "BUT NOT CURRENTLY WORKING",
         "UNEMPLOYED",
+        "IM UNEMPLOYED",
         "UNEMPLOYMENT",
         "UNABLE",
         "NIL",
@@ -24,11 +25,14 @@ test_data = {
         "SISTERS CARER",
         "DAUGHTERS CARER",
         "PATERNITY LEAVE",
-        "MATERNITY LEAVE",
+        "ON PATERNITY LEAVE!" "MATERNITY LEAVE",
         "HOUSEWIFE",
+        "HOUSE HUSBAND" "HOUSE WIFE",
         "HOMEMAKER",
+        "HOME WIFE",
         "FULL TIME MOM",
         "FULL TIME GRANDAD",
+        "FULLTIME MOM",
         "AT HOME",
     ],
     "negative": [
@@ -39,6 +43,9 @@ test_data = {
         "HOUSE HUNTER",
         "HOUSE MASTER",
         "PATERNITY LEAVE COVER",
+        "GRAPHIC DESIGN...HOMES SECTOR",
+        "DESIGNS HOMES",
+        "CARE HOMES WORKER",
     ],
 }
 
@@ -58,7 +65,7 @@ def test_add_not_working_identifier(prepare_regex_test_cases, spark_session):
     assert_df_equality(
         actual_df,
         expected_df,
-        ignore_row_order=True,
+        ignore_row_order=False,
         ignore_column_order=True,
         ignore_nullable=True,
     )
