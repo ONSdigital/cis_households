@@ -1945,6 +1945,16 @@ def union_dependent_cleaning(df):
             "Do NOT Reinstate": "Do not reinstate",
         },
     }
+    if "blood_consolidation_point_error" in df.columns:  # TEMP DELETE AFTER CONSOLIDATION PREFIX REMOVED
+        df = df.withColumn(
+            "blood_consolidation_point_error",
+            F.regexp_replace(F.col("blood_consolidation_point_error"), r"^[Cc]onsolidation\.", ""),
+        )
+        df = df.withColumn(
+            "swab_consolidation_point_error",
+            F.regexp_replace(F.col("swab_consolidation_point_error"), r"^[Cc]onsolidation\.", ""),
+        )
+
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
     # TODO: Add in once dependencies are derived
