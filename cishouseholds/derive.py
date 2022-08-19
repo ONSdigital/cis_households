@@ -1118,6 +1118,15 @@ def assign_substring(
     return df
 
 
+def year_divisor(df: DataFrame, column_name_to_assign, start_date, end_date):
+    df = df.withColumn("TEMP", F.sequence(F.year(start_date), F.year(end_date)))
+    df = df.withColumn(
+        column_name_to_assign,
+        365 + (F.size(F.expr("filter(TEMP,x ->IF(x%100=0 AND x%400!=0,FALSE,x%4=0))")) / F.size(F.col("TEMP"))),
+    )
+    return df.drop("TEMP")
+
+
 def assign_school_year(
     df: DataFrame,
     column_name_to_assign: str,
@@ -1145,30 +1154,30 @@ def assign_school_year(
         reference day/month (which year participant in by dob) by country
     """
 
-    df = (
-        df.join(F.broadcast(school_year_lookup), on=country_column, how="left")
-        .withColumn(
-            "school_start_date",
-            F.when(
-                (F.month(dob_column) > F.col("school_year_ref_month"))
-                | (
-                    (F.month(dob_column) == F.col("school_year_ref_month"))
-                    & (F.dayofmonth(dob_column) >= F.col("school_year_ref_day"))
-                ),
-                F.to_date(
-                    F.concat(F.year(dob_column) + 5, F.col("school_start_month"), F.col("school_start_day")),
-                    format="yyyyMMdd",
-                ),
-            ).otherwise(
-                F.to_date(
-                    F.concat(F.year(dob_column) + 4, F.col("school_start_month"), F.col("school_start_day")),
-                    format="yyyyMMdd",
-                )
+    df = df.join(F.broadcast(school_year_lookup), on=country_column, how="left").withColumn(
+        "school_start_date",
+        F.when(
+            (F.month(dob_column) > F.col("school_year_ref_month"))
+            | (
+                (F.month(dob_column) == F.col("school_year_ref_month"))
+                & (F.dayofmonth(dob_column) >= F.col("school_year_ref_day"))
             ),
-        )
-        .withColumn(
+            F.to_date(
+                F.concat(F.year(dob_column) + 5, F.col("school_start_month"), F.col("school_start_day")),
+                format="yyyyMMdd",
+            ),
+        ).otherwise(
+            F.to_date(
+                F.concat(F.year(dob_column) + 4, F.col("school_start_month"), F.col("school_start_day")),
+                format="yyyyMMdd",
+            )
+        ),
+    )
+    df = year_divisor(df, "DIV", "school_start_date", reference_date_column)
+    df = (
+        df.withColumn(
             column_name_to_assign,
-            F.floor(F.round(F.datediff(F.col(reference_date_column), F.col("school_start_date")) / 365.2425, 3)).cast(
+            F.floor(F.datediff(F.col(reference_date_column), F.col("school_start_date")) / F.col("DIV")).cast(
                 "integer"
             ),
         )
@@ -1179,6 +1188,7 @@ def assign_school_year(
             ).otherwise(F.col(column_name_to_assign)),
         )
         .drop(
+            "DIV",
             "school_start_month",
             "school_start_day",
             "school_year_ref_month",

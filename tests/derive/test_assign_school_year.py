@@ -24,6 +24,8 @@ def school_year_lookup(spark_session):
     "expected_data",
     # fmt: off
     [
+        ("2020-08-31", "2006-11-22", "England", 8), # special case
+
         ("2021-09-01", "2014-09-01", "England",             2),
         ("2021-08-31", "2014-09-01", "England",             1), # new reference cutoff not started and child born after start date
         ("2021-09-01", "2014-08-31", "England",             3), # new reference cutoff started and child born before start date
