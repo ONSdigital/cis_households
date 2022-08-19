@@ -115,7 +115,7 @@ def update_value_if_multiple_and_ref_in_list(
 ):
     """
     update column value with new value if multiple strings found, separated by separator e.g. ','
-    and based on whether column contains value in check_list or not
+    and based on whether column contains any value in check_list or not
     Parameters
     -----------
     df
@@ -125,15 +125,25 @@ def update_value_if_multiple_and_ref_in_list(
     new_value_if_not_in_list
     separator
     """
-    if df.column_name_to_update.rlike(separator):
-        if df.column_name.rlike(check_list):
-            df.withColumn(column_name_to_update, new_value_if_in_list)
-        else:
-            df.withColumn(column_name_to_update, new_value_if_not_in_list)
+    df = df.withColumn("ref_flag", F.lit(0))
+    for check in check_list:
+        df = df.withColumn(
+            "ref_flag",
+            F.when(
+                (F.col(column_name_to_update).contains(separator)) & (F.col(column_name_to_update).contains(check)),
+                F.col("ref_flag") + F.lit(1),
+            ).when(
+                (F.col(column_name_to_update).contains(separator)) & ~(F.col(column_name_to_update).contains(check)),
+                F.col("ref_flag"),
+            ),
+        )
 
-    else:
-        df.withColumnAs(column_name_to_update, column_name_to_update)
-
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(F.col("ref_flag") >= F.lit(1), new_value_if_in_list)
+        .when(F.col("ref_flag") < F.lit(1), new_value_if_not_in_list)
+        .otherwise(F.col(column_name_to_update)),
+    ).drop(F.col("ref_flag"))
     return df
 
 
