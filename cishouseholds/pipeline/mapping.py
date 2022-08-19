@@ -161,8 +161,8 @@ category_maps = {
             "QNR - Questionnaire No Return": 1,
             "TNR - Test Not Returned": 2,
         },
-        "blood_consolidation_point_error": consolidation_categories,
-        "swab_consolidation_point_error": consolidation_categories,
+        # "blood_consolidation_point_error": consolidation_categories,
+        # "swab_consolidation_point_error": consolidation_categories,
         "participant_visit_status": {
             "Cancelled": 0,
             "Completed": 1,
