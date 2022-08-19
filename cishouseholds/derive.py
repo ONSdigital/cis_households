@@ -2268,20 +2268,23 @@ def flag_records_for_student_v1_rules() -> F.Column:
     )
 
 
-def flag_records_for_student_v2_rules() -> F.Column:
+def flag_records_for_school_v2_rules() -> F.Column:
     """Flag records for application of "Student-v2" rules"""
     return (F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18))
 
 
 def flag_records_for_uni_v0_rules() -> F.Column:
     """Flag records for application of "Uni-v0" rules"""
-    return (F.col("age_at_visit") >= F.lit(17)) & (
-        F.col("work_status_v0").isNull()
-        | F.col("work_status_v0").isin(
-            "Furloughed (temporarily not working)",
-            "Not working (unemployed, retired, long-term sick etc.)",
+    return (
+        (F.col("age_at_visit") >= F.lit(17))
+        & (
+            F.col("work_status_v0").isNull()
+            | F.col("work_status_v0").isin(
+                "Furloughed (temporarily not working)",
+                "Not working (unemployed, retired, long-term sick etc.)",
+            )
         )
-    )
+    ) | ((F.col("age_at_visit") >= F.lit(17)) & (F.col("age_at_visit") < F.lit(22)))
 
 
 def flag_records_for_uni_v2_rules() -> F.Column:

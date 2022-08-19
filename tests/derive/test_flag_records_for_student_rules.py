@@ -1,8 +1,8 @@
 from chispa import assert_df_equality
 
+from cishouseholds.derive import flag_records_for_school_v2_rules
 from cishouseholds.derive import flag_records_for_student_v0_rules
 from cishouseholds.derive import flag_records_for_student_v1_rules
-from cishouseholds.derive import flag_records_for_student_v2_rules
 
 
 def test_flag_records_for_student_v0_rules(spark_session):
@@ -84,7 +84,7 @@ def test_flag_records_for_student_v2_rules(spark_session):
 
     expected_df = spark_session.createDataFrame(test_cases, schema="age_at_visit int, actual_flag boolean")
 
-    actual_df = expected_df.drop("actual_flag").withColumn("actual_flag", flag_records_for_student_v2_rules())
+    actual_df = expected_df.drop("actual_flag").withColumn("actual_flag", flag_records_for_school_v2_rules())
 
     assert_df_equality(
         actual_df,
