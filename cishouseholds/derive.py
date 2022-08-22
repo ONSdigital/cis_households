@@ -2127,9 +2127,8 @@ def flag_records_for_work_location_student() -> F.Column:
 
 def flag_records_for_work_from_home_rules() -> F.Column:
     """Flag records for application of "Work From Home" rules"""
-    return (
-        F.col("work_location").isNull()
-        | (
+    return F.col("work_location").isNull() & ~(
+        (
             F.col("work_status_v0").isin(
                 "Furloughed (temporarily not working)",
                 "Not working (unemployed, retired, long-term sick etc.)",
@@ -2338,6 +2337,6 @@ def flag_records_for_childcare_v1_rules() -> F.Column:
     return F.col("age_at_visit") <= F.lit(4)
 
 
-def flag_records_for_childcare_v2_rules() -> F.Column:
-    """Flag records for application of "Childcare-V1" rules"""
-    return F.col("age_at_visit") <= F.lit(5)
+def flag_records_for_childcare_v2_b_rules() -> F.Column:
+    """Flag records for application of "Childcare-V2_b" rules"""
+    return (F.col("age_at_visit") <= F.lit(5)) & F.col("school_year").isNull()
