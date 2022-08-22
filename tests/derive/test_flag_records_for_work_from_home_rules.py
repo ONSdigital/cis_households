@@ -6,13 +6,12 @@ from cishouseholds.derive import flag_records_for_work_from_home_rules
 def test_flag_records_for_work_from_home_rules(spark_session):
     """Test flag_records_for_work_from_home_rules function correctly flags the records"""
 
-    # below we are flagging "None"'s with 1 everything else 0 - these, Nones/Nulls are
-    # what we are expecting the flag_records_for_work_from_home_rules to flag with 1s.
     test_cases = [
-        ("office work", 16, "Student", True),
-        (None, 15, "Student", True),
-        ("construction site", 19, "Furloughed (temporarily not working)", True),
-        ("office", 24, "Employed", False),
+        (None, 16, "Student", False),
+        (None, 15, "Student", False),
+        (None, 19, "Furloughed (temporarily not working)", False),
+        (None, 24, "Employed", True),
+        ("Client site", 35, "Self-Employed", False),
     ]
 
     expected_df = spark_session.createDataFrame(

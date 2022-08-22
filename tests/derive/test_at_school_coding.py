@@ -31,7 +31,7 @@ test_data = {
         "EDUCATION IN FINAL YEAR OF SECONDARY SCHOOL",
     ],
     "negative": [
-        "SCHOOL TEACHER",
+        "TEACHER IN SECONDARY SCHOOL AGED 11 TO 16" "SCHOOL TEACHER",
         "SCHOOL DINNER LADY",
         "PRIMARY CARE GIVER",
         "CHILD MINDER",
