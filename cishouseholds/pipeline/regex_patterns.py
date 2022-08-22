@@ -26,14 +26,11 @@ RegexPattern = namedtuple("RegexPattern", ["positive_regex_pattern", "negative_r
 
 social_care_positive_regex = "|".join(
     [
-        "COUNS|COUNC",  # counsellor
+        "((?=.*?(COUNS|COUNC))(^(?!.*(ADDICT|VICTIM|TRAUMA|MENTAL HEALTH|DRUG|ALCOHOL|ABUSE|SUBSTANCE))))",  # noqa:E501 # counsellor
         "(?<!BUSINESS )SUP+ORT *WORKER",  # non-business support
-        "CHILD *(CARE|MIND)|NANN[YIE]+|AU PAIR",  # child carer
         "(((CAR(ER|ING)+|NURSE) (FOR|OF))|LOOKS* *AFTER) *(MUM|MOTHER|DAD|FATHER|SON|D[AU]+GHT|WIFE|HUSB|PARTNER",
         "CHILD|FAM|T*H*E* ELDERLY)",  # general carer
-        "^CAE?RE*R *(CARE*|NA)*$|(CARE|NURSING) *HOME|(SOCIAL|COMMUNITY",
-        "DOMICIL[IA]*RY)* *CARE|CARE *(WORK|ASSISTANT)|ASS(T|ISTED) CARING",
-        "CARE SUPPORT WORK|SUPPORT *WORKER *CARE|INDEPEND[EA]NT LIVING",
+        "(?=.*?(CHILD (CARE|MIND)|NANN[YIE]+|AU PAIR|(CARE|NURSING) HOME|(SOCIAL|COMMUNITY|DOMICIL[IA]*RY) CARE|CARE (WORK|ASSISTANT|SUPPORT)|ASS(T|ISTED) CARING|SUPPORT WORKER|INDEPEND[EA]NT LIVING))(^(?!.*(HOSPITAL|MEDICAL|CRITICAL|MENTAL)))",  # noqa: E501
         "SOCIAL.*WORK|FOSTER CARE",  # social worker
     ]
 )
@@ -65,7 +62,8 @@ healthcare_roles = "|".join(
         "MATERNITY",
         "WARD",
         "PHLEBOTOM",
-        "((?=.*?(PARA *MEDIC|AMBUL[AE]NCE))(^(?!.*(LECTUR))))" "MI*D*.?WI*F.?E.?|MIDWIV|MID*WIF|HEALTH VISITOR",
+        "((?=.*?(PARA *MEDIC|AMBUL[AE]NCE))(^(?!.*(LECTUR))))",
+        "MI*D*.?WI*F.?E.?|MIDWIV|MID*WIF|HEALTH VISITOR",
         "ONCOLOGY",
         "ACCIDENT *(& *|AND *)*EMERGENCY",
         "COVID.*SWA[BP]",
@@ -75,7 +73,7 @@ healthcare_roles = "|".join(
         "((?=.*?(D[EIA]{0,2}[TC][EI]?[CT]+[AEIOU]*[NC(RY)]|DIET(RIST)?))(^(?!.*(DETECTION))))",  # DIETICIAN,
     ]
 )
-additional_healtchare_roles = "|".join(
+additional_healthcare_roles = "|".join(
     [
         "SONOGRAPHER",
         "RADIO(GRAPHER|LOGIST)",
@@ -110,7 +108,7 @@ non_healthcare_regex = "|".join(
         "DRIV(E|ER|ING)|PILOT|TRAIN DRIVE|TAXI|LORRY|TRANSPORT|DELIVER|SUPPLY",  # delivery
         "CHEF|SOUS|COOK|CATER|BREWERY|CHEESE|KITCHEN|KFC|CULINARY|FARM(ER|ING)",  # catering
         "AC[AE]DEMIC|RESEAR*CH|SCIEN|LAB(ORATORY)?|DATA|ANAL|STATIST|EPIDEMI|EXAM|EDUCAT|EARLY YEARS|SCHOOL|COLL.GE",
-        "TEACH|LECTURE|PROFESS|HOUSE *(M[AI]ST(ER|RESS)|PARENT)|COACH|TRAIN|INSTRUCT|TUTOR|LEARN|EDUCATION|SCHOOL|UNIV",  # noqa: E501 education
+        "TEACH|LECTURE|PROFESS|HOUSE *(M[AI]ST(ER|RESS)|PARENT)|COACH|TRAINER|INSTRUCT|TUTOR|LEARN|EDUCATION|SCHOOL|UNIV",  # noqa: E501 education
         "BROADCAST|JOURNALIST|CAMERA|WRIT|COMMUNICAT|CURAT(OR)*|MARKETING|MUSICIAN|ACT([OE]R|RESS)|ARTIST",  # noqa:E501 media/reporting
         "RETAIL|BUYER|SALE|BUY AND SELL|CUSTOMER|AGENT|BANK(ING|ER)|INSURANCE|BEAUT(Y|ICIAN)?|NAIL|HAIR|SHOP|PROPERTY|TRADE|SUPER *MARKET|WH *SMITH|TESCO",  # noqa:E501 retail
         "LOCAL *GOVERNMENT|CIVIL *SERV(ANT|ICE)|HOTEL|CARE *HOME|VET[A-Z]*RY|HAIR *(SALON|DRESS)+|SPORT[S ]*CENT|LEISURE|BEAUTY|CLUB|PROJECT|BUSINESS|COMPAN(Y|IES)",  # noqa:501
@@ -122,28 +120,25 @@ non_healthcare_regex = "|".join(
         "CHAPL[AI]*N|VICAR|CLERGY|MINISTER|PREACH|CHURCH|PARISH",  # religous services
         "I[ \\.]*T\\.?\\b|DIGIT|WEBSITE|NETWORK|DEVELOPER|SOFTWARE|SYSTEM|CLERICAL",  # IT
         "CHAIR|CHARITY|CITIZEN|CIVIL|VOLUNT|LIBRAR|TRANSLAT|INVESTIGAT|FIRE ?(WO)?(M[AE]N|FIGHT)|POLICE|POST *(WO)*MAN|PRISON|FIRST AID|SAFETY|TAX|GOVER?NMENT",  # noqa:E501 public service
-        "CONTRACTOR|COUNCIL|MEDICAL SCHOOL",
+        "CONTRACTOR|COUNCIL|MEDICAL SCHOOL|^RETIRED",
     ]
 )
 
-non_patient_facing_regex = (
-    "|".join(
-        [
-            "ONLINE|ZOOM|MICROSOFT|MS TEAMS|SKYPE|GOOGLE HANGOUTS?|REMOTE|VIRTUAL",
-            "(ONLY|OVER THE) (TELE)?PHONE|((TELE)?PHONE|VIDEO) (CONSULT|CALL|WORK|SUPPORT)",
-            "(NO[TN]( CURRENTLY)?|NEVER) (IN PERSON|FACE TO FACE)",
-            "SH[EI]+LDING|WORK(ING)? (FROM|AT) HOME|HOME ?BASED|DELIVER(Y|ING)? (PRE|PER)SCRI",
-            "(?<!NOT )OFFICE BASED",
-            "((?=.*?(111|119|999|911|NHS|TRIAGE|EMERGENCY))(?=.*?(ADVI[SC][OE]R|RESPONSE|OPERAT|",
-            "CALL (HANDLER|CENT(RE|ER)|TAKE)",
-            "(TELE)?PHONE|TELE(PHONE)?|COVID))(^(?!.*(CUSTOMER SERVICE|SALES)).*))",  # call handler
-            "RECEPTION",
-            "S.?C+R+.?T+.?R+Y",
-            "P.?RS+.?N+.?L AS+IS+T+AN+",
-            "ADMIN",
-            "CLER(K|ICAL)",
-        ]
-    ),
+non_patient_facing_regex = "|".join(
+    [
+        "ONLINE|ZOOM|MICROSOFT|MS TEAMS|SKYPE|GOOGLE HANGOUTS?|REMOTE|VIRTUAL",
+        "(ONLY|OVER THE) (TELE)?PHONE|((TELE)?PHONE|VIDEO) (CONSULT|CALL|WORK|SUPPORT)",
+        "(NO[TN]( CURRENTLY)?|NEVER) (IN PERSON|FACE TO FACE)",
+        "SH[EI]+LDING|WORK(ING)? (FROM|AT) HOME|HOME ?BASED|DELIVER(Y|ING)? (PRE|PER)SCRI",
+        "(?<!NOT )OFFICE BASED",
+        "((?=.*?(111|119|999|911|NHS|TRIAGE|EMERGENCY))(?=.*?(ADVI[SC][OE]R|RESPONSE|OPERAT|CALL (HANDLER|CENT(RE|ER)|TAKE)",  # noqa:E501
+        "(TELE)?PHONE|TELE(PHONE)?|COVID))(^(?!.*(CUSTOMER SERVICE|SALES)).*))",  # call handler
+        "RECEPTION",
+        "S.?C+R+.?T+.?R+Y",
+        "P.?RS+.?N+.?L AS+IS+T+AN+",
+        "CLER(K|ICAL)",
+        "ADMIN|MANAGER",
+    ]
 )
 
 outpatient_exclusions = "|".join(["LOCAL COUNCIL", "DISCHARGE", "BUSINESS"])
@@ -157,6 +152,8 @@ support_roles = "|".join(
         "ADMIN",
         "CLER(K|ICAL)",
         "SUP+ORT *WORKER",
+        "TRAINEE",
+        "JUNIOU?R",
     ]
 )
 healthcare_positive_regex = "|".join(
@@ -179,8 +176,8 @@ socialcare_pattern = RegexPattern(
 )
 
 patient_facing_pattern = RegexPattern(
-    positive_regex_pattern=healthcare_positive_regex + "|" + additional_healtchare_roles,
-    negative_regex_pattern=non_patient_facing_regex,
+    positive_regex_pattern=healthcare_positive_regex + "|" + additional_healthcare_roles,
+    negative_regex_pattern=non_patient_facing_regex + "|" + non_healthcare_regex,
 )
 
 non_patient_facing_pattern = RegexPattern(positive_regex_pattern=non_patient_facing_regex, negative_regex_pattern=None)

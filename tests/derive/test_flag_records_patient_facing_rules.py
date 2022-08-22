@@ -3,33 +3,38 @@ import yaml
 from chispa import assert_df_equality
 
 from cishouseholds.derive import assign_regex_match_result
-from cishouseholds.pipeline.regex_patterns import healthcare_pattern
+from cishouseholds.pipeline.regex_patterns import patient_facing_pattern
 
 # A list of positive test cases which need to be interpreted as Attending School &
 # negative test cases which shouldn't.
 # Please append new cases to the appropriate list below
 test_data = {
     "positive": [
-        "HOSPITAL WORKER",
-        "HOSPITAL CARE ASSISTANT" "JUNIOR MIDWIFE",
+        "JUNIOR MIDWIFE",
         "TRAINEE PHLEBOTOM",
         "DOCTOR",
-        "PA TO DOCTOR" "A&E RECEPTIONIST",
-        "RECEPTIONIST IN GP CLINIC",
         "DRUG COUNSELLOR",
-        "EMERGENCY CALL HANDLER",
-        "AMBULANCE DRIVER",
         "OSTEOPATH",
-        "MIDWIFE MANAGER",
-        "HCA" "DIETICIAN",
+        "HCA",
+        "COVID SWAB",
+        "DENTIST",
+        "HOSPITAL CARE ASSISTANT",
+        "GP",
+        "DIETICIAN",
+        "HOSPITAL WORKER",
         "ASSISTANT DIETICIAN",
-        "999 CALL HANDLER",
     ],
     "negative": [
         "SCHOOL NURSE",
+        "AMBULANCE DRIVER",
+        "RETIRED DOCTOR",
+        "GYNECOLOGIST",
+        "ORTHODONTIST WORKING FROM HOME",
+        "999 CALL HANDLER",
+        "MIDWIFE MANAGER",
         "LECTURING DOCTOR OF PHYSICS",
         "DISCHARGED PATIENT CARER",
-        "LOCAL COUNCIL CARER" "SECONDARY SCHOOL TEACHER",
+        "LOCAL COUNCIL CARER",
         "PHYSIOSIST",
         "DETECTION",
         "BUSINESS RECEPTIONIST",
@@ -37,17 +42,18 @@ test_data = {
 }
 
 
-def test_healthcare_identifier(prepare_regex_test_cases, spark_session):
+def test_patient_facing_identifier(prepare_regex_test_cases, spark_session):
 
     test_cases = prepare_regex_test_cases(test_data)
 
-    expected_df = spark_session.createDataFrame(test_cases, schema="test_case string, work_healthcare boolean")
+    expected_df = spark_session.createDataFrame(test_cases, schema="test_case string, patient_facing boolean")
+
     actual_df = assign_regex_match_result(
-        df=expected_df.drop("work_healthcare"),
+        df=expected_df.drop("patient_facing"),
         columns_to_check_in=["test_case"],
-        positive_regex_pattern=healthcare_pattern.positive_regex_pattern,
-        negative_regex_pattern=healthcare_pattern.negative_regex_pattern,
-        column_name_to_assign="work_healthcare",
+        positive_regex_pattern=patient_facing_pattern.positive_regex_pattern,
+        negative_regex_pattern=patient_facing_pattern.negative_regex_pattern,
+        column_name_to_assign="patient_facing",
     )
     assert_df_equality(
         actual_df,

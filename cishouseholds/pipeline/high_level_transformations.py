@@ -2100,6 +2100,7 @@ def union_dependent_derivations(df):
         map={"Yes": "No", "No": "Yes"},
         condition_column="currently_smokes_or_vapes",
     )
+    df = add_pattern_matching_flags(df)
     df = fill_backwards_work_status_v2(
         df=df,
         date="visit_datetime",
