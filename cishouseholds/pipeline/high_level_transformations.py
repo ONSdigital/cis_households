@@ -142,11 +142,13 @@ from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.regex_patterns import at_school_pattern
 from cishouseholds.pipeline.regex_patterns import at_university_pattern
 from cishouseholds.pipeline.regex_patterns import furloughed_pattern
+from cishouseholds.pipeline.regex_patterns import healthcare_pattern
 from cishouseholds.pipeline.regex_patterns import in_college_or_further_education_pattern
 from cishouseholds.pipeline.regex_patterns import not_working_pattern
 from cishouseholds.pipeline.regex_patterns import patient_facing_pattern
 from cishouseholds.pipeline.regex_patterns import retired_regex_pattern
 from cishouseholds.pipeline.regex_patterns import self_employed_regex
+from cishouseholds.pipeline.regex_patterns import socialcare_pattern
 from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -2524,7 +2526,20 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         positive_regex_pattern=patient_facing_pattern.positive_regex_pattern,
         negative_regex_pattern=patient_facing_pattern.negative_regex_pattern,
     )
-
+    df = assign_regex_match_result(
+        df=df,
+        positive_regex_pattern=healthcare_pattern.positive_regex_pattern,
+        negative_regex_pattern=healthcare_pattern.negative_regex_pattern,
+        column_name_to_assign="works_healthcare",
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+    )
+    df = assign_regex_match_result(
+        df=df,
+        positive_regex_pattern=socialcare_pattern.positive_regex_pattern,
+        negative_regex_pattern=socialcare_pattern.negative_regex_pattern,
+        column_name_to_assign="works_socialcare",
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+    )
     return df
 
 
