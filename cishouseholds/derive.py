@@ -1118,15 +1118,6 @@ def assign_substring(
     return df
 
 
-def year_divisor(df: DataFrame, column_name_to_assign, start_date, end_date):
-    df = df.withColumn("TEMP", F.sequence(F.year(start_date), F.year(end_date)))
-    df = df.withColumn(
-        column_name_to_assign,
-        365 + (F.size(F.expr("filter(TEMP,x ->IF(x%100=0 AND x%400!=0,FALSE,x%4=0))")) / F.size(F.col("TEMP"))),
-    )
-    return df.drop("TEMP")
-
-
 def assign_school_year(
     df: DataFrame,
     column_name_to_assign: str,
@@ -1173,13 +1164,14 @@ def assign_school_year(
             )
         ),
     )
-    df = year_divisor(df, "DIV", "school_start_date", reference_date_column)
     df = (
         df.withColumn(
             column_name_to_assign,
-            F.floor(F.datediff(F.col(reference_date_column), F.col("school_start_date")) / F.col("DIV")).cast(
-                "integer"
-            ),
+            F.when(
+                (F.month("school_start_date") == F.month(reference_date_column))
+                & (F.dayofmonth("school_start_date") == F.dayofmonth(reference_date_column)),
+                F.year(reference_date_column) - F.year("school_start_date"),
+            ).otherwise(F.year(reference_date_column) - F.year("school_start_date") - 1),
         )
         .withColumn(
             column_name_to_assign,
@@ -1188,7 +1180,6 @@ def assign_school_year(
             ).otherwise(F.col(column_name_to_assign)),
         )
         .drop(
-            "DIV",
             "school_start_month",
             "school_start_day",
             "school_year_ref_month",
@@ -1196,7 +1187,6 @@ def assign_school_year(
             "school_start_date",
         )
     )
-
     return df
 
 
