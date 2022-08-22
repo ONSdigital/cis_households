@@ -50,7 +50,7 @@ from cishouseholds.derive import derive_cq_pattern
 from cishouseholds.derive import derive_had_symptom_last_7days_from_digital
 from cishouseholds.derive import derive_household_been_columns
 from cishouseholds.derive import flag_records_for_childcare_v1_rules
-from cishouseholds.derive import flag_records_for_childcare_v2_rules
+from cishouseholds.derive import flag_records_for_childcare_v2_b_rules
 from cishouseholds.derive import flag_records_for_college_v0_rules
 from cishouseholds.derive import flag_records_for_college_v2_rules
 from cishouseholds.derive import flag_records_for_furlough_rules_v0
@@ -2712,10 +2712,10 @@ def reclassify_work_variables(
 
     update_work_status_student_v2_c = university_regex_hit & flag_records_for_uni_v2_rules()
 
-    update_work_status_student_v2_d = ~childcare_regex_hit & flag_records_for_childcare_v2_rules()  # type: ignore
+    update_work_status_student_v2_d = ~childcare_regex_hit & flag_records_for_childcare_v2_b_rules()  # type: ignore
 
-    update_work_status_student_v2_e = (childcare_regex_hit & flag_records_for_childcare_v2_rules()) | (
-        school_regex_hit & flag_records_for_childcare_v2_rules()
+    update_work_status_student_v2_e = (childcare_regex_hit & flag_records_for_childcare_v2_b_rules()) | (
+        school_regex_hit & flag_records_for_childcare_v2_b_rules()
     )
 
     update_work_location_general = flag_records_for_work_location_null()
@@ -2783,7 +2783,12 @@ def reclassify_work_variables(
                 F.col("work_status_v1")
             ),
         )
-        .withColumn(
+    )
+
+    _df2 = spark_session.createDataFrame(_df.rdd, schema=_df.schema)  # breaks lineage
+
+    _df3 = (
+        _df2.withColumn(
             "work_status_v2",
             F.when(update_work_status_student_v2_a, F.lit("4-5y and older at school/home-school")).otherwise(
                 F.col("work_status_v2")
@@ -2813,12 +2818,7 @@ def reclassify_work_variables(
                 F.col("work_status_v2")
             ),
         )
-    )
-
-    _df2 = spark_session.createDataFrame(_df.rdd, schema=_df.schema)  # breaks lineage
-
-    _df3 = (
-        _df2.withColumn(
+        .withColumn(
             "work_status_v0",
             F.when(
                 update_work_status_retired, F.lit("Not working (unemployed, retired, long-term sick etc.)")
