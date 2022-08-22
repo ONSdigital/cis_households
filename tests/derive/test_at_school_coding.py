@@ -62,7 +62,7 @@ def test_add_at_school_identifier(prepare_regex_test_cases, spark_session):
     assert_df_equality(
         actual_df,
         expected_df,
-        ignore_row_order=True,
+        ignore_row_order=False,
         ignore_column_order=True,
         ignore_nullable=True,
     )
