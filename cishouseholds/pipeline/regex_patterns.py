@@ -30,7 +30,6 @@ occupations = [
     "WORKER",
 ]
 
-
 RegexPattern = namedtuple("RegexPattern", ["positive_regex_pattern", "negative_regex_pattern"])
 
 work_from_home_pattern = RegexPattern(
