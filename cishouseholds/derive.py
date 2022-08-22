@@ -2268,8 +2268,10 @@ def flag_records_for_student_v1_rules() -> F.Column:
 
 
 def flag_records_for_school_v2_rules() -> F.Column:
-    """Flag records for application of "Student-v2" rules"""
-    return (F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18))
+    """Flag records for application of "School rules -v2" rules"""
+    return ((F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18))) & ~(
+        F.col("school_year").isNull()
+    )
 
 
 def flag_records_for_uni_v0_rules() -> F.Column:
