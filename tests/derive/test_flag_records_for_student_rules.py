@@ -1,8 +1,8 @@
 from chispa import assert_df_equality
 
+from cishouseholds.derive import flag_records_for_school_v2_rules
 from cishouseholds.derive import flag_records_for_student_v0_rules
 from cishouseholds.derive import flag_records_for_student_v1_rules
-from cishouseholds.derive import flag_records_for_student_v2_rules
 
 
 def test_flag_records_for_student_v0_rules(spark_session):
@@ -10,17 +10,17 @@ def test_flag_records_for_student_v0_rules(spark_session):
 
     # the following is from cishouseholds.mapping.category_maps['iqvia_raw_category_map']['work_status_v0']
     test_cases = [
-        ("Employed", 1, 17, True),
-        ("Self-employed", 2, 16, True),
-        ("Furloughed (temporarily not working)", 3, 21, True),
-        ("Not working (unemployed, retired, long-term sick etc.)", 4, 35, False),
-        ("Student", 5, 19, False),
-        (None, None, 23, True),
-        (None, None, 15, True),
+        ("Employed", 17, True),
+        ("Self-employed", 19, False),
+        ("Furloughed (temporarily not working)", 21, True),
+        ("Not working (unemployed, retired, long-term sick etc.)", 17, True),
+        ("Student", 19, False),
+        (None, 23, True),
+        (None, 15, True),
     ]
 
     expected_df = spark_session.createDataFrame(
-        test_cases, schema="work_status_v0 string, my_value int, age_at_visit int, actual_flag boolean"
+        test_cases, schema="work_status_v0 string, age_at_visit int, actual_flag boolean"
     )
 
     actual_df = expected_df.drop("actual_flag").withColumn("actual_flag", flag_records_for_student_v0_rules())
@@ -72,24 +72,26 @@ def test_flag_records_for_student_v1_rules(spark_session):
     )
 
 
-def test_flag_records_for_student_v2_rules(spark_session):
-    """Test flag_records_for_student_v2_rules function correctly flags the records"""
+def test_flag_records_for_school_v2_rules(spark_session):
+    """Test flag_records_for_school_v2_rules function correctly flags the records"""
 
     test_cases = [
-        (1, False),
-        (5, True),
-        (12, True),
-        (19, False),
+        (1, None, False),
+        (5, 8, True),
+        (12, None, False),
+        (19, None, False),
     ]
 
-    expected_df = spark_session.createDataFrame(test_cases, schema="age_at_visit int, actual_flag boolean")
+    expected_df = spark_session.createDataFrame(
+        test_cases, schema="age_at_visit int, school_year int, actual_flag boolean"
+    )
 
-    actual_df = expected_df.drop("actual_flag").withColumn("actual_flag", flag_records_for_student_v2_rules())
+    actual_df = expected_df.drop("actual_flag").withColumn("actual_flag", flag_records_for_school_v2_rules())
 
     assert_df_equality(
         actual_df,
         expected_df,
-        ignore_row_order=True,
+        ignore_row_order=False,
         ignore_column_order=True,
         ignore_nullable=True,
     )
