@@ -1268,40 +1268,33 @@ def assign_school_year(
         reference day/month (which year participant in by dob) by country
     """
 
+    df = df.join(F.broadcast(school_year_lookup), on=country_column, how="left").withColumn(
+        "school_start_date",
+        F.when(
+            (F.month(dob_column) > F.col("school_year_ref_month"))
+            | (
+                (F.month(dob_column) == F.col("school_year_ref_month"))
+                & (F.dayofmonth(dob_column) >= F.col("school_year_ref_day"))
+            ),
+            F.to_date(
+                F.concat(F.year(dob_column) + 5, F.col("school_start_month"), F.col("school_start_day")),
+                format="yyyyMMdd",
+            ),
+        ).otherwise(
+            F.to_date(
+                F.concat(F.year(dob_column) + 4, F.col("school_start_month"), F.col("school_start_day")),
+                format="yyyyMMdd",
+            )
+        ),
+    )
     df = (
-        df.join(F.broadcast(school_year_lookup), on=country_column, how="left")
-        .withColumn(
-            "school_start_date",
-            F.when(
-                (F.month(dob_column) > F.col("school_year_ref_month"))
-                | (
-                    (F.month(dob_column) == F.col("school_year_ref_month"))
-                    & (F.dayofmonth(dob_column) >= F.col("school_year_ref_day"))
-                ),
-                F.to_date(
-                    F.concat(
-                        F.year(dob_column) + 5,
-                        F.col("school_start_month"),
-                        F.col("school_start_day"),
-                    ),
-                    format="yyyyMMdd",
-                ),
-            ).otherwise(
-                F.to_date(
-                    F.concat(
-                        F.year(dob_column) + 4,
-                        F.col("school_start_month"),
-                        F.col("school_start_day"),
-                    ),
-                    format="yyyyMMdd",
-                )
-            ),
-        )
-        .withColumn(
+        df.withColumn(
             column_name_to_assign,
-            F.floor(F.round(F.datediff(F.col(reference_date_column), F.col("school_start_date")) / 365.2425, 3)).cast(
-                "integer"
-            ),
+            F.when(
+                (F.month("school_start_date") <= F.month(reference_date_column))
+                & (F.dayofmonth("school_start_date") <= F.dayofmonth(reference_date_column)),
+                F.year(reference_date_column) - F.year("school_start_date"),
+            ).otherwise(F.year(reference_date_column) - F.year("school_start_date") - 1),
         )
         .withColumn(
             column_name_to_assign,
@@ -1317,7 +1310,6 @@ def assign_school_year(
             "school_start_date",
         )
     )
-
     return df
 
 
