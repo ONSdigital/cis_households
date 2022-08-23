@@ -1947,8 +1947,6 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "allocated_blood_barcode_not_used_reason": _(
             "text.sentence"
         ),  # Previously Blood_Barcode_Status_Error TODO check not pick list
-        "blood_barcode_void_reason": _("choice", items=void_reasons),
-        "swab_barcode_void_reason": _("choice", items=void_reasons),
         "swab_sample_received_consolidation_point_datetime": _(
             "discrete_distribution",
             population=[
@@ -2001,7 +1999,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
-        "form_started_datetime": _(
+        "form_start_datetime": _(
             "discrete_distribution",
             population=[
                 _(
@@ -2014,9 +2012,9 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
-        "swab_consolidation_point_error": _("choice", items=consolidation_points),
         "blood_consolidation_point_error": _("choice", items=consolidation_points),
-        "swab_consolidation_point_error_datetime": _(
+        "swab_consolidation_point_error": _("choice", items=consolidation_points),
+        "blood_consolidation_point_error_datetime": _(
             "discrete_distribution",
             population=[
                 _(
@@ -2029,7 +2027,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
-        "blood_consolidation_point_error_datetime": _(
+        "swab_consolidation_point_error_datetime": _(
             "discrete_distribution",
             population=[
                 _(
