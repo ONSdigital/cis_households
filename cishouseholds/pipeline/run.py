@@ -1,8 +1,10 @@
+import configparser
 import os
 import time
 import traceback
 from contextlib import contextmanager
 from datetime import datetime
+from pathlib import Path
 from typing import Dict
 from typing import List
 
@@ -130,6 +132,12 @@ def run_pipeline_stages(
     Ensure that the stages referenced in any condition do return a status.
     A status can be added by adding a return string to the stage function.
     """
+
+    config = configparser.ConfigParser()
+    config_file = Path(__file__).parent.parent / ".bumpversion.cfg"
+    config.readfp(open(config_file))
+    pipeline_version = config.get("bumpversion", "current_version")
+
     number_of_stages = len(pipeline_stage_list)
     max_digits = len(str(number_of_stages))
     pipeline_error_count = 0
@@ -140,7 +148,9 @@ def run_pipeline_stages(
         attempt = 0
         complete_status_string = "successfully"
         stage_name = stage_config.pop("function")
-        stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name} at {stage_start}"
+        stage_text = (
+            f"{pipeline_version}: Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name} at {stage_start}"
+        )
 
         print(stage_text)  # functional
         if check_conditions(stage_responses=stage_responses, stage_config=stage_config):
