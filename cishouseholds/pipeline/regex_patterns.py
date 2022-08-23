@@ -71,6 +71,7 @@ healthcare_roles = "|".join(
         "((?=.*?(PH[YI]+SIO|PH[YSIH]+IO*THERAPIST|PH[YI]S[IY]CAL*REHAB",
         "PH[YI]S[IY]CAL*THERAPY))(^(?!.*(PHYSIOLOG|PHYSIOSIST))))",
         "((?=.*?(D[EIA]{0,2}[TC][EI]?[CT]+[AEIOU]*[NC(RY)]|DIET(RIST)?))(^(?!.*(DETECTION))))",  # DIETICIAN,
+        "((?=.*?(COUN(C|S)))(?=.*?(ADDICT|VICTIM|TRAUMA|MENTAL HEALTH|DRUG|ALCOHOL|ABUSE|SUBSTANCE)))",
     ]
 )
 additional_healthcare_roles = "|".join(
@@ -157,8 +158,7 @@ support_roles = "|".join(
     ]
 )
 healthcare_positive_regex = "|".join(
-    [
-        "((?=.*?(COUN(C|S)))(?=.*?(ADDICT|VICTIM|TRAUMA|MENTAL HEALTH|DRUG|ALCOHOL|ABUSE|SUBSTANCE)))",  # noqa: E501  # counsellor
+    [  # noqa: E501  # counsellor
         f"((?=.*?({support_roles}))(?=.*?({healthcare_roles}))(^(?!.*({outpatient_exclusions})).*))",  # noqa: E501 # other location dependent workers
         "((?=.*?(111|119|999|911|NHS|TRIAGE|EMERGENCY))(?=.*?(ADVI[SC][OE]R|RESPONSE|OPERAT|CALL (HANDLER|CENT(RE|ER)|TAKE)|(TELE)?PHONE|TELE(PHONE)?|COVID))(^(?!.*(CUSTOMER SERVICE|SALES)).*))",  # noqa: E501  # call handler
         "|".join(["^" + x for x in healthcare_roles.split("|")]),
@@ -187,10 +187,10 @@ work_from_home_pattern = RegexPattern(
     negative_regex_pattern=None,
 )
 
-# healthcare_bin_pattern = RegexPattern(
-#     positive_regex_pattern="",
-#     negative_regex_pattern="AC[AE]DEMIC|LECTURE|DEAN|DOCTOR SCIENCE|DR LAB|DATA ANAL|AC?OUNT(ANT|ANCY)?|WARE *HOUSE|TRADE UNION|SALES (MANAGER|REP)|INVESTIGATION OF+ICE|AC+OUNT|PRISI?ON|DIRECT[OE]R" # noqa: E501
-# )
+healthcare_bin_pattern = RegexPattern(
+    positive_regex_pattern=healthcare_positive_regex + "|" + additional_healthcare_roles,
+    negative_regex_pattern=non_healthcare_regex + "|" + social_care_positive_regex,
+)
 
 at_school_pattern = RegexPattern(
     positive_regex_pattern="|".join(
