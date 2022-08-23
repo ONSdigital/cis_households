@@ -13,23 +13,33 @@ from pyspark.sql import DataFrame
 
 from cishouseholds.expressions import all_columns_null
 from cishouseholds.expressions import any_column_not_null
-from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import current_date_from_file_date
 from cishouseholds.expressions import sum_within_row
 
 
 def update_survey_completion_status(
-    df: DataFrame, column_name_to_update: str, window_end_date_column: str, exclusion_columns: List[str]
+    df: DataFrame,
+    column_name_to_update: str,
+    window_end_date_column: str,
+    form_started_datetime_column: str,
+    form_completed_datetime_column,
 ):
     """
     Assign statuses for Never completed and Not yet completed when survey responses are not filled in on the survey
     """
-    filled_survey_data = ~any_column_null([col for col in df.columns if col not in exclusion_columns])
+    current_date = current_date_from_file_date(df)
     df = df.withColumn(
         column_name_to_update,
-        F.when(filled_survey_data, F.col(column_name_to_update))
-        .when(F.col(window_end_date_column) < current_date_from_file_date(df), "Never completed")
-        .otherwise("Not yet completed"),
+        F.when(
+            (F.col(form_started_datetime_column).isNotNull())
+            & (F.col(form_started_datetime_column) <= current_date)
+            & (F.col(window_end_date_column) >= current_date),
+            F.when(
+                (F.col(form_completed_datetime_column).isNotNull())
+                & (F.col(form_completed_datetime_column) <= current_date),
+                "Completed",
+            ).otherwise("Not yet completed"),
+        ).otherwise("Never completed"),
     )
     return df
 

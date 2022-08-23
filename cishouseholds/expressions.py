@@ -5,10 +5,11 @@ from operator import or_
 from typing import Any
 
 import pyspark.sql.functions as F
+from pyspark.sql import Column
 from pyspark.sql import DataFrame
 
 
-def current_date_from_file_date(df: DataFrame):
+def current_date_from_file_date(df: DataFrame) -> Column:
     "Use file date column to derive a latest date"
     return F.lit(df.orderBy(F.desc("file_date")).head().file_date)
 

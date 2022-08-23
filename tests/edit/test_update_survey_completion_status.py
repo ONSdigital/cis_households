@@ -6,28 +6,20 @@ from cishouseholds.edit import update_survey_completion_status
 
 def test_update_survey_completion_status(spark_session):
 
-    input_df = spark_session.createDataFrame(
-        data=[
-            ("Complete", None, None, "2022-01-01", "2022-01-01"),
-            ("Complete", None, "value", "2022-01-01", "2022-01-01"),
-            ("Complete", None, None, "2020-01-01", "2022-01-01"),
-        ],
-        schema="""col1 string, col2 string, col3 string, end string, file_date string""",
-    )
-
     expected_df = spark_session.createDataFrame(
         data=[
-            ("Never completed", None, None, "2020-01-01", "2022-01-01"),
-            ("Complete", None, "value", "2022-01-01", "2022-01-01"),
-            ("Not yet completed", None, None, "2022-01-01", "2022-01-01"),
+            ("Never completed", None, None, "2022-01-04", "2022-01-05"),
+            ("Not yet completed", "2022-01-01", None, "2022-01-06", "2022-01-05"),
+            ("Completed", "2022-01-01", "2022-01-02", "2022-01-06", "2022-01-05"),
         ],
-        schema="""col1 string, col2 string, col3 string, end string, file_date string""",
+        schema="""result string, started_date string, completed_date string, end_date string, file_date string""",
     )
 
-    for df in [input_df, expected_df]:
-        for col in ["end", "file_date"]:
-            df = df.withColumn(col, F.to_timestamp(col))
+    input_df = expected_df.drop("result")
+    for col in input_df.columns:
+        input_df = input_df.withColumn(col, F.to_timestamp(col))
+        expected_df = expected_df.withColumn(col, F.to_timestamp(col))
 
-    output_df = update_survey_completion_status(input_df, "col1", "end", ["col2"])
+    output_df = update_survey_completion_status(input_df, "result", "end_date", "started_date", "completed_date")
 
-    assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True)
+    assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)

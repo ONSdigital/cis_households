@@ -93,6 +93,7 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
 from cishouseholds.edit import update_person_count_from_ages
 from cishouseholds.edit import update_strings_to_sentence_case
+from cishouseholds.edit import update_survey_completion_status
 from cishouseholds.edit import update_think_have_covid_symptom_any
 from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.edit import update_work_facing_now_column
@@ -678,6 +679,14 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
         df, "blood_not_taken_could_not_reason", _welsh_blood_not_taken_reason_categories
     )
     df = translate_column_regex_replace(df, "swab_not_taken_missing_parts", _welsh_swab_kit_missing_categories)
+
+    df = update_survey_completion_status(
+        df=df,
+        window_end_date_column="participant_window_end_datetime",
+        form_started_datetime_column="form_started_datetime",
+        form_completed_datetime_column="form_completed_datetime",
+        column_name_to_update="survey_completion_status",
+    )
 
     return df
 
