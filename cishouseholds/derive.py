@@ -1168,8 +1168,8 @@ def assign_school_year(
         df.withColumn(
             column_name_to_assign,
             F.when(
-                (F.month("school_start_date") == F.month(reference_date_column))
-                & (F.dayofmonth("school_start_date") == F.dayofmonth(reference_date_column)),
+                (F.month("school_start_date") <= F.month(reference_date_column))
+                & (F.dayofmonth("school_start_date") <= F.dayofmonth(reference_date_column)),
                 F.year(reference_date_column) - F.year("school_start_date"),
             ).otherwise(F.year(reference_date_column) - F.year("school_start_date") - 1),
         )
