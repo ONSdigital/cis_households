@@ -148,7 +148,6 @@ from cishouseholds.pipeline.regex_patterns import at_school_pattern
 from cishouseholds.pipeline.regex_patterns import at_university_pattern
 from cishouseholds.pipeline.regex_patterns import childcare_pattern
 from cishouseholds.pipeline.regex_patterns import furloughed_pattern
-from cishouseholds.pipeline.regex_patterns import healthcare_bin_pattern
 from cishouseholds.pipeline.regex_patterns import in_college_or_further_education_pattern
 from cishouseholds.pipeline.regex_patterns import not_working_pattern
 from cishouseholds.pipeline.regex_patterns import retired_regex_pattern
@@ -160,6 +159,8 @@ from cishouseholds.pipeline.regex_testing import social_care_pattern
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
+
+# from cishouseholds.pipeline.regex_patterns import healthcare_bin_pattern
 
 
 def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFrame:
@@ -2558,13 +2559,16 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         column_name_to_assign="works_healthcare",
         columns_to_check_in=["work_main_job_title", "work_main_job_role"],
     )
-    df = assign_regex_match_result(
-        df=df,
-        positive_regex_pattern=healthcare_bin_pattern.positive_regex_pattern,
-        negative_regex_pattern=healthcare_bin_pattern.negative_regex_pattern,
-        column_name_to_assign="works_healthcare_bin",
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+    df = df.withColumn(
+        "is_patient_facing", F.when(F.col("works_healthcare"), F.col("is_patient_facing")).otherwise(False)
     )
+    # df = assign_regex_match_result(
+    #     df=df,
+    #     positive_regex_pattern=healthcare_bin_pattern.positive_regex_pattern,
+    #     negative_regex_pattern=healthcare_bin_pattern.negative_regex_pattern,
+    #     column_name_to_assign="works_healthcare_bin",
+    #     columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+    # )
 
     window = Window.partitionBy("participant_id")
     df = df.withColumn(
