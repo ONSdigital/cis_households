@@ -1,4 +1,5 @@
 # flake8: noqa
+from functools import reduce
 from typing import List
 
 import pyspark.sql.functions as F
@@ -30,6 +31,7 @@ from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_raw_copies
+from cishouseholds.derive import assign_regex_from_map
 from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_substring
@@ -101,7 +103,9 @@ from cishouseholds.edit import update_strings_to_sentence_case
 from cishouseholds.edit import update_think_have_covid_symptom_any
 from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.edit import update_work_facing_now_column
+from cishouseholds.expressions import any_column_equal_value
 from cishouseholds.expressions import any_column_null
+from cishouseholds.expressions import array_contains_any
 from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
@@ -153,9 +157,11 @@ from cishouseholds.pipeline.regex_patterns import not_working_pattern
 from cishouseholds.pipeline.regex_patterns import retired_regex_pattern
 from cishouseholds.pipeline.regex_patterns import self_employed_regex
 from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
-from cishouseholds.pipeline.regex_testing import healthcare_pattern
+from cishouseholds.pipeline.regex_testing import healthcare_negative_roles
+from cishouseholds.pipeline.regex_testing import healthcare_positive_roles
+from cishouseholds.pipeline.regex_testing import non_patient_facing_roles
 from cishouseholds.pipeline.regex_testing import patient_facing_pattern
-from cishouseholds.pipeline.regex_testing import social_care_pattern
+from cishouseholds.pipeline.regex_testing import roles_map
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
@@ -2483,61 +2489,67 @@ def derive_overall_vaccination(df: DataFrame) -> DataFrame:
 def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     """Add result of various regex pattern matchings"""
 
-    # # add work from home flag
-    # df = assign_regex_match_result(
-    #     df=df,
-    #     columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-    #     positive_regex_pattern=work_from_home_pattern.positive_regex_pattern,
-    #     negative_regex_pattern=work_from_home_pattern.negative_regex_pattern,
-    #     column_name_to_assign="is_working_from_home",
-    #     debug_mode=False,
-    # )
+    # add work from home flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=work_from_home_pattern.positive_regex_pattern,
+        negative_regex_pattern=work_from_home_pattern.negative_regex_pattern,
+        column_name_to_assign="is_working_from_home",
+        debug_mode=False,
+    )
 
-    # # add at-school flag
-    # df = assign_regex_match_result(
-    #     df=df,
-    #     columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-    #     positive_regex_pattern=at_school_pattern.positive_regex_pattern,
-    #     negative_regex_pattern=at_school_pattern.negative_regex_pattern,
-    #     column_name_to_assign="at_school",
-    #     debug_mode=False,
-    # )
+    # add at-school flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=at_school_pattern.positive_regex_pattern,
+        negative_regex_pattern=at_school_pattern.negative_regex_pattern,
+        column_name_to_assign="at_school",
+        debug_mode=False,
+    )
 
-    # # add at-university flag
-    # df = assign_regex_match_result(
-    #     df=df,
-    #     columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-    #     positive_regex_pattern=at_university_pattern.positive_regex_pattern,
-    #     negative_regex_pattern=at_university_pattern.negative_regex_pattern,
-    #     column_name_to_assign="at_university",
-    #     debug_mode=False,
-    # )
-    # # add is-retired flag
-    # df = assign_regex_match_result(
-    #     df=df,
-    #     columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-    #     positive_regex_pattern=retired_regex_pattern.positive_regex_pattern,
-    #     negative_regex_pattern=retired_regex_pattern.negative_regex_pattern,
-    #     column_name_to_assign="is_retired",
-    #     debug_mode=False,
-    # )
+    # add at-university flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=at_university_pattern.positive_regex_pattern,
+        negative_regex_pattern=at_university_pattern.negative_regex_pattern,
+        column_name_to_assign="at_university",
+        debug_mode=False,
+    )
+    # add is-retired flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=retired_regex_pattern.positive_regex_pattern,
+        negative_regex_pattern=retired_regex_pattern.negative_regex_pattern,
+        column_name_to_assign="is_retired",
+        debug_mode=False,
+    )
 
-    # # add not-working flag
-    # df = assign_regex_match_result(
-    #     df=df,
-    #     columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-    #     positive_regex_pattern=not_working_pattern.positive_regex_pattern,
-    #     negative_regex_pattern=not_working_pattern.negative_regex_pattern,
-    #     column_name_to_assign="not_working",
-    # )
-    # # add self-employed flag
-    # df = assign_regex_match_result(
-    #     df=df,
-    #     columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-    #     positive_regex_pattern=self_employed_regex.positive_regex_pattern,
-    #     column_name_to_assign="is_self_employed",
-    #     debug_mode=False,
-    # )
+    # add not-working flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=not_working_pattern.positive_regex_pattern,
+        negative_regex_pattern=not_working_pattern.negative_regex_pattern,
+        column_name_to_assign="not_working",
+    )
+    # add self-employed flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=self_employed_regex.positive_regex_pattern,
+        column_name_to_assign="is_self_employed",
+        debug_mode=False,
+    )
+    df = assign_regex_from_map(
+        df=df,
+        column_name_to_assign="regex_derived_job_sector",
+        reference_columns=["work_main_job_title", "work_main_job_role"],
+        roles=roles_map,
+    )
     df = assign_regex_match_result(
         df=df,
         columns_to_check_in=["work_main_job_title", "work_main_job_role"],
@@ -2545,36 +2557,36 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         positive_regex_pattern=patient_facing_pattern.positive_regex_pattern,
         negative_regex_pattern=patient_facing_pattern.negative_regex_pattern,
     )
-    df = assign_regex_match_result(
-        df=df,
-        positive_regex_pattern=social_care_pattern.positive_regex_pattern,
-        negative_regex_pattern=social_care_pattern.negative_regex_pattern,
-        column_name_to_assign="works_social_care",
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-    )
-    df = assign_regex_match_result(
-        df=df,
-        positive_regex_pattern=healthcare_pattern.positive_regex_pattern,
-        negative_regex_pattern=healthcare_pattern.negative_regex_pattern,
-        column_name_to_assign="works_healthcare",
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+
+    df = df.withColumn(
+        "works_healthcare",
+        (array_contains_any("regex_derived_job_sector", healthcare_positive_roles))
+        & (~array_contains_any("regex_derived_job_sector", healthcare_negative_roles)),
     )
     df = df.withColumn(
-        "is_patient_facing", F.when(F.col("works_healthcare"), F.col("is_patient_facing")).otherwise(False)
+        "is_patient_facing",
+        F.when(
+            (F.col("works_healthcare") & F.col("is_patient_facing"))
+            & (~array_contains_any("regex_derived_job_sector", non_patient_facing_roles)),
+            True,
+        ).otherwise(False),
     )
-    # df = assign_regex_match_result(
-    #     df=df,
-    #     positive_regex_pattern=healthcare_bin_pattern.positive_regex_pattern,
-    #     negative_regex_pattern=healthcare_bin_pattern.negative_regex_pattern,
-    #     column_name_to_assign="works_healthcare_bin",
-    #     columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-    # )
 
     window = Window.partitionBy("participant_id")
     df = df.withColumn(
         "patient_facing_over_20_percent",
         F.sum(F.when(F.col("is_patient_facing"), 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
     )
+
+    work_status_columns = ["work_status_v0", "work_status_v1", "work_status_v2", "work_status_digital"]
+    for work_status_column in work_status_columns:
+        df = df.withColumn(
+            work_status_column,
+            F.when(F.col("not_working"), "not working")
+            .when(F.col("at_school") | F.col("at_university"), "student")
+            .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"))
+            .otherwise(F.col(work_status_column)),
+        )
     return df
 
 

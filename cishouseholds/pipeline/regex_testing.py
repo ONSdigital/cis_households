@@ -126,6 +126,8 @@ physiotherapist = match_with_exclusions(
     ),
 )
 social_work = "SOCIAL.*WORK|FOSTER CARE"
+support_work = "SUP+ORT *WORKER"
+apprentice = "AP*RENTI[CS]"
 call_operator = match_with_exclusions(
     [
         "111|119|999|911|NHS|TRIAGE|EMERGENCY",
@@ -135,76 +137,97 @@ call_operator = match_with_exclusions(
 )
 
 # patient facing
-patient_facing_negative_regex = "|".join(
-    [
-        hc_admin,
-        hc_secretary,
-        call_operator,
-        match_with_exclusions(
-            "ONLINE|ZOOM|MICROSOFT|MS TEAMS|SKYPE|GOOGLE HANGOUTS?|REMOTE|VIRTUAL|(ONLY|OVER THE) (TELE)?PHONE|((TELE)?PHONE|VIDEO) (CONSULT|CALL|WORK|SUPPORT)|(NO[TN]( CURRENTLY)?|NEVER) (IN PERSON|FACE TO FACE)|SH[EI]+LDING|WORK(ING)? (FROM|AT) HOME|HOME ?BASED|DELIVER(Y|ING)? PRESCRI",
-            "(?<!NOT )OFFICE BASED",
-        ),
-    ]
+patient_facing_negative_regex = match_with_exclusions(
+    "ONLINE|ZOOM|MICROSOFT|MS TEAMS|SKYPE|GOOGLE HANGOUTS?|REMOTE|VIRTUAL|(ONLY|OVER THE) (TELE)?PHONE|((TELE)?PHONE|VIDEO) (CONSULT|CALL|WORK|SUPPORT)|(NO[TN]( CURRENTLY)?|NEVER) (IN PERSON|FACE TO FACE)|SH[EI]+LDING|WORK(ING)? (FROM|AT) HOME|HOME ?BASED|DELIVER(Y|ING)? PRESCRI",
+    "(?<!NOT )OFFICE BASED",
 )
 patient_facing_positive_regex = "|".join(
     [
-        paramedic,
-        additional_hc,
-        covid_test,
         "PALLIATIVE CARE|(?<!NOT )PATI[EA]NT FACING|(LOOK(S|ING)? AFTER|SEES?|CAR(E|ING) (OF|FOR)) PATI[EA]NTS|(?<!NO )FACE TO FACE|(?<!NOT )FACE TO FACE",
         "(?<!NO )(DIRECT )?CONTACT WITH PATI[EA]NTS|CLIENTS COME TO (HER|HIS|THEIR) HOUSE",
     ]
 )
 
-healthcare_negative_regex = "|".join(
-    [
-        transport_exclusions,
-        catering_exclusions,
-        teaching_exclusions,
-        media_exclusions,
-        retail_exclusions,
-        domestic_exclusions,
-        construction_exclusions,
-        religious_exclusions,
-        it_exclusions,
-        public_service_exclusions,
-        vet,
-        house_care,
-        child_care,
-        informal_care,
-        formal_care,
-        social_work,
-    ]
-)
-healthcare_positive_regex = "|".join(
-    [
-        hc_admin,
-        hc_secretary,
-        hc_receptionist,
-        hc_counsellor,
-        hc_support,
-        pharmacist,
-        call_operator,
-        patient_facing_positive_regex,
-        dietician,
-        doctor,
-        dentist,
-        midwife,
-        nurse,
-        paramedic,
-        physiotherapist,
-    ]
-)
+healthcare_negative_roles = [
+    "transport",
+    "catering",
+    "teaching",
+    "media",
+    "retail",
+    "domestic",
+    "construction",
+    "religion",
+    "IT",
+    "public_service",
+    "vet",
+    "house_care",
+    "child_care",
+    "informal_care",
+    "formal_care",
+    "social_work",
+    "base_non_healthcare",
+]
 
-social_care_positive_regex = "|".join(["SUP+ORT *WORKER", house_care, informal_care, child_care, formal_care])
+healthcare_positive_roles = [
+    "hc_admin",
+    "hc_secretary",
+    "hc_receptionist",
+    "hc_counsellor",
+    "hc_support",
+    "pharmacist",
+    "call_operator",
+    "patient_facing_positive_regex",
+    "dietician",
+    "doctor",
+    "dentist",
+    "midwife",
+    "nurse",
+    "paramedic",
+    "physiotherapist",
+    "covid_tester",
+    "base_healthcare",
+]
 
-social_care_pattern = RegexPattern(
-    positive_regex_pattern=social_care_positive_regex, negative_regex_pattern=healthcare_positive_regex
-)
+non_patient_facing_roles = ["hc_receptionist", "hc_counsellor", "hc_support"]
 
-healthcare_pattern = RegexPattern(
-    positive_regex_pattern=healthcare_positive_regex, negative_regex_pattern=healthcare_negative_regex
-)
+roles_map = {
+    "hc_admin": hc_admin,
+    "hc_secretary": hc_secretary,
+    "hc_receptionist": hc_receptionist,
+    "hc_counsellor": hc_counsellor,
+    "hc_support": hc_support,
+    "pharmacist": pharmacist,
+    "call_operator": call_operator,
+    "patient_facing_positive_regex": patient_facing_positive_regex,
+    "dietician": dietician,
+    "doctor": doctor,
+    "dentist": dentist,
+    "midwife": midwife,
+    "nurse": nurse,
+    "paramedic": paramedic,
+    "physiotherapist": physiotherapist,
+    "covid_tester": covid_test,
+    "base_healthcare": base_inclusions,
+    "base_non_healthcare": base_exclusions,
+    "transport": transport_exclusions,
+    "catering": catering_exclusions,
+    "teaching": teaching_exclusions,
+    "media": media_exclusions,
+    "retail": retail_exclusions,
+    "domestic": domestic_exclusions,
+    "construction": construction_exclusions,
+    "religion": religious_exclusions,
+    "IT": it_exclusions,
+    "public_service": public_service_exclusions,
+    "vet": vet,
+    "house_care": house_care,
+    "child_care": child_care,
+    "informal_care": informal_care,
+    "formal_care": formal_care,
+    "social_work": social_work,
+    "additional_healthcare": additional_hc,
+    "apprentice": apprentice,
+}
 
 patient_facing_pattern = RegexPattern(
     positive_regex_pattern=patient_facing_positive_regex, negative_regex_pattern=patient_facing_negative_regex

@@ -238,6 +238,7 @@ not_working_pattern = RegexPattern(
             r"(TERNITY.(?=LEAVE))",
             r"(FULL.?TIME.{0,}(MUM|MOM|MOTHER|DAD|FATHER))",
             r"(HOME|HOUSE)\s*(?=WIFE|MAKER|HUSBAND|PARENT)",
+            r"OFF SICK|SICK LEAVE",
         ]
     ),
     negative_regex_pattern="|".join(["MASTER", "MISTRESS", "COVER"]),

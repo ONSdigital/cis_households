@@ -7,6 +7,7 @@ from operator import or_
 from typing import Any
 from typing import Dict
 from typing import List
+from typing import Mapping
 from typing import Optional
 from typing import Tuple
 from typing import Union
@@ -23,11 +24,26 @@ from cishouseholds.expressions import any_column_null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def classify_healthcare_patient_facing_status(
-    df: DataFrame, work_health_care_patient_facing_column: str, job_role_column: str, job_title_column: str
-):
-    """ """
-    df = df.withColumn("job_role_title", F.concat(F.col(job_title_column), F.col(job_role_column)))
+def assign_regex_from_map(df: DataFrame, column_name_to_assign: str, reference_columns: List[str], roles: Mapping):
+    df = df.withColumn(
+        column_name_to_assign,
+        F.array(
+            [
+                F.when(
+                    reduce(
+                        or_,
+                        [
+                            F.coalesce(F.col(reference_column), F.lit("")).rlike(pattern)
+                            for reference_column in reference_columns
+                        ],
+                    ),
+                    title,
+                )
+                for title, pattern in roles.items()
+            ]
+        ),
+    )
+    df = df.withColumn(column_name_to_assign, F.expr(f"filter({column_name_to_assign}, x -> x is not null)"))
     return df
 
 
