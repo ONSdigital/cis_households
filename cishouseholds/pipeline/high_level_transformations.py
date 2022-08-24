@@ -1290,7 +1290,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "swab_consolidation_point_error",
         ["sample_leaked", "sample_uncompleted"],
         "multiple errors sample discarded",
-        "multiple errors sample_retained",
+        "multiple errors sample retained",
         ",",
     )
 

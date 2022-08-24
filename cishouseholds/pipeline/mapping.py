@@ -28,7 +28,10 @@ consolidation_categories = {
     "sample_uncompleted": 14,
     "tube_carrier_unbagged": 15,
     "tube_carrier_unbagged_unboxed": 16,
+    "multiple errors sample discarded": 17,
+    "multiple errors sample retained": 18,
 }
+
 _yes_no_categories = {"No": 0, "Yes": 1}
 
 category_maps = {
