@@ -1,4 +1,5 @@
 # flake8: noqa
+import logging
 import os
 import shutil
 from datetime import datetime
@@ -420,28 +421,6 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
     return df
 
 
-def get_free_text_responses_to_be_translated(
-    df: DataFrame, unique_id_cols: List[str], free_text_cols: List[str]
-) -> DataFrame:
-    """
-    drops values where all free_text_cols are null and where the form_language = "Welsh" from a subset df
-
-    parameters
-        unique_id_cols
-            list of columns to be used as unique identifiers
-        free_text_cols
-            list of free-text columns to be used for na.drop logic
-    """
-
-    df = (
-        df.select(unique_id_cols + free_text_cols + ["form_language"])
-        .filter(F.col("form_language") == "Welsh")
-        .na.drop(how="all", subset=free_text_cols)
-    )
-
-    return df
-
-
 def transform_translated_responses_into_lookup(
     spark_session: SparkSession,
     formatted_time: str = datetime.now().strftime("%Y%m%d_%H%M"),
@@ -452,20 +431,29 @@ def transform_translated_responses_into_lookup(
     checks if the translation_lookup_path already exists, and if it does, checks new translations against existing
     updates translation_lookup_df with new translations, backs up existing lookup df, replaces with updated lookup df
     """
-    if os.environ["deployment"] != "local":
-        translation_config = get_config()["translation"]
-        translation_directory = translation_config["translation_directory"]
-        completed_translations_directory = os.path.join(translation_directory, "completed/")
-        translation_lookup_path = translation_config["translation_lookup_path"]
-        translation_lookup_df = pd.DataFrame(translation_lookup_path)
-        translation_backup_directory = translation_config["translation_backup_directory"]
-    else:
-        completed_translations_directory = os.getcwd()
-        translation_lookup_path = os.path.join(os.getcwd(), "all_translated_responses.csv")
-        translation_lookup_df = pd.DataFrame(
-            columns=["id", "dataset_name", "target_column_name", "old_value", "new_value"]
-        )
-        translation_backup_directory = os.getcwd()
+    # Reformat using code snippet below
+    # get_config().get("translation_path", "my_local_path")
+
+    translation_directory = get_config().get("translation_directory", "")
+    translation_lookup_path = get_config().get("translation_lookup_path", "")
+    completed_translations_directory = os.path.join(translation_directory, "completed/")
+    translation_lookup_df = pd.DataFrame(translation_lookup_path)
+    translation_backup_directory = get_config().get("translation_backup_directory", "")
+
+    # if os.environ["deployment"] != "local":
+    #    translation_config = get_config()["translation"]
+    #    translation_directory = translation_config["translation_directory"]
+    #    completed_translations_directory = os.path.join(translation_directory, "completed/")
+    #    translation_lookup_path = translation_config["translation_lookup_path"]
+    #    translation_lookup_df = pd.DataFrame(translation_lookup_path)
+    #    translation_backup_directory = translation_config["translation_backup_directory"]
+    # else:
+    #    completed_translations_directory = os.getcwd()
+    #    translation_lookup_path = os.path.join(os.getcwd(), "all_translated_responses.csv")
+    #    translation_lookup_df = pd.DataFrame(
+    #        columns=["id", "dataset_name", "target_column_name", "old_value", "new_value"]
+    #    )
+    #    translation_backup_directory = os.getcwd()
 
     translation_backup_path = os.path.join(
         translation_backup_directory, f"all_translated_responses_{formatted_time}.csv"
@@ -482,13 +470,19 @@ def transform_translated_responses_into_lookup(
         translated_sheets = translated_workbook.sheet_names
         workbook_translations = pd.DataFrame()
         for sheet in translated_sheets:
-            sheet_translation = pd.read_excel(
-                path, sheet_name=sheet, engine="openpyxl", names=["target_column_name", "old_value", "new_value"]
-            )
+            try:
+                sheet_translation = pd.read_excel(
+                    path, sheet_name=sheet, engine="openpyxl", usecols=["target_column_name", "original", "translated"]
+                )
+            except ValueError:
+                message = "Sheet could not be read correctly. Check input sheet"
+                logging.warning(message)
+                continue
             sheet_translation = (
                 sheet_translation.dropna()
                 .assign(id=sheet, dataset_name=None)
-                .reindex(columns=["id", "dataset_name", "target_column_name", "old_value", "new_value"])
+                .reindex(columns=["id", "dataset_name", "target_column_name", "original", "translated"])
+                .rename(columns={"original": "old_value", "translated": "new_value"})
             )
             if len(sheet_translation) > 0:
                 sheet_translation.loc[sheet_translation.index.max() + 1] = [
@@ -556,6 +550,7 @@ def export_responses_to_be_translated(
                 .transpose()
                 .assign(translated=([None] * len(to_be_translated_df.columns)))
             )
+            participant_to_be_translated_df.index.name = "target_column_name"
             participant_to_be_translated_df.columns = ["original", "translated"]
             # participant_to_be_translated_df.columns.name = ["header"]
             participant_to_be_translated_df.to_excel(writer, sheet_name=unique_id)
@@ -569,7 +564,10 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame, spark_sessio
     """
     Call functions to translate welsh survey responses from the cis digital questionnaire
     """
-
+    # Reformat using code snippet below
+    # get_config().get("translation_path", "my_local_path")
+    translation_directory = get_config().get("translation_directory", "")
+    translation_lookup_path = get_config().get("translation_lookup_path", "")
     if os.environ["deployment"] != "local":
         translation_config = get_config()["translation"]
         translation_directory = translation_config["translation_directory"]
@@ -603,8 +601,10 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame, spark_sessio
         translation_lookup_df = transform_translated_responses_into_lookup(spark_session)
         df = update_from_lookup_df(df, translation_lookup_df, id_column="id")
 
-    to_be_translated_df = get_free_text_responses_to_be_translated(
-        df, digital_unique_identifiers, digital_free_text_columns
+    to_be_translated_df = (
+        df.select(digital_unique_identifiers + digital_free_text_columns + ["form_language"])
+        .filter(F.col("form_language") == "Welsh")
+        .na.drop(how="all", subset=digital_free_text_columns)
     )
     export_responses_to_be_translated(to_be_translated_df, translation_directory)
     df = df.drop("id")
