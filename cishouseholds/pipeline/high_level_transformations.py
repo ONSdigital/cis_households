@@ -2584,7 +2584,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             work_status_column,
             F.when(F.col("not_working"), "not working")
             .when(F.col("at_school") | F.col("at_university"), "student")
-            .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"))
+            .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
             .otherwise(F.col(work_status_column)),
         )
     return df
