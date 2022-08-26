@@ -158,9 +158,10 @@ from cishouseholds.pipeline.regex_patterns import not_working_pattern
 from cishouseholds.pipeline.regex_patterns import retired_regex_pattern
 from cishouseholds.pipeline.regex_patterns import self_employed_regex
 from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
+from cishouseholds.pipeline.regex_testing import healthcare_classification
 from cishouseholds.pipeline.regex_testing import healthcare_negative_roles
 from cishouseholds.pipeline.regex_testing import healthcare_positive_roles
-from cishouseholds.pipeline.regex_testing import non_patient_facing_roles
+from cishouseholds.pipeline.regex_testing import patient_facing_classification
 from cishouseholds.pipeline.regex_testing import patient_facing_pattern
 from cishouseholds.pipeline.regex_testing import roles_map
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
@@ -2570,6 +2571,15 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         reference_columns=["work_main_job_title", "work_main_job_role"],
         roles=roles_map,
     )
+    df = df.withColumn("healthcare_area", F.lit(None))
+    for healthcare_type, roles in healthcare_classification:  # type: ignore
+        df = df.withColumn(
+            "healthcare_area",
+            F.when(array_contains_any("regex_derived_job_sector", roles), healthcare_type).otherwise(  # type: ignore
+                F.col("healthcare_area")
+            ),
+        )
+
     df = assign_regex_match_result(
         df=df,
         columns_to_check_in=["work_main_job_title", "work_main_job_role"],
@@ -2583,13 +2593,29 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         (array_contains_any("regex_derived_job_sector", healthcare_positive_roles))
         & (~array_contains_any("regex_derived_job_sector", healthcare_negative_roles)),
     )
+
     df = df.withColumn(
         "is_patient_facing",
         F.when(
-            (F.col("works_healthcare") & F.col("is_patient_facing"))
-            & (~array_contains_any("regex_derived_job_sector", non_patient_facing_roles)),
+            (F.col("works_healthcare") | F.col("is_patient_facing"))
+            & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
             True,
         ).otherwise(False),
+    )
+
+    df = assign_column_value_from_multiple_column_map(
+        df,
+        "work_health_care_patient_facing",
+        [
+            ["No", [False, None]],
+            ["Yes, primary care, patient-facing", [True, "Primary"]],
+            ["Yes, secondary care, patient-facing", [False, "Primary"]],
+            ["Yes, other healthcare, patient-facing", [True, "Secondary"]],
+            ["Yes, primary care, non-patient-facing", [False, "Secondary"]],
+            ["Yes, secondary care, non-patient-facing", [True, "Other"]],
+            ["Yes, other healthcare, non-patient-facing", [False, "Other"]],
+        ],
+        ["is_patient_facing", "healthcare_area"],
     )
 
     window = Window.partitionBy("participant_id")
