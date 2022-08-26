@@ -106,6 +106,7 @@ doctor = match_with_exclusions(
     r"DOCT[EO]R|\bGP\b|GENERAL PRACTI(CIAN|TION)|\bDR\b|CARDIAC|\A ?(&|AND) ?E\|PHYSI[CT]I[AO]",
     r"LECTURER|DOCTORI*AL|RESEARCH|PHD|STAT|WAR|ANIMAL|SALES*|FINANCE",
 )
+general_practitioner = r"GP|GENERAL PRACTIT.*ER"
 dentist = r"DENTIS.*|\bDENTAL|ORAL HEALTH"
 midwife = r"MI*D*.?WI*F.?E.?|MIDWIV|MID*WIF|HEALTH VISITOR"
 nurse = match_with_exclusions(
@@ -156,6 +157,12 @@ patient_facing_positive_regex = "|".join(
         r"(?<!NO )(DIRECT )?CONTACT WITH PATI[EA]NTS|CLIENTS COME TO (HER|HIS|THEIR) HOUSE",
     ]
 )
+
+primary_healthcare_roles = [
+    "nurse",
+    "doctor",
+    "general_practitioner"
+]
 
 healthcare_negative_roles = [
     "transport",
@@ -212,6 +219,7 @@ roles_map = {
     "patient_facing_positive_regex": patient_facing_positive_regex,
     "dietician": dietician,
     "doctor": doctor,
+    "general_practitioner":general_practitioner,
     "dentist": dentist,
     "midwife": midwife,
     "nurse": nurse,

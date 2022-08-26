@@ -60,7 +60,6 @@ def school_year_lookup(spark_session):
 
         ("2021-08-15", "2014-02-28", "Scotland",            3), # new school year started and child born before reference cutoff date
         ("2021-08-15", "2014-03-01", "Scotland",            2), # new school year started and child born after reference cutoff date
-
         ("2021-08-31", "2015-09-01", "Northern Ireland",    0), # reception
 
         ("2021-07-02", "2014-07-02", "Northern Ireland",    1), # testing edge case after date allocation cut off
