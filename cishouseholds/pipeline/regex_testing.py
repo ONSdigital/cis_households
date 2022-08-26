@@ -128,7 +128,7 @@ physiotherapist = match_with_exclusions(
     ),
 )
 hc_theatre = match_with_exclusions("THEATRE", "PERFORMER|ACTOR|STAGE|PLAY")
-social_work = r"SOCIAL.*WORK|FOSTER CARE|SHELTERED (ACC.*N|LIVING)|CHILD PROTECTION|PROBATION OFFICER|YOUTH OFFENDER|HCA|HMP|COUNCILLOR|COMMUNITY WORKER|PRISON OFFIC|HOME CARER"
+social_work = r"SOCIAL.*WORK|FOSTER CARE|CHILD PROTECTION|PROBATION OFFICER|YOUTH OFFENDER|HCA|HMP|COUNCILLOR|COMMUNITY WORKER|PRISON OFFIC|SHELTERED (ACC.*N|LIVING)"
 support_work = "SUP+ORT *WORKER"
 apprentice = "AP*RENTI[CS]"
 call_operator = match_with_exclusions(
@@ -184,6 +184,11 @@ healthcare_classification = {
         "physiotherapist",
     ],
     "Other": ["hc_counsellor", "covid_test"],
+}
+
+social_care_classification = {
+    "Care/Residential home": ["residential_care"],
+    "Other": ["social_work", "child_care", "informal_care", "social_work"],
 }
 
 patient_facing_classification = {

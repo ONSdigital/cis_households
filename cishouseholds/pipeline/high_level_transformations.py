@@ -164,6 +164,7 @@ from cishouseholds.pipeline.regex_testing import healthcare_positive_roles
 from cishouseholds.pipeline.regex_testing import patient_facing_classification
 from cishouseholds.pipeline.regex_testing import patient_facing_pattern
 from cishouseholds.pipeline.regex_testing import roles_map
+from cishouseholds.pipeline.regex_testing import social_care_classification
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
@@ -2577,6 +2578,15 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             "healthcare_area",
             F.when(array_contains_any("regex_derived_job_sector", roles), healthcare_type).otherwise(  # type: ignore
                 F.col("healthcare_area")
+            ),
+        )
+
+    df = df.withColumn("social_care_area", F.lit(None))
+    for social_care_type, roles in social_care_classification:  # type: ignore
+        df = df.withColumn(
+            "social_care_area",
+            F.when(array_contains_any("regex_derived_job_sector", roles), social_care_type).otherwise(  # type: ignore
+                F.col("social_care_area")
             ),
         )
 
