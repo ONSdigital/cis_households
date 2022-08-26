@@ -10,6 +10,7 @@ def filter_all_not_null(df: DataFrame, reference_columns: List[str]) -> DataFram
     """
     Filter rows which have NULL values in all the specified columns.
     From households_aggregate_processes.xlsx, filter number 2.
+    
     Parameters
     ----------
     df
