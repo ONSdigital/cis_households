@@ -158,11 +158,7 @@ patient_facing_positive_regex = "|".join(
     ]
 )
 
-primary_healthcare_roles = [
-    "nurse",
-    "doctor",
-    "general_practitioner"
-]
+primary_healthcare_roles = ["nurse", "doctor", "general_practitioner"]
 
 healthcare_negative_roles = [
     "transport",
@@ -219,7 +215,7 @@ roles_map = {
     "patient_facing_positive_regex": patient_facing_positive_regex,
     "dietician": dietician,
     "doctor": doctor,
-    "general_practitioner":general_practitioner,
+    "general_practitioner": general_practitioner,
     "dentist": dentist,
     "midwife": midwife,
     "nurse": nurse,
