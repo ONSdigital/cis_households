@@ -6,7 +6,8 @@ from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 #TODO-DOCUMENTATION
-#1.my comment
+#1. If we want to use all columns in the dataframe do we have to provide a string of all 
+#   column names or will this automatically accept all columns unless a subset is specified. 
 def filter_all_not_null(df: DataFrame, reference_columns: List[str]) -> DataFrame:
     """
     Filter rows which have NULL values in all the specified columns.
@@ -21,7 +22,11 @@ def filter_all_not_null(df: DataFrame, reference_columns: List[str]) -> DataFram
     """
     return df.na.drop(how="all", subset=reference_columns)
 
-
+#TODO-DOCUMENTATION
+#1. What is reference column four referring to? I can see 1 and 2 are coded A and B and the third
+# is the datatime stamp but unclear what four is.
+#2. Why are the magic numbers 1.5 and 0.000001 used? 
+#
 def filter_duplicates_by_time_and_threshold(
     df: DataFrame,
     first_reference_column: str,
