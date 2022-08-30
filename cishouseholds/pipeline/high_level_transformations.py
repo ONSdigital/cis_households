@@ -159,8 +159,6 @@ from cishouseholds.pipeline.regex_patterns import retired_regex_pattern
 from cishouseholds.pipeline.regex_patterns import self_employed_regex
 from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
 from cishouseholds.pipeline.regex_testing import healthcare_classification
-from cishouseholds.pipeline.regex_testing import healthcare_negative_roles
-from cishouseholds.pipeline.regex_testing import healthcare_positive_roles
 from cishouseholds.pipeline.regex_testing import patient_facing_classification
 from cishouseholds.pipeline.regex_testing import patient_facing_pattern
 from cishouseholds.pipeline.regex_testing import roles_map
@@ -2624,10 +2622,10 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         [
             ["No", [False, None]],
             ["Yes, primary care, patient-facing", [True, "Primary"]],
-            ["Yes, secondary care, patient-facing", [False, "Primary"]],
-            ["Yes, other healthcare, patient-facing", [True, "Secondary"]],
-            ["Yes, primary care, non-patient-facing", [False, "Secondary"]],
-            ["Yes, secondary care, non-patient-facing", [True, "Other"]],
+            ["Yes, secondary care, patient-facing", [True, "Secondary"]],
+            ["Yes, other healthcare, patient-facing", [True, "Other"]],
+            ["Yes, primary care, non-patient-facing", [False, "Primary"]],
+            ["Yes, secondary care, non-patient-facing", [False, "Secondary"]],
             ["Yes, other healthcare, non-patient-facing", [False, "Other"]],
         ],
         ["is_patient_facing", "healthcare_area"],
