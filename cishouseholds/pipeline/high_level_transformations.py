@@ -431,29 +431,11 @@ def transform_translated_responses_into_lookup(
     checks if the translation_lookup_path already exists, and if it does, checks new translations against existing
     updates translation_lookup_df with new translations, backs up existing lookup df, replaces with updated lookup df
     """
-    # Reformat using code snippet below
-    # get_config().get("translation_path", "my_local_path")
-
     translation_directory = get_config().get("translation_directory", "")
     translation_lookup_path = get_config().get("translation_lookup_path", "")
     completed_translations_directory = os.path.join(translation_directory, "completed/")
     translation_lookup_df = pd.DataFrame(translation_lookup_path)
     translation_backup_directory = get_config().get("translation_backup_directory", "")
-
-    # if os.environ["deployment"] != "local":
-    #    translation_config = get_config()["translation"]
-    #    translation_directory = translation_config["translation_directory"]
-    #    completed_translations_directory = os.path.join(translation_directory, "completed/")
-    #    translation_lookup_path = translation_config["translation_lookup_path"]
-    #    translation_lookup_df = pd.DataFrame(translation_lookup_path)
-    #    translation_backup_directory = translation_config["translation_backup_directory"]
-    # else:
-    #    completed_translations_directory = os.getcwd()
-    #    translation_lookup_path = os.path.join(os.getcwd(), "all_translated_responses.csv")
-    #    translation_lookup_df = pd.DataFrame(
-    #        columns=["id", "dataset_name", "target_column_name", "old_value", "new_value"]
-    #    )
-    #    translation_backup_directory = os.getcwd()
 
     translation_backup_path = os.path.join(
         translation_backup_directory, f"all_translated_responses_{formatted_time}.csv"
@@ -552,7 +534,6 @@ def export_responses_to_be_translated(
             )
             participant_to_be_translated_df.index.name = "target_column_name"
             participant_to_be_translated_df.columns = ["original", "translated"]
-            # participant_to_be_translated_df.columns.name = ["header"]
             participant_to_be_translated_df.to_excel(writer, sheet_name=unique_id)
             writer.sheets[unique_id].column_dimensions["A"].width = 35
             writer.sheets[unique_id].column_dimensions["B"].width = 35
@@ -568,10 +549,11 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame, spark_sessio
     # get_config().get("translation_path", "my_local_path")
     translation_directory = get_config().get("translation_directory", "")
     translation_lookup_path = get_config().get("translation_lookup_path", "")
-    if os.environ["deployment"] != "local":
-        translation_config = get_config()["translation"]
-        translation_directory = translation_config["translation_directory"]
-        translation_lookup_path = translation_config["translation_lookup_path"]
+
+    # if os.environ["deployment"] != "local":
+    #    translation_config = get_config()["translation"]
+    #    translation_directory = translation_config["translation_directory"]
+    #    translation_lookup_path = translation_config["translation_lookup_path"]
 
     digital_unique_identifiers = ["participant_id", "participant_completion_window_id"]
 
