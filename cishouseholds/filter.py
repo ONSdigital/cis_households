@@ -22,62 +22,6 @@ def filter_all_not_null(df: DataFrame, reference_columns: List[str]) -> DataFram
     return df.na.drop(how="all", subset=reference_columns)
 
 
-# TODO-DOCUMENTATION
-# 1. What is reference column four referring to? I can see 1 and 2 are coded A and B and the third
-# is the datatime stamp but unclear what four is.
-# 2. Why are the magic numbers 1.5 and 0.000001 used?
-#
-def filter_duplicates_by_time_and_threshold(
-    df: DataFrame,
-    first_reference_column: str,
-    second_reference_column: str,
-    third_reference_column: str,
-    fourth_reference_column: str,
-    time_threshold: float = 1.5,
-    float_threshold: float = 0.00001,
-) -> DataFrame:
-    """
-    Drop duplicates based on two identitical column values if third and fourth column and not both within
-    a threshold difference from the first duplicate record.
-    From households_aggregate_processes.xlsx, filter number 4.
-    Parameters
-    ----------
-    df
-    first_reference_column
-        First column with duplicate value
-    second_reference_column
-        Second column with duplicate value
-    third_reference_column
-        Column used for time based threshold difference, timestamp
-    fourth_reference_column
-        Column used for numeric based threshold difference, float
-    """
-
-    window = Window.partitionBy(first_reference_column, second_reference_column).orderBy(third_reference_column)
-
-    df = df.withColumn("duplicate_id", F.row_number().over(window))
-
-    df = df.withColumn(
-        "within_time_threshold",
-        (
-            F.abs(
-                F.first(third_reference_column).over(window).cast("long") - F.col(third_reference_column).cast("long")
-            )
-            / (60 * 60)
-        )
-        < time_threshold,
-    )
-
-    df = df.withColumn(
-        "within_float_threshold",
-        F.abs(F.first(fourth_reference_column).over(window) - F.col(fourth_reference_column)) < float_threshold,
-    )
-
-    df = df.filter((F.col("duplicate_id") == 1) | ~(F.col("within_time_threshold") & (F.col("within_float_threshold"))))
-
-    return df.drop("duplicate_id", "within_time_threshold", "within_float_threshold")
-
-
 def filter_by_cq_diff(
     df: DataFrame, comparing_column: str, ordering_column: str, tolerance: float = 0.00001
 ) -> DataFrame:
@@ -85,6 +29,7 @@ def filter_by_cq_diff(
     This function works out what columns have a float value difference less than 10-^5 or 0.00001
         (or any other tolerance value inputed) given all the other columns are the same and
         considers it to be the same dropping or deleting the repeated values and only keeping one entry.
+
     Parameters
     ----------
     df
@@ -126,6 +71,7 @@ def assign_date_interval_and_flag(
     upper and lower interval. If the difference of dates is within the upper and
     lower time intervals, the function will output None and an integer 1 if the
     difference in dates are outside of those intervals.
+
     Parameters
     ----------
     df
@@ -153,6 +99,7 @@ def assign_date_interval_and_flag(
         By default will be a string called 'hours' if upper and lower
         intervals are input as days, define interval_format to 'days'.
         These are the only two possible formats.
+
     Notes
     -----
     Lower_interval should be a negative value if start_datetime_reference_column
