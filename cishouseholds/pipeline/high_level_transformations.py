@@ -77,6 +77,7 @@ from cishouseholds.derive import flag_records_for_uni_v0_rules
 from cishouseholds.derive import flag_records_for_uni_v2_rules
 from cishouseholds.derive import flag_records_for_work_from_home_rules
 from cishouseholds.derive import flag_records_for_work_location_null
+from cishouseholds.derive import flag_records_for_work_location_student
 from cishouseholds.derive import get_keys_by_value
 from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.derive import mean_across_columns
@@ -2840,7 +2841,7 @@ def reclassify_work_variables(
         school_regex_hit & flag_records_for_childcare_v2_b_rules()
     )
 
-    update_work_location_general = flag_records_for_work_location_null()
+    update_work_location_general = flag_records_for_work_location_null() | flag_records_for_work_location_student()
 
     # Please note the order of *_edited columns, these must come before the in-place updates
 
