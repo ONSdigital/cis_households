@@ -2573,7 +2573,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         roles=roles_map,
     )
     df = df.withColumn("healthcare_area", F.lit(None))
-    for healthcare_type, roles in healthcare_classification:  # type: ignore
+    for healthcare_type, roles in healthcare_classification.items():  # type: ignore
         df = df.withColumn(
             "healthcare_area",
             F.when(array_contains_any("regex_derived_job_sector", roles), healthcare_type).otherwise(  # type: ignore
@@ -2583,7 +2583,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
 
     # TODO: need to exclude healthcare types from social care matching
     df = df.withColumn("social_care_area", F.lit(None))
-    for social_care_type, roles in social_care_classification:  # type: ignore
+    for social_care_type, roles in social_care_classification.items():  # type: ignore
         df = df.withColumn(
             "social_care_area",
             F.when(array_contains_any("regex_derived_job_sector", roles), social_care_type).otherwise(  # type: ignore
