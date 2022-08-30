@@ -84,7 +84,7 @@ domestic = match_with_exclusions(
     r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|(?<!NO[NT][ -])MEDICAL|DONOR CARER*|HOSPITAL",
 )
 child_care = match_with_exclusions(
-    r"CHILD *(CARE|MIND)|NANN[YIE]+\b|AU PAIR", "(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|MEDICAL|DONOR CARER*|HOSPITAL"
+    r"CHILD *(CARE|MIND)|NANN[YIE]+\b|AU PAIR", r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|MEDICAL|DONOR CARER*|HOSPITAL"
 )
 informal_care = match_with_exclusions(
     r"(((CAR(ER|ING)+|NURSE) (FOR|OF))|LOOKS* *AFTER) *(MUM|MOTHER|DAD|FATHER|SON|D[AU]+GHT|WIFE|HUSB|PARTNER|CHILD|FAM|T*H*E* ELDERLY)",
@@ -216,47 +216,6 @@ patient_facing_classification = {
     ],
     "N": ["call_operator", "covid_test", "hc_admin", "hc_receptionist", "hc_secretary"],
 }
-
-healthcare_negative_roles = [
-    "transport",
-    "catering",
-    "teaching",
-    "media",
-    "retail",
-    "domestic",
-    "construction",
-    "religion",
-    "IT",
-    "public_service",
-    "vet",
-    "house_care",
-    "child_care",
-    "informal_care",
-    "residential_care",
-    "social_work",
-    "base_non_healthcare",
-]
-
-healthcare_positive_roles = [
-    "hc_admin",
-    "hc_secretary",
-    "hc_receptionist",
-    "hc_counsellor",
-    "hc_support",
-    "pharmacist",
-    "call_operator",
-    "patient_facing_positive_regex",
-    "dietician",
-    "doctor",
-    "dentist",
-    "midwife",
-    "nurse",
-    "paramedic",
-    "physiotherapist",
-    "covid_tester",
-    "base_healthcare",
-    "hc_theatre",
-]
 
 roles_map = {
     "additional_primary_hc": additional_primary_hc,
