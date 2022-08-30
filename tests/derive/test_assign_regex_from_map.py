@@ -5,7 +5,7 @@ from cishouseholds.derive import assign_regex_from_map
 
 def test_assign_regex_from_map(spark_session):
     expected_df = spark_session.createDataFrame(
-        data=[("AB", "A"["A", "B"]), ("A", "B"["A", "B"]), ("C", "D", []), ("A", "C", ["A"])],
+        data=[("AB", "A", ["A", "B"]), ("A", "B", ["A", "B"]), ("C", "D", []), ("A", "C", ["A"])],
         schema=["colA", "colB", "result"],
     )
 
