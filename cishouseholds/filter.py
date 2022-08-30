@@ -5,27 +5,27 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
-#TODO-DOCUMENTATION
-#1. If we want to use all columns in the dataframe do we have to provide a string of all 
-#   column names or will this automatically accept all columns unless a subset is specified. 
+
 def filter_all_not_null(df: DataFrame, reference_columns: List[str]) -> DataFrame:
     """
     Filter rows which have NULL values in all the specified columns.
     From households_aggregate_processes.xlsx, filter number 2.
-    
+
     Parameters
     ----------
     df
     reference_columns
-        Columns to check for missing values in, all
-        must be missing for the record to be dropped.
+        Columns to check for missing values in, all must be missing for the record to be
+        dropped. If you want all columns in the input dataframe to be considered, then simply
+        pass `{{df}}.columns` as input to this argument
     """
     return df.na.drop(how="all", subset=reference_columns)
 
-#TODO-DOCUMENTATION
-#1. What is reference column four referring to? I can see 1 and 2 are coded A and B and the third
+
+# TODO-DOCUMENTATION
+# 1. What is reference column four referring to? I can see 1 and 2 are coded A and B and the third
 # is the datatime stamp but unclear what four is.
-#2. Why are the magic numbers 1.5 and 0.000001 used? 
+# 2. Why are the magic numbers 1.5 and 0.000001 used?
 #
 def filter_duplicates_by_time_and_threshold(
     df: DataFrame,
