@@ -1290,7 +1290,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "swab_consolidation_point_error",
         ["sample_leaked", "sample_uncompleted"],
         "multiple errors sample discarded",
-        "multiple errors sample_retained",
+        "multiple errors sample retained",
         ",",
     )
 
@@ -1299,7 +1299,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "blood_consolidation_point_error",
         ["sample_leaked", "sample_uncompleted"],
         "multiple errors sample discarded",
-        "multiple errors sample_retained",
+        "multiple errors sample retained",
         ",",
     )
 
@@ -1407,13 +1407,13 @@ def derive_age_based_columns(df: DataFrame, column_name_to_assign: str) -> DataF
         df,
         reference_column=column_name_to_assign,
         column_name_to_assign="age_group_over_16",
-        map={16: "16-49", 50: "50-70", 70: "70+"},
+        map={16: "16-49", 50: "50-69", 70: "70+"},
     )
     df = assign_named_buckets(
         df,
         reference_column=column_name_to_assign,
         column_name_to_assign="age_group_7_intervals",
-        map={2: "2-11", 12: "12-16", 17: "17-25", 25: "25-34", 35: "35-49", 50: "50-69", 70: "70+"},
+        map={2: "2-11", 12: "12-16", 17: "17-24", 25: "25-34", 35: "35-49", 50: "50-69", 70: "70+"},
     )
     df = assign_named_buckets(
         df,
