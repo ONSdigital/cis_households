@@ -28,6 +28,7 @@ occupations = [
     "SUPERVISE",
     "TEACH(ER|ING)?",
     "WORKER",
+    "INSTRUCTOR",
 ]
 
 RegexPattern = namedtuple("RegexPattern", ["positive_regex_pattern", "negative_regex_pattern"])

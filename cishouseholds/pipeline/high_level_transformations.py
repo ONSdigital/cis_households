@@ -2884,7 +2884,12 @@ def reclassify_work_variables(
                 F.col("work_status_v2")
             ),
         )
-        .withColumn(
+    )
+
+    _df2 = spark_session.createDataFrame(_df.rdd, schema=_df.schema)  # breaks lineage to avoid Java OOM Error
+
+    _df3 = (
+        _df2.withColumn(
             "work_status_v0",
             F.when(update_work_status_student_v0, F.lit("Student")).otherwise(F.col("work_status_v0")),
         )
@@ -2906,12 +2911,7 @@ def reclassify_work_variables(
                 F.col("work_status_v1")
             ),
         )
-    )
-
-    _df2 = spark_session.createDataFrame(_df.rdd, schema=_df.schema)  # breaks lineage
-
-    _df3 = (
-        _df2.withColumn(
+        .withColumn(
             "work_status_v2",
             F.when(update_work_status_student_v2_a, F.lit("4-5y and older at school/home-school")).otherwise(
                 F.col("work_status_v2")
@@ -2955,7 +2955,12 @@ def reclassify_work_variables(
             "work_status_v2",
             F.when(update_work_status_retired, F.lit("Retired")).otherwise(F.col("work_status_v2")),
         )
-        .withColumn(
+    )
+
+    _df4 = spark_session.createDataFrame(_df3.rdd, schema=_df3.schema)  # breaks lineage to avoid Java OOM Error
+
+    _df5 = (
+        _df4.withColumn(
             "work_status_v0",
             F.when(
                 update_work_status_not_working_v0, F.lit("Not working (unemployed, retired, long-term sick etc.)")
@@ -3026,11 +3031,11 @@ def reclassify_work_variables(
 
     if drop_original_variables:
         # replace original versions with their cleaned versions
-        _df3 = _df3.drop(
+        _df5 = _df5.drop(
             "work_location_original",
             "work_status_v0_original",
             "work_status_v1_original",
             "work_status_v2_original",
         )
 
-    return _df3
+    return _df5
