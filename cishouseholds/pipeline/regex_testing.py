@@ -152,6 +152,8 @@ additional_secondary_hc = r"ANA?ETH|SURGE(ON|ERY)|\bOPD\b|\bITU\b|(SPEECH|LANGUA
 
 other_hc = r"OPTICIAN|OPTHAL.*IST|ACCUP.*RE|THERAPIST|FOOT PRACTI(CIAN|TION)|HOMEOPATHY|PHYSCOT.*IST|\bMORT|HOSPITAL|\bNHS\b|MEDICAL EQUIP|TEACHING MEDICAL|WELLBEING PRACTITIONER"
 
+support_roles = "ASSISTANT"  # supporting types of people
+
 # patient facing
 patient_facing_negative_regex = match_with_exclusions(
     r"ONLINE|ZOOM|MICROSOFT|MS TEAMS|SKYPE|GOOGLE HANGOUTS?|REMOTE|VIRTUAL|(ONLY|OVER THE) (TELE)?PHONE|((TELE)?PHONE|VIDEO) (CONSULT|CALL|WORK|SUPPORT)|(NO[TN]( CURRENTLY)?|NEVER) (IN PERSON|FACE TO FACE)|SH[EI]+LDING|WORK(ING)? (FROM|AT) HOME|HOME ?BASED|DELIVER(Y|ING)? PRESCRI",
@@ -212,7 +214,7 @@ patient_facing_classification = {
         "social_work",
         "residential_care",
     ],
-    "N": ["call_operator", "covid_test", "hc_admin", "hc_receptionist", "hc_secretary", "support_roles"],
+    "N": ["call_operator", "covid_test", "hc_admin", "hc_receptionist", "hc_secretary"],
 }
 
 healthcare_negative_roles = [

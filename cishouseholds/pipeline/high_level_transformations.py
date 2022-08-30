@@ -2581,6 +2581,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             ),
         )
 
+    # TODO: need to exclude healthcare types from social care matching
     df = df.withColumn("social_care_area", F.lit(None))
     for social_care_type, roles in social_care_classification:  # type: ignore
         df = df.withColumn(
@@ -2598,11 +2599,11 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         negative_regex_pattern=patient_facing_pattern.negative_regex_pattern,
     )
 
-    df = df.withColumn(
-        "works_healthcare",
-        (array_contains_any("regex_derived_job_sector", healthcare_positive_roles))
-        & (~array_contains_any("regex_derived_job_sector", healthcare_negative_roles)),
-    )
+    # df = df.withColumn(
+    #     "works_healthcare",
+    #     (array_contains_any("regex_derived_job_sector", healthcare_positive_roles))
+    #     & (~array_contains_any("regex_derived_job_sector", healthcare_negative_roles)),
+    # )
 
     df = df.withColumn(
         "is_patient_facing",
