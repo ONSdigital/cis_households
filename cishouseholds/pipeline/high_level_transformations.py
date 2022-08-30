@@ -2591,6 +2591,10 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             ),
         )
 
+    # add boolean flags for working in healthcare or socialcare
+    df = df.withColumn("works_healthcare", F.col("healthcare_area").isNotNull())
+    df = df.withColumn("works_social_care", F.col("social_care_area").isNotNull())
+
     df = assign_regex_match_result(
         df=df,
         columns_to_check_in=["work_main_job_title", "work_main_job_role"],
