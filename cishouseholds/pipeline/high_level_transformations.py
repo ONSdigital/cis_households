@@ -423,6 +423,9 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
 
 def transform_translated_responses_into_lookup(
     spark_session: SparkSession,
+    translation_directory: str,
+    translation_lookup_path: str,
+    translation_backup_directory: str,
     formatted_time: str = datetime.now().strftime("%Y%m%d_%H%M"),
 ) -> DataFrame:
     """
@@ -431,11 +434,8 @@ def transform_translated_responses_into_lookup(
     checks if the translation_lookup_path already exists, and if it does, checks new translations against existing
     updates translation_lookup_df with new translations, backs up existing lookup df, replaces with updated lookup df
     """
-    translation_directory = get_config().get("translation_directory", "")
-    translation_lookup_path = get_config().get("translation_lookup_path", "")
     completed_translations_directory = os.path.join(translation_directory, "completed/")
     translation_lookup_df = pd.DataFrame(translation_lookup_path)
-    translation_backup_directory = get_config().get("translation_backup_directory", "")
 
     translation_backup_path = os.path.join(
         translation_backup_directory, f"all_translated_responses_{formatted_time}.csv"
@@ -545,15 +545,10 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame, spark_sessio
     """
     Call functions to translate welsh survey responses from the cis digital questionnaire
     """
-    # Reformat using code snippet below
-    # get_config().get("translation_path", "my_local_path")
-    translation_directory = get_config().get("translation_directory", "")
-    translation_lookup_path = get_config().get("translation_lookup_path", "")
-
-    # if os.environ["deployment"] != "local":
-    #    translation_config = get_config()["translation"]
-    #    translation_directory = translation_config["translation_directory"]
-    #    translation_lookup_path = translation_config["translation_lookup_path"]
+    translation_settings = get_config().get("translation", "")
+    translation_directory = translation_settings.get("translation_directory", "")
+    translation_lookup_path = translation_settings.get("translation_lookup_path", "")
+    translation_backup_directory = translation_settings.get("translation_backup_directory", "")
 
     digital_unique_identifiers = ["participant_id", "participant_completion_window_id"]
 
@@ -578,18 +573,18 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame, spark_sessio
         "cis_covid_vaccine_type_other",
     ]
 
-    df = df.withColumn("id", F.concat(F.lit(F.col("participant_id")), F.lit(F.col("participant_completion_window_id"))))
-    if os.path.exists(translation_lookup_path):
-        translation_lookup_df = transform_translated_responses_into_lookup(spark_session)
-        df = update_from_lookup_df(df, translation_lookup_df, id_column="id")
+    # df = df.withColumn("id", F.concat(F.lit(F.col("participant_id")), F.lit(F.col("participant_completion_window_id"))))
+    # if os.path.exists(translation_lookup_path):
+    #    translation_lookup_df = transform_translated_responses_into_lookup(spark_session, translation_directory, translation_lookup_path, translation_backup_directory)
+    #    df = update_from_lookup_df(df, translation_lookup_df, id_column="id")
 
-    to_be_translated_df = (
-        df.select(digital_unique_identifiers + digital_free_text_columns + ["form_language"])
-        .filter(F.col("form_language") == "Welsh")
-        .na.drop(how="all", subset=digital_free_text_columns)
-    )
-    export_responses_to_be_translated(to_be_translated_df, translation_directory)
-    df = df.drop("id")
+    # to_be_translated_df = (
+    #    df.select(digital_unique_identifiers + digital_free_text_columns + ["form_language"])
+    #    .filter(F.col("form_language") == "Welsh")
+    #    .na.drop(how="all", subset=digital_free_text_columns)
+    # )
+    # export_responses_to_be_translated(to_be_translated_df, translation_directory)
+    # df = df.drop("id")
 
     digital_yes_no_columns = [
         "household_invited_to_digital",

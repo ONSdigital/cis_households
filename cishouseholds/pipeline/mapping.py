@@ -2075,6 +2075,8 @@ _welsh_contact_type_by_age_group_categories = {
     "6 i 10": "6 to 10",
     "11 i 20": "11 to 20",
     "21 neu fwy": "21 or more",
+    "Byddai'n well gen i beidio â dweud": "Prefer not to say",
+    "Byddain well gen i beidio â dweud": "Prefer not to say",
 }
 
 _welsh_number_of_types_categories = {
@@ -2082,6 +2084,7 @@ _welsh_number_of_types_categories = {
     "7 gwaith neu fwy": "7 times or more",
     "Ddim yn gwybod": "Don't know",
     "Byddai'n well gen i beidio â dweud": "Prefer not to say",
+    "Byddain well gen i beidio â dweud": "Prefer not to say",
 }
 
 _welsh_vaccination_type_categories = {
@@ -2110,10 +2113,13 @@ _welsh_face_covering_categories = {
     "Nid wyf yn mynd i fy ngweithle na fy man addysg": "I am not going to my place of work or education",
     "Nid wyf yn mynd i fannau cyhoeddus caeedig eraill nac yn defnyddio trafnidiaeth gyhoeddus": "I am not going to other enclosed public spaces or using public transport",  # noqa: E501
     "Ydw, bob amser": "Yes always",
+    "Ydw bob amser": "Yes always",
     "Ydw, weithiau": "Yes sometimes",
+    "Ydw weithiau": "Yes sometimes",
     "Byth": "Never",
     "Rwy'n gorchuddio fy wyneb am resymau eraill - er enghraifft am resymau crefyddol neu ddiwylliannol": "I cover my face for other reasons - for example for religious or cultural reasons",  # noqa: E501
     "Byddai'n well gen i beidio â dweud": "Prefer not to say",
+    "Byddain well gen i beidio â dweud": "Prefer not to say",
 }
 
 _welsh_swab_sample_not_taken_categories = {
