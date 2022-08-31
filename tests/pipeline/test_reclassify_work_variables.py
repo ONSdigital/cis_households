@@ -9,13 +9,19 @@ from cishouseholds.pipeline.high_level_transformations import reclassify_work_va
 
 @pytest.fixture
 def load_test_cases():
+    # NOTE: school_year must be given as a string or null  in the csv. When we read into Spark Dataframe, we
+    # cast into IntegerType(). The reason why we have this workaround is because when we read the csv (had
+    # school_year been given as an integer with some missing values, Pandas will read it as a float type since
+    # it cannot handle nulls in an integer column) - this will cause issues when you try to read into Spark
+    # Dataframe as a Integer column.
     test_data = pd.read_csv("tests/pipeline/test_reclassify_work_variables/test-cases.csv")
 
     # if you want to test on individual records in the test-cases.csv file, then you can apply a filter on row_id below
     # in both expected & input data eg: query("record_type=='expected' and row_id==3")
-    expected_data = test_data.query("record_type=='expected'").drop(columns=["record_type"])
+    row_id = 1
+    expected_data = test_data.query(f"record_type=='expected'").drop(columns=["record_type"])
 
-    input_data = test_data.query("record_type=='input'").drop(
+    input_data = test_data.query(f"record_type=='input'").drop(
         columns=["record_type"] + [col for col in test_data.columns if "_hit_" in col]
     )
 
@@ -35,6 +41,7 @@ def test_reclassify_work_variables(spark_session, load_test_cases):
             t.StructField("work_main_job_title", t.StringType()),
             t.StructField("work_main_job_role", t.StringType()),
             t.StructField("age_at_visit", t.IntegerType()),
+            t.StructField("school_year", t.StringType()),
             t.StructField("work_location", t.StringType()),
             t.StructField("work_status_v0", t.StringType()),
             t.StructField("work_status_v1", t.StringType()),
@@ -42,9 +49,17 @@ def test_reclassify_work_variables(spark_session, load_test_cases):
         ]
     )
 
-    expected_df = spark_session.createDataFrame(expected_data, schema=input_schema).replace("NaN", None)
+    expected_df = (
+        spark_session.createDataFrame(expected_data, schema=input_schema)
+        .replace("NaN", None)
+        .withColumn("school_year", F.col("school_year").cast("integer"))
+    )
 
-    input_df = spark_session.createDataFrame(input_data, schema=input_schema).replace("NaN", None)
+    input_df = (
+        spark_session.createDataFrame(input_data, schema=input_schema)
+        .replace("NaN", None)
+        .withColumn("school_year", F.col("school_year").cast("integer"))
+    )
     actual_df = reclassify_work_variables(input_df, spark_session=spark_session, drop_original_variables=True)
 
     assert_df_equality(
