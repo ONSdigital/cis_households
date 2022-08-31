@@ -6,6 +6,36 @@ yes_no_prefer_not_to_say = ["Yes", "No", "Prefer not to say"]
 yes_no_unknown_choice = ["Yes", "No", "Don't know", None]
 people_count = ["0", "1 to 5", "6 to 10", "11 to 20", "21 or more", "Don't know", "Prefer not to say", None]
 times_count = ["1", "2", "3", "4", "5", "6", "7 times or more", "Don't know", "None", "Prefer not to say", None]
+void_reasons = [
+    "Leaked sample",
+    "Low VTM/dry tube",
+    "Multiple swabs",
+    "No swab",
+    "Empty or Insufficient volume",
+    "Leaked",
+    "Unused Kits",
+    "Delay due to mis-delivery",
+    "No LP5 tube",
+    "No LP5",
+]
+consolidation_points = [
+    "Consolidation.box_empty",
+    "Consolidation.sample_leaked",
+    "Consolidation.sample_uncompleted",
+    "Consolidation.kpa_overpacked_different_ref_different_type",
+    "Consolidation.kpa_overpacked",
+    "Consolidation.kpa_overpacked_different_ref_same_type",
+    "Consolidation.sample_mismatched",
+    "Consolidation.sample_bagged_zip",
+    "Consolidation.sample_unbagged",
+    "Consolidation.sample_unbagged_no_kpa",
+    "Consolidation.box_multipacked",
+    "Consolidation.tube_carrier_unbagged",
+    "Consolidation.tube_carrier_unbagged_unboxed",
+    "Consolidation.kpa_unboxed",
+    "Consolidation.kpa_unscanned",
+    "Consolidation.exception_undefined",
+]
 
 start_date_list = datetime(2022, 1, 1)
 end_date_list = datetime(2022, 1, 10)
@@ -1969,6 +1999,47 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
+        "form_start_datetime": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "blood_consolidation_point_error": _("choice", items=consolidation_points),
+        "swab_consolidation_point_error": _("choice", items=consolidation_points),
+        "blood_consolidation_point_error_datetime": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "swab_consolidation_point_error_datetime": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
         "digital_survey_collection_mode": _("choice", items=["Online", "Telephone", None]),
         "swab_taken": _("choice", items=yes_no_none_choice),
         "swab_not_taken_reason": _(
@@ -2810,4 +2881,5 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         ),
         "other_antibody_test_positive_date": _("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021),
         "other_antibody_test_negative_date": _("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021),
+        "form_language": _("choice", items=["Welsh", "English"]),
     }

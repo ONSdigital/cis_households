@@ -7,6 +7,7 @@ from operator import or_
 from typing import Any
 from typing import Dict
 from typing import List
+from typing import Mapping
 from typing import Optional
 from typing import Tuple
 from typing import Union
@@ -21,6 +22,30 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.expressions import any_column_matches_regex
 from cishouseholds.expressions import any_column_null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+def assign_regex_from_map(df: DataFrame, column_name_to_assign: str, reference_columns: List[str], roles: Mapping):
+    regex_columns = []
+    for title, pattern in roles.items():
+        regex_columns.append(
+            F.when(
+                reduce(
+                    or_,
+                    [
+                        F.coalesce(F.col(reference_column), F.lit("")).rlike(pattern)
+                        for reference_column in reference_columns
+                    ],
+                ),
+                title,
+            )
+        )
+
+    df = df.withColumn(
+        column_name_to_assign,
+        F.array(regex_columns),
+    )
+    df = df.withColumn(column_name_to_assign, F.expr(f"filter({column_name_to_assign}, x -> x is not null)"))
+    return df
 
 
 def assign_datetime_from_coalesced_columns_and_log_source(
@@ -53,7 +78,11 @@ def assign_datetime_from_coalesced_columns_and_log_source(
         F.to_timestamp(
             F.when(
                 F.col(source_reference_column_name).isin(secondary_date_columns),
-                F.concat_ws(" ", F.date_format(F.coalesce(*coalesce_columns), "yyyy-MM-dd"), F.lit(default_timestamp)),
+                F.concat_ws(
+                    " ",
+                    F.date_format(F.coalesce(*coalesce_columns), "yyyy-MM-dd"),
+                    F.lit(default_timestamp),
+                ),
             ).otherwise(F.coalesce(*coalesce_columns)),
             format="yyyy-MM-dd HH:mm:ss",
         ),
@@ -67,9 +96,13 @@ def assign_date_from_filename(df: DataFrame, column_name_to_assign: str, filenam
     """
     date = F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 1)
     time = F.when(
-        F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 2) == "", "_000000"
+        F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 2) == "",
+        "_000000",
     ).otherwise(F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 2))
-    df = df.withColumn(column_name_to_assign, F.to_timestamp(F.concat(date, time), format="yyyyMMdd_HHmmss"))
+    df = df.withColumn(
+        column_name_to_assign,
+        F.to_timestamp(F.concat(date, time), format="yyyyMMdd_HHmmss"),
+    )
     return df
 
 
@@ -105,7 +138,10 @@ def translate_column_regex_replace(df: DataFrame, reference_column: str, multipl
     function assumes that the lookup and translation values are already cleaned
     """
     for lookup_val, translation_val in multiple_choice_dict.items():
-        df = df.withColumn(reference_column, F.regexp_replace(reference_column, lookup_val, translation_val))
+        df = df.withColumn(
+            reference_column,
+            F.regexp_replace(reference_column, lookup_val, translation_val),
+        )
     return df
 
 
@@ -127,7 +163,10 @@ def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_colu
 
 
 def assign_column_value_from_multiple_column_map(
-    df: DataFrame, column_name_to_assign: str, value_to_condition_map: List[List[Any]], column_names: List[str]
+    df: DataFrame,
+    column_name_to_assign: str,
+    value_to_condition_map: List[List[Any]],
+    column_names: List[str],
 ):
     """
     assign column value based on values of any number of columns in a dictionary
@@ -175,7 +214,11 @@ def assign_column_value_from_multiple_column_map(
 
 
 def concat_fields_if_true(
-    df: DataFrame, column_name_to_assign: str, column_name_pattern: str, true_value: str, sep: str = ""
+    df: DataFrame,
+    column_name_to_assign: str,
+    column_name_pattern: str,
+    true_value: str,
+    sep: str = "",
 ):
     """
     concat the names of fields where a given condition is met to form a new column
@@ -183,13 +226,19 @@ def concat_fields_if_true(
     columns = [col for col in df.columns if re.match(column_name_pattern, col)]
     df = df.withColumn(
         column_name_to_assign,
-        F.concat_ws(sep, *[F.when(F.col(col) == true_value, col).otherwise(None) for col in columns]),
+        F.concat_ws(
+            sep,
+            *[F.when(F.col(col) == true_value, col).otherwise(None) for col in columns],
+        ),
     )
     return df
 
 
 def derive_had_symptom_last_7days_from_digital(
-    df: DataFrame, column_name_to_assign: str, symptom_column_prefix: str, symptoms: List[str]
+    df: DataFrame,
+    column_name_to_assign: str,
+    symptom_column_prefix: str,
+    symptoms: List[str],
 ):
     """
     Derive symptoms in v2 format from digital file
@@ -205,7 +254,12 @@ def derive_had_symptom_last_7days_from_digital(
     return df.drop("NUM_YES", "NUM_NO")
 
 
-def assign_visits_in_day(df: DataFrame, column_name_to_assign: str, visit_date_column: str, participant_id_column: str):
+def assign_visits_in_day(
+    df: DataFrame,
+    column_name_to_assign: str,
+    visit_date_column: str,
+    participant_id_column: str,
+):
     """
     Count number of visits of each participant in a given day
     Parameters
@@ -217,7 +271,11 @@ def assign_visits_in_day(df: DataFrame, column_name_to_assign: str, visit_date_c
 
 
 def count_barcode_cleaned(
-    df: DataFrame, column_name_to_assign: str, barcode_column: str, date_taken_column: str, visit_datetime_colum: str
+    df: DataFrame,
+    column_name_to_assign: str,
+    barcode_column: str,
+    date_taken_column: str,
+    visit_datetime_colum: str,
 ):
     """
     Count occurrences of barcode
@@ -256,7 +314,10 @@ def assign_fake_id(df: DataFrame, column_name_to_assign: str, reference_column: 
 
 
 def assign_distinct_count_in_group(
-    df, column_name_to_assign: str, count_distinct_columns: List[str], group_by_columns: List[str]
+    df,
+    column_name_to_assign: str,
+    count_distinct_columns: List[str],
+    group_by_columns: List[str],
 ):
     """
     Window-based count of distinct values by group
@@ -323,7 +384,12 @@ def assign_multigenerational(
     )
     transformed_df = df.groupBy(household_id_column, visit_date_column).count().drop("count")
     transformed_df = transformed_df.join(
-        df.select(household_id_column, participant_id_column, date_of_birth_column, country_column),
+        df.select(
+            household_id_column,
+            participant_id_column,
+            date_of_birth_column,
+            country_column,
+        ),
         on=household_id_column,
     ).distinct()
 
@@ -373,18 +439,25 @@ def assign_multigenerational(
 
 
 def assign_household_participant_count(
-    df: DataFrame, column_name_to_assign: str, household_id_column: str, participant_id_column: str
+    df: DataFrame,
+    column_name_to_assign: str,
+    household_id_column: str,
+    participant_id_column: str,
 ):
     """Assign the count of participants within each household."""
     household_window = Window.partitionBy(household_id_column)
     df = df.withColumn(
-        column_name_to_assign, F.size(F.collect_set(F.col(participant_id_column)).over(household_window))
+        column_name_to_assign,
+        F.size(F.collect_set(F.col(participant_id_column)).over(household_window)),
     )
     return df
 
 
 def assign_household_under_2_count(
-    df: DataFrame, column_name_to_assign: str, column_pattern: str, condition_column: str
+    df: DataFrame,
+    column_name_to_assign: str,
+    column_pattern: str,
+    condition_column: str,
 ):
     """
     Count number of individuals below two from age (months) columns matching pattern.
@@ -398,7 +471,8 @@ def assign_household_under_2_count(
     """
     columns_to_count = [column for column in df.columns if re.match(column_pattern, column)]
     count = reduce(
-        add, [F.when((F.col(column) >= 0) & (F.col(column) <= 24), 1).otherwise(0) for column in columns_to_count]
+        add,
+        [F.when((F.col(column) >= 0) & (F.col(column) <= 24), 1).otherwise(0) for column in columns_to_count],
     )
     df = df.withColumn(
         column_name_to_assign,
@@ -412,7 +486,10 @@ def assign_household_under_2_count(
 
 
 def assign_ever_had_long_term_health_condition_or_disabled(
-    df: DataFrame, column_name_to_assign: str, health_conditions_column: str, condition_impact_column: str
+    df: DataFrame,
+    column_name_to_assign: str,
+    health_conditions_column: str,
+    condition_impact_column: str,
 ):
     """
     Assign a column that identifies if patient is long term disabled by applying several
@@ -463,7 +540,10 @@ def assign_random_day_in_month(
     """
     df = df.withColumn("TEMP_DAY", F.lit(1))
     df = df.withColumn("TEMP_DATE", F.concat_ws("-", year_column, month_column, "TEMP_DAY"))
-    df = df.withColumn("TEMP_DAY", F.round(F.rand() * (F.date_format(F.last_day("TEMP_DATE"), "d") - 0.5001), 0) + 0.5)
+    df = df.withColumn(
+        "TEMP_DAY",
+        F.round(F.rand() * (F.date_format(F.last_day("TEMP_DATE"), "d") - 0.5001), 0) + 0.5,
+    )
     df = df.withColumn(
         column_name_to_assign,
         F.to_timestamp(
@@ -493,7 +573,10 @@ def assign_household_size(
         column_name_to_assign,
         F.coalesce(
             F.col(existing_group_column),
-            F.when(F.col(household_participant_count_column) < 5, F.col(household_participant_count_column))
+            F.when(
+                F.col(household_participant_count_column) < 5,
+                F.col(household_participant_count_column),
+            )
             .otherwise("5+")
             .cast("string"),
         ),
@@ -515,7 +598,11 @@ def assign_first_visit(df: DataFrame, column_name_to_assign: str, id_column: str
 
 
 def assign_last_visit(
-    df: DataFrame, column_name_to_assign: str, id_column: str, visit_date_column: str, visit_status_column: str
+    df: DataFrame,
+    column_name_to_assign: str,
+    id_column: str,
+    visit_date_column: str,
+    visit_status_column: str,
 ) -> DataFrame:
     """
     Assign a column to contain only the last date a participant completed a visited
@@ -529,7 +616,10 @@ def assign_last_visit(
     df = df.withColumn(
         column_name_to_assign,
         F.first(
-            F.when(~F.col(visit_status_column).isin("Cancelled", "Patient did not attend"), F.col(visit_date_column)),
+            F.when(
+                ~F.col(visit_status_column).isin("Cancelled", "Patient did not attend"),
+                F.col(visit_date_column),
+            ),
             ignorenulls=True,
         ).over(window),
     )
@@ -577,7 +667,10 @@ def assign_column_given_proportion(
 
 
 def count_value_occurrences_in_column_subset_row_wise(
-    df: DataFrame, column_name_to_assign: str, selection_columns: List[str], count_if_value: Union[str, int, None]
+    df: DataFrame,
+    column_name_to_assign: str,
+    selection_columns: List[str],
+    count_if_value: Union[str, int, None],
 ) -> DataFrame:
     """
     Assign a column to be the count of cells in selection row where condition is true
@@ -590,10 +683,16 @@ def count_value_occurrences_in_column_subset_row_wise(
     """
     df = df.withColumn(column_name_to_assign, F.array([F.col(col) for col in selection_columns]))
     if count_if_value is None:
-        df = df.withColumn(column_name_to_assign, F.expr(f"filter({column_name_to_assign}, x -> x is not null)"))
+        df = df.withColumn(
+            column_name_to_assign,
+            F.expr(f"filter({column_name_to_assign}, x -> x is not null)"),
+        )
     else:
         df = df.withColumn(column_name_to_assign, F.array_remove(column_name_to_assign, count_if_value))
-    df = df.withColumn(column_name_to_assign, F.lit(len(selection_columns) - F.size(F.col(column_name_to_assign))))
+    df = df.withColumn(
+        column_name_to_assign,
+        F.lit(len(selection_columns) - F.size(F.col(column_name_to_assign))),
+    )
     return df
 
 
@@ -650,7 +749,11 @@ def assign_true_if_any(
 
 
 def assign_proportion_column(
-    df: DataFrame, column_name_to_assign: str, numerator_column: str, denominator_column: str, numerator_selector: str
+    df: DataFrame,
+    column_name_to_assign: str,
+    numerator_column: str,
+    denominator_column: str,
+    numerator_selector: str,
 ) -> DataFrame:
     """
     Assign a column as the result of a division operation on total of select values from numerator column
@@ -730,7 +833,10 @@ def assign_unique_id_column(df: DataFrame, column_name_to_assign: str, concat_co
 
 
 def assign_has_been_to_column(
-    df: DataFrame, column_name_to_assign: str, contact_participant_column: str, contact_other_column: str
+    df: DataFrame,
+    column_name_to_assign: str,
+    contact_participant_column: str,
+    contact_other_column: str,
 ) -> DataFrame:
     """
     Assign a column to evidence whether a relevant party has been to a given place using the 2 input
@@ -785,7 +891,8 @@ def assign_filename_column(df: DataFrame, column_name_to_assign: str) -> DataFra
     column_name_to_assign
     """
     return df.withColumn(
-        column_name_to_assign, F.regexp_replace(F.input_file_name(), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", "")
+        column_name_to_assign,
+        F.regexp_replace(F.input_file_name(), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", ""),
     )
 
 
@@ -856,15 +963,19 @@ def assign_school_year_september_start(
     )
     df = df.withColumn(
         column_name_to_assign,
-        F.when((F.col(column_name_to_assign) <= 0) | (F.col(column_name_to_assign) > 13), None).otherwise(
-            F.col(column_name_to_assign)
-        ),
+        F.when(
+            (F.col(column_name_to_assign) <= 0) | (F.col(column_name_to_assign) > 13),
+            None,
+        ).otherwise(F.col(column_name_to_assign)),
     )
     return df
 
 
 def assign_work_patient_facing_now(
-    df: DataFrame, column_name_to_assign: str, age_column: str, work_healthcare_column: str
+    df: DataFrame,
+    column_name_to_assign: str,
+    age_column: str,
+    work_healthcare_column: str,
 ) -> DataFrame:
     """
     Assign column for work person facing depending on values of given input reference
@@ -896,7 +1007,10 @@ def assign_work_patient_facing_now(
         },
     )
     df = assign_named_buckets(
-        df, age_column, column_name_to_assign, {0: "<=15y", 16: F.col(column_name_to_assign), 75: ">=75y"}
+        df,
+        age_column,
+        column_name_to_assign,
+        {0: "<=15y", 16: F.col(column_name_to_assign), 75: ">=75y"},
     )
     return df
 
@@ -922,7 +1036,10 @@ def assign_work_person_facing_now(
         column_name_to_assign,
         work_social_care_column,
         {
-            "Yes": ["Yes, care/residential home, resident-facing", "Yes, other social care, resident-facing"],
+            "Yes": [
+                "Yes, care/residential home, resident-facing",
+                "Yes, other social care, resident-facing",
+            ],
             "No": [
                 "No",
                 "Yes, care/residential home, non-resident-facing",
@@ -943,7 +1060,11 @@ def assign_work_person_facing_now(
 
 
 def assign_named_buckets(
-    df: DataFrame, reference_column: str, column_name_to_assign: str, map: dict, use_current_values=False
+    df: DataFrame,
+    reference_column: str,
+    column_name_to_assign: str,
+    map: dict,
+    use_current_values=False,
 ) -> DataFrame:
     """
     Assign a new column with named ranges for given integer ranges contianed within a reference column
@@ -959,7 +1080,9 @@ def assign_named_buckets(
         forward if not in range of lookup buckets specified in map
     """
     bucketizer = Bucketizer(
-        splits=[float("-Inf"), *list(map.keys()), float("Inf")], inputCol=reference_column, outputCol="buckets"
+        splits=[float("-Inf"), *list(map.keys()), float("Inf")],
+        inputCol=reference_column,
+        outputCol="buckets",
     )
     dfb = bucketizer.setHandleInvalid("keep").transform(df)
 
@@ -974,7 +1097,11 @@ def assign_named_buckets(
 
 
 def assign_age_group_school_year(
-    df: DataFrame, country_column: str, age_column: str, school_year_column: str, column_name_to_assign: str
+    df: DataFrame,
+    country_column: str,
+    age_column: str,
+    school_year_column: str,
+    column_name_to_assign: str,
 ) -> DataFrame:
     """
     Assign column_age_group_school_year using multiple references column values in a specific pattern
@@ -989,7 +1116,10 @@ def assign_age_group_school_year(
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.when((F.col(age_column) >= 2) & (F.col(age_column) <= 12) & (F.col(school_year_column) <= 6), "02-6SY")
+        F.when(
+            (F.col(age_column) >= 2) & (F.col(age_column) <= 12) & (F.col(school_year_column) <= 6),
+            "02-6SY",
+        )
         .when(
             ((F.col(school_year_column) >= 7) & (F.col(school_year_column) <= 11))
             | (
@@ -1020,7 +1150,11 @@ def assign_age_group_school_year(
         .otherwise(None),
     )
     df = assign_named_buckets(
-        df, age_column, column_name_to_assign, {25: "25-34", 35: "35-49", 50: "50-69", 70: "70+"}, True
+        df,
+        age_column,
+        column_name_to_assign,
+        {25: "25-34", 35: "35-49", 50: "50-69", 70: "70+"},
+        True,
     )
     return df
 
@@ -1050,7 +1184,10 @@ def assign_taken_column(df: DataFrame, column_name_to_assign: str, reference_col
     column_name_to_assign
     reference_column
     """
-    df = df.withColumn(column_name_to_assign, F.when(F.col(reference_column).isNull(), "No").otherwise("Yes"))
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col(reference_column).isNull(), "No").otherwise("Yes"),
+    )
 
     return df
 
@@ -1065,9 +1202,13 @@ def assign_outward_postcode(df: DataFrame, column_name_to_assign: str, reference
     column_name_to_assign
     reference_column
     """
-    df = df.withColumn(column_name_to_assign, F.rtrim(F.regexp_replace(F.col(reference_column), r".{3}$", "")))
     df = df.withColumn(
-        column_name_to_assign, F.when(F.length(column_name_to_assign) > 4, None).otherwise(F.col(column_name_to_assign))
+        column_name_to_assign,
+        F.rtrim(F.regexp_replace(F.col(reference_column), r".{3}$", "")),
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.length(column_name_to_assign) > 4, None).otherwise(F.col(column_name_to_assign)),
     )
 
     return df
@@ -1095,7 +1236,11 @@ def assign_column_from_coalesce(df: DataFrame, column_name_to_assign: str, *args
 
 
 def assign_substring(
-    df: DataFrame, column_name_to_assign, column_to_substring, start_position, substring_length
+    df: DataFrame,
+    column_name_to_assign,
+    column_to_substring,
+    start_position,
+    substring_length,
 ) -> DataFrame:
     """
     Criteria - returns data with new column which is a substring
@@ -1113,7 +1258,10 @@ def assign_substring(
     df: pyspark.sql.DataFrame
 
     """
-    df = df.withColumn(column_name_to_assign, F.substring(column_to_substring, start_position, substring_length))
+    df = df.withColumn(
+        column_name_to_assign,
+        F.substring(column_to_substring, start_position, substring_length),
+    )
 
     return df
 
@@ -1145,40 +1293,41 @@ def assign_school_year(
         reference day/month (which year participant in by dob) by country
     """
 
-    df = (
-        df.join(F.broadcast(school_year_lookup), on=country_column, how="left")
-        .withColumn(
-            "school_start_date",
-            F.when(
-                (F.month(dob_column) > F.col("school_year_ref_month"))
-                | (
-                    (F.month(dob_column) == F.col("school_year_ref_month"))
-                    & (F.dayofmonth(dob_column) >= F.col("school_year_ref_day"))
-                ),
-                F.to_date(
-                    F.concat(F.year(dob_column) + 5, F.col("school_start_month"), F.col("school_start_day")),
-                    format="yyyyMMdd",
-                ),
-            ).otherwise(
-                F.to_date(
-                    F.concat(F.year(dob_column) + 4, F.col("school_start_month"), F.col("school_start_day")),
-                    format="yyyyMMdd",
-                )
+    df = df.join(F.broadcast(school_year_lookup), on=country_column, how="left").withColumn(
+        "school_start_date",
+        F.when(
+            (F.month(dob_column) > F.col("school_year_ref_month"))
+            | (
+                (F.month(dob_column) == F.col("school_year_ref_month"))
+                & (F.dayofmonth(dob_column) >= F.col("school_year_ref_day"))
             ),
-        )
-        .withColumn(
+            F.to_date(
+                F.concat(F.year(dob_column) + 5, F.col("school_start_month"), F.col("school_start_day")),
+                format="yyyyMMdd",
+            ),
+        ).otherwise(
+            F.to_date(
+                F.concat(F.year(dob_column) + 4, F.col("school_start_month"), F.col("school_start_day")),
+                format="yyyyMMdd",
+            )
+        ),
+    )
+    df = (
+        df.withColumn(
             column_name_to_assign,
-            F.floor(F.datediff(F.col(reference_date_column), F.col("school_start_date")) / 365.25).cast("integer"),
+            F.when(
+                (F.month(reference_date_column) > F.month("school_start_date"))
+                | (
+                    (F.dayofmonth(reference_date_column) >= F.dayofmonth("school_start_date"))
+                    & (F.month(reference_date_column) == F.month("school_start_date"))
+                ),
+                F.year(reference_date_column) - F.year("school_start_date"),
+            ).otherwise(F.year(reference_date_column) - F.year("school_start_date") - 1),
         )
-        # Below statement is to recreate Stata code (school years in DAs don't follow the same pattern),
-        #  though need to confirm if this is accurate
-        # .withColumn(column_name_to_assign, F.when((F.col(country_column)==F.lit("Northern Ireland")) /
-        # | (F.col(country_column)==F.lit("Scotland")), F.col(column_name_to_assign)+1)
-        #                                     .otherwise(F.col(column_name_to_assign)))
         .withColumn(
             column_name_to_assign,
             F.when(
-                (F.col(column_name_to_assign) >= F.lit(14)) | (F.col(column_name_to_assign) <= F.lit(0)), None
+                (F.col(column_name_to_assign) >= F.lit(14)) | (F.col(column_name_to_assign) < F.lit(0)), None
             ).otherwise(F.col(column_name_to_assign)),
         )
         .drop(
@@ -1189,7 +1338,6 @@ def assign_school_year(
             "school_start_date",
         )
     )
-
     return df
 
 
@@ -1300,7 +1448,10 @@ def assign_date_difference(
         else:
             start = F.col(start_reference_column)
         modifications = {"weeks": F.floor(F.col(column_name_to_assign) / 7)}
-        df = df.withColumn(column_name_to_assign, F.datediff(end=F.col(end_reference_column), start=start))
+        df = df.withColumn(
+            column_name_to_assign,
+            F.datediff(end=F.col(end_reference_column), start=start),
+        )
         if format in modifications:
             df = df.withColumn(column_name_to_assign, modifications[format])
         return df.withColumn(column_name_to_assign, F.col(column_name_to_assign).cast("integer"))
@@ -1430,7 +1581,11 @@ def assign_column_to_date_string(
 
 
 def assign_single_column_from_split(
-    df: DataFrame, column_name_to_assign: str, reference_column: str, split_on: str = " ", item_number: int = 0
+    df: DataFrame,
+    column_name_to_assign: str,
+    reference_column: str,
+    split_on: str = " ",
+    item_number: int = 0,
 ):
     """
     Assign a single column with the values from an item within a reference column that has been split.
@@ -1460,7 +1615,10 @@ def assign_single_column_from_split(
     pyspark.sql.DataFrame
     """
 
-    return df.withColumn(column_name_to_assign, F.split(F.col(reference_column), split_on).getItem(item_number))
+    return df.withColumn(
+        column_name_to_assign,
+        F.split(F.col(reference_column), split_on).getItem(item_number),
+    )
 
 
 def assign_isin_list(
@@ -1499,7 +1657,10 @@ def assign_isin_list(
 
 
 def assign_from_lookup(
-    df: DataFrame, column_name_to_assign: str, reference_columns: list, lookup_df: DataFrame
+    df: DataFrame,
+    column_name_to_assign: str,
+    reference_columns: list,
+    lookup_df: DataFrame,
 ) -> DataFrame:
     """
     Assign a new column based on values from a lookup DF (null values will be carried forward as null)
@@ -1543,9 +1704,11 @@ def assign_from_lookup(
 
     lookup_df = lookup_df.drop(*reference_columns)
 
-    return df.join(F.broadcast(lookup_df), df.concat_columns.eqNullSafe(lookup_df.concat_columns), how="left").drop(
-        "concat_columns"
-    )
+    return df.join(
+        F.broadcast(lookup_df),
+        df.concat_columns.eqNullSafe(lookup_df.concat_columns),
+        how="left",
+    ).drop("concat_columns")
 
 
 def assign_age_at_date(df: DataFrame, column_name_to_assign: str, base_date, date_of_birth) -> DataFrame:
@@ -1584,7 +1747,10 @@ def assign_correct_age_at_date(df: DataFrame, column_name_to_assign, reference_d
     )
     df = df.withColumn(
         "day_more",
-        F.when(F.date_format(F.col(reference_date), "d") >= F.date_format(F.col(date_of_birth), "d"), 1).otherwise(0),
+        F.when(
+            F.date_format(F.col(reference_date), "d") >= F.date_format(F.col(date_of_birth), "d"),
+            1,
+        ).otherwise(0),
     )
     df = df.withColumn(
         column_name_to_assign,
@@ -1627,7 +1793,8 @@ def assign_grouped_variable_from_days_since(
     return df.withColumn(
         column_name_to_assign,
         F.when(
-            (F.col(binary_reference_column) == "Yes") & (F.col(days_since_reference_column).isNull()), "Date not given"
+            (F.col(binary_reference_column) == "Yes") & (F.col(days_since_reference_column).isNull()),
+            "Date not given",
         )
         .otherwise(F.col(column_name_to_assign))
         .cast("string"),
@@ -1956,15 +2123,44 @@ def get_keys_by_value(input_dict: Dict, values_to_lookup: List) -> List:
     return result
 
 
+def flag_records_for_work_location_null() -> F.Column:
+    """Flag records for application of "Work location" rules"""
+    return (
+        F.col("work_location").isNull() | (F.col("work_main_job_title").isNull() & F.col("work_main_job_role").isNull())
+    ) & (
+        F.col("work_status_v0").isin(
+            "Furloughed (temporarily not working)",
+            "Not working (unemployed, retired, long-term sick etc.)",
+            "Student",
+        )
+    )
+
+
+def flag_records_for_work_location_student() -> F.Column:
+    """Flag records for application of "Work location" rules for students"""
+    return F.col("work_status_v0").isin("Student") | (F.col("age_at_visit") < F.lit(16))
+
+
 def flag_records_for_work_from_home_rules() -> F.Column:
     """Flag records for application of "Work From Home" rules"""
-    return F.col("work_location").isNull()
+    return F.col("work_location").isNull() & ~(
+        (
+            F.col("work_status_v0").isin(
+                "Furloughed (temporarily not working)",
+                "Not working (unemployed, retired, long-term sick etc.)",
+                "Student",
+            )
+        )
+        | (F.col("age_at_visit") < F.lit(16))
+    )
 
 
 def flag_records_for_furlough_rules_v0() -> F.Column:
     """Flag records for application of "Furlough Rules V0" rules"""
     return F.col("work_status_v0").isin(
-        "Employed", "Self-employed", "Not working (unemployed, retired, long-term sick etc.)"
+        "Employed",
+        "Self-employed",
+        "Not working (unemployed, retired, long-term sick etc.)",
     )
 
 
@@ -1994,6 +2190,11 @@ def flag_records_for_furlough_rules_v2_a() -> F.Column:
 def flag_records_for_furlough_rules_v2_b() -> F.Column:
     """Flag records for application of "Furlough Rules V2-b" rules"""
     return F.col("work_status_v2").isin("Self-employed and currently working")
+
+
+def flag_records_for_self_employed_rules_v0() -> F.Column:
+    """Flag records for application of "Self-employed Rules V0" rules"""
+    return F.col("work_status_v0").isin("Employed")
 
 
 def flag_records_for_self_employed_rules_v1_a() -> F.Column:
@@ -2057,7 +2258,10 @@ def flag_records_for_student_v0_rules() -> F.Column:
         (F.col("age_at_visit") >= F.lit(17))
         & (
             F.col("work_status_v0").isNull()
-            | F.col("work_status_v0").isin("Employed", "Furloughed (temporarily not working)")
+            | F.col("work_status_v0").isin(
+                "Furloughed (temporarily not working)",
+                "Not working (unemployed, retired, long-term sick etc.)",
+            )
         )
     )
 
@@ -2079,26 +2283,78 @@ def flag_records_for_student_v1_rules() -> F.Column:
     )
 
 
-def flag_records_for_student_v2_rules() -> F.Column:
-    """Flag records for application of "Student-v2" rules"""
-    return (F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18))
+def flag_records_for_school_v2_rules() -> F.Column:
+    """Flag records for application of "School rules -v2" rules"""
+    return ((F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18))) & ~(
+        F.col("school_year").isNull()
+    )
+
+
+def flag_records_for_uni_v0_rules() -> F.Column:
+    """Flag records for application of "Uni-v0" rules"""
+    return (
+        (F.col("age_at_visit") >= F.lit(17))
+        & (
+            F.col("work_status_v0").isNull()
+            | F.col("work_status_v0").isin(
+                "Furloughed (temporarily not working)",
+                "Not working (unemployed, retired, long-term sick etc.)",
+            )
+        )
+    ) | ((F.col("age_at_visit") >= F.lit(17)) & (F.col("age_at_visit") < F.lit(22)))
 
 
 def flag_records_for_uni_v2_rules() -> F.Column:
     """Flag records for application of "Uni-v2" rules"""
-    return (F.col("age_at_visit") >= F.lit(17)) & (
-        F.col("work_status_v2").isNull()
-        | F.col("work_status_v2").isin(
-            "Looking for paid work and able to start", "Not working and not looking for work", "Retired"
+    return (
+        (F.col("age_at_visit") >= F.lit(17))
+        & (
+            F.col("work_status_v2").isNull()
+            | F.col("work_status_v2").isin(
+                "Looking for paid work and able to start",
+                "Not working and not looking for work",
+                "Retired",
+                "4-5y and older at school/home-school",
+            )
         )
-    )
+    ) | ((F.col("age_at_visit") >= F.lit(17)) & (F.col("age_at_visit") < F.lit(22)))
+
+
+def flag_records_for_college_v0_rules() -> F.Column:
+    """Flag records for application of "College-v0" rules"""
+    return (
+        (F.col("age_at_visit") >= F.lit(16))
+        & (
+            F.col("work_status_v0").isNull()
+            | F.col("work_status_v0").isin(
+                "Furloughed (temporarily not working)",
+                "Not working (unemployed, retired, long-term sick etc.)",
+            )
+        )
+    ) | ((F.col("age_at_visit") >= F.lit(17)) & (F.col("age_at_visit") < F.lit(22)))
 
 
 def flag_records_for_college_v2_rules() -> F.Column:
     """Flag records for application of "College-v2" rules"""
-    return (F.col("age_at_visit") >= F.lit(16)) & (
-        F.col("work_status_v2").isNull()
-        | F.col("work_status_v2").isin(
-            "Looking for paid work and able to start", "Not working and not looking for work", "Retired"
+    return (
+        (F.col("age_at_visit") >= F.lit(16))
+        & (
+            F.col("work_status_v2").isNull()
+            | F.col("work_status_v2").isin(
+                "Looking for paid work and able to start",
+                "Not working and not looking for work",
+                "Retired",
+                "4-5y and older at school/home-school",
+            )
         )
-    )
+    ) | ((F.col("age_at_visit") >= F.lit(17)) & (F.col("age_at_visit") < F.lit(22)))
+
+
+def flag_records_for_childcare_v1_rules() -> F.Column:
+    """Flag records for application of "Childcare-V1" rules"""
+    return F.col("age_at_visit") <= F.lit(4)
+
+
+def flag_records_for_childcare_v2_b_rules() -> F.Column:
+    """Flag records for application of "Childcare-V2_b" rules"""
+    return (F.col("age_at_visit") <= F.lit(5)) & F.col("school_year").isNull()

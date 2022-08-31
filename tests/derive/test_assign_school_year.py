@@ -9,10 +9,12 @@ from cishouseholds.derive import assign_school_year
 def school_year_lookup(spark_session):
     return spark_session.createDataFrame(
         data=[
-            ("England", "09", "01", "09", "01"),
-            ("Wales", "09", "01", "09", "01"),
-            ("Scotland", "08", "15", "03", "01"),
-            ("Northern Ireland", "09", "01", "07", "02"),
+            # fmt: off
+            ("England",             "09", "01",     "09", "01"),
+            ("Wales",               "09", "01",     "09", "01"),
+            ("Scotland",            "08", "15",     "03", "01"),
+            ("Northern Ireland",    "09", "01",     "07", "02"),
+            # fmt: on
         ],
         schema=["country", "school_start_month", "school_start_day", "school_year_ref_month", "school_year_ref_day"],
     )
@@ -20,19 +22,62 @@ def school_year_lookup(spark_session):
 
 @pytest.mark.parametrize(
     "expected_data",
+    # fmt: off
     [
-        ("2021-11-10", "2014-09-02", "England", 2),
-        ("2021-11-10", "2014-09-02", "Northern Ireland", 2),
-        ("2021-11-10", "2014-09-02", "Scotland", 2),
-        ("2021-08-15", "2014-09-02", "Wales", 1),
-        ("2021-08-15", "2014-09-02", "Northern Ireland", 1),
-        ("2021-08-15", "2014-09-02", "Scotland", 2),
-        ("2021-09-01", "2014-07-01", "Northern Ireland", 3),
-        ("2021-08-14", "2014-02-28", "Scotland", 2),
-        ("2021-08-14", "1995-02-28", "Scotland", None),
-        ("2021-11-10", "2016-10-01", "England", None),
-        ("2021-11-10", "2016-10-01", "Northern Ireland", None),
+        ("2021-09-01", "2014-09-01", "England",             2),
+        ("2021-08-31", "2014-09-01", "England",             1), # new reference cutoff not started and child born after start date
+        ("2021-09-01", "2014-08-31", "England",             3), # new reference cutoff started and child born before start date
+        ("2021-08-31", "2014-08-31", "England",             2), # new reference cutoff not started and child born before start date
+        ("2021-09-01", "2017-08-31", "England",             0), # reception
+
+        ("2016-09-01", "1999-07-20", "England",             13), # stefens date
+        ("2016-09-01", "1999-08-31", "Wales",               13), # stefens date
+        ("2016-09-01", "1998-09-01", "Wales",               13), # stefens date
+
+        ("2020-09-01", "2003-08-31", "Wales",               13), # leap
+        ("2020-09-01", "2002-09-01", "Wales",               13),
+
+        ("2021-09-01", "2004-08-31", "Wales",               13), # non leap
+        ("2021-09-01", "2003-09-01", "Wales",               13),
+
+        ("2022-09-01", "2005-08-31", "Wales",               13), # non leap
+        ("2022-09-01", "2004-09-01", "Wales",               13),
+
+        ("2024-09-01", "2007-08-31", "Wales",               13), # leap
+        ("2024-09-01", "2006-09-01", "Wales",               13),
+
+        ("2021-09-01", "2017-09-01", "England",             None),  # too young to start school
+
+        ("2021-08-15", "2014-08-15", "Scotland",            2), # testing edge case after school start
+        ("2021-08-14", "2014-08-15", "Scotland",            1), # new school year not yet started and child born after start date
+        ("2021-08-15", "2014-08-14", "Scotland",            2), # new school year started and child born before start date
+        ("2021-08-14", "2014-08-14", "Scotland",            1), # new school year not yet started and child born before start date
+
+        ("2021-03-01", "2014-03-01", "Scotland",            1), # testing edge case after date allocation cut off
+        ("2021-02-28", "2014-03-01", "Scotland",            1), # new reference cutoff not started and child born after reference date
+        ("2021-03-01", "2014-02-28", "Scotland",            2), # new reference cutoff started and child born before reference date
+        ("2021-02-28", "2014-02-28", "Scotland",            2), # new reference cutoff not started and child born before reference date
+
+        ("2021-08-15", "2014-02-28", "Scotland",            3), # new school year started and child born before reference cutoff date
+        ("2021-08-15", "2014-03-01", "Scotland",            2), # new school year started and child born after reference cutoff date
+
+        ("2020-11-06", "2001-05-21", "Scotland",            None),  # fails 26/08/2022 test case
+        ("2020-11-07", "2016-01-04", "Scotland",            0), # fails 26/08/2022 test case
+
+        ("2021-08-31", "2015-09-01", "Northern Ireland",    0), # reception
+
+        ("2021-07-02", "2014-07-02", "Northern Ireland",    1), # testing edge case after date allocation cut off
+        ("2021-07-01", "2014-07-02", "Northern Ireland",    1), # new reference cutoff not started and child born after reference date
+        ("2021-07-02", "2014-07-01", "Northern Ireland",    2), # new reference cutoff started and child born before reference date
+        ("2021-07-01", "2014-07-01", "Northern Ireland",    2), # new reference cutoff not started and child born before reference date
+
+        ("2021-07-01", "2003-09-01", "Northern Ireland",    12), # 17 year old born after cutoff date visited before new school year started
+
+        ("2021-09-01", "2003-09-01", "Wales",               13), # max age to be in school
+        ("2021-09-01", "2003-09-02", "Wales",               13), # max age to be in school
+        ("2021-09-01", "2003-08-30", "Wales",               None), # one day older to be in school
     ],
+    # fmt: on
 )
 def test_assign_school_year(spark_session, expected_data, school_year_lookup):
 

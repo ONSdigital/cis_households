@@ -58,6 +58,7 @@ from cishouseholds.pipeline.mapping import category_maps
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import soc_regex_map
 from cishouseholds.pipeline.reporting import generate_error_table
+from cishouseholds.pipeline.reporting import generate_lab_report
 from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
@@ -392,13 +393,15 @@ def process_soc_data(
     ).drop("resolved_soc_code")
 
     soc_lookup_df = soc_lookup_df.withColumn("FILTER_CONDITION", F.count("*").over(window) > 1)
-    duplicate_rows_df = soc_lookup_df.filter(F.col("FILTER_CONDITION")).drop("FILTER_CONDITION")
     soc_lookup_df = soc_lookup_df.filter(~F.col("FILTER_CONDITION")).drop("FILTER_CONDITION")
-
-    update_table(duplicate_rows_df, duplicate_soc_rows_table, "overwrite", archive=True)
 
     soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
     survey_responses_df = survey_responses_df.join(soc_lookup_df, on=join_on_columns, how="left")
+
+    soc_lookup_df = soc_lookup_df.withColumn("FILTER_CONDITION", F.count("*").over(window) > 1)
+    duplicate_rows_df = soc_lookup_df.filter(F.col("FILTER_CONDITION")).drop("FILTER_CONDITION")
+
+    update_table(duplicate_rows_df, duplicate_soc_rows_table, "overwrite", archive=True)
     update_table(survey_responses_df, soc_coded_survey_responses_table, "overwrite")
     update_table(soc_lookup_df, transformed_soc_lookup_table, "overwrite")
 
@@ -724,7 +727,6 @@ def geography_and_imputation_dependent_processing(
         how="left",
         on="lower_super_output_area_code_11",
     )
-
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
 
     df = assign_multigenerational(
@@ -843,6 +845,15 @@ def report(
     write_string_to_file(
         output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
     )
+
+
+@register_pipeline_stage("lab_report")
+def lab_report(survey_responses_table: str, swab_report_table: str, blood_report_table: str) -> DataFrame:
+    """Generate reports of most recent 7 days of swab and blood data"""
+    survey_responses_df = extract_from_table(survey_responses_table).orderBy("file_date")
+    swab_df, blood_df = generate_lab_report(survey_responses_df)
+    update_table(swab_df, swab_report_table, "overwrite")
+    update_table(blood_df, blood_report_table, "overwrite")
 
 
 @register_pipeline_stage("record_level_interface")
