@@ -894,6 +894,9 @@ def impute_demographic_columns(
     with a datetime suffix.
     Also outputs a table of survey response records with imputed values.
 
+    Note that this stage depends on geography information from the sample files being available
+    (from sample file processing).
+
     Parameters
     ----------
     survey_responses_table
@@ -926,7 +929,8 @@ def calculate_household_level_populations(
     household_level_populations_table,
 ):
     """
-    Calculate counts of households by CIS area 20 and country code 12 geographical groups.
+    Calculate counts of households by CIS area 20 and country code 12 geographical groups used in the design weight
+    calculation.
 
     Combines several lookup tables to get the necessary geographies linked to households, then sums households by
     CIS area and country code.
@@ -936,9 +940,9 @@ def calculate_household_level_populations(
     address_lookup_table
         addressbase HIVE table name
     postcode_lookup_table
-        APS postcode lookup HIVE table name to join onto addressbase to get LSOA 11 and country code 12
+        NSPL postcode lookup HIVE table name to join onto addressbase to get LSOA 11 and country code 12
     lsoa_cis_lookup_table
-        LSOA to CIS lookup HIVE table name to get CIS area codes
+        LSOA 11 to CIS lookup HIVE table name to get CIS area codes
     country_lookup_table
         country lookup HIVE table name to get country names from country code 12
     household_level_populations_table
@@ -1557,8 +1561,17 @@ def sample_file_ETL(
 
     Notes
     -----
-    Lookup tables are referenced here to resolve and issue with missing data on the addressbase and new sample files.
-    Once these issues are resolved, this part of the code may be simplified.
+    Lookup tables are referenced here are used to get data that are missing on the master sample and sample
+    files, which are required to link on postcode. Once these issues are resolved, this part of the code may be
+    simplified to include only:
+    - household_level_populations_table
+    - old_sample_file
+    - new_sample_file
+    - new_sample_source_name
+    - tranche_file_path
+    - tranche_strata_columns
+
+    This is dependent on receiving the new sample file in the format expected as specified in the excel specification.
 
     Paramaters
     ----------
@@ -1571,7 +1584,7 @@ def sample_file_ETL(
     new_sample_source_name
         string constant to be stored as the sample source name for the new sample records
     postcode_lookup
-        HIVE table containing the APS postcode lookup
+        HIVE table containing the NSPL postcode lookup
     master_sample_file
         HIVE table containing the master sample
     design_weight_table
@@ -1581,7 +1594,7 @@ def sample_file_ETL(
     lsoa_cis_lookup
         HIVE table containing LSOA 11 to CIS area 20 lookup
     tranche_file_path
-        path to tranche CSV file, if a tranche is required for the current sample file, otherwise leave empty
+        path to tranche CSV file, if a tranche is required for the current sample file, otherwise leave empty in config
     tranche_strata_columns
         list of column names to be used as strata in tranche factor calculations
     """
