@@ -7,6 +7,7 @@ from operator import or_
 from typing import Any
 from typing import Dict
 from typing import List
+from typing import Mapping
 from typing import Optional
 from typing import Tuple
 from typing import Union
@@ -21,6 +22,30 @@ from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.expressions import any_column_matches_regex
 from cishouseholds.expressions import any_column_null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+def assign_regex_from_map(df: DataFrame, column_name_to_assign: str, reference_columns: List[str], roles: Mapping):
+    regex_columns = []
+    for title, pattern in roles.items():
+        regex_columns.append(
+            F.when(
+                reduce(
+                    or_,
+                    [
+                        F.coalesce(F.col(reference_column), F.lit("")).rlike(pattern)
+                        for reference_column in reference_columns
+                    ],
+                ),
+                title,
+            )
+        )
+
+    df = df.withColumn(
+        column_name_to_assign,
+        F.array(regex_columns),
+    )
+    df = df.withColumn(column_name_to_assign, F.expr(f"filter({column_name_to_assign}, x -> x is not null)"))
+    return df
 
 
 def assign_datetime_from_coalesced_columns_and_log_source(

@@ -31,7 +31,7 @@ repos:
     rev: 3.9.2
     hooks:
     -   id: flake8
-        args: [--max-line-length, "120", "--extend-exclude=tests/**"]
+        args: [--max-line-length, "120", "--extend-exclude=tests/**", "--extend-ignore=E501 cishouseholds/pipieline/regex_testing.py"]
 
 -   repo: https://github.com/psf/black
     rev: 21.9b0
