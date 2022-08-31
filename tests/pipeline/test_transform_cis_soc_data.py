@@ -14,6 +14,7 @@ def test_transform_cis_soc_data(spark_session):
             ("JOB TITLE 2", "JOB2", "un"),
             ("JOB TITLE 3", "JOB3", "un"),
             (None, "JOB3", "un"),
+            ("JOB TITLE 4", "JOB4", ""),
             (None, None, None),
         ],
         schema="work_main_job_title string, work_main_job_role string, standard_occupational_classification_code string",

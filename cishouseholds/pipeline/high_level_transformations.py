@@ -174,10 +174,11 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     """
     transform and process cis soc data
     """
+
     df = df.withColumn(
         "standard_occupational_classification_code",
-        F.when(F.substring(F.col("standard_occupational_classification_code"), 1, 2) == "un", "uncodeable").otherwise(
-            F.col("standard_occupational_classification_code")
+        F.regexp_replace(
+            F.col("standard_occupational_classification_code"), r"^un|^conflict|^AS20|^REF!|^\s*$", "uncodeable"
         ),
     )
 
