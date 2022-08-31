@@ -180,6 +180,26 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.calculate_household_level_populations">
+<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">calculate_household_level_populations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address_lookup_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postcode_lookup_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lsoa_cis_lookup_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country_lookup_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">household_level_populations_table</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.calculate_household_level_populations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate counts of households by CIS area 20 and country code 12 geographical groups used in the design weight
+calculation.</p>
+<p>Combines several lookup tables to get the necessary geographies linked to households, then sums households by
+CIS area and country code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>address_lookup_table</strong> – addressbase HIVE table name</p></li>
+<li><p><strong>postcode_lookup_table</strong> – NSPL postcode lookup HIVE table name to join onto addressbase to get LSOA 11 and country code 12</p></li>
+<li><p><strong>lsoa_cis_lookup_table</strong> – LSOA 11 to CIS lookup HIVE table name to get CIS area codes</p></li>
+<li><p><strong>country_lookup_table</strong> – country lookup HIVE table name to get country names from country code 12</p></li>
+<li><p><strong>household_level_populations_table</strong> – HIVE table to write household level populations to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.csv_to_table">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">csv_to_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_operations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.csv_to_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a list of csv files into HDFS tables. Requires a schema.</p>
@@ -249,13 +269,20 @@ Includes filling forwards or backwards over time and deriving new information ov
 <dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.impute_demographic_columns">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">impute_demographic_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">survey_responses_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imputed_values_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">survey_responses_imputed_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.impute_demographic_columns" title="Permalink to this definition">¶</a></dt>
-<dd><p>Imputes values for key demographic columns.
-Applies filling forward for listed columns. Specific imputations are then used for sex, ethnicity and date of birth.</p>
+<dd><p>Impute values for sex, ethnicity and date of birth.</p>
+<p>Assumes that columns to be imputed have been filled forwards, as the latest value from each participant is used.
+Specific imputations are carried out for for each key demographic column. The resulting columns should have no
+missing values.</p>
+<p>Stores imputed values in a lookup table, for reuse in subsequent imputation rounds. This table is also backed up
+with a datetime suffix.
+Also outputs a table of survey response records with imputed values.</p>
+<p>Note that this stage depends on geography information from the sample files being available
+(from sample file processing).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>survey_responses_table</strong> – name of HIVE table containing survey responses for imputation, containing <cite>key_columns</cite></p></li>
-<li><p><strong>imputed_values_table</strong> – name of HIVE table containing previously imputed values</p></li>
+<li><p><strong>imputed_values_table</strong> – name of HIVE table containing previously imputed values by participant</p></li>
 <li><p><strong>survey_responses_imputed_table</strong> – name of HIVE table to write survey responses following imputation</p></li>
 </ul>
 </dd>
@@ -389,6 +416,58 @@ on the responses table. name should match that created in validate_survey_respon
 <li><p><strong>invalid_survey_responses_table</strong> – table name of hdfs table of survey responses failing validation checks</p></li>
 <li><p><strong>output_directory</strong> – output folder location to store the report</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.sample_file_ETL">
+<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">sample_file_ETL</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">household_level_populations_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">old_sample_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_sample_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_sample_source_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">postcode_lookup</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">master_sample_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">design_weight_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country_lookup</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lsoa_cis_lookup</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tranche_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tranche_strata_columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.sample_file_ETL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process a new sample file, to union it with previous sample data and calculate new swab and antibody design weights.
+Creates a table of geographies and design weights per household.</p>
+<p>Carries out different scenarios for antibody design weight for either:
+1. Where no tranche is provided, or no new households have been sampled
+2. Where a tranche has been provided and new households have been sampled</p>
+<p><code class="docutils literal notranslate"><span class="pre">old_sample_file</span></code> may point to the same table as <code class="docutils literal notranslate"><span class="pre">design_weight_table</span></code>, to reuse the values from the previous
+sample file processing run.</p>
+<p>To process a new sample file, the following <em>must</em> be updated:
+- <code class="docutils literal notranslate"><span class="pre">new_sample_file</span></code>
+- <code class="docutils literal notranslate"><span class="pre">new_sample_source_name</span></code>
+- <code class="docutils literal notranslate"><span class="pre">tranche_file_path</span></code></p>
+<p>The output <code class="docutils literal notranslate"><span class="pre">design_weight_table</span></code> is also stored as a backup table with the current datetime.</p>
+<p class="rubric">Notes</p>
+<p>Lookup tables are referenced here are used to get data that are missing on the master sample and sample
+files, which are required to link on postcode. Once these issues are resolved, this part of the code may be
+simplified to include only:
+- household_level_populations_table
+- old_sample_file
+- new_sample_file
+- new_sample_source_name
+- tranche_file_path
+- tranche_strata_columns</p>
+<p>This is dependent on receiving the new sample file in the format expected as specified in the excel specification.</p>
+<dl class="simple">
+<dt>household_level_populations_table</dt><dd><p>HIVE table create by household level population calculation, containing population by CIS area and country</p>
+</dd>
+<dt>old_sample_file</dt><dd><p>HIVE table containing the previously processed sample files, including design weights</p>
+</dd>
+<dt>new_sample_file</dt><dd><p>CSV file or HIVE table containing the new sample to be processed</p>
+</dd>
+<dt>new_sample_source_name</dt><dd><p>string constant to be stored as the sample source name for the new sample records</p>
+</dd>
+<dt>postcode_lookup</dt><dd><p>HIVE table containing the NSPL postcode lookup</p>
+</dd>
+<dt>master_sample_file</dt><dd><p>HIVE table containing the master sample</p>
+</dd>
+<dt>design_weight_table</dt><dd><p>HIVE table to write household geographies and design weights to</p>
+</dd>
+<dt>country_lookup</dt><dd><p>HIVE table containing country code 12 to country name lookup</p>
+</dd>
+<dt>lsoa_cis_lookup</dt><dd><p>HIVE table containing LSOA 11 to CIS area 20 lookup</p>
+</dd>
+<dt>tranche_file_path</dt><dd><p>path to tranche CSV file, if a tranche is required for the current sample file, otherwise leave empty in config</p>
+</dd>
+<dt>tranche_strata_columns</dt><dd><p>list of column names to be used as strata in tranche factor calculations</p>
 </dd>
 </dl>
 </dd></dl>
