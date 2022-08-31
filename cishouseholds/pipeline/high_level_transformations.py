@@ -195,9 +195,24 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     ).orderBy(F.desc("LENGTH"))
 
     window = Window.partitionBy(*join_on_columns)
-    df = df.withColumn("DROP", F.col("LENGTH") != F.max("LENGTH").over(window))
-    df = df.filter((F.col("standard_occupational_classification_code") != "uncodeable") & (~F.col("DROP")))
-    return df.drop("DROP", "LENGTH")
+
+    df = df.withColumn(
+        "DROP_REASON",
+        F.when(F.col("LENGTH") != F.max("LENGTH").over(window), "NOT MOST SPECIFIC").when(
+            F.col("standard_occupational_classification_code") == "uncodeable", "UNCODEABLE"
+        ),
+    )
+    df = df.withColumn(
+        "DROP_REASON",
+        F.when(
+            (F.sum(F.when(F.col("DROP_REASON").isNull(), 1).otherwise(0)).over(window) > 1)
+            & (F.col("DROP_REASON").isNull()),
+            "AMBIGUOUS AFTER DEDUPLICATION",
+        ).otherwise(F.col("DROP_REASON")),
+    ).drop("LENGTH")
+    resolved_df = df.filter(F.col("DROP_REASON").isNull()).drop("DROP_REASON")
+    duplicate_df = df.filter(F.col("DROP_REASON").isNotNull())
+    return duplicate_df, resolved_df
 
 
 def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:

@@ -374,7 +374,7 @@ def process_soc_data(
     Process soc data and combine result with survey responses data
     """
     join_on_columns = ["work_main_job_title", "work_main_job_role"]
-    window = Window.partitionBy(*join_on_columns)
+    window = Window.partitionBy("standard_occupational_classification_code", *join_on_columns)
     inconsistences_resolution_df = extract_from_table(inconsistences_resolution_table).withColumnRenamed(
         "Gold SOC2010 code", "resolved_soc_code"
     )
@@ -392,14 +392,12 @@ def process_soc_data(
         F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
     ).drop("resolved_soc_code")
 
+    # remove any duplicate
     soc_lookup_df = soc_lookup_df.withColumn("FILTER_CONDITION", F.count("*").over(window) > 1)
     soc_lookup_df = soc_lookup_df.filter(~F.col("FILTER_CONDITION")).drop("FILTER_CONDITION")
 
-    soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
+    duplicate_rows_df, soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
     survey_responses_df = survey_responses_df.join(soc_lookup_df, on=join_on_columns, how="left")
-
-    soc_lookup_df = soc_lookup_df.withColumn("FILTER_CONDITION", F.count("*").over(window) > 1)
-    duplicate_rows_df = soc_lookup_df.filter(F.col("FILTER_CONDITION")).drop("FILTER_CONDITION")
 
     update_table(duplicate_rows_df, duplicate_soc_rows_table, "overwrite", archive=True)
     update_table(survey_responses_df, soc_coded_survey_responses_table, "overwrite")
