@@ -3,6 +3,7 @@ from operator import add
 from operator import and_
 from operator import or_
 from typing import Any
+from typing import List
 
 import pyspark.sql.functions as F
 
@@ -10,6 +11,11 @@ import pyspark.sql.functions as F
 def any_column_not_null(column_list: list):
     "Expression that evaluates true if any column is not null."
     return reduce(or_, [F.col(column).isNotNull() for column in column_list])
+
+
+def array_contains_any(array_column: str, values: List):
+    "check if array column contains any value in list"
+    return reduce(or_, [F.array_contains(array_column, val) for val in values])
 
 
 def all_columns_null(column_list: list):
@@ -20,6 +26,11 @@ def all_columns_null(column_list: list):
 def any_column_null(column_list: list):
     "Expression that evaluates true if any column is null."
     return reduce(or_, [F.col(column).isNull() for column in column_list])
+
+
+def any_column_equal_value(column_list: list, val):
+    "Expression that evaluates true if any column matches val"
+    return reduce(or_, [F.col(column).eqNullSafe(val) for column in column_list])
 
 
 def all_equal(column_list: list, equal_to: Any):

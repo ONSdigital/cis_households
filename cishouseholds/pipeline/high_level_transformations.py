@@ -1,4 +1,5 @@
 # flake8: noqa
+from functools import reduce
 from typing import List
 
 import pyspark.sql.functions as F
@@ -30,6 +31,7 @@ from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_raw_copies
+from cishouseholds.derive import assign_regex_from_map
 from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_substring
@@ -102,7 +104,9 @@ from cishouseholds.edit import update_think_have_covid_symptom_any
 from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.edit import update_value_if_multiple_and_ref_in_list
 from cishouseholds.edit import update_work_facing_now_column
+from cishouseholds.expressions import any_column_equal_value
 from cishouseholds.expressions import any_column_null
+from cishouseholds.expressions import array_contains_any
 from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
@@ -154,9 +158,16 @@ from cishouseholds.pipeline.regex_patterns import not_working_pattern
 from cishouseholds.pipeline.regex_patterns import retired_regex_pattern
 from cishouseholds.pipeline.regex_patterns import self_employed_regex
 from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
+from cishouseholds.pipeline.regex_testing import healthcare_classification
+from cishouseholds.pipeline.regex_testing import patient_facing_classification
+from cishouseholds.pipeline.regex_testing import patient_facing_pattern
+from cishouseholds.pipeline.regex_testing import roles_map
+from cishouseholds.pipeline.regex_testing import social_care_classification
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
+
+# from cishouseholds.pipeline.regex_patterns import healthcare_bin_pattern
 
 
 def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFrame:
@@ -186,7 +197,6 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     window = Window.partitionBy(*join_on_columns)
     df = df.withColumn("DROP", F.col("LENGTH") != F.max("LENGTH").over(window))
     df = df.filter((F.col("standard_occupational_classification_code") != "uncodeable") & (~F.col("DROP")))
-
     return df.drop("DROP", "LENGTH")
 
 
@@ -2124,6 +2134,7 @@ def union_dependent_derivations(df):
         map={"Yes": "No", "No": "Yes"},
         condition_column="currently_smokes_or_vapes",
     )
+    df = add_pattern_matching_flags(df)
     df = fill_backwards_work_status_v2(
         df=df,
         date="visit_datetime",
@@ -2553,7 +2564,88 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         column_name_to_assign="is_self_employed",
         debug_mode=False,
     )
+    df = assign_regex_from_map(
+        df=df,
+        column_name_to_assign="regex_derived_job_sector",
+        reference_columns=["work_main_job_title", "work_main_job_role"],
+        roles=roles_map,
+    )
+    df = df.withColumn("healthcare_area", F.lit(None))
+    for healthcare_type, roles in healthcare_classification.items():  # type: ignore
+        df = df.withColumn(
+            "healthcare_area",
+            F.when(array_contains_any("regex_derived_job_sector", roles), healthcare_type).otherwise(  # type: ignore
+                F.col("healthcare_area")
+            ),
+        )
 
+    # TODO: need to exclude healthcare types from social care matching
+    df = df.withColumn("social_care_area", F.lit(None))
+    for social_care_type, roles in social_care_classification.items():  # type: ignore
+        df = df.withColumn(
+            "social_care_area",
+            F.when(array_contains_any("regex_derived_job_sector", roles), social_care_type).otherwise(  # type: ignore
+                F.col("social_care_area")
+            ),
+        )
+
+    # add boolean flags for working in healthcare or socialcare
+    df = df.withColumn("works_healthcare", F.col("healthcare_area").isNotNull())
+    df = df.withColumn("works_social_care", F.col("social_care_area").isNotNull())
+
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        column_name_to_assign="is_patient_facing",
+        positive_regex_pattern=patient_facing_pattern.positive_regex_pattern,
+        negative_regex_pattern=patient_facing_pattern.negative_regex_pattern,
+    )
+
+    # df = df.withColumn(
+    #     "works_healthcare",
+    #     (array_contains_any("regex_derived_job_sector", healthcare_positive_roles))
+    #     & (~array_contains_any("regex_derived_job_sector", healthcare_negative_roles)),
+    # )
+
+    df = df.withColumn(
+        "is_patient_facing",
+        F.when(
+            (F.col("works_healthcare") | F.col("is_patient_facing"))
+            & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
+            True,
+        ).otherwise(False),
+    )
+
+    df = assign_column_value_from_multiple_column_map(
+        df,
+        "work_health_care_patient_facing",
+        [
+            ["No", [False, None]],
+            ["Yes, primary care, patient-facing", [True, "Primary"]],
+            ["Yes, secondary care, patient-facing", [True, "Secondary"]],
+            ["Yes, other healthcare, patient-facing", [True, "Other"]],
+            ["Yes, primary care, non-patient-facing", [False, "Primary"]],
+            ["Yes, secondary care, non-patient-facing", [False, "Secondary"]],
+            ["Yes, other healthcare, non-patient-facing", [False, "Other"]],
+        ],
+        ["is_patient_facing", "healthcare_area"],
+    )
+
+    window = Window.partitionBy("participant_id")
+    df = df.withColumn(
+        "patient_facing_over_20_percent",
+        F.sum(F.when(F.col("is_patient_facing"), 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
+    )
+
+    work_status_columns = ["work_status_v0", "work_status_v1", "work_status_v2", "work_status_digital"]
+    for work_status_column in work_status_columns:
+        df = df.withColumn(
+            work_status_column,
+            F.when(F.col("not_working"), "not working")
+            .when(F.col("at_school") | F.col("at_university"), "student")
+            .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
+            .otherwise(F.col(work_status_column)),
+        )
     return df
 
 
