@@ -1,10 +1,8 @@
-import configparser
 import os
 import time
 import traceback
 from contextlib import contextmanager
 from datetime import datetime
-from pathlib import Path
 from typing import Dict
 from typing import List
 
@@ -133,10 +131,7 @@ def run_pipeline_stages(
     A status can be added by adding a return string to the stage function.
     """
 
-    config = configparser.ConfigParser()
-    config_file = Path(__file__).parent.parent / ".bumpversion.cfg"
-    config.readfp(open(config_file))
-    pipeline_version = config.get("bumpversion", "current_version")
+    pipeline_version = cishouseholds.__version__
 
     number_of_stages = len(pipeline_stage_list)
     max_digits = len(str(number_of_stages))

@@ -1,7 +1,16 @@
+import re
+from pathlib import Path
+
 import setuptools
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
+
+
+def get_version():
+    text = open(Path(__file__).parent / "cishouseholds" / "__init__.py").read()
+    match = re.compile(r"^__version__\s*\=\s*[\"\']([^\s\'\"]+)", re.M).search(text)
+    return match.group(1)
 
 
 def read_requirements(file):
@@ -26,7 +35,7 @@ dev_requires = [
 
 setuptools.setup(
     name="cishouseholds",
-    version="2.2.2-beta.4",
+    version=get_version(),
     author="CIS development team",
     author_email="cis.dev@ons.gov.uk",
     description="Data engineering pipeline for the Office for National Statistics COVID-19 Infection Survey (CIS)",
