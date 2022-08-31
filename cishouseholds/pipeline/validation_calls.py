@@ -32,8 +32,6 @@ def validation_calls(SparkVal):
             "matches": r"^(ON([SWCN]0|S2|S7)[0-9]{7})$",
             "subset": F.col("survey_response_dataset_major_version") <= 2,
         },
-        "1tot1_swab": {"matches": 1},  # Swab_matches_not_exact
-        # "region_code":"not_null"
     }
     duplicate_column_calls = {
         "blood_sample_barcode": {
@@ -150,21 +148,6 @@ def validation_calls(SparkVal):
         ),
         error_message="sample taken should be within date range",
         columns=["visit_datetime", "samples_taken_datetime"],
-    )
-
-    SparkVal.validate_user_defined_logic(  # No_blood_match_mismatching
-        logic=(
-            ((F.datediff(F.col("blood_sample_received_date"), F.col("visit_datetime")) <= 2))
-            | ((F.datediff(F.col("blood_sample_received_date"), F.col("visit_datetime")) >= 11))
-        ),
-        error_message="blood sample recieved date should be between 2 days before and 11 after visit date",
-        columns=["blood_sample_received_date", "visit_datetime"],
-    )
-
-    SparkVal.validate_user_defined_logic(
-        logic=((F.col("pcr_result_recorded_datetime") >= F.col("visit_datetime")) & (F.col("diff_vs_visit_hr") <= 240)),
-        error_message="the swab result should be recieved within 10 days after the visit",
-        columns=["pcr_result_recorded_datetime", "visit_datetime", "diff_vs_visit_hr"],
     )
 
 

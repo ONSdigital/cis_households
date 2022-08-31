@@ -6,6 +6,36 @@ yes_no_prefer_not_to_say = ["Yes", "No", "Prefer not to say"]
 yes_no_unknown_choice = ["Yes", "No", "Don't know", None]
 people_count = ["0", "1 to 5", "6 to 10", "11 to 20", "21 or more", "Don't know", "Prefer not to say", None]
 times_count = ["1", "2", "3", "4", "5", "6", "7 times or more", "Don't know", "None", "Prefer not to say", None]
+void_reasons = [
+    "Leaked sample",
+    "Low VTM/dry tube",
+    "Multiple swabs",
+    "No swab",
+    "Empty or Insufficient volume",
+    "Leaked",
+    "Unused Kits",
+    "Delay due to mis-delivery",
+    "No LP5 tube",
+    "No LP5",
+]
+consolidation_points = [
+    "Consolidation.box_empty",
+    "Consolidation.sample_leaked",
+    "Consolidation.sample_uncompleted",
+    "Consolidation.kpa_overpacked_different_ref_different_type",
+    "Consolidation.kpa_overpacked",
+    "Consolidation.kpa_overpacked_different_ref_same_type",
+    "Consolidation.sample_mismatched",
+    "Consolidation.sample_bagged_zip",
+    "Consolidation.sample_unbagged",
+    "Consolidation.sample_unbagged_no_kpa",
+    "Consolidation.box_multipacked",
+    "Consolidation.tube_carrier_unbagged",
+    "Consolidation.tube_carrier_unbagged_unboxed",
+    "Consolidation.kpa_unboxed",
+    "Consolidation.kpa_unscanned",
+    "Consolidation.exception_undefined",
+]
 
 start_date_list = datetime(2022, 1, 1)
 end_date_list = datetime(2022, 1, 10)
@@ -44,27 +74,6 @@ def get_nims_data_description(_, participant_ids=[]):
     }
 
 
-def get_swab_data_description(_):
-    return lambda: {  # noqa: E731
-        "Sample": _("random.custom_code", mask="ONS########", digit="#"),
-        "Result": _("choice", items=["Negative", "Positive", "Void"]),
-        "Date Tested": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S UTC", start=2018, end=2022),
-        "Lab ID": _("choice", items=["GLS"]),
-        "CH1-Target": _("choice", items=["ORF1ab", None]),
-        "CH1-Result": _("choice", items=["Inconclusive", "Negative", "Positive", "Rejected"]),
-        "CH1-Cq": _("float_number", start=10.0, end=40.0, precision=12),
-        "CH2-Target": _("choice", items=["N gene", None]),
-        "CH2-Result": _("choice", items=["Inconclusive", "Negative", "Positive", "Rejected"]),
-        "CH2-Cq": _("float_number", start=10.0, end=40.0, precision=12),
-        "CH3-Target": _("choice", items=["S gene", None]),
-        "CH3-Result": _("choice", items=["Inconclusive", "Negative", "Positive", "Rejected"]),
-        "CH3-Cq": _("float_number", start=10.0, end=40.0, precision=12),
-        "CH4-Target": _("choice", items=["S gene", None]),
-        "CH4-Result": _("choice", items=["Positive", "Rejected"]),
-        "CH4-Cq": _("float_number", start=15.0, end=30.0, precision=12),
-    }
-
-
 def get_swab_testkit_data_description(_):
     return lambda: {  # noqa: E731
         "Sample": _("random.custom_code", mask="ONS########", digit="#"),
@@ -84,54 +93,6 @@ def get_swab_testkit_data_description(_):
         "CH4-Target": _("choice", items=["S gene", None]),
         "CH4-Result": _("choice", items=["Positive", "Rejected"]),
         "CH4-Cq": _("float_number", start=15.0, end=30.0, precision=12),
-    }
-
-
-def get_blood_data_description(_, target):
-    return lambda: {  # noqa: E731
-        "Serum Source ID": _("random.custom_code", mask="ONS########", digit="#"),
-        "Blood Sample Type": _("choice", items=["Venous", "Capillary"]),
-        "Plate Barcode": _("random.custom_code", mask=f"ONS_######C{target}-#", digit="#"),
-        "Well ID": _("random.custom_code", mask="@##", char="@", digit="#"),
-        "Detection": _("choice", items=["DETECTED", "NOT detected", "failed"]),
-        "Monoclonal quantitation (Colourimetric)": _("float_number", start=0.0, end=3500, precision=4),
-        "Monoclonal bounded quantitation (Colourimetric)": _("float_number", start=20, end=400, precision=1),
-        "Monoclonal undiluted quantitation (Colourimetric)": _("integer_number", start=0, end=20000),
-        "Date ELISA Result record created": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
-        "Date Samples Arrayed Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
-        "Date Samples Received Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
-        "Voyager Date Created": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S", start=2018, end=2022),
-    }
-
-
-def get_unassayed_blood_data_description(_):
-    return lambda: {  # noqa: E731
-        "Date Received": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S UTC", start=2018, end=2022),
-        "Sample ID": _("random.custom_code", mask="ONS########", digit="#"),
-        "Rejection Code": _("random.randint", a=1, b=9999),
-        "Reason for rejection": _("text.sentence"),
-        "Sample Type V/C": _("choice", items=["V", "C"]),
-    }
-
-
-def get_historical_blood_data_description(_):
-    return lambda: {  # noqa: E731
-        "blood_barcode_OX": _("random.custom_code", mask="ONS########", digit="#"),
-        "received_ox_date": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
-        "result_tdi": _("choice", items=["Positive", "Negative", "Could not process", "Insufficient sample", None]),
-        "result_siemens": _("choice", items=["Positive", "Negative", "Insufficient sample", None]),
-        "result_tdi_date": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
-        "assay_tdi": _("random.uniform", a=0, b=150000, precision=6),
-        "assay_category": _("choice", items=["Pre 2021-03-01", "Post 2021-03-01"]),
-        "assay_siemens": _("random.uniform", a=0, b=20, precision=6),
-        "plate_tdi": _("random.custom_code", mask="ONS_######", digit="#"),
-        "well_tdi": _("random.custom_code", mask="&##", digit="#", char="&"),
-        "lims_id": _("random.custom_code", mask="ONS########1", digit="#"),
-        "blood_sample_type": _("choice", items=["Venous", "Capillary"]),
-        "voyager_blood_dt_time": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S", start=2018, end=2022),
-        "arrayed_ox_date": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2018, end=2022),
-        "assay_mabs": _("random.uniform", a=0, b=800, precision=6),
-        "platestorage": _("choice", items=["Fresh", "Frozen"]),
     }
 
 
@@ -2038,6 +1999,47 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
             ],
             weights=[0.9, 0.1],
         ),
+        "form_start_datetime": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "blood_consolidation_point_error": _("choice", items=consolidation_points),
+        "swab_consolidation_point_error": _("choice", items=consolidation_points),
+        "blood_consolidation_point_error_datetime": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "swab_consolidation_point_error_datetime": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
         "digital_survey_collection_mode": _("choice", items=["Online", "Telephone", None]),
         "swab_taken": _("choice", items=yes_no_none_choice),
         "swab_not_taken_reason": _(
@@ -2879,4 +2881,5 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         ),
         "other_antibody_test_positive_date": _("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021),
         "other_antibody_test_negative_date": _("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021),
+        "form_language": _("choice", items=["Welsh", "English"]),
     }
