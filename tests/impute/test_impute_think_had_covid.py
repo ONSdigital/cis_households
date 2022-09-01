@@ -1,7 +1,7 @@
 import pyspark.sql.functions as F
 from chispa import assert_df_equality
 
-from cishouseholds.impute import impute_think_had_covid
+from cishouseholds.impute import fill_forwards_covid_contact
 
 
 def test_impute_think_had_covid(spark_session):
@@ -44,5 +44,5 @@ def test_impute_think_had_covid(spark_session):
         input_df = input_df.withColumn(col, F.to_timestamp(F.col(col), format="yyyy-MM-dd"))
         expected_df = expected_df.withColumn(col, F.to_timestamp(F.col(col), format="yyyy-MM-dd"))
 
-    output_df = impute_think_had_covid(input_df, "id", "date", "visit_date", "type", "contact", {"A": 1, "B": 2})
+    output_df = fill_forwards_covid_contact(input_df, "id", "date", "visit_date", "type", "contact", {"A": 1, "B": 2})
     assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)

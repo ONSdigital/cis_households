@@ -1,8 +1,9 @@
-import pyspark.sql.functions as F
-from chispa import assert_df_equality
 from tkinter.messagebox import NO
 
-from cishouseholds.impute import impute_contact_covid
+import pyspark.sql.functions as F
+from chispa import assert_df_equality
+
+from cishouseholds.impute import fill_forwards_covid_infection
 
 
 def test_impute_contact_covid(spark_session):
@@ -46,12 +47,12 @@ def test_impute_contact_covid(spark_session):
         input_df = input_df.withColumn(col, F.to_timestamp(F.col(col), format="yyyy-MM-dd"))
         expected_df = expected_df.withColumn(col, F.to_timestamp(F.col(col), format="yyyy-MM-dd"))
 
-    output_df = impute_contact_covid(
+    output_df = fill_forwards_covid_infection(
         df=input_df,
         participant_id_column="id",
-        covid_date_column="date",
-        visit_date_column="visit_date",
-        contact_column="contact",
-        carry_forward_columns=["col_1", "col_2", "col_3"],
+        event_date_column="date",
+        reference_date_column="visit_date",
+        event_indicator_column="contact",
+        fill_forward_columns=["col_1", "col_2", "col_3"],
     )
     assert_df_equality(output_df, expected_df, ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
