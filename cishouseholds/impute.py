@@ -20,6 +20,53 @@ from cishouseholds.udfs import generate_sample_proportional_to_size_udf
 sample_proportional_to_size_udf = generate_sample_proportional_to_size_udf(get_or_create_spark_session())
 
 
+def impute_outside_uk_columns(
+    df: DataFrame,
+    outside_uk_date_column: str,
+    outside_country_column: str,
+    outside_uk_since_column: str,
+    visit_datetime_column: str,
+    id_column: str,
+):
+    df = df.withColumn(
+        outside_uk_since_column,
+        F.when(F.col(outside_uk_date_column) < F.lit("2020/04/01"), "No").otherwise(F.col(outside_uk_since_column)),
+    )
+    df = df.withColumn(
+        outside_uk_date_column,
+        F.when(F.col(outside_uk_date_column) < F.lit("2020/04/01"), None).otherwise(F.col(outside_uk_date_column)),
+    )
+    df = df.withColumn(
+        outside_country_column,
+        F.when(F.col(outside_uk_date_column) < F.lit("2020/04/01"), None).otherwise(F.col(outside_country_column)),
+    )
+
+    window = (
+        Window.partitionBy(id_column)
+        .orderBy(visit_datetime_column)
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
+    df = df.withColumn(
+        outside_uk_since_column,
+        F.when(
+            F.col(outside_uk_since_column) != "Yes", F.last(outside_uk_since_column, ignorenulls=True).over(window)
+        ).otherwise(F.col(outside_uk_since_column)),
+    )
+    df = df.withColumn(
+        outside_uk_date_column,
+        F.when(
+            F.col(outside_uk_since_column) != "Yes", F.last(outside_uk_date_column, ignorenulls=True).over(window)
+        ).otherwise(F.col(outside_uk_date_column)),
+    )
+    df = df.withColumn(
+        outside_country_column,
+        F.when(
+            F.col(outside_uk_since_column) != "Yes", F.last(outside_country_column, ignorenulls=True).over(window)
+        ).otherwise(F.col(outside_country_column)),
+    )
+    return df
+
+
 def impute_contact_covid(
     df: DataFrame,
     participant_id_column: str,
