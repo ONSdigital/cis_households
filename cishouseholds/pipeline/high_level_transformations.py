@@ -45,6 +45,7 @@ from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import assign_work_status_group
+from cishouseholds.derive import clean_postcode
 from cishouseholds.derive import concat_fields_if_true
 from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
@@ -87,7 +88,6 @@ from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_barcode_simple
 from cishouseholds.edit import clean_job_description_string
-from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import edit_to_sum_or_max_value

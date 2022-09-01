@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.weights.design_weights import household_level_populations
+from cishouseholds.derive import household_level_populations
 
 
 def test_household_level_populations(spark_session):
