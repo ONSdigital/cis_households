@@ -177,9 +177,7 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
 
     df = df.withColumn(
         "standard_occupational_classification_code",
-        F.regexp_replace(
-            F.col("standard_occupational_classification_code"), r"^un|^conflict|^AS20|^REF!|^\s*$", "uncodeable"
-        ),
+        F.regexp_replace(F.col("standard_occupational_classification_code"), r"[a-zA-Z].*|^\s*$", "uncodeable"),
     )
 
     # remove nulls and deduplicate on all columns
@@ -195,7 +193,7 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
         ),
     ).orderBy(F.desc("LENGTH"))
 
-    window = Window.partitionBy(*join_on_columns)
+    window = Window.partitionBy(*join_on_columns).orderBy(*join_on_columns)
 
     df = df.withColumn(
         "DROP_REASON",
@@ -203,16 +201,23 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
             F.col("standard_occupational_classification_code") == "uncodeable", "UNCODEABLE"
         ),
     )
-    df = df.withColumn(
-        "DROP_REASON",
-        F.when(
-            (F.sum(F.when(F.col("DROP_REASON").isNull(), 1).otherwise(0)).over(window) > 1)
-            & (F.col("DROP_REASON").isNull()),
-            "AMBIGUOUS AFTER DEDUPLICATION",
-        ).otherwise(F.col("DROP_REASON")),
-    ).drop("LENGTH")
-    resolved_df = df.filter(F.col("DROP_REASON").isNull()).drop("DROP_REASON")
-    duplicate_df = df.filter(F.col("DROP_REASON").isNotNull())
+    df = (
+        df.withColumn(
+            "DROP_REASON",
+            F.when(
+                (F.sum(F.when(F.col("DROP_REASON").isNull(), 1).otherwise(0)).over(window) > 1)
+                & (F.col("DROP_REASON").isNull()),
+                "AMBIGUOUS AFTER DEDUPLICATION",
+            ).otherwise(F.col("DROP_REASON")),
+        )
+        .withColumn("ROW_NUMBER", F.row_number().over(window))
+        .drop("LENGTH")
+    )
+
+    resolved_df = df.filter((F.col("DROP_REASON").isNull()) | (F.col("ROW_NUMBER") == 1)).drop(
+        "DROP_REASON", "ROW_NUMBER"
+    )
+    duplicate_df = df.filter((F.col("DROP_REASON").isNotNull()) & (F.col("ROW_NUMBER") != 1)).drop("ROW_NUMBER")
     return duplicate_df, resolved_df
 
 

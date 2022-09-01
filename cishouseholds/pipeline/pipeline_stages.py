@@ -375,15 +375,11 @@ def process_soc_data(
     """
     join_on_columns = ["work_main_job_title", "work_main_job_role"]
     window = Window.partitionBy("standard_occupational_classification_code", *join_on_columns)
-    inconsistences_resolution_df = extract_from_table(inconsistences_resolution_table).withColumnRenamed(
-        "Gold SOC2010 code", "resolved_soc_code"
-    )
+    inconsistences_resolution_df = extract_from_table(inconsistences_resolution_table)
     soc_lookup_df = extract_from_table(unioned_soc_lookup_table)
     survey_responses_df = extract_from_table(survey_responses_table)
     soc_lookup_df = soc_lookup_df.join(
-        inconsistences_resolution_df.withColumnRenamed(
-            "standard_occupational_classification_code", "resolved_soc_code"
-        ),
+        inconsistences_resolution_df,
         on=join_on_columns,
         how="left",
     )
