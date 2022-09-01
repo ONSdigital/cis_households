@@ -33,7 +33,8 @@ def assign_datetime_from_coalesced_columns_and_log_source(
     source_reference_column_name: str,
     default_timestamp: str,
 ):
-
+#TODO-documentation:
+#1. description of parameters missing in docstring - for example: what is min_date, default timestamp
     """
     Assign a timestamp column from coalesced list of columns with a default timestamp if timestamp missing in column
     """
@@ -99,7 +100,8 @@ def assign_visit_order(df: DataFrame, column_name_to_assign: str, id: str, order
     df = df.withColumn(column_name_to_assign, F.row_number().over(window))
     return df
 
-
+#TODO-documentation:
+#1. Parameters in docstring is missing an underline
 def translate_column_regex_replace(df: DataFrame, reference_column: str, multiple_choice_dict: dict):
     """
     translate a multiple choice column from welsh to english for downstream transformation based on multiple_choice_dict
@@ -119,7 +121,8 @@ def translate_column_regex_replace(df: DataFrame, reference_column: str, multipl
         )
     return df
 
-
+#TODO-documentation:
+#1. Parameters in docstring is missing an underline
 def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_column_name_map: dict, sep: str):
     """
     map column containing multiple value options to new columns containing true/false based on if their
@@ -208,7 +211,6 @@ def concat_fields_if_true(
     )
     return df
 
-
 def derive_had_symptom_last_7days_from_digital(
     df: DataFrame,
     column_name_to_assign: str,
@@ -228,7 +230,7 @@ def derive_had_symptom_last_7days_from_digital(
     )
     return df.drop("NUM_YES", "NUM_NO")
 
-
+#TO-DO-documentation: function not used anywhere
 def assign_visits_in_day(
     df: DataFrame,
     column_name_to_assign: str,
@@ -244,7 +246,7 @@ def assign_visits_in_day(
     df = df.withColumn(column_name_to_assign, F.sum(F.lit(1)).over(window))
     return df
 
-
+#TO-DO-documentation: function not used anywhere
 def count_barcode_cleaned(
     df: DataFrame,
     column_name_to_assign: str,
@@ -274,7 +276,7 @@ def count_barcode_cleaned(
     )
     return df
 
-
+#TO-DO-formatting of the arguments inside the function
 def assign_fake_id(df: DataFrame, column_name_to_assign: str, reference_column: str):
     """
     Derive an incremental id from a reference column containing an id
@@ -502,7 +504,7 @@ def assign_ever_had_long_term_health_condition_or_disabled(
 
     return df.drop("TEMP_EVERNEVER")
 
-
+#TO-DO-documentation - argument formatting
 def assign_random_day_in_month(
     df: DataFrame, column_name_to_assign: str, month_column: str, year_column: str
 ) -> DataFrame:
@@ -533,7 +535,7 @@ def assign_random_day_in_month(
     )
     return df.drop("TEMP_DATE", "TEMP_DAY")
 
-
+#TO-DO-documentation: function not used anywhere
 def assign_household_size(
     df: DataFrame,
     column_name_to_assign: str,
@@ -557,7 +559,8 @@ def assign_household_size(
         ),
     )
 
-
+#TO-DO-documentation: wrong function description
+#TO-DO-documentation: function not used anywhere
 def assign_first_visit(df: DataFrame, column_name_to_assign: str, id_column: str, visit_date_column: str) -> DataFrame:
     """
     Assign column to represent number of participants in household
@@ -571,7 +574,7 @@ def assign_first_visit(df: DataFrame, column_name_to_assign: str, id_column: str
     window = Window.partitionBy(id_column).orderBy(visit_date_column)
     return df.withColumn(column_name_to_assign, F.first(visit_date_column).over(window))
 
-
+#TO-DO-documentation: function not used anywhere
 def assign_last_visit(
     df: DataFrame,
     column_name_to_assign: str,
@@ -600,7 +603,7 @@ def assign_last_visit(
     )
     return df
 
-
+#TO-DO-documentation: function not used anywhere
 def assign_column_given_proportion(
     df: DataFrame,
     column_name_to_assign: str,
@@ -670,7 +673,8 @@ def count_value_occurrences_in_column_subset_row_wise(
     )
     return df
 
-
+#TO-DO-documentation: spelling
+#TO-DO-documentation: function not used anywhere
 def assign_any_symptoms_around_visit(
     df: DataFrame,
     column_name_to_assign: str,
@@ -695,7 +699,7 @@ def assign_any_symptoms_around_visit(
     )
     return df
 
-
+#TO-DO-documentation: function not used anywhere
 def assign_true_if_any(
     df: DataFrame,
     column_name_to_assign: str,
@@ -722,7 +726,7 @@ def assign_true_if_any(
         )
     return df
 
-
+#TO-DO-documentation: function not used anywhere
 def assign_proportion_column(
     df: DataFrame,
     column_name_to_assign: str,
@@ -806,7 +810,7 @@ def assign_unique_id_column(df: DataFrame, column_name_to_assign: str, concat_co
     """
     return df.withColumn(column_name_to_assign, F.concat_ws("-", *concat_columns))
 
-
+#TO-DO-documentation: function not used anywhere
 def assign_has_been_to_column(
     df: DataFrame,
     column_name_to_assign: str,
@@ -838,7 +842,7 @@ def assign_has_been_to_column(
     )
     return df
 
-
+#TO-DO-documentation: function not used anywhere
 def assign_covid_contact_status(
     df: DataFrame, column_name_to_assign: str, known_column: str, suspect_column: str
 ) -> DataFrame:
@@ -870,7 +874,7 @@ def assign_filename_column(df: DataFrame, column_name_to_assign: str) -> DataFra
         F.regexp_replace(F.input_file_name(), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", ""),
     )
 
-
+#TO-DO-documentation: typo
 def assign_column_from_mapped_list_key(
     df: DataFrame, column_name_to_assign: str, reference_column: str, map: dict
 ) -> DataFrame:
@@ -892,7 +896,7 @@ def assign_column_from_mapped_list_key(
         )
     return df
 
-
+#TO-DO-documentation: function not used anywhere
 def assign_test_target(df: DataFrame, column_name_to_assign: str, filename_column: str) -> DataFrame:
     """
     Assign a column for the appropriate test target type corresponding
@@ -912,7 +916,7 @@ def assign_test_target(df: DataFrame, column_name_to_assign: str, filename_colum
     )
     return df
 
-
+#TO-DO-documentation: function not used anywhere
 def assign_school_year_september_start(
     df: DataFrame, dob_column: str, visit_date_column: str, column_name_to_assign: str
 ) -> DataFrame:
@@ -945,7 +949,7 @@ def assign_school_year_september_start(
     )
     return df
 
-
+#TO-DO-documentation: function not used anywhere
 def assign_work_patient_facing_now(
     df: DataFrame,
     column_name_to_assign: str,
@@ -989,7 +993,7 @@ def assign_work_patient_facing_now(
     )
     return df
 
-
+#TO-DO-documentation: function not used anywhere
 def assign_work_person_facing_now(
     df: DataFrame,
     column_name_to_assign: str,
@@ -1033,7 +1037,7 @@ def assign_work_person_facing_now(
     )
     return df
 
-
+#TO-DO-documentation: typo
 def assign_named_buckets(
     df: DataFrame,
     reference_column: str,
@@ -1070,7 +1074,8 @@ def assign_named_buckets(
     dfb = dfb.withColumn(column_name_to_assign, mapping_expr[dfb["buckets"]])
     return dfb.drop("buckets")
 
-
+#TO-DO-documentation: typo
+#TO-DO-documentation: function not used anywhere
 def assign_age_group_school_year(
     df: DataFrame,
     country_column: str,
@@ -1188,7 +1193,7 @@ def assign_outward_postcode(df: DataFrame, column_name_to_assign: str, reference
 
     return df
 
-
+#TO-DO-documentation: function not used anywhere
 def assign_column_from_coalesce(df: DataFrame, column_name_to_assign: str, *args) -> DataFrame:
     """
     Assign new column with values from coalesced columns.
@@ -1209,7 +1214,8 @@ def assign_column_from_coalesce(df: DataFrame, column_name_to_assign: str, *args
     """
     return df.withColumn(colName=column_name_to_assign, col=F.coalesce(*args))
 
-
+#TO-DO-documentation: argument types not specified
+#TO-DO-documentation: function not used anywhere
 def assign_substring(
     df: DataFrame,
     column_name_to_assign,
@@ -1312,7 +1318,7 @@ def assign_school_year(
     )
     return df
 
-
+#TO-DO-documentation: function not used anywhere
 def derive_cq_pattern(df: DataFrame, column_names, spark_session) -> DataFrame:
     """
     Derive a new column containing string of pattern in
@@ -1355,7 +1361,7 @@ def derive_cq_pattern(df: DataFrame, column_names, spark_session) -> DataFrame:
 
     return df
 
-
+#TO-DO-documentation: function not used anywhere
 def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list) -> DataFrame:
     """
     Create a new column containing the mean of multiple existing columns.
@@ -1551,7 +1557,7 @@ def assign_column_to_date_string(
         df = df.withColumn(column_name_to_assign, F.lower(F.col(column_name_to_assign)))
     return df
 
-
+#TO-DO-documentation: function not used anywhere
 def assign_single_column_from_split(
     df: DataFrame,
     column_name_to_assign: str,
@@ -1627,7 +1633,7 @@ def assign_isin_list(
         .otherwise(None),
     )
 
-
+#TO-DO-documentation: function not used anywhere
 def assign_from_lookup(
     df: DataFrame,
     column_name_to_assign: str,
@@ -1706,7 +1712,7 @@ def assign_age_at_date(df: DataFrame, column_name_to_assign: str, base_date, dat
 
     return df.drop("date_diff")
 
-
+#TO-DO-documentation: function not used anywhere
 def assign_correct_age_at_date(df: DataFrame, column_name_to_assign, reference_date, date_of_birth) -> DataFrame:
     """
     Uses correct logic to calculate complete years elapsed between 2 dates
@@ -1830,7 +1836,7 @@ def assign_work_status_group(df: DataFrame, colum_name_to_assign: str, reference
     )
     return df
 
-
+#TO-DO-documentation: function not used anywhere
 def contact_known_or_suspected_covid_type(
     df: DataFrame,
     contact_known_covid_type_column: str,
@@ -2071,7 +2077,7 @@ def assign_regex_match_result(
 
     return df
 
-
+#TO-DO-documentation: function not used anywhere
 def get_keys_by_value(input_dict: Dict, values_to_lookup: List) -> List:
     """
     Returns a list of keys from the input dictionary if the dictionary's values are in the
@@ -2107,7 +2113,7 @@ def flag_records_for_work_location_null() -> F.Column:
         )
     )
 
-
+#TO-FO-documentation: function not used anywhere
 def flag_records_for_work_location_student() -> F.Column:
     """Flag records for application of "Work location" rules for students"""
     return F.col("work_status_v0").isin("Student") | (F.col("age_at_visit") < F.lit(16))
@@ -2163,7 +2169,7 @@ def flag_records_for_furlough_rules_v2_b() -> F.Column:
     """Flag records for application of "Furlough Rules V2-b" rules"""
     return F.col("work_status_v2").isin("Self-employed and currently working")
 
-
+#TO-FO-documentation: function not used anywhere
 def flag_records_for_self_employed_rules_v0() -> F.Column:
     """Flag records for application of "Self-employed Rules V0" rules"""
     return F.col("work_status_v0").isin("Employed")
