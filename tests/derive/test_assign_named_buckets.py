@@ -13,6 +13,7 @@ def test_assign_named_buckets(spark_session):
             ("e", 20, "20-49"),
             ("f", 55, "50-69"),
             ("g", 70, "70+"),
+            ("h", 0, None),
         ],
         schema="name string, age integer, age_range string",
     )

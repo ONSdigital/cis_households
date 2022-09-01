@@ -7,6 +7,7 @@ from typing import Union
 import pandas as pd
 from pyspark.sql import DataFrame
 
+from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pyspark_utils import column_to_list
 
 
@@ -14,9 +15,7 @@ class InvalidFileError(Exception):
     pass
 
 
-def list_contents(
-    path: str, recursive: Optional[bool] = False, date_from_filename: Optional[bool] = False
-) -> DataFrame:
+def list_contents(path: str, recursive: Optional[bool] = False, date_from_filename: Optional[bool] = True) -> DataFrame:
     """
     Read contents of a directory and return the path for each file and
     returns a dataframe of
@@ -34,16 +33,18 @@ def list_contents(
     for line in ls.stdout:  # type: ignore
         dic = {}
         f = line.decode("utf-8")
+        attributes = f.split()
+
+        attributes = [*attributes[:7], " ".join(attributes[7:])]
         if "Found" not in f:
-            for i, component in enumerate(f.split()):
+            for i, component in enumerate(attributes):
                 dic[names[i]] = component
             dic["filename"] = dic["file_path"].split("/")[-1]
         files.append(dic)
     df = pd.DataFrame(files)
     if date_from_filename:
-        df["upload_date"] = df["filename"].str.extract((r"(\d{8})(_\d{4})?(.csv)"), expand=False)
+        df["upload_date"] = df["filename"].str.extract((r"(\d{8})(?:_\d{4}|_\d{6})?(?=.csv|.txt)"), expand=False)
         df["upload_date"] = pd.to_datetime(df["upload_date"], errors="coerce", format="%Y%m%d")
-
     return df
 
 
@@ -51,6 +52,7 @@ def get_files_by_date(
     path: str,
     start_date: Optional[Union[str, datetime]] = None,
     end_date: Optional[Union[str, datetime]] = None,
+    date_from_filename: bool = True,
 ) -> List:
     """
     Get a list of hdfs file paths for a given set of date critera and parent path on hdfs.
@@ -66,7 +68,7 @@ def get_files_by_date(
     end_date
         date to select files before
     """
-    file_df = list_contents(path, date_from_filename=True)
+    file_df = list_contents(path, date_from_filename=date_from_filename)
     file_df = file_df.dropna(subset=["upload_date"])
     file_df = file_df.sort_values(["upload_date", "upload_time"])
 
@@ -97,8 +99,6 @@ def remove_list_items_in_table(item_list: list, table_name: str, item_column: st
     item_column
         name of column in table containing items to remove from list
     """
-    from cishouseholds.pipeline.input_file_processing import extract_from_table
-
     table_item_column = extract_from_table(table_name).select(item_column).distinct()
     table_items = column_to_list(table_item_column, item_column)
 
@@ -113,6 +113,7 @@ def get_files_to_be_processed(
     end_date=None,
     include_processed=False,
     include_invalid=False,
+    date_from_filename=True,
 ):
     """
     Get list of files matching the specified pattern and optionally filter
@@ -120,7 +121,7 @@ def get_files_to_be_processed(
     """
     from cishouseholds.pipeline.load import check_table_exists
 
-    file_paths = get_files_by_date(resource_path, start_date, end_date)
+    file_paths = get_files_by_date(resource_path, start_date, end_date, date_from_filename)
 
     if check_table_exists("error_file_log") and not include_invalid:
         file_paths = remove_list_items_in_table(file_paths, "error_file_log", "file_path")

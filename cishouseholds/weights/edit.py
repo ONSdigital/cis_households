@@ -1,4 +1,3 @@
-import re
 from typing import List
 
 from pyspark.sql import DataFrame
@@ -6,10 +5,14 @@ from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.edit import update_column_values_from_map
-from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
 def join_on_existing(df: DataFrame, df_to_join: DataFrame, on: List):
+    """
+    Join 2 dataframes on columns in 'on' list and
+    override empty values in the left dataframe with values from the right
+    dataframe.
+    """
     columns = [col for col in df_to_join.columns if col in df.columns]
     for col in columns:
         if col not in on:
@@ -17,46 +20,15 @@ def join_on_existing(df: DataFrame, df_to_join: DataFrame, on: List):
     df = df.join(df_to_join, on=on, how="left")
     for col in columns:
         if col not in on:
-            df = df.withColumn(
-                col, F.when(F.col(f"{col}_FT").isNotNull(), F.col(f"{col}_FT")).otherwise(F.col(col))
-            ).drop(f"{col}_FT")
+            df = df.withColumn(col, F.coalesce(F.col(f"{col}_FT"), F.col(col))).drop(f"{col}_FT")
     return df
 
 
-def null_to_value(df: DataFrame, column_name_to_update: str, value: int = 0):
-    return df.withColumn(
-        column_name_to_update,
-        F.when((F.col(column_name_to_update).isNull()) | (F.isnan(F.col(column_name_to_update))), value).otherwise(
-            F.col(column_name_to_update)
-        ),
+def fill_nulls(column_name_to_update, fill_value: int = 0):
+    """Fill Null and NaN values with a constant integer."""
+    return F.when((column_name_to_update.isNull()) | (F.isnan(column_name_to_update)), fill_value).otherwise(
+        column_name_to_update
     )
-
-
-def reformat_calibration_df(df: DataFrame, pivot_column: str, groupby_columns: List[str]):
-    dfs = []
-    for col in groupby_columns:
-        reformatted_df = df.groupBy(col).pivot(col).agg({pivot_column: "sum"}).drop(col, "null")
-        for p_column in reformatted_df.columns:
-            new_column_name = f"P{p_column.rstrip('.0')}"
-            reformatted_df = reformatted_df.withColumnRenamed(p_column, new_column_name)
-            reformatted_df = reformatted_df.withColumn(
-                new_column_name, F.lit(reformatted_df.agg({new_column_name: "max"}).collect()[0][0])
-            )
-        expr = [F.last(col).alias(col) for col in reformatted_df.columns]
-        reformatted_df = reformatted_df.agg(*expr)
-        dfs.append(reformatted_df)
-
-    if len(dfs) == 1:
-        return dfs[0]
-    else:
-        spark = get_or_create_spark_session()
-        spark.conf.set("spark.sql.crossJoin.enabled", "true")
-        return_df = dfs[0].withColumn("TEMP", F.lit(1))
-        for df in dfs[1:]:
-            df = df.withColumn("TEMP", F.lit(1))
-            return_df = return_df.join(df, return_df.TEMP == df.TEMP.alias("DF_TEMP"), how="inner").drop("TEMP")
-        # spark.conf.set("spark.sql.crossJoin.enabled", "false")
-        return return_df
 
 
 def reformat_calibration_df_simple(df: DataFrame, population_column: str, groupby_columns: List[str]):
@@ -134,17 +106,8 @@ aps_value_map = {
 # fmt: on
 
 
-def recode_column_patterns(df: DataFrame):
-    for curent_pattern, new_prefix in numeric_column_pattern_map.items():
-        col = list(filter(re.compile(curent_pattern).match, df.columns))
-        if len(col) > 0:
-            col = col[0]
-            new_col = new_prefix.format(re.findall(r"\d{1,}", col)[0])  # type: ignore
-            df = df.withColumnRenamed(col, new_col)
-    return df
-
-
 def recode_column_values(df: DataFrame, lookup: dict):
+    """wrapper to loop over multiple value maps for different columns"""
     for column_name, map in lookup.items():
         df = update_column_values_from_map(df, column_name, map)
     return df
@@ -189,8 +152,7 @@ def update_population_values(df: DataFrame):
     df = df.withColumn("interim_region_code", F.col("region_code"))
     df = df.withColumn("interim_sex", F.col("sex"))
 
-    for col, map in maps.items():
-        df = update_column_values_from_map(df, col, map)
+    df = recode_column_values(df, maps)
 
     for col, map in age_maps.items():  # type: ignore
         df = assign_named_buckets(df=df, reference_column="age", column_name_to_assign=col, map=map)

@@ -10,29 +10,40 @@ from pyspark.sql.types import StructType
 from cishouseholds.pipeline.config import get_config
 
 session_options = {
-    "l": {
-        "spark.executor.memory": "64g",
+    "test": {
+        "spark.executor.memory": "32g",
         "spark.executor.cores": 4,
-        "spark.dynamicAllocation.maxExecutors": 15,
-        "spark.sql.shuffle.partitions": 1000,
+        "spark.dynamicAllocation.maxExecutors": 8,
+        "spark.sql.shuffle.partitions": 256,
+        "spark.task.cpus": 1,
+    },
+    "l": {
+        "spark.executor.memory": "32g",
+        "spark.executor.cores": 4,
+        "spark.dynamicAllocation.maxExecutors": 16,
+        "spark.sql.shuffle.partitions": 256,
+        "spark.task.cpus": 1,
     },
     "m": {
         "spark.executor.memory": "32g",
-        "spark.executor.cores": 5,
-        "spark.dynamicAllocation.maxExecutors": 12,
-        "spark.sql.shuffle.partitions": 200,
+        "spark.executor.cores": 4,
+        "spark.dynamicAllocation.maxExecutors": 8,
+        "spark.sql.shuffle.partitions": 256,
+        "spark.task.cpus": 1,
     },
     "s": {
         "spark.executor.memory": "16g",
-        "spark.executor.cores": 5,
-        "spark.dynamicAllocation.maxExecutors": 5,
-        "spark.sql.shuffle.partitions": 50,
+        "spark.executor.cores": 2,
+        "spark.dynamicAllocation.maxExecutors": 4,
+        "spark.sql.shuffle.partitions": 128,
+        "spark.task.cpus": 1,
     },
     "xs": {
         "spark.executor.memory": "1g",
         "spark.executor.cores": 1,
-        "spark.dynamicAllocation.maxExecutors": 3,
-        "spark.sql.shuffle.partitions": 12,
+        "spark.dynamicAllocation.maxExecutors": 4,
+        "spark.sql.shuffle.partitions": 128,
+        "spark.task.cpus": 1,
     },
 }
 
@@ -85,6 +96,7 @@ def get_or_create_spark_session() -> SparkSession:
         .config("spark.shuffle.service.enabled", "true")
         .config("spark.sql.crossJoin.enabled", "true")
         .config("spark.sql.adaptive.enabled", "true")
+        .config("spark.task.cpus", spark_session_options["spark.task.cpus"])
         .appName("cishouseholds")
         .enableHiveSupport()
         .getOrCreate()
@@ -96,3 +108,17 @@ def get_or_create_spark_session() -> SparkSession:
 def column_to_list(df: DataFrame, column_name: str):
     """Fast collection of all records in a column to a standard list."""
     return [row[column_name] for row in df.collect()]
+
+
+def running_in_dev_test() -> bool:
+    """Convenience function to check if the code is executing in DevTest environment.
+
+    We test whether the code is executing in DevTest or not by inspecting the SPARK_HOME
+    environment variable - which is usuaully set to
+    `/opt/cloudera/parcels/CDH-6.3.x-x.cdh6.x.x.p0.xxxxxxxx/lib/spark`
+    """
+    expected_prefix_in_devtest_spark_home = "/opt/cloudera/parcels/CDH"
+
+    spark_home = os.getenv("SPARK_HOME", "")
+
+    return spark_home.startswith(expected_prefix_in_devtest_spark_home)

@@ -1,9 +1,22 @@
 """A collection of HDFS utils."""
+import os
 import subprocess
 
 
-def _perform(command, shell=False, str_output=False, ignore_error=False):
-    """Run shell command in subprocess returning exit code or full string output."""
+def _perform(command, shell: bool = False, str_output: bool = False, ignore_error: bool = False):
+    """
+    Run shell command in subprocess returning exit code or full string output.
+    _perform() will build the command that will be put into HDFS.
+    This will also be used for the functions below.
+    Parameters
+    ----------
+    shell
+        If true, the command will be executed through the shell.
+        See subprocess.Popen() reference.
+    str_output
+        output exception as string
+    ignore_error
+    """
     process = subprocess.Popen(command, shell=shell, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = process.communicate()
 
@@ -15,83 +28,79 @@ def _perform(command, shell=False, str_output=False, ignore_error=False):
     return process.returncode == 0
 
 
-def isfile(path):
+def isfile(path: str) -> bool:
     """
     Test if file exists. Uses 'hadoop fs -test -f.
 
-    Args: path (String)
+    Returns
+    -------
+    True for successfully completed operation. Else False.
 
-    Returns:
-        bool: Returns True for successfully completed operation. Else False.
-
-    Note:
-        If checking that directory with partitioned files (i.e. csv, parquet)
-        exists this will return false use isdir instead.
+    Note
+    ----
+    If checking that directory with partitioned files (i.e. csv, parquet)
+    exists this will return false use isdir instead.
     """
     command = ["hadoop", "fs", "-test", "-f", path]
     return _perform(command)
 
 
-def isdir(path):
+def isdir(path: str) -> bool:
     """
     Test if directory exists. Uses 'hadoop fs -test -d'.
 
-    Args: path (String)
-
-    Returns:
-    bool: Returns True for successfully completed operation. Else False.
+    Returns
+    -------
+    True for successfully completed operation. Else False.
     """
     command = ["hadoop", "fs", "-test", "-d", path]
     return _perform(command)
 
 
-def create_dir(path):
+def create_dir(path: str) -> bool:
     """
-    Create a directory. Uses 'hadoop fs -mkdir'.
+    Create a directory including the parent directories if they don't already exist.
+    Uses 'hadoop fs -mkdir -p'
 
-    Args: path (String)
-
-    Returns:
-        bool: Returns True for successfully completed operation. Else False.
+    Returns
+    -------
+    True for successfully completed operation. Else False.
     """
-    command = ["hadoop", "fs", "-mkdir", path]
+    command = ["hadoop", "fs", "-mkdir", "-p", path]
     return _perform(command)
 
 
-def delete_file(path):
+def delete_file(path: str):
     """
     Delete a file. Uses 'hadoop fs -rm'.
 
-    Args: path (String)
-
-    Returns:
-        bool: Returns True for successfully completed operation. Else False.
+    Returns
+    -------
+    True for successfully completed operation. Else False.
     """
     command = ["hadoop", "fs", "-rm", path]
     return _perform(command)
 
 
-def delete_dir(path):
+def delete_dir(path: str):
     """
     Delete a directory. Uses 'hadoop fs -rmdir'.
 
-    Args: path (String)
-
-    Returns:
-        bool: Returns True for successfully completed operation. Else False.
+    Returns
+    -------
+    True for successfully completed operation. Else False.
     """
     command = ["hadoop", "fs", "-rmdir", path]
     return _perform(command)
 
 
-def rename(from_path, to_path, overwrite=False):
+def rename(from_path: str, to_path: str, overwrite=False) -> bool:
     """
     Rename (i.e. move using full path) a file. Uses 'hadoop fs -mv'.
 
-    Args: path (String)
-
-    Returns:
-        bool: Returns True for successfully completed operation. Else False.
+    Returns
+    -------
+    True for successfully completed operation. Else False.
     """
     # move fails if target file exists and no -f option available
     if overwrite:
@@ -101,14 +110,13 @@ def rename(from_path, to_path, overwrite=False):
     return _perform(command)
 
 
-def copy(from_path, to_path, overwrite=False):
+def copy(from_path, to_path, overwrite=False) -> bool:
     """
     Copy a file. Uses 'hadoop fs -cp'.
 
-    Args: path (String)
-
-    Returns:
-        bool: Returns True for successfully completed operation. Else False.
+    Returns
+    -------
+    True for successfully completed operation. Else False.
     """
     if overwrite:
         return _perform(["hadoop", "fs", "-cp", "-f", from_path, to_path])
@@ -116,52 +124,67 @@ def copy(from_path, to_path, overwrite=False):
         return _perform(["hadoop", "fs", "-cp", from_path, to_path])
 
 
-def copy_local_to_hdfs(from_path, to_path):
+def copy_local_to_hdfs(from_path: str, to_path: str) -> bool:
     """
     Move or copy a local file to HDFS.
 
-    Args:
-        from_path (String): path to local file
-        to_path (String): path of where file should be placed in HDFS
+    Parameters
+    ----------
+    from_path: str
+        path to local file
+    to_path: str
+        path of where file should be placed in HDFS
 
-    Returns:
-        bool: Returns True for successfully completed operation. Else False.
+    Returns
+    -------
+    True for successfully completed operation. Else False.
     """
+    # make sure any nested directories in to_path exist first before copying
+    destination_path = os.path.dirname(to_path)
+    destination_path_creation = create_dir(destination_path)
+
+    assert destination_path_creation is True, f"Unable to create destination path: {destination_path}"
+
     command = ["hadoop", "fs", "-copyFromLocal", from_path, to_path]
     return _perform(command)
 
 
-def move_local_to_hdfs(from_path, to_path):
+def move_local_to_hdfs(from_path: str, to_path: str) -> bool:
     """
     Move a local file to HDFS.
 
-    Args:
-        from_path (String): path to local file
-        to_path (String): path of where file should be placed in HDFS
+    Parameters
+    ----------
+    from_path: str
+        path to local file
+    to_path: str
+        path of where file should be placed in HDFS
 
-    Returns:
-        bool: Returns True for successfully completed operation. Else False.
+    Returns
+    -------
+    True for successfully completed operation. Else False.
     """
     command = ["hadoop", "fs", "-moveFromLocal", from_path, to_path]
     return _perform(command)
 
 
-def dir_size(path):
+def dir_size(path: str):
     """
     Get HDFS directory size.
 
-    Args:
-        path (String): path to HDFS directory
+    Returns
+    -------
+    str - [size] [disk space consumed] [path]
 
-    Returns:
-        str - [size] [disk space consumed] [path]
-        Hadoop replicates data for resilience, disk space consumed is size x replication.
+    Notes
+    -----
+    Hadoop replicates data for resilience, disk space consumed is size x replication.
     """
     command = ["hadoop", "fs", "-du", "-s", "-h", path]
     return _perform(command, str_output=True)
 
 
-def read_header(path):
+def read_header(path: str):
     """
     Reads the first line of a file on HDFS
     """
@@ -176,7 +199,7 @@ def write_string_to_file(content: bytes, path: str):
     return _write_string_to_file.communicate(content)
 
 
-def read_file_to_string(path):
+def read_file_to_string(path: str):
     """
     Reads file into a string
     """
@@ -184,7 +207,7 @@ def read_file_to_string(path):
     return _perform(command, str_output=True)
 
 
-def hdfs_stat_size(path):
+def hdfs_stat_size(path: str):
     """
     Runs stat command on a file or directory to get the size in bytes.
     """
@@ -192,7 +215,7 @@ def hdfs_stat_size(path):
     return _perform(command, str_output=True).split(" ")[0]
 
 
-def hdfs_md5sum(path):
+def hdfs_md5sum(path: str):
     """
     Get md5sum of a specific file on HDFS.
     """

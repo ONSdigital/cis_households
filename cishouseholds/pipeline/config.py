@@ -14,8 +14,9 @@ def get_config() -> dict:
     config = {}
     if config_location is None:
         print(
-            "PIPELINE_CONFIG_LOCATION environment variable should be set to "
-            "the config file path. An empty dictionary will be used by default for this run."
+            "WARNING: PIPELINE_CONFIG_LOCATION environment variable should be set to "
+            "the config file path or passed to `run_from_config`."
+            " An empty dictionary will be used by default for this run."
         )  # functional
     else:
         with open(config_location) as fh:

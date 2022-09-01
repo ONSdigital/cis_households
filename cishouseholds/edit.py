@@ -2,6 +2,7 @@ import re
 from functools import reduce
 from itertools import chain
 from operator import add
+from typing import Any
 from typing import List
 from typing import Mapping
 from typing import Optional
@@ -10,9 +11,60 @@ from typing import Union
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
+from cishouseholds.expressions import all_columns_null
 from cishouseholds.expressions import any_column_not_null
-from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import sum_within_row
+
+
+def clean_job_description_string(df: DataFrame, column_name_to_assign: str):
+    """
+    Remove non alphanumeric characters and duplicate spaces from work main job role variable and set to uppercase.
+    Also removes NA type responses.
+    """
+    cleaned_string = F.regexp_replace(
+        F.regexp_replace(
+            F.regexp_replace(F.regexp_replace(F.upper(F.col(column_name_to_assign)), r"-", " "), r"\s{2,}", " "),
+            r"([^a-zA-Z0-9&\s]{1,})|(^\s)|(\s$)",
+            "",
+        ),
+        r"^N+[/\ ]*[AONE]+[ N/\\AONE]*$|^NA[ MB]*A$|^NA NIL$|^NA N[QS]$|^NOT *APP[ NOTAP]*$|^[NA ]*NOT APPLICABLE$|^(NOT APPLICABLE ?)*$",  # noqa: E501
+        "",
+    )
+
+    df = df.withColumn(column_name_to_assign, F.when(cleaned_string != "", cleaned_string))
+    return df
+
+
+def update_strings_to_sentence_case(df: DataFrame, columns: List[str]):
+    """
+    apply lower case to all but first letter of string in list of columns
+    """
+    for col in columns:
+        df = df.withColumn(
+            col,
+            F.concat(
+                F.upper(F.substring(F.col(col), 0, 1)),
+                F.lower(F.expr(f"substring({col}, 2, length({col})-1)")),
+            ),
+        )
+    return df
+
+
+def update_column_in_time_window(
+    df: DataFrame, column_name_to_update: str, time_column: str, new_value: Any, time_window: List[str]
+):
+    """
+    Update the value of a column to a fixed value if the time the participant filled out the survey exists in a window
+    """
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            (F.col(time_column) > F.to_timestamp(F.lit(time_window[0])))
+            & (F.col(time_column) < F.to_timestamp(F.lit(time_window[1]))),
+            new_value,
+        ).otherwise(F.col(column_name_to_update)),
+    )
+    return df
 
 
 def update_to_value_if_any_not_null(df: DataFrame, column_name_to_assign: str, value_to_assign: str, column_list: list):
@@ -50,6 +102,48 @@ def update_column_if_ref_in_list(
             F.col(column_name_to_update).eqNullSafe(old_value) & F.col(reference_column).isin(check_list), new_value
         ).otherwise(F.col(column_name_to_update)),
     )
+    return df
+
+
+def update_value_if_multiple_and_ref_in_list(
+    df: DataFrame,
+    column_name_to_update: str,
+    check_list: List[str],
+    new_value_if_in_list: str,
+    new_value_if_not_in_list: str,
+    separator: str,
+):
+    """
+    update column value with new value if multiple strings found, separated by separator e.g. ','
+    and based on whether column contains any value in check_list or not
+    Parameters
+    -----------
+    df
+    column_name_to_update
+    check_list
+    new_value_if_in_list
+    new_value_if_not_in_list
+    separator
+    """
+    df = df.withColumn("ref_flag", F.lit(0))
+    for check in check_list:
+        df = df.withColumn(
+            "ref_flag",
+            F.when(
+                (F.col(column_name_to_update).contains(separator)) & (F.col(column_name_to_update).contains(check)),
+                F.col("ref_flag") + F.lit(1),
+            ).when(
+                (F.col(column_name_to_update).contains(separator)) & ~(F.col(column_name_to_update).contains(check)),
+                F.col("ref_flag"),
+            ),
+        )
+
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(F.col("ref_flag") >= F.lit(1), new_value_if_in_list)
+        .when(F.col("ref_flag") < F.lit(1), new_value_if_not_in_list)
+        .otherwise(F.col(column_name_to_update)),
+    ).drop(F.col("ref_flag"))
     return df
 
 
@@ -187,7 +281,7 @@ def update_face_covering_outside_of_home(
     return df
 
 
-def update_symptoms_last_7_days_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
+def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
     """
     update value to no if symptoms are ongoing
     Parameters
@@ -245,6 +339,14 @@ def update_visit_order(df: DataFrame, visit_order_column: str) -> DataFrame:
     return df
 
 
+def clean_barcode_simple(df: DataFrame, barcode_column: str):
+    """
+    clean barcode by converting to upper an removing whitespace
+    """
+    df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), r"[^a-zA-Z0-9]", "")))
+    return df
+
+
 def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> DataFrame:
     """
     Clean lab sample barcodes.
@@ -258,8 +360,7 @@ def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> Dat
         signifies if updating was performed on row
     """
     df = df.withColumn("BARCODE_COPY", F.col(barcode_column))
-    df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), " ", "")))
-    df = df.withColumn(barcode_column, F.regexp_replace(F.col(barcode_column), r"[^a-zA-Z0-9]", ""))
+    df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), r"[^a-zA-Z0-9]", "")))
 
     suffix = F.regexp_extract(barcode_column, r"[\dOI]{1,8}$", 0)
     prefix = F.regexp_replace(F.col(barcode_column), r"[\dOI]{1,8}$", "")
@@ -358,7 +459,7 @@ def split_school_year_by_country(df: DataFrame, school_year_column: str, country
     country_column
     id_column
     """
-    countries = [["England", "Wales"], ["Scotland"], ["NI"]]
+    countries = [["England", "Wales"], ["Scotland"], ["Northern Ireland"]]
     column_names = ["school_year_england_wales", "school_year_scotland", "school_year_northern_ireland"]
     for column_name, country_set in zip(column_names, countries):
         df = df.withColumn(
@@ -743,7 +844,7 @@ def edit_to_sum_or_max_value(
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.when(any_column_null([column_name_to_assign, *columns_to_sum]), None)
+        F.when(all_columns_null([column_name_to_assign, *columns_to_sum]), None)
         .when(
             F.col(column_name_to_assign).isNull(),
             F.least(F.lit(max_value), sum_within_row(columns_to_sum)),

@@ -1,10 +1,12 @@
 from chispa import assert_df_equality
+from pyspark.sql import functions as F
+from pyspark.sql.types import DecimalType
 from pyspark.sql.window import Window
 
-from cishouseholds.weights.weights import calculate_combined_dweight_swabs
+from cishouseholds.weights.design_weights import scale_swab_design_weight
 
 
-def test_calculate_combined_dweight_swabs(spark_session):
+def test_calculate_combined_design_weight_swabs(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
             (1, 1, 1),
@@ -17,21 +19,23 @@ def test_calculate_combined_dweight_swabs(spark_session):
             """,
     )
     expected_df = spark_session.createDataFrame(
-        data=[(2, 1, 2, 2, 0.5, 1.0), (1, 1, 1, 1, 1.0, 1.0)],
+        data=[(2, 1, 2, 1.0), (1, 1, 1, 1.0)],
         schema="""
            combined_design_weight_swab integer,
            number_of_households_by_cis_area integer,
            window integer,
-           sum_combined_design_weight_swab long,
-           scaling_factor_combined_design_weight_swab double,
-           scaled_design_weight_swab_nonadjusted double
+           scaled_design_weight_swab_non_adjusted double
         """,
+    ).withColumn(
+        "scaled_design_weight_swab_non_adjusted",
+        F.col("scaled_design_weight_swab_non_adjusted").cast(DecimalType(38, 20)),
     )
     window = Window.partitionBy("window")
-    output_df = calculate_combined_dweight_swabs(
+    output_df = scale_swab_design_weight(
         df=input_df,
+        column_name_to_assign="scaled_design_weight_swab_non_adjusted",
         design_weight_column="combined_design_weight_swab",
-        num_households_column="number_of_households_by_cis_area",
+        household_count_column="number_of_households_by_cis_area",
         cis_window=window,
     )
 
