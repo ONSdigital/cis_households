@@ -28,6 +28,18 @@ occupations = [
     "SUPERVISE",
     "TEACH(ER|ING)?",
     "WORKER",
+    'REGULATION',
+    'POLICY',
+    'GOVERN(MENT|ANCE)',
+    'ADVIS[O,E]R',
+    'CARE( *|-*)TAKER',
+    'SUPERVIS[O,E]R',
+    'DEPARTMENT (FOR|OF) EDUCATION',
+    'OFFICE(R?)',
+    'COUN[C,S][E,I]L+OR',
+    'SALE[S?]'
+
+
 ]
 
 RegexPattern = namedtuple("RegexPattern", ["positive_regex_pattern", "negative_regex_pattern"])
@@ -219,7 +231,6 @@ at_university_pattern = RegexPattern(
             "(?:IN|AT).?COLLEGE",
             "UNI\\b",
             "UNIVERSITY",
-            "FULL.?TIME",
             "EDUCATION",
             "ST[UI]D(?:YING|Y|ENT|T|WNY)",
             "PHD",
@@ -262,7 +273,6 @@ in_college_or_further_education_pattern = RegexPattern(
         [
             "[AT].?LEVELS?",
             "YEAR \\d{2}",
-            "APPRENTICE",
             "VOCATION",
             "QUALIFICATION",
             "SIXTH FORM",
