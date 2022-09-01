@@ -55,6 +55,7 @@ def run_from_config():
     spark = get_or_create_spark_session()
     spark.sparkContext.setCheckpointDir(get_config()["storage"]["checkpoint_directory"])
     config = get_config()
+    pipeline_version = cishouseholds.__version__
 
     run_datetime = datetime.now()
     splunk_logger = SplunkLogger(config.get("splunk_log_directory"))
@@ -70,6 +71,7 @@ def run_from_config():
         pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
         print(f"Spark UI: {get_spark_ui_url()}")  # functional
         print(f"Spark application ID: {get_spark_application_id()}")  # functional
+        print(f"cishouseholds version number: {pipeline_version}")  # functional
         splunk_logger.log(status="start")
 
         pipeline_error_count = run_pipeline_stages(
@@ -131,8 +133,6 @@ def run_pipeline_stages(
     A status can be added by adding a return string to the stage function.
     """
 
-    pipeline_version = cishouseholds.__version__
-
     number_of_stages = len(pipeline_stage_list)
     max_digits = len(str(number_of_stages))
     pipeline_error_count = 0
@@ -143,9 +143,7 @@ def run_pipeline_stages(
         attempt = 0
         complete_status_string = "successfully"
         stage_name = stage_config.pop("function")
-        stage_text = (
-            f"{pipeline_version}: Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name} at {stage_start}"
-        )
+        stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name} at {stage_start}"
 
         print(stage_text)  # functional
         if check_conditions(stage_responses=stage_responses, stage_config=stage_config):
