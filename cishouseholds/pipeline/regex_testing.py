@@ -214,7 +214,7 @@ patient_facing_classification = {
         "social_work",
         "residential_care",
     ],
-    "N": ["call_operator", "covid_test", "hc_admin", "hc_receptionist", "hc_secretary"],
+    "N": ["call_operator", "covid_test", "hc_admin", "hc_receptionist", "hc_secretary", "domestic"],
 }
 
 roles_map = {
