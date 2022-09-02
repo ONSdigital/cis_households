@@ -2371,8 +2371,14 @@ def flag_records_for_childcare_v0_rules() -> F.Column:
 
 def flag_records_for_childcare_v1_rules() -> F.Column:
     """Flag records for application of "Childcare-V1" rules. Rule_id: 6003"""
-    return F.col("age_at_visit") <= F.lit(4) & F.col("school_year").isNull() & ~(
-        F.col("work_status_v1").isin("Child under 5y not attending child care", "Child under 5y attending child care")
+    return (
+        (F.col("age_at_visit") <= F.lit(4))
+        & F.col("school_year").isNull()
+        & ~(
+            F.col("work_status_v1").isin(
+                "Child under 5y not attending child care", "Child under 5y attending child care"
+            )
+        )
     )
 
 
