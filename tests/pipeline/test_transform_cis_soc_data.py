@@ -25,7 +25,7 @@ def test_transform_cis_soc_data(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             ("JOB TITLE 1", "JOB1", 5, False),
-            ("JOB TITLE 2", "JOB2", 66, False),
+            ("JOB TITLE 2", "JOB2", 77, False),
             ("JOB TITLE 3", "JOB3", "uncodeable", True),
             ("JOB TITLE 4", "JOB4", "uncodeable", True),
             ("JOB TITLE 5", "JOB5", 100, False),
@@ -34,7 +34,7 @@ def test_transform_cis_soc_data(spark_session):
     )
     expected_duplicate_df = spark_session.createDataFrame(
         data=[
-            ("JOB TITLE 2", "JOB2", 77, "AMBIGUOUS AFTER DEDUPLICATION", False),
+            ("JOB TITLE 2", "JOB2", 66, "AMBIGUOUS AFTER DEDUPLICATION", False),
             ("JOB TITLE 2", "JOB2", 6, "NOT MOST SPECIFIC", False),
             ("JOB TITLE 2", "JOB2", "uncodeable", "UNCODEABLE", True),
             ("JOB TITLE 5", "JOB5", 7, "NOT MOST SPECIFIC", False),
