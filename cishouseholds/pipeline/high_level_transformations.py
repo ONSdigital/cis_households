@@ -219,7 +219,6 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
         .withColumn("ROW_NUMBER", F.row_number().over(window))
         .drop("LENGTH")
     )
-    df.show()
     resolved_df = df.filter((F.col("DROP_REASON").isNull()) | (F.col("ROW_NUMBER") == 1)).drop(
         "DROP_REASON", "ROW_NUMBER"
     )
