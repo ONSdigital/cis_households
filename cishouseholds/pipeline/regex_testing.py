@@ -23,7 +23,7 @@ teaching_exclusions = match_with_exclusions(
 catering_exclusions = r"CHEF|SOUS|COOK|CATER|BREWERY|CHEESE|KITCHEN|KFC|CULINARY|FARM(ER|ING)"
 media_exclusions = r"BROADCAST|JOURNALIST|CAMERA|WRIT|COMMUNICAT|CURAT(OR)*|MARKETING|MUSICIAN|ACT([OE]R|RESS)|ARTIST"
 retail_exclusions = r"RETAIL|BUYER|SALE|BUY AND SELL|CUSTOMER|AGENT|BANK(ING|ER)|INSURANCE|BEAUT(Y|ICIAN)?|NAIL|HAIR|SHOP|PROPERTY|TRADE|SUPER *MARKET|WH *SMITH|TESCO"
-domestic_exclusions = r"DOMESTIC|CLEAN|LAU*ND.*Y"
+domestic_exclusions = r"DOMESTIC|CLEAN|LAU*ND(ER|RY)"
 construction_exclusions = r"BUILD|CONSTRUCT|RENOVAT|REFIT|ENGINE|PLANT|CR[AI]*NE*|SURVEY(OR)*|DESIGNER|ARCHITECT|TECHNICIAN|MECHAN|MANUFACT|ELECTRIC|CARPENTER|PLUMB|WELD(ER|ING)|PASTER(ER|ING)|\bEE\b|GARDE*N|FURNITURE|MAINT[AIE]*N*[EA]N*CE|\bGAS\b|JOINER"
 religious_exclusions = r"CHAPL[AI]*N|VICAR|CLERGY|MINISTER|PREACH|CHURCH"
 it_exclusions = r"\bI[ \.]*T\.?\b|DIGIT|WEBSITE|NETWORK|DEVELOPER|SOFTWARE|SYSTEM"
@@ -80,7 +80,7 @@ hc_support = match_with_exclusions(
     [r"BU(IS|SI)NESS SUPPORT", r"LOCAL COUNCIL|DISCHARGE|POST HOSPITAL|HOME NURS", r"HEALTH *CARE ASSIST|\bHCA\b"],
 )
 domestic = match_with_exclusions(
-    r"(HOME|HOUSE|DOMESTIC) *CARE|CARER* OF HOME|HOUSE *WIFE|HOME *MAKER",
+    r"(HOME|HOUSE|DOMESTIC) *CARE|CARER* OF HOME|HOUSE *WIFE|HOME *MAKER" + "|" + domestic_exclusions,
     r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|(?<!NO[NT][ -])MEDICAL|DONOR CARER*|HOSPITAL",
 )
 child_care = match_with_exclusions(
@@ -116,7 +116,7 @@ midwife = r"MI*D*.?WI*F.?E.?|MIDWIV|MID*WIF|HEALTH VISITOR"
 nurse = match_with_exclusions(
     r"N[IU]RS[EY]|MATRON|\bHCA\b", r"N[UI][RS]S[EA]R*[YIEU]+|(CARE|NURSING) *HOME|SCHOOL|TEACHER"
 )
-paramedic = match_with_exclusions("PARA *MEDIC|AMBUL[AE]NCE", teaching_exclusions)
+paramedic = match_with_exclusions("PARA *MEDIC|AMBUL[AE]NCE", [teaching_exclusions, domestic_exclusions])
 covid_test = match_with_exclusions(["COVID", "TEST|SWAB|VAC+INAT|IM+UNIS|SCREEN|WARD"], "LAB|AN[AY]LIST|SCHOOL|MANAGER")
 physiotherapist = match_with_exclusions(
     r"PH[YI]+SIO|PH[YSIH]+IO\s*THERAPIST|PH[YI]S[IY]CAL\s*REHAB|PH[YI]S[IY]CAL\s*THERAPY",

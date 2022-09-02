@@ -176,8 +176,14 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     """
 
     df = df.withColumn(
+        "soc_code_edited_to_uncodeable",
+        F.col("standard_occupational_classification_code").rlike(r".*[^0-9].*|^\s*$"),
+    )
+    df = df.withColumn(
         "standard_occupational_classification_code",
-        F.regexp_replace(F.col("standard_occupational_classification_code"), r"[a-zA-Z].*|^\s*$", "uncodeable"),
+        F.when(F.col("soc_code_edited_to_uncodeable"), "uncodeable").otherwise(
+            F.col("standard_occupational_classification_code")
+        ),
     )
 
     # remove nulls and deduplicate on all columns
