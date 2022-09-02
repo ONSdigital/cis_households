@@ -23,20 +23,20 @@ def test_transform_cis_soc_data(spark_session):
     )
     expected_df = spark_session.createDataFrame(
         data=[
-            ("JOB TITLE 1", "JOB1", 5,False),
-            ("JOB TITLE 2", "JOB2", 77,False),
-            ("JOB TITLE 3", "JOB3", "uncodeable",True),
-            ("JOB TITLE 4", "JOB4", "uncodeable",True),
+            ("JOB TITLE 1", "JOB1", 5, False),
+            ("JOB TITLE 2", "JOB2", 77, False),
+            ("JOB TITLE 3", "JOB3", "uncodeable", True),
+            ("JOB TITLE 4", "JOB4", "uncodeable", True),
             ("JOB TITLE 5", "JOB5", 100, False),
         ],
         schema="work_main_job_title string, work_main_job_role string, standard_occupational_classification_code string, soc_code_edited_to_uncodeable boolean",
     )
     expected_duplicate_df = spark_session.createDataFrame(
         data=[
-            ("JOB TITLE 2", "JOB2", 66, "AMBIGUOUS AFTER DEDUPLICATION",False),
-            ("JOB TITLE 2", "JOB2", 6, "NOT MOST SPECIFIC",False),
-            ("JOB TITLE 2", "JOB2", "uncodeable", "UNCODEABLE",True),
-            ("JOB TITLE 5", "JOB5", 5,  "NOT MOST SPECIFIC", False),
+            ("JOB TITLE 2", "JOB2", 66, "AMBIGUOUS AFTER DEDUPLICATION", False),
+            ("JOB TITLE 2", "JOB2", 6, "NOT MOST SPECIFIC", False),
+            ("JOB TITLE 2", "JOB2", "uncodeable", "UNCODEABLE", True),
+            ("JOB TITLE 5", "JOB5", 5, "NOT MOST SPECIFIC", False),
         ],
         schema="work_main_job_title string, work_main_job_role string, standard_occupational_classification_code string, DROP_REASON string, soc_code_edited_to_uncodeable boolean",
     )
@@ -47,4 +47,6 @@ def test_transform_cis_soc_data(spark_session):
     output_df.show()
 
     assert_df_equality(output_df, expected_df, ignore_nullable=True, ignore_row_order=True, ignore_column_order=True)
-    assert_df_equality(duplicate_df, expected_duplicate_df, ignore_nullable=True, ignore_row_order=True, ignore_column_order=True)
+    assert_df_equality(
+        duplicate_df, expected_duplicate_df, ignore_nullable=True, ignore_row_order=True, ignore_column_order=True
+    )
