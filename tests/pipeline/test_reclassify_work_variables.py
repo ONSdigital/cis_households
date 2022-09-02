@@ -36,7 +36,7 @@ def test_reclassify_work_variables(spark_session, load_test_cases):
 
     input_schema = t.StructType(
         [
-            t.StructField("row_id", t.IntegerType()),
+            t.StructField("row_id", t.FloatType()),
             t.StructField("rule", t.StringType()),
             t.StructField("work_main_job_title", t.StringType()),
             t.StructField("work_main_job_role", t.StringType()),
