@@ -10,9 +10,9 @@ def test_flag_records_for_uni_v2_rules(spark_session):
     # the following is from cishouseholds.mapping.category_maps['iqvia_raw_category_map']['work_status_v2']
     test_cases = [
         ("Employed and currently working", 35, False),
-        ("Employed and currently not working", 99, False),
+        ("Employed and currently not working", 99, True),
         ("Self-employed and currently working", 12, False),
-        ("Self-employed and currently not working", 56, False),
+        ("Self-employed and currently not working", 56, True),
         ("Looking for paid work and able to start", 16, False),
         ("Looking for paid work and able to start", 17, True),
         ("Not working and not looking for work", 16, False),
@@ -23,7 +23,7 @@ def test_flag_records_for_uni_v2_rules(spark_session):
         ("Child under 4-5y attending child care", 12, False),
         ("4-5y and older at school/home-school", 1, False),
         ("Attending college or FE (including if temporarily absent)", 13, False),
-        ("Attending university (including if temporarily absent)", 17, True),
+        ("Attending university (including if temporarily absent)", 19, True),
         (None, 17, True),
         ("Employed and currently working", 21, True),
         (None, 16, False),
