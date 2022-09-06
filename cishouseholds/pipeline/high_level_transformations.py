@@ -74,7 +74,6 @@ from cishouseholds.derive import flag_records_for_work_from_home_rules
 from cishouseholds.derive import flag_records_for_work_location_null
 from cishouseholds.derive import get_keys_by_value
 from cishouseholds.derive import map_options_to_bool_columns
-from cishouseholds.derive import mean_across_columns
 from cishouseholds.derive import regex_match_result
 from cishouseholds.derive import translate_column_regex_replace
 from cishouseholds.edit import apply_value_map_multiple_columns
