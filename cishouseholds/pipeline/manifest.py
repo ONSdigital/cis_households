@@ -17,8 +17,9 @@ class ManifestError(Exception):
 
 class Manifest:
     """
-    An outgoing file manifest.
-    Used by NiFi for data integrity checks before transfer of data to ***.
+    An outgoing file transfer manifest. Accumulates file metadata before writing a JSON manifest file.
+
+    Used by Apache NiFi for data integrity checks before initiating data transfers.
 
     Attributes
     ==========
@@ -127,7 +128,8 @@ class Manifest:
 
     def _delete_files_after_fail(self):
         """
-        Delete all files in the manifest. Used when manifest is not valid.
+        Delete all files in the manifest. Used when manifest content does not match the target file for transfer,
+        or during a dry run.
         """
 
         for f in self.manifest["files"]:
