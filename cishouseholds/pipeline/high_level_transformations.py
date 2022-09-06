@@ -2672,12 +2672,12 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         "healthcare_area",
         "regex_derived_job_sector",
     ]
-    generate_stratified_sample(
-        sh_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
-    )
-    generate_stratified_sample(
-        h_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
-    )
+    # generate_stratified_sample(
+    #     sh_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
+    # )
+    # generate_stratified_sample(
+    #     h_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
+    # )
 
     return df
 
