@@ -1,5 +1,4 @@
 # flake8: noqa
-from functools import reduce
 from typing import List
 
 import pyspark.sql.functions as F
@@ -127,6 +126,8 @@ from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
+from cishouseholds.pipeline.config import get_config
+from cishouseholds.pipeline.generate_outputs import generate_stratified_sample
 from cishouseholds.pipeline.mapping import _welsh_ability_to_socially_distance_at_work_or_education_categories
 from cishouseholds.pipeline.mapping import _welsh_blood_kit_missing_categories
 from cishouseholds.pipeline.mapping import _welsh_blood_not_taken_reason_categories
@@ -164,6 +165,7 @@ from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
 from cishouseholds.pipeline.regex_testing import healthcare_classification
 from cishouseholds.pipeline.regex_testing import patient_facing_classification
 from cishouseholds.pipeline.regex_testing import patient_facing_pattern
+from cishouseholds.pipeline.regex_testing import priority_map
 from cishouseholds.pipeline.regex_testing import roles_map
 from cishouseholds.pipeline.regex_testing import social_care_classification
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
@@ -2575,7 +2577,9 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         column_name_to_assign="regex_derived_job_sector",
         reference_columns=["work_main_job_title", "work_main_job_role"],
         roles=roles_map,
+        priority_map=priority_map,
     )
+    # create healthcare area flag
     df = df.withColumn("healthcare_area", F.lit(None))
     for healthcare_type, roles in healthcare_classification.items():  # type: ignore
         df = df.withColumn(
@@ -2596,8 +2600,8 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         )
 
     # add boolean flags for working in healthcare or socialcare
-    df = df.withColumn("works_healthcare", F.col("healthcare_area").isNotNull())
-    df = df.withColumn("works_social_care", F.col("social_care_area").isNotNull())
+    df = df.withColumn("works_healthcare", F.when(F.col("healthcare_area").isNotNull(), "Yes").otherwise("No"))
+    df = df.withColumn("works_social_care", F.when(F.col("social_care_area").isNotNull(), "Yes").otherwise("No"))
 
     df = assign_regex_match_result(
         df=df,
@@ -2652,6 +2656,29 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
             .otherwise(F.col(work_status_column)),
         )
+
+    # Temp table generations:
+    sh_df = df.filter(
+        (F.col("work_socialcare") != F.col("works_social_care"))
+        | (F.col("work_healthcare") != F.col("works_healthcare"))
+    )
+    h_df = df.filter(F.col("work_healthcare") != F.col("works_healthcare"))
+    cols_added = [
+        "is_patient_facing",
+        "works_healthcare",
+        "works_social_care",
+        "work_healthcare_patient_facing",
+        "social_care_area",
+        "healthcare_area",
+        "regex_derived_job_sector",
+    ]
+    generate_stratified_sample(
+        sh_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
+    )
+    generate_stratified_sample(
+        h_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
+    )
+
     return df
 
 
