@@ -24,27 +24,40 @@ from cishouseholds.expressions import any_column_null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def assign_regex_from_map(df: DataFrame, column_name_to_assign: str, reference_columns: List[str], roles: Mapping):
-    regex_columns = []
-    for title, pattern in roles.items():
-        regex_columns.append(
-            F.when(
-                reduce(
-                    or_,
-                    [
-                        F.coalesce(F.col(reference_column), F.lit("")).rlike(pattern)
-                        for reference_column in reference_columns
-                    ],
-                ),
-                title,
-            )
-        )
+def assign_regex_from_map(
+    df: DataFrame, column_name_to_assign: str, reference_columns: List[str], roles: Mapping, priority_map: Mapping
+):
+    regex_columns = {key: [] for key in [1, *list(priority_map.values())]}  # type: ignore
 
-    df = df.withColumn(
-        column_name_to_assign,
-        F.array(regex_columns),
-    )
-    df = df.withColumn(column_name_to_assign, F.expr(f"filter({column_name_to_assign}, x -> x is not null)"))
+    for title, pattern in roles.items():
+        col = F.when(
+            reduce(
+                or_,
+                [
+                    F.coalesce(F.col(reference_column), F.lit("")).rlike(pattern)
+                    for reference_column in reference_columns
+                ],
+            ),
+            title,
+        )
+        if title in priority_map:
+            regex_columns[priority_map[title]].append(col)
+        else:
+            regex_columns[1].append(col)
+
+    sorted_regex_columns = dict(sorted(regex_columns.items(), key=lambda item: item[0], reverse=True))
+
+    coalesce_cols = []
+    for key, cols in sorted_regex_columns.items():
+        col_name = f"priority{key}_{column_name_to_assign}"
+        coalesce_cols.append(col_name)
+        df = df.withColumn(
+            col_name,
+            F.array(cols),
+        )
+        filtered_array = F.expr(f"filter({col_name}, x -> x is not null)")
+        df = df.withColumn(col_name, F.when(F.size(filtered_array) != 0, filtered_array))
+    df = df.withColumn(column_name_to_assign, F.coalesce(*coalesce_cols)).drop(*coalesce_cols)
     return df
 
 

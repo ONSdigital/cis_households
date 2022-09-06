@@ -161,6 +161,7 @@ from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
 from cishouseholds.pipeline.regex_testing import healthcare_classification
 from cishouseholds.pipeline.regex_testing import patient_facing_classification
 from cishouseholds.pipeline.regex_testing import patient_facing_pattern
+from cishouseholds.pipeline.regex_testing import priority_map
 from cishouseholds.pipeline.regex_testing import roles_map
 from cishouseholds.pipeline.regex_testing import social_care_classification
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
@@ -2572,7 +2573,9 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         column_name_to_assign="regex_derived_job_sector",
         reference_columns=["work_main_job_title", "work_main_job_role"],
         roles=roles_map,
+        priority_map=priority_map,
     )
+    # create healthcare area flag
     df = df.withColumn("healthcare_area", F.lit(None))
     for healthcare_type, roles in healthcare_classification.items():  # type: ignore
         df = df.withColumn(
