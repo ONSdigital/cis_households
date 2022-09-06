@@ -468,6 +468,26 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
+  name: form_started_datetime
+  nullable: true
+  type: string
+- metadata: {}
+  name: swab_consolidation_point_error
+  nullable: true
+  type: string
+- metadata: {}
+  name: blood_consolidation_point_error
+  nullable: true
+  type: string
+- metadata: {}
+  name: swab_consolidation_point_error_datetime
+  nullable: true
+  type: string
+- metadata: {}
+  name: blood_consolidation_point_error_datetime
+  nullable: true
+  type: string
+- metadata: {}
   name: digital_survey_collection_mode
   nullable: true
   type: string

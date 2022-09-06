@@ -8,7 +8,6 @@ from typing import List
 
 import cishouseholds.pipeline.input_file_stages  # noqa: F401
 import cishouseholds.pipeline.pipeline_stages  # noqa: F401
-import cishouseholds.pipeline.R_pipeline_stages  # noqa: F401
 from cishouseholds.log import SplunkLogger
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import add_run_log_entry
@@ -56,6 +55,7 @@ def run_from_config():
     spark = get_or_create_spark_session()
     spark.sparkContext.setCheckpointDir(get_config()["storage"]["checkpoint_directory"])
     config = get_config()
+    pipeline_version = cishouseholds.__version__
 
     run_datetime = datetime.now()
     splunk_logger = SplunkLogger(config.get("splunk_log_directory"))
@@ -71,6 +71,7 @@ def run_from_config():
         pipeline_stage_list = [stage for stage in config["stages"] if stage.pop("run")]
         print(f"Spark UI: {get_spark_ui_url()}")  # functional
         print(f"Spark application ID: {get_spark_application_id()}")  # functional
+        print(f"cishouseholds version number: {pipeline_version}")  # functional
         splunk_logger.log(status="start")
 
         pipeline_error_count = run_pipeline_stages(
@@ -131,6 +132,7 @@ def run_pipeline_stages(
     Ensure that the stages referenced in any condition do return a status.
     A status can be added by adding a return string to the stage function.
     """
+
     number_of_stages = len(pipeline_stage_list)
     max_digits = len(str(number_of_stages))
     pipeline_error_count = 0

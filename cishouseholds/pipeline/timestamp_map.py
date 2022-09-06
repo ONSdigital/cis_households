@@ -52,13 +52,6 @@ survey_responses_v0_datetime_map = {
     "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'": ["visit_datetime", "samples_taken_datetime"],
 }
 
-swab_datetime_map = {"yyyy-MM-dd HH:mm:ss": ["pcr_result_recorded_datetime"]}
-
-blood_datetime_map = {
-    "yyyy-MM-dd HH:mm:ss": ["blood_sample_collected_datetime"],
-    "yyyy-MM-dd": ["blood_sample_arrayed_date", "antibody_test_result_recorded_date", "blood_sample_received_date"],
-}
-
 cis_digital_datetime_map = {
     "yyyy-MM-dd'T'HH:mm:ss'Z'": [
         "household_digital_enrolment_invited_datetime",
@@ -93,6 +86,7 @@ cis_digital_datetime_map = {
         "blood_sample_received_consolidation_point_datetime",
         "swab_sample_received_lab_datetime",
         "blood_sample_received_lab_datetime",
+        "form_start_datetime",
     ],
     "yyyy-MM-dd": [
         "date_of_birth",
