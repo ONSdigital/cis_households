@@ -1149,27 +1149,6 @@ def assign_outward_postcode(df: DataFrame, column_name_to_assign: str, reference
     return df
 
 
-def assign_column_from_coalesce(df: DataFrame, column_name_to_assign: str, *args) -> DataFrame:
-    """
-    Assign new column with values from coalesced columns.
-    From households_aggregate_processes.xlsx, derivation number 6.
-    D6: V1, or V2 if V1 is missing
-
-    Parameters
-    ----------
-    df: pyspark.sql.DataFrame
-    column_name_to_assign: string
-    *args: string
-        name of columns to coalesce
-
-    Return
-    ------
-    df: pyspark.sql.DataFrame
-
-    """
-    return df.withColumn(colName=column_name_to_assign, col=F.coalesce(*args))
-
-
 def assign_school_year(
     df: DataFrame,
     column_name_to_assign: str,
