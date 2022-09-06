@@ -1222,49 +1222,6 @@ def assign_school_year(
     return df
 
 
-def derive_cq_pattern(df: DataFrame, column_names, spark_session) -> DataFrame:
-    """
-    Derive a new column containing string of pattern in
-    ["N only", "OR only", "S only", "OR+N", "OR+S", "N+S", "OR+N+S", NULL]
-    indicating which ct_* columns indicate a positive result.
-    From households_aggregate_processes.xlsx, derivation number 7.
-
-    Parameters
-    ----------
-    df: pyspark.sql.DataFrame
-    column_names: list of string
-    spark_session: pyspark.sql.SparkSession
-
-    Return
-    ------
-    df: pyspark.sql.DataFrame
-    """
-    assert len(column_names) == 3
-
-    indicator_list = ["indicator_" + column_name for column_name in column_names]
-
-    lookup_df = spark_session.createDataFrame(
-        data=[
-            (0, 0, 0, None),
-            (1, 0, 0, "OR only"),
-            (0, 1, 0, "N only"),
-            (0, 0, 1, "S only"),
-            (1, 1, 0, "OR+N"),
-            (1, 0, 1, "OR+S"),
-            (0, 1, 1, "N+S"),
-            (1, 1, 1, "OR+N+S"),
-        ],
-        schema=indicator_list + ["cq_pattern"],
-    )
-
-    for column_name in column_names:
-        df = df.withColumn("indicator_" + column_name, F.when(F.col(column_name) > 0, 1).otherwise(0))
-
-    df = df.join(F.broadcast(lookup_df), on=indicator_list, how="left").drop(*indicator_list)
-
-    return df
-
-
 def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list) -> DataFrame:
     """
     Create a new column containing the mean of multiple existing columns.
