@@ -2550,6 +2550,9 @@ def derive_overall_vaccination(df: DataFrame) -> DataFrame:
 def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     """Add result of various regex pattern matchings"""
 
+    df = df.withColumn("work_main_job_title", F.upper(F.col("work_main_job_title")))
+    df = df.withColumn("work_main_job_role", F.upper(F.col("work_main_job_role")))
+
     # add work from home flag
     df = assign_regex_match_result(
         df=df,

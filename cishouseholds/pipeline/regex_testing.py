@@ -87,15 +87,15 @@ child_care = match_with_exclusions(
     r"CHILD *(CARE|MIND)|NANN[YIE]+\b|AU PAIR", r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|MEDICAL|DONOR CARER*|HOSPITAL"
 )
 informal_care = match_with_exclusions(
-    r"(((CAR(ER|ING)+|NURSE) (FOR|OF))|LOOKS* *AFTER) *(MUM|MOTHER|DAD|FATHER|SON|D[AU]+GHT|WIFE|HUSB|PARTNER|CHILD|FAM|T*H*E* ELDERLY)",
-    r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|MEDICAL|DONOR CARER*",
+    r"(((CAR(E|ING)+|NURSE) (FOR|OF))|LOOKS* *AFTER) *(MUM|MOTHER|DAD|FATHER|SON|D[AU]+GHT|WIFE|HUSB|PARTNER|CHILD|FAM|T*H*E* ELDERLY)",
+    r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|MEDICAL|DONOR CARER*|ADVICE|CALL",
 )
 house_care = match_with_exclusions(
     r"(HOME|HOUSE|DOMESTIC) *CARE|CARER* OF HOME|HOUSE *WIFE|HOME *MAKER",
     r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|(?<!NO[NT][ -])MEDICAL|DONOR CARER*",
 )
 residential_care = match_with_exclusions(
-    r"^CAE?RE*R *(CARE*|NA)*$|(CARE|NURSING) *HOME|(SOCIAL|COMMUNITY|DOMICIL[IA]*RY)* *CARE|CARE *(WORK|ASSISTANT)|ASST CARING|CARE SUPPORT WORK|SUPPORT *WORKER *CARE|INDEPEND[EA]NT LIVING",
+    r"^CAE?RE*R *(CARE*|NA)*$|(CARE|NURSING) *HOME|(SOCIAL|COMMUNITY|DOMICIL[IA]*RY){1,} *CARE|CARE *(WORK|ASSISTANT)|ASST CARING|CARE SUPPORT WORK|SUPPORT *WORKER *CARE|INDEPEND[EA]NT LIVING",
     r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|MEDICAL|DONOR CARER*|HOSPITAL .* CARE",
 )
 pharmacist = match_with_exclusions(
@@ -128,7 +128,7 @@ physiotherapist = match_with_exclusions(
     ),
 )
 hc_theatre = match_with_exclusions("THEATRE", "PERFORMER|ACTOR|STAGE|PLAY")
-social_work = r"SOCIAL.*WORK|FOSTER CARE|CHILD PROTECTION|PROBATION OFFICER|YOUTH OFFENDER|HCA|HMP|COUNCILLOR|COMMUNITY WORKER|PRISON OFFIC|SHELTERED (ACC.*N|LIVING)"
+social_work = r"SOCIAL.*WORK|FOSTER CARE|CHILD PROTECTION|PROBATION OFFICER|YOUTH OFFENDER|HMP|COMMUNITY WORKER|PRISON OFFIC|SHELTERED (ACC.*N|LIVING)"
 support_work = "SUP+ORT *WORKER"
 apprentice = "AP*RENTI[CS]"
 call_operator = match_with_exclusions(
@@ -214,7 +214,7 @@ patient_facing_classification = {
         "social_work",
         "residential_care",
     ],
-    "N": ["call_operator", "covid_test", "hc_admin", "hc_receptionist", "hc_secretary"],
+    "N": ["call_operator", "covid_test", "hc_admin", "hc_receptionist", "hc_secretary", "domestic"],
 }
 
 roles_map = {
