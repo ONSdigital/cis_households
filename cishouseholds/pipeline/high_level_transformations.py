@@ -2658,6 +2658,8 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         )
 
     # Temp table generations:
+    df.cache()
+    df.count()
     sh_df = df.filter(
         (F.col("work_socialcare") != F.col("works_social_care"))
         | (F.col("work_healthcare") != F.col("works_healthcare"))
@@ -2672,12 +2674,12 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         "healthcare_area",
         "regex_derived_job_sector",
     ]
-    # generate_stratified_sample(
-    #     sh_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
-    # )
-    # generate_stratified_sample(
-    #     h_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
-    # )
+    generate_stratified_sample(
+        sh_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
+    )
+    generate_stratified_sample(
+        h_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
+    )
 
     return df
 
