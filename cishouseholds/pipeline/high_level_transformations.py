@@ -2620,7 +2620,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "is_patient_facing",
         F.when(
-            (F.col("works_healthcare") | F.col("is_patient_facing"))
+            ((F.col("works_healthcare") == "Yes") | F.col("is_patient_facing"))
             & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
             True,
         ).otherwise(False),
@@ -2658,8 +2658,9 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         )
 
     # Temp table generations:
+    df = df.withColumn("work_healthcare", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
     sh_df = df.filter(
-        (F.col("work_socialcare") != F.col("works_social_care"))
+        (F.col("work_social_care") != F.col("works_social_care"))
         | (F.col("work_healthcare") != F.col("works_healthcare"))
     )
     h_df = df.filter(F.col("work_healthcare") != F.col("works_healthcare"))
