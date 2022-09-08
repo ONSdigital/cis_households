@@ -1,9 +1,10 @@
 # flake8: noqa
-import logging
 import os
 import shutil
+import subprocess
 from datetime import datetime
 from functools import reduce
+from pathlib import Path
 from typing import List
 
 import pyspark.sql.functions as F
@@ -115,6 +116,7 @@ from cishouseholds.expressions import any_column_equal_value
 from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import array_contains_any
 from cishouseholds.expressions import sum_within_row
+from cishouseholds.hdfs_utils import delete_file
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change
@@ -132,6 +134,9 @@ from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.pipeline.config import get_config
+from cishouseholds.pipeline.generate_outputs import write_csv_rename
+from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
+from cishouseholds.pipeline.load import add_error_file_log_entry
 from cishouseholds.pipeline.mapping import _welsh_ability_to_socially_distance_at_work_or_education_categories
 from cishouseholds.pipeline.mapping import _welsh_blood_kit_missing_categories
 from cishouseholds.pipeline.mapping import _welsh_blood_not_taken_reason_categories
@@ -172,6 +177,7 @@ from cishouseholds.pipeline.regex_testing import patient_facing_pattern
 from cishouseholds.pipeline.regex_testing import roles_map
 from cishouseholds.pipeline.regex_testing import social_care_classification
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
+from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
 
@@ -432,9 +438,8 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
 
 
 def transform_translated_responses_into_lookup(
-    spark_session: SparkSession,
     translation_directory: str,
-    translation_lookup_path: str,
+    translation_lookup_directory: str,
     translation_backup_directory: str,
     formatted_time: str = datetime.now().strftime("%Y%m%d_%H%M"),
 ) -> DataFrame:
@@ -445,18 +450,20 @@ def transform_translated_responses_into_lookup(
     updates translation_lookup_df with new translations, backs up existing lookup df, replaces with updated lookup df
     """
     completed_translations_directory = os.path.join(translation_directory, "completed/")
-    translation_lookup_df = pd.DataFrame(translation_lookup_path)
+    translation_lookup_path = translation_lookup_directory + "/translated_value_lookup.csv"
+    translation_lookup_df = extract_lookup_csv(
+        translation_lookup_path, validation_schemas["csv_lookup_schema"]
+    ).toPandas()
 
-    translation_backup_path = os.path.join(
-        translation_backup_directory, f"all_translated_responses_{formatted_time}.csv"
-    )
+    translation_backup_path = Path(translation_backup_directory) / f"translated_value_lookup_{formatted_time}"
+
     list_of_file_paths = [
         os.path.join(completed_translations_directory, _)
         for _ in os.listdir(completed_translations_directory)
         if _.endswith(".xlsx")
     ]
 
-    new_translations = pd.DataFrame()
+    new_translations = pd.DataFrame(columns=["id", "dataset_name", "target_column_name", "old_value", "new_value"])
     for path in list_of_file_paths:
         translated_workbook = pd.ExcelFile(path, engine="openpyxl")
         translated_sheets = translated_workbook.sheet_names
@@ -468,7 +475,7 @@ def transform_translated_responses_into_lookup(
                 )
             except ValueError:
                 message = "Sheet could not be read correctly. Check input sheet"
-                logging.warning(message)
+                add_error_file_log_entry(path, message)  # type: ignore
                 continue
             sheet_translation = (
                 sheet_translation.dropna()
@@ -489,24 +496,33 @@ def transform_translated_responses_into_lookup(
         if os.path.exists(os.path.join(completed_translations_directory, "processed/")):
             shutil.move(path, os.path.join(completed_translations_directory, "processed/"))
 
-    if os.path.exists(translation_lookup_path):
-        shutil.copy(translation_lookup_path, translation_backup_path)
-        filtered_translations = new_translations[~new_translations["id"].isin(translation_lookup_df["id"])]
-        updated_translation_lookup = translation_lookup_df.append(filtered_translations)
-    else:
-        updated_translation_lookup = new_translations
+    filtered_translations = new_translations[~new_translations["id"].isin(translation_lookup_df["id"])]
+    spark_session = get_or_create_spark_session()
 
-    updated_translation_lookup.to_csv(translation_lookup_path, sep=",", index=False)
     translations_df = spark_session.createDataFrame(
-        updated_translation_lookup,
+        translation_lookup_df,
         schema="id string, dataset_name string, target_column_name string, old_value string, new_value string",
     )
+
+    if len(filtered_translations) > 0:
+        write_csv_rename(translations_df, translation_backup_path, ",", ".csv")
+
+        updated_translation_lookup_df = translation_lookup_df.append(filtered_translations)
+
+        updated_translations_df = spark_session.createDataFrame(
+            updated_translation_lookup_df,
+            schema="id string, dataset_name string, target_column_name string, old_value string, new_value string",
+        )
+
+        export_translation_lookup_path = Path(translation_lookup_directory) / "translated_value_lookup"
+        delete_file(export_translation_lookup_path.as_posix() + ".csv")
+        write_csv_rename(updated_translations_df, export_translation_lookup_path, ",", ".csv")
 
     return translations_df
 
 
 def export_responses_to_be_translated(
-    df: DataFrame, translations_directory: str = None, formatted_time: str = datetime.now().strftime("%Y%m%d_%H%M")
+    df: DataFrame, translation_directory: str, formatted_time: str = datetime.now().strftime("%Y%m%d_%H%M")
 ) -> DataFrame:
     """
     loads to_be_translated df and converts it into pandas df for transformation into an excel workbook format
@@ -524,16 +540,10 @@ def export_responses_to_be_translated(
     returns
         pandas df for last participant that was translated
     """
-    df = df.withColumn(
-        "id", F.concat(F.lit(F.col("participant_id")), F.lit(F.col("participant_completion_window_id")))
-    ).drop("participant_id", "participant_completion_window_id", "form_language")
-    to_be_translated_df = df.toPandas()
-    unique_id_list = to_be_translated_df["id"].unique()
+    translations_workbook = translation_directory + f"/to_be_translated_{formatted_time}.xlsx"
 
-    if translations_directory is not None:
-        translations_workbook = translations_directory + f"to_be_translated_{formatted_time}.xlsx"
-    else:
-        translations_workbook = f"to_be_translated_{formatted_time}.xlsx"
+    to_be_translated_df = df.drop("participant_id", "participant_completion_window_id", "form_language").toPandas()
+    unique_id_list = to_be_translated_df["id"].unique()
 
     with pd.ExcelWriter(translations_workbook, engine="openpyxl") as writer:
         for unique_id in unique_id_list:
@@ -548,17 +558,18 @@ def export_responses_to_be_translated(
             writer.sheets[unique_id].column_dimensions["A"].width = 35
             writer.sheets[unique_id].column_dimensions["B"].width = 35
             writer.sheets[unique_id].column_dimensions["C"].width = 35
-    return participant_to_be_translated_df
+    return df.distinct().count()
 
 
-def translate_welsh_survey_responses_version_digital(df: DataFrame, spark_session: SparkSession) -> DataFrame:
+def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame:
     """
     Call functions to translate welsh survey responses from the cis digital questionnaire
     """
-    translation_settings = get_config().get("translation", "")
-    translation_directory = translation_settings.get("translation_directory", "")
-    translation_lookup_path = translation_settings.get("translation_lookup_path", "")
-    translation_backup_directory = translation_settings.get("translation_backup_directory", "")
+    translation_settings = get_config().get("translation", None)
+    translation_directory = translation_settings.get("translation_directory", None)
+    translation_lookup_path = translation_settings.get("translation_lookup_path", None)
+    translation_lookup_directory = translation_settings.get("translation_lookup_directory", None)
+    translation_backup_directory = translation_settings.get("translation_backup_directory", None)
 
     digital_unique_identifiers = ["participant_id", "participant_completion_window_id"]
 
@@ -583,18 +594,28 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame, spark_sessio
         "cis_covid_vaccine_type_other",
     ]
 
-    # df = df.withColumn("id", F.concat(F.lit(F.col("participant_id")), F.lit(F.col("participant_completion_window_id"))))
-    # if os.path.exists(translation_lookup_path):
-    #    translation_lookup_df = transform_translated_responses_into_lookup(spark_session, translation_directory, translation_lookup_path, translation_backup_directory)
-    #    df = update_from_lookup_df(df, translation_lookup_df, id_column="id")
+    df = df.withColumn("id", F.concat(F.lit(F.col("participant_id")), F.lit(F.col("participant_completion_window_id"))))
+    if (
+        translation_directory is not None
+        and translation_lookup_directory is not None
+        and translation_backup_directory is not None
+    ):
+        translation_lookup_df = transform_translated_responses_into_lookup(
+            translation_directory, translation_lookup_directory, translation_backup_directory
+        )
 
-    # to_be_translated_df = (
-    #    df.select(digital_unique_identifiers + digital_free_text_columns + ["form_language"])
-    #    .filter(F.col("form_language") == "Welsh")
-    #    .na.drop(how="all", subset=digital_free_text_columns)
-    # )
-    # export_responses_to_be_translated(to_be_translated_df, translation_directory)
-    # df = df.drop("id")
+    if translation_lookup_directory is not None:
+        df = update_from_lookup_df(df, translation_lookup_df, id_column="id")
+
+    to_be_translated_df = (
+        df.select(digital_unique_identifiers + digital_free_text_columns + ["form_language", "id"])
+        .filter(F.col("form_language") == "Welsh")
+        .na.drop(how="all", subset=digital_free_text_columns)
+    )
+    num_responses_to_be_translated = 0
+    if translation_directory is not None and to_be_translated_df.distinct().count() > 0:
+        num_responses_to_be_translated = export_responses_to_be_translated(to_be_translated_df, translation_directory)
+    df = df.drop("id")
 
     digital_yes_no_columns = [
         "household_invited_to_digital",
@@ -1343,7 +1364,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         },
         "work_location": {
             "From home meaning in the same grounds or building as your home": "Working from home",
-            "Somewhere else meaning not at your home)": "Working somewhere else (not your home)",
+            "Somewhere else meaning not at your home": "Working somewhere else (not your home)",
             "Both from home and work somewhere else": "Both (from home and somewhere else)",
         },
         "transport_to_work_or_education": {
