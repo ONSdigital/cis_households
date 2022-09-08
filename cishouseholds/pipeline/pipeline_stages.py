@@ -31,6 +31,7 @@ from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
+from cishouseholds.pipeline.generate_outputs import generate_stratified_sample
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
@@ -1101,6 +1102,11 @@ def sample_file_ETL(
         tranche_strata_columns,
     )
     update_table(design_weights, design_weight_table, write_mode="overwrite", archive=True)
+
+
+@register_pipeline_stage("stratified_sample")
+def stratified_sample(df, selected_cols, rows_per_sample, num_files, output_folder_name, array_columns):
+    generate_stratified_sample(df, selected_cols, rows_per_sample, num_files, output_folder_name, array_columns)
 
 
 @register_pipeline_stage("aggregated_output")
