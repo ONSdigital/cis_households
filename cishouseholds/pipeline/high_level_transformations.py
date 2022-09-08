@@ -1,4 +1,6 @@
 # flake8: noqa
+from functools import reduce
+from operator import and_
 from typing import List
 
 import pyspark.sql.functions as F
@@ -179,15 +181,18 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     """
     transform and process cis soc data
     """
+    # allow nullsafe join on title as soc is sometimes assigned without
+    df = df.filter(F.col("work_main_job_title").isNotNull()).distinct()
+    df = df.withColumn(
+        "soc_code_edited_to_uncodeable",
+        F.col("standard_occupational_classification_code").rlike(r".*[^0-9].*|^\s*$"),
+    )
     df = df.withColumn(
         "standard_occupational_classification_code",
-        F.when(F.substring(F.col("standard_occupational_classification_code"), 1, 2) == "un", "uncodeable").otherwise(
+        F.when(F.col("soc_code_edited_to_uncodeable"), "uncodeable").otherwise(
             F.col("standard_occupational_classification_code")
         ),
-    )
-
-    # remove nulls and deduplicate on all columns
-    df = df.filter(F.col("work_main_job_title").isNotNull() & F.col("work_main_job_role").isNotNull()).distinct()
+    ).drop("soc_code_edited_to_uncodeable")
 
     df = df.withColumn(
         "LENGTH",
@@ -199,10 +204,32 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
         ),
     ).orderBy(F.desc("LENGTH"))
 
+    # create windows with descending soc code
     window = Window.partitionBy(*join_on_columns)
-    df = df.withColumn("DROP", F.col("LENGTH") != F.max("LENGTH").over(window))
-    df = df.filter((F.col("standard_occupational_classification_code") != "uncodeable") & (~F.col("DROP")))
-    return df.drop("DROP", "LENGTH")
+
+    # flag non specific soc codes and uncodeable codes
+    df = df.withColumn(
+        "DROP",
+        F.when(
+            (F.col("LENGTH") != F.max("LENGTH").over(window))
+            | (F.col("standard_occupational_classification_code") == "uncodeable"),
+            1,
+        ).otherwise(0),
+    )
+    retain_count = F.sum(F.when(F.col("DROP") == 0, 1).otherwise(0)).over(window)
+    # flag ambiguous codes from remaining set
+    df = df.withColumn(
+        "DROP",
+        F.when(
+            (retain_count > 1) & (F.col("DROP") == 0),
+            2,
+        ).otherwise(F.col("DROP")),
+    ).drop("LENGTH")
+    # remove flag from first row of dropped set if all codes from group are flagged
+    df = df.withColumn("DROP", F.when(F.count("*").over(window) == 1, 0).otherwise(F.col("DROP")))
+    resolved_df = df.filter((F.col("DROP") == 0)).drop("DROP", "ROW_NUMBER")
+    duplicate_df = df.filter(F.col("DROP") == 2).drop("ROW_NUMBER", "DROP")
+    return duplicate_df, resolved_df
 
 
 def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
