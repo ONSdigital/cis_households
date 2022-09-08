@@ -1408,6 +1408,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = clean_job_description_string(df, "work_main_job_title")
     df = clean_job_description_string(df, "work_main_job_role")
     df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
+    # df = add_pattern_matching_flags(df)
     return df
 
 
@@ -1431,7 +1432,6 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
         direct_contact_column="work_direct_contact_patients_or_clients",
         health_care_column="work_health_care_area",
     )
-
     return df
 
 
@@ -2166,7 +2166,6 @@ def union_dependent_derivations(df):
         map={"Yes": "No", "No": "Yes"},
         condition_column="currently_smokes_or_vapes",
     )
-    df = add_pattern_matching_flags(df)
     df = fill_backwards_work_status_v2(
         df=df,
         date="visit_datetime",
@@ -2637,17 +2636,10 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         positive_regex_pattern=patient_facing_pattern.positive_regex_pattern,
         negative_regex_pattern=patient_facing_pattern.negative_regex_pattern,
     )
-
-    # df = df.withColumn(
-    #     "works_healthcare",
-    #     (array_contains_any("regex_derived_job_sector", healthcare_positive_roles))
-    #     & (~array_contains_any("regex_derived_job_sector", healthcare_negative_roles)),
-    # )
-
     df = df.withColumn(
         "is_patient_facing",
         F.when(
-            (F.col("works_healthcare") | F.col("is_patient_facing"))
+            ((F.col("works_healthcare") == "Yes") | F.col("is_patient_facing"))
             & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
             True,
         ).otherwise(False),
@@ -2674,7 +2666,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         F.sum(F.when(F.col("is_patient_facing"), 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
     )
 
-    work_status_columns = ["work_status_v0", "work_status_v1", "work_status_v2", "work_status_digital"]
+    work_status_columns = [col for col in df.columns if "work_status_" in col]
     for work_status_column in work_status_columns:
         df = df.withColumn(
             work_status_column,
@@ -2684,29 +2676,26 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             .otherwise(F.col(work_status_column)),
         )
 
-    # Temp table generations:
-    df.cache()
-    df.count()
-    sh_df = df.filter(
-        (F.col("work_socialcare") != F.col("works_social_care"))
-        | (F.col("work_healthcare") != F.col("works_healthcare"))
-    )
-    h_df = df.filter(F.col("work_healthcare") != F.col("works_healthcare"))
-    cols_added = [
-        "is_patient_facing",
-        "works_healthcare",
-        "works_social_care",
-        "work_healthcare_patient_facing",
-        "social_care_area",
-        "healthcare_area",
-        "regex_derived_job_sector",
-    ]
-    generate_stratified_sample(
-        sh_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
-    )
-    generate_stratified_sample(
-        h_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
-    )
+    # # Temp table generations:
+    # df = df.withColumn("work_healthcare", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
+    # sh_df = df.filter(
+    #     (F.col("work_social_care") != F.col("works_social_care"))
+    #     | (F.col("work_healthcare") != F.col("works_healthcare"))
+    # )
+    # h_df = df.filter(F.col("work_healthcare") != F.col("works_healthcare"))
+    # cols_added = [
+    #     "is_patient_facing",
+    #     "works_healthcare",
+    #     "works_social_care",
+    #     "work_health_care_patient_facing",
+    #     "social_care_area",
+    #     "healthcare_area",
+    #     "regex_derived_job_sector",
+    # ]
+    # generate_stratified_sample(
+    #     sh_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
+    # )
+    # generate_stratified_sample(h_df, cols_added, 500, 5, "healthcare_inconsistences", ["regex_derived_job_sector"])
 
     return df
 
