@@ -35,10 +35,6 @@ def test_transform_cis_soc_data(spark_session):
         data=[
             ("JOB TITLE 2", "JOB2", 66, "AMBIGUOUS AFTER DEDUPLICATION", False),
             ("JOB TITLE 2", "JOB2", 77, "AMBIGUOUS AFTER DEDUPLICATION", False),
-            ("JOB TITLE 2", "JOB2", 6, "NOT MOST SPECIFIC", False),
-            ("JOB TITLE 2", "JOB2", "uncodeable", "UNCODEABLE", True),
-            ("JOB TITLE 5", "JOB5", 7, "NOT MOST SPECIFIC", False),
-            ("JOB TITLE 5", "JOB5", "uncodeable", "UNCODEABLE", True),
         ],
         schema="work_main_job_title string, work_main_job_role string, standard_occupational_classification_code string, DROP_REASON string, soc_code_edited_to_uncodeable boolean",
     )

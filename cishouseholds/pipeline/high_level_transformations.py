@@ -189,10 +189,7 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
         F.when(F.col("soc_code_edited_to_uncodeable"), "uncodeable").otherwise(
             F.col("standard_occupational_classification_code")
         ),
-    )
-
-    # remove nulls and deduplicate on all columns
-    df = df.filter(F.col("work_main_job_title").isNotNull() & F.col("work_main_job_role").isNotNull()).distinct()
+    ).drop("soc_code_edited_to_uncodeable")
 
     df = df.withColumn(
         "LENGTH",
@@ -206,11 +203,6 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
 
     # create windows with descending soc code
     window = Window.partitionBy(*join_on_columns)
-    ordered_window = window.orderBy(
-        F.when(F.col("standard_occupational_classification_code") == "uncodeable", 0)
-        .otherwise(F.col("standard_occupational_classification_code"))
-        .desc(),
-    )
 
     # flag non specific soc codes and uncodeable codes
     df = df.withColumn(
@@ -231,7 +223,7 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     # remove flag from first row of dropped set if all codes from group are flagged
     df = df.withColumn("DROP_REASON", F.when(F.count("*").over(window) == 1, None).otherwise(F.col("DROP_REASON")))
     resolved_df = df.filter((F.col("DROP_REASON").isNull())).drop("DROP_REASON", "ROW_NUMBER")
-    duplicate_df = df.filter((F.col("DROP_REASON").isNotNull())).drop("ROW_NUMBER")
+    duplicate_df = df.filter((F.col("DROP_REASON") == "AMBIGUOUS AFTER DEDUPLICATION")).drop("ROW_NUMBER")
     return duplicate_df, resolved_df
 
 
