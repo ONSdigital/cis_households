@@ -179,7 +179,7 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     """
     transform and process cis soc data
     """
-
+    # allow nullsafe join on title as soc is sometimes assigned without
     df = df.withColumn(
         "soc_code_edited_to_uncodeable",
         F.col("standard_occupational_classification_code").rlike(r".*[^0-9].*|^\s*$"),
