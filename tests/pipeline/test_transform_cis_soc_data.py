@@ -33,10 +33,10 @@ def test_transform_cis_soc_data(spark_session):
     )
     expected_conflicts_df = spark_session.createDataFrame(
         data=[
-            ("JOB TITLE 2", "JOB2", 66, "AMBIGUOUS AFTER DEDUPLICATION"),
-            ("JOB TITLE 2", "JOB2", 77, "AMBIGUOUS AFTER DEDUPLICATION"),
+            ("JOB TITLE 2", "JOB2", 66),
+            ("JOB TITLE 2", "JOB2", 77),
         ],
-        schema="work_main_job_title string, work_main_job_role string, standard_occupational_classification_code string, DROP_REASON string",
+        schema="work_main_job_title string, work_main_job_role string, standard_occupational_classification_code string",
     )
     # test mapping functionality with complete map off
     duplicate_df, output_df = transform_cis_soc_data(input_df, ["work_main_job_role"])

@@ -209,24 +209,26 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
 
     # flag non specific soc codes and uncodeable codes
     df = df.withColumn(
-        "DROP_REASON",
-        F.when(F.col("LENGTH") != F.max("LENGTH").over(window), "NOT MOST SPECIFIC").when(
-            F.col("standard_occupational_classification_code") == "uncodeable", "UNCODEABLE"
-        ),
+        "DROP",
+        F.when(
+            (F.col("LENGTH") != F.max("LENGTH").over(window))
+            | (F.col("standard_occupational_classification_code") == "uncodeable"),
+            1,
+        ).otherwise(0),
     )
-    retain_count = F.sum(F.when(F.col("DROP_REASON").isNull(), 1).otherwise(0)).over(window)
+    retain_count = F.sum(F.when(F.col("DROP") == 0, 1).otherwise(0)).over(window)
     # flag ambiguous codes from remaining set
     df = df.withColumn(
-        "DROP_REASON",
+        "DROP",
         F.when(
-            (retain_count > 1) & (F.col("DROP_REASON").isNull()),
-            "AMBIGUOUS AFTER DEDUPLICATION",
-        ).otherwise(F.col("DROP_REASON")),
+            (retain_count > 1) & (F.col("DROP") == 0),
+            2,
+        ).otherwise(F.col("DROP")),
     ).drop("LENGTH")
     # remove flag from first row of dropped set if all codes from group are flagged
-    df = df.withColumn("DROP_REASON", F.when(F.count("*").over(window) == 1, None).otherwise(F.col("DROP_REASON")))
-    resolved_df = df.filter((F.col("DROP_REASON").isNull())).drop("DROP_REASON", "ROW_NUMBER")
-    duplicate_df = df.filter((F.col("DROP_REASON") == "AMBIGUOUS AFTER DEDUPLICATION")).drop("ROW_NUMBER")
+    df = df.withColumn("DROP", F.when(F.count("*").over(window) == 1, 0).otherwise(F.col("DROP")))
+    resolved_df = df.filter((F.col("DROP") == 0)).drop("DROP", "ROW_NUMBER")
+    duplicate_df = df.filter(F.col("DROP") == 2).drop("ROW_NUMBER", "DROP")
     return duplicate_df, resolved_df
 
 
