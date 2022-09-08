@@ -1381,6 +1381,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = clean_job_description_string(df, "work_main_job_title")
     df = clean_job_description_string(df, "work_main_job_role")
     df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
+    df = add_pattern_matching_flags(df)
     return df
 
 
@@ -1404,7 +1405,6 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
         direct_contact_column="work_direct_contact_patients_or_clients",
         health_care_column="work_health_care_area",
     )
-    # df = add_pattern_matching_flags(df)
     return df
 
 
@@ -2516,6 +2516,61 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = df.withColumn("work_main_job_title", F.upper(F.col("work_main_job_title")))
     df = df.withColumn("work_main_job_role", F.upper(F.col("work_main_job_role")))
 
+    # add work from home flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=work_from_home_pattern.positive_regex_pattern,
+        negative_regex_pattern=work_from_home_pattern.negative_regex_pattern,
+        column_name_to_assign="is_working_from_home",
+        debug_mode=False,
+    )
+
+    # add at-school flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=at_school_pattern.positive_regex_pattern,
+        negative_regex_pattern=at_school_pattern.negative_regex_pattern,
+        column_name_to_assign="at_school",
+        debug_mode=False,
+    )
+
+    # add at-university flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=at_university_pattern.positive_regex_pattern,
+        negative_regex_pattern=at_university_pattern.negative_regex_pattern,
+        column_name_to_assign="at_university",
+        debug_mode=False,
+    )
+    # add is-retired flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=retired_regex_pattern.positive_regex_pattern,
+        negative_regex_pattern=retired_regex_pattern.negative_regex_pattern,
+        column_name_to_assign="is_retired",
+        debug_mode=False,
+    )
+
+    # add not-working flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=not_working_pattern.positive_regex_pattern,
+        negative_regex_pattern=not_working_pattern.negative_regex_pattern,
+        column_name_to_assign="not_working",
+    )
+    # add self-employed flag
+    df = assign_regex_match_result(
+        df=df,
+        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+        positive_regex_pattern=self_employed_regex.positive_regex_pattern,
+        column_name_to_assign="is_self_employed",
+        debug_mode=False,
+    )
     df = assign_regex_from_map(
         df=df,
         column_name_to_assign="regex_derived_job_sector",
@@ -2584,7 +2639,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         F.sum(F.when(F.col("is_patient_facing"), 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
     )
 
-    work_status_columns = ["work_status_v0", "work_status_v1", "work_status_v2", "work_status_digital"]
+    work_status_columns = [col for col in df.columns if "work_status_" in col]
     for work_status_column in work_status_columns:
         df = df.withColumn(
             work_status_column,

@@ -1105,7 +1105,11 @@ def sample_file_ETL(
 
 
 @register_pipeline_stage("stratified_sample")
-def stratified_sample(df, selected_cols, rows_per_sample, num_files, output_folder_name, array_columns):
+def stratified_sample(
+    table_name, filter_condition, selected_cols, rows_per_sample, num_files, output_folder_name, array_columns
+):
+    df = extract_from_table(table_name)
+    df = df.filter(eval(filter_condition))
     generate_stratified_sample(df, selected_cols, rows_per_sample, num_files, output_folder_name, array_columns)
 
 
