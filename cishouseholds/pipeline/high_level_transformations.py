@@ -4,6 +4,7 @@ import shutil
 import subprocess
 from datetime import datetime
 from functools import reduce
+from operator import and_
 from pathlib import Path
 from typing import List
 
@@ -58,9 +59,11 @@ from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wi
 from cishouseholds.derive import derive_cq_pattern
 from cishouseholds.derive import derive_had_symptom_last_7days_from_digital
 from cishouseholds.derive import derive_household_been_columns
+from cishouseholds.derive import flag_records_for_childcare_v0_rules
 from cishouseholds.derive import flag_records_for_childcare_v1_rules
 from cishouseholds.derive import flag_records_for_childcare_v2_b_rules
 from cishouseholds.derive import flag_records_for_college_v0_rules
+from cishouseholds.derive import flag_records_for_college_v1_rules
 from cishouseholds.derive import flag_records_for_college_v2_rules
 from cishouseholds.derive import flag_records_for_furlough_rules_v0
 from cishouseholds.derive import flag_records_for_furlough_rules_v1_a
@@ -74,16 +77,17 @@ from cishouseholds.derive import flag_records_for_not_working_rules_v2_a
 from cishouseholds.derive import flag_records_for_not_working_rules_v2_b
 from cishouseholds.derive import flag_records_for_retired_rules
 from cishouseholds.derive import flag_records_for_school_v2_rules
+from cishouseholds.derive import flag_records_for_self_employed_rules_v0
 from cishouseholds.derive import flag_records_for_self_employed_rules_v1_a
 from cishouseholds.derive import flag_records_for_self_employed_rules_v1_b
 from cishouseholds.derive import flag_records_for_self_employed_rules_v2_a
 from cishouseholds.derive import flag_records_for_self_employed_rules_v2_b
-from cishouseholds.derive import flag_records_for_student_v0_rules
-from cishouseholds.derive import flag_records_for_student_v1_rules
 from cishouseholds.derive import flag_records_for_uni_v0_rules
+from cishouseholds.derive import flag_records_for_uni_v1_rules
 from cishouseholds.derive import flag_records_for_uni_v2_rules
 from cishouseholds.derive import flag_records_for_work_from_home_rules
 from cishouseholds.derive import flag_records_for_work_location_null
+from cishouseholds.derive import flag_records_for_work_location_student
 from cishouseholds.derive import get_keys_by_value
 from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.derive import mean_across_columns
@@ -134,6 +138,7 @@ from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.pipeline.config import get_config
+from cishouseholds.pipeline.generate_outputs import generate_stratified_sample
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.load import add_error_file_log_entry
@@ -174,6 +179,7 @@ from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
 from cishouseholds.pipeline.regex_testing import healthcare_classification
 from cishouseholds.pipeline.regex_testing import patient_facing_classification
 from cishouseholds.pipeline.regex_testing import patient_facing_pattern
+from cishouseholds.pipeline.regex_testing import priority_map
 from cishouseholds.pipeline.regex_testing import roles_map
 from cishouseholds.pipeline.regex_testing import social_care_classification
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
@@ -188,15 +194,18 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     """
     transform and process cis soc data
     """
+    # allow nullsafe join on title as soc is sometimes assigned without
+    df = df.filter(F.col("work_main_job_title").isNotNull()).distinct()
+    df = df.withColumn(
+        "soc_code_edited_to_uncodeable",
+        F.col("standard_occupational_classification_code").rlike(r".*[^0-9].*|^\s*$"),
+    )
     df = df.withColumn(
         "standard_occupational_classification_code",
-        F.when(F.substring(F.col("standard_occupational_classification_code"), 1, 2) == "un", "uncodeable").otherwise(
+        F.when(F.col("soc_code_edited_to_uncodeable"), "uncodeable").otherwise(
             F.col("standard_occupational_classification_code")
         ),
-    )
-
-    # remove nulls and deduplicate on all columns
-    df = df.filter(F.col("work_main_job_title").isNotNull() & F.col("work_main_job_role").isNotNull()).distinct()
+    ).drop("soc_code_edited_to_uncodeable")
 
     df = df.withColumn(
         "LENGTH",
@@ -208,10 +217,32 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
         ),
     ).orderBy(F.desc("LENGTH"))
 
+    # create windows with descending soc code
     window = Window.partitionBy(*join_on_columns)
-    df = df.withColumn("DROP", F.col("LENGTH") != F.max("LENGTH").over(window))
-    df = df.filter((F.col("standard_occupational_classification_code") != "uncodeable") & (~F.col("DROP")))
-    return df.drop("DROP", "LENGTH")
+
+    # flag non specific soc codes and uncodeable codes
+    df = df.withColumn(
+        "DROP",
+        F.when(
+            (F.col("LENGTH") != F.max("LENGTH").over(window))
+            | (F.col("standard_occupational_classification_code") == "uncodeable"),
+            1,
+        ).otherwise(0),
+    )
+    retain_count = F.sum(F.when(F.col("DROP") == 0, 1).otherwise(0)).over(window)
+    # flag ambiguous codes from remaining set
+    df = df.withColumn(
+        "DROP",
+        F.when(
+            (retain_count > 1) & (F.col("DROP") == 0),
+            2,
+        ).otherwise(F.col("DROP")),
+    ).drop("LENGTH")
+    # remove flag from first row of dropped set if all codes from group are flagged
+    df = df.withColumn("DROP", F.when(F.count("*").over(window) == 1, 0).otherwise(F.col("DROP")))
+    resolved_df = df.filter((F.col("DROP") == 0)).drop("DROP", "ROW_NUMBER")
+    duplicate_df = df.filter(F.col("DROP") == 2).drop("ROW_NUMBER", "DROP")
+    return duplicate_df, resolved_df
 
 
 def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
@@ -1567,6 +1598,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = clean_job_description_string(df, "work_main_job_title")
     df = clean_job_description_string(df, "work_main_job_role")
     df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
+    # df = add_pattern_matching_flags(df)
     return df
 
 
@@ -1590,7 +1622,6 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
         direct_contact_column="work_direct_contact_patients_or_clients",
         health_care_column="work_health_care_area",
     )
-
     return df
 
 
@@ -2325,7 +2356,6 @@ def union_dependent_derivations(df):
         map={"Yes": "No", "No": "Yes"},
         condition_column="currently_smokes_or_vapes",
     )
-    df = add_pattern_matching_flags(df)
     df = fill_backwards_work_status_v2(
         df=df,
         date="visit_datetime",
@@ -2700,6 +2730,9 @@ def derive_overall_vaccination(df: DataFrame) -> DataFrame:
 def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     """Add result of various regex pattern matchings"""
 
+    df = df.withColumn("work_main_job_title", F.upper(F.col("work_main_job_title")))
+    df = df.withColumn("work_main_job_role", F.upper(F.col("work_main_job_role")))
+
     # add work from home flag
     df = assign_regex_match_result(
         df=df,
@@ -2760,7 +2793,9 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         column_name_to_assign="regex_derived_job_sector",
         reference_columns=["work_main_job_title", "work_main_job_role"],
         roles=roles_map,
+        priority_map=priority_map,
     )
+    # create healthcare area flag
     df = df.withColumn("healthcare_area", F.lit(None))
     for healthcare_type, roles in healthcare_classification.items():  # type: ignore
         df = df.withColumn(
@@ -2781,8 +2816,8 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         )
 
     # add boolean flags for working in healthcare or socialcare
-    df = df.withColumn("works_healthcare", F.col("healthcare_area").isNotNull())
-    df = df.withColumn("works_social_care", F.col("social_care_area").isNotNull())
+    df = df.withColumn("works_healthcare", F.when(F.col("healthcare_area").isNotNull(), "Yes").otherwise("No"))
+    df = df.withColumn("works_social_care", F.when(F.col("social_care_area").isNotNull(), "Yes").otherwise("No"))
 
     df = assign_regex_match_result(
         df=df,
@@ -2791,17 +2826,10 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         positive_regex_pattern=patient_facing_pattern.positive_regex_pattern,
         negative_regex_pattern=patient_facing_pattern.negative_regex_pattern,
     )
-
-    # df = df.withColumn(
-    #     "works_healthcare",
-    #     (array_contains_any("regex_derived_job_sector", healthcare_positive_roles))
-    #     & (~array_contains_any("regex_derived_job_sector", healthcare_negative_roles)),
-    # )
-
     df = df.withColumn(
         "is_patient_facing",
         F.when(
-            (F.col("works_healthcare") | F.col("is_patient_facing"))
+            ((F.col("works_healthcare") == "Yes") | F.col("is_patient_facing"))
             & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
             True,
         ).otherwise(False),
@@ -2828,7 +2856,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         F.sum(F.when(F.col("is_patient_facing"), 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
     )
 
-    work_status_columns = ["work_status_v0", "work_status_v1", "work_status_v2", "work_status_digital"]
+    work_status_columns = [col for col in df.columns if "work_status_" in col]
     for work_status_column in work_status_columns:
         df = df.withColumn(
             work_status_column,
@@ -2837,12 +2865,35 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
             .otherwise(F.col(work_status_column)),
         )
+
+    # # Temp table generations:
+    # df = df.withColumn("work_healthcare", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
+    # sh_df = df.filter(
+    #     (F.col("work_social_care") != F.col("works_social_care"))
+    #     | (F.col("work_healthcare") != F.col("works_healthcare"))
+    # )
+    # h_df = df.filter(F.col("work_healthcare") != F.col("works_healthcare"))
+    # cols_added = [
+    #     "is_patient_facing",
+    #     "works_healthcare",
+    #     "works_social_care",
+    #     "work_health_care_patient_facing",
+    #     "social_care_area",
+    #     "healthcare_area",
+    #     "regex_derived_job_sector",
+    # ]
+    # generate_stratified_sample(
+    #     sh_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
+    # )
+    # generate_stratified_sample(h_df, cols_added, 500, 5, "healthcare_inconsistences", ["regex_derived_job_sector"])
+
     return df
 
 
 def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
     """
     Adds various flags to indicate which rules were triggered for a given record.
+    TODO: Don't use this function - it is not up to date with derive module
     """
     # Work from Home rules
     df = df.withColumn("wfh_rules", flag_records_for_work_from_home_rules())
@@ -2882,9 +2933,9 @@ def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
     df = df.withColumn("not_working_rules_v2_b", flag_records_for_not_working_rules_v2_b())
 
     # Student rules
-    df = df.withColumn("student_rules_v0", flag_records_for_student_v0_rules())
+    # df = df.withColumn("student_rules_v0", flag_records_for_student_v0_rules())
 
-    df = df.withColumn("student_rules_v1", flag_records_for_student_v1_rules())
+    # df = df.withColumn("student_rules_v1", flag_records_for_student_v1_rules())
 
     df = df.withColumn("school_rules_v2", flag_records_for_school_v2_rules())
 
@@ -2915,11 +2966,13 @@ def reclassify_work_variables(
         before & after edits.
     """
     # Work from Home
-    update_work_location = flag_records_for_work_from_home_rules() & regex_match_result(
+    working_from_home_regex_hit = regex_match_result(
         columns_to_check_in=["work_main_job_title", "work_main_job_role"],
         positive_regex_pattern=work_from_home_pattern.positive_regex_pattern,
         negative_regex_pattern=work_from_home_pattern.negative_regex_pattern,
     )
+    # Rule_id: 1000
+    update_work_location = flag_records_for_work_from_home_rules() & working_from_home_regex_hit
 
     # Furlough
     furlough_regex_hit = regex_match_result(
@@ -2928,10 +2981,15 @@ def reclassify_work_variables(
         negative_regex_pattern=furloughed_pattern.negative_regex_pattern,
     )
 
+    # Rule_id: 2000
     update_work_status_furlough_v0 = furlough_regex_hit & flag_records_for_furlough_rules_v0()
+    # Rule_id: 2001
     update_work_status_furlough_v1_a = furlough_regex_hit & flag_records_for_furlough_rules_v1_a()
+    # Rule_id: 2002
     update_work_status_furlough_v1_b = furlough_regex_hit & flag_records_for_furlough_rules_v1_b()
+    # Rule_id: 2003
     update_work_status_furlough_v2_a = furlough_regex_hit & flag_records_for_furlough_rules_v2_a()
+    # Rule_id: 2004
     update_work_status_furlough_v2_b = furlough_regex_hit & flag_records_for_furlough_rules_v2_b()
 
     # Self-Employed
@@ -2941,9 +2999,15 @@ def reclassify_work_variables(
         negative_regex_pattern=self_employed_regex.negative_regex_pattern,
     )
 
+    # Rule_id: 3000
+    update_work_status_self_employed_v0 = self_employed_regex_hit & flag_records_for_self_employed_rules_v0()
+    # Rule_id: 3001
     update_work_status_self_employed_v1_a = self_employed_regex_hit & flag_records_for_self_employed_rules_v1_a()
+    # Rule_id: 3002
     update_work_status_self_employed_v1_b = self_employed_regex_hit & flag_records_for_self_employed_rules_v1_b()
+    # Rule_id: 3003
     update_work_status_self_employed_v2_a = self_employed_regex_hit & flag_records_for_self_employed_rules_v2_a()
+    # Rule_id: 3004
     update_work_status_self_employed_v2_b = self_employed_regex_hit & flag_records_for_self_employed_rules_v2_b()
 
     # Retired
@@ -2953,19 +3017,28 @@ def reclassify_work_variables(
         negative_regex_pattern=retired_regex_pattern.negative_regex_pattern,
     )
 
+    # Rule_id: 4000, 4001, 4002
     update_work_status_retired = retired_regex_hit | flag_records_for_retired_rules()
 
     # Not-working
-    not_working_regex_hit = regex_match_result(
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=not_working_pattern.positive_regex_pattern,
-        negative_regex_pattern=not_working_pattern.negative_regex_pattern,
+    not_working_regex_hit = (
+        regex_match_result(
+            columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+            positive_regex_pattern=not_working_pattern.positive_regex_pattern,
+            negative_regex_pattern=not_working_pattern.negative_regex_pattern,
+        )
+        & ~working_from_home_regex_hit  # type: ignore
     )
 
+    # Rule_id: 5000
     update_work_status_not_working_v0 = not_working_regex_hit & flag_records_for_not_working_rules_v0()
+    # Rule_id: 5001
     update_work_status_not_working_v1_a = not_working_regex_hit & flag_records_for_not_working_rules_v1_a()
+    # Rule_id: 5002
     update_work_status_not_working_v1_b = not_working_regex_hit & flag_records_for_not_working_rules_v1_b()
+    # Rule_id: 5003
     update_work_status_not_working_v2_a = not_working_regex_hit & flag_records_for_not_working_rules_v2_a()
+    # Rule_id: 5004
     update_work_status_not_working_v2_b = not_working_regex_hit & flag_records_for_not_working_rules_v2_b()
 
     # School/Student
@@ -2997,6 +3070,7 @@ def reclassify_work_variables(
     age_under_16 = F.col("age_at_visit") < F.lit(16)
     age_over_four = F.col("age_at_visit") > F.lit(4)
 
+    # Rule_id: 6000
     update_work_status_student_v0 = (
         (school_regex_hit & flag_records_for_school_v2_rules())
         | (university_regex_hit & flag_records_for_uni_v0_rules())
@@ -3004,34 +3078,42 @@ def reclassify_work_variables(
         | (age_over_four & age_under_16)
     )
 
+    # Rule_id: 6001
+    update_work_status_student_v0_a = (childcare_regex_hit & flag_records_for_childcare_v0_rules()) | (
+        school_regex_hit & flag_records_for_childcare_v0_rules()
+    )
+
+    # Rule_id: 6002
     update_work_status_student_v1_a = (
-        (school_regex_hit & flag_records_for_student_v1_rules())
-        | (university_regex_hit & flag_records_for_student_v1_rules())
-        | (college_regex_hit & flag_records_for_student_v1_rules())
+        (school_regex_hit & flag_records_for_school_v2_rules())
+        | (university_regex_hit & flag_records_for_uni_v1_rules())
+        | (college_regex_hit & flag_records_for_college_v1_rules())
         | (age_over_four & age_under_16)
     )
 
-    update_work_status_student_v1_b = ~childcare_regex_hit & flag_records_for_childcare_v1_rules()  # type: ignore
-
+    # Rule_id: 6003
     update_work_status_student_v1_c = (childcare_regex_hit & flag_records_for_childcare_v1_rules()) | (
         school_regex_hit & flag_records_for_childcare_v1_rules()
     )
 
-    update_work_status_student_v2_a = (school_regex_hit & flag_records_for_school_v2_rules()) | (
-        age_over_four & age_under_16
-    )
-
-    update_work_status_student_v2_b = college_regex_hit & flag_records_for_college_v2_rules()
-
-    update_work_status_student_v2_c = university_regex_hit & flag_records_for_uni_v2_rules()
-
-    update_work_status_student_v2_d = ~childcare_regex_hit & flag_records_for_childcare_v2_b_rules()  # type: ignore
-
+    # Rule_id: 6004
     update_work_status_student_v2_e = (childcare_regex_hit & flag_records_for_childcare_v2_b_rules()) | (
         school_regex_hit & flag_records_for_childcare_v2_b_rules()
     )
 
-    update_work_location_general = flag_records_for_work_location_null()
+    # Rule_id: 6005
+    update_work_status_student_v2_a = (school_regex_hit & flag_records_for_school_v2_rules()) | (
+        age_over_four & age_under_16
+    )
+
+    # Rule_id: 6006
+    update_work_status_student_v2_b = college_regex_hit & flag_records_for_college_v2_rules()
+
+    # Rule_id: 6007
+    update_work_status_student_v2_c = university_regex_hit & flag_records_for_uni_v2_rules()
+
+    # Rule_id: 6008
+    update_work_location_general = flag_records_for_work_location_null() | flag_records_for_work_location_student()
 
     # Please note the order of *_edited columns, these must come before the in-place updates
 
@@ -3047,7 +3129,7 @@ def reclassify_work_variables(
         )
         .withColumn(
             "work_status_v0",
-            F.when(self_employed_regex_hit, F.lit("Self-employed")).otherwise(F.col("work_status_v0")),
+            F.when(update_work_status_self_employed_v0, F.lit("Self-employed")).otherwise(F.col("work_status_v0")),
         )
         .withColumn(
             "work_status_v1",
@@ -3074,9 +3156,16 @@ def reclassify_work_variables(
                 F.col("work_status_v2")
             ),
         )
-        .withColumn(
+    )
+
+    _df2 = spark_session.createDataFrame(_df.rdd, schema=_df.schema)  # breaks lineage to avoid Java OOM Error
+
+    _df3 = (
+        _df2.withColumn(
             "work_status_v0",
-            F.when(update_work_status_student_v0, F.lit("Student")).otherwise(F.col("work_status_v0")),
+            F.when(update_work_status_student_v0 | update_work_status_student_v0_a, F.lit("Student")).otherwise(
+                F.col("work_status_v0")
+            ),
         )
         .withColumn(
             "work_status_v1",
@@ -3086,22 +3175,11 @@ def reclassify_work_variables(
         )
         .withColumn(
             "work_status_v1",
-            F.when(update_work_status_student_v1_b, F.lit("Child under 5y not attending child care")).otherwise(
-                F.col("work_status_v1")
-            ),
-        )
-        .withColumn(
-            "work_status_v1",
             F.when(update_work_status_student_v1_c, F.lit("Child under 5y attending child care")).otherwise(
                 F.col("work_status_v1")
             ),
         )
-    )
-
-    _df2 = spark_session.createDataFrame(_df.rdd, schema=_df.schema)  # breaks lineage
-
-    _df3 = (
-        _df2.withColumn(
+        .withColumn(
             "work_status_v2",
             F.when(update_work_status_student_v2_a, F.lit("4-5y and older at school/home-school")).otherwise(
                 F.col("work_status_v2")
@@ -3118,12 +3196,6 @@ def reclassify_work_variables(
             F.when(
                 update_work_status_student_v2_c, F.lit("Attending university (including if temporarily absent)")
             ).otherwise(F.col("work_status_v2")),
-        )
-        .withColumn(
-            "work_status_v2",
-            F.when(update_work_status_student_v2_d, F.lit("Child under 4-5y not attending child care")).otherwise(
-                F.col("work_status_v2")
-            ),
         )
         .withColumn(
             "work_status_v2",
@@ -3145,7 +3217,12 @@ def reclassify_work_variables(
             "work_status_v2",
             F.when(update_work_status_retired, F.lit("Retired")).otherwise(F.col("work_status_v2")),
         )
-        .withColumn(
+    )
+
+    _df4 = spark_session.createDataFrame(_df3.rdd, schema=_df3.schema)  # breaks lineage to avoid Java OOM Error
+
+    _df5 = (
+        _df4.withColumn(
             "work_status_v0",
             F.when(
                 update_work_status_not_working_v0, F.lit("Not working (unemployed, retired, long-term sick etc.)")
@@ -3216,11 +3293,11 @@ def reclassify_work_variables(
 
     if drop_original_variables:
         # replace original versions with their cleaned versions
-        _df3 = _df3.drop(
+        _df5 = _df5.drop(
             "work_location_original",
             "work_status_v0_original",
             "work_status_v1_original",
             "work_status_v2_original",
         )
 
-    return _df3
+    return _df5
