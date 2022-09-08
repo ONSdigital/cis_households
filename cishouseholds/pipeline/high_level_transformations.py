@@ -1404,7 +1404,7 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
         direct_contact_column="work_direct_contact_patients_or_clients",
         health_care_column="work_health_care_area",
     )
-
+    # df = add_pattern_matching_flags(df)
     return df
 
 
@@ -2139,7 +2139,6 @@ def union_dependent_derivations(df):
         map={"Yes": "No", "No": "Yes"},
         condition_column="currently_smokes_or_vapes",
     )
-    df = add_pattern_matching_flags(df)
     df = fill_backwards_work_status_v2(
         df=df,
         date="visit_datetime",
@@ -2517,61 +2516,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = df.withColumn("work_main_job_title", F.upper(F.col("work_main_job_title")))
     df = df.withColumn("work_main_job_role", F.upper(F.col("work_main_job_role")))
 
-    # add work from home flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=work_from_home_pattern.positive_regex_pattern,
-        negative_regex_pattern=work_from_home_pattern.negative_regex_pattern,
-        column_name_to_assign="is_working_from_home",
-        debug_mode=False,
-    )
-
-    # add at-school flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=at_school_pattern.positive_regex_pattern,
-        negative_regex_pattern=at_school_pattern.negative_regex_pattern,
-        column_name_to_assign="at_school",
-        debug_mode=False,
-    )
-
-    # add at-university flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=at_university_pattern.positive_regex_pattern,
-        negative_regex_pattern=at_university_pattern.negative_regex_pattern,
-        column_name_to_assign="at_university",
-        debug_mode=False,
-    )
-    # add is-retired flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=retired_regex_pattern.positive_regex_pattern,
-        negative_regex_pattern=retired_regex_pattern.negative_regex_pattern,
-        column_name_to_assign="is_retired",
-        debug_mode=False,
-    )
-
-    # add not-working flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=not_working_pattern.positive_regex_pattern,
-        negative_regex_pattern=not_working_pattern.negative_regex_pattern,
-        column_name_to_assign="not_working",
-    )
-    # add self-employed flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=self_employed_regex.positive_regex_pattern,
-        column_name_to_assign="is_self_employed",
-        debug_mode=False,
-    )
     df = assign_regex_from_map(
         df=df,
         column_name_to_assign="regex_derived_job_sector",
@@ -2610,13 +2554,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         positive_regex_pattern=patient_facing_pattern.positive_regex_pattern,
         negative_regex_pattern=patient_facing_pattern.negative_regex_pattern,
     )
-
-    # df = df.withColumn(
-    #     "works_healthcare",
-    #     (array_contains_any("regex_derived_job_sector", healthcare_positive_roles))
-    #     & (~array_contains_any("regex_derived_job_sector", healthcare_negative_roles)),
-    # )
-
     df = df.withColumn(
         "is_patient_facing",
         F.when(
@@ -2657,26 +2594,26 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             .otherwise(F.col(work_status_column)),
         )
 
-    # Temp table generations:
-    df = df.withColumn("work_healthcare", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
-    sh_df = df.filter(
-        (F.col("work_social_care") != F.col("works_social_care"))
-        | (F.col("work_healthcare") != F.col("works_healthcare"))
-    )
-    h_df = df.filter(F.col("work_healthcare") != F.col("works_healthcare"))
-    cols_added = [
-        "is_patient_facing",
-        "works_healthcare",
-        "works_social_care",
-        "work_health_care_patient_facing",
-        "social_care_area",
-        "healthcare_area",
-        "regex_derived_job_sector",
-    ]
-    generate_stratified_sample(
-        sh_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
-    )
-    generate_stratified_sample(h_df, cols_added, 500, 5, "healthcare_inconsistences", ["regex_derived_job_sector"])
+    # # Temp table generations:
+    # df = df.withColumn("work_healthcare", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
+    # sh_df = df.filter(
+    #     (F.col("work_social_care") != F.col("works_social_care"))
+    #     | (F.col("work_healthcare") != F.col("works_healthcare"))
+    # )
+    # h_df = df.filter(F.col("work_healthcare") != F.col("works_healthcare"))
+    # cols_added = [
+    #     "is_patient_facing",
+    #     "works_healthcare",
+    #     "works_social_care",
+    #     "work_health_care_patient_facing",
+    #     "social_care_area",
+    #     "healthcare_area",
+    #     "regex_derived_job_sector",
+    # ]
+    # generate_stratified_sample(
+    #     sh_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
+    # )
+    # generate_stratified_sample(h_df, cols_added, 500, 5, "healthcare_inconsistences", ["regex_derived_job_sector"])
 
     return df
 
