@@ -20,6 +20,13 @@ def clean_job_description_string(df: DataFrame, column_name_to_assign: str):
     """
     Remove non alphanumeric characters and duplicate spaces from work main job role variable and set to uppercase.
     Also removes NA type responses.
+
+    Parameters
+    ----------
+    df
+        The input DataFrame to process
+    column_name_to_assign
+        The name of the column to edit
     """
     cleaned_string = F.regexp_replace(
         F.regexp_replace(
@@ -37,7 +44,14 @@ def clean_job_description_string(df: DataFrame, column_name_to_assign: str):
 
 def update_strings_to_sentence_case(df: DataFrame, columns: List[str]):
     """
-    apply lower case to all but first letter of string in list of columns
+    Apply lower case to all but first letter of string in list of columns
+
+    Parameters
+    ----------
+    df
+        The input DataFrame to process
+    columns
+        A list of columns to apply the editing described above
     """
     for col in columns:
         df = df.withColumn(
@@ -55,6 +69,20 @@ def update_column_in_time_window(
 ):
     """
     Update the value of a column to a fixed value if the time the participant filled out the survey exists in a window
+
+    Parameters
+    ----------
+    df
+        The input DataFrame to process
+    column_name_to_update
+        The name of the column to update/edit
+    time_column
+        The name of the timestamp column
+    new_value
+        The new value to insert into `column_name_to_update` column
+    time_window
+        A list of two timestamps given as a string eg: ["2020-01-09T12:00:00", "2020-12-09T12:00:00"]. First timestamp
+        must be older than the second timestamp in this list.
     """
     df = df.withColumn(
         column_name_to_update,
@@ -68,7 +96,19 @@ def update_column_in_time_window(
 
 
 def update_to_value_if_any_not_null(df: DataFrame, column_name_to_assign: str, value_to_assign: str, column_list: list):
-    """Edit existing column to value when a value is present in any of the listed columns."""
+    """Edit existing column to `value_to_assign` when a value is present in any of the listed columns.
+
+    Parameters
+    ----------
+    df
+        The input DataFrame to process
+    column_name_to_assign
+        The name of the existing column
+    value_to_assign
+        The value to assign
+    column_list
+        A list of columns to check if any of them do not have null values
+    """
     df = df.withColumn(
         column_name_to_assign,
         F.when(any_column_not_null(column_list), value_to_assign).otherwise(F.col(column_name_to_assign)),
@@ -87,6 +127,7 @@ def update_column_if_ref_in_list(
     """
     Update column value with new_value if the current value is equal to old_value
     and reference column is in list
+
     Parameters
     ----------
     df
@@ -114,8 +155,9 @@ def update_value_if_multiple_and_ref_in_list(
     separator: str,
 ):
     """
-    update column value with new value if multiple strings found, separated by separator e.g. ','
+    Update column value with new value if multiple strings found, separated by separator e.g. ','
     and based on whether column contains any value in check_list or not
+
     Parameters
     -----------
     df
@@ -169,12 +211,16 @@ def update_value_if_multiple_and_ref_in_list(
 
 def clean_within_range(df: DataFrame, column_name_to_update: str, range: List[int]) -> DataFrame:
     """
-    convert values outside range to null
+    Convert values outside range to null
+
     Parameters
     ----------
     df
+        The input DataFrame to process
     column_name_to_update
+        The name of the column to update
     range
+        A list of two numbers - 1st number in this list must be less than the 2nd number
     """
     df = df.withColumn(
         column_name_to_update,
@@ -192,8 +238,12 @@ def update_person_count_from_ages(df: DataFrame, column_name_to_assign: str, col
 
     Parameters
     ----------
-    column_patter
-        regex pattern to match columns that should be counted
+    df
+        The input DataFrame to process
+    column_name_to_update
+        The name of the column to update
+    column_pattern
+        regex pattern to select columns that should be counted
 
     """
     r = re.compile(column_pattern)
@@ -213,13 +263,18 @@ def update_face_covering_outside_of_home(
     df: DataFrame, column_name_to_update: str, covered_enclosed_column: str, covered_work_column: str
 ):
     """
-    update the face covering variable by using a lookup to set value of cell based upon values of 2 other columns
+    Update the face covering variable by using a lookup to set value of cell based upon values of 2 other columns
+
     Parameters
     ----------
     df
+        The input DataFrame to process
     column_name_to_update
+        The name of the column to update
     covered_enclosed_column
+        Name of the column capturing wether the person wears a mask in enclosed spaces
     covered_work_column
+        Name of the column capturing wether the person wears a mask in work setting
     """
     df = df.withColumn(
         column_name_to_update,
@@ -283,7 +338,8 @@ def update_face_covering_outside_of_home(
 
 def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
     """
-    update value to no if symptoms are ongoing
+    Update value to no if symptoms are ongoing
+
     Parameters
     ----------
     df
