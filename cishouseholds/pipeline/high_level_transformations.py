@@ -596,7 +596,7 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
     """
     Call functions to translate welsh survey responses from the cis digital questionnaire
     """
-    translation_settings = get_config().get("translation", "inactive")
+    translation_settings = get_config().get("translation", {"inactive": "inactive"})
     translation_directory = translation_settings.get("translation_directory", None)
     translation_lookup_path = translation_settings.get("translation_lookup_path", None)
     translation_lookup_directory = translation_settings.get("translation_lookup_directory", None)
