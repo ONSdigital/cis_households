@@ -596,7 +596,7 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
     """
     Call functions to translate welsh survey responses from the cis digital questionnaire
     """
-    translation_settings = get_config().get("translation", None)
+    translation_settings = get_config().get("translation", "inactive")
     translation_directory = translation_settings.get("translation_directory", None)
     translation_lookup_path = translation_settings.get("translation_lookup_path", None)
     translation_lookup_directory = translation_settings.get("translation_lookup_directory", None)
@@ -1570,7 +1570,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i",
     )
     df = clean_postcode(df, "postcode")
-    df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
 
     consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     if all(col in df.columns for col in consent_cols):
