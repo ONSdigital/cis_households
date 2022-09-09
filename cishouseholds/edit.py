@@ -354,10 +354,15 @@ def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: st
 
 def update_visit_order(df: DataFrame, visit_order_column: str) -> DataFrame:
     """
-    Ensures visit order row value in list of allowed values
+    Ensures values in Visit Order column are in the list of allowed values. Any value
+    outside of the list of allowed values is set to None.
+
     Parameters
+    ----------
     df
+        The input DataFrame to process
     visit_order_column
+        The name of the column containing the visit order
     """
     allowed = [
         "First Visit",
@@ -397,7 +402,7 @@ def update_visit_order(df: DataFrame, visit_order_column: str) -> DataFrame:
 
 def clean_barcode_simple(df: DataFrame, barcode_column: str):
     """
-    clean barcode by converting to upper an removing whitespace
+    Clean barcode by converting to upper an removing whitespace
     """
     df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), r"[^a-zA-Z0-9]", "")))
     return df
@@ -406,12 +411,16 @@ def clean_barcode_simple(df: DataFrame, barcode_column: str):
 def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> DataFrame:
     """
     Clean lab sample barcodes.
+
     Converts barcode start to 'ONS' if not a valid variant. Removes barcodes with only 0 values in numeric part or not
     matching the expected format.
+
     Parameters
     ---------
     df
+        The input DataFrame to process
     barcode_column
+        Name of the column containing the barcode
     edited_column
         signifies if updating was performed on row
     """
@@ -442,12 +451,15 @@ def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> Dat
 
 def clean_postcode(df: DataFrame, postcode_column: str):
     """
-    update postcode variable to include only uppercase alpha numeric characters and set
-    to null if required format cannot be identified
+    Update postcode variable to include only uppercase alpha numeric characters and set
+    to null if required format cannot be identified.
+
     Parameters
     ----------
     df
+        The input DataFrame to process
     postcode_column
+        Name of the column containing the postcode to clean
     """
     cleaned_postcode_characters = F.upper(F.regexp_replace(postcode_column, r"[^a-zA-Z\d]", ""))
     inward_code = F.substring(cleaned_postcode_characters, -3, 3)
@@ -462,12 +474,24 @@ def clean_postcode(df: DataFrame, postcode_column: str):
 def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, dataset_name: str = None):
     """
     Edit values in df based on old to new mapping in lookup_df
+
     Expected columns on lookup_df:
     - id
     - dataset_name
     - target_column_name
     - old_value
     - new_value
+
+    Parameters
+    ----------
+    df
+        The input DataFrame to process
+    lookup_df
+        The lookup df with the structure described
+    id_column
+        Name of the the id column in `df`
+    dataset_name
+        Name of the dataset to filter rows in `lookup_df` by
     """
 
     if dataset_name is not None:
@@ -507,13 +531,16 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, d
 
 def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str):
     """
-    Create separate columns for school year depending on the individuals country of residence
+    Create separate columns for school year depending on the individual's country of residence
+
     Parameters
     ----------
     df
+        The input DataFrame to process
     school_year_column
+        The column containing school year info
     country_column
-    id_column
+        The column containing country of residence info
     """
     countries = [["England", "Wales"], ["Scotland"], ["Northern Ireland"]]
     column_names = ["school_year_england_wales", "school_year_scotland", "school_year_northern_ireland"]
@@ -528,6 +555,7 @@ def update_social_column(df: DataFrame, social_column: str, health_column: str):
     """
     Update the value of the social column to that of the health column
     provided that the social column is null and health column is not
+
     Parameters
     ----------
     df
@@ -553,12 +581,15 @@ def update_column_values_from_map(
 ) -> DataFrame:
     """
     Convert column values matching map key to value
+
     Parameters
     ----------
     df
     column
     map
+    condition_column
     error_if_value_not_found
+        If True, an error is raised if the set of values to map are not present in `map`
     default_value
     """
     if condition_column is None:
