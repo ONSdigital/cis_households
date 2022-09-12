@@ -770,13 +770,6 @@ def apply_value_map_multiple_columns(df: DataFrame, column_map_dic: Mapping):
     return df
 
 
-def update_schema_names(schema: dict, column_name_map: dict):
-    """
-    Update schema dictionary column names using a column name map, of old to new names.
-    """
-    return {column_name_map[key]: value for key, value in schema.items()}
-
-
 def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> str:
     """
     Remove all instances of whitespace before and after a string field including all duplicate spaces
