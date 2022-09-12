@@ -580,17 +580,27 @@ def update_column_values_from_map(
     default_value: Union[str, bool, int] = None,
 ) -> DataFrame:
     """
-    Convert column values matching map key to value
+    Given a map (dictionary) of Key-Value pairs, Replace column values that match the Keys
+    in the map/dictionary with the corresponding Values.
 
     Parameters
     ----------
     df
+        The input DataFrame to process
     column
+        The column name to assign - alias for column_name_to_update
     map
+        A dictionary of dictionaries - the top level key in this dictionary can correspond to
+        the `column` you want to update. A dictionary associated with the top level key is expected
+        contain key-value pairs. The keys in the key-value pairs are matched with the values in
+        the column `column` and when matched, the value in the column is replaced by the value in
+        corresponding key-value pair.
     condition_column
+        The column containing the value to be mapped using mapping_expr
     error_if_value_not_found
         If True, an error is raised if the set of values to map are not present in `map`
     default_value
+        Default value to use when values in column `column` cannot be matched with keys in `map`
     """
     if condition_column is None:
         condition_column = column
