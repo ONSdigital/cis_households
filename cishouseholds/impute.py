@@ -116,6 +116,54 @@ def fill_forward_from_last_change(
     )
 
 
+def fill_forward_event(
+    df: DataFrame,
+    event_indicator_column: str,
+    event_date_column: str,
+    detail_columns: List[str],
+    participant_id_column: str,
+    visit_datetime_column: str,
+):
+    """ """
+    event_columns = [event_date_column, event_indicator_column, *detail_columns]
+    bounded_window = (
+        Window.partitionBy(participant_id_column, event_date_column)
+        .orderBy(visit_datetime_column)
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
+    window = Window.partitionBy(participant_id_column, visit_datetime_column).orderBy(F.desc(event_date_column))
+    filtered_df = (
+        df.withColumn(  # TODO: convert to filter statements
+            "DROP_EVENT",
+            F.when(
+                F.sum(
+                    F.when(
+                        (F.col(event_date_column).isNull()) | (F.col(event_date_column) > F.col(visit_datetime_column)),
+                        0,  # erroneous event
+                    ).otherwise(1)
+                ).over(bounded_window)
+                == 1,
+                False,
+            ).otherwise(True),
+        )
+        .filter(~F.col("DROP_EVENT"))
+        .drop("DROP_EVENT")
+    )
+
+    df = (
+        df.drop(*event_columns)
+        .join(filtered_df.select(participant_id_column, *event_columns), on=participant_id_column, how="left")
+        .withColumn("DROP_EVENT", F.col(event_date_column) > F.col(visit_datetime_column))
+    )
+    for col in event_columns:
+        df = df.withColumn(col, F.when(F.col("DROP_EVENT"), None).otherwise(F.col(col)))
+
+    df = df.withColumn(event_indicator_column, F.when(F.col(event_date_column).isNull(), "No").otherwise("Yes"))
+    df = df.drop("DROP_EVENT").distinct().withColumn("ROW_NUMBER", F.row_number().over(window))
+    df = df.filter(F.col("ROW_NUMBER") == 1).drop("ROW_NUMBER")
+    return df
+
+
 def fill_forward_from_last_change_marked_subset(
     df: DataFrame,
     fill_forward_columns: List[str],
