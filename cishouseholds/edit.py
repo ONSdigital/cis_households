@@ -770,23 +770,6 @@ def apply_value_map_multiple_columns(df: DataFrame, column_map_dic: Mapping):
     return df
 
 
-def update_schema_types(schema: dict, column_names: list, new_type: dict):
-    """
-    Update entries within schema dictionary to reflect a common change across all rows in list (column_names)
-    Parameters
-    ----------
-    schema
-    column_names
-        list of names of keys within schema to assign new type to
-    new_type
-        type dictionary to update the schema entry to
-    """
-    schema = schema.copy()
-    for column_name in column_names:
-        schema[column_name] = new_type
-    return schema
-
-
 def update_schema_names(schema: dict, column_name_map: dict):
     """
     Update schema dictionary column names using a column name map, of old to new names.
