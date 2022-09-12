@@ -909,6 +909,7 @@ def edit_swab_results_single(
 def cast_columns_from_string(df: DataFrame, column_list: list, cast_type: str) -> DataFrame:
     """
     Convert string columns to a given datatype.
+
     Parameters
     ----------
     df
@@ -935,6 +936,17 @@ def edit_to_sum_or_max_value(
     If exceeds max, uses max_value. If all values are Null, sets outcome to Null.
 
     column_name_to_assign must already exist on the df.
+
+    Parameters
+    ----------
+    df
+        The Dataframe to process
+    column_name_to_assign
+        The column to impute (must already exist in the Dataframe)
+    columns_to_sum
+        List of column names to sum up
+    max_value
+        Max value
     """
     df = df.withColumn(
         column_name_to_assign,
