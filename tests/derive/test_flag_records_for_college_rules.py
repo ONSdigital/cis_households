@@ -10,9 +10,9 @@ def test_flag_records_for_college_v2_rules(spark_session):
     # the following is from cishouseholds.mapping.category_maps['iqvia_raw_category_map']['work_status_v2']
     test_cases = [
         ("Employed and currently working", 35, False),
-        ("Employed and currently not working", 99, False),
+        ("Employed and currently not working", 99, True),
         ("Self-employed and currently working", 12, False),
-        ("Self-employed and currently not working", 56, False),
+        ("Self-employed and currently not working", 56, True),
         ("Looking for paid work and able to start", 15, False),
         ("Looking for paid work and able to start", 16, True),
         ("Not working and not looking for work", 15, False),
