@@ -609,25 +609,6 @@ def update_work_facing_now_column(
     return df
 
 
-def deduplicate_rows(df: DataFrame, reference_columns: Union[List[str], str]):
-    """
-    Remove duplicate rows based on values present in reference columns
-
-    Parameters
-    ---------
-    df
-        The Dataframe to de-duplicate
-    reference_columns
-        A list of columns to use to determine whether a record is duplicate or not. If
-        this is "all" then a record is considered duplicate if values in all the columns for that
-        record are duplicated in another row.
-    """
-    if reference_columns == "all":
-        return df.distinct()
-    else:
-        return df.dropDuplicates(reference_columns)
-
-
 def convert_null_if_not_in_list(df: DataFrame, column_name: str, options_list: List[str]) -> DataFrame:
     """
     Convert column values to null if the entry is not present in provided list
