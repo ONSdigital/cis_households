@@ -43,11 +43,9 @@ from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa:
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def transform_translated_responses_into_lookup(
+def get_new_translations_from_completed_translations_directory(
     translation_directory: str,
     translation_lookup_directory: str,
-    translation_backup_directory: str,
-    formatted_time: str = datetime.now().strftime("%Y%m%d_%H%M"),
 ) -> DataFrame:
     """
     checks for new translations in completed_translations_directory and builds a pandas df from excel files it finds
@@ -60,8 +58,6 @@ def transform_translated_responses_into_lookup(
     translation_lookup_df = extract_lookup_csv(
         translation_lookup_path, validation_schemas["csv_lookup_schema"]
     ).toPandas()
-
-    translation_backup_path = Path(translation_backup_directory) / f"translated_value_lookup_{formatted_time}"
 
     list_of_file_paths = [
         os.path.join(completed_translations_directory, _)
@@ -103,37 +99,36 @@ def transform_translated_responses_into_lookup(
         if os.path.exists(os.path.join(completed_translations_directory, "processed/")):
             shutil.move(path, os.path.join(completed_translations_directory, "processed/"))
 
-    filtered_translations = new_translations[~new_translations["id"].isin(translation_lookup_df["id"])]
-
-    new_items_to_be_translated = len(filtered_translations) > 0
-
+    filtered_new_translations = new_translations[~new_translations["id"].isin(translation_lookup_df["id"])]
     spark_session = get_or_create_spark_session()
-
-    translations_df = spark_session.createDataFrame(
-        translation_lookup_df,
+    new_translations_df = spark_session.createDataFrame(
+        filtered_new_translations,
         schema="id string, dataset_name string, target_column_name string, old_value string, new_value string",
     )
 
-    if new_items_to_be_translated:
-        write_csv_rename(translations_df, translation_backup_path, ",", ".csv")
-
-        updated_translation_lookup_df = translation_lookup_df.append(filtered_translations)
-
-        updated_translations_df = spark_session.createDataFrame(
-            updated_translation_lookup_df,
-            schema="id string, dataset_name string, target_column_name string, old_value string, new_value string",
-        )
-
-        export_translation_lookup_path = Path(translation_lookup_directory) / "translated_value_lookup"
-        delete_file(export_translation_lookup_path.as_posix() + ".csv")
-        write_csv_rename(updated_translations_df, export_translation_lookup_path, ",", ".csv")
-        translations_df = updated_translations_df
-
-    return translations_df
+    return new_translations_df
 
 
-def export_responses_to_be_translated(
-    df: DataFrame, translation_directory: str, formatted_time: str = datetime.now().strftime("%Y%m%d_%H%M")
+def backup_and_replace_translation_lookup_df(
+    old_lookup_df: DataFrame,
+    new_lookup_df: DataFrame,
+    lookup_directory: str,
+    backup_directory: str,
+    formatted_time: str = datetime.now().strftime("%Y%m%d_%H%M"),
+) -> DataFrame:
+
+    backup_path = Path(backup_directory) / f"translated_value_lookup_{formatted_time}"
+    write_csv_rename(old_lookup_df, backup_path, ",", ".csv")
+
+    lookup_path = Path(lookup_directory) / "translated_value_lookup"
+    delete_file(lookup_path.as_posix() + ".csv")
+    write_csv_rename(new_lookup_df, lookup_path, ",", ".csv")
+
+
+def export_responses_to_be_translated_to_translation_directory(
+    to_be_translated_df: DataFrame,
+    translation_directory: str,
+    formatted_time: str = datetime.now().strftime("%Y%m%d_%H%M"),
 ) -> DataFrame:
     """
     loads to_be_translated df and converts it into pandas df for transformation into an excel workbook format
@@ -153,7 +148,9 @@ def export_responses_to_be_translated(
     """
     translations_workbook = translation_directory + f"/to_be_translated_{formatted_time}.xlsx"
 
-    to_be_translated_df = df.drop("participant_id", "participant_completion_window_id", "form_language").toPandas()
+    to_be_translated_df = to_be_translated_df.drop(
+        "participant_id", "participant_completion_window_id", "form_language"
+    ).toPandas()
     unique_id_list = to_be_translated_df["id"].unique()
 
     with pd.ExcelWriter(translations_workbook, engine="openpyxl") as writer:
@@ -349,16 +346,23 @@ def translate_welsh_fixed_text_responses_digital(df: DataFrame) -> DataFrame:
     return df
 
 
-def translate_welsh_free_text_responses_digital(df: DataFrame) -> DataFrame:
+def translate_welsh_free_text_responses_digital(
+    df: DataFrame,
+    lookup_path: str,
+) -> DataFrame:
     """
     Call functions to translate welsh survey responses from the cis digital questionnaire
     """
-    translation_settings = get_config().get("translation", {"inactive": "inactive"})
-    translation_directory = translation_settings.get("translation_directory", None)
-    translation_lookup_path = translation_settings.get("translation_lookup_path", None)
-    translation_lookup_directory = translation_settings.get("translation_lookup_directory", None)
-    translation_backup_directory = translation_settings.get("translation_backup_directory", None)
 
+    df = df.withColumn("id", F.concat(F.lit(F.col("participant_id")), F.lit(F.col("participant_completion_window_id"))))
+    translation_lookup_df = extract_lookup_csv(lookup_path, validation_schemas["csv_lookup_schema"])
+    df = update_from_lookup_df(df, translation_lookup_df, id_column="id")
+    df = df.drop("id")
+
+    return df
+
+
+def get_welsh_responses_to_be_translated(df: DataFrame) -> DataFrame:
     digital_unique_identifiers = ["participant_id", "participant_completion_window_id"]
 
     digital_free_text_columns = [
@@ -381,31 +385,63 @@ def translate_welsh_free_text_responses_digital(df: DataFrame) -> DataFrame:
         "work_sector_other",
         "cis_covid_vaccine_type_other",
     ]
-
-    df = df.withColumn("id", F.concat(F.lit(F.col("participant_id")), F.lit(F.col("participant_completion_window_id"))))
-
-    if translation_settings != "inactive":
-        translation_lookup_df = transform_translated_responses_into_lookup(
-            translation_directory, translation_lookup_directory, translation_backup_directory
-        )
-
-    if translation_lookup_path is not None:
-        translation_lookup_df = extract_lookup_csv(translation_lookup_path, validation_schemas["csv_lookup_schema"])
-        df = update_from_lookup_df(df, translation_lookup_df, id_column="id")
-
     to_be_translated_df = (
         df.select(digital_unique_identifiers + digital_free_text_columns + ["form_language", "id"])
         .filter(F.col("form_language") == "Welsh")
         .na.drop(how="all", subset=digital_free_text_columns)
     )
-    if translation_directory is not None and to_be_translated_df.distinct().count() > 0:
-        export_responses_to_be_translated(to_be_translated_df, translation_directory)
-    df = df.drop("id")
-
-    return df
+    return to_be_translated_df
 
 
 def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame:
+    translation_settings = get_config().get("translation", {"inactive": "inactive"})
+    storage_settings = get_config()["storage"]
+    translation_lookup_path = storage_settings["translation_lookup_path"]
+
+    translation_project_workflow_enabled = translation_settings != {"inactive": "inactive"}
+
+    if translation_project_workflow_enabled:
+
+        translation_directory = translation_settings.get("translation_directory", None)
+        translation_lookup_directory = translation_settings.get("translation_lookup_directory", None)
+        translation_backup_directory = translation_settings.get("translation_backup_directory", None)
+
+        new_translations_df = get_new_translations_from_completed_translations_directory(
+            translation_directory=translation_directory,
+            translation_lookup_directory=translation_lookup_directory,
+        )
+
+        if new_translations_df.distinct().count() > 0:
+
+            translation_lookup_df = extract_lookup_csv(translation_lookup_path, validation_schemas["csv_lookup_schema"])
+
+            new_translations_lookup_df = translation_lookup_df.union(new_translations_df)
+
+            backup_and_replace_translation_lookup_df(
+                old_lookup_df=translation_lookup_df,
+                new_lookup_df=new_translations_lookup_df,
+                lookup_directory=translation_lookup_directory,
+                backup_directory=translation_backup_directory,
+            )
+
+        df = translate_welsh_free_text_responses_digital(
+            df=df,
+            lookup_path=translation_lookup_path,
+        )
+
+        to_be_translated_df = get_welsh_responses_to_be_translated(df)
+
+        if to_be_translated_df.distinct.count() > 0:
+
+            export_responses_to_be_translated_to_translation_directory(
+                to_be_translated_df=to_be_translated_df, translation_directory=translation_directory
+            )
+    else:
+        df = translate_welsh_free_text_responses_digital(
+            df=df,
+            lookup_path=translation_lookup_path,
+        )
+
     df = translate_welsh_fixed_text_responses_digital(df)
 
     return df
