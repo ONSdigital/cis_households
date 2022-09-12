@@ -773,7 +773,8 @@ def apply_value_map_multiple_columns(df: DataFrame, column_map_dic: Mapping):
 def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> str:
     """
     Remove all instances of whitespace before and after a string field including all duplicate spaces
-    along with dots (.) aswell
+    along with dots (.) as well
+
     Parameters
     ----------
     df
@@ -797,6 +798,7 @@ def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> 
 def rename_column_names(df: DataFrame, variable_name_map: dict) -> DataFrame:
     """
     Rename column names.
+
     Parameters
     ----------
     df
@@ -811,6 +813,7 @@ def assign_from_map(df: DataFrame, column_name_to_assign: str, reference_column:
     """
     Assign column with values based on a dictionary map of reference_column.
     From households_aggregate_processes.xlsx, edit number 1.
+
     Parameters
     ----------
     df
@@ -820,16 +823,18 @@ def assign_from_map(df: DataFrame, column_name_to_assign: str, reference_column:
         Name of column of TimeStamp type to be converted
     mapper
         Dictionary of key value pairs to edit values
-    Return
+
+    Returns
     ------
     pyspark.sql.DataFrame
+
     Notes
     -----
     Function works if key and value are of the same type and there is a missing key in the mapper
     If types are the same, the missing keys will be replaced with the reference column value/
     If types are not the same, the missing keys will be given as NULLS
     If key and value are of a different type and there is a missing key in the mapper,
-        then the type is not converted.
+    then the type is not converted.
     """
     key_types = set([type(key) for key in mapper.keys()])
     value_types = set([type(values) for values in mapper.values()])
@@ -878,7 +883,7 @@ def edit_swab_results_single(
 ) -> DataFrame:
     """
     The objective of this function is to edit/correct the gene_result_classification from Positive to Negative or 1 to 0
-        in case gene_result_value is 0.0 or lower and overall_result_classification is Positive or 1.
+    in case gene_result_value is 0.0 or lower and overall_result_classification is Positive or 1.
 
     Parameters
     ----------
