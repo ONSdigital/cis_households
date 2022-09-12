@@ -720,11 +720,15 @@ def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str):
 def map_column_values_to_null(df: DataFrame, column_list: List[str], value: str):
     """
     Map columns from column list with given value to null
+
     Parameters
     ----------
     df
+        The Dataframe to process
     column_list
+        The list of columns to edit
     value
+        The value, if found in any of the columns in `column_list`, to be set to None
     """
     for col in column_list:
         df = df.withColumn(col, F.when(F.col(col) == value, None).otherwise(F.col(col)))
@@ -734,6 +738,7 @@ def map_column_values_to_null(df: DataFrame, column_list: List[str], value: str)
 def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> DataFrame:
     """
     Convert string columns to timestamp given format.
+
     Parameters
     ----------
     df
@@ -749,6 +754,17 @@ def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> Dat
 
 
 def apply_value_map_multiple_columns(df: DataFrame, column_map_dic: Mapping):
+    """A wrapper around update_column_values_from_map function.
+
+    Parameters
+    ----------
+    df
+        The Dataframe to process
+    column_map_dic
+        A dictionary with column name (to edit) as Key and the value being another dictionary, whose
+        keys are the values we want to replace by the corresponding value in the Key:Value pair
+
+    """
     for col, map in column_map_dic.items():
         df = update_column_values_from_map(df, col, map)
     return df
@@ -763,7 +779,7 @@ def update_schema_types(schema: dict, column_names: list, new_type: dict):
     column_names
         list of names of keys within schema to assign new type to
     new_type
-        type dictionary to update the schame entry to
+        type dictionary to update the schema entry to
     """
     schema = schema.copy()
     for column_name in column_names:
