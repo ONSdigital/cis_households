@@ -635,11 +635,15 @@ def update_work_facing_now_column(
 ) -> DataFrame:
     """
     Update value of variable depending on state of reference column work_status_column
+
     Parameters
     ----------
     df
+        The input Dataframe to process
     column_name_to_update
+        The column to update
     work_status_column
+        The column which contains the work status of the participant
     work_status_list
         list of possible work statuses which result in "no" as column to update
     """
@@ -653,13 +657,18 @@ def update_work_facing_now_column(
     return df
 
 
-def dedudiplicate_rows(df: DataFrame, reference_columns: Union[List[str], str]):
+def deduplicate_rows(df: DataFrame, reference_columns: Union[List[str], str]):
     """
-    Remove rows based on duplicate values present in reference columns
+    Remove duplicate rows based on values present in reference columns
+
     Parameters
     ---------
     df
+        The Dataframe to de-duplicate
     reference_columns
+        A list of columns to use to determine whether a record is duplicate or not. If
+        this is "all" then a record is considered duplicate if values in all the columns for that
+        record are duplicated in another row.
     """
     if reference_columns == "all":
         return df.distinct()
@@ -669,12 +678,16 @@ def dedudiplicate_rows(df: DataFrame, reference_columns: Union[List[str], str]):
 
 def convert_null_if_not_in_list(df: DataFrame, column_name: str, options_list: List[str]) -> DataFrame:
     """
-    Convert column values to null if the entry is no present in provided list
+    Convert column values to null if the entry is not present in provided list
+
     Parameters
     ----------
     df
+        The Dataframe to process
     column_name
+        The column whose values need to be updated
     options_list
+        A list of values to compare values in column `column_name` against
     """
     df = df.withColumn(
         column_name, F.when((F.col(column_name).isin(*options_list)), F.col(column_name)).otherwise(None)
@@ -686,10 +699,13 @@ def convert_null_if_not_in_list(df: DataFrame, column_name: str, options_list: L
 def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str):
     """
     Converts barcode to null if numeric characters are all 0 otherwise performs no change
+
     Parameters
     ----------
     df
+        The Dataframe to process
     barcode_column_name
+        Name of the column holding the barcode values
     """
     df = df.withColumn(
         barcode_column_name,
