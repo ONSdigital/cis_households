@@ -2074,6 +2074,7 @@ _welsh_yes_no_categories = {
     "Do": "Yes",
     "Byddwn": "Yes",
     "Byddai'n well gen i beidio â dweud": "Prefer not to say",
+    "Byddai`n well gen i beidio â dweud": "Prefer not to say",
     "Ddim yn gwybod": "Don't know",
 }
 
@@ -2278,6 +2279,7 @@ _welsh_currently_smokes_or_vapes_description_categories = {
     "Pib/cetyn": "Pipe",
     "Fêp neu E-sigaréts": "Vape or E-cigarettes",
     "Hookah neu bibau shisha": "Hookah or shisha pipes",
+    "Byddai`n well gen i beidio â dweud": "Prefer not to say",
 }
 
 _welsh_cis_covid_vaccine_number_of_doses_categories = {
