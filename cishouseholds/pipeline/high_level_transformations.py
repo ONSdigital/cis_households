@@ -1,4 +1,5 @@
 # flake8: noqa
+from datetime import datetime
 from typing import List
 
 import pyspark.sql.functions as F
@@ -96,6 +97,7 @@ from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import rename_column_names
+from cishouseholds.edit import survey_edit_auto_complete
 from cishouseholds.edit import update_column_if_ref_in_list
 from cishouseholds.edit import update_column_in_time_window
 from cishouseholds.edit import update_column_values_from_map
@@ -1272,6 +1274,13 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
     df = concat_fields_if_true(df, "think_had_covid_which_symptoms", "think_had_covid_which_symptom_", "Yes", ";")
     df = concat_fields_if_true(df, "which_symptoms_last_7_days", "think_have_covid_symptom_", "Yes", ";")
     df = concat_fields_if_true(df, "long_covid_symptoms", "think_have_long_covid_symptom_", "Yes", ";")
+    df = survey_edit_auto_complete(
+        df,
+        "survey_completion_status",
+        "participant_completion_window_end_datetime",
+        "face_covering_other_enclosed_places",
+        datetime.now().strftime("%Y%m%d_%H%M"),
+    )
     df = update_column_values_from_map(
         df,
         "survey_completion_status",

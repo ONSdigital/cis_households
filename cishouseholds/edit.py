@@ -859,18 +859,23 @@ def edit_to_sum_or_max_value(
 def survey_edit_auto_complete(
     df: DataFrame,
     column_name_to_assign: str,
-    completion_window: datetime,
-    file_date: datetime,
-    last_question: str,
+    completion_window_column: str,
+    last_question_column: str,
+    file_date: str = datetime.now().strftime("%Y%m%d_%H%M"),
 ):
     """
     Add a status type for the variable survey_completion_status to reflect participants who have filled in the final
     question on the survey but had their questionnaire automatically submitted when the test window closed
-    as they didn’t click ‘submit’
+    as they didn't click "submit"
     """
 
     df = df.withColumn(
         column_name_to_assign,
-        F.when(completion_window < file_date, F.col(last_question).isNotNull() == "Auto Completed"),
+        F.when(
+            (F.col(column_name_to_assign) == "In progress")
+            & (F.col(completion_window_column) < F.lit(file_date))
+            & (F.col(last_question_column).isNotNull()),
+            "Auto Completed",
+        ).otherwise(F.lit(F.col(column_name_to_assign))),
     )
     return df
