@@ -124,31 +124,33 @@ def fill_forward_event(
     participant_id_column: str,
     visit_datetime_column: str,
 ):
-    """ """
+    """
+    Fill forwards all columns associated with an event.
+    Disambiguate events by earliest recorded expression of an event and
+    take the latest event for each visit_datetime forward across all records.
+
+    Parameters
+    df
+    event_indicator_column
+        column indicating if an event took place
+    event_date_column
+        date of the event
+    detail_columns
+        additional columns relating to the event
+    participant_id_column
+    visit_datetime_column
+    """
     event_columns = [event_date_column, event_indicator_column, *detail_columns]
-    bounded_window = (
-        Window.partitionBy(participant_id_column, event_date_column)
-        .orderBy(visit_datetime_column)
-        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
-    )
+
     window = Window.partitionBy(participant_id_column, visit_datetime_column).orderBy(F.desc(event_date_column))
+    filter_window = Window.partitionBy(participant_id_column, event_date_column).orderBy(visit_datetime_column)
+
     filtered_df = (
-        df.withColumn(  # TODO: convert to filter statements
-            "DROP_EVENT",
-            F.when(
-                F.sum(
-                    F.when(
-                        (F.col(event_date_column).isNull()) | (F.col(event_date_column) > F.col(visit_datetime_column)),
-                        0,  # erroneous event
-                    ).otherwise(1)
-                ).over(bounded_window)
-                == 1,
-                False,
-            ).otherwise(True),
-        )
-        .filter(~F.col("DROP_EVENT"))
-        .drop("DROP_EVENT")
-    )
+        df.filter((F.col(event_date_column).isNotNull()) & (F.col(event_date_column) <= F.col(visit_datetime_column)))
+        .withColumn("ROW_NUMBER", F.row_number().over(filter_window))
+        .filter(F.col("ROW_NUMBER") == 1)
+        .drop("ROW_NUMBER")
+    )  # filter valid events prioritizing the first occupance of an event
 
     df = (
         df.drop(*event_columns)
