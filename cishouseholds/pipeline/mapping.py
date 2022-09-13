@@ -1122,6 +1122,7 @@ category_maps = {
             "Submitted": 3,
             "Archived": 4,
             "Locked": 5,
+            "Auto Completed": 11,
         },
         "swab_not_taken_reason": {
             "I am near the end of my testing window and my swab test kit has not arrived": 1,
