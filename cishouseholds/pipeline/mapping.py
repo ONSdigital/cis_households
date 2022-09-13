@@ -1204,6 +1204,49 @@ category_maps = {
         },
         "swab_sample_barcode_correct": _yes_no_categories,
         "blood_sample_barcode_correct": _yes_no_categories,
+        "age_group_5_intervals": {
+            "2-11": 1,
+            "12-19": 2,
+            "20-49": 3,
+            "50-69": 4,
+            "70+": 5,
+        },
+        "age_group_7_intervals": {"2-11": 1, "12-16": 2, "17-24": 3, "25-34": 4, "35-49": 5, "50-69": 6, "70+": 7},
+        "age_group_over_16": {
+            "16-49": 3,
+            "50-69": 4,
+            "70+": 5,
+        },
+        "age_group_5_year_intervals": {
+            "2-4": 1,
+            "5-9": 2,
+            "10-14": 3,
+            "15-19": 4,
+            "20-24": 5,
+            "25-29": 6,
+            "30-34": 7,
+            "35-39": 8,
+            "40-44": 9,
+            "45-49": 10,
+            "50-54": 11,
+            "55-59": 12,
+            "60-64": 13,
+            "65-69": 14,
+            "70-74": 15,
+            "75-79": 16,
+            "80-84": 17,
+            "85-89": 18,
+            "90+": 19,
+        },
+        "age_group_school_year": {
+            "02-6SY": 1,
+            "07SY-11SY": 2,
+            "12SY-24": 3,
+            "25-34": 4,
+            "35-49": 5,
+            "50-69": 6,
+            "70+": 7,
+        },
     }
 }
 
@@ -1213,7 +1256,7 @@ column_name_maps = {
     "soc_resolution_name_map": {
         "job_title": "work_main_job_title",
         "main_job_responsibilities": "work_main_job_role",
-        "Gold SOC2010 code": "standard_occupational_classification_code",
+        "Gold SOC2010 code": "resolved_soc_code",
     },
     "swab_variable_name_map": {
         "Sample": "swab_sample_barcode",
