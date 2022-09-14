@@ -45,19 +45,24 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 def get_new_translations_from_completed_translations_directory(
     translation_directory: str,
-    translation_lookup_directory: str,
+    translation_lookup_path: str,
 ) -> DataFrame:
     """
-    checks for new translations in completed_translations_directory and builds a pandas df from excel files it finds
-    there.
-    checks if the translation_lookup_path already exists, and if it does, checks new translations against existing
-    updates translation_lookup_df with new translations, backs up existing lookup df, replaces with updated lookup df
+    Checks for new completed translations in a subfolder of the translation_directory, builds a df of
+    new_translations from all xlsx files found in this subfolder.
+    Loads the existing translation_lookup_df from the translation_lookup_path and compares it against
+    the new_translations df, and filters the new_translations to only rows which have not previously
+    been translated.
+
+    Args:
+        translation_directory (str): directory for translations workflow
+        translation_lookup_path (str): path of existing translated values lookup
+
+    Returns:
+        DataFrame: Returns a new_translations_df of only new translation rows.
     """
+
     completed_translations_directory = os.path.join(translation_directory, "completed/")
-    translation_lookup_path = translation_lookup_directory + "/translated_value_lookup.csv"
-    translation_lookup_df = extract_lookup_csv(
-        translation_lookup_path, validation_schemas["csv_lookup_schema"]
-    ).toPandas()
 
     list_of_file_paths = [
         os.path.join(completed_translations_directory, _)
@@ -99,6 +104,10 @@ def get_new_translations_from_completed_translations_directory(
         if os.path.exists(os.path.join(completed_translations_directory, "processed/")):
             shutil.move(path, os.path.join(completed_translations_directory, "processed/"))
 
+    translation_lookup_df = extract_lookup_csv(
+        translation_lookup_path, validation_schemas["csv_lookup_schema"]
+    ).toPandas()
+
     filtered_new_translations = new_translations[~new_translations["id"].isin(translation_lookup_df["id"])]
     spark_session = get_or_create_spark_session()
     new_translations_df = spark_session.createDataFrame(
@@ -115,8 +124,18 @@ def backup_and_replace_translation_lookup_df(
     lookup_directory: str,
     backup_directory: str,
     formatted_time: str = datetime.now().strftime("%Y%m%d_%H%M"),
-) -> DataFrame:
+):
+    """
+    Backs up the old_lookup_df to the backup_directory with an automatically generated timestamp suffix.
+    Replaces the old_lookup_df with a new_lookup_df.
 
+    Args:
+        old_lookup_df (DataFrame): old_lookup_df to be backed up and replaced
+        new_lookup_df (DataFrame): new_lookup_df to replace old_lookup_df
+        lookup_directory (str): directory containing the lookup_df
+        backup_directory (str): directory to back up the old_lookup_df to
+        formatted_time (str, optional): Defaults to datetime.now().strftime("%Y%m%d_%H%M").
+    """
     backup_path = Path(backup_directory) / f"translated_value_lookup_{formatted_time}"
     write_csv_rename(old_lookup_df, backup_path, ",", ".csv")
 
@@ -129,22 +148,16 @@ def export_responses_to_be_translated_to_translation_directory(
     to_be_translated_df: DataFrame,
     translation_directory: str,
     formatted_time: str = datetime.now().strftime("%Y%m%d_%H%M"),
-) -> DataFrame:
+):
     """
-    loads to_be_translated df and converts it into pandas df for transformation into an excel workbook format
-    for translator facing processes
+    Exports and formats all responses from the to_be_translated_df into an xlsx workbook containing
+    one tab for each row to be translated in the df. Workbook is saved into the translation_directory with
+    an automatically generated timestamp
 
-    parameters
-        translations_directory
-            path of translations_directory, assumes this is supplied from the config
-        formatted_time
-            YYYYMMDD_HHMM
-
-    outputs
-        exports excel files to the translations_directory
-
-    returns
-        pandas df for last participant that was translated
+    Args:
+        to_be_translated_df (DataFrame): to_be_translated_df containing all rows requiring free-text translation
+        translation_directory (str): directory for the translation workflow
+        formatted_time (str, optional): Defaults to datetime.now().strftime("%Y%m%d_%H%M").
     """
     translations_workbook = translation_directory + f"/to_be_translated_{formatted_time}.xlsx"
 
@@ -169,6 +182,16 @@ def export_responses_to_be_translated_to_translation_directory(
 
 
 def translate_welsh_fixed_text_responses_digital(df: DataFrame) -> DataFrame:
+    """
+    Uses column maps and dictionaries defined in mapping.py to translate other language fixed-text
+    responses to English.
+
+    Args:
+        df (DataFrame): the dataframe containing fixed text responses to translate
+
+    Returns:
+        DataFrame: the df containing translated fixed-text responses
+    """
     digital_yes_no_columns = [
         "household_invited_to_digital",
         "household_members_under_2_years_count",
@@ -351,7 +374,15 @@ def translate_welsh_free_text_responses_digital(
     lookup_path: str,
 ) -> DataFrame:
     """
-    Call functions to translate welsh survey responses from the cis digital questionnaire
+    Loads a lookup_df from the lookup_path and runs an update_from_lookup_df function to replace specific values with
+    translated values as specified in the lookup_df
+
+    Args:
+        df (DataFrame): df containing free-text responses requiring translation
+        lookup_path (str): path for translation_lookup_df containing responses to translate
+
+    Returns:
+        DataFrame: df containing translated free-text responses provided in the translation_lookup_df
     """
 
     df = df.withColumn("id", F.concat(F.lit(F.col("participant_id")), F.lit(F.col("participant_completion_window_id"))))
@@ -363,6 +394,16 @@ def translate_welsh_free_text_responses_digital(
 
 
 def get_welsh_responses_to_be_translated(df: DataFrame) -> DataFrame:
+    """
+    Creates a unique id field for the purpose of translation matching using a field map, then filters
+    the df using a free-text field map to return only records with at least one not null value
+
+    Args:
+        df (DataFrame): df containing responses that may require translation
+
+    Returns:
+        DataFrame: filtered df containing only responses that require free-text translation
+    """
     digital_unique_identifiers = ["participant_id", "participant_completion_window_id"]
 
     digital_free_text_columns = [
@@ -394,6 +435,30 @@ def get_welsh_responses_to_be_translated(df: DataFrame) -> DataFrame:
 
 
 def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame:
+    """
+    High-level function that manages the translation of both fixed-text and free-text Welsh responses in the
+    CIS Digital response extract.
+
+    Loads values from config to determine if the translation_project_workflow_enabled flag is true, if the
+    translation_project_workflow_enabled flag is true then it works through the translation project workflow to:
+    1. check for new completed free-text translations
+    2. if there are new completed free-text translations then backup and update the translations_lookup_df
+    3. update the df from the translations_lookup_df
+    4. filter the df to get free-text responses to be translated
+    5. export free-text responses to be translated
+
+    If the translation_project_workflow_enabled flag is false then it will just carry out step 3. above.
+    After this check it will update the fixed-text responses in the df.
+
+    This function requires that the config contains a valid translation_lookup_path in the storage dictionary of
+    the pipeline_config file.
+
+    Args:
+        df (DataFrame): df containing free- or fixed-text responses to translate
+
+    Returns:
+        DataFrame: df incorporating any available translations to free- or fixed-text responses
+    """
     translation_settings = get_config().get("translation", {"inactive": "inactive"})
     storage_settings = get_config()["storage"]
     translation_lookup_path = storage_settings["translation_lookup_path"]
@@ -408,7 +473,7 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
 
         new_translations_df = get_new_translations_from_completed_translations_directory(
             translation_directory=translation_directory,
-            translation_lookup_directory=translation_lookup_directory,
+            translation_lookup_path=translation_lookup_path,
         )
 
         if new_translations_df.distinct().count() > 0:
