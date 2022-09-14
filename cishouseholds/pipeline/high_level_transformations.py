@@ -36,9 +36,7 @@ from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_regex_from_map
 from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.derive import assign_school_year_september_start
-from cishouseholds.derive import assign_substring
 from cishouseholds.derive import assign_taken_column
-from cishouseholds.derive import assign_test_target
 from cishouseholds.derive import assign_true_if_any
 from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import assign_visit_order
@@ -50,7 +48,6 @@ from cishouseholds.derive import assign_work_status_group
 from cishouseholds.derive import concat_fields_if_true
 from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
-from cishouseholds.derive import derive_cq_pattern
 from cishouseholds.derive import derive_had_symptom_last_7days_from_digital
 from cishouseholds.derive import derive_household_been_columns
 from cishouseholds.derive import flag_records_for_childcare_v0_rules
@@ -82,9 +79,7 @@ from cishouseholds.derive import flag_records_for_uni_v2_rules
 from cishouseholds.derive import flag_records_for_work_from_home_rules
 from cishouseholds.derive import flag_records_for_work_location_null
 from cishouseholds.derive import flag_records_for_work_location_student
-from cishouseholds.derive import get_keys_by_value
 from cishouseholds.derive import map_options_to_bool_columns
-from cishouseholds.derive import mean_across_columns
 from cishouseholds.derive import regex_match_result
 from cishouseholds.derive import translate_column_regex_replace
 from cishouseholds.edit import apply_value_map_multiple_columns
