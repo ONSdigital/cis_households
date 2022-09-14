@@ -344,14 +344,9 @@ def process_soc_deltas(
         date_from_filename=False,
     )
     for file_path in file_list:
-        error_message, validation_schema, column_name_map, drop_list = normalise_schema(
-            file_path, soc_schema, soc_regex_map
-        )
+        error_message, df = normalise_schema(file_path, soc_schema, soc_regex_map)
         if error_message is None:
-            df = extract_input_data(file_path, validation_schema, ",").drop(*drop_list)
             df = assign_filename_column(df, source_file_column)
-            for actual_column, normalised_column in column_name_map.items():
-                df = df.withColumnRenamed(actual_column, normalised_column)
             dfs.append(df)
         else:
             add_error_file_log_entry(file_path, error_message)  # type: ignore

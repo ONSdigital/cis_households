@@ -47,30 +47,46 @@ def normalise_schema(file_path: str, reference_validation_schema: dict, regex_sc
     spark_session = get_or_create_spark_session()
 
     file = spark_session.sparkContext.textFile(file_path)
-    actual_header = file.first()
-    buffer = StringIO(actual_header)
-    reader = csv.reader(buffer, delimiter=",")
-    actual_header = next(reader)
+    found = False
+    used = []
+    while not found:
+        first = file.first()
+        header = next(csv.reader(StringIO(first), delimiter=","))
+        used.append(first)
+        file = file.filter(lambda line: line not in used)
+        if len([x for x in header if x != ""]) == len(header):
+            found = True
+
+    actual_header = header
+
     validation_schema = {}
-    column_name_map = {}
     dont_drop_list = []
     if actual_header != list(reference_validation_schema.keys()):
         for actual_col in actual_header:
-            validation_schema[actual_col] = {"type": "string"}
+            matched = False
             for regex, normalised_column in regex_schema.items():
                 if re.search(rf"{regex}", actual_col):
-                    validation_schema[actual_col] = reference_validation_schema[normalised_column]
-                    column_name_map[actual_col] = normalised_column
+                    validation_schema[normalised_column] = reference_validation_schema[normalised_column]
                     dont_drop_list.append(actual_col)
+                    matched = True
                     break
-        if set(column_name_map.values()) == set(reference_validation_schema.keys()):
-            return None, validation_schema, column_name_map, [col for col in actual_header if col not in dont_drop_list]
-        else:
+            if not matched:
+                validation_schema[actual_col] = "string"
+        if not all([col in validation_schema.keys() for col in reference_validation_schema.keys()]):
             error_message = (
                 f"{file_path} is invalid as header({actual_header} contained unrecognisable columns"  # functional
             )
-            return error_message, {}, {}, []
-    return None, reference_validation_schema, {}, []
+            return error_message, None
+        drop = [col for col in actual_header if col not in dont_drop_list]
+    else:
+        validation_schema = reference_validation_schema
+        drop = []
+    df = (
+        file.mapPartitions(lambda line: csv.reader(line, delimiter=",", quotechar='"'))
+        .toDF(",".join([f"{col} {_type}" for col, _type in validation_schema.items()]))
+        .drop(*drop)
+    )
+    return None, df
 
 
 def validate_csv_header(text_file: RDD, expected_header: List[str], delimiter: str = ","):
