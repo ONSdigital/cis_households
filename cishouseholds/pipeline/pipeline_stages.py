@@ -13,6 +13,7 @@ from pyspark.sql import functions as F
 
 from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
+from cishouseholds.derive import assign_age_group_school_year
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_multigenerational
 from cishouseholds.derive import assign_outward_postcode
@@ -764,6 +765,14 @@ def geography_and_imputation_dependent_processing(
     )  # Includes school year and age_at_visit derivations
 
     df = derive_age_based_columns(df, "age_at_visit")
+    df = assign_age_group_school_year(
+        df,
+        country_column="country_name_12",
+        age_column="age_at_visit",
+        school_year_column="school_year",
+        column_name_to_assign="age_group_school_year",
+    )
+
     df = create_formatted_datetime_string_columns(df)
     update_table(df, output_table_name, write_mode="overwrite")
 
