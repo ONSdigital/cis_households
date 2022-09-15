@@ -137,6 +137,7 @@ def run_pipeline_stages(
     max_digits = len(str(number_of_stages))
     pipeline_error_count = 0
     stage_responses: Dict[str, str] = {}
+    current_table = None
     for n, stage_config in enumerate(pipeline_stage_list):
         stage_start = datetime.now()
         stage_success = False
@@ -153,9 +154,13 @@ def run_pipeline_stages(
                     with spark_description_set("adding run status"):
                         add_run_status(run_id, "retry", stage_text, "")
                 attempt_start = datetime.now()
+                if "input_table" not in stage_config:  # automatically add input table name
+                    stage_config["input_table"] = current_table
                 try:
                     with spark_description_set(stage_name):
-                        stage_responses[stage_name] = pipeline_stages[stage_name](**stage_config)
+                        result = pipeline_stages[stage_name](**stage_config)
+                        stage_responses[stage_name] = result.get("status")
+                        current_table = result.get("output_table")
                     stage_success = True
                     with spark_description_set("adding run status"):
                         add_run_status(run_id, "success", stage_text, "")
