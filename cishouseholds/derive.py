@@ -433,8 +433,13 @@ def assign_multigenerational(
         base_date=F.col(visit_date_column),
         date_of_birth=F.col(date_of_birth_column),
     )
-    transformed_df = assign_school_year(
-        df=transformed_df,
+
+    transformed_df_2 = spark_session.createDataFrame(
+        transformed_df.rdd, schema=transformed_df.schema
+    )  # breaks lineage to avoid Java OOM Error
+
+    transformed_df_3 = assign_school_year(
+        df=transformed_df_2,
         column_name_to_assign=school_year_column_name_to_assign,
         reference_date_column=visit_date_column,
         dob_column=date_of_birth_column,
@@ -454,12 +459,16 @@ def assign_multigenerational(
     generation_2_present = F.sum(generation_2).over(window) >= 1
     generation_3_present = F.sum(generation_3).over(window) >= 1
 
-    transformed_df = transformed_df.withColumn(
+    transformed_df_4 = spark_session.createDataFrame(
+        transformed_df_3.rdd, schema=transformed_df_3.schema
+    )  # breaks lineage to avoid Java OOM Error
+
+    transformed_df_5 = transformed_df_4.withColumn(
         column_name_to_assign,
         F.when(generation_1_present & generation_2_present & generation_3_present, 1).otherwise(0),
     )
     df = df.join(
-        transformed_df.select(
+        transformed_df_5.select(
             column_name_to_assign,
             age_column_name_to_assign,
             school_year_column_name_to_assign,
