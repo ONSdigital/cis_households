@@ -460,12 +460,13 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
         DataFrame: df incorporating any available translations to free- or fixed-text responses
     """
     translation_settings = get_config().get("translation", {"inactive": "inactive"})
-    storage_settings = get_config()["storage"]
-    translation_lookup_path = storage_settings["translation_lookup_path"]
+    storage_settings = get_config().get("storage", {"inactive": "inactive"})
+    translation_lookup_path = storage_settings.get("translation_lookup_path", "inactive")
 
-    translation_project_workflow_enabled = translation_settings != {"inactive": "inactive"}
+    full_translation_project_workflow_enabled = translation_settings != {"inactive": "inactive"}
+    translation_from_lookup_workflow_enabled = translation_lookup_path != "inactive"
 
-    if translation_project_workflow_enabled:
+    if full_translation_project_workflow_enabled:
 
         translation_directory = translation_settings.get("translation_directory", None)
         translation_lookup_directory = translation_settings.get("translation_lookup_directory", None)
@@ -501,7 +502,8 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
             export_responses_to_be_translated_to_translation_directory(
                 to_be_translated_df=to_be_translated_df, translation_directory=translation_directory
             )
-    else:
+
+    if translation_from_lookup_workflow_enabled and ~full_translation_project_workflow_enabled:
         df = translate_welsh_free_text_responses_digital(
             df=df,
             lookup_path=translation_lookup_path,
