@@ -767,7 +767,7 @@ def geography_and_imputation_dependent_processing(
     df = derive_age_based_columns(df, "age_at_visit")
     df = assign_age_group_school_year(
         df,
-        country_column="county_name_12",
+        country_column="country_name_12",
         age_column="age_at_visit",
         school_year_column="school_year",
         column_name_to_assign="age_group_school_year",
