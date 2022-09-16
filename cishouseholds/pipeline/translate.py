@@ -10,7 +10,7 @@ from pyspark.sql.dataframe import DataFrame
 from cishouseholds.derive import translate_column_regex_replace
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import update_from_lookup_df
-from cishouseholds.hdfs_utils import delete_file
+from cishouseholds.hdfs_utils import rename
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
@@ -119,29 +119,28 @@ def get_new_translations_from_completed_translations_directory(
 
 
 def backup_and_replace_translation_lookup_df(
-    old_lookup_df: DataFrame,
     new_lookup_df: DataFrame,
     lookup_directory: str,
     backup_directory: str,
     formatted_time: str = datetime.now().strftime("%Y%m%d_%H%M"),
 ):
     """
-    Backs up the old_lookup_df to the backup_directory with an automatically generated timestamp suffix.
-    Replaces the old_lookup_df with a new_lookup_df.
+    Backs up the lookup_path to the backup_directory with an automatically generated timestamp suffix.
+    Writes the new_lookup_df to the lookup_directory
 
     Args:
-        old_lookup_df (DataFrame): old_lookup_df to be backed up and replaced
         new_lookup_df (DataFrame): new_lookup_df to replace old_lookup_df
         lookup_directory (str): directory containing the lookup_df
         backup_directory (str): directory to back up the old_lookup_df to
         formatted_time (str, optional): Defaults to datetime.now().strftime("%Y%m%d_%H%M").
     """
-    backup_path = Path(backup_directory) / f"translated_value_lookup_{formatted_time}"
-    write_csv_rename(old_lookup_df, backup_path, ",", ".csv")
-
-    lookup_path = Path(lookup_directory) / "translated_value_lookup"
-    delete_file(lookup_path.as_posix() + ".csv")
-    write_csv_rename(new_lookup_df, lookup_path, ",", ".csv")
+    backup_path = Path(backup_directory) / f"translated_value_lookup_{formatted_time}.csv"
+    lookup_path = Path(lookup_directory) / "translated_value_lookup.csv"
+    temp_path = Path(lookup_directory) / f"translated_value_lookup_{formatted_time}"
+    write_csv_rename(new_lookup_df, temp_path, ",", ".csv")
+    rename(str(lookup_path), str(backup_path))
+    temp_path = Path(lookup_directory) / f"translated_value_lookup_{formatted_time}.csv"
+    rename(str(temp_path), str(lookup_path))
 
 
 def export_responses_to_be_translated_to_translation_directory(
@@ -427,9 +426,11 @@ def get_welsh_responses_to_be_translated(df: DataFrame) -> DataFrame:
         "cis_covid_vaccine_type_other",
     ]
     to_be_translated_df = (
-        df.select(digital_unique_identifiers + digital_free_text_columns + ["form_language", "id"])
+        df.withColumn("id", F.concat(F.lit(F.col("participant_id")), F.lit(F.col("participant_completion_window_id"))))
+        .select(digital_unique_identifiers + digital_free_text_columns + ["form_language", "id"])
         .filter(F.col("form_language") == "Welsh")
         .na.drop(how="all", subset=digital_free_text_columns)
+        .distinct()
     )
     return to_be_translated_df
 
@@ -463,10 +464,10 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
     storage_settings = get_config().get("storage", {"inactive": "inactive"})
     translation_lookup_path = storage_settings.get("translation_lookup_path", "inactive")
 
-    full_translation_project_workflow_enabled = translation_settings != {"inactive": "inactive"}
-    translation_from_lookup_workflow_enabled = translation_lookup_path != "inactive"
+    translation_settings_in_pipeline_config = translation_settings != {"inactive": "inactive"}
+    translation_lookup_path_in_pipeline_config = translation_lookup_path != "inactive"
 
-    if full_translation_project_workflow_enabled:
+    if translation_settings_in_pipeline_config:
 
         translation_directory = translation_settings.get("translation_directory", None)
         translation_lookup_directory = translation_settings.get("translation_lookup_directory", None)
@@ -484,7 +485,6 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
             new_translations_lookup_df = translation_lookup_df.union(new_translations_df)
 
             backup_and_replace_translation_lookup_df(
-                old_lookup_df=translation_lookup_df,
                 new_lookup_df=new_translations_lookup_df,
                 lookup_directory=translation_lookup_directory,
                 backup_directory=translation_backup_directory,
@@ -497,13 +497,13 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
 
         to_be_translated_df = get_welsh_responses_to_be_translated(df)
 
-        if to_be_translated_df.distinct.count() > 0:
+        if to_be_translated_df.distinct().count() > 0:
 
             export_responses_to_be_translated_to_translation_directory(
                 to_be_translated_df=to_be_translated_df, translation_directory=translation_directory
             )
 
-    if translation_from_lookup_workflow_enabled and ~full_translation_project_workflow_enabled:
+    if translation_lookup_path_in_pipeline_config and not translation_settings_in_pipeline_config:
         df = translate_welsh_free_text_responses_digital(
             df=df,
             lookup_path=translation_lookup_path,
