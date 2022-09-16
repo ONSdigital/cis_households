@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 from functools import reduce
 from itertools import chain
 from operator import add
@@ -382,25 +383,6 @@ def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> Dat
         edited_column, F.when(~F.col("BARCODE_COPY").eqNullSafe(F.col(barcode_column)), 1).otherwise(None)
     )
     return df.drop("BARCODE_COPY")
-
-
-def clean_postcode(df: DataFrame, postcode_column: str):
-    """
-    update postcode variable to include only uppercase alpha numeric characters and set
-    to null if required format cannot be identified
-    Parameters
-    ----------
-    df
-    postcode_column
-    """
-    cleaned_postcode_characters = F.upper(F.regexp_replace(postcode_column, r"[^a-zA-Z\d]", ""))
-    inward_code = F.substring(cleaned_postcode_characters, -3, 3)
-    outward_code = F.regexp_replace(cleaned_postcode_characters, r".{3}$", "")
-    df = df.withColumn(
-        postcode_column,
-        F.when(F.length(outward_code) <= 4, F.concat(F.rpad(outward_code, 4, " "), inward_code)).otherwise(None),
-    )
-    return df
 
 
 def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, dataset_name: str = None):
@@ -851,5 +833,101 @@ def edit_to_sum_or_max_value(
         )
         .otherwise(F.col(column_name_to_assign))
         .cast("integer"),
+    )
+    return df
+
+
+def join_on_existing(df: DataFrame, df_to_join: DataFrame, on: List):
+    """
+    Join 2 dataframes on columns in 'on' list and
+    override empty values in the left dataframe with values from the right
+    dataframe.
+    """
+    columns = [col for col in df_to_join.columns if col in df.columns]
+    for col in columns:
+        if col not in on:
+            df_to_join = df_to_join.withColumnRenamed(col, f"{col}_FT")
+    df = df.join(df_to_join, on=on, how="left")
+    for col in columns:
+        if col not in on:
+            df = df.withColumn(col, F.coalesce(F.col(f"{col}_FT"), F.col(col))).drop(f"{col}_FT")
+    return df
+
+
+def fill_nulls(column_name_to_update, fill_value: int = 0):
+    """Fill Null and NaN values with a constant integer."""
+    return F.when((column_name_to_update.isNull()) | (F.isnan(column_name_to_update)), fill_value).otherwise(
+        column_name_to_update
+    )
+
+
+def recode_column_values(df: DataFrame, lookup: dict):
+    """wrapper to loop over multiple value maps for different columns"""
+    for column_name, map in lookup.items():
+        df = update_column_values_from_map(df, column_name, map)
+    return df
+
+
+# 1165
+# requires MATCHED_*col
+def update_column(df: DataFrame, lookup_df: DataFrame, column_name_to_update: str, join_on_columns: List[str]):
+    """
+    Assign column (column_name_to_update) new value from lookup dataframe (lookup_df) if the value does not match
+    its counterpart in the old dataframe
+    """
+    lookup_df = lookup_df.withColumnRenamed(column_name_to_update, f"{column_name_to_update}_from_lookup")
+    df = df.join(lookup_df, on=[*join_on_columns], how="left")
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            F.col(column_name_to_update).isNull(),
+            F.when(
+                F.col(f"{column_name_to_update}_from_lookup").isNotNull(), F.col(f"{column_name_to_update}_from_lookup")
+            ).otherwise(("N/A")),
+        ).otherwise(F.col(column_name_to_update)),
+    )
+    return df.drop(f"{column_name_to_update}_from_lookup")
+
+
+def update_data(df: DataFrame, auxillary_dfs: dict):
+    """
+    wrapper function for calling update column
+    """
+    df = update_column(
+        df=df,
+        lookup_df=auxillary_dfs["postcode_lookup"],
+        column_name_to_update="lower_super_output_area_code_11",
+        join_on_columns=["country_code_12", "postcode"],
+    )
+    df = update_column(
+        df=df,
+        lookup_df=auxillary_dfs["cis_phase_lookup"],
+        column_name_to_update="cis_area_code_20",
+        join_on_columns=["lower_super_output_area_code_11"],
+    )
+    return df
+
+
+def survey_edit_auto_complete(
+    df: DataFrame,
+    column_name_to_assign: str,
+    completion_window_column: str,
+    last_question_column: str,
+    file_date: str = datetime.now().strftime("%Y%m%d_%H%M"),
+):
+    """
+    Add a status type for the variable survey_completion_status to reflect participants who have filled in the final
+    question on the survey but had their questionnaire automatically submitted when the test window closed
+    as they didn't click "submit"
+    """
+
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col(column_name_to_assign) == "In progress")
+            & (F.col(completion_window_column) < F.lit(file_date))
+            & (F.col(last_question_column).isNotNull()),
+            "Auto Completed",
+        ).otherwise(F.lit(F.col(column_name_to_assign))),
     )
     return df

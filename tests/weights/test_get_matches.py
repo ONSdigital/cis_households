@@ -1,7 +1,7 @@
 import pyspark.sql.functions as F
 from chispa import assert_df_equality
 
-from cishouseholds.weights.derive import get_matches
+from cishouseholds.derive import get_matches
 
 
 def test_get_matches(spark_session):
