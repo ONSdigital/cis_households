@@ -1413,7 +1413,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = clean_job_description_string(df, "work_main_job_title")
     df = clean_job_description_string(df, "work_main_job_role")
     df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
-    # df = add_pattern_matching_flags(df)
+    df = add_pattern_matching_flags(df)
     return df
 
 
@@ -2637,21 +2637,21 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         F.when(
             ((F.col("works_healthcare") == "Yes") | F.col("is_patient_facing"))
             & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
-            True,
-        ).otherwise(False),
+            "Yes",
+        ).otherwise("No"),
     )
 
     df = assign_column_value_from_multiple_column_map(
         df,
         "work_health_care_patient_facing",
         [
-            ["No", [False, None]],
-            ["Yes, primary care, patient-facing", [True, "Primary"]],
-            ["Yes, secondary care, patient-facing", [True, "Secondary"]],
-            ["Yes, other healthcare, patient-facing", [True, "Other"]],
-            ["Yes, primary care, non-patient-facing", [False, "Primary"]],
-            ["Yes, secondary care, non-patient-facing", [False, "Secondary"]],
-            ["Yes, other healthcare, non-patient-facing", [False, "Other"]],
+            ["No", ["No", None]],
+            ["Yes, primary care, patient-facing", ["Yes", "Primary"]],
+            ["Yes, secondary care, patient-facing", ["Yes", "Secondary"]],
+            ["Yes, other healthcare, patient-facing", ["Yes", "Other"]],
+            ["Yes, primary care, non-patient-facing", ["No", "Primary"]],
+            ["Yes, secondary care, non-patient-facing", ["No", "Secondary"]],
+            ["Yes, other healthcare, non-patient-facing", ["No", "Other"]],
         ],
         ["is_patient_facing", "healthcare_area"],
     )

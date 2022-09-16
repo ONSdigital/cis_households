@@ -42,9 +42,9 @@ def test_normalise_scehma(spark_session, pandas_df_to_temporary_csv):
     )
 
     schema = {
-        "colA": "string",
-        "colB": "string",
-        "colC": "string",
+        "colA": {"type": "string"},
+        "colB": {"type": "integer"},
+        "colC": {"type": "integer"},
     }
 
     regex_schema = {r"A": "colA", r"B": "colB", r"C": "colC"}
