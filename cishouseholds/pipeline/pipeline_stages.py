@@ -42,6 +42,7 @@ from cishouseholds.pipeline.high_level_transformations import derive_overall_vac
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
+from cishouseholds.pipeline.high_level_transformations import reclassify_work_variables
 from cishouseholds.pipeline.high_level_transformations import transform_cis_soc_data
 from cishouseholds.pipeline.high_level_transformations import transform_from_lookups
 from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
@@ -466,6 +467,7 @@ def execute_union_dependent_transformations(unioned_survey_table: str, transform
         output table name for table with applied transformations dependent on complete survey dataset
     """
     df = extract_from_table(unioned_survey_table)
+    df = reclassify_work_variables(df, spark_session=get_or_create_spark_session(), drop_original_variables=False)
     df = fill_forwards_transformations(df)
     df = union_dependent_cleaning(df)
     df = union_dependent_derivations(df)
