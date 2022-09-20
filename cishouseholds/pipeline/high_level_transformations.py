@@ -2378,18 +2378,18 @@ def fill_forwards_transformations(df):
 
     ## TODO: Not needed until a future release, will leave commented out in code until required
     #
-    #    df = update_column_if_ref_in_list(
-    #        df=df,
-    #        column_name_to_update="work_location",
-    #        old_value=None,
-    #        new_value="Not applicable, not currently working",
-    #        reference_column="work_status_v0",
-    #        check_list=[
-    #            "Furloughed (temporarily not working)",
-    #            "Not working (unemployed, retired, long-term sick etc.)",
-    #            "Student",
-    #        ],
-    #    )
+    df = update_column_if_ref_in_list(
+        df=df,
+        column_name_to_update="work_location",
+        old_value=None,
+        new_value="Not applicable, not currently working",
+        reference_column="work_status_v0",
+        check_list=[
+            "Furloughed (temporarily not working)",
+            "Not working (unemployed, retired, long-term sick etc.)",
+            "Student",
+        ],
+    )
 
     df = fill_forwards_travel_column(df)
 
