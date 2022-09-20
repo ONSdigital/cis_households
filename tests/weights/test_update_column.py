@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.weights.edit import update_column
+from cishouseholds.edit import update_column
 
 
 def test_update_column(spark_session):

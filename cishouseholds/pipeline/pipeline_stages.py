@@ -13,9 +13,11 @@ from pyspark.sql import functions as F
 
 from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
+from cishouseholds.derive import assign_age_group_school_year
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_multigenerational
 from cishouseholds.derive import assign_outward_postcode
+from cishouseholds.derive import household_level_populations
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.extract import get_files_to_be_processed
@@ -30,6 +32,7 @@ from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
+from cishouseholds.pipeline.design_weights import calculate_design_weights
 from cishouseholds.pipeline.generate_outputs import generate_stratified_sample
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
@@ -39,6 +42,7 @@ from cishouseholds.pipeline.high_level_transformations import derive_overall_vac
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
+from cishouseholds.pipeline.high_level_transformations import reclassify_work_variables
 from cishouseholds.pipeline.high_level_transformations import transform_cis_soc_data
 from cishouseholds.pipeline.high_level_transformations import transform_from_lookups
 from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
@@ -68,8 +72,6 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import check_lookup_table_joined_columns_unique
 from cishouseholds.validate import normalise_schema
 from cishouseholds.validate import validate_files
-from cishouseholds.weights.design_weights import calculate_design_weights
-from cishouseholds.weights.design_weights import household_level_populations
 from dummy_data_generation.generate_data import generate_cis_soc_data
 from dummy_data_generation.generate_data import generate_digital_data
 from dummy_data_generation.generate_data import generate_nims_table
@@ -764,6 +766,14 @@ def geography_and_imputation_dependent_processing(
     )  # Includes school year and age_at_visit derivations
 
     df = derive_age_based_columns(df, "age_at_visit")
+    df = assign_age_group_school_year(
+        df,
+        country_column="country_name_12",
+        age_column="age_at_visit",
+        school_year_column="school_year",
+        column_name_to_assign="age_group_school_year",
+    )
+    df = reclassify_work_variables(df, spark_session=get_or_create_spark_session(), drop_original_variables=False)
     df = create_formatted_datetime_string_columns(df)
     update_table(df, output_table_name, write_mode="overwrite")
 
