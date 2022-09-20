@@ -7,15 +7,15 @@ from pyspark.sql import functions as F
 from pyspark.sql.types import DecimalType
 from pyspark.sql.window import Window
 
-from cishouseholds.derive import assign_count_by_group
 from cishouseholds.derive import assign_distinct_count_in_group
 from cishouseholds.derive import assign_filename_column
-from cishouseholds.edit import clean_postcode
+from cishouseholds.derive import assign_named_buckets
+from cishouseholds.derive import clean_postcode
+from cishouseholds.derive import derive_country_code
+from cishouseholds.edit import fill_nulls
+from cishouseholds.edit import join_on_existing
+from cishouseholds.edit import recode_column_values
 from cishouseholds.merge import union_multiple_tables
-from cishouseholds.weights.derive import assign_sample_new_previous
-from cishouseholds.weights.derive import assign_tranche_factor
-from cishouseholds.weights.edit import fill_nulls
-from cishouseholds.weights.edit import join_on_existing
 
 
 def calculate_design_weights(
@@ -281,20 +281,6 @@ def join_and_process_lookups(
     return df
 
 
-def derive_country_code(df, column_name_to_assign: str, region_code_column: str):
-    """Derive country code from region code starting character."""
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when(F.col(region_code_column).startswith("E"), "E92000001")
-        .when(F.col(region_code_column).startswith("N"), "N92000002")
-        .when(F.col(region_code_column).startswith("S"), "S92000003")
-        .when(F.col(region_code_column).startswith("W"), "W92000004")
-        .when(F.col(region_code_column).startswith("L"), "L93000001")
-        .when(F.col(region_code_column).startswith("M"), "M83000003"),
-    )
-    return df
-
-
 def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) -> DataFrame:
     """
     Recode and rename old column values in sample data if change detected in new sample data
@@ -323,28 +309,6 @@ def recode_columns(old_df: DataFrame, new_df: DataFrame, hh_info_df: DataFrame) 
         )
         old_df = old_df.withColumn(old_lsoa, "lsoa_from_lookup").withColumnRenamed(old_lsoa, new_lsoa).drop(old_lsoa)
     return old_df
-
-
-def household_level_populations(
-    address_lookup: DataFrame, postcode_lookup: DataFrame, lsoa_cis_lookup: DataFrame, country_lookup: DataFrame
-) -> DataFrame:
-    """
-    1. join address base extract with NSPL by postcode to get LSOA 11 and country 12
-    2. join LSOA to CIS lookup, by LSOA 11 to get CIS area 20
-    3. join country lookup by country_code to get country names
-    4. calculate household counts by CIS area and country
-
-    N.B. Expects join keys to be deduplicated.
-    """
-    address_lookup = clean_postcode(address_lookup, "postcode")
-    postcode_lookup = clean_postcode(postcode_lookup, "postcode")
-    df = address_lookup.join(F.broadcast(postcode_lookup), on="postcode", how="left")
-    df = df.join(F.broadcast(lsoa_cis_lookup), on="lower_super_output_area_code_11", how="left")
-    df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
-    df = assign_count_by_group(df, "number_of_households_by_cis_area", ["cis_area_code_20"])
-    df = assign_count_by_group(df, "number_of_households_by_country", ["country_code_12"])
-
-    return df
 
 
 def calculate_scaled_swab_design_weights(
@@ -688,3 +652,133 @@ def scale_antibody_design_weights(
         (scaling_factor * F.col(design_weight_column_to_scale)).cast(DecimalType(38, 20)),
     )
     return df
+
+
+def assign_sample_new_previous(df: DataFrame, column_name_to_assign: str, date_column: str, batch_number_column: str):
+    """
+    Assign as new sample where date and batch number are highest in the dataset, otherwise assign as previous.
+    """
+    false_window = Window.partitionBy(F.lit(0))
+    df = df.withColumn("MAX_DATE", F.max(date_column).over(false_window))
+    df = df.withColumn("MAX_BATCH_NUMBER", F.max(batch_number_column).over(false_window))
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            ((F.col(date_column) == F.col("MAX_DATE")) & (F.col(batch_number_column) == F.col("MAX_BATCH_NUMBER"))),
+            "new",
+        ).otherwise("previous"),
+    )
+    return df.drop("MAX_DATE", "MAX_BATCH_NUMBER")
+
+
+def assign_tranche_factor(
+    df: DataFrame,
+    tranche_factor_column_name_to_assign: str,
+    eligibility_percentage_column_name_to_assign: str,
+    sampled_households_count: str,
+    household_id_column: str,
+    tranche_column: str,
+    eligibility_column: str,
+    strata_columns: List[str],
+):
+    """
+    Assign tranche factor as the ratio between the number of eligible households in the strata
+    by the number of eligible households with the maximum tranche value in the strata.
+
+    Outcome is Null for ineligible households.
+    """
+    eligible_window = Window.partitionBy(eligibility_column, *strata_columns)
+    eligible_households_by_strata = F.count(F.col(household_id_column)).over(eligible_window)
+
+    df = df.withColumn("households_by_eligibility_and_strata", eligible_households_by_strata)
+
+    df = df.withColumn("MAX_TRANCHE_NUMBER", F.max(tranche_column).over(Window.partitionBy(F.lit(0))))
+    latest_tranche = (F.col(eligibility_column) == "Yes") & (F.col(tranche_column) == F.col("MAX_TRANCHE_NUMBER"))
+    df = df.withColumn(
+        tranche_factor_column_name_to_assign,
+        F.when(latest_tranche, eligible_households_by_strata / F.col(sampled_households_count)),
+    )
+    df = df.withColumn(
+        eligibility_percentage_column_name_to_assign,
+        F.when(
+            latest_tranche,
+            ((eligible_households_by_strata - F.col(sampled_households_count)) / F.col(sampled_households_count)) * 100,
+        ),
+    )
+    return df.drop("MAX_TRANCHE_NUMBER")
+
+
+def update_population_values(df: DataFrame):
+    maps = {
+        "interim_region_code": {
+            "E12000001": 1,
+            "E12000002": 2,
+            "E12000003": 3,
+            "E12000004": 4,
+            "E12000005": 5,
+            "E12000006": 6,
+            "E12000007": 7,
+            "E12000008": 8,
+            "E12000009": 9,
+            "W99999999": 10,
+            "S99999999": 11,
+            "N99999999": 12,
+        },
+        "interim_sex": {"m": 1, "f": 2},
+    }
+    age_maps = {
+        "age_group_swab": {
+            2: 1,
+            12: 2,
+            17: 3,
+            25: 4,
+            35: 5,
+            50: 6,
+            70: 7,
+        },
+        "age_group_antibodies": {
+            16: 1,
+            25: 2,
+            35: 3,
+            50: 4,
+            70: 5,
+        },
+    }
+    df = df.withColumn("interim_region_code", F.col("region_code"))
+    df = df.withColumn("interim_sex", F.col("sex"))
+
+    df = recode_column_values(df, maps)
+
+    for col, map in age_maps.items():  # type: ignore
+        df = assign_named_buckets(df=df, reference_column="age", column_name_to_assign=col, map=map)
+    return df
+
+
+def clean_df(df: DataFrame):
+    """
+    Edit column values by applying predefined logic
+    """
+    df = df.withColumn("country_name_12", F.lower(F.col("country_name_12")))
+    drop_columns = [col for col in df.columns if "OLD" in col]
+    return df.drop(*drop_columns)
+
+
+def reformat_age_population_table(df: DataFrame, m_f_columns: List[str]):
+    """
+    recast columns to rows within a population column
+    and aggregate the names of these rows into m and f values for sex
+    """
+    for col in m_f_columns:
+        df = df.withColumn(col, F.array(F.lit(col[1:]), F.col(col)))
+    cols = [col for col in df.columns if col not in m_f_columns]
+    dfs = []
+    for sex in ["m", "f"]:
+        selected_columns = [col for col in m_f_columns if col[0] == sex]
+        dfs.append(
+            df.select(*cols, F.explode(F.array(*[F.col(c) for c in selected_columns])).alias("age_population"))
+            .withColumn("sex", F.lit(sex))
+            .withColumn("age", F.col("age_population")[0].cast("integer"))
+            .withColumn("population", F.col("age_population")[1].cast("integer"))
+            .drop("age_population")
+        )
+    return dfs[0].unionByName(dfs[1])
