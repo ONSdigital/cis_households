@@ -2672,27 +2672,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             .otherwise(F.col(work_status_column)),
         )
 
-    # # Temp table generations:
-    # df = df.withColumn("work_healthcare", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
-    # sh_df = df.filter(
-    #     (F.col("work_social_care") != F.col("works_social_care"))
-    #     | (F.col("work_healthcare") != F.col("works_healthcare"))
-    # )
-    # h_df = df.filter(F.col("work_healthcare") != F.col("works_healthcare"))
-    # cols_added = [
-    #     "is_patient_facing",
-    #     "works_healthcare",
-    #     "works_social_care",
-    #     "work_health_care_patient_facing",
-    #     "social_care_area",
-    #     "healthcare_area",
-    #     "regex_derived_job_sector",
-    # ]
-    # generate_stratified_sample(
-    #     sh_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
-    # )
-    # generate_stratified_sample(h_df, cols_added, 500, 5, "healthcare_inconsistences", ["regex_derived_job_sector"])
-
     return df
 
 
