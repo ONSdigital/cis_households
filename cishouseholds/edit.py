@@ -21,6 +21,13 @@ def clean_job_description_string(df: DataFrame, column_name_to_assign: str):
     """
     Remove non alphanumeric characters and duplicate spaces from work main job role variable and set to uppercase.
     Also removes NA type responses.
+
+    Parameters
+    ----------
+    df
+        The input DataFrame to process
+    column_name_to_assign
+        The name of the column to edit
     """
     cleaned_string = F.regexp_replace(
         F.regexp_replace(
@@ -38,7 +45,14 @@ def clean_job_description_string(df: DataFrame, column_name_to_assign: str):
 
 def update_strings_to_sentence_case(df: DataFrame, columns: List[str]):
     """
-    apply lower case to all but first letter of string in list of columns
+    Apply lower case to all but first letter of string in list of columns
+
+    Parameters
+    ----------
+    df
+        The input DataFrame to process
+    columns
+        A list of columns to apply the editing described above
     """
     for col in columns:
         df = df.withColumn(
@@ -56,6 +70,20 @@ def update_column_in_time_window(
 ):
     """
     Update the value of a column to a fixed value if the time the participant filled out the survey exists in a window
+
+    Parameters
+    ----------
+    df
+        The input DataFrame to process
+    column_name_to_update
+        The name of the column to update/edit
+    time_column
+        The name of the timestamp column
+    new_value
+        The new value to insert into `column_name_to_update` column
+    time_window
+        A list of two timestamps given as a string eg: ["2020-01-09T12:00:00", "2020-12-09T12:00:00"]. First timestamp
+        must be older than the second timestamp in this list.
     """
     df = df.withColumn(
         column_name_to_update,
@@ -69,7 +97,19 @@ def update_column_in_time_window(
 
 
 def update_to_value_if_any_not_null(df: DataFrame, column_name_to_assign: str, value_to_assign: str, column_list: list):
-    """Edit existing column to value when a value is present in any of the listed columns."""
+    """Edit existing column to `value_to_assign` when a value is present in any of the listed columns.
+
+    Parameters
+    ----------
+    df
+        The input DataFrame to process
+    column_name_to_assign
+        The name of the existing column
+    value_to_assign
+        The value to assign
+    column_list
+        A list of columns to check if any of them do not have null values
+    """
     df = df.withColumn(
         column_name_to_assign,
         F.when(any_column_not_null(column_list), value_to_assign).otherwise(F.col(column_name_to_assign)),
@@ -88,6 +128,7 @@ def update_column_if_ref_in_list(
     """
     Update column value with new_value if the current value is equal to old_value
     and reference column is in list
+
     Parameters
     ----------
     df
@@ -115,8 +156,9 @@ def update_value_if_multiple_and_ref_in_list(
     separator: str,
 ):
     """
-    update column value with new value if multiple strings found, separated by separator e.g. ','
+    Update column value with new value if multiple strings found, separated by separator e.g. ','
     and based on whether column contains any value in check_list or not
+
     Parameters
     -----------
     df
@@ -170,12 +212,16 @@ def update_value_if_multiple_and_ref_in_list(
 
 def clean_within_range(df: DataFrame, column_name_to_update: str, range: List[int]) -> DataFrame:
     """
-    convert values outside range to null
+    Convert values outside range to null
+
     Parameters
     ----------
     df
+        The input DataFrame to process
     column_name_to_update
+        The name of the column to update
     range
+        A list of two numbers - 1st number in this list must be less than the 2nd number
     """
     df = df.withColumn(
         column_name_to_update,
@@ -193,8 +239,12 @@ def update_person_count_from_ages(df: DataFrame, column_name_to_assign: str, col
 
     Parameters
     ----------
-    column_patter
-        regex pattern to match columns that should be counted
+    df
+        The input DataFrame to process
+    column_name_to_update
+        The name of the column to update
+    column_pattern
+        regex pattern to select columns that should be counted
 
     """
     r = re.compile(column_pattern)
@@ -214,13 +264,18 @@ def update_face_covering_outside_of_home(
     df: DataFrame, column_name_to_update: str, covered_enclosed_column: str, covered_work_column: str
 ):
     """
-    update the face covering variable by using a lookup to set value of cell based upon values of 2 other columns
+    Update the face covering variable by using a lookup to set value of cell based upon values of 2 other columns
+
     Parameters
     ----------
     df
+        The input DataFrame to process
     column_name_to_update
+        The name of the column to update
     covered_enclosed_column
+        Name of the column capturing wether the person wears a mask in enclosed spaces
     covered_work_column
+        Name of the column capturing wether the person wears a mask in work setting
     """
     df = df.withColumn(
         column_name_to_update,
@@ -284,7 +339,8 @@ def update_face_covering_outside_of_home(
 
 def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
     """
-    update value to no if symptoms are ongoing
+    Update value to no if symptoms are ongoing
+
     Parameters
     ----------
     df
@@ -297,52 +353,9 @@ def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: st
     return df
 
 
-def update_visit_order(df: DataFrame, visit_order_column: str) -> DataFrame:
-    """
-    Ensures visit order row value in list of allowed values
-    Parameters
-    df
-    visit_order_column
-    """
-    allowed = [
-        "First Visit",
-        "Follow-up 1",
-        "Follow-up 2",
-        "Follow-up 3",
-        "Follow-up 4",
-        "Month 2",
-        "Month 3",
-        "Month 4",
-        "Month 5",
-        "Month 6",
-        "Month 7",
-        "Month 8",
-        "Month 9",
-        "Month 10",
-        "Month 11",
-        "Month 12",
-        "Month 13",
-        "Month 14",
-        "Month 15",
-        "Month 16",
-        "Month 17",
-        "Month 18",
-        "Month 19",
-        "Month 20",
-        "Month 21",
-        "Month 22",
-        "Month 23",
-        "Month 24",
-    ]
-    df = df.withColumn(
-        visit_order_column, F.when(F.col(visit_order_column).isin(allowed), F.col(visit_order_column)).otherwise(None)
-    )
-    return df
-
-
 def clean_barcode_simple(df: DataFrame, barcode_column: str):
     """
-    clean barcode by converting to upper an removing whitespace
+    Clean barcode by converting to upper an removing whitespace
     """
     df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), r"[^a-zA-Z0-9]", "")))
     return df
@@ -351,12 +364,16 @@ def clean_barcode_simple(df: DataFrame, barcode_column: str):
 def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> DataFrame:
     """
     Clean lab sample barcodes.
+
     Converts barcode start to 'ONS' if not a valid variant. Removes barcodes with only 0 values in numeric part or not
     matching the expected format.
+
     Parameters
     ---------
     df
+        The input DataFrame to process
     barcode_column
+        Name of the column containing the barcode
     edited_column
         signifies if updating was performed on row
     """
@@ -387,12 +404,15 @@ def clean_barcode(df: DataFrame, barcode_column: str, edited_column: str) -> Dat
 
 def clean_postcode(df: DataFrame, postcode_column: str):
     """
-    update postcode variable to include only uppercase alpha numeric characters and set
-    to null if required format cannot be identified
+    Update postcode variable to include only uppercase alpha numeric characters and set
+    to null if required format cannot be identified.
+
     Parameters
     ----------
     df
+        The input DataFrame to process
     postcode_column
+        Name of the column containing the postcode to clean
     """
     cleaned_postcode_characters = F.upper(F.regexp_replace(postcode_column, r"[^a-zA-Z\d]", ""))
     inward_code = F.substring(cleaned_postcode_characters, -3, 3)
@@ -407,12 +427,24 @@ def clean_postcode(df: DataFrame, postcode_column: str):
 def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, dataset_name: str = None):
     """
     Edit values in df based on old to new mapping in lookup_df
+
     Expected columns on lookup_df:
     - id
     - dataset_name
     - target_column_name
     - old_value
     - new_value
+
+    Parameters
+    ----------
+    df
+        The input DataFrame to process
+    lookup_df
+        The lookup df with the structure described
+    id_column
+        Name of the the id column in `df`
+    dataset_name
+        Name of the dataset to filter rows in `lookup_df` by
     """
 
     if dataset_name is not None:
@@ -452,13 +484,16 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, d
 
 def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str):
     """
-    Create separate columns for school year depending on the individuals country of residence
+    Create separate columns for school year depending on the individual's country of residence
+
     Parameters
     ----------
     df
+        The input DataFrame to process
     school_year_column
+        The column containing school year info
     country_column
-    id_column
+        The column containing country of residence info
     """
     countries = [["England", "Wales"], ["Scotland"], ["Northern Ireland"]]
     column_names = ["school_year_england_wales", "school_year_scotland", "school_year_northern_ireland"]
@@ -473,6 +508,7 @@ def update_social_column(df: DataFrame, social_column: str, health_column: str):
     """
     Update the value of the social column to that of the health column
     provided that the social column is null and health column is not
+
     Parameters
     ----------
     df
@@ -497,14 +533,27 @@ def update_column_values_from_map(
     default_value: Union[str, bool, int] = None,
 ) -> DataFrame:
     """
-    Convert column values matching map key to value
+    Given a map (dictionary) of Key-Value pairs, Replace column values that match the Keys
+    in the map/dictionary with the corresponding Values.
+
     Parameters
     ----------
     df
+        The input DataFrame to process
     column
+        The column name to assign - alias for column_name_to_update
     map
+        A dictionary of dictionaries - the top level key in this dictionary can correspond to
+        the `column` you want to update. A dictionary associated with the top level key is expected
+        contain key-value pairs. The keys in the key-value pairs are matched with the values in
+        the column `column` and when matched, the value in the column is replaced by the value in
+        corresponding key-value pair.
+    condition_column
+        The column containing the value to be mapped using mapping_expr
     error_if_value_not_found
+        If True, an error is raised if the set of values to map are not present in `map`
     default_value
+        Default value to use when values in column `column` cannot be matched with keys in `map`
     """
     if condition_column is None:
         condition_column = column
@@ -539,11 +588,15 @@ def update_work_facing_now_column(
 ) -> DataFrame:
     """
     Update value of variable depending on state of reference column work_status_column
+
     Parameters
     ----------
     df
+        The input Dataframe to process
     column_name_to_update
+        The column to update
     work_status_column
+        The column which contains the work status of the participant
     work_status_list
         list of possible work statuses which result in "no" as column to update
     """
@@ -557,28 +610,18 @@ def update_work_facing_now_column(
     return df
 
 
-def dedudiplicate_rows(df: DataFrame, reference_columns: Union[List[str], str]):
-    """
-    Remove rows based on duplicate values present in reference columns
-    Parameters
-    ---------
-    df
-    reference_columns
-    """
-    if reference_columns == "all":
-        return df.distinct()
-    else:
-        return df.dropDuplicates(reference_columns)
-
-
 def convert_null_if_not_in_list(df: DataFrame, column_name: str, options_list: List[str]) -> DataFrame:
     """
-    Convert column values to null if the entry is no present in provided list
+    Convert column values to null if the entry is not present in provided list
+
     Parameters
     ----------
     df
+        The Dataframe to process
     column_name
+        The column whose values need to be updated
     options_list
+        A list of values to compare values in column `column_name` against
     """
     df = df.withColumn(
         column_name, F.when((F.col(column_name).isin(*options_list)), F.col(column_name)).otherwise(None)
@@ -590,10 +633,13 @@ def convert_null_if_not_in_list(df: DataFrame, column_name: str, options_list: L
 def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str):
     """
     Converts barcode to null if numeric characters are all 0 otherwise performs no change
+
     Parameters
     ----------
     df
+        The Dataframe to process
     barcode_column_name
+        Name of the column holding the barcode values
     """
     df = df.withColumn(
         barcode_column_name,
@@ -608,11 +654,15 @@ def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str):
 def map_column_values_to_null(df: DataFrame, column_list: List[str], value: str):
     """
     Map columns from column list with given value to null
+
     Parameters
     ----------
     df
+        The Dataframe to process
     column_list
+        The list of columns to edit
     value
+        The value, if found in any of the columns in `column_list`, to be set to None
     """
     for col in column_list:
         df = df.withColumn(col, F.when(F.col(col) == value, None).otherwise(F.col(col)))
@@ -622,6 +672,7 @@ def map_column_values_to_null(df: DataFrame, column_list: List[str], value: str)
 def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> DataFrame:
     """
     Convert string columns to timestamp given format.
+
     Parameters
     ----------
     df
@@ -637,39 +688,27 @@ def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> Dat
 
 
 def apply_value_map_multiple_columns(df: DataFrame, column_map_dic: Mapping):
+    """A wrapper around update_column_values_from_map function.
+
+    Parameters
+    ----------
+    df
+        The Dataframe to process
+    column_map_dic
+        A dictionary with column name (to edit) as Key and the value being another dictionary, whose
+        keys are the values we want to replace by the corresponding value in the Key:Value pair
+
+    """
     for col, map in column_map_dic.items():
         df = update_column_values_from_map(df, col, map)
     return df
 
 
-def update_schema_types(schema: dict, column_names: list, new_type: dict):
-    """
-    Update entries within schema dictionary to reflect a common change across all rows in list (column_names)
-    Parameters
-    ----------
-    schema
-    column_names
-        list of names of keys within schema to assign new type to
-    new_type
-        type dictionary to update the schame entry to
-    """
-    schema = schema.copy()
-    for column_name in column_names:
-        schema[column_name] = new_type
-    return schema
-
-
-def update_schema_names(schema: dict, column_name_map: dict):
-    """
-    Update schema dictionary column names using a column name map, of old to new names.
-    """
-    return {column_name_map[key]: value for key, value in schema.items()}
-
-
 def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> str:
     """
     Remove all instances of whitespace before and after a string field including all duplicate spaces
-    along with dots (.) aswell
+    along with dots (.) as well
+
     Parameters
     ----------
     df
@@ -693,6 +732,7 @@ def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> 
 def rename_column_names(df: DataFrame, variable_name_map: dict) -> DataFrame:
     """
     Rename column names.
+
     Parameters
     ----------
     df
@@ -707,6 +747,7 @@ def assign_from_map(df: DataFrame, column_name_to_assign: str, reference_column:
     """
     Assign column with values based on a dictionary map of reference_column.
     From households_aggregate_processes.xlsx, edit number 1.
+
     Parameters
     ----------
     df
@@ -716,16 +757,18 @@ def assign_from_map(df: DataFrame, column_name_to_assign: str, reference_column:
         Name of column of TimeStamp type to be converted
     mapper
         Dictionary of key value pairs to edit values
-    Return
+
+    Returns
     ------
     pyspark.sql.DataFrame
+
     Notes
     -----
     Function works if key and value are of the same type and there is a missing key in the mapper
     If types are the same, the missing keys will be replaced with the reference column value/
     If types are not the same, the missing keys will be given as NULLS
     If key and value are of a different type and there is a missing key in the mapper,
-        then the type is not converted.
+    then the type is not converted.
     """
     key_types = set([type(key) for key in mapper.keys()])
     value_types = set([type(values) for values in mapper.values()])
@@ -774,7 +817,7 @@ def edit_swab_results_single(
 ) -> DataFrame:
     """
     The objective of this function is to edit/correct the gene_result_classification from Positive to Negative or 1 to 0
-        in case gene_result_value is 0.0 or lower and overall_result_classification is Positive or 1.
+    in case gene_result_value is 0.0 or lower and overall_result_classification is Positive or 1.
 
     Parameters
     ----------
@@ -797,25 +840,10 @@ def edit_swab_results_single(
     )
 
 
-def re_cast_column_if_null(df: DataFrame, desired_column_type: str = "integer") -> DataFrame:
-    """
-    Searches for null type schema in all columns of given dataframe df
-    and returns desired format by cast().
-    Parameters
-    ----------
-    df
-    desired_column_type
-        valid inputs in string: integer, string, double
-    """
-    for column_name, column_type in df.dtypes:
-        if column_type == "null":
-            df = df.withColumn(column_name, F.col(column_name).cast(desired_column_type))
-    return df
-
-
 def cast_columns_from_string(df: DataFrame, column_list: list, cast_type: str) -> DataFrame:
     """
     Convert string columns to a given datatype.
+
     Parameters
     ----------
     df
@@ -842,6 +870,17 @@ def edit_to_sum_or_max_value(
     If exceeds max, uses max_value. If all values are Null, sets outcome to Null.
 
     column_name_to_assign must already exist on the df.
+
+    Parameters
+    ----------
+    df
+        The Dataframe to process
+    column_name_to_assign
+        The column to impute (must already exist in the Dataframe)
+    columns_to_sum
+        List of column names to sum up
+    max_value
+        Max value
     """
     df = df.withColumn(
         column_name_to_assign,
@@ -852,6 +891,77 @@ def edit_to_sum_or_max_value(
         )
         .otherwise(F.col(column_name_to_assign))
         .cast("integer"),
+    )
+    return df
+
+
+def join_on_existing(df: DataFrame, df_to_join: DataFrame, on: List):
+    """
+    Join 2 dataframes on columns in 'on' list and
+    override empty values in the left dataframe with values from the right
+    dataframe.
+    """
+    columns = [col for col in df_to_join.columns if col in df.columns]
+    for col in columns:
+        if col not in on:
+            df_to_join = df_to_join.withColumnRenamed(col, f"{col}_FT")
+    df = df.join(df_to_join, on=on, how="left")
+    for col in columns:
+        if col not in on:
+            df = df.withColumn(col, F.coalesce(F.col(f"{col}_FT"), F.col(col))).drop(f"{col}_FT")
+    return df
+
+
+def fill_nulls(column_name_to_update, fill_value: int = 0):
+    """Fill Null and NaN values with a constant integer."""
+    return F.when((column_name_to_update.isNull()) | (F.isnan(column_name_to_update)), fill_value).otherwise(
+        column_name_to_update
+    )
+
+
+def recode_column_values(df: DataFrame, lookup: dict):
+    """wrapper to loop over multiple value maps for different columns"""
+    for column_name, map in lookup.items():
+        df = update_column_values_from_map(df, column_name, map)
+    return df
+
+
+# 1165
+# requires MATCHED_*col
+def update_column(df: DataFrame, lookup_df: DataFrame, column_name_to_update: str, join_on_columns: List[str]):
+    """
+    Assign column (column_name_to_update) new value from lookup dataframe (lookup_df) if the value does not match
+    its counterpart in the old dataframe
+    """
+    lookup_df = lookup_df.withColumnRenamed(column_name_to_update, f"{column_name_to_update}_from_lookup")
+    df = df.join(lookup_df, on=[*join_on_columns], how="left")
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            F.col(column_name_to_update).isNull(),
+            F.when(
+                F.col(f"{column_name_to_update}_from_lookup").isNotNull(), F.col(f"{column_name_to_update}_from_lookup")
+            ).otherwise(("N/A")),
+        ).otherwise(F.col(column_name_to_update)),
+    )
+    return df.drop(f"{column_name_to_update}_from_lookup")
+
+
+def update_data(df: DataFrame, auxillary_dfs: dict):
+    """
+    wrapper function for calling update column
+    """
+    df = update_column(
+        df=df,
+        lookup_df=auxillary_dfs["postcode_lookup"],
+        column_name_to_update="lower_super_output_area_code_11",
+        join_on_columns=["country_code_12", "postcode"],
+    )
+    df = update_column(
+        df=df,
+        lookup_df=auxillary_dfs["cis_phase_lookup"],
+        column_name_to_update="cis_area_code_20",
+        join_on_columns=["lower_super_output_area_code_11"],
     )
     return df
 

@@ -3,7 +3,7 @@ from pyspark.sql import functions as F
 from pyspark.sql.types import DecimalType
 from pyspark.sql.window import Window
 
-from cishouseholds.weights.design_weights import scale_swab_design_weight
+from cishouseholds.pipeline.design_weights import scale_swab_design_weight
 
 
 def test_calculate_combined_design_weight_swabs(spark_session):

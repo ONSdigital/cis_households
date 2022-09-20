@@ -2,8 +2,8 @@ import pytest
 from pyspark.sql import functions as F
 from pyspark.sql.types import DecimalType
 
-from cishouseholds.weights.design_weights import DesignWeightError
-from cishouseholds.weights.design_weights import validate_design_weights
+from cishouseholds.pipeline.design_weights import DesignWeightError
+from cishouseholds.pipeline.design_weights import validate_design_weights
 
 
 def test_precal_and_design_weights_checkpoints_fail(spark_session):
