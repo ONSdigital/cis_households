@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.weights.derive import assign_tranche_factor
+from cishouseholds.pipeline.design_weights import assign_tranche_factor
 
 
 def test_assign_tranche_factor(spark_session):
