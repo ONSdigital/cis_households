@@ -204,6 +204,7 @@ patient_facing_classification = {
         "hospital_generic",
         "midwife",
         "nurse",
+        "hc_receptionist",
         "paramedic",
         "pharmacist",
         "hc_therapist",
@@ -211,7 +212,7 @@ patient_facing_classification = {
         "residential_care",
         "hc_support",
     ],
-    "N": ["call_operator", "covid_test", "hc_admin", "hc_receptionist", "hc_secretary", "domestic"],
+    "N": ["call_operator", "covid_test", "hc_admin", "hc_secretary", "domestic"],
 }
 
 roles_map = {
@@ -266,7 +267,6 @@ priority_map = {
     "teaching": 2,
     "hc_admin": 2,
     "hc_secretary": 2,
-    "hc_receptionist": 2,
 }
 
 patient_facing_pattern = RegexPattern(
