@@ -2635,17 +2635,17 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "is_patient_facing",
         F.when(
-            ((F.col("works_healthcare") == "Yes") | F.col("is_patient_facing"))
+            ((F.col("works_healthcare") == "Yes") | (F.col("is_patient_facing") == True))
             & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
             "Yes",
         ).otherwise("No"),
     )
-
     df = assign_column_value_from_multiple_column_map(
         df,
         "health_care_patient_facing_derived",
         [
             ["No", ["No", None]],
+            ["No", ["Yes", None]],
             ["Yes, primary care, patient-facing", ["Yes", "Primary"]],
             ["Yes, secondary care, patient-facing", ["Yes", "Secondary"]],
             ["Yes, other healthcare, patient-facing", ["Yes", "Other"]],
@@ -2655,11 +2655,10 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         ],
         ["is_patient_facing", "healthcare_area"],
     )
-
     window = Window.partitionBy("participant_id")
     df = df.withColumn(
         "patient_facing_over_20_percent",
-        F.sum(F.when(F.col("is_patient_facing"), 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
+        F.sum(F.when(F.col("is_patient_facing") == "Yes", 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
     )
 
     work_status_columns = [col for col in df.columns if "work_status_" in col]

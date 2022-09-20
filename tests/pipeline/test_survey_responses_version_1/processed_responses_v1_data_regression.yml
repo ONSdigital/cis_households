@@ -1,5 +1,7 @@
 - ability_to_socially_distance_at_work_or_education: 'No'
   any_household_members_over_2_years_and_not_present: null
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk_last_country: 'YES'
   been_outside_uk_last_return_date: '2022-01-02 00:00:00.000000'
@@ -33,6 +35,8 @@
   file_date: null
   first_name: Janyce
   gender: Prefer not to say
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: 021263322966
   hours_a_day_with_someone_else_at_home: '6'
   household_been_care_home_last_28_days: 'Yes'
@@ -53,6 +57,9 @@
   infant_age_months_6: 5.0
   infant_age_months_7: 3.0
   infant_age_months_8: null
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: Elementary, my dear Watson.
   last_name: Dickerson
@@ -60,6 +67,7 @@
   last_suspected_covid_contact_type: A census taker once tried to test me. I ate his
     liver with some fava beans and a nice Chianti.
   no_email_address: 0.0
+  not_working: false
   ons_household_id: 021263322966
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
@@ -74,6 +82,7 @@
   participant_visit_status: Re-scheduled
   participant_withdrawal_reason: Moving location
   participant_withdrawal_reason_raw: Moving location
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_2_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
@@ -107,6 +116,7 @@
   physical_contact_over_70_years: 'No'
   physical_contact_under_18_years: 'Yes'
   postcode: FN0F6OF
+  regex_derived_job_sector: null
   samples_taken_datetime: '2022-01-05 08:58:26.000000'
   self_isolating: 'No'
   self_isolating_reason: Where are my pants?
@@ -118,6 +128,7 @@
   smokes_nothing_now: 'Yes'
   smokes_pipe: null
   smokes_vape_e_cigarettes: 'No'
+  social_care_area: null
   social_distance_contact_18_to_69_years: 'Yes'
   social_distance_contact_over_70_years: 'Yes'
   social_distance_contact_under_18_years: 'Yes'
@@ -204,8 +215,12 @@
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
   work_status_v2: Here's looking at you, kid.
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
+  at_school: false
+  at_university: false
   bad_email: null
   been_outside_uk_last_country: 'NO'
   been_outside_uk_last_return_date: '2022-01-07 00:00:00.000000'
@@ -239,6 +254,8 @@
   file_date: null
   first_name: Tyrone
   gender: null
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '919192147365'
   hours_a_day_with_someone_else_at_home: '2'
   household_been_care_home_last_28_days: null
@@ -260,6 +277,9 @@
   infant_age_months_6: 2.0
   infant_age_months_7: 5.0
   infant_age_months_8: 8.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: They call me *Mister* Tibbs!
   last_name: David
@@ -267,6 +287,7 @@
   last_suspected_covid_contact_type: Those who refuse to learn from history are condemned
     to repeat it.
   no_email_address: 1.0
+  not_working: false
   ons_household_id: '919192147365'
   other_antibody_test: 'No'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
@@ -281,6 +302,7 @@
   participant_visit_status: Cancelled
   participant_withdrawal_reason: Moving location
   participant_withdrawal_reason_raw: Moving location
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_reason_for_not_consenting: Here's looking at you, kid.
   person_3_reason_for_not_consenting: Those who refuse to learn from history are condemned
@@ -314,6 +336,7 @@
   physical_contact_over_70_years: 'Yes'
   physical_contact_under_18_years: 'No'
   postcode: null
+  regex_derived_job_sector: null
   samples_taken_datetime: '2022-01-01 08:36:35.000000'
   self_isolating: 'No'
   self_isolating_reason: Any element of a tuple can be accessed in constant time.
@@ -325,6 +348,7 @@
   smokes_nothing_now: 'Yes'
   smokes_pipe: 'No'
   smokes_vape_e_cigarettes: 'No'
+  social_care_area: null
   social_distance_contact_18_to_69_years: 'Yes'
   social_distance_contact_over_70_years: null
   social_distance_contact_under_18_years: 'No'
@@ -414,8 +438,12 @@
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
   work_status_v2: Here's looking at you, kid.
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: null
   any_household_members_over_2_years_and_not_present: 'Yes'
+  at_school: false
+  at_university: false
   bad_email: null
   been_outside_uk_last_country: 'NO'
   been_outside_uk_last_return_date: '2022-01-02 00:00:00.000000'
@@ -451,6 +479,8 @@
   file_date: null
   first_name: Belkis
   gender: null
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '955705581901'
   hours_a_day_with_someone_else_at_home: '12'
   household_been_care_home_last_28_days: null
@@ -471,6 +501,9 @@
   infant_age_months_6: 6.0
   infant_age_months_7: 2.0
   infant_age_months_8: 0.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: One morning I shot an elephant in my pajamas. How he got
     in my pajamas, I don't know.
@@ -479,6 +512,7 @@
   last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   no_email_address: 0.0
+  not_working: false
   ons_household_id: '955705581901'
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
@@ -493,6 +527,7 @@
   participant_visit_status: Completed
   participant_withdrawal_reason: null
   participant_withdrawal_reason_raw: null
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: You're gonna need a bigger boat.
   person_2_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
@@ -527,6 +562,8 @@
   physical_contact_over_70_years: 'Yes'
   physical_contact_under_18_years: 'Yes'
   postcode: null
+  regex_derived_job_sector:
+  - construction
   samples_taken_datetime: '2022-01-07 05:53:35.000000'
   self_isolating: 'No'
   self_isolating_reason: Initially composing light-hearted and irreverent works, he
@@ -539,6 +576,7 @@
   smokes_nothing_now: 'No'
   smokes_pipe: null
   smokes_vape_e_cigarettes: 'Yes'
+  social_care_area: null
   social_distance_contact_18_to_69_years: 'No'
   social_distance_contact_over_70_years: 'Yes'
   social_distance_contact_under_18_years: 'Yes'
@@ -624,8 +662,12 @@
   work_status_v1: The only thing we have to fear is fear itself.
   work_status_v1_raw: The only thing we have to fear is fear itself.
   work_status_v2: The only thing we have to fear is fear itself.
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk_last_country: 'NO'
   been_outside_uk_last_return_date: '2022-01-09 00:00:00.000000'
@@ -660,6 +702,8 @@
   file_date: null
   first_name: Jae
   gender: null
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '876960826911'
   hours_a_day_with_someone_else_at_home: '1'
   household_been_care_home_last_28_days: 'Yes'
@@ -681,12 +725,16 @@
   infant_age_months_6: 1.0
   infant_age_months_7: 0.0
   infant_age_months_8: 1.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: Let them eat cake.
   last_name: Hyde
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Here's looking at you, kid.
   no_email_address: 0.0
+  not_working: false
   ons_household_id: '876960826911'
   other_antibody_test: null
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
@@ -702,6 +750,7 @@
   participant_visit_status: Scheduled
   participant_withdrawal_reason: Swab / blood process to distressing
   participant_withdrawal_reason_raw: Swab / blood process to distressing
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_2_reason_for_not_consenting: The only thing we have to fear is fear itself.
   person_3_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
@@ -733,6 +782,8 @@
   physical_contact_over_70_years: null
   physical_contact_under_18_years: null
   postcode: SE3Z6OR
+  regex_derived_job_sector:
+  - teaching
   samples_taken_datetime: '2022-01-01 16:24:54.000000'
   self_isolating: 'No'
   self_isolating_reason: Ports are created with the built-in function open_port.
@@ -744,6 +795,7 @@
   smokes_nothing_now: 'Yes'
   smokes_pipe: 'Yes'
   smokes_vape_e_cigarettes: 'No'
+  social_care_area: null
   social_distance_contact_18_to_69_years: null
   social_distance_contact_over_70_years: 'No'
   social_distance_contact_under_18_years: 'No'
@@ -834,8 +886,12 @@
     fava beans and a nice Chianti.
   work_status_v2: A census taker once tried to test me. I ate his liver with some
     fava beans and a nice Chianti.
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk_last_country: 'YES'
   been_outside_uk_last_return_date: '2022-01-05 00:00:00.000000'
@@ -870,6 +926,8 @@
   file_date: null
   first_name: Jenee
   gender: Female
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '602276804025'
   hours_a_day_with_someone_else_at_home: '3'
   household_been_care_home_last_28_days: null
@@ -890,6 +948,9 @@
   infant_age_months_6: null
   infant_age_months_7: 5.0
   infant_age_months_8: 1.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: '"You''ve got to ask yourself one question: ""Do I feel
     lucky?"" Well, do ya? Punk!"'
@@ -897,6 +958,7 @@
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: You're gonna need a bigger boat.
   no_email_address: 1.0
+  not_working: false
   ons_household_id: '602276804025'
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
@@ -912,6 +974,7 @@
   participant_visit_status: Scheduled
   participant_withdrawal_reason: No longer wants to take part
   participant_withdrawal_reason_raw: No longer wants to take part
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Houston, we have a problem.
   person_2_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
@@ -946,6 +1009,8 @@
   physical_contact_over_70_years: null
   physical_contact_under_18_years: 'No'
   postcode: null
+  regex_derived_job_sector:
+  - IT
   samples_taken_datetime: '2022-01-09 10:19:02.000000'
   self_isolating: 'No'
   self_isolating_reason: Atoms are used within a program to denote distinguished values.
@@ -957,6 +1022,7 @@
   smokes_nothing_now: 'No'
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
+  social_care_area: null
   social_distance_contact_18_to_69_years: null
   social_distance_contact_over_70_years: 'Yes'
   social_distance_contact_under_18_years: 'No'
@@ -1047,8 +1113,12 @@
     fava beans and a nice Chianti.
   work_status_v2: A census taker once tried to test me. I ate his liver with some
     fava beans and a nice Chianti.
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: 'Yes'
   any_household_members_over_2_years_and_not_present: null
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk_last_country: 'NO'
   been_outside_uk_last_return_date: '2022-01-05 00:00:00.000000'
@@ -1082,6 +1152,8 @@
   file_date: null
   first_name: Alan
   gender: Prefer not to say
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: 001674039598
   hours_a_day_with_someone_else_at_home: '1'
   household_been_care_home_last_28_days: 'No'
@@ -1102,6 +1174,9 @@
   infant_age_months_6: 1.0
   infant_age_months_7: null
   infant_age_months_8: 3.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: Houston, we have a problem.
   last_name: Robbins
@@ -1109,6 +1184,7 @@
   last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   no_email_address: 0.0
+  not_working: false
   ons_household_id: 001674039598
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
@@ -1123,6 +1199,7 @@
   participant_visit_status: Re-scheduled
   participant_withdrawal_reason: Moving location
   participant_withdrawal_reason_raw: Moving location
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
   person_2_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
@@ -1156,6 +1233,8 @@
   physical_contact_over_70_years: null
   physical_contact_under_18_years: 'No'
   postcode: null
+  regex_derived_job_sector:
+  - teaching
   samples_taken_datetime: '2022-01-02 09:26:10.000000'
   self_isolating: 'No'
   self_isolating_reason: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
@@ -1168,6 +1247,7 @@
   smokes_nothing_now: null
   smokes_pipe: 'Yes'
   smokes_vape_e_cigarettes: 'Yes'
+  social_care_area: null
   social_distance_contact_18_to_69_years: 'No'
   social_distance_contact_over_70_years: null
   social_distance_contact_under_18_years: 'No'
@@ -1253,8 +1333,12 @@
   work_status_v1: I'm gonna make him an offer he can't refuse.
   work_status_v1_raw: I'm gonna make him an offer he can't refuse.
   work_status_v2: I'm gonna make him an offer he can't refuse.
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: 'No'
   any_household_members_over_2_years_and_not_present: null
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk_last_country: null
   been_outside_uk_last_return_date: '2022-01-06 00:00:00.000000'
@@ -1287,6 +1371,8 @@
   file_date: null
   first_name: Shaun
   gender: Female
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: 044476904382
   hours_a_day_with_someone_else_at_home: '3'
   household_been_care_home_last_28_days: 'Yes'
@@ -1307,12 +1393,16 @@
   infant_age_months_6: 2.0
   infant_age_months_7: null
   infant_age_months_8: 2.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: You're gonna need a bigger boat.
   last_name: Lynch
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Let them eat cake.
   no_email_address: 1.0
+  not_working: false
   ons_household_id: 044476904382
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-01 00:00:00.000000'
@@ -1328,6 +1418,7 @@
   participant_visit_status: Cancelled
   participant_withdrawal_reason: Bad experience with tester / survey
   participant_withdrawal_reason_raw: Bad experience with tester / survey
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_3_reason_for_not_consenting: You're gonna need a bigger boat.
@@ -1362,6 +1453,7 @@
   physical_contact_over_70_years: 'Yes'
   physical_contact_under_18_years: 'No'
   postcode: null
+  regex_derived_job_sector: null
   samples_taken_datetime: '2022-01-04 14:55:06.000000'
   self_isolating: 'No'
   self_isolating_reason: The arguments can be primitive data types or compound data
@@ -1374,6 +1466,7 @@
   smokes_nothing_now: 'Yes'
   smokes_pipe: null
   smokes_vape_e_cigarettes: 'No'
+  social_care_area: null
   social_distance_contact_18_to_69_years: 'No'
   social_distance_contact_over_70_years: 'Yes'
   social_distance_contact_under_18_years: 'No'
@@ -1463,8 +1556,12 @@
   work_status_v1: Here's looking at you, kid.
   work_status_v1_raw: Here's looking at you, kid.
   work_status_v2: Here's looking at you, kid.
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: 'Yes'
   any_household_members_over_2_years_and_not_present: 'No'
+  at_school: false
+  at_university: false
   bad_email: null
   been_outside_uk_last_country: null
   been_outside_uk_last_return_date: '2022-01-07 00:00:00.000000'
@@ -1499,6 +1596,8 @@
   file_date: null
   first_name: Maple
   gender: Female
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '890407714528'
   hours_a_day_with_someone_else_at_home: '2'
   household_been_care_home_last_28_days: 'Yes'
@@ -1519,6 +1618,9 @@
   infant_age_months_6: 2.0
   infant_age_months_7: 7.0
   infant_age_months_8: 3.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: They call me *Mister* Tibbs!
   last_name: Brock
@@ -1526,6 +1628,7 @@
   last_suspected_covid_contact_type: Ask not what your country can do for you; ask
     what you can do for your country.
   no_email_address: 0.0
+  not_working: false
   ons_household_id: '890407714528'
   other_antibody_test: null
   other_antibody_test_first_positive_date: '2022-01-08 00:00:00.000000'
@@ -1540,6 +1643,7 @@
   participant_visit_status: Cancelled
   participant_withdrawal_reason: Too many visits
   participant_withdrawal_reason_raw: Too many visits
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
   person_2_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
@@ -1575,6 +1679,7 @@
   physical_contact_over_70_years: 'Yes'
   physical_contact_under_18_years: 'No'
   postcode: null
+  regex_derived_job_sector: null
   samples_taken_datetime: '2022-01-05 21:50:51.000000'
   self_isolating: 'No'
   self_isolating_reason: Erlang is known for its designs that are well suited for
@@ -1587,6 +1692,7 @@
   smokes_nothing_now: 'Yes'
   smokes_pipe: null
   smokes_vape_e_cigarettes: 'No'
+  social_care_area: null
   social_distance_contact_18_to_69_years: 'Yes'
   social_distance_contact_over_70_years: 'No'
   social_distance_contact_under_18_years: 'No'
@@ -1674,8 +1780,12 @@
     know what you're gonna get.
   work_status_v2: Mama always said life was like a box of chocolates. You never know
     what you're gonna get.
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: 'Yes'
   any_household_members_over_2_years_and_not_present: 'Yes'
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk_last_country: null
   been_outside_uk_last_return_date: '2022-01-09 00:00:00.000000'
@@ -1709,6 +1819,8 @@
   file_date: null
   first_name: Ira
   gender: null
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '456442497105'
   hours_a_day_with_someone_else_at_home: '0'
   household_been_care_home_last_28_days: null
@@ -1728,6 +1840,9 @@
   infant_age_months_6: 4.0
   infant_age_months_7: 1.0
   infant_age_months_8: 6.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: Let them eat cake.
   last_name: Bernard
@@ -1735,6 +1850,7 @@
   last_suspected_covid_contact_type: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
   no_email_address: 1.0
+  not_working: false
   ons_household_id: '456442497105'
   other_antibody_test: null
   other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
@@ -1750,6 +1866,7 @@
   participant_visit_status: Cancelled
   participant_withdrawal_reason: Bad experience with tester / survey
   participant_withdrawal_reason_raw: Bad experience with tester / survey
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   person_2_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
@@ -1783,6 +1900,8 @@
   physical_contact_over_70_years: null
   physical_contact_under_18_years: 'No'
   postcode: null
+  regex_derived_job_sector:
+  - media
   samples_taken_datetime: '2022-01-03 13:05:35.000000'
   self_isolating: 'No'
   self_isolating_reason: Atoms are used within a program to denote distinguished values.
@@ -1794,6 +1913,7 @@
   smokes_nothing_now: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
+  social_care_area: null
   social_distance_contact_18_to_69_years: null
   social_distance_contact_over_70_years: 'Yes'
   social_distance_contact_under_18_years: 'Yes'
@@ -1879,8 +1999,12 @@
   work_status_v1: Frankly, my dear, I don't give a damn.
   work_status_v1_raw: Frankly, my dear, I don't give a damn.
   work_status_v2: Frankly, my dear, I don't give a damn.
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk_last_country: 'NO'
   been_outside_uk_last_return_date: '2022-01-06 00:00:00.000000'
@@ -1914,6 +2038,8 @@
   file_date: null
   first_name: Buck
   gender: Male
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '788221784619'
   hours_a_day_with_someone_else_at_home: '2'
   household_been_care_home_last_28_days: 'Yes'
@@ -1935,6 +2061,9 @@
   infant_age_months_6: 0.0
   infant_age_months_7: 1.0
   infant_age_months_8: 7.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: The only thing we have to fear is fear itself.
   last_name: Meyers
@@ -1942,6 +2071,7 @@
   last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   no_email_address: 0.0
+  not_working: false
   ons_household_id: '788221784619'
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
@@ -1956,6 +2086,7 @@
   participant_visit_status: Scheduled
   participant_withdrawal_reason: Moving location
   participant_withdrawal_reason_raw: Moving location
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
@@ -1992,6 +2123,8 @@
   physical_contact_over_70_years: 'No'
   physical_contact_under_18_years: 'No'
   postcode: null
+  regex_derived_job_sector:
+  - media
   samples_taken_datetime: '2022-01-01 21:42:49.000000'
   self_isolating: 'No'
   self_isolating_reason: Do you have any idea why this is not working?
@@ -2003,6 +2136,7 @@
   smokes_nothing_now: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: 'Yes'
+  social_care_area: null
   social_distance_contact_18_to_69_years: null
   social_distance_contact_over_70_years: null
   social_distance_contact_under_18_years: null
@@ -2092,3 +2226,5 @@
   work_status_v1: Houston, we have a problem.
   work_status_v1_raw: Houston, we have a problem.
   work_status_v2: Houston, we have a problem.
+  works_healthcare: 'No'
+  works_social_care: 'No'

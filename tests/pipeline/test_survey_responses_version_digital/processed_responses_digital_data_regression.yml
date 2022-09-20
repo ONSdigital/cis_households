@@ -4,6 +4,8 @@
     works, he also wrote serious, sombre and religious pieces beginning in the 1930s.
   allocated_swab_barcode_not_used_reason: She spent her earliest years reading classic
     literature, and writing poetry.
+  at_school: false
+  at_university: false
   bad_email: null
   been_outside_uk: null
   been_outside_uk_last_country: Guinea-Bissau
@@ -132,6 +134,8 @@
   first_name: Caron
   form_language: English
   form_start_datetime: '2022-01-08 06:34:15.000000'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '763063387334'
   hospital_last_28_days: 'No'
   hours_a_day_with_someone_else_at_home: Don't know
@@ -158,6 +162,9 @@
   infant_age_months_6: null
   infant_age_months_7: null
   infant_age_months_8: 56.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   language_preference: null
   last_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_covid_contact_type: null
@@ -168,6 +175,7 @@
   last_suspected_covid_contact_type_raw: Someone you live with
   long_covid_symptoms: think_have_long_covid_symptom_headache;think_have_long_covid_symptom_diarrhoea;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_low_mood;think_have_long_covid_symptom_more_trouble_sleeping;think_have_long_covid_symptom_runny_nose_or_sneezing;think_have_long_covid_symptom_noisy_breathing
   middle_name: Jessika
+  not_working: false
   ons_household_id: '763063387334'
   opted_out_of_blood_next_window: 'No'
   opted_out_of_blood_next_window_datetime: '2022-01-08 09:37:24.000000'
@@ -205,6 +213,7 @@
   participant_withdrawal_reason_raw: Moving Location
   participant_withdrawal_type: Withdrawn_no_future_linkage_or_use_of_samples
   participant_withdrawal_type_raw: Withdrawn - no future linkage or use of samples
+  patient_facing_over_20_percent: 0.0
   person_not_consenting_age_1: null
   person_not_consenting_age_2: 958.0
   person_not_consenting_age_3: null
@@ -246,6 +255,7 @@
   reason_for_not_consenting_9: Atoms can contain any character if they are enclosed
     within single quotes and an escape convention exists which allows any character
     to be used within an atom.
+  regex_derived_job_sector: null
   regularly_lateral_flow_testing: null
   sample_collection_courier_datetime: '2022-01-09 15:31:48.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-06 17:17:10.000000'
@@ -264,6 +274,7 @@
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
+  social_care_area: null
   social_distance_contact_18_to_69_years: 21 or more
   social_distance_contact_18_to_69_years_raw: 21 or more
   social_distance_contact_over_70_years: '0'
@@ -436,6 +447,8 @@
   work_status_v0: null
   work_status_v1: null
   work_status_v2: null
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: Difficult to maintain 2m, but
     can be 1m
   ability_to_socially_distance_at_work_or_education_raw: Difficult to maintain 2 metres
@@ -443,6 +456,8 @@
   allocated_blood_barcode_not_used_reason: Make me a sandwich.
   allocated_swab_barcode_not_used_reason: Erlang is a general-purpose, concurrent,
     functional programming language.
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Oman
@@ -575,6 +590,8 @@
   first_name: Forest
   form_language: Welsh
   form_start_datetime: '2022-01-08 07:43:48.000000'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '414160350614'
   hospital_last_28_days: 'No'
   hours_a_day_with_someone_else_at_home: null
@@ -602,6 +619,9 @@
   infant_age_months_6: null
   infant_age_months_7: null
   infant_age_months_8: null
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   language_preference: Welsh
   last_covid_contact_date: '2022-01-02 00:00:00.000000'
   last_covid_contact_type: null
@@ -612,6 +632,7 @@
   last_suspected_covid_contact_type_raw: Someone you live with
   long_covid_symptoms: think_have_long_covid_symptom_fever;think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_loss_of_appetite;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_low_mood;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_noisy_breathing
   middle_name: Buck
+  not_working: false
   ons_household_id: '414160350614'
   opted_out_of_blood_next_window: null
   opted_out_of_blood_next_window_datetime: '2022-01-05 10:12:45.000000'
@@ -649,6 +670,7 @@
   participant_withdrawal_reason_raw: Participant does not want to self swab
   participant_withdrawal_type: Withdrawn
   participant_withdrawal_type_raw: Withdrawn
+  patient_facing_over_20_percent: 0.0
   person_not_consenting_age_1: null
   person_not_consenting_age_2: null
   person_not_consenting_age_3: null
@@ -692,6 +714,8 @@
     for systems.
   reason_for_not_consenting_9: Atoms are used within a program to denote distinguished
     values.
+  regex_derived_job_sector:
+  - media
   regularly_lateral_flow_testing: null
   sample_collection_courier_datetime: null
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-03 23:59:40.000000'
@@ -710,6 +734,7 @@
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: 'Yes'
+  social_care_area: null
   social_distance_contact_18_to_69_years: 1-5
   social_distance_contact_18_to_69_years_raw: 1 to 5
   social_distance_contact_over_70_years: null
@@ -884,6 +909,8 @@
   work_status_v0: null
   work_status_v1: null
   work_status_v2: null
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: Relatively easy to maintain 2m
   ability_to_socially_distance_at_work_or_education_raw: Relatively easy to maintain
     2 metres apart. Most of the time you can be 2 meters away from other people
@@ -891,6 +918,8 @@
     in constant time.
   allocated_swab_barcode_not_used_reason: Atoms are used within a program to denote
     distinguished values.
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk: null
   been_outside_uk_last_country: Philippines
@@ -1021,6 +1050,8 @@
   first_name: Honey
   form_language: Welsh
   form_start_datetime: '2022-01-09 15:31:41.000000'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: 030988308904
   hospital_last_28_days: 'No'
   hours_a_day_with_someone_else_at_home: Don't know
@@ -1048,6 +1079,9 @@
   infant_age_months_6: null
   infant_age_months_7: 24.0
   infant_age_months_8: null
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   language_preference: English
   last_covid_contact_date: '2022-01-07 00:00:00.000000'
   last_covid_contact_type: null
@@ -1058,6 +1092,7 @@
   last_suspected_covid_contact_type_raw: null
   long_covid_symptoms: think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_memory_loss_or_confusion;think_have_long_covid_symptom_runny_nose_or_sneezing
   middle_name: Gale
+  not_working: false
   ons_household_id: 030988308904
   opted_out_of_blood_next_window: 'No'
   opted_out_of_blood_next_window_datetime: '2022-01-03 16:05:20.000000'
@@ -1096,6 +1131,7 @@
   participant_withdrawal_reason_raw: Moving Location
   participant_withdrawal_type: Withdrawn
   participant_withdrawal_type_raw: Withdrawn
+  patient_facing_over_20_percent: 0.0
   person_not_consenting_age_1: 926.0
   person_not_consenting_age_2: 166.0
   person_not_consenting_age_3: null
@@ -1138,6 +1174,8 @@
     language.
   reason_for_not_consenting_9: The Galactic Empire is nearing completion of the Death
     Star, a space station with the power to destroy entire planets.
+  regex_derived_job_sector:
+  - teaching
   regularly_lateral_flow_testing: null
   sample_collection_courier_datetime: '2022-01-06 05:06:10.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-05 21:06:50.000000'
@@ -1156,6 +1194,7 @@
   smokes_hookah_shisha_pipes: null
   smokes_pipe: 'Yes'
   smokes_vape_e_cigarettes: null
+  social_care_area: null
   social_distance_contact_18_to_69_years: 11-20
   social_distance_contact_18_to_69_years_raw: 11 to 20
   social_distance_contact_over_70_years: null
@@ -1334,12 +1373,16 @@
   work_status_v0: null
   work_status_v1: null
   work_status_v2: null
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: null
   ability_to_socially_distance_at_work_or_education_raw: null
   allocated_blood_barcode_not_used_reason: Its main implementation is the Glasgow
     Haskell Compiler.
   allocated_swab_barcode_not_used_reason: The Galactic Empire is nearing completion
     of the Death Star, a space station with the power to destroy entire planets.
+  at_school: false
+  at_university: false
   bad_email: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Zimbabwe
@@ -1473,6 +1516,8 @@
   first_name: Shawnee
   form_language: Welsh
   form_start_datetime: '2022-01-05 02:41:47.000000'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '734353881968'
   hospital_last_28_days: 'Yes'
   hours_a_day_with_someone_else_at_home: Don't know
@@ -1500,6 +1545,9 @@
   infant_age_months_6: 98.0
   infant_age_months_7: null
   infant_age_months_8: 38.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   language_preference: English
   last_covid_contact_date: null
   last_covid_contact_type: null
@@ -1510,6 +1558,7 @@
   last_suspected_covid_contact_type_raw: Someone I do not live with
   long_covid_symptoms: think_have_long_covid_symptom_nausea_or_vomiting;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_diarrhoea;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_low_mood;think_have_long_covid_symptom_memory_loss_or_confusion;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_runny_nose_or_sneezing
   middle_name: Isaac
+  not_working: false
   ons_household_id: '734353881968'
   opted_out_of_blood_next_window: null
   opted_out_of_blood_next_window_datetime: null
@@ -1548,6 +1597,7 @@
   participant_withdrawal_reason_raw: Moving Location
   participant_withdrawal_type: Withdrawn_no_future_linkage_or_use_of_samples
   participant_withdrawal_type_raw: Withdrawn - no future linkage or use of samples
+  patient_facing_over_20_percent: 0.0
   person_not_consenting_age_1: null
   person_not_consenting_age_2: null
   person_not_consenting_age_3: 345.0
@@ -1586,6 +1636,8 @@
   reason_for_not_consenting_8: Its main implementation is the Glasgow Haskell Compiler.
   reason_for_not_consenting_9: Haskell features a type system with type inference
     and lazy evaluation.
+  regex_derived_job_sector:
+  - teaching
   regularly_lateral_flow_testing: 'Yes'
   sample_collection_courier_datetime: '2022-01-05 10:59:27.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-01 07:59:46.000000'
@@ -1604,6 +1656,7 @@
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: 'Yes'
+  social_care_area: null
   social_distance_contact_18_to_69_years: null
   social_distance_contact_18_to_69_years_raw: Don't know
   social_distance_contact_over_70_years: 11-20
@@ -1781,12 +1834,16 @@
   work_status_v0: null
   work_status_v1: null
   work_status_v2: null
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   ability_to_socially_distance_at_work_or_education_raw: Easy to maintain 2 metres
     apart. It is not a problem to stay this far away from other people
   allocated_blood_barcode_not_used_reason: Do you have any idea why this is not working?
   allocated_swab_barcode_not_used_reason: Type classes first appeared in the Haskell
     programming language.
+  at_school: false
+  at_university: false
   bad_email: null
   been_outside_uk: null
   been_outside_uk_last_country: Israel
@@ -1918,6 +1975,8 @@
   first_name: Annika
   form_language: Welsh
   form_start_datetime: '2022-01-04 09:57:44.000000'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '602276804025'
   hospital_last_28_days: 'Yes'
   hours_a_day_with_someone_else_at_home: Don't know
@@ -1944,6 +2003,9 @@
   infant_age_months_6: null
   infant_age_months_7: 54.0
   infant_age_months_8: null
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   language_preference: null
   last_covid_contact_date: null
   last_covid_contact_type: null
@@ -1954,6 +2016,7 @@
   last_suspected_covid_contact_type_raw: null
   long_covid_symptoms: think_have_long_covid_symptom_diarrhoea;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_more_trouble_sleeping;think_have_long_covid_symptom_difficulty_concentrating
   middle_name: Hank
+  not_working: false
   ons_household_id: '602276804025'
   opted_out_of_blood_next_window: 'No'
   opted_out_of_blood_next_window_datetime: '2022-01-04 06:48:13.000000'
@@ -1992,6 +2055,7 @@
   participant_withdrawal_reason_raw: No longer wants to take part
   participant_withdrawal_type: Withdrawn
   participant_withdrawal_type_raw: Withdrawn
+  patient_facing_over_20_percent: 0.0
   person_not_consenting_age_1: 603.0
   person_not_consenting_age_2: 729.0
   person_not_consenting_age_3: 973.0
@@ -2031,6 +2095,8 @@
   reason_for_not_consenting_8: Erlang is a general-purpose, concurrent, functional
     programming language.
   reason_for_not_consenting_9: Make me a sandwich.
+  regex_derived_job_sector:
+  - IT
   regularly_lateral_flow_testing: null
   sample_collection_courier_datetime: null
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-03 09:40:01.000000'
@@ -2049,6 +2115,7 @@
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
+  social_care_area: null
   social_distance_contact_18_to_69_years: null
   social_distance_contact_18_to_69_years_raw: null
   social_distance_contact_over_70_years: '0'
@@ -2221,6 +2288,8 @@
   work_status_v0: null
   work_status_v1: null
   work_status_v2: null
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
     1m away
   ability_to_socially_distance_at_work_or_education_raw: Very difficult to be more
@@ -2230,6 +2299,8 @@
     alphanumeric characters, the first character being lowercase.
   allocated_swab_barcode_not_used_reason: Its main implementation is the Glasgow Haskell
     Compiler.
+  at_school: false
+  at_university: false
   bad_email: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Liechtenstein
@@ -2364,6 +2435,8 @@
   first_name: Shaun
   form_language: English
   form_start_datetime: '2022-01-06 10:18:09.000000'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '822178461989'
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: null
@@ -2390,6 +2463,9 @@
   infant_age_months_6: 89.0
   infant_age_months_7: 71.0
   infant_age_months_8: 83.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   language_preference: null
   last_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_covid_contact_type: null
@@ -2400,6 +2476,7 @@
   last_suspected_covid_contact_type_raw: Someone you live with
   long_covid_symptoms: think_have_long_covid_symptom_fever;think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_more_trouble_sleeping;think_have_long_covid_symptom_difficulty_concentrating
   middle_name: My
+  not_working: false
   ons_household_id: '822178461989'
   opted_out_of_blood_next_window: 'No'
   opted_out_of_blood_next_window_datetime: '2022-01-07 21:22:06.000000'
@@ -2438,6 +2515,7 @@
   participant_withdrawal_reason_raw: Too many visits
   participant_withdrawal_type: Withdrawn_no_future_linkage_or_use_of_samples
   participant_withdrawal_type_raw: Withdrawn - no future linkage or use of samples
+  patient_facing_over_20_percent: 0.0
   person_not_consenting_age_1: null
   person_not_consenting_age_2: null
   person_not_consenting_age_3: null
@@ -2477,6 +2555,7 @@
     but these messages must obey the so-called ""port protocol."""'
   reason_for_not_consenting_9: In 1989 the building was heavily damaged by fire, but
     it has since been restored.
+  regex_derived_job_sector: null
   regularly_lateral_flow_testing: 'No'
   sample_collection_courier_datetime: '2022-01-01 01:16:24.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-04 03:58:47.000000'
@@ -2495,6 +2574,7 @@
   smokes_hookah_shisha_pipes: null
   smokes_pipe: 'Yes'
   smokes_vape_e_cigarettes: null
+  social_care_area: null
   social_distance_contact_18_to_69_years: null
   social_distance_contact_18_to_69_years_raw: null
   social_distance_contact_over_70_years: null
@@ -2668,6 +2748,8 @@
   work_status_v0: null
   work_status_v1: null
   work_status_v2: null
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: Difficult to maintain 2m, but
     can be 1m
   ability_to_socially_distance_at_work_or_education_raw: Difficult to maintain 2 metres
@@ -2676,6 +2758,8 @@
     external world.
   allocated_swab_barcode_not_used_reason: Ports are created with the built-in function
     open_port.
+  at_school: false
+  at_university: false
   bad_email: null
   been_outside_uk: 'No'
   been_outside_uk_last_country: Dominican Republic
@@ -2809,6 +2893,8 @@
   first_name: Clemmie
   form_language: English
   form_start_datetime: '2022-01-05 06:12:29.000000'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '623704990229'
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: null
@@ -2835,6 +2921,9 @@
   infant_age_months_6: 26.0
   infant_age_months_7: null
   infant_age_months_8: null
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   language_preference: null
   last_covid_contact_date: '2022-01-05 00:00:00.000000'
   last_covid_contact_type: Living in your own home
@@ -2845,6 +2934,7 @@
   last_suspected_covid_contact_type_raw: Someone you do not live with
   long_covid_symptoms: think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_fatigue;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_cough;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_noisy_breathing
   middle_name: Clarence
+  not_working: false
   ons_household_id: '623704990229'
   opted_out_of_blood_next_window: 'No'
   opted_out_of_blood_next_window_datetime: '2022-01-03 17:00:18.000000'
@@ -2882,6 +2972,7 @@
   participant_withdrawal_reason_raw: Swab/blood process distressing
   participant_withdrawal_type: null
   participant_withdrawal_type_raw: null
+  patient_facing_over_20_percent: 0.0
   person_not_consenting_age_1: null
   person_not_consenting_age_2: 330.0
   person_not_consenting_age_3: null
@@ -2921,6 +3012,7 @@
   reason_for_not_consenting_8: The arguments can be primitive data types or compound
     data types.
   reason_for_not_consenting_9: Do you have any idea why this is not working?
+  regex_derived_job_sector: null
   regularly_lateral_flow_testing: 'No'
   sample_collection_courier_datetime: '2022-01-01 00:05:15.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-03 13:58:24.000000'
@@ -2939,6 +3031,7 @@
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
+  social_care_area: null
   social_distance_contact_18_to_69_years: 6-10
   social_distance_contact_18_to_69_years_raw: 6 to 10
   social_distance_contact_over_70_years: 21 or more
@@ -3115,6 +3208,8 @@
   work_status_v0: null
   work_status_v1: null
   work_status_v2: null
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
     1m away
   ability_to_socially_distance_at_work_or_education_raw: Very difficult to be more
@@ -3122,6 +3217,8 @@
     basis
   allocated_blood_barcode_not_used_reason: Where are my pants?
   allocated_swab_barcode_not_used_reason: I don't even care.
+  at_school: false
+  at_university: false
   bad_email: null
   been_outside_uk: 'No'
   been_outside_uk_last_country: Malta
@@ -3256,6 +3353,8 @@
   first_name: Myung
   form_language: Welsh
   form_start_datetime: '2022-01-03 17:37:42.000000'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '502848695986'
   hospital_last_28_days: 'Yes'
   hours_a_day_with_someone_else_at_home: null
@@ -3282,6 +3381,9 @@
   infant_age_months_6: 33.0
   infant_age_months_7: 27.0
   infant_age_months_8: null
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   language_preference: English
   last_covid_contact_date: null
   last_covid_contact_type: null
@@ -3292,6 +3394,7 @@
   last_suspected_covid_contact_type_raw: null
   long_covid_symptoms: think_have_long_covid_symptom_nausea_or_vomiting;think_have_long_covid_symptom_loss_of_taste;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_loss_of_appetite;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_memory_loss_or_confusion
   middle_name: Quinn
+  not_working: false
   ons_household_id: '502848695986'
   opted_out_of_blood_next_window: 'Yes'
   opted_out_of_blood_next_window_datetime: '2022-01-01 11:05:50.000000'
@@ -3329,6 +3432,7 @@
   participant_withdrawal_reason_raw: Bad experience with tester/survey
   participant_withdrawal_type: Withdrawn
   participant_withdrawal_type_raw: Withdrawn
+  patient_facing_over_20_percent: 0.0
   person_not_consenting_age_1: 282.0
   person_not_consenting_age_2: null
   person_not_consenting_age_3: null
@@ -3369,6 +3473,8 @@
   reason_for_not_consenting_8: Make me a sandwich.
   reason_for_not_consenting_9: He looked inquisitively at his keyboard and wrote another
     sentence.
+  regex_derived_job_sector:
+  - IT
   regularly_lateral_flow_testing: 'No'
   sample_collection_courier_datetime: '2022-01-05 07:11:22.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-08 09:34:37.000000'
@@ -3387,6 +3493,7 @@
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
+  social_care_area: null
   social_distance_contact_18_to_69_years: 6-10
   social_distance_contact_18_to_69_years_raw: 6 to 10
   social_distance_contact_over_70_years: 6-10
@@ -3561,6 +3668,8 @@
   work_status_v0: null
   work_status_v1: null
   work_status_v2: null
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
     1m away
   ability_to_socially_distance_at_work_or_education_raw: Very difficult to be more
@@ -3570,6 +3679,8 @@
     works, he also wrote serious, sombre and religious pieces beginning in the 1930s.
   allocated_swab_barcode_not_used_reason: Haskell features a type system with type
     inference and lazy evaluation.
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Bangladesh
@@ -3700,6 +3811,8 @@
   first_name: Remedios
   form_language: English
   form_start_datetime: '2022-01-08 00:30:18.000000'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '821442294850'
   hospital_last_28_days: 'Yes'
   hours_a_day_with_someone_else_at_home: '[10, 14, 12, 22, 4, 17, 5, 9]'
@@ -3727,6 +3840,9 @@
   infant_age_months_6: 29.0
   infant_age_months_7: 93.0
   infant_age_months_8: null
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   language_preference: Welsh
   last_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_covid_contact_type: Outside your home
@@ -3737,6 +3853,7 @@
   last_suspected_covid_contact_type_raw: Someone I live with
   long_covid_symptoms: think_have_long_covid_symptom_headache;think_have_long_covid_symptom_diarrhoea;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_loss_of_appetite;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_anxiety
   middle_name: Jae
+  not_working: true
   ons_household_id: '821442294850'
   opted_out_of_blood_next_window: null
   opted_out_of_blood_next_window_datetime: '2022-01-02 07:59:17.000000'
@@ -3775,6 +3892,7 @@
   participant_withdrawal_reason_raw: null
   participant_withdrawal_type: Withdrawn
   participant_withdrawal_type_raw: Withdrawn
+  patient_facing_over_20_percent: 0.0
   person_not_consenting_age_1: null
   person_not_consenting_age_2: null
   person_not_consenting_age_3: null
@@ -3817,6 +3935,7 @@
     and writing poetry.
   reason_for_not_consenting_9: In 1989 the building was heavily damaged by fire, but
     it has since been restored.
+  regex_derived_job_sector: null
   regularly_lateral_flow_testing: 'Yes'
   sample_collection_courier_datetime: '2022-01-03 18:35:01.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-09 02:10:48.000000'
@@ -3835,6 +3954,7 @@
   smokes_hookah_shisha_pipes: null
   smokes_pipe: 'Yes'
   smokes_vape_e_cigarettes: null
+  social_care_area: null
   social_distance_contact_18_to_69_years: null
   social_distance_contact_18_to_69_years_raw: Don't know
   social_distance_contact_over_70_years: '0'
@@ -4003,14 +4123,15 @@
     quotes and an escape convention exists which allows any character to be used within
     an atom.
   work_sector_raw: Civil Service or Local Government
-  work_status_digital: Self-employed
-  work_status_education: Attending university
-  work_status_employment: null
-  work_status_unemployment: Not looking for paid work. This includes looking after
-    the home or family or not wanting a job or being long-term sick or disabled
+  work_status_digital: not working
+  work_status_education: not working
+  work_status_employment: not working
+  work_status_unemployment: not working
   work_status_v0: null
   work_status_v1: null
   work_status_v2: null
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   ability_to_socially_distance_at_work_or_education_raw: Easy to maintain 2 metres
     apart. It is not a problem to stay this far away from other people
@@ -4018,6 +4139,8 @@
     Haskell Compiler.
   allocated_swab_barcode_not_used_reason: The syntax {D1,D2,...,Dn} denotes a tuple
     whose arguments are D1, D2, ... Dn.
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk: null
   been_outside_uk_last_country: Poland
@@ -4152,6 +4275,8 @@
   first_name: Reiko
   form_language: English
   form_start_datetime: '2022-01-05 20:29:16.000000'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '568720322983'
   hospital_last_28_days: 'Yes'
   hours_a_day_with_someone_else_at_home: Don't know
@@ -4178,6 +4303,9 @@
   infant_age_months_6: 86.0
   infant_age_months_7: null
   infant_age_months_8: 68.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   language_preference: null
   last_covid_contact_date: null
   last_covid_contact_type: Living in your own home
@@ -4188,6 +4316,7 @@
   last_suspected_covid_contact_type_raw: Someone you do not live with
   long_covid_symptoms: think_have_long_covid_symptom_headache;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_memory_loss_or_confusion;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_noisy_breathing
   middle_name: Argentina
+  not_working: false
   ons_household_id: '568720322983'
   opted_out_of_blood_next_window: 'Yes'
   opted_out_of_blood_next_window_datetime: '2022-01-01 14:56:59.000000'
@@ -4225,6 +4354,7 @@
   participant_withdrawal_reason_raw: Too many visits
   participant_withdrawal_type: Withdrawn_no_future_linkage
   participant_withdrawal_type_raw: Withdrawn - no future linkage
+  patient_facing_over_20_percent: 0.0
   person_not_consenting_age_1: null
   person_not_consenting_age_2: 608.0
   person_not_consenting_age_3: null
@@ -4268,6 +4398,8 @@
     programming language.
   reason_for_not_consenting_9: The sequential subset of Erlang supports eager evaluation,
     single assignment, and dynamic typing.
+  regex_derived_job_sector:
+  - IT
   regularly_lateral_flow_testing: null
   sample_collection_courier_datetime: '2022-01-07 21:25:12.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-02 03:43:57.000000'
@@ -4286,6 +4418,7 @@
   smokes_hookah_shisha_pipes: null
   smokes_pipe: 'Yes'
   smokes_vape_e_cigarettes: null
+  social_care_area: null
   social_distance_contact_18_to_69_years: 1-5
   social_distance_contact_18_to_69_years_raw: 1 to 5
   social_distance_contact_over_70_years: 6-10
@@ -4465,3 +4598,5 @@
   work_status_v0: null
   work_status_v1: null
   work_status_v2: null
+  works_healthcare: 'No'
+  works_social_care: 'No'

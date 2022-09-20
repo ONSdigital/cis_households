@@ -5,6 +5,8 @@
   agreed_to_additional_consent_visit: 'Yes'
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: null
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk: null
   been_outside_uk_last_country: NAMIBIA
@@ -73,6 +75,8 @@
   have_email_address: null
   have_landline_number: 'No'
   have_mobile_number: 'Yes'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '392744995712'
   hospital_last_28_days: 'Yes'
   hours_a_day_with_someone_else_at_home: null
@@ -93,6 +97,9 @@
   infant_age_months_6: 2.0
   infant_age_months_7: 7.0
   infant_age_months_8: 3.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: Living in your own home
   last_name: Gross
@@ -103,6 +110,7 @@
   no_fingerprick_blood_taken_reason: Two attempts made
   no_venous_blood_taken_reason: Participant dehydrated
   not_attended_reason: Doctor Appointment
+  not_working: false
   ons_household_id: '392744995712'
   other_antibody_test: 'No'
   other_antibody_test_first_positive_date: null
@@ -122,6 +130,7 @@
   participant_withdrawal_reason: Withdrawn_no_future_linkage
   participant_withdrawal_reason_raw: Withdrawn_no_future_linkage
   participant_withdrawal_type: On Holiday
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
@@ -155,6 +164,7 @@
   physical_contact_under_18_years: 21 or more
   postcode: PS0F2CG
   reconsented_blood: 'True'
+  regex_derived_job_sector: null
   regularly_lateral_flow_testing: null
   samples_taken_datetime: '2022-01-07 16:06:21.000000'
   self_isolating: 'No'
@@ -169,6 +179,7 @@
   smokes_hookah_shisha_pipes: 'No'
   smokes_pipe: 'Yes'
   smokes_vape_e_cigarettes: 'No'
+  social_care_area: null
   social_distance_contact_18_to_69_years: 1-5
   social_distance_contact_over_70_years: null
   social_distance_contact_under_18_years: 11-20
@@ -302,6 +313,8 @@
   work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: 'Yes'
@@ -309,6 +322,8 @@
   agreed_to_additional_consent_visit: 'No'
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk: null
   been_outside_uk_last_country: JAMAICA
@@ -378,6 +393,8 @@
   have_email_address: 'No'
   have_landline_number: null
   have_mobile_number: 'Yes'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '261449825198'
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: null
@@ -397,6 +414,9 @@
   infant_age_months_6: 8.0
   infant_age_months_7: null
   infant_age_months_8: 0.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: Living in your own home
   last_name: Hunt
@@ -407,6 +427,7 @@
   no_fingerprick_blood_taken_reason: No stock
   no_venous_blood_taken_reason: Non-contact visit. Household self-isolating
   not_attended_reason: Phone not answered
+  not_working: false
   ons_household_id: '261449825198'
   other_antibody_test: 'No'
   other_antibody_test_first_positive_date: null
@@ -426,6 +447,7 @@
   participant_withdrawal_reason: null
   participant_withdrawal_reason_raw: null
   participant_withdrawal_type: Phone not answered
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
   person_2_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
@@ -460,6 +482,8 @@
   physical_contact_under_18_years: Participant Would Not/Could Not Answer
   postcode: TE4H2TC
   reconsented_blood: 'False'
+  regex_derived_job_sector:
+  - IT
   regularly_lateral_flow_testing: 'No'
   samples_taken_datetime: null
   self_isolating: null
@@ -472,6 +496,7 @@
   smokes_hookah_shisha_pipes: null
   smokes_pipe: 'No'
   smokes_vape_e_cigarettes: 'Yes'
+  social_care_area: null
   social_distance_contact_18_to_69_years: '0'
   social_distance_contact_over_70_years: 11-20
   social_distance_contact_under_18_years: '0'
@@ -606,6 +631,8 @@
   work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
     1m away
   able_to_take_blood: 'No'
@@ -614,6 +641,8 @@
   agreed_to_additional_consent_visit: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'No'
+  at_school: false
+  at_university: false
   bad_email: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: OMAN
@@ -682,6 +711,8 @@
   have_email_address: 'No'
   have_landline_number: 'Yes'
   have_mobile_number: 'Yes'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '704542495687'
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: null
@@ -702,6 +733,9 @@
   infant_age_months_6: 6.0
   infant_age_months_7: 2.0
   infant_age_months_8: 4.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: null
   last_name: Waters
@@ -712,6 +746,7 @@
   no_fingerprick_blood_taken_reason: Bruising or pain after first attempt
   no_venous_blood_taken_reason: Participant refused
   not_attended_reason: On Holiday
+  not_working: false
   ons_household_id: '704542495687'
   other_antibody_test: 'No'
   other_antibody_test_first_positive_date: null
@@ -731,6 +766,7 @@
   participant_withdrawal_reason: Withdrawn
   participant_withdrawal_reason_raw: Withdrawn
   participant_withdrawal_type: At School
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_reason_for_not_consenting: Houston, we have a problem.
   person_3_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
@@ -766,6 +802,7 @@
   physical_contact_under_18_years: Participant Would Not/Could Not Answer
   postcode: null
   reconsented_blood: 'True'
+  regex_derived_job_sector: null
   regularly_lateral_flow_testing: null
   samples_taken_datetime: null
   self_isolating: null
@@ -778,6 +815,7 @@
   smokes_hookah_shisha_pipes: 'No'
   smokes_pipe: 'No'
   smokes_vape_e_cigarettes: 'Yes'
+  social_care_area: null
   social_distance_contact_18_to_69_years: 6-10
   social_distance_contact_over_70_years: null
   social_distance_contact_under_18_years: 1-5
@@ -910,6 +948,8 @@
   work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   able_to_take_blood: null
   accepted_fingerprick_invite: 'No'
@@ -917,6 +957,8 @@
   agreed_to_additional_consent_visit: null
   any_household_members_over_2_years_and_not_present: 'Yes'
   approached_for_blood_samples: 'No'
+  at_school: false
+  at_university: false
   bad_email: null
   been_outside_uk: null
   been_outside_uk_last_country: VENEZUELA
@@ -986,6 +1028,8 @@
   have_email_address: 'Yes'
   have_landline_number: 'No'
   have_mobile_number: 'Yes'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '352206298026'
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: null
@@ -1006,6 +1050,9 @@
   infant_age_months_6: 4.0
   infant_age_months_7: null
   infant_age_months_8: 7.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: Living in your own home
   last_name: Cervantes
@@ -1016,6 +1063,7 @@
   no_fingerprick_blood_taken_reason: Bruising or pain after first attempt
   no_venous_blood_taken_reason: Two attempts made
   not_attended_reason: On Holiday
+  not_working: false
   ons_household_id: '352206298026'
   other_antibody_test: null
   other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
@@ -1035,6 +1083,7 @@
   participant_withdrawal_reason: null
   participant_withdrawal_reason_raw: null
   participant_withdrawal_type: Other
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
@@ -1070,6 +1119,8 @@
   physical_contact_under_18_years: 6-10
   postcode: null
   reconsented_blood: 'False'
+  regex_derived_job_sector:
+  - media
   regularly_lateral_flow_testing: 'Yes'
   samples_taken_datetime: null
   self_isolating: 'Yes'
@@ -1083,6 +1134,7 @@
   smokes_hookah_shisha_pipes: 'Yes'
   smokes_pipe: 'No'
   smokes_vape_e_cigarettes: 'No'
+  social_care_area: null
   social_distance_contact_18_to_69_years: 6-10
   social_distance_contact_over_70_years: 11-20
   social_distance_contact_under_18_years: 21 or more
@@ -1222,6 +1274,8 @@
     and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
     1m away
   able_to_take_blood: 'Yes'
@@ -1230,6 +1284,8 @@
   agreed_to_additional_consent_visit: 'No'
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: null
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: PAKISTAN
@@ -1299,6 +1355,8 @@
   have_email_address: 'Yes'
   have_landline_number: 'Yes'
   have_mobile_number: 'Yes'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '248046164260'
   hospital_last_28_days: 'No'
   hours_a_day_with_someone_else_at_home: null
@@ -1319,6 +1377,9 @@
   infant_age_months_6: 1.0
   infant_age_months_7: 6.0
   infant_age_months_8: 6.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: '2022-01-04 00:00:00.000000'
   last_covid_contact_type: null
   last_name: Meyers
@@ -1329,6 +1390,7 @@
   no_fingerprick_blood_taken_reason: No stock
   no_venous_blood_taken_reason: null
   not_attended_reason: Doctor Appointment
+  not_working: false
   ons_household_id: '248046164260'
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: null
@@ -1348,6 +1410,7 @@
   participant_withdrawal_reason: Withdrawn_no_future_linkage_or_use of samples
   participant_withdrawal_reason_raw: Withdrawn_no_future_linkage_or_use of samples
   participant_withdrawal_type: Doctor Appointment
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_2_reason_for_not_consenting: You're gonna need a bigger boat.
   person_3_reason_for_not_consenting: Those who refuse to learn from history are condemned
@@ -1383,6 +1446,7 @@
   physical_contact_under_18_years: Participant Would Not/Could Not Answer
   postcode: null
   reconsented_blood: 'True'
+  regex_derived_job_sector: null
   regularly_lateral_flow_testing: 'No'
   samples_taken_datetime: null
   self_isolating: null
@@ -1395,6 +1459,7 @@
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
+  social_care_area: null
   social_distance_contact_18_to_69_years: Participant Would Not/Could Not Answer
   social_distance_contact_over_70_years: '0'
   social_distance_contact_under_18_years: 21 or more
@@ -1532,6 +1597,8 @@
   work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: Difficult to maintain 2m, but
     can be 1m
   able_to_take_blood: null
@@ -1540,6 +1607,8 @@
   agreed_to_additional_consent_visit: null
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: JAMAICA
@@ -1608,6 +1677,8 @@
   have_email_address: 'Yes'
   have_landline_number: 'Yes'
   have_mobile_number: 'No'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '296617139656'
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: null
@@ -1628,6 +1699,9 @@
   infant_age_months_6: 2.0
   infant_age_months_7: 3.0
   infant_age_months_8: 4.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: Outside your home
   last_name: Brady
@@ -1638,6 +1712,7 @@
   no_fingerprick_blood_taken_reason: Two attempts made
   no_venous_blood_taken_reason: Other
   not_attended_reason: Living Away
+  not_working: false
   ons_household_id: '296617139656'
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-08 00:00:00.000000'
@@ -1657,6 +1732,7 @@
   participant_withdrawal_reason: Withdrawn_no_future_linkage
   participant_withdrawal_reason_raw: Withdrawn_no_future_linkage
   participant_withdrawal_type: Living Away - For Education
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Ask not what your country can do for you; ask
     what you can do for your country.
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
@@ -1694,6 +1770,8 @@
   physical_contact_under_18_years: null
   postcode: null
   reconsented_blood: 'True'
+  regex_derived_job_sector:
+  - teaching
   regularly_lateral_flow_testing: null
   samples_taken_datetime: null
   self_isolating: 'No'
@@ -1706,6 +1784,7 @@
   smokes_hookah_shisha_pipes: 'No'
   smokes_pipe: 'Yes'
   smokes_vape_e_cigarettes: 'Yes'
+  social_care_area: null
   social_distance_contact_18_to_69_years: null
   social_distance_contact_over_70_years: 6-10
   social_distance_contact_under_18_years: 21 or more
@@ -1845,6 +1924,8 @@
   work_status_v1: null
   work_status_v2: null
   work_status_v2_raw: null
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: Difficult to maintain 2m, but
     can be 1m
   able_to_take_blood: 'No'
@@ -1853,6 +1934,8 @@
   agreed_to_additional_consent_visit: 'Yes'
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'No'
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: NAMIBIA
@@ -1922,6 +2005,8 @@
   have_email_address: null
   have_landline_number: null
   have_mobile_number: 'Yes'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '217846198988'
   hospital_last_28_days: null
   hours_a_day_with_someone_else_at_home: null
@@ -1941,6 +2026,9 @@
   infant_age_months_6: 3.0
   infant_age_months_7: 6.0
   infant_age_months_8: 5.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: Outside your home
   last_name: Romero
@@ -1951,6 +2039,7 @@
   no_fingerprick_blood_taken_reason: Bruising or pain after first attempt
   no_venous_blood_taken_reason: Two attempts made
   not_attended_reason: Other
+  not_working: false
   ons_household_id: '217846198988'
   other_antibody_test: null
   other_antibody_test_first_positive_date: '2022-01-07 00:00:00.000000'
@@ -1970,6 +2059,7 @@
   participant_withdrawal_reason: Withdrawn_no_future_linkage
   participant_withdrawal_reason_raw: Withdrawn_no_future_linkage
   participant_withdrawal_type: Other
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
   person_2_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
@@ -2006,6 +2096,7 @@
   physical_contact_under_18_years: null
   postcode: SE3Z6OR
   reconsented_blood: 'False'
+  regex_derived_job_sector: null
   regularly_lateral_flow_testing: 'No'
   samples_taken_datetime: '2022-01-02 17:59:52.000000'
   self_isolating: 'No'
@@ -2020,6 +2111,7 @@
   smokes_hookah_shisha_pipes: null
   smokes_pipe: 'No'
   smokes_vape_e_cigarettes: 'No'
+  social_care_area: null
   social_distance_contact_18_to_69_years: 1-5
   social_distance_contact_over_70_years: null
   social_distance_contact_under_18_years: 11-20
@@ -2153,6 +2245,8 @@
   work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: null
   able_to_take_blood: 'Yes'
   accepted_fingerprick_invite: null
@@ -2160,6 +2254,8 @@
   agreed_to_additional_consent_visit: null
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'Yes'
+  at_school: false
+  at_university: false
   bad_email: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: null
@@ -2228,6 +2324,8 @@
   have_email_address: null
   have_landline_number: 'Yes'
   have_mobile_number: 'No'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '602276804025'
   hospital_last_28_days: 'No'
   hours_a_day_with_someone_else_at_home: null
@@ -2247,6 +2345,9 @@
   infant_age_months_6: null
   infant_age_months_7: 5.0
   infant_age_months_8: 1.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: Outside your home
   last_name: Day
@@ -2257,6 +2358,7 @@
   no_fingerprick_blood_taken_reason: Participant time constraints
   no_venous_blood_taken_reason: Participant felt unwell/fainted
   not_attended_reason: At School
+  not_working: false
   ons_household_id: '602276804025'
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: null
@@ -2276,6 +2378,7 @@
   participant_withdrawal_reason: Withdrawn_no_future_linkage_or_use of samples
   participant_withdrawal_reason_raw: Withdrawn_no_future_linkage_or_use of samples
   participant_withdrawal_type: On Holiday
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
@@ -2311,6 +2414,7 @@
   physical_contact_under_18_years: Participant Would Not/Could Not Answer
   postcode: null
   reconsented_blood: 'True'
+  regex_derived_job_sector: null
   regularly_lateral_flow_testing: 'Yes'
   samples_taken_datetime: '2022-01-03 12:02:32.000000'
   self_isolating: null
@@ -2323,6 +2427,7 @@
   smokes_hookah_shisha_pipes: 'No'
   smokes_pipe: 'No'
   smokes_vape_e_cigarettes: null
+  social_care_area: null
   social_distance_contact_18_to_69_years: 6-10
   social_distance_contact_over_70_years: 21 or more
   social_distance_contact_under_18_years: 1-5
@@ -2459,6 +2564,8 @@
   work_status_v1: 5y and older in full-time education
   work_status_v2: 4-5y and older at school/home-school
   work_status_v2_raw: 5y and older in full-time education
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: null
   able_to_take_blood: 'No'
   accepted_fingerprick_invite: null
@@ -2466,6 +2573,8 @@
   agreed_to_additional_consent_visit: null
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: null
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: UGANDA
@@ -2534,6 +2643,8 @@
   have_email_address: 'Yes'
   have_landline_number: 'No'
   have_mobile_number: 'No'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '352709577630'
   hospital_last_28_days: 'Yes'
   hours_a_day_with_someone_else_at_home: null
@@ -2553,6 +2664,9 @@
   infant_age_months_6: 4.0
   infant_age_months_7: 6.0
   infant_age_months_8: 2.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: Living in your own home
   last_name: Mosley
@@ -2563,6 +2677,7 @@
   no_fingerprick_blood_taken_reason: Participant time constraints
   no_venous_blood_taken_reason: Participant refused
   not_attended_reason: At Work
+  not_working: false
   ons_household_id: '352709577630'
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
@@ -2582,6 +2697,7 @@
   participant_withdrawal_reason: null
   participant_withdrawal_reason_raw: null
   participant_withdrawal_type: Phone not answered
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: They call me *Mister* Tibbs!
   person_2_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
@@ -2618,6 +2734,8 @@
   physical_contact_under_18_years: 21 or more
   postcode: UK0X5SF
   reconsented_blood: 'True'
+  regex_derived_job_sector:
+  - construction
   regularly_lateral_flow_testing: 'Yes'
   samples_taken_datetime: '2022-01-09 13:56:27.000000'
   self_isolating: null
@@ -2630,6 +2748,7 @@
   smokes_hookah_shisha_pipes: 'Yes'
   smokes_pipe: null
   smokes_vape_e_cigarettes: 'Yes'
+  social_care_area: null
   social_distance_contact_18_to_69_years: 1-5
   social_distance_contact_over_70_years: 6-10
   social_distance_contact_under_18_years: 1-5
@@ -2770,6 +2889,8 @@
     and currently working (include if on leave or sick leave for less than 4 weeks)
   work_status_v2_raw: Attending university (including if temporarily absent)Self-employed
     and currently working (include if on leave or sick leave for less than 4 weeks)
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - ability_to_socially_distance_at_work_or_education: Very difficult to be more than
     1m away
   able_to_take_blood: 'Yes'
@@ -2778,6 +2899,8 @@
   agreed_to_additional_consent_visit: 'No'
   any_household_members_over_2_years_and_not_present: 'Yes'
   approached_for_blood_samples: null
+  at_school: false
+  at_university: false
   bad_email: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: HONDURAS
@@ -2847,6 +2970,8 @@
   have_email_address: null
   have_landline_number: 'No'
   have_mobile_number: 'No'
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '883187696082'
   hospital_last_28_days: 'No'
   hours_a_day_with_someone_else_at_home: null
@@ -2868,6 +2993,9 @@
   infant_age_months_6: 8.0
   infant_age_months_7: 7.0
   infant_age_months_8: null
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: null
   last_covid_contact_type: null
   last_name: Bolton
@@ -2878,6 +3006,7 @@
   no_fingerprick_blood_taken_reason: Other
   no_venous_blood_taken_reason: Non-contact visit. Household self-isolating
   not_attended_reason: Phone not answered
+  not_working: false
   ons_household_id: '883187696082'
   other_antibody_test: 'No'
   other_antibody_test_first_positive_date: null
@@ -2897,6 +3026,7 @@
   participant_withdrawal_reason: Withdrawn_no_future_linkage
   participant_withdrawal_reason_raw: Withdrawn_no_future_linkage
   participant_withdrawal_type: At Work
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_2_reason_for_not_consenting: You're gonna need a bigger boat.
   person_3_reason_for_not_consenting: Mama always said life was like a box of chocolates.
@@ -2932,6 +3062,8 @@
   physical_contact_under_18_years: 21 or more
   postcode: LV1J6SR
   reconsented_blood: 'False'
+  regex_derived_job_sector:
+  - construction
   regularly_lateral_flow_testing: 'Yes'
   samples_taken_datetime: '2022-01-07 13:21:56.000000'
   self_isolating: 'No'
@@ -2944,6 +3076,7 @@
   smokes_hookah_shisha_pipes: 'No'
   smokes_pipe: 'No'
   smokes_vape_e_cigarettes: 'Yes'
+  social_care_area: null
   social_distance_contact_18_to_69_years: null
   social_distance_contact_over_70_years: 11-20
   social_distance_contact_under_18_years: '0'
@@ -3081,3 +3214,5 @@
   work_status_v2: Employed and currently working
   work_status_v2_raw: Employed and currently working (including if on leave or sick
     leave for less than 4 weeks)
+  works_healthcare: 'No'
+  works_social_care: 'No'
