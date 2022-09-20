@@ -7,6 +7,7 @@ def test_assign_column_value_from_multiple_column_map(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             ("No", None, "No"),
+            ("Yes", None, None),
             ("No", "Primary", "Yes, primary care, non-patient-facing"),
             ("Yes", "Other", "Yes, other healthcare, patient-facing"),
         ],
