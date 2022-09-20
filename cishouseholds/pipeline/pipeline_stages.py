@@ -42,6 +42,7 @@ from cishouseholds.pipeline.high_level_transformations import derive_overall_vac
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
+from cishouseholds.pipeline.high_level_transformations import reclassify_work_variables
 from cishouseholds.pipeline.high_level_transformations import transform_cis_soc_data
 from cishouseholds.pipeline.high_level_transformations import transform_from_lookups
 from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
@@ -772,7 +773,7 @@ def geography_and_imputation_dependent_processing(
         school_year_column="school_year",
         column_name_to_assign="age_group_school_year",
     )
-
+    df = reclassify_work_variables(df, spark_session=get_or_create_spark_session(), drop_original_variables=False)
     df = create_formatted_datetime_string_columns(df)
     update_table(df, output_table_name, write_mode="overwrite")
 
