@@ -2643,7 +2643,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
 
     df = assign_column_value_from_multiple_column_map(
         df,
-        "health_care_patient_facing",
+        "health_care_patient_facing_derived",
         [
             ["No", ["No", None]],
             ["Yes, primary care, patient-facing", ["Yes", "Primary"]],
