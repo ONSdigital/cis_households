@@ -17,6 +17,21 @@ def test_assign_multigeneration(spark_session):
             (2, "2020-01-22", 5, "2009-01-22", "England"),
             (3, "2021-03-11", 1, "2006-02-23", "Endland"),  # test duplicate participant id in different house
             (3, "2021-01-05", 6, "1989-03-12", "England"),
+            (99, "2020-09-26", 270, "1966-05-04", "England"),
+            (99, "2020-09-26", 410, "2007-08-15", "England"),
+            (99, "2020-09-26", 543, "2007-08-15", "England"),
+            (99, "2020-09-26", 609, "2006-06-22", "England"),  # Unedited into hh_id 99
+            (99, "2020-09-26", 770, "1968-03-20", "England"),
+            (99, "2020-11-21", 270, "1966-05-04", "England"),
+            (99, "2020-11-21", 410, "2007-08-15", "England"),
+            (99, "2020-11-21", 543, "2007-08-15", "England"),
+            (99, "2020-11-21", 609, "2006-06-22", "England"),  # Unedited into hh_id 99
+            (99, "2020-11-21", 770, "1968-03-20", "England"),
+            (20, "2022-07-06", 385, "2008-09-06", "England"),
+            (20, "2022-07-06", 470, "1973-02-05", "England"),
+            (99, "2022-07-06", 609, "2006-06-22", "England"),  # Manually edited into hh_id 99 from 20
+            (20, "2022-07-06", 494, "1970-03-21", "England"),
+            (20, "2022-08-30", 609, "2006-06-22", "England"),  # Not manually edited into hh_id 99 from 20
         ],
         schema="hh_id integer, visit_date string, id integer, dob string, country string",
     )
@@ -33,6 +48,9 @@ def test_assign_multigeneration(spark_session):
         ],
         schema="id integer, visit_date string, hh_id integer, dob string, country string, age_at_visit integer, school_year integer, multigen integer",
     )
+    import pdb
+
+    pdb.set_trace()
     output_df = assign_multigenerational(
         df=input_df,
         column_name_to_assign="multigen",
