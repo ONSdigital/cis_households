@@ -1122,6 +1122,7 @@ category_maps = {
             "Submitted": 3,
             "Archived": 4,
             "Locked": 5,
+            "Auto Completed": 11,
         },
         "swab_not_taken_reason": {
             "I am near the end of my testing window and my swab test kit has not arrived": 1,
@@ -2087,19 +2088,27 @@ survey_response_cisd_cast_to_double = [
 ]
 soc_regex_map = {
     "title": "work_main_job_title",
-    "(role)|(responsibilities)": "work_main_job_role",
-    "(code)|(SOC)": "standard_occupational_classification_code",
+    "role|responsibilities": "work_main_job_role",
+    "code|SOC": "standard_occupational_classification_code",
 }
 
 _welsh_yes_no_categories = {
     "Na": "No",
     "Nac ydw": "No",
+    "Nac Ydw": "No",
     "Nac ydy": "No",
+    "Nac Ydy": "No",
     "Nac oes": "No",
+    "Nac Oes": "No",
+    "Nag oes": "No",
+    "Nag Oes": "No",
     "Nac oedd": "No",
+    "Nac Oedd": "No",
     "Na hoffwn": "No",
+    "Na Hoffwn": "No",
     "Naddo": "No",
     "Na fyddwn": "No",
+    "le": "Yes",
     "Ie": "Yes",
     "Ydw": "Yes",
     "Ydy": "Yes",
@@ -2109,6 +2118,7 @@ _welsh_yes_no_categories = {
     "Do": "Yes",
     "Byddwn": "Yes",
     "Byddai'n well gen i beidio â dweud": "Prefer not to say",
+    "Byddai`n well gen i beidio â dweud": "Prefer not to say",
     "Ddim yn gwybod": "Don't know",
 }
 
@@ -2118,6 +2128,9 @@ _welsh_contact_type_by_age_group_categories = {
     "6 i 10": "6 to 10",
     "11 i 20": "11 to 20",
     "21 neu fwy": "21 or more",
+    "Ddim yn gwybod": "Don't know",
+    "Byddai'n well gen i beidio â dweud": "Prefer not to say",
+    "Byddain well gen i beidio â dweud": "Prefer not to say",
 }
 
 _welsh_number_of_types_categories = {
@@ -2125,6 +2138,7 @@ _welsh_number_of_types_categories = {
     "7 gwaith neu fwy": "7 times or more",
     "Ddim yn gwybod": "Don't know",
     "Byddai'n well gen i beidio â dweud": "Prefer not to say",
+    "Byddain well gen i beidio â dweud": "Prefer not to say",
 }
 
 _welsh_vaccination_type_categories = {
@@ -2137,26 +2151,34 @@ _welsh_vaccination_type_categories = {
 _welsh_lot_little_not_categories = {
     "Ydy  llawer": "Yes a lot",  # TODO Double space in the IQVIA spec, check when we receive extract
     "Ydy llawer": "Yes a lot",
+    "Ydy - llawer": "Yes a lot",
     "Ydy, llawer": "Yes a lot",
     "Ydy  ychydig": "Yes a little",  # TODO Double space in the IQVIA spec, check when we receive extract
     "Ydy ychydig": "Yes a little",
+    "Ydy - ychydig": "Yes a little",
     "Ydy, ychydig": "Yes a little",
     "Ddim o gwbl": "Not at all",
 }
 
 _welsh_live_with_categories = {
     "Rhywun rwy'n byw gydag ef": "Someone I live with",
+    "Rhywun sy'n byw gyda fi": "Someone I live with",
     "Rhywun nad wyf yn byw gydag ef": "Someone I do not live with",
+    "Rhywun sy ddim yn byw gyda fi": "Someone I do not live with",
 }
 
 _welsh_face_covering_categories = {
     "Nid wyf yn mynd i fy ngweithle na fy man addysg": "I am not going to my place of work or education",
     "Nid wyf yn mynd i fannau cyhoeddus caeedig eraill nac yn defnyddio trafnidiaeth gyhoeddus": "I am not going to other enclosed public spaces or using public transport",  # noqa: E501
     "Ydw, bob amser": "Yes always",
+    "Ydw bob amser": "Yes always",
     "Ydw, weithiau": "Yes sometimes",
+    "Ydw weithiau": "Yes sometimes",
     "Byth": "Never",
     "Rwy'n gorchuddio fy wyneb am resymau eraill - er enghraifft am resymau crefyddol neu ddiwylliannol": "I cover my face for other reasons - for example for religious or cultural reasons",  # noqa: E501
+    "Rwy`n gorchuddio fy wyneb am resymau eraill - er enghraifft am resymau crefyddol neu ddiwylliannol": "I cover my face for other reasons - for example for religious or cultural reasons",  # noqa: E501
     "Byddai'n well gen i beidio â dweud": "Prefer not to say",
+    "Byddain well gen i beidio â dweud": "Prefer not to say",
 }
 
 _welsh_swab_sample_not_taken_categories = {
@@ -2164,6 +2186,7 @@ _welsh_swab_sample_not_taken_categories = {
     "Nid oeddwin i am ei chymryd y mis hwn": "I did not want to take it this month",
     "Roedd y pecyn prawf swab wedi'i ddifrodi": "The swab test kit arrived damaged",
     "Roedd darnau ar goll o'r pecyn prawf swab": "The swab test kit arrived with parts missing",
+    "Roedd darnau ar goll o`r pecyn prawf swab": "The swab test kit arrived with parts missing",
     "Roedd y pecyn prawf swab wedi'i ddifrodi ac roedd darnau ar goll": "The swab test kit arrived both damaged and with parts missing",  # noqa: E501
     "Mae fy nghyfnod profi bron â dod i ben ac nid yw fy mhecyn prawf swab wedi cyrraedd": "I am near the end of my testing window and my swab test kit has not arrived",  # noqa: E501
 }
@@ -2173,9 +2196,11 @@ _welsh_swab_kit_missing_categories = {
     "Ffon swab": "Swab stick",
     "Bag bioberyglon y gellir ei ailselio â phad amsugno ynddo": "Re-sealable biohazard bag with absorbent pad",
     "Copi o'ch cod bar ar gyfer y swab": "Copy of your swab barcode",
+    "Copi o`ch cod bar ar gyfer y swab": "Copy of your swab barcode",
     "Blwch sampl": "Sample box",
     "Bag i ddychwelyd y sampl â label parod arno": "Sample return bag with a return label on",
     "Arall, nodwch": "Other please specify",
+    "Arall nodwch": "Other please specify",
 }
 
 _welsh_blood_sample_not_taken_categories = {
@@ -2184,6 +2209,7 @@ _welsh_blood_sample_not_taken_categories = {
     "Penderfynais beidio â'i chymryd y mis hwn": "I decided not to take it this month",
     "Roedd y pecyn prawf gwaed wedi'i ddifrodi": "The blood test kit arrived damaged",
     "Roedd darnau ar goll o'r pecyn prawf gwaed": "The blood test kit arrived with parts missing",
+    "Roedd darnau ar goll o`r pecyn prawf gwaed": "The blood test kit arrived with parts missing",
     "Roedd y pecyn prawf gwaed wedi'i ddifrodi ac roedd darnau ar goll": "The blood test kit arrived both damaged and with parts missing",  # noqa: E501
     "Mae fy nghyfnod profi bron â dod i ben ac nid yw fy mhecyn prawf gwaed wedi cyrraedd": "I am near the end of my testing window and my blood test kit has not arrived",  # noqa: E501
 }
@@ -2200,6 +2226,7 @@ _welsh_blood_kit_missing_categories = {
     "Blwch sampl": "Sample box",
     "Bag i ddychwelyd y sampl â label parod arno": "Sample return bag with a return label on",
     "Arall, nodwch": "Other please specify",
+    "Arall nodwch": "Other please specify",
 }
 
 _welsh_blood_not_taken_reason_categories = {
@@ -2219,6 +2246,7 @@ _welsh_work_status_digital_categories = {
 
 _welsh_work_status_employment_categories = {
     "Gweithio ar hyn o bryd. Mae hyn yn cynnwys os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall am lai na 4 wythnos": "Currently working. This includes if you are on sick or other leave for less than 4 weeks",  # noqa: E501
+    "Gweithio ar hyn o bryd. Mae hyn yn cynnwys os ydych chi`n absennol oherwydd salwch neu`n absennol am reswm arall am lai na 4 wythnos": "Currently working. This includes if you are on sick or other leave for less than 4 weeks",  # noqa: E501
     "Ddim yn gweithio ar hyn o bryd - er enghraifft os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall fel mamolaeth neu dadolaeth am fwy na 4 wythnos": "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
 }
 
@@ -2258,6 +2286,7 @@ _welsh_work_sector_categories = {
 _welsh_work_location_categories = {
     "Gartref, gan olygu ar yr un safle neu yn yr un adeilad â'ch cartref": "From home meaning in the same grounds or building as your home",  # noqa: E501
     "Yn rhywle arall, gan olygu nid yn eich cartref": "Somewhere else meaning not at your home",
+    "Yn rhywle arall - gan olygu nid yn eich cartref": "Somewhere else meaning not at your home",
     "Gartref ac yn rhywle arall": "Both from home and somewhere else",
 }
 
@@ -2276,6 +2305,7 @@ _welsh_transport_to_work_education_categories = {
 _welsh_ability_to_socially_distance_at_work_or_education_categories = {
     "Hawdd cadw 2 fetr ar wahân. Nid yw'n broblem cadw draw cymaint â hyn oddi wrth bobl eraill": "Easy to maintain 2 metres apart. It is not a problem to stay this far away from other people",  # noqa: E501
     "Cymharol hawdd cadw 2 fetr ar wahân. Gallwch chi fod 2 fetr i ffwrdd oddi wrth bobl eraill y rhan fwyaf o'r amser": "Relatively easy to maintain 2 metres apart. Most of the time you can be 2 meters away from other people",  # noqa: E501
+    "Cymharol hawdd cadw 2 fetr ar wahân. Gallwch chi fod 2 fetr i ffwrdd oddi wrth bobl eraill y rhan fwyaf or amser": "Relatively easy to maintain 2 metres apart. Most of the time you can be 2 meters away from other people",  # noqa: E501
     "Anodd cadw 2 fetr ar wahân. Ond gallwch chi fod o leiaf 1 metr i ffwrdd oddi wrth bobl eraill fel arfer": "Difficult to maintain 2 metres apart. But you can usually be at least 1 metre away from other people",  # noqa: E501
     "Anodd iawn bod mwy nag 1 metr i ffwrdd. Mae eich gwaith yn golygu eich bod chi mewn cysylltiad agos ag eraill yn rheolaidd": "Very difficult to be more than 1 metre away. Your work means you are in close contact with others on a regular basis",  # noqa: E501
 }
@@ -2293,6 +2323,7 @@ _welsh_currently_smokes_or_vapes_description_categories = {
     "Pib/cetyn": "Pipe",
     "Fêp neu E-sigaréts": "Vape or E-cigarettes",
     "Hookah neu bibau shisha": "Hookah or shisha pipes",
+    "Byddai`n well gen i beidio â dweud": "Prefer not to say",
 }
 
 _welsh_cis_covid_vaccine_number_of_doses_categories = {
@@ -2307,7 +2338,9 @@ _welsh_cis_covid_vaccine_number_of_doses_categories = {
 
 _welsh_other_covid_infection_test_result_categories = {
     "Un neu fwy o brofion yn bositif": "One or more tests were positive",
+    "Un neu fwy o brofion yn bositif am wrthgyrff": "One or more tests were positive for antibodies",
     "Un neu fwy o brofion yn negatif a dim un yn bositif": "One or more tests were negative and none were positive",
+    "Un neu fwy o brofion yn negatif am wrthgyrff a dim un yn bositif": "One or more tests were negative for antibodies and none were positive",
     "Pob prawf wedi methu": "All tests failed",
     "Aros am yr holl ganlyniadau": "Waiting for all results",
 }

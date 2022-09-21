@@ -1,4 +1,6 @@
 - any_household_members_over_2_years_and_not_present: 'Yes'
+  at_school: false
+  at_university: false
   bad_email: null
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
@@ -23,6 +25,8 @@
   ethnicity: Any other ethnic group
   file_date: null
   full_name: Crystle Osborn
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '212633229661'
   household_been_care_home_last_28_days: 'No'
   household_been_hospital_last_28_days: 'Yes'
@@ -40,11 +44,15 @@
   infant_age_months_6: 1.0
   infant_age_months_7: 4.0
   infant_age_months_8: null
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_covid_contact_type: Elementary, my dear Watson.
   last_suspected_covid_contact_date: '2022-01-08 00:00:00.000000'
   last_suspected_covid_contact_type: Elementary, my dear Watson.
   no_email_address: 1.0
+  not_working: false
   ons_household_id: '212633229661'
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_results: 'Yes'
@@ -52,6 +60,7 @@
   participant_visit_status: Re-scheduled
   participant_withdrawal_reason: No longer wants to take part
   participant_withdrawal_reason_raw: No longer wants to take part
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Houston, we have a problem.
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
@@ -85,10 +94,12 @@
   person_not_present_age_8: 62.0
   postcode: null
   received_shielding_letter: 'Yes'
+  regex_derived_job_sector: null
   samples_taken_datetime: '2022-01-09 08:41:07.000000'
   self_isolating: null
   sex: Female
   sex_raw: Female
+  social_care_area: null
   street: Ballydoonan
   study_cohort: Those who refuse to learn from history are condemned to repeat it.
   suffix: B
@@ -153,7 +164,11 @@
   work_social_care: 'No'
   work_social_care_raw: 'No'
   work_status_v0: Its main implementation is the Glasgow Haskell Compiler.
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - any_household_members_over_2_years_and_not_present: null
+  at_school: false
+  at_university: false
   bad_email: false
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
@@ -178,6 +193,8 @@
   ethnicity: Any other Mixed background
   file_date: null
   full_name: Jae Cervantes
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '558190156218'
   household_been_care_home_last_28_days: 'Yes'
   household_been_hospital_last_28_days: 'No'
@@ -196,12 +213,16 @@
   infant_age_months_6: 3.0
   infant_age_months_7: 2.0
   infant_age_months_8: 3.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: '2022-01-09 00:00:00.000000'
   last_covid_contact_type: Those who refuse to learn from history are condemned to
     repeat it.
   last_suspected_covid_contact_date: '2022-01-06 00:00:00.000000'
   last_suspected_covid_contact_type: I'm gonna make him an offer he can't refuse.
   no_email_address: 1.0
+  not_working: false
   ons_household_id: '558190156218'
   other_covid_infection_test: null
   other_covid_infection_test_results: null
@@ -209,6 +230,7 @@
   participant_visit_status: Patient did not attend
   participant_withdrawal_reason: Moving location
   participant_withdrawal_reason_raw: Moving location
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Elementary, my dear Watson.
   person_2_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
@@ -239,10 +261,13 @@
   person_not_present_age_8: 43.0
   postcode: null
   received_shielding_letter: null
+  regex_derived_job_sector:
+  - IT
   samples_taken_datetime: '2022-01-06 21:42:30.000000'
   self_isolating: null
   sex: Female
   sex_raw: Female
+  social_care_area: null
   street: Benwee
   study_cohort: Houston, we have a problem.
   suffix: A
@@ -309,7 +334,11 @@
   work_social_care: 'Yes'
   work_social_care_raw: 'Yes'
   work_status_v0: Where are my pants?
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - any_household_members_over_2_years_and_not_present: 'Yes'
+  at_school: false
+  at_university: false
   bad_email: null
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
@@ -334,6 +363,8 @@
   ethnicity: Mixed-White & Black African
   file_date: null
   full_name: Argentina Brady
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '167403959807'
   household_been_care_home_last_28_days: 'Yes'
   household_been_hospital_last_28_days: null
@@ -350,12 +381,16 @@
   infant_age_months_6: 1.0
   infant_age_months_7: null
   infant_age_months_8: 2.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: '2022-01-09 00:00:00.000000'
   last_covid_contact_type: Mama always said life was like a box of chocolates. You
     never know what you're gonna get.
   last_suspected_covid_contact_date: '2022-01-06 00:00:00.000000'
   last_suspected_covid_contact_type: Here's looking at you, kid.
   no_email_address: 1.0
+  not_working: false
   ons_household_id: '167403959807'
   other_covid_infection_test: null
   other_covid_infection_test_results: null
@@ -363,6 +398,7 @@
   participant_visit_status: Scheduled
   participant_withdrawal_reason: Too many visits
   participant_withdrawal_reason_raw: Too many visits
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Here's looking at you, kid.
   person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
@@ -395,10 +431,13 @@
   person_not_present_age_8: null
   postcode: TE4H2TC
   received_shielding_letter: null
+  regex_derived_job_sector:
+  - media
   samples_taken_datetime: '2022-01-09 17:18:11.000000'
   self_isolating: 'No'
   sex: null
   sex_raw: null
+  social_care_area: null
   street: Invergourie
   study_cohort: Houston, we have a problem.
   suffix: C
@@ -468,7 +507,11 @@
   work_social_care_raw: 'Yes'
   work_status_v0: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - any_household_members_over_2_years_and_not_present: null
+  at_school: false
+  at_university: false
   bad_email: false
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: null
@@ -493,6 +536,8 @@
   ethnicity: Asian or Asian British-Chinese
   file_date: null
   full_name: Barton Ramos
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '846198988073'
   household_been_care_home_last_28_days: 'No'
   household_been_hospital_last_28_days: null
@@ -510,6 +555,9 @@
   infant_age_months_6: 6.0
   infant_age_months_7: 1.0
   infant_age_months_8: 6.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: '2022-01-08 00:00:00.000000'
   last_covid_contact_type: One morning I shot an elephant in my pajamas. How he got
     in my pajamas, I don't know.
@@ -517,6 +565,7 @@
   last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   no_email_address: 1.0
+  not_working: false
   ons_household_id: '846198988073'
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_results: 'No'
@@ -524,6 +573,7 @@
   participant_visit_status: Scheduled
   participant_withdrawal_reason: No longer wants to take part
   participant_withdrawal_reason_raw: No longer wants to take part
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
   person_2_reason_for_not_consenting: Ask not what your country can do for you; ask
@@ -558,10 +608,12 @@
   person_not_present_age_8: 71.0
   postcode: null
   received_shielding_letter: 'Yes'
+  regex_derived_job_sector: null
   samples_taken_datetime: '2022-01-04 22:05:02.000000'
   self_isolating: 'No'
   sex: Male
   sex_raw: Male
+  social_care_area: null
   street: null
   study_cohort: You're gonna need a bigger boat.
   suffix: L
@@ -628,7 +680,11 @@
   work_social_care: 'No'
   work_social_care_raw: 'No'
   work_status_v0: Ports are used to communicate with the external world.
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - any_household_members_over_2_years_and_not_present: null
+  at_school: false
+  at_university: false
   bad_email: false
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
@@ -653,6 +709,8 @@
   ethnicity: Any other Black background
   file_date: null
   full_name: Annika Reilly
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '602276804025'
   household_been_care_home_last_28_days: 'No'
   household_been_hospital_last_28_days: 'No'
@@ -670,6 +728,9 @@
   infant_age_months_6: null
   infant_age_months_7: 5.0
   infant_age_months_8: 1.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_covid_contact_type: '"You''ve got to ask yourself one question: ""Do I feel
     lucky?"" Well, do ya? Punk!"'
@@ -677,6 +738,7 @@
   last_suspected_covid_contact_type: A census taker once tried to test me. I ate his
     liver with some fava beans and a nice Chianti.
   no_email_address: 1.0
+  not_working: false
   ons_household_id: '602276804025'
   other_covid_infection_test: 'No'
   other_covid_infection_test_results: null
@@ -684,6 +746,7 @@
   participant_visit_status: Scheduled
   participant_withdrawal_reason: No longer wants to take part
   participant_withdrawal_reason_raw: No longer wants to take part
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   person_2_reason_for_not_consenting: Mama always said life was like a box of chocolates.
@@ -716,10 +779,13 @@
   person_not_present_age_8: 55.0
   postcode: null
   received_shielding_letter: 'No'
+  regex_derived_job_sector:
+  - IT
   samples_taken_datetime: '2022-01-09 10:19:02.000000'
   self_isolating: null
   sex: null
   sex_raw: null
+  social_care_area: null
   street: null
   study_cohort: Here's looking at you, kid.
   suffix: C
@@ -785,7 +851,11 @@
   work_social_care_raw: 'Yes'
   work_status_v0: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - any_household_members_over_2_years_and_not_present: null
+  at_school: false
+  at_university: false
   bad_email: false
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
@@ -810,6 +880,8 @@
   ethnicity: Any other Black background
   file_date: null
   full_name: Alan Robbins
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '769043821442'
   household_been_care_home_last_28_days: 'No'
   household_been_hospital_last_28_days: 'No'
@@ -827,12 +899,16 @@
   infant_age_months_6: 2.0
   infant_age_months_7: 7.0
   infant_age_months_8: 8.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_covid_contact_type: They call me *Mister* Tibbs!
   last_suspected_covid_contact_date: '2022-01-07 00:00:00.000000'
   last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   no_email_address: 1.0
+  not_working: false
   ons_household_id: '769043821442'
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_results: 'Yes'
@@ -840,6 +916,7 @@
   participant_visit_status: Completed
   participant_withdrawal_reason: null
   participant_withdrawal_reason_raw: null
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
     ape.
   person_2_reason_for_not_consenting: Mr. Gorbachev, open this gate! Mr. Gorbachev,
@@ -874,10 +951,12 @@
   person_not_present_age_8: 30.0
   postcode: null
   received_shielding_letter: 'Yes'
+  regex_derived_job_sector: null
   samples_taken_datetime: '2022-01-05 19:49:21.000000'
   self_isolating: 'No'
   sex: Female
   sex_raw: Female
+  social_care_area: null
   street: null
   study_cohort: Frankly, my dear, I don't give a damn.
   suffix: B
@@ -942,7 +1021,11 @@
   work_social_care: 'Yes'
   work_social_care_raw: 'Yes'
   work_status_v0: Where are my pants?
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - any_household_members_over_2_years_and_not_present: null
+  at_school: false
+  at_university: false
   bad_email: null
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
@@ -967,6 +1050,8 @@
   ethnicity: Mixed-White & Black African
   file_date: null
   full_name: Caron Barton
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '105638762102'
   household_been_care_home_last_28_days: null
   household_been_hospital_last_28_days: 'No'
@@ -984,12 +1069,16 @@
   infant_age_months_6: null
   infant_age_months_7: 5.0
   infant_age_months_8: 2.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_covid_contact_type: Frankly, my dear, I don't give a damn.
   last_suspected_covid_contact_date: '2022-01-07 00:00:00.000000'
   last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   no_email_address: 1.0
+  not_working: false
   ons_household_id: '105638762102'
   other_covid_infection_test: 'No'
   other_covid_infection_test_results: null
@@ -997,6 +1086,7 @@
   participant_visit_status: Completed
   participant_withdrawal_reason: Moving location
   participant_withdrawal_reason_raw: Moving location
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Let them eat cake.
   person_2_reason_for_not_consenting: Here's looking at you, kid.
   person_3_reason_for_not_consenting: Mama always said life was like a box of chocolates.
@@ -1031,10 +1121,12 @@
   person_not_present_age_8: null
   postcode: NC0C6UK
   received_shielding_letter: 'Yes'
+  regex_derived_job_sector: null
   samples_taken_datetime: '2022-01-03 10:12:51.000000'
   self_isolating: 'No'
   sex: Male
   sex_raw: Male
+  social_care_area: null
   street: Drumagrove
   study_cohort: Elementary, my dear Watson.
   suffix: O
@@ -1101,7 +1193,11 @@
   work_social_care_raw: 'Yes'
   work_status_v0: Haskell is a standardized, general-purpose purely functional programming
     language, with non-strict semantics and strong static typing.
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - any_household_members_over_2_years_and_not_present: 'Yes'
+  at_school: false
+  at_university: false
   bad_email: false
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: null
@@ -1126,6 +1222,8 @@
   ethnicity: Mixed-White & Black Caribbean
   file_date: null
   full_name: Clemmie Harper
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '826911152672'
   household_been_care_home_last_28_days: null
   household_been_hospital_last_28_days: 'No'
@@ -1143,12 +1241,16 @@
   infant_age_months_6: 5.0
   infant_age_months_7: 0.0
   infant_age_months_8: 2.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: '2022-01-01 00:00:00.000000'
   last_covid_contact_type: Houston, we have a problem.
   last_suspected_covid_contact_date: '2022-01-01 00:00:00.000000'
   last_suspected_covid_contact_type: Ask not what your country can do for you; ask
     what you can do for your country.
   no_email_address: 0.0
+  not_working: false
   ons_household_id: '826911152672'
   other_covid_infection_test: 'No'
   other_covid_infection_test_results: null
@@ -1156,6 +1258,7 @@
   participant_visit_status: Cancelled
   participant_withdrawal_reason: Bad experience with tester / survey
   participant_withdrawal_reason_raw: Bad experience with tester / survey
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: Houston, we have a problem.
   person_2_reason_for_not_consenting: '"You''ve got to ask yourself one question:
     ""Do I feel lucky?"" Well, do ya? Punk!"'
@@ -1188,10 +1291,12 @@
   person_not_present_age_8: 63.0
   postcode: null
   received_shielding_letter: 'No'
+  regex_derived_job_sector: null
   samples_taken_datetime: '2022-01-04 13:06:30.000000'
   self_isolating: 'No'
   sex: Female
   sex_raw: null
+  social_care_area: null
   street: null
   study_cohort: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear down this wall!
   suffix: U
@@ -1258,7 +1363,11 @@
   work_social_care: null
   work_social_care_raw: null
   work_status_v0: Any element of a tuple can be accessed in constant time.
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - any_household_members_over_2_years_and_not_present: null
+  at_school: false
+  at_university: false
   bad_email: false
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
@@ -1283,6 +1392,8 @@
   ethnicity: White-British
   file_date: null
   full_name: Honey Porter
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '407714528425'
   household_been_care_home_last_28_days: null
   household_been_hospital_last_28_days: null
@@ -1299,6 +1410,9 @@
   infant_age_months_6: 5.0
   infant_age_months_7: 2.0
   infant_age_months_8: 8.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: '2022-01-07 00:00:00.000000'
   last_covid_contact_type: Mama always said life was like a box of chocolates. You
     never know what you're gonna get.
@@ -1306,6 +1420,7 @@
   last_suspected_covid_contact_type: Get your stinking paws off me, you damned dirty
     ape.
   no_email_address: 0.0
+  not_working: false
   ons_household_id: '407714528425'
   other_covid_infection_test: 'No'
   other_covid_infection_test_results: 'Yes'
@@ -1313,6 +1428,7 @@
   participant_visit_status: Scheduled
   participant_withdrawal_reason: No longer wants to take part
   participant_withdrawal_reason_raw: No longer wants to take part
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: You're gonna need a bigger boat.
   person_2_reason_for_not_consenting: Elementary, my dear Watson.
   person_3_reason_for_not_consenting: Elementary, my dear Watson.
@@ -1343,10 +1459,12 @@
   person_not_present_age_8: 6.0
   postcode: null
   received_shielding_letter: 'No'
+  regex_derived_job_sector: null
   samples_taken_datetime: '2022-01-01 23:07:11.000000'
   self_isolating: null
   sex: Prefer not to say
   sex_raw: null
+  social_care_area: null
   street: null
   study_cohort: Houston, we have a problem.
   suffix: M
@@ -1412,7 +1530,11 @@
   work_social_care: 'Yes'
   work_social_care_raw: 'Yes'
   work_status_v0: Any element of a tuple can be accessed in constant time.
+  works_healthcare: 'No'
+  works_social_care: 'No'
 - any_household_members_over_2_years_and_not_present: null
+  at_school: false
+  at_university: false
   bad_email: null
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: null
@@ -1437,6 +1559,8 @@
   ethnicity: Asian or Asian British-Indian
   file_date: null
   full_name: Carlos Martin
+  health_care_patient_facing_derived: 'No'
+  healthcare_area: null
   hh_id: '736535270957'
   household_been_care_home_last_28_days: 'No'
   household_been_hospital_last_28_days: 'No'
@@ -1455,6 +1579,9 @@
   infant_age_months_6: 6.0
   infant_age_months_7: 5.0
   infant_age_months_8: 4.0
+  is_patient_facing: 'No'
+  is_self_employed: false
+  is_working_from_home: false
   last_covid_contact_date: '2022-01-05 00:00:00.000000'
   last_covid_contact_type: A census taker once tried to test me. I ate his liver with
     some fava beans and a nice Chianti.
@@ -1462,6 +1589,7 @@
   last_suspected_covid_contact_type: One morning I shot an elephant in my pajamas.
     How he got in my pajamas, I don't know.
   no_email_address: 0.0
+  not_working: false
   ons_household_id: '736535270957'
   other_covid_infection_test: null
   other_covid_infection_test_results: null
@@ -1469,6 +1597,7 @@
   participant_visit_status: Completed
   participant_withdrawal_reason: null
   participant_withdrawal_reason_raw: null
+  patient_facing_over_20_percent: 0.0
   person_1_reason_for_not_consenting: The only thing we have to fear is fear itself.
   person_2_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
   person_3_reason_for_not_consenting: They call me *Mister* Tibbs!
@@ -1499,10 +1628,13 @@
   person_not_present_age_8: 89.0
   postcode: null
   received_shielding_letter: 'No'
+  regex_derived_job_sector:
+  - construction
   samples_taken_datetime: '2022-01-08 09:34:37.000000'
   self_isolating: 'Yes'
   sex: Male
   sex_raw: null
+  social_care_area: null
   street: Glendon
   study_cohort: Mama always said life was like a box of chocolates. You never know
     what you're gonna get.
@@ -1573,3 +1705,5 @@
   work_social_care_raw: 'Yes'
   work_status_v0: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
+  works_healthcare: 'No'
+  works_social_care: 'No'
