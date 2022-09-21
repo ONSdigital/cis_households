@@ -993,16 +993,37 @@ def survey_edit_auto_complete(
 
 def replace_sample_barcode(
     df: DataFrame,
-    column_name_to_update: str,
+    swab_barcode_combined: str,
+    blood_barcode_combined: str,
+    swab_barcode: str,
+    blood_barcode: str,
+    dataset_version: int,
+    swab_barcode_correct: str,
+    blood_barcode_correct: str,
+    swab_barcode_entered: str,
+    blood_barcode_entered: str,
 ):
+
     """
     For CIS Digital responses, the derived values swab_sample_barcode_combined and blood_sample_barcode_combined
     should replace the value in swab_sample_barcode and blood_sample_barcode respectively, as this takes the user
     entered one over the auto-allocated one if applicable.
     """
 
-    df = df.withColumn(
-        column_name_to_update,
-        F.when(),
-    )
-    return df
+    if "swab_sample_barcode_user_entered" in df.columns:
+        for test_type in ["swab", "blood"]:
+            df = df.withColumn(
+                f"{test_type}_sample_barcode_combined",
+                F.when(
+                    (F.col("survey_response_dataset_major_version") == 3)
+                    & (F.col(f"{test_type}_sample_barcode_correct") == "No"),
+                    F.col(f"{test_type}_sample_barcode_user_entered"),
+                )
+                .when(
+                    (F.col("survey_response_dataset_major_version") == 3)
+                    & (F.col(f"{test_type}_sample_barcode_correct") == "Yes")
+                    & (F.col(f"{test_type}_sample_barcode_user_entered") is None),
+                    F.col(f"{test_type}_sample_barcode"),
+                )
+                .otherwise(F.col(f"{test_type}_sample_barcode")),
+            )

@@ -94,6 +94,7 @@ from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import rename_column_names
+from cishouseholds.edit import replace_sample_barcode
 from cishouseholds.edit import survey_edit_auto_complete
 from cishouseholds.edit import update_column_if_ref_in_list
 from cishouseholds.edit import update_column_in_time_window
@@ -2072,16 +2073,20 @@ def union_dependent_derivations(df):
         ],
         "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
     }
-    if "swab_sample_barcode_user_entered" in df.columns:
-        for test_type in ["swab", "blood"]:
-            df = df.withColumn(
-                f"{test_type}_sample_barcode_combined",
-                F.when(
-                    F.col(f"{test_type}_sample_barcode_correct") == "No",
-                    F.col(f"{test_type}_sample_barcode_user_entered"),
-                ).otherwise(F.col(f"{test_type}_sample_barcode"))
-                # set to sample_barcode if _sample_barcode_correct is yes or null.
-            )
+
+    df = replace_sample_barcode(
+        df=df,
+        swab_barcode_combined="swab_barcode_combined",
+        blood_barcode_combined="blood_sample_barcode_combined",
+        swab_barcode="swab_sample_barcode",
+        blood_barcode="blood_sample_barcode",
+        dataset_version="survey_response_dataset_major_version",
+        swab_barcode_correct="swab_sample_barcode_correct",
+        blood_barcode_correct="blood_sample_barcode_correct",
+        swab_barcode_entered="swab_sample_barcode_user_entered",
+        blood_barcode_entered="blood_sample_barcode_user_entered",
+    )
+
     df = assign_column_from_mapped_list_key(
         df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
     )
