@@ -413,11 +413,15 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
     This function requires that the config contains a valid translation_lookup_path in the storage dictionary of
     the pipeline_config file.
 
-    Args:
-        df (DataFrame): df containing free- or fixed-text responses to translate
+    Parameters
+    ----------
+    df :  DataFrame
+        df containing free- or fixed-text responses to translate)
 
-    Returns:
-        DataFrame: df incorporating any available translations to free- or fixed-text responses
+    Returns
+    -------
+    df : DataFrame
+        df incorporating any available translations to free- or fixed-text responses
     """
     translation_settings = get_config().get("translation", {"inactive": "inactive"})
     storage_settings = get_config().get("storage", {"inactive": "inactive"})

@@ -53,12 +53,17 @@ def get_new_translations_from_completed_translations_directory(
     the new_translations df, and filters the new_translations to only rows which have not previously
     been translated.
 
-    Args:
-        translation_directory (str): directory for translations workflow
-        translation_lookup_path (str): path of existing translated values lookup
+    Parameters
+    ----------
+    translation_directory : str
+        directory for translations workflow
+    translation_lookup_path : str
+        path of existing translated values lookup
 
-    Returns:
-        DataFrame: Returns a new_translations_df of only new translation rows.
+    Returns
+    -------
+    new_translations_df : DataFrame
+        returns a new_translations_df of only new translation rows.
     """
 
     completed_translations_directory = os.path.join(translation_directory, "completed/")
@@ -130,11 +135,16 @@ def backup_and_replace_translation_lookup_df(
     This uses two rename operations instead of a delete / write_csv_rename operations as there were obstinate
     technical difficulties getting these to work as intended on HDFS
 
-    Args:
-        new_lookup_df (DataFrame): new_lookup_df to replace old_lookup_df
-        lookup_directory (str): directory containing the lookup_df
-        backup_directory (str): directory to back up the old_lookup_df to
-        formatted_time (str, optional): Defaults to datetime.now().strftime("%Y%m%d_%H%M").
+    Parameters
+    ----------
+    new_lookup_df : DataFrame
+        new_lookup_df to replace old_lookup_df
+    lookup_directory : str
+        directory containing the lookup_df
+    backup_directory : str
+        directory to back up the old_lookup_df to
+    formatted_time : str, optional
+        defaults to datetime.now().strftime("%Y%m%d_%H%M").
     """
     backup_path = Path(backup_directory) / f"translated_value_lookup_{formatted_time}.csv"
     lookup_path = Path(lookup_directory) / "translated_value_lookup.csv"
@@ -155,10 +165,14 @@ def export_responses_to_be_translated_to_translation_directory(
     one tab for each row to be translated in the df. Workbook is saved into the translation_directory with
     an automatically generated timestamp
 
-    Args:
-        to_be_translated_df (DataFrame): to_be_translated_df containing all rows requiring free-text translation
-        translation_directory (str): directory for the translation workflow
-        formatted_time (str, optional): Defaults to datetime.now().strftime("%Y%m%d_%H%M").
+    Parameters
+    ----------
+    to_be_translated_df : DataFrame
+        to_be_translated_df containing all rows requiring free-text translation
+    translation_directory : str
+        directory for the translation workflow
+    formatted_time : str, optional
+        defaults to datetime.now().strftime("%Y%m%d_%H%M").
     """
     translations_workbook = translation_directory + f"/to_be_translated_{formatted_time}.xlsx"
 
@@ -187,11 +201,15 @@ def translate_welsh_fixed_text_responses_digital(df: DataFrame) -> DataFrame:
     Uses column maps and dictionaries defined in mapping.py to translate other language fixed-text
     responses to English.
 
-    Args:
-        df (DataFrame): the dataframe containing fixed text responses to translate
+    Parameters
+    ----------
+    df : DataFrame
+        the dataframe containing fixed text responses to translate
 
-    Returns:
-        DataFrame: the df containing translated fixed-text responses
+    Returns
+    -------
+    df : DataFrame
+        the df containing translated fixed-text responses
     """
     digital_yes_no_columns = [
         "household_invited_to_digital",
@@ -378,12 +396,17 @@ def translate_welsh_free_text_responses_digital(
     Loads a lookup_df from the lookup_path and runs an update_from_lookup_df function to replace specific values with
     translated values as specified in the lookup_df
 
-    Args:
-        df (DataFrame): df containing free-text responses requiring translation
-        lookup_path (str): path for translation_lookup_df containing responses to translate
+    Parameters
+    ----------
+    df : DataFrame
+        df containing free-text responses requiring translation
+    lookup_path : str
+        path for translation_lookup_df containing responses to translate
 
-    Returns:
-        DataFrame: df containing translated free-text responses provided in the translation_lookup_df
+    Returns
+    -------
+    df : DataFrame
+        df containing translated free-text responses provided in the translation_lookup_df
     """
 
     df = df.withColumn("id", F.concat(F.lit(F.col("participant_id")), F.lit(F.col("participant_completion_window_id"))))
@@ -399,11 +422,15 @@ def get_welsh_responses_to_be_translated(df: DataFrame) -> DataFrame:
     Creates a unique id field for the purpose of translation matching using a field map, then filters
     the df using a free-text field map to return only records with at least one not null value
 
-    Args:
-        df (DataFrame): df containing responses that may require translation
+    Parameters
+    ----------
+    df : DataFrame
+        df containing responses that may require translation
 
-    Returns:
-        DataFrame: filtered df containing only responses that require free-text translation
+    Returns
+    -------
+    to_be_translated_df : DataFrame
+        filtered df containing only responses that require free-text translation
     """
     digital_unique_identifiers = ["participant_id", "participant_completion_window_id"]
 
