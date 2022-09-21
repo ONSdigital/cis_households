@@ -225,21 +225,41 @@ def hdfs_md5sum(path: str):
 
 
 def cleanup_checkpoint_dir(spark: SparkSession):
-    """Cleanup checkpoint files at the the end of the job"""
+    """Cleanup checkpoint files at the the end of the job
+
+    >>> from pyspark.sql import SparkSession
+    >>> spark = SparkSession.builder.getOrCreate()
+    >>> # try deleting a checkpoint when it is not set
+    >>> cleanup_checkpoint_dir(spark)  # doesn't throw an error
+    Checkpoint directory not set
+    >>> # Set-up a check point
+    >>> spark.sparkContext.setCheckpointDir('D:/projects/checkpoints')
+    >>> cleanup_checkpoint_dir(spark)
+    Found checkpoint directory: file:/D:/projects/checkpoints/e5b71b89-402b-4035-a481-ce83c688c2d3
+    Deleted checkpoint directory: file:/D:/projects/checkpoints/e5b71b89-402b-4035-a481-ce83c688c2d3
+
+    """
 
     # get sparkContext from the spark session object
     sc = spark.sparkContext
 
     # find out the checkpoint dir associated with the spark session
-    my_checkpoint_dir = sc._jsc.sc().getCheckpointDir().get()
-    print(f"Found checkpoint directory: {my_checkpoint_dir}")  # functional
+    my_checkpoint_dir = sc._jsc.sc().getCheckpointDir()
+
+    # check if checkpoint directory has actually been set
+    if my_checkpoint_dir.isEmpty():
+        print("Checkpoint directory not set")  # functional
+        return None
+
+    folder_to_delete = my_checkpoint_dir.get()
+    print(f"Found checkpoint directory: {folder_to_delete}")  # functional
 
     # get a Hadoop filesystem handle
     fs = sc._jvm.org.apache.hadoop.fs.FileSystem.get(sc._jsc.hadoopConfiguration())
 
     # make sure the folder exists before deleting it
-    if fs.exists(sc._jvm.org.apache.hadoop.fs.Path(str(my_checkpoint_dir))):
-        fs.delete(sc._jvm.org.apache.hadoop.fs.Path(str(my_checkpoint_dir)))
-        print(f"Deleted checkpoint directory: {my_checkpoint_dir}")  # functional
+    if fs.exists(sc._jvm.org.apache.hadoop.fs.Path(folder_to_delete)):
+        fs.delete(sc._jvm.org.apache.hadoop.fs.Path(folder_to_delete))
+        print(f"Deleted checkpoint directory: {folder_to_delete}")  # functional
 
     return None
