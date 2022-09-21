@@ -405,7 +405,6 @@ def assign_multigenerational(
         ),
         on=household_id_column,
     ).distinct()
-
     transformed_df = assign_age_at_date(
         df=transformed_df,
         column_name_to_assign=age_column_name_to_assign,
@@ -439,13 +438,14 @@ def assign_multigenerational(
     )
     df = df.join(
         transformed_df.select(
+            household_id_column,
             column_name_to_assign,
             age_column_name_to_assign,
             school_year_column_name_to_assign,
             participant_id_column,
             visit_date_column,
         ),
-        on=[participant_id_column, visit_date_column],
+        on=[participant_id_column, household_id_column, visit_date_column],
         how="left",
     )
     return df
