@@ -989,3 +989,20 @@ def survey_edit_auto_complete(
         ).otherwise(F.lit(F.col(column_name_to_assign))),
     )
     return df
+
+
+def replace_sample_barcode(
+    df: DataFrame,
+    column_name_to_update: str,
+):
+    """
+    For CIS Digital responses, the derived values swab_sample_barcode_combined and blood_sample_barcode_combined
+    should replace the value in swab_sample_barcode and blood_sample_barcode respectively, as this takes the user
+    entered one over the auto-allocated one if applicable.
+    """
+
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(),
+    )
+    return df
