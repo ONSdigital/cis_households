@@ -2,6 +2,8 @@
 import os
 import subprocess
 
+from pyspark.sql import SparkSession
+
 
 def _perform(command, shell: bool = False, str_output: bool = False, ignore_error: bool = False):
     """
@@ -220,3 +222,24 @@ def hdfs_md5sum(path: str):
     Get md5sum of a specific file on HDFS.
     """
     return _perform(f"hadoop fs -cat {path} | md5sum", shell=True, str_output=True, ignore_error=True).split(" ")[0]
+
+
+def cleanup_checkpoint_dir(spark: SparkSession):
+    """Cleanup checkpoint files at the the end of the job"""
+
+    # get sparkContext from the spark session object
+    sc = spark.sparkContext
+
+    # find out the checkpoint dir associated with the spark session
+    my_checkpoint_dir = sc._jsc.sc().getCheckpointDir().get()
+    print(f"Found checkpoint directory: {my_checkpoint_dir}")  # functional
+
+    # get a Hadoop filesystem handle
+    fs = sc._jvm.org.apache.hadoop.fs.FileSystem.get(sc._jsc.hadoopConfiguration())
+
+    # make sure the folder exists before deleting it
+    if fs.exists(sc._jvm.org.apache.hadoop.fs.Path(str(my_checkpoint_dir))):
+        fs.delete(sc._jvm.org.apache.hadoop.fs.Path(str(my_checkpoint_dir)))
+        print(f"Deleted checkpoint directory: {my_checkpoint_dir}")  # functional
+
+    return None
