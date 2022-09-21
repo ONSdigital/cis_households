@@ -2088,8 +2088,8 @@ survey_response_cisd_cast_to_double = [
 ]
 soc_regex_map = {
     "title": "work_main_job_title",
-    "(role)|(responsibilities)": "work_main_job_role",
-    "(code)|(SOC)": "standard_occupational_classification_code",
+    "role|responsibilities": "work_main_job_role",
+    "code|SOC": "standard_occupational_classification_code",
 }
 
 _welsh_yes_no_categories = {
