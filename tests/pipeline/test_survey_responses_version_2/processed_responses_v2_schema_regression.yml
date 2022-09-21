@@ -1144,6 +1144,61 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: is_working_from_home
+  nullable: false
+  type: boolean
+- metadata: {}
+  name: at_school
+  nullable: false
+  type: boolean
+- metadata: {}
+  name: at_university
+  nullable: false
+  type: boolean
+- metadata: {}
+  name: not_working
+  nullable: false
+  type: boolean
+- metadata: {}
+  name: is_self_employed
+  nullable: false
+  type: boolean
+- metadata: {}
+  name: regex_derived_job_sector
+  nullable: true
+  type:
+    containsNull: true
+    elementType: string
+    type: array
+- metadata: {}
+  name: healthcare_area
+  nullable: true
+  type: string
+- metadata: {}
+  name: social_care_area
+  nullable: true
+  type: string
+- metadata: {}
+  name: works_healthcare
+  nullable: false
+  type: string
+- metadata: {}
+  name: works_social_care
+  nullable: false
+  type: string
+- metadata: {}
+  name: is_patient_facing
+  nullable: false
+  type: string
+- metadata: {}
+  name: health_care_patient_facing_derived
+  nullable: true
+  type: string
+- metadata: {}
+  name: patient_facing_over_20_percent
+  nullable: true
+  type: double
+- metadata: {}
   name: self_isolating_reason_detailed
   nullable: true
   type: string

@@ -168,7 +168,8 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     df = df.filter(F.col("work_main_job_title").isNotNull()).distinct()
     df = df.withColumn(
         "soc_code_edited_to_uncodeable",
-        F.col("standard_occupational_classification_code").rlike(r".*[^0-9].*|^\s*$"),
+        (F.col("standard_occupational_classification_code").rlike(r".*[^0-9].*|^\s*$"))
+        | (F.col("standard_occupational_classification_code").isNull()),
     )
     df = df.withColumn(
         "standard_occupational_classification_code",
@@ -1299,7 +1300,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = clean_job_description_string(df, "work_main_job_title")
     df = clean_job_description_string(df, "work_main_job_role")
     df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
-    # df = add_pattern_matching_flags(df)
+    df = add_pattern_matching_flags(df)
     return df
 
 
@@ -2455,14 +2456,14 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         debug_mode=False,
     )
     # add is-retired flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=retired_regex_pattern.positive_regex_pattern,
-        negative_regex_pattern=retired_regex_pattern.negative_regex_pattern,
-        column_name_to_assign="is_retired",
-        debug_mode=False,
-    )
+    # df = assign_regex_match_result(
+    #     df=df,
+    #     columns_to_check_in=["work_main_job_title", "work_main_job_role"],
+    #     positive_regex_pattern=retired_regex_pattern.positive_regex_pattern,
+    #     negative_regex_pattern=retired_regex_pattern.negative_regex_pattern,
+    #     column_name_to_assign="is_retired",
+    #     debug_mode=False,
+    # )
 
     # add not-working flag
     df = assign_regex_match_result(
@@ -2521,31 +2522,30 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "is_patient_facing",
         F.when(
-            ((F.col("works_healthcare") == "Yes") | F.col("is_patient_facing"))
+            ((F.col("works_healthcare") == "Yes") | (F.col("is_patient_facing") == True))
             & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
-            True,
-        ).otherwise(False),
+            "Yes",
+        ).otherwise("No"),
     )
-
     df = assign_column_value_from_multiple_column_map(
         df,
-        "health_care_patient_facing",
+        "health_care_patient_facing_derived",
         [
-            ["No", [False, None]],
-            ["Yes, primary care, patient-facing", [True, "Primary"]],
-            ["Yes, secondary care, patient-facing", [True, "Secondary"]],
-            ["Yes, other healthcare, patient-facing", [True, "Other"]],
-            ["Yes, primary care, non-patient-facing", [False, "Primary"]],
-            ["Yes, secondary care, non-patient-facing", [False, "Secondary"]],
-            ["Yes, other healthcare, non-patient-facing", [False, "Other"]],
+            ["No", ["No", None]],
+            ["No", ["Yes", None]],
+            ["Yes, primary care, patient-facing", ["Yes", "Primary"]],
+            ["Yes, secondary care, patient-facing", ["Yes", "Secondary"]],
+            ["Yes, other healthcare, patient-facing", ["Yes", "Other"]],
+            ["Yes, primary care, non-patient-facing", ["No", "Primary"]],
+            ["Yes, secondary care, non-patient-facing", ["No", "Secondary"]],
+            ["Yes, other healthcare, non-patient-facing", ["No", "Other"]],
         ],
         ["is_patient_facing", "healthcare_area"],
     )
-
     window = Window.partitionBy("participant_id")
     df = df.withColumn(
         "patient_facing_over_20_percent",
-        F.sum(F.when(F.col("is_patient_facing"), 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
+        F.sum(F.when(F.col("is_patient_facing") == "Yes", 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
     )
 
     work_status_columns = [col for col in df.columns if "work_status_" in col]
@@ -2557,27 +2557,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
             .otherwise(F.col(work_status_column)),
         )
-
-    # # Temp table generations:
-    # df = df.withColumn("work_healthcare", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
-    # sh_df = df.filter(
-    #     (F.col("work_social_care") != F.col("works_social_care"))
-    #     | (F.col("work_healthcare") != F.col("works_healthcare"))
-    # )
-    # h_df = df.filter(F.col("work_healthcare") != F.col("works_healthcare"))
-    # cols_added = [
-    #     "is_patient_facing",
-    #     "works_healthcare",
-    #     "works_social_care",
-    #     "work_health_care_patient_facing",
-    #     "social_care_area",
-    #     "healthcare_area",
-    #     "regex_derived_job_sector",
-    # ]
-    # generate_stratified_sample(
-    #     sh_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
-    # )
-    # generate_stratified_sample(h_df, cols_added, 500, 5, "healthcare_inconsistences", ["regex_derived_job_sector"])
 
     return df
 
