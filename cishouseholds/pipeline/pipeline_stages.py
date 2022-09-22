@@ -772,6 +772,7 @@ def geography_and_imputation_dependent_processing(
         school_year_column="school_year",
         column_name_to_assign="age_group_school_year",
     )
+
     df = reclassify_work_variables(df, spark_session=get_or_create_spark_session(), drop_original_variables=False)
     df = create_formatted_datetime_string_columns(df)
     update_table(df, output_table_name, write_mode="overwrite")
