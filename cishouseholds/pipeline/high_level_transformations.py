@@ -2522,10 +2522,10 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "is_patient_facing",
         F.when(
-            ((F.col("works_healthcare") == "Yes") | (F.col("is_patient_facing") == True))
-            & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
-            "Yes",
-        ).otherwise("No"),
+            array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])
+            | ~F.col("is_patient_facing"),
+            "No",
+        ).otherwise("Yes"),
     )
     df = assign_column_value_from_multiple_column_map(
         df,
