@@ -424,7 +424,7 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     return df
 
 
-def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, dataset_name: str = None):
+def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str = None, dataset_name: str = None):
     """
     Edit values in df based on old to new mapping in lookup_df
 
@@ -445,12 +445,13 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, dataset_name: str
     dataset_name
         Name of the dataset to filter rows in `lookup_df` by
     """
-
+    drop_list = []
+    id_columns = [id_column]
     if dataset_name is not None:
         lookup_df = lookup_df.filter(F.col("dataset_name") == dataset_name)
 
-    id_columns = list(lookup_df.select("id_column_name").distinct().toPandas()["id_column_name"])
-    drop_list = []
+    if id_column is not None:
+        id_columns = list(lookup_df.select("id_column_name").distinct().toPandas()["id_column_name"])
 
     for id_column in id_columns:
         temp_lookup_df = lookup_df.filter(F.col("id_column_name") == id_column)
