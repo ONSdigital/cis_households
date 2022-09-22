@@ -391,6 +391,12 @@ def process_soc_data(
 
     duplicate_rows_df, soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
     survey_responses_df = survey_responses_df.join(soc_lookup_df, on=join_on_columns, how="left")
+    survey_responses_df = survey_responses_df.withColumn(
+        "standard_occupational_classification_code",
+        F.when(F.col("standard_occupational_classification_code").isNull(), "uncodeable").otherwise(
+            F.col("standard_occupational_classification_code")
+        ),
+    )
 
     update_table(duplicate_rows_df, duplicate_soc_rows_table, "overwrite", archive=True)
     update_table(survey_responses_df, soc_coded_survey_responses_table, "overwrite")
