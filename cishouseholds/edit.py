@@ -444,6 +444,8 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str = 
         The lookup df with the structure described
     dataset_name
         Name of the dataset to filter rows in `lookup_df` by
+    id_column
+        Name of the the id column in `df`
     """
     drop_list = []
     id_columns = [id_column]
