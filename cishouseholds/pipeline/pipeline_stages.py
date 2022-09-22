@@ -391,6 +391,12 @@ def process_soc_data(
 
     duplicate_rows_df, soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
     survey_responses_df = survey_responses_df.join(soc_lookup_df, on=join_on_columns, how="left")
+    survey_responses_df = survey_responses_df.withColumn(
+        "standard_occupational_classification_code",
+        F.when(F.col("standard_occupational_classification_code").isNull(), "uncodeable").otherwise(
+            F.col("standard_occupational_classification_code")
+        ),
+    )
 
     update_table(duplicate_rows_df, duplicate_soc_rows_table, "overwrite", archive=True)
     update_table(survey_responses_df, soc_coded_survey_responses_table, "overwrite")
@@ -768,6 +774,7 @@ def geography_and_imputation_dependent_processing(
         school_year_column="school_year",
         column_name_to_assign="age_group_school_year",
     )
+
     df = reclassify_work_variables(df, spark_session=get_or_create_spark_session(), drop_original_variables=False)
     df = create_formatted_datetime_string_columns(df)
     update_table(df, output_table_name, write_mode="overwrite")
