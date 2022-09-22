@@ -4,6 +4,7 @@ from functools import reduce
 from itertools import chain
 from operator import add
 from typing import Any
+from typing import Dict
 from typing import List
 from typing import Mapping
 from typing import Optional
@@ -991,9 +992,8 @@ def survey_edit_auto_complete(
     return df
 
 
-def replace_sample_barcode(
-    df: DataFrame,
-    column_name_to_update: str,
+def conditionally_replace_columns(
+    df: DataFrame, column_to_column_map: Dict[str, str], condition: Optional[object] = True
 ):
     """
     For CIS Digital responses, the derived values swab_sample_barcode_combined and blood_sample_barcode_combined
@@ -1001,8 +1001,6 @@ def replace_sample_barcode(
     entered one over the auto-allocated one if applicable.
     """
 
-    df = df.withColumn(
-        column_name_to_update,
-        F.when(),
-    )
+    for to_replace, replace_with in column_to_column_map.items():
+        df = df.withColumn(to_replace, F.when(condition, F.col(replace_with)).otherwise(F.col(to_replace)))
     return df
