@@ -30,16 +30,7 @@ def assign_regex_from_map(
     regex_columns = {key: [] for key in [1, *list(priority_map.values())]}  # type: ignore
 
     for title, pattern in roles.items():
-        col = F.when(
-            reduce(
-                or_,
-                [
-                    F.coalesce(F.col(reference_column), F.lit("")).rlike(pattern)
-                    for reference_column in reference_columns
-                ],
-            ),
-            title,
-        )
+        col = F.when(F.coalesce(F.concat(*reference_columns), F.lit("")).rlike(pattern), title)
         if title in priority_map:
             regex_columns[priority_map[title]].append(col)
         else:
@@ -426,15 +417,19 @@ def assign_multigenerational(
         ),
         on=household_id_column,
     ).distinct()
-
     transformed_df = assign_age_at_date(
         df=transformed_df,
         column_name_to_assign=age_column_name_to_assign,
         base_date=F.col(visit_date_column),
         date_of_birth=F.col(date_of_birth_column),
     )
-    transformed_df = assign_school_year(
-        df=transformed_df,
+
+    transformed_df_2 = spark_session.createDataFrame(
+        transformed_df.rdd, schema=transformed_df.schema
+    )  # breaks lineage to avoid Java OOM Error
+
+    transformed_df_3 = assign_school_year(
+        df=transformed_df_2,
         column_name_to_assign=school_year_column_name_to_assign,
         reference_date_column=visit_date_column,
         dob_column=date_of_birth_column,
@@ -454,19 +449,24 @@ def assign_multigenerational(
     generation_2_present = F.sum(generation_2).over(window) >= 1
     generation_3_present = F.sum(generation_3).over(window) >= 1
 
-    transformed_df = transformed_df.withColumn(
+    transformed_df_4 = spark_session.createDataFrame(
+        transformed_df_3.rdd, schema=transformed_df_3.schema
+    )  # breaks lineage to avoid Java OOM Error
+
+    transformed_df_5 = transformed_df_4.withColumn(
         column_name_to_assign,
         F.when(generation_1_present & generation_2_present & generation_3_present, 1).otherwise(0),
     )
     df = df.join(
-        transformed_df.select(
+        transformed_df_5.select(
+            household_id_column,
             column_name_to_assign,
             age_column_name_to_assign,
             school_year_column_name_to_assign,
             participant_id_column,
             visit_date_column,
         ),
-        on=[participant_id_column, visit_date_column],
+        on=[participant_id_column, household_id_column, visit_date_column],
         how="left",
     )
     return df
