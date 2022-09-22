@@ -30,16 +30,7 @@ def assign_regex_from_map(
     regex_columns = {key: [] for key in [1, *list(priority_map.values())]}  # type: ignore
 
     for title, pattern in roles.items():
-        col = F.when(
-            reduce(
-                or_,
-                [
-                    F.coalesce(F.col(reference_column), F.lit("")).rlike(pattern)
-                    for reference_column in reference_columns
-                ],
-            ),
-            title,
-        )
+        col = F.when(F.coalesce(F.concat(*reference_columns), F.lit("")).rlike(pattern), title)
         if title in priority_map:
             regex_columns[priority_map[title]].append(col)
         else:
@@ -426,7 +417,6 @@ def assign_multigenerational(
         ),
         on=household_id_column,
     ).distinct()
-
     transformed_df = assign_age_at_date(
         df=transformed_df,
         column_name_to_assign=age_column_name_to_assign,
@@ -469,13 +459,14 @@ def assign_multigenerational(
     )
     df = df.join(
         transformed_df_5.select(
+            household_id_column,
             column_name_to_assign,
             age_column_name_to_assign,
             school_year_column_name_to_assign,
             participant_id_column,
             visit_date_column,
         ),
-        on=[participant_id_column, visit_date_column],
+        on=[participant_id_column, household_id_column, visit_date_column],
         how="left",
     )
     return df
