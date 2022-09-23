@@ -399,6 +399,7 @@ validation_schemas = {
         "new_value": string_dict,
     },
     "csv_lookup_schema_extended": {
+        "id_column_name": string_dict,
         "id": string_dict,
         "dataset_name": string_dict,
         "target_column_name": string_dict,
