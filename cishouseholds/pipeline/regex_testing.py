@@ -99,7 +99,7 @@ house_care = match_with_exclusions(
     r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|(?<!NO[NT][ -])MEDICAL|DONOR CARER*",
 )
 residential_care = match_with_exclusions(
-    r"^CAE?RE*R *(CARE*|NA)*$|(CARE|NURSING) *HOME|(SOCIAL|COMMUNITY|DOMICIL[IA]*RY|DOMESTIC){1,} *CARE|CARE *(WORK|ASSISTANT)|ASST CARING|CARE SUPPORT WORK|SUPPORT *WORKER *CARE|INDEPEND[EA]NT LIVING",
+    r"^CAE?RE*R *(CARE*|NA)*$|(CARE|NURSING) *HOME|(SOCIAL|COMMUNITY|DOMICIL[IA]*RY|DOMESTIC){1,} *CARE|CARE *(WORK|ASSISTANT)|ASST CARING|CARE SUPPORT WORK|SUPPORT *WORKER *CARE|INDEPEND[EA]NT LIVING|PERSONAL CARE",
     r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|MEDICAL|COMM?UNITY|DONOR CARER*|HOSPITAL|AMBULANCE"
     + "|"
     + call_exclusions,
@@ -125,22 +125,22 @@ nurse = match_with_exclusions(
 paramedic = match_with_exclusions("PARA *MEDIC|AMBUL[AE]NCE", teaching_exclusions)
 covid_test = match_with_exclusions(["COVID", "TEST|SWAB|VAC+INAT|IM+UNIS|SCREEN|WARD"], "LAB|AN[AY]LIST|SCHOOL|MANAGER")
 therapist = match_with_exclusions(
-    r"PH[YI]S[IY]CAL\s*REHAB|PH[YI]S[IY]CAL\s*THERAPY|P(HY)?S[A-Z]*[IY]ST|(WHEEL *CHAIR|DISABILITY) THERAP(Y|IST)",
+    r"PH[YI]S[IY]CAL\s*REHAB|PH[YI]S[IY]CAL\s*THERAPY|P(HY)?S[A-Z]*[IY]ST|(WHEEL *CHAIR|DISABILITY) THERAP(Y|IST)|PHYSIO\b",
     r"EDUCATION|SCHOOL|BUSINESS|STUDYING|LECTURER|PROFESSOR|ACADEMIC|RESEARCH|PHYSICIST|UNIVERSITY|TEACHING|TEACH|STUDENT|TECHNICIAN|DOCTORATE|PHD|POSTDOCTORAL|PRISON|OCCUPATION|OCCUPATIONAL|FORENSICS|\bUCL\b",
 )
 hc_theatre = match_with_exclusions("THEATRE", "PERFORMER|ACTOR|STAGE|PLAY|CINEMA|MOVIE")
 social_work = match_with_exclusions(
     r"SOCIAL.*WORK|FOSTER CARE|CHILD PROTECTION|PROBATION OFFICER|YOUTH OFFENDER|HMP|COMMUNITY WORKER|PRISON OFFIC|SHELTERED (ACC.*N|LIVING)",
-    "SOCIALLY DISTANCE",
+    "SOCIAL(LY)? DISTANCE",
 )
 support_work = "SUP+ORT *WORKER"
 apprentice = "AP*RENTI[CS]"
-call_operator = match_with_exclusions(
+hc_call_operator = match_with_exclusions(
     [
         r"111|119|999|911|NHS|TRIAGE|EMERGENCY",
         r"ADVI[SC][OE]R|RESPONSE|OPERAT|CALL (HANDLER|CENT(RE|ER)|TAKE)|(TELE)?PHONE|TELE(PHONE)?|COVID",
     ],
-    "CUSTOMER SERVICE|SALES",
+    "CUSTOMER SERVICE|SALES|POLICE|ROADSIDE|\bAA\b",
 )
 
 additional_primary_hc = r"OUTPATIENT"
@@ -184,12 +184,12 @@ healthcare_classification = {
         "hc_therapist",
         "base_healthcare",
     ],
-    "Other": ["hc_counsellor", "covid_test", "hc_support"],
+    "Other": ["hc_counsellor", "covid_test", "hc_support", "hc_receptionist"],
 }
 
 social_care_classification = {
     "Care/Residential home": ["residential_care"],
-    "Other": ["social_work", "child_care", "informal_care", "social_work"],
+    "Other": ["social_work", "child_care", "informal_care"],
 }
 
 patient_facing_classification = {
@@ -215,7 +215,7 @@ patient_facing_classification = {
         "residential_care",
         "hc_support",
     ],
-    "N": ["call_operator", "covid_test", "hc_admin", "hc_secretary", "domestic"],
+    "N": ["hc_call_operator", "covid_test", "hc_admin", "hc_secretary", "domestic"],
 }
 
 roles_map = {
@@ -230,7 +230,7 @@ roles_map = {
     "hc_counsellor": hc_counsellor,
     "hc_support": hc_support,
     "pharmacist": pharmacist,
-    "call_operator": call_operator,
+    "call_operator": hc_call_operator,
     "dietician": dietician,
     "doctor": doctor,
     "general_practitioner": general_practitioner,
