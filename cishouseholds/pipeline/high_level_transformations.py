@@ -2434,34 +2434,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = df.withColumn("work_main_job_title", F.upper(F.col("work_main_job_title")))
     df = df.withColumn("work_main_job_role", F.upper(F.col("work_main_job_role")))
 
-    # add at-school flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=at_school_pattern.positive_regex_pattern,
-        negative_regex_pattern=at_school_pattern.negative_regex_pattern,
-        column_name_to_assign="at_school",
-        debug_mode=False,
-    )
-
-    # add at-university flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=at_university_pattern.positive_regex_pattern,
-        negative_regex_pattern=at_university_pattern.negative_regex_pattern,
-        column_name_to_assign="at_university",
-        debug_mode=False,
-    )
-
-    # add not-working flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=not_working_pattern.positive_regex_pattern,
-        negative_regex_pattern=not_working_pattern.negative_regex_pattern,
-        column_name_to_assign="not_working",
-    )
     df = assign_regex_from_map(
         df=df,
         column_name_to_assign="regex_derived_job_sector",
