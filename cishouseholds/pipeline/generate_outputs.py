@@ -69,7 +69,8 @@ def generate_stratified_sample(
         .sortWithinPartitions("sampling_strata", "participant_id")
     )
     for col in array_columns:
-        sampled_df.withColumn(col, F.col(col).cast("string")).write.mode("overwrite").csv(output_directory)
+        sampled_df = sampled_df.withColumn(col, F.col(col).cast("string"))
+    sampled_df.write.option("header", True).mode("overwrite").csv(output_directory)
 
 
 def map_output_values_and_column_names(df: DataFrame, column_name_map: dict, value_map_by_column: dict):
