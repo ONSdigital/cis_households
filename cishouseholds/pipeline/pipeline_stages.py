@@ -912,6 +912,7 @@ def record_level_interface(
     csv_editing_file
         defines the editing from old values to new values in the HIVE tables
         Columns expected
+            - id_column_name (optional)
             - id
             - dataset_name
             - target_column
