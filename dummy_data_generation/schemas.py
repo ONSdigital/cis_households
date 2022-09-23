@@ -96,6 +96,13 @@ def get_swab_testkit_data_description(_):
     }
 
 
+def get_participant_extract_data_description(_, blood_barcodes, swab_barcodes):
+    return lambda: {  # noqa: E731
+        "ons_household_id": _("random.custom_code", mask="############", digit="#"),
+        "participant_survey_status": _("choice", items=["Active", "Complete", "Withdrawn"]),
+    }
+
+
 def get_voyager_0_data_description(_, blood_barcodes, swab_barcodes):
     return lambda: {  # noqa: E731
         "ONS Household ID": _("random.custom_code", mask="############", digit="#"),
