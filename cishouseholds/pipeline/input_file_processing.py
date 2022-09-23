@@ -126,7 +126,7 @@ def extract_validate_transform_input_data(
             editing_lookup_df = extract_lookup_csv(
                 record_editing_config_path, validation_schemas["csv_lookup_schema_extended"]
             )
-            df = update_from_lookup_df(df, editing_lookup_df, id_column=id_column, dataset_name=dataset_name)
+            df = update_from_lookup_df(df, editing_lookup_df, dataset_name=dataset_name)
 
     df = convert_columns_to_timestamps(df, datetime_map)
     df = cast_columns_from_string(df, cast_to_double_columns_list, "double")
