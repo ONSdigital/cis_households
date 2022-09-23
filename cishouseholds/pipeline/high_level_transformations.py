@@ -90,6 +90,7 @@ from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_barcode_simple
 from cishouseholds.edit import clean_job_description_string
 from cishouseholds.edit import clean_within_range
+from cishouseholds.edit import conditionally_replace_columns
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
@@ -1300,7 +1301,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = clean_job_description_string(df, "work_main_job_title")
     df = clean_job_description_string(df, "work_main_job_role")
     df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
-    df = add_pattern_matching_flags(df)
     return df
 
 
@@ -1970,6 +1970,14 @@ def union_dependent_derivations(df):
                 ).otherwise(F.col(f"{test_type}_sample_barcode"))
                 # set to sample_barcode if _sample_barcode_correct is yes or null.
             )
+    df = conditionally_replace_columns(
+        df,
+        {
+            "swab_sample_barcode_combined": "swab_sample_barcode",
+            "blood_sample_barcode_combined": "blood_sample_barcode",
+        },
+        (F.col("survey_response_dataset_major_version") == 3),
+    )
     df = assign_column_from_mapped_list_key(
         df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
     )

@@ -4,6 +4,7 @@ from functools import reduce
 from itertools import chain
 from operator import add
 from typing import Any
+from typing import Dict
 from typing import List
 from typing import Mapping
 from typing import Optional
@@ -997,4 +998,18 @@ def survey_edit_auto_complete(
             "Auto Completed",
         ).otherwise(F.lit(F.col(column_name_to_assign))),
     )
+    return df
+
+
+def conditionally_replace_columns(
+    df: DataFrame, column_to_column_map: Dict[str, str], condition: Optional[object] = True
+):
+    """
+    For CIS Digital responses, the derived values swab_sample_barcode_combined and blood_sample_barcode_combined
+    should replace the value in swab_sample_barcode and blood_sample_barcode respectively, as this takes the user
+    entered one over the auto-allocated one if applicable.
+    """
+
+    for to_replace, replace_with in column_to_column_map.items():
+        df = df.withColumn(to_replace, F.when(condition, F.col(replace_with)).otherwise(F.col(to_replace)))
     return df
