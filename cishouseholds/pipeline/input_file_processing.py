@@ -123,7 +123,9 @@ def extract_validate_transform_input_data(
         df = df.filter(~F.col(id_column).isin(filter_ids))
 
         if record_editing_config_path is not None:
-            editing_lookup_df = extract_lookup_csv(record_editing_config_path, validation_schemas["csv_lookup_schema"])
+            editing_lookup_df = extract_lookup_csv(
+                record_editing_config_path, validation_schemas["csv_lookup_schema_extended"]
+            )
             df = update_from_lookup_df(df, editing_lookup_df, id_column=id_column, dataset_name=dataset_name)
 
     df = convert_columns_to_timestamps(df, datetime_map)
