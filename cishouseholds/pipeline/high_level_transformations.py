@@ -2434,16 +2434,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = df.withColumn("work_main_job_title", F.upper(F.col("work_main_job_title")))
     df = df.withColumn("work_main_job_role", F.upper(F.col("work_main_job_role")))
 
-    # add work from home flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=work_from_home_pattern.positive_regex_pattern,
-        negative_regex_pattern=work_from_home_pattern.negative_regex_pattern,
-        column_name_to_assign="is_working_from_home",
-        debug_mode=False,
-    )
-
     # add at-school flag
     df = assign_regex_match_result(
         df=df,
@@ -2463,15 +2453,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         column_name_to_assign="at_university",
         debug_mode=False,
     )
-    # add is-retired flag
-    # df = assign_regex_match_result(
-    #     df=df,
-    #     columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-    #     positive_regex_pattern=retired_regex_pattern.positive_regex_pattern,
-    #     negative_regex_pattern=retired_regex_pattern.negative_regex_pattern,
-    #     column_name_to_assign="is_retired",
-    #     debug_mode=False,
-    # )
 
     # add not-working flag
     df = assign_regex_match_result(
@@ -2480,14 +2461,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         positive_regex_pattern=not_working_pattern.positive_regex_pattern,
         negative_regex_pattern=not_working_pattern.negative_regex_pattern,
         column_name_to_assign="not_working",
-    )
-    # add self-employed flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=self_employed_regex.positive_regex_pattern,
-        column_name_to_assign="is_self_employed",
-        debug_mode=False,
     )
     df = assign_regex_from_map(
         df=df,
@@ -2565,6 +2538,9 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
             .otherwise(F.col(work_status_column)),
         )
+
+    # temp include for testing
+    df = df.withColumn("work_healthcare", F.when(F.col("work_health_care_area").isNull(), "No").otherwise("Yes"))
 
     return df
 
