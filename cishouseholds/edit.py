@@ -452,7 +452,7 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str = 
     if dataset_name is not None:
         lookup_df = lookup_df.filter(F.col("dataset_name") == dataset_name)
 
-    if id_column is not None:
+    if id_column is None:
         id_columns = list(lookup_df.select("id_column_name").distinct().toPandas()["id_column_name"])
 
     for id_column in id_columns:
