@@ -425,11 +425,12 @@ def clean_postcode(df: DataFrame, postcode_column: str):
     return df
 
 
-def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, dataset_name: str = None):
+def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str = None, dataset_name: str = None):
     """
     Edit values in df based on old to new mapping in lookup_df
 
     Expected columns on lookup_df:
+    - id_column_name
     - id
     - dataset_name
     - target_column_name
@@ -442,45 +443,53 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str, d
         The input DataFrame to process
     lookup_df
         The lookup df with the structure described
-    id_column
-        Name of the the id column in `df`
     dataset_name
         Name of the dataset to filter rows in `lookup_df` by
+    id_column
+        Name of the the id column in `df`
     """
-
+    drop_list = []
+    id_columns = [id_column]
     if dataset_name is not None:
         lookup_df = lookup_df.filter(F.col("dataset_name") == dataset_name)
 
-    columns_to_edit = list(lookup_df.select("target_column_name").distinct().toPandas()["target_column_name"])
+    if id_column is None:
+        id_columns = list(lookup_df.select("id_column_name").distinct().toPandas()["id_column_name"])
 
-    pivoted_lookup_df = (
-        lookup_df.groupBy("id")
-        .pivot("target_column_name")
-        .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
-        .drop("old_value", "new_value")
-    )
-    edited_df = df.join(pivoted_lookup_df, on=(pivoted_lookup_df["id"] == df[id_column]), how="left").drop(
-        pivoted_lookup_df["id"]
-    )
-
-    for column_to_edit in columns_to_edit:
-        if column_to_edit not in df.columns:
-            print(
-                f"WARNING: Target column to edit, from editing lookup, does not exist in dataframe: {column_to_edit}"
-            )  # functional
-            continue
-        edited_df = edited_df.withColumn(
-            column_to_edit,
-            F.when(
-                F.col(column_to_edit).eqNullSafe(
-                    F.col(f"{column_to_edit}_old_value").cast(df.schema[column_to_edit].dataType)
-                ),
-                F.col(f"{column_to_edit}_new_value").cast(df.schema[column_to_edit].dataType),
-            ).otherwise(F.col(column_to_edit)),
+    for id_column in id_columns:
+        temp_lookup_df = lookup_df.filter(F.col("id_column_name") == id_column)
+        columns_to_edit = list(temp_lookup_df.select("target_column_name").distinct().toPandas()["target_column_name"])
+        pivoted_lookup_df = (
+            temp_lookup_df.groupBy("id")
+            .pivot("target_column_name")
+            .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
+            .drop("old_value", "new_value")
+        )
+        df = df.join(pivoted_lookup_df, on=(pivoted_lookup_df["id"] == df[id_column]), how="left").drop(
+            pivoted_lookup_df["id"]
         )
 
-    drop_list = [*[f"{col}_old_value" for col in columns_to_edit], *[f"{col}_new_value" for col in columns_to_edit]]
-    return edited_df.drop(*drop_list)
+        for column_to_edit in columns_to_edit:
+            if column_to_edit not in df.columns:
+                print(
+                    f"WARNING: Target column to edit, from editing lookup, does not exist in dataframe: {column_to_edit}"
+                )  # functional
+                continue
+            df = df.withColumn(
+                column_to_edit,
+                F.when(
+                    F.col(column_to_edit).eqNullSafe(
+                        F.col(f"{column_to_edit}_old_value").cast(df.schema[column_to_edit].dataType)
+                    ),
+                    F.col(f"{column_to_edit}_new_value").cast(df.schema[column_to_edit].dataType),
+                ).otherwise(F.col(column_to_edit)),
+            )
+
+        drop_list.extend(
+            [*[f"{col}_old_value" for col in columns_to_edit], *[f"{col}_new_value" for col in columns_to_edit]]
+        )
+
+    return df.drop(*drop_list)
 
 
 def split_school_year_by_country(df: DataFrame, school_year_column: str, country_column: str):
