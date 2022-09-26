@@ -36,7 +36,7 @@ base_non_healthcare = r"AC[AE]DEMIC|LECTURE|DEAN|CURATOR|DOCTOR SCIENCE|DR LAB|D
 
 
 # base inclusions
-base_inclusions = r"(PALLIATIVE|INTENSIVE) CARE|TRIAGE|CHIROPRACT|PRIMARY HEALTCHARE"
+base_inclusions = r"(PALLIATIVE|INTENSIVE) CARE|CHIROPRACT|PRIMARY HEALTCHARE"
 
 vet = match_with_exclusions(r"\bVETS*|\bVEN?T[A-Z]*(RY|IAN)|EQUIN|\b(DOG|CAT)|HEDGEHOG|ANIMAL", r"VET PEOPLE|VETERAN")
 hospital_generic = r"HOSPITAL(?!ITY)"
@@ -78,7 +78,7 @@ hc_secretary = match_with_exclusions(
 hc_support = match_with_exclusions(
     [
         r"SUP+ORT *WORKER|ASSISTANT",
-        r"HOSPITAL|HEALTH *CARE|MENTAL *HEALTH|MATERNITY|CLINICAL|WARD|NURSE|NURSING(?! *HOME)|SURGERY|A&E|ONCOLOGY|PHLEBOTOM|AMBULANCE|WARD|MIDWIFE|IN *LABOUR|ACCIDENT *(& *|AND *)*EMERGENCY|COVID.*SWA[BP]",
+        r"HOSPITAL|HEALTH *CARE|MENTAL *HEALTH|MATERNITY|CLINICAL|WARD|NURSE\b|NURSING(?! *HOME)|SURGERY|A&E|ONCOLOGY|PHLEBOTOM|AMBULANCE|WARD|MIDWIFE|IN *LABOUR|ACCIDENT *(& *|AND *)*EMERGENCY|COVID.*SWA[BP]",
     ],
     [r"BU(IS|SI)NESS SUPPORT", r"LOCAL COUNCIL|DISCHARGE|POST HOSPITAL|HOME NURS", r"HEALTH *CARE ASSIST|\bHCA\b"],
 )
@@ -140,7 +140,7 @@ hc_call_operator = match_with_exclusions(
         r"111|119|999|911|NHS|TRIAGE|EMERGENCY",
         r"ADVI[SC][OE]R|RESPONSE|OPERAT|CALL (HANDLER|CENT(RE|ER)|TAKE)|(TELE)?PHONE|TELE(PHONE)?|COVID",
     ],
-    "CUSTOMER SERVICE|SALES|POLICE|ROADSIDE|\bAA\b",
+    "CUSTOMER SERVICE|SALES|POLICE|ROADSIDE|\bAA\b|ATTEND",
 )
 
 additional_primary_hc = r"OUTPATIENT"
@@ -269,8 +269,10 @@ priority_map = {
     "paramedic": 0,
     "retired": 9,
     "teaching": 2,
+    "media": 2,
     "hc_admin": 2,
     "hc_secretary": 2,
+    "social_work": 2,
     "base_non_healthcare": 3,
     "public_service": 2,
 }
