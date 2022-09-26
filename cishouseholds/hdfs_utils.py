@@ -2,6 +2,8 @@
 import os
 import subprocess
 
+from pyspark.sql import SparkSession
+
 
 def _perform(command, shell: bool = False, str_output: bool = False, ignore_error: bool = False):
     """
@@ -220,3 +222,44 @@ def hdfs_md5sum(path: str):
     Get md5sum of a specific file on HDFS.
     """
     return _perform(f"hadoop fs -cat {path} | md5sum", shell=True, str_output=True, ignore_error=True).split(" ")[0]
+
+
+def cleanup_checkpoint_dir(spark: SparkSession):
+    """Cleanup checkpoint files at the the end of the job
+
+    >>> from pyspark.sql import SparkSession
+    >>> spark = SparkSession.builder.getOrCreate()
+    >>> # try deleting a checkpoint when it is not set
+    >>> cleanup_checkpoint_dir(spark)  # doesn't throw an error
+    Checkpoint directory not set
+    >>> # Set-up a check point
+    >>> spark.sparkContext.setCheckpointDir('D:/projects/checkpoints')
+    >>> cleanup_checkpoint_dir(spark)
+    Found checkpoint directory: file:/D:/projects/checkpoints/e5b71b89-402b-4035-a481-ce83c688c2d3
+    Deleted checkpoint directory: file:/D:/projects/checkpoints/e5b71b89-402b-4035-a481-ce83c688c2d3
+
+    """
+
+    # get sparkContext from the spark session object
+    sc = spark.sparkContext
+
+    # find out the checkpoint dir associated with the spark session
+    my_checkpoint_dir = sc._jsc.sc().getCheckpointDir()
+
+    # check if checkpoint directory has actually been set
+    if my_checkpoint_dir.isEmpty():
+        print("Checkpoint directory not set")  # functional
+        return None
+
+    folder_to_delete = my_checkpoint_dir.get()
+    print(f"Found checkpoint directory: {folder_to_delete}")  # functional
+
+    # get a Hadoop filesystem handle
+    fs = sc._jvm.org.apache.hadoop.fs.FileSystem.get(sc._jsc.hadoopConfiguration())
+
+    # make sure the folder exists before deleting it
+    if fs.exists(sc._jvm.org.apache.hadoop.fs.Path(folder_to_delete)):
+        fs.delete(sc._jvm.org.apache.hadoop.fs.Path(folder_to_delete))
+        print(f"Deleted checkpoint directory: {folder_to_delete}")  # functional
+
+    return None

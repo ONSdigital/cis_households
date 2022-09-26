@@ -42,6 +42,7 @@ from cishouseholds.pipeline.high_level_transformations import derive_overall_vac
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
+from cishouseholds.pipeline.high_level_transformations import reclassify_work_variables
 from cishouseholds.pipeline.high_level_transformations import transform_cis_soc_data
 from cishouseholds.pipeline.high_level_transformations import transform_from_lookups
 from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
@@ -345,14 +346,9 @@ def process_soc_deltas(
         date_from_filename=False,
     )
     for file_path in file_list:
-        error_message, validation_schema, column_name_map, drop_list = normalise_schema(
-            file_path, soc_schema, soc_regex_map
-        )
+        error_message, df = normalise_schema(file_path, soc_schema, soc_regex_map)
         if error_message is None:
-            df = extract_input_data(file_path, validation_schema, ",").drop(*drop_list)
             df = assign_filename_column(df, source_file_column)
-            for actual_column, normalised_column in column_name_map.items():
-                df = df.withColumnRenamed(actual_column, normalised_column)
             dfs.append(df)
         else:
             add_error_file_log_entry(file_path, error_message)  # type: ignore
@@ -395,6 +391,12 @@ def process_soc_data(
 
     duplicate_rows_df, soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
     survey_responses_df = survey_responses_df.join(soc_lookup_df, on=join_on_columns, how="left")
+    survey_responses_df = survey_responses_df.withColumn(
+        "standard_occupational_classification_code",
+        F.when(F.col("standard_occupational_classification_code").isNull(), "uncodeable").otherwise(
+            F.col("standard_occupational_classification_code")
+        ),
+    )
 
     update_table(duplicate_rows_df, duplicate_soc_rows_table, "overwrite", archive=True)
     update_table(survey_responses_df, soc_coded_survey_responses_table, "overwrite")
@@ -773,6 +775,7 @@ def geography_and_imputation_dependent_processing(
         column_name_to_assign="age_group_school_year",
     )
 
+    df = reclassify_work_variables(df, spark_session=get_or_create_spark_session(), drop_original_variables=False)
     df = create_formatted_datetime_string_columns(df)
     update_table(df, output_table_name, write_mode="overwrite")
 
@@ -909,6 +912,7 @@ def record_level_interface(
     csv_editing_file
         defines the editing from old values to new values in the HIVE tables
         Columns expected
+            - id_column_name (optional)
             - id
             - dataset_name
             - target_column
