@@ -375,19 +375,15 @@ def process_soc_data(
     inconsistences_resolution_df = extract_from_table(inconsistences_resolution_table)
     soc_lookup_df = extract_from_table(unioned_soc_lookup_table)
     survey_responses_df = extract_from_table(survey_responses_table)
-    soc_lookup_df = soc_lookup_df.join(
-        inconsistences_resolution_df,
+    soc_lookup_df = soc_lookup_df.distinct().join(
+        inconsistences_resolution_df.distinct(),
         on=join_on_columns,
         how="left",
     )
-    soc_lookup_df = (
-        soc_lookup_df.withColumn(
-            "standard_occupational_classification_code",
-            F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
-        )
-        .distinct()
-        .drop("resolved_soc_code")
-    )
+    soc_lookup_df = soc_lookup_df.withColumn(
+        "standard_occupational_classification_code",
+        F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
+    ).drop("resolved_soc_code")
 
     duplicate_rows_df, soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
     survey_responses_df = survey_responses_df.join(soc_lookup_df, on=join_on_columns, how="left")

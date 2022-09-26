@@ -211,7 +211,7 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     ).drop("LENGTH")
     # remove flag from first row of dropped set if all codes from group are flagged
     df = df.withColumn("DROP", F.when(F.count("*").over(window) == 1, 0).otherwise(F.col("DROP")))
-    resolved_df = df.filter((F.col("DROP") == 0)).drop("DROP", "ROW_NUMBER")
+    resolved_df = df.filter((F.col("DROP") < 2)).drop("DROP", "ROW_NUMBER")
     duplicate_df = df.filter(F.col("DROP") == 2).drop("ROW_NUMBER", "DROP")
     return duplicate_df, resolved_df
 
