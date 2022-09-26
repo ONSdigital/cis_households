@@ -1965,7 +1965,8 @@ def union_dependent_derivations(df):
             df = df.withColumn(
                 f"{test_type}_sample_barcode_combined",
                 F.when(
-                    F.col(f"{test_type}_sample_barcode_correct") == "No",
+                    F.col(f"{test_type}_sample_barcode_correct")
+                    == "No" & ~F.col(f"{test_type}_sample_barcode_user_entered").isNull(),
                     F.col(f"{test_type}_sample_barcode_user_entered"),
                 ).otherwise(F.col(f"{test_type}_sample_barcode"))
                 # set to sample_barcode if _sample_barcode_correct is yes or null.
@@ -1973,8 +1974,8 @@ def union_dependent_derivations(df):
     df = conditionally_replace_columns(
         df,
         {
-            "swab_sample_barcode_combined": "swab_sample_barcode",
-            "blood_sample_barcode_combined": "blood_sample_barcode",
+            "swab_sample_barcode": "swab_sample_barcode_combined",
+            "blood_sample_barcode": "blood_sample_barcode_combined",
         },
         (F.col("survey_response_dataset_major_version") == 3),
     )
