@@ -40,6 +40,13 @@ def check_conditions(stage_responses: dict, stage_config: dict):
     return False
 
 
+def check_dependencies(run_config, stage_config):
+    stages_to_run = []
+    for stage_list in run_config.values():
+        stages_to_run.extend(stage_list)
+    print(stages_to_run)
+
+
 def run_from_config():
     """
     Run ordered pipeline stages, from pipeline configuration. Config file location must be specified in the environment
@@ -66,6 +73,8 @@ def run_from_config():
     with spark_description_set("adding run status"):
         add_run_status(run_id, "started")
     pipeline_error_count = None
+
+    check_dependencies(config["run"], config["stages"])
 
     try:
         validate_config_stages(all_object_function_dict=pipeline_stages, config_arguments_list_of_dict=config["stages"])

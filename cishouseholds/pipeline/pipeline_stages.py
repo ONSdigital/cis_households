@@ -360,7 +360,7 @@ def process_soc_deltas(
     return {"output_table": output_table}
 
 
-@register_pipeline_stage("process_soc_data", dependencies=["process_soc_deltas", "union_survey_responses"])
+@register_pipeline_stage("process_soc_data", dependencies=["process_soc_deltas", "union_survey_response_files"])
 def process_soc_data(
     input_table: str,
     output_table: str,
@@ -405,7 +405,15 @@ def process_soc_data(
     return {"output_table": output_table}
 
 
-@register_pipeline_stage("union_survey_response_files")
+@register_pipeline_stage(
+    "union_survey_response_files",
+    dependencies=[
+        "survey_responses_version_0_ETL",
+        "survey_responses_version_1_ETL",
+        "survey_responses_version_2_ETL",
+        "survey_responses_version_digital_ETL",
+    ],
+)
 def union_survey_response_files(tables_to_union: List, output_table: str):
     """
     Union survey response for v0, v1 and v2, and write to table.
@@ -422,7 +430,7 @@ def union_survey_response_files(tables_to_union: List, output_table: str):
     return {"output_table": output_table}
 
 
-@register_pipeline_stage("replace_design_weights")
+@register_pipeline_stage("replace_design_weights", dependencies=["union_survey_response_files"])
 def replace_design_weights(
     design_weight_lookup_table: str,
     input_table: str,
