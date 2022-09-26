@@ -143,7 +143,7 @@ from cishouseholds.pipeline.regex_patterns import self_employed_regex
 from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
 from cishouseholds.pipeline.regex_testing import healthcare_classification
 from cishouseholds.pipeline.regex_testing import patient_facing_classification
-from cishouseholds.pipeline.regex_testing import patient_facing_pattern
+from cishouseholds.pipeline.regex_testing import patient_facing_negative_regex
 from cishouseholds.pipeline.regex_testing import priority_map
 from cishouseholds.pipeline.regex_testing import roles_map
 from cishouseholds.pipeline.regex_testing import social_care_classification
@@ -2468,17 +2468,17 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = assign_regex_match_result(
         df=df,
         columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        column_name_to_assign="is_patient_facing",
-        positive_regex_pattern=patient_facing_pattern.positive_regex_pattern,
-        negative_regex_pattern=patient_facing_pattern.negative_regex_pattern,
+        column_name_to_assign="not_patient_facing",
+        positive_regex_pattern=patient_facing_negative_regex,
+        negative_regex_pattern="",
     )
     df = df.withColumn(
         "is_patient_facing",
         F.when(
-            array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])
-            | ~F.col("is_patient_facing"),
-            "No",
-        ).otherwise("Yes"),
+            array_contains_any("regex_derived_job_sector", patient_facing_classification["Y"])
+            & ~F.col("not_patient_facing"),
+            "Yes",
+        ).otherwise("No"),
     )
     df = assign_column_value_from_multiple_column_map(
         df,

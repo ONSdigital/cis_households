@@ -155,12 +155,12 @@ patient_facing_negative_regex = match_with_exclusions(
     r"(NO|LIMITED|NOT) FACE TO FACE|ONLINE|ZOOM|MICROSOFT|MS TEAMS|SKYPE|GOOGLE HANGOUTS?|REMOTE|VIRTUAL|DIGITAL|(ONLY|OVER THE) (TELE)?PHONE|((TELE)?PHONE|VIDEO) (CONSULT|CALL|WORK|SUPPORT)|(NO[TN]( CURRENTLY)?|NEVER) (IN PERSON|FACE TO FACE)|SH[EI]+LDING|WORK(ING)? (FROM|AT) HOME|HOME ?BASED|DELIVER(Y|ING)? PRESCRI|NO (CONTACT|VISITORS)",
     r"(?<!NOT )OFFICE BASED",
 )
-patient_facing_positive_regex = "|".join(
-    [
-        r"PALLIATIVE CARE|(?<!NOT )PATI[EA]NT FACING|(LOOK(S|ING)? AFTER|SEES?|CAR(E|ING) (OF|FOR)) PATI[EA]NTS|FACE TO FACE|FACE TO FACE",
-        r"(?<!NO )(DIRECT )?CONTACT WITH PATI[EA]NTS|CLIENTS COME TO (HER|HIS|THEIR) HOUSE",
-    ]
-)
+# patient_facing_positive_regex = "|".join(
+#     [
+#         r"PALLIATIVE CARE|(?<!NOT )PATI[EA]NT FACING|(LOOK(S|ING)? AFTER|SEES?|CAR(E|ING) (OF|FOR)) PATI[EA]NTS|FACE TO FACE|FACE TO FACE",
+#         r"(?<!NO )(DIRECT )?CONTACT WITH PATI[EA]NTS|CLIENTS COME TO (HER|HIS|THEIR) HOUSE",
+#     ]
+# )
 
 healthcare_classification = {
     "Primary": [
@@ -274,7 +274,3 @@ priority_map = {
     "base_non_healthcare": 3,
     "public_service": 2,
 }
-
-patient_facing_pattern = RegexPattern(
-    positive_regex_pattern=patient_facing_positive_regex, negative_regex_pattern=patient_facing_negative_regex
-)
