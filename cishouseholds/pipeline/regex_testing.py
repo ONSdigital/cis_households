@@ -188,8 +188,8 @@ healthcare_classification = {
 }
 
 social_care_classification = {
-    "Care/Residential home": ["residential_care"],
     "Other": ["social_work", "child_care", "informal_care"],
+    "Care/Residential home": ["residential_care"],
 }
 
 patient_facing_classification = {
