@@ -8,6 +8,7 @@ from typing import List
 
 import cishouseholds.pipeline.input_file_stages  # noqa: F401
 import cishouseholds.pipeline.pipeline_stages  # noqa: F401
+from cishouseholds.hdfs_utils import cleanup_checkpoint_dir
 from cishouseholds.log import SplunkLogger
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import add_run_log_entry
@@ -91,6 +92,10 @@ def run_from_config():
             error_message=repr(e),
         )
         raise e
+    finally:
+        # clean up check-pointed files
+        cleanup_checkpoint_dir(spark)
+
     run_time = (datetime.now() - run_datetime).total_seconds()
     print(f"\nPipeline run completed in: {run_time//60:.0f} minute(s) and {run_time%60:.1f} second(s)")  # functional
     if pipeline_error_count != 0:

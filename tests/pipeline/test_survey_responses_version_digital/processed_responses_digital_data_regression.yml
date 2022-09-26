@@ -3535,7 +3535,7 @@
     services
   work_in_additional_paid_employment: null
   work_in_additional_paid_employment_raw: Prefer not to say
-  work_location: Somewhere else meaning not at your home
+  work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else meaning not at your home
   work_main_job_changed: null
   work_main_job_role: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
@@ -4435,7 +4435,7 @@
     services
   work_in_additional_paid_employment: 'No'
   work_in_additional_paid_employment_raw: 'No'
-  work_location: Somewhere else meaning not at your home
+  work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else meaning not at your home
   work_main_job_changed: 'No'
   work_main_job_role: HASKELL FEATURES A TYPE SYSTEM WITH TYPE INFERENCE AND LAZY

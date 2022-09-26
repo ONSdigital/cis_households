@@ -30,16 +30,7 @@ def assign_regex_from_map(
     regex_columns = {key: [] for key in [1, *list(priority_map.values())]}  # type: ignore
 
     for title, pattern in roles.items():
-        col = F.when(
-            reduce(
-                or_,
-                [
-                    F.coalesce(F.col(reference_column), F.lit("")).rlike(pattern)
-                    for reference_column in reference_columns
-                ],
-            ),
-            title,
-        )
+        col = F.when(F.coalesce(F.concat(*reference_columns), F.lit("")).rlike(pattern), title)
         if title in priority_map:
             regex_columns[priority_map[title]].append(col)
         else:
@@ -426,15 +417,19 @@ def assign_multigenerational(
         ),
         on=household_id_column,
     ).distinct()
-
     transformed_df = assign_age_at_date(
         df=transformed_df,
         column_name_to_assign=age_column_name_to_assign,
         base_date=F.col(visit_date_column),
         date_of_birth=F.col(date_of_birth_column),
     )
-    transformed_df = assign_school_year(
-        df=transformed_df,
+
+    transformed_df_2 = spark_session.createDataFrame(
+        transformed_df.rdd, schema=transformed_df.schema
+    )  # breaks lineage to avoid Java OOM Error
+
+    transformed_df_3 = assign_school_year(
+        df=transformed_df_2,
         column_name_to_assign=school_year_column_name_to_assign,
         reference_date_column=visit_date_column,
         dob_column=date_of_birth_column,
@@ -454,19 +449,24 @@ def assign_multigenerational(
     generation_2_present = F.sum(generation_2).over(window) >= 1
     generation_3_present = F.sum(generation_3).over(window) >= 1
 
-    transformed_df = transformed_df.withColumn(
+    transformed_df_4 = spark_session.createDataFrame(
+        transformed_df_3.rdd, schema=transformed_df_3.schema
+    )  # breaks lineage to avoid Java OOM Error
+
+    transformed_df_5 = transformed_df_4.withColumn(
         column_name_to_assign,
         F.when(generation_1_present & generation_2_present & generation_3_present, 1).otherwise(0),
     )
     df = df.join(
-        transformed_df.select(
+        transformed_df_5.select(
+            household_id_column,
             column_name_to_assign,
             age_column_name_to_assign,
             school_year_column_name_to_assign,
             participant_id_column,
             visit_date_column,
         ),
-        on=[participant_id_column, visit_date_column],
+        on=[participant_id_column, household_id_column, visit_date_column],
         how="left",
     )
     return df
@@ -2180,3 +2180,100 @@ def flag_records_for_childcare_v2_b_rules() -> F.Column:
             )
         )
     )
+
+
+def derive_country_code(df, column_name_to_assign: str, region_code_column: str):
+    """Derive country code from region code starting character."""
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col(region_code_column).startswith("E"), "E92000001")
+        .when(F.col(region_code_column).startswith("N"), "N92000002")
+        .when(F.col(region_code_column).startswith("S"), "S92000003")
+        .when(F.col(region_code_column).startswith("W"), "W92000004")
+        .when(F.col(region_code_column).startswith("L"), "L93000001")
+        .when(F.col(region_code_column).startswith("M"), "M83000003"),
+    )
+    return df
+
+
+def clean_postcode(df: DataFrame, postcode_column: str):
+    """
+    update postcode variable to include only uppercase alpha numeric characters and set
+    to null if required format cannot be identified
+    Parameters
+    ----------
+    df
+    postcode_column
+    """
+    cleaned_postcode_characters = F.upper(F.regexp_replace(postcode_column, r"[^a-zA-Z\d]", ""))
+    inward_code = F.substring(cleaned_postcode_characters, -3, 3)
+    outward_code = F.regexp_replace(cleaned_postcode_characters, r".{3}$", "")
+    df = df.withColumn(
+        postcode_column,
+        F.when(F.length(outward_code) <= 4, F.concat(F.rpad(outward_code, 4, " "), inward_code)).otherwise(None),
+    )
+    return df
+
+
+def household_level_populations(
+    address_lookup: DataFrame, postcode_lookup: DataFrame, lsoa_cis_lookup: DataFrame, country_lookup: DataFrame
+) -> DataFrame:
+    """
+    1. join address base extract with NSPL by postcode to get LSOA 11 and country 12
+    2. join LSOA to CIS lookup, by LSOA 11 to get CIS area 20
+    3. join country lookup by country_code to get country names
+    4. calculate household counts by CIS area and country
+
+    N.B. Expects join keys to be deduplicated.
+    """
+    address_lookup = clean_postcode(address_lookup, "postcode")
+    postcode_lookup = clean_postcode(postcode_lookup, "postcode")
+    df = address_lookup.join(F.broadcast(postcode_lookup), on="postcode", how="left")
+    df = df.join(F.broadcast(lsoa_cis_lookup), on="lower_super_output_area_code_11", how="left")
+    df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
+    df = assign_count_by_group(df, "number_of_households_by_cis_area", ["cis_area_code_20"])
+    df = assign_count_by_group(df, "number_of_households_by_country", ["country_code_12"])
+
+    return df
+
+
+def assign_population_projections(
+    current_projection_df: DataFrame, previous_projection_df: DataFrame, month: int, m_f_columns: List[str]
+):
+    """
+    Use a given input month to create a scalar between previous and current values within m and f
+    subscript columns and update values accordingly
+    """
+    for col in m_f_columns:
+        current_projection_df = current_projection_df.withColumnRenamed(col, f"{col}_new")
+    current_projection_df = current_projection_df.join(
+        previous_projection_df.select("id", *m_f_columns), on="id", how="left"
+    )
+    if month < 6:
+        a = 6 - month
+        b = 6 + month
+    else:
+        a = 18 - month
+        b = month - 6
+
+    for col in m_f_columns:
+        current_projection_df = current_projection_df.withColumn(
+            col, F.lit(1 / 12) * ((a * F.col(col)) + (b * F.col(f"{col}_new")))
+        )
+        current_projection_df = current_projection_df.drop(f"{col}_new")
+    return current_projection_df
+
+
+def get_matches(old_sample_df: DataFrame, new_sample_df: DataFrame, selection_columns: List[str], barcode_column: str):
+    """
+    assign column to denote whether the data of a given set of columns (selection_columns) matches
+    between old and new sample df's (old_sample_df) (new_sample_df)
+    """
+    select_df = old_sample_df.select(barcode_column, *selection_columns)
+    for col in select_df.columns:
+        if col != barcode_column:
+            select_df = select_df.withColumnRenamed(col, col + "_OLD")
+    joined_df = new_sample_df.join(select_df, on=barcode_column, how="left")
+    for col in selection_columns:
+        joined_df = joined_df.withColumn(f"MATCHED_{col}", F.when(F.col(col) == F.col(f"{col}_OLD"), 1).otherwise(None))
+    return joined_df
