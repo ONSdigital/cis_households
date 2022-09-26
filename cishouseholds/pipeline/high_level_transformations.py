@@ -166,7 +166,9 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     transform and process cis soc data
     """
     # allow nullsafe join on title as soc is sometimes assigned without
-    df = df.filter(F.col("work_main_job_title").isNotNull()).distinct()
+    df = df.filter(F.col("work_main_job_title").isNotNull()).drop_duplicates(
+        ["standard_occupational_classification_code", *join_on_columns]
+    )
     df = df.withColumn(
         "soc_code_edited_to_uncodeable",
         (F.col("standard_occupational_classification_code").rlike(r".*[^0-9].*|^\s*$"))
@@ -212,7 +214,7 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     ).drop("LENGTH")
     # remove flag from first row of dropped set if all codes from group are flagged
     df = df.withColumn("DROP", F.when(F.count("*").over(window) == 1, 0).otherwise(F.col("DROP")))
-    resolved_df = df.filter((F.col("DROP") < 2)).drop("DROP", "ROW_NUMBER")
+    resolved_df = df.filter(F.col("DROP") == 0).drop("DROP", "ROW_NUMBER")
     duplicate_df = df.filter(F.col("DROP") == 2).drop("ROW_NUMBER", "DROP")
     return duplicate_df, resolved_df
 
