@@ -123,10 +123,10 @@ def responses_digital_ETL_output(pandas_df_to_temporary_csv):
 def pandas_df_to_temporary_csv(tmpdir_factory, spark_session):
     """Provides a function to write a pandas dataframe to a temporary csv file with function scope."""
 
-    def _pandas_df_to_temporary_csv(pandas_df, sep=",", filename="temp.csv"):
+    def _pandas_df_to_temporary_csv(pandas_df, sep=",", filename="temp.csv", header=True):
         in_dev_test = running_in_dev_test()
         temporary_csv_path = Path(tmpdir_factory.mktemp("data") / filename)
-        pandas_df.to_csv(temporary_csv_path, sep=sep, header=True, index=False, na_rep="")
+        pandas_df.to_csv(temporary_csv_path, sep=sep, header=header, index=False, na_rep="")
         _temporary_csv_path = str(temporary_csv_path.as_posix()).lstrip("/")
         if in_dev_test:
             # copy the csv file from local dir to hdfs when running in DevTest env
