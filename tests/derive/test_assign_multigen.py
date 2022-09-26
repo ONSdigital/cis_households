@@ -9,14 +9,6 @@ from cishouseholds.derive import assign_multigenerational
 def test_assign_multigeneration(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
-            # (1, "2020-02-06", 1, "2005-02-06", "England"),
-            # (1, "2020-02-05", 2, "1947-02-06", "England"),
-            # (1, "2022-04-05", 1, "2005-02-06", "England"),
-            # (1, "2020-02-05", 3, "1997-11-06", "England"),
-            # (1, "2020-12-12", 4, None, "England"),
-            # (2, "2020-01-22", 5, "2009-01-22", "England"),
-            # (3, "2021-03-11", 1, "2006-02-23", "Endland"),  # test duplicate participant id in different house
-            # (3, "2021-01-05", 6, "1989-03-12", "England"),
             (99, "2020-09-26", 270, "1966-05-04", "England"),
             (99, "2020-09-26", 410, "2007-08-15", "England"),
             (99, "2020-09-26", 543, "2007-08-15", "England"),
@@ -37,14 +29,6 @@ def test_assign_multigeneration(spark_session):
     )
     expected_df = spark_session.createDataFrame(
         data=[
-            # (1, "2021-03-11", 3, "2006-02-23", "Endland", 15, None, 0),
-            # (1, "2022-04-05", 1, "2005-02-06", "England", 17, 12, 0),
-            # (1, "2020-02-06", 1, "2005-02-06", "England", 14, 10, 1),
-            # (2, "2020-02-05", 1, "1947-02-06", "England", 72, None, 1),
-            # (3, "2020-02-05", 1, "1997-11-06", "England", 22, None, 1),
-            # (4, "2020-12-12", 1, None, "England", None, None, 1),
-            # (5, "2020-01-22", 2, "2009-01-22", "England", 10, 6, 0),
-            # (6, "2021-01-05", 3, "1989-03-12", "England", 31, None, 0),
             (99, "2020-09-26", 270, "1966-05-04", "England", 54, None, 0),
             (99, "2020-09-26", 410, "2007-08-15", "England", 13, 9, 0),
             (99, "2020-09-26", 543, "2007-08-15", "England", 13, 9, 0),
