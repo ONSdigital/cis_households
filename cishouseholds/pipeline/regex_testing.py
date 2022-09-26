@@ -78,7 +78,7 @@ hc_secretary = match_with_exclusions(
 hc_support = match_with_exclusions(
     [
         r"SUP+ORT *WORKER|ASSISTANT",
-        r"HOSPITAL|HEALTH *CARE|MENTAL *HEALTH|MATERNITY|CLINICAL|WARD|NURSE\b|NURSING(?! *HOME)|SURGERY|A&E|ONCOLOGY|PHLEBOTOM|AMBULANCE|WARD|MIDWIFE|IN *LABOUR|ACCIDENT *(& *|AND *)*EMERGENCY|COVID.*SWA[BP]",
+        r"HOSPITAL|HEALTH *CARE|MENTAL *HEALTH|MATERNITY(?! LEAVE)|CLINICAL|WARD|NURSE\b|NURSING(?! *HOME)|SURGERY|A&E|ONCOLOGY|PHLEBOTOM|AMBULANCE|WARD|MIDWIFE|IN *LABOUR|ACCIDENT *(& *|AND *)*EMERGENCY|COVID.*SWA[BP]",
     ],
     [r"BU(IS|SI)NESS SUPPORT", r"LOCAL COUNCIL|DISCHARGE|POST HOSPITAL|HOME NURS", r"HEALTH *CARE ASSIST|\bHCA\b"],
 )
@@ -130,7 +130,7 @@ therapist = match_with_exclusions(
 )
 hc_theatre = match_with_exclusions("THEATRE", "PERFORMER|ACTOR|STAGE|PLAY|CINEMA|MOVIE|WARDROBE|PRODUCER|DIRECTOR")
 social_work = match_with_exclusions(
-    r"SOCIAL.*WORK|FOSTER CARE|CHILD PROTECTION|PROBATION OFFICER|YOUTH OFFENDER|HMP|COMMUNITY WORKER|PRISON OFFIC|SHELTERED (ACC.*N|LIVING)",
+    r"SOCIAL.*WORK|FOSTER CARE|CHILD PROTECTION|PROBATION OFFICER|OCC?UPATIONAL THERAP|\bOT\b|YOUTH OFFENDER|HMP|COMMUNITY WORKER|PRISON OFFIC|SHELTERED (ACC.*N|LIVING)",
     "SOCIAL(LY)? DISTANCE",
 )
 support_work = "SUP+ORT *WORKER"
@@ -188,7 +188,7 @@ healthcare_classification = {
 }
 
 social_care_classification = {
-    "Other": ["social_work", "child_care", "informal_care"],
+    "Other": ["social_work", "child_care"],
     "Care/Residential home": ["residential_care"],
 }
 
@@ -263,16 +263,18 @@ roles_map = {
 }
 
 priority_map = {
-    "vet": 2,
-    "construction": 2,
-    "retail": 2,
+    "vet": 3,
+    "construction": 3,
+    "retail": 3,
     "paramedic": 0,
     "retired": 9,
-    "teaching": 2,
-    "media": 2,
-    "hc_admin": 2,
-    "hc_secretary": 2,
-    "social_work": 2,
-    "base_non_healthcare": 3,
-    "public_service": 2,
+    "teaching": 3,
+    "media": 3,
+    "hc_admin": 3,
+    "hc_secretary": 3,
+    "social_work": 3,
+    "base_non_healthcare": 4,
+    "public_service": 4,
+    "nurse": 2,
+    "informal_care": 8,
 }

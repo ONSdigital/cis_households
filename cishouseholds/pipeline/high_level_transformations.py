@@ -2441,16 +2441,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         roles=roles_map,
         priority_map=priority_map,
     )
-    # create healthcare area flag
-    df = df.withColumn("healthcare_area", F.lit(None))
-    for healthcare_type, roles in healthcare_classification.items():  # type: ignore
-        df = df.withColumn(
-            "healthcare_area",
-            F.when(array_contains_any("regex_derived_job_sector", roles), healthcare_type).otherwise(  # type: ignore
-                F.col("healthcare_area")
-            ),
-        )
-
     # TODO: need to exclude healthcare types from social care matching
     df = df.withColumn("social_care_area", F.lit(None))
     for social_care_type, roles in social_care_classification.items():  # type: ignore
@@ -2459,6 +2449,16 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             F.when(array_contains_any("regex_derived_job_sector", roles), social_care_type).otherwise(  # type: ignore
                 F.col("social_care_area")
             ),
+        )
+
+    # create healthcare area flag
+    df = df.withColumn("healthcare_area", F.lit(None))
+    for healthcare_type, roles in healthcare_classification.items():  # type: ignore
+        df = df.withColumn(
+            "healthcare_area",
+            F.when(F.col("social_care_area").isNotNull(), None)
+            .when(array_contains_any("regex_derived_job_sector", roles), healthcare_type)
+            .otherwise(F.col("healthcare_area")),  # type: ignore
         )
 
     # add boolean flags for working in healthcare or socialcare
