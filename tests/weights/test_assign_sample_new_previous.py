@@ -1,7 +1,7 @@
 import pyspark.sql.functions as F
 from chispa import assert_df_equality
 
-from cishouseholds.weights.derive import assign_sample_new_previous
+from cishouseholds.pipeline.design_weights import assign_sample_new_previous
 
 
 def test_assign_sample_new_previous(spark_session):

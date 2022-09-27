@@ -28,6 +28,10 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
+  name: current_window_cadence
+  nullable: true
+  type: string
+- metadata: {}
   name: street
   nullable: true
   type: string
@@ -468,7 +472,11 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: form_started_datetime
+  name: form_start_datetime
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: blood_consolidation_point_error
   nullable: true
   type: string
 - metadata: {}
@@ -476,15 +484,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: blood_consolidation_point_error
+  name: blood_consolidation_point_error_datetime
   nullable: true
   type: string
 - metadata: {}
   name: swab_consolidation_point_error_datetime
-  nullable: true
-  type: string
-- metadata: {}
-  name: blood_consolidation_point_error_datetime
   nullable: true
   type: string
 - metadata: {}
@@ -1232,10 +1236,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_covid_symptom_onset_date
-  nullable: true
-  type: timestamp
-- metadata: {}
   name: think_have_covid_symptoms
   nullable: true
   type: string
@@ -1255,6 +1255,10 @@ fields:
   name: other_antibody_test_negative_date
   nullable: true
   type: timestamp
+- metadata: {}
+  name: form_language
+  nullable: true
+  type: string
 - metadata: {}
   name: survey_response_source_file
   nullable: false

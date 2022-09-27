@@ -1,47 +1,57 @@
-row_id,rule,record_type,work_main_job_title,work_main_job_role,age_at_visit,school_year,work_location,work_status_v0,work_status_v1,work_status_v2
-0,wfh_rules=1,input,ADMIN - WORKS FROM HOME,ADMINSTRATOR,54,,,Employed,Employed and currently working,Employed and currently working
-0,wfh_rules=1,expected,ADMIN - WORKS FROM HOME,ADMINSTRATOR,54,,Working from home,Employed,Employed and currently working,Employed and currently working
-1,furlough_rules_v0 = 1,input,ASSISTANT SCHOOL TEACHER,FURLOWED,70,,OFFICE,Employed,Employed and currently not working,Employed and currently not working
-1,furlough_rules_v0 = 1,expected,ASSISTANT SCHOOL TEACHER,FURLOWED,70,,OFFICE,Furloughed (temporarily not working),Employed and currently not working,Employed and currently not working
-2,furlough_rules_v1_a = 1,input,ASSISTANT SCHOOL TEACHER,FURLOWED,70,,OFFICE,Furloughed (temporarily not working),Looking for paid work and able to start,Employed and currently not working
-2,furlough_rules_v1_a = 1,expected,ASSISTANT SCHOOL TEACHER,FURLOWED,70,,OFFICE,Furloughed (temporarily not working),Employed and currently not working,Employed and currently not working
-3,furlough_rules_v1_b = 1,input,PLUMBER,FURLOWED,70,,OFFICE,Furloughed (temporarily not working),Self-employed and currently working,Self-employed and currently not working
-3,furlough_rules_v1_b = 1,expected,PLUMBER,FURLOWED,70,,OFFICE,Furloughed (temporarily not working),Self-employed and currently not working,Self-employed and currently not working
-4,furlough_rules_v2_a = 1,input,DOCTOR,FURLOWED,30,,HOSPITAL,Furloughed (temporarily not working),Employed and currently not working,Employed and currently working
-4,furlough_rules_v2_a = 1,expected,DOCTOR,FURLOWED,30,,HOSPITAL,Furloughed (temporarily not working),Employed and currently not working,Employed and currently not working
-5,furlough_rules_v2_b = 1,input,SELFEMPLOYED CHEF,FURLOWED,30,,RESTAURANT,Furloughed (temporarily not working),Employed and currently not working,Self-employed and currently working
-5,furlough_rules_v2_b = 1,expected,SELFEMPLOYED CHEF,FURLOWED,30,,RESTAURANT,Furloughed (temporarily not working),Self-employed and currently not working,Self-employed and currently not working
-6,self_employed_rules_regex_only,input,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Employed,Self-employed and currently working,Self-employed and currently working
-6,self_employed_rules_regex_only,expected,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Self-employed and currently working,Self-employed and currently working
-7,self_employed_rules_v1_a= 1,input,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Employed and currently working,Self-employed and currently working
-7,self_employed_rules_v1_a= 1,expected,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Self-employed and currently working,Self-employed and currently working
-8,self_employed_rules_v1_b= 1,input,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Employed and currently not working,Self-employed and currently not working
-8,self_employed_rules_v1_b= 1,expected,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Self-employed and currently not working,Self-employed and currently not working
-9,self_employed_rules_v2_a= 1,input,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Self-employed and currently working,Employed and currently working
-9,self_employed_rules_v2_a= 1,expected,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Self-employed and currently working,Self-employed and currently working
-10,self_employed_rules_v2_b= 1,input,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Self-employed and currently not working,Employed and currently not working
-10,self_employed_rules_v2_b= 1,expected,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Self-employed and currently not working,Self-employed and currently not working
-11,retired,input,,,78,,HOME BOUND,,,
-11,retired,expected,,,78,,"Not applicable, not currently working","Not working (unemployed, retired, long-term sick etc.)",Retired,Retired
-12,no_working_rules_v0=1,input,NOT WORKING,NOT WORKING,45,,OFFICE,Employed,Employed and currently not working,Employed and currently not working
-12,no_working_rules_v0=1,expected,NOT WORKING,NOT WORKING,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Employed and currently not working,Employed and currently not working
-13,no_working_rules_v1_a=1,input,NOT WORKING,UNEMPLOYED,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Employed and currently working,Employed and currently not working
-13,no_working_rules_v1_a=1,expected,NOT WORKING,UNEMPLOYED,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Employed and currently not working,Employed and currently not working
-14,no_working_rules_v1_b=1,input,SELFEMPLOYED CHEF,NOT WORKING,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Self-employed and currently working,Self-employed and currently not working
-14,no_working_rules_v1_b=1,expected,SELFEMPLOYED CHEF,NOT WORKING,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Self-employed and currently not working,Self-employed and currently not working
-15,no_working_rules_v2_a=1,input,NOT WORKING,UNEMPLOYED,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Employed and currently not working,Employed and currently working
-15,no_working_rules_v2_a=1,expected,NOT WORKING,UNEMPLOYED,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Employed and currently not working,Employed and currently not working
-16,no_working_rules_v2_b=1,input,NOT WORKING,NOT WORKING,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Self-employed and currently not working,Self-employed and currently working
-16,no_working_rules_v2_b=1,expected,NOT WORKING,NOT WORKING,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Self-employed and currently not working,Self-employed and currently not working
-17,school/student v0,input,STUDENT,STUDYING,17,,SCHOOL,Employed,5y and older in full-time education,4-5y and older at school/home-school
-17,school/student v0,expected,STUDENT,STUDYING,17,,SCHOOL,Student,5y and older in full-time education,Attending university (including if temporarily absent)
-18,school/student v1,input,STUDENT,STUDYING,15,,SCHOOL,Student,,4-5y and older at school/home-school
-18,school/student v1,expected,STUDENT,STUDYING,15,,SCHOOL,Student,5y and older in full-time education,4-5y and older at school/home-school
-19,school/student v2,input,STUDENT,STUDYING,4,,OFFICE,Student,Child under 5y attending child care,Not working and not looking for work
-19,school/student v2,expected,STUDENT,STUDYING,4,,OFFICE,Student,Child under 5y attending child care,Child under 4-5y attending child care
-20,school/student v2_uni,input,STUDENT,STUDYING,20,,College,Employed,,
-20,school/student v2_uni,expected,STUDENT,STUDYING,20,,College,Student,5y and older in full-time education,Attending university (including if temporarily absent)
-21,school/student v2_college,input,STUDENT AT COLLEGE,STUDENT,22,,OFFICE,Student,,Retired
-21,school/student v2_college,expected,STUDENT AT COLLEGE,STUDENT,22,,OFFICE,Student,5y and older in full-time education,Attending college or FE (including if temporarily absent)
-22,general,input,NURSE,FURLOWED,33,,,Furloughed (temporarily not working),Employed and currently not working,Employed and currently not working
-22,general,expected,NURSE,FURLOWED,33,,"Not applicable, not currently working",Furloughed (temporarily not working),Employed and currently not working,Employed and currently not working
+row_id,rule_id,record_type,work_main_job_title,work_main_job_role,age_at_visit,school_year,work_location,work_status_v0,work_status_v1,work_status_v2
+0,1000,input,ADMIN - WORKS FROM HOME,ADMINSTRATOR,54,,,Employed,Employed and currently working,Employed and currently working
+0,1000,expected,ADMIN - WORKS FROM HOME,ADMINSTRATOR,54,,Working from home,Employed,Employed and currently working,Employed and currently working
+1,2000,input,ASSISTANT SCHOOL TEACHER,FURLOWED,70,,OFFICE,Employed,Employed and currently not working,Employed and currently not working
+1,2000,expected,ASSISTANT SCHOOL TEACHER,FURLOWED,70,,OFFICE,Furloughed (temporarily not working),Employed and currently not working,Employed and currently not working
+2,2001,input,ASSISTANT SCHOOL TEACHER,FURLOWED,70,,OFFICE,Furloughed (temporarily not working),Looking for paid work and able to start,Employed and currently not working
+2,2001,expected,ASSISTANT SCHOOL TEACHER,FURLOWED,70,,OFFICE,Furloughed (temporarily not working),Employed and currently not working,Employed and currently not working
+3,2002,input,PLUMBER,FURLOWED,70,,OFFICE,Furloughed (temporarily not working),Self-employed and currently working,Self-employed and currently not working
+3,2002,expected,PLUMBER,FURLOWED,70,,OFFICE,Furloughed (temporarily not working),Self-employed and currently not working,Self-employed and currently not working
+4,2003,input,DOCTOR,FURLOWED,30,,HOSPITAL,Furloughed (temporarily not working),Employed and currently not working,Employed and currently working
+4,2003,expected,DOCTOR,FURLOWED,30,,HOSPITAL,Furloughed (temporarily not working),Employed and currently not working,Employed and currently not working
+5,2004,input,SELFEMPLOYED CHEF,FURLOWED,30,,RESTAURANT,Furloughed (temporarily not working),Employed and currently not working,Self-employed and currently working
+5,2004,expected,SELFEMPLOYED CHEF,FURLOWED,30,,RESTAURANT,Furloughed (temporarily not working),Self-employed and currently not working,Self-employed and currently not working
+6,3000,input,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,,Self-employed and currently working,Self-employed and currently working
+6,3000,expected,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Self-employed and currently working,Self-employed and currently working
+7,3001,input,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Employed and currently working,Self-employed and currently working
+7,3001,expected,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Self-employed and currently working,Self-employed and currently working
+8,3002,input,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Employed and currently not working,Self-employed and currently not working
+8,3002,expected,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Self-employed and currently not working,Self-employed and currently not working
+9,3003,input,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Self-employed and currently working,Employed and currently working
+9,3003,expected,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Self-employed and currently working,Self-employed and currently working
+10,3004,input,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Self-employed and currently not working,Employed and currently not working
+10,3004,expected,SELFEMPLOYED CHEF,CHEF,25,,SCHOOL,Self-employed,Self-employed and currently not working,Self-employed and currently not working
+11,"4,000",input,,,78,,HOME BOUND,,,
+11,"4,000",expected,,,78,,"Not applicable, not currently working","Not working (unemployed, retired, long-term sick etc.)",Retired,Retired
+11.1,"4,001",input,,,78,,HOME BOUND,,,
+11.1,"4,001",expected,,,78,,"Not applicable, not currently working","Not working (unemployed, retired, long-term sick etc.)",Retired,Retired
+11.2,"4,002",input,,,78,,HOME BOUND,"Not working (unemployed, retired, long-term sick etc.)",,
+11.2,"4,002",expected,,,78,,"Not applicable, not currently working","Not working (unemployed, retired, long-term sick etc.)",Retired,Retired
+12,5000,input,NOT WORKING,NOT WORKING,45,,OFFICE,Employed,Employed and currently not working,Employed and currently not working
+12,5000,expected,NOT WORKING,NOT WORKING,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Employed and currently not working,Employed and currently not working
+13,5001,input,NOT WORKING,UNEMPLOYED,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Employed and currently working,Employed and currently not working
+13,5001,expected,NOT WORKING,UNEMPLOYED,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Employed and currently not working,Employed and currently not working
+14,5002,input,SELFEMPLOYED CHEF,NOT WORKING,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Self-employed and currently working,Self-employed and currently not working
+14,5002,expected,SELFEMPLOYED CHEF,NOT WORKING,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Self-employed and currently not working,Self-employed and currently not working
+15,5003,input,NOT WORKING,UNEMPLOYED,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Employed and currently not working,Employed and currently working
+15,5003,expected,NOT WORKING,UNEMPLOYED,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Employed and currently not working,Employed and currently not working
+16,5004,input,NOT WORKING,NOT WORKING,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Self-employed and currently not working,Self-employed and currently working
+16,5004,expected,NOT WORKING,NOT WORKING,45,,OFFICE,"Not working (unemployed, retired, long-term sick etc.)",Self-employed and currently not working,Self-employed and currently not working
+17,6000,input,STUDENT,STUDYING,15,,SCHOOL,Employed,5y and older in full-time education,4-5y and older at school/home-school
+17,6000,expected,STUDENT,STUDYING,15,,"Not applicable, not currently working",Student,5y and older in full-time education,4-5y and older at school/home-school
+18,6001,input,STUDENT,STUDYING,15,,SCHOOL,Student,,4-5y and older at school/home-school
+18,6001,expected,STUDENT,STUDYING,15,,"Not applicable, not currently working",Student,5y and older in full-time education,4-5y and older at school/home-school
+19,6002,input,STUDENT,STUDYING,4,,OFFICE,Student,Child under 5y attending child care,Not working and not looking for work
+19,6002,expected,STUDENT,STUDYING,4,,"Not applicable, not currently working",Student,Child under 5y attending child care,Child under 4-5y attending child care
+20,6003,input,STUDENT,STUDYING,4,,College,Student,5y and older in full-time education,Child under 4-5y attending child care
+20,6003,expected,STUDENT,STUDYING,4,,"Not applicable, not currently working",Student,Child under 5y attending child care,Child under 4-5y attending child care
+21,6004,input,STUDENT AT COLLEGE,STUDENT,5,,OFFICE,Student,,Retired
+21,6004,expected,STUDENT AT COLLEGE,STUDENT,5,,"Not applicable, not currently working",Student,5y and older in full-time education,Child under 4-5y attending child care
+22,6005,input,STUDENT,STUDYING,6,,OFFICE,Student,,
+22,6005,expected,STUDENT,STUDYING,6,,"Not applicable, not currently working",Student,5y and older in full-time education,4-5y and older at school/home-school
+23,6006,input,STUDENT,STUDYING,16,,OFFICE,Student,,
+23,6006,expected,STUDENT,STUDYING,16,,"Not applicable, not currently working",Student,5y and older in full-time education,Attending college or FE (including if temporarily absent)
+24,6007,input,STUDENT,STUDYING,19,,OFFICE,Student,,
+24,6007,expected,STUDENT,STUDYING,19,,"Not applicable, not currently working",Student,5y and older in full-time education,Attending university (including if temporarily absent)
+25,7000,input,NURSE,FURLOWED,33,,,Furloughed (temporarily not working),Employed and currently not working,Employed and currently not working
+25,7000,expected,NURSE,FURLOWED,33,,"Not applicable, not currently working",Furloughed (temporarily not working),Employed and currently not working,Employed and currently not working

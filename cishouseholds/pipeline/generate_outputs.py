@@ -1,16 +1,76 @@
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 from typing import List
 from typing import Optional
 from typing import Union
 
+import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
+from pyspark.sql import Window
 
 from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.extract import list_contents
+from cishouseholds.hdfs_utils import create_dir
+
+
+def generate_stratified_sample(
+    df: DataFrame,
+    cols: List[str],
+    rows_per_sample: int,
+    num_files: int,
+    output_folder_name: str,
+    array_columns: List[str] = [],
+):
+    """
+    Generate a stratified sample of data in multiple separate csv files
+    """
+    output_directory = "/dapsen/workspace_zone/covserolink/cis_pipeline_proving/proving_outputs/" + output_folder_name
+    create_dir(output_directory)
+
+    df = df.withColumn("sampling_strata", F.concat_ws("-", *[F.col(col) for col in cols]))
+    for col in cols:
+        df = df.withColumn(f"{col}_decision", F.lit(0))
+
+    summary_df = (
+        df.groupBy("sampling_strata")
+        .agg(
+            F.countDistinct("participant_id").alias("n_distinct_participants"),
+            F.count("participant_id").alias("n_records"),
+        )
+        .withColumn(
+            "n_stratum", F.count(F.col("sampling_strata")).over(Window().rangeBetween(-sys.maxsize, sys.maxsize))
+        )
+        .withColumn("n_sample_required", F.lit(rows_per_sample) / F.col("n_stratum"))
+        .withColumn("percentage_sample_required", F.col("n_sample_required") / F.col("n_records"))
+        .orderBy("sampling_strata")
+        .toPandas()
+    )
+
+    sampling_fractions = {
+        row.sampling_strata: min(row.percentage_sample_required, 1) for row in summary_df.itertuples()
+    }
+
+    cols_to_output = [
+        "participant_id",
+        "work_main_job_title",
+        "work_main_job_role",
+        *cols,
+        *[f"{col}_decision" for col in cols],
+    ]
+
+    sampled_df = (
+        df.sampleBy("sampling_strata", fractions=sampling_fractions, seed=123456)
+        .select(*cols_to_output)
+        .repartition(num_files)
+        .sortWithinPartitions("sampling_strata", "participant_id")
+    )
+    for col in array_columns:
+        sampled_df = sampled_df.withColumn(col, F.col(col).cast("string"))
+    sampled_df.write.option("header", True).mode("overwrite").csv(output_directory)
 
 
 def map_output_values_and_column_names(df: DataFrame, column_name_map: dict, value_map_by_column: dict):
