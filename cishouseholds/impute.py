@@ -158,6 +158,7 @@ def fill_forward_event(
     take the latest event for each visit_datetime forward across all records.
 
     Parameters
+    ----------
     df
     event_indicator_column
         column indicating if an event took place
@@ -374,11 +375,27 @@ def fill_forward_only_to_nulls_in_dataset_based_on_column(
 ) -> DataFrame:
     """
     This function will carry forward values windowed by an id ordered by date.
-    Fills the set of columns in list_fill_forward indepentently, filling non-null values forwards into the row when
+    Fills the set of columns in list_fill_forward independently, filling non-null values forwards into the row when
     all list_fill_forward values in that row are null.
 
     Only fills into Null values on or after specified dataset version and when changed condition is met.
     Though this may include filling the last value from the previous dataset version.
+
+    Parameters
+    ----------
+    df
+        The input dataframe
+    id
+        The column to use to partition rows
+    date
+        A date column
+    changed
+        Indicator column to capture whether a  record has changed or not
+    dataset
+        The name of the source dataset for the record in question
+    dataset_value
+    list_fill_forward
+    changed_positive_value
     """
     window = Window.partitionBy(id).orderBy(date)
 
