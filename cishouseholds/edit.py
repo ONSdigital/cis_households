@@ -1014,17 +1014,12 @@ def replace_sample_barcode(
             df = df.withColumn(
                 f"{test_type}_sample_barcode_combined",
                 F.when(
-                    (F.col("survey_response_dataset_major_version") == 3)
-                    & (F.col(f"{test_type}_sample_barcode_correct") == "No")
-                    & (F.col(f"{test_type}_sample_barcode_user_entered") is not None),
+                    (
+                        (F.col("survey_response_dataset_major_version") == 3)
+                        & (F.col(f"{test_type}_sample_barcode_correct") == "No")
+                        & ~(F.col(f"{test_type}_sample_barcode_user_entered").isNull())
+                    ),
                     F.col(f"{test_type}_sample_barcode_user_entered"),
-                )
-                .when(
-                    (F.col("survey_response_dataset_major_version") == 3)
-                    & (F.col(f"{test_type}_sample_barcode_correct") == "No")
-                    & (F.col(f"{test_type}_sample_barcode_user_entered") is None),
-                    F.col(f"{test_type}_sample_barcode"),
-                )
-                .otherwise(F.col(f"{test_type}_sample_barcode")),
+                ).otherwise(F.col(f"{test_type}_sample_barcode")),
             )
     return df
