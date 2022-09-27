@@ -1002,17 +1002,7 @@ def survey_edit_auto_complete(
 
 def replace_sample_barcode(
     df: DataFrame,
-    swab_barcode_combined: str,
-    blood_barcode_combined: str,
-    swab_barcode: str,
-    blood_barcode: str,
-    dataset_version: int,
-    swab_barcode_correct: str,
-    blood_barcode_correct: str,
-    swab_barcode_entered: str,
-    blood_barcode_entered: str,
 ):
-
     """
     For CIS Digital responses, the derived values swab_sample_barcode_combined and blood_sample_barcode_combined
     should replace the value in swab_sample_barcode and blood_sample_barcode respectively, as this takes the user
