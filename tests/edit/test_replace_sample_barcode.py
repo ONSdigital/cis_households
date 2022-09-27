@@ -6,10 +6,10 @@ from cishouseholds.edit import replace_sample_barcode
 def test_replace_sample_barcode(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
-            (1, "A", "B", 3, "Yes", "Yes", "C", "D"),
-            (2, "A", "B", 3, "No", "No", "C", "D"),
-            (3, "A", "B", 3, "Yes", "Yes", None, None),
-            (4, "A", "B", 2, "Yes", "Yes", "C", "D"),
+            (1, "A", "B", 3, "Yes", "Yes", "C", "D"),  # Tests to preserve preassigned A and B in new col
+            (2, "A", "B", 3, "No", "No", "C", "D"),  # Tests to replace A and B with C and D in new col
+            (3, "A", "B", 3, "Yes", "Yes", None, None),  # Tests to preserve preassigned A and B in new col
+            (4, "A", "B", 2, "Yes", "Yes", "C", "D"),  # Tests to preserve values due to business logic
         ],
         schema="""
         id integer,
