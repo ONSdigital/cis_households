@@ -84,6 +84,17 @@ def impute_outside_uk_columns(
 
 
 def impute_visit_datetime(df: DataFrame, visit_datetime_column: str, sampled_datetime_column: str) -> DataFrame:
+    """Imputer visit datetime columns
+
+    Parameters
+    ----------
+    df
+        The input dataframe containing the column to impute
+    visit_datetime_column
+        The visit datetime column
+    sampled_datetime_column
+        The column to use to impute the `visit_datetime_column`
+    """
     df = df.withColumn(
         visit_datetime_column,
         F.when(F.col(visit_datetime_column).isNull(), F.col(sampled_datetime_column)).otherwise(
@@ -240,6 +251,25 @@ def generate_fill_forward_df(
     record_changed_column: str,
     record_changed_value: str,
 ) -> DataFrame:
+    """
+    Generate fill-forward dataframe
+
+    Parameters
+    ----------
+    df
+        The input dataframe containing the columns to impute
+    fill_forward_columns
+        The list of columns to fill-foward
+    participant_id_column
+        The column to use to partition rows - typically this will be the participant id
+    visit_datetime_column
+        The visit datatime column
+    record_changed_column
+        An indicator column that tells us whether a record needs to be fill-foward if it equals `record_changed_value
+    record_changed_value
+        See `record_changed_column` above
+
+    """
     window = Window.partitionBy(participant_id_column).orderBy(F.col(visit_datetime_column).asc())
     df = df.withColumn("ROW_NUMBER", F.row_number().over(window))
 
