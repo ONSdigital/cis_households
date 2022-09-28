@@ -414,7 +414,8 @@ def process_regx_data(survey_responses_table: str, regex_derived_survey_response
     if check_table_exists(regex_lookup_table):
         lookup_df = extract_from_table(regex_lookup_table, True)
         non_derived_rows = df.join(lookup_df, on=join_on_columns, how="leftanti").select(*join_on_columns).distinct()
-        update_table(add_pattern_matching_flags(non_derived_rows), regex_lookup_table, "append")
+        lookup_df = lookup_df.unionByName(add_pattern_matching_flags(non_derived_rows))
+        update_table(lookup_df, regex_lookup_table, "overwrite")
     else:
         lookup_df = add_pattern_matching_flags(df.select(*join_on_columns).distinct())
     df = df.join(regex_lookup_table, on=join_on_columns, how="left")
