@@ -96,6 +96,7 @@ from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import rename_column_names
+from cishouseholds.edit import replace_sample_barcode
 from cishouseholds.edit import survey_edit_auto_complete
 from cishouseholds.edit import update_column_if_ref_in_list
 from cishouseholds.edit import update_column_in_time_window
@@ -114,6 +115,7 @@ from cishouseholds.expressions import array_contains_any
 from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
+from cishouseholds.impute import fill_forward_event
 from cishouseholds.impute import fill_forward_from_last_change
 from cishouseholds.impute import fill_forward_from_last_change_marked_subset
 from cishouseholds.impute import fill_forward_only_to_nulls
@@ -1960,24 +1962,18 @@ def union_dependent_derivations(df):
         ],
         "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
     }
-    if "swab_sample_barcode_user_entered" in df.columns:
-        for test_type in ["swab", "blood"]:
-            df = df.withColumn(
-                f"{test_type}_sample_barcode_combined",
-                F.when(
-                    F.col(f"{test_type}_sample_barcode_correct") == "No",
-                    F.col(f"{test_type}_sample_barcode_user_entered"),
-                ).otherwise(F.col(f"{test_type}_sample_barcode"))
-                # set to sample_barcode if _sample_barcode_correct is yes or null.
-            )
+
+    df = replace_sample_barcode(df=df)
+
     df = conditionally_replace_columns(
         df,
         {
-            "swab_sample_barcode_combined": "swab_sample_barcode",
-            "blood_sample_barcode_combined": "blood_sample_barcode",
+            "swab_sample_barcode": "swab_sample_barcode_combined",
+            "blood_sample_barcode": "blood_sample_barcode_combined",
         },
         (F.col("survey_response_dataset_major_version") == 3),
     )
+
     df = assign_column_from_mapped_list_key(
         df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
     )
@@ -2087,7 +2083,62 @@ def union_dependent_derivations(df):
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
     )
+
+    df = fill_forward_event(
+        df=df,
+        event_indicator_column="think_had_covid",
+        event_date_column="think_had_covid_onset_date",
+        detail_columns=[
+            "other_covid_infection_test",
+            "other_covid_infection_test_result",
+            "think_had_covid_admitted_to_hospital",
+            "think_had_covid_contacted_nhs",
+            "think_had_covid_symptom_fever",
+            "think_had_covid_symptom_muscle_ache",
+            "think_had_covid_symptom_fatigue",
+            "think_had_covid_symptom_sore_throat",
+            "think_had_covid_symptom_cough",
+            "think_had_covid_symptom_shortness_of_breath",
+            "think_had_covid_symptom_headache",
+            "think_had_covid_symptom_nausea_or_vomiting",
+            "think_had_covid_symptom_abdominal_pain",
+            "think_had_covid_symptom_loss_of_appetite",
+            "think_had_covid_symptom_noisy_breathing",
+            "think_had_covid_symptom_runny_nose_or_sneezing",
+            "think_had_covid_symptom_more_trouble_sleeping",
+            "think_had_covid_symptom_diarrhoea",
+            "think_had_covid_symptom_loss_of_taste",
+            "think_had_covid_symptom_loss_of_smell",
+            "think_had_covid_symptom_memory_loss_or_confusion",
+            "think_had_covid_symptom_chest_pain",
+            "think_had_covid_symptom_vertigo_or_dizziness",
+            "think_had_covid_symptom_difficulty_concentrating",
+            "think_had_covid_symptom_anxiety",
+            "think_had_covid_symptom_palpitations",
+            "think_had_covid_symptom_low_mood",
+        ],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+    )
+
     # Derive these after fill forwards and other changes to dates
+    df = fill_forward_event(
+        df=df,
+        event_indicator_column="contact_suspected_positive_covid_last_28_days",
+        event_date_column="last_suspected_covid_contact_date",
+        detail_columns=["last_suspected_covid_contact_type"],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_date",
+    )
+    df = fill_forward_event(
+        df=df,
+        event_indicator_column="contact_known_positive_covid_last_28_days",
+        event_date_column="last_covid_contact_date",
+        detail_columns=["last_covid_contact_type"],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_date",
+    )
+
     df = create_formatted_datetime_string_columns(df)
     return df
 
