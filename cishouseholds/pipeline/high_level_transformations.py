@@ -503,14 +503,11 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
             "blood_taken_datetime",
             "survey_completed_datetime",
             "survey_last_modified_datetime",
-            # "swab_return_date",
-            # "blood_return_date",
-            # "swab_return_future_date",
-            # "blood_return_future_date",
         ],
         secondary_date_columns=[],
-        file_date_column="file_date",
-        min_date="2022-05-01",
+        min_datetime_column_name="participant_completion_window_start_datetime_string",
+        max_datetime_column_name="participant_completion_window_end_datetime_string",
+        reference_datetime_column_name="swab_sample_received_consolidation_point_datetime_string",
         default_timestamp="12:00:00",
     )
     df = update_column_in_time_window(
