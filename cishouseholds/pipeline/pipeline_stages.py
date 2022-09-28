@@ -366,7 +366,7 @@ def process_soc_data(
     inconsistences_resolution_table: str,
     unioned_soc_lookup_table: str,
     transformed_soc_lookup_table: str,
-    duplicate_soc_rows_table: str,
+    coding_errors_table: str,
 ):
     """
     Process soc data and combine result with survey responses data
@@ -385,7 +385,7 @@ def process_soc_data(
         F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
     ).drop("resolved_soc_code")
 
-    duplicate_rows_df, soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
+    coding_errors_df, soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
     survey_responses_df = survey_responses_df.join(soc_lookup_df, on=join_on_columns, how="left")
     survey_responses_df = survey_responses_df.withColumn(
         "standard_occupational_classification_code",
@@ -394,7 +394,7 @@ def process_soc_data(
         ),
     )
 
-    update_table(duplicate_rows_df, duplicate_soc_rows_table, "overwrite", archive=True)
+    update_table(coding_errors_df, coding_errors_table, "overwrite", archive=True)
     update_table(survey_responses_df, soc_coded_survey_responses_table, "overwrite")
     update_table(soc_lookup_df, transformed_soc_lookup_table, "overwrite")
 
