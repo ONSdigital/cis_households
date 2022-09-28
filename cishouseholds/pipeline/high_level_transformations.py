@@ -505,9 +505,9 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
             "survey_last_modified_datetime",
         ],
         secondary_date_columns=[],
-        min_datetime_column_name="participant_completion_window_start_datetime_string",
-        max_datetime_column_name="participant_completion_window_end_datetime_string",
-        reference_datetime_column_name="swab_sample_received_consolidation_point_datetime_string",
+        min_datetime_column_name="participant_completion_window_start_datetime",
+        max_datetime_column_name="participant_completion_window_end_datetime",
+        reference_datetime_column_name="swab_sample_received_consolidation_point_datetime",
         default_timestamp="12:00:00",
     )
     df = update_column_in_time_window(
