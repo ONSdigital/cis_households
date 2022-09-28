@@ -2122,6 +2122,23 @@ def union_dependent_derivations(df):
     )
 
     # Derive these after fill forwards and other changes to dates
+    df = fill_forward_event(
+        df=df,
+        event_indicator_column="contact_suspected_positive_covid_last_28_days",
+        event_date_column="last_suspected_covid_contact_date",
+        detail_columns=["last_suspected_covid_contact_type"],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_date",
+    )
+    df = fill_forward_event(
+        df=df,
+        event_indicator_column="contact_known_positive_covid_last_28_days",
+        event_date_column="last_covid_contact_date",
+        detail_columns=["last_covid_contact_type"],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_date",
+    )
+
     df = create_formatted_datetime_string_columns(df)
     return df
 
