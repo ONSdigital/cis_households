@@ -2523,10 +2523,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
             .otherwise(F.col(work_status_column)),
         )
-
-    # temp include for testing
-    df = df.withColumn("work_healthcare", F.when(F.col("work_health_care_area").isNull(), "No").otherwise("Yes"))
-
     return df
 
 

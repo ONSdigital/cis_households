@@ -36,6 +36,7 @@ from cishouseholds.pipeline.design_weights import calculate_design_weights
 from cishouseholds.pipeline.generate_outputs import generate_stratified_sample
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
+from cishouseholds.pipeline.high_level_transformations import add_pattern_matching_flags
 from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.high_level_transformations import derive_age_based_columns
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
@@ -401,6 +402,23 @@ def process_soc_data(
     update_table(duplicate_rows_df, duplicate_soc_rows_table, "overwrite", archive=True)
     update_table(survey_responses_df, soc_coded_survey_responses_table, "overwrite")
     update_table(soc_lookup_df, transformed_soc_lookup_table, "overwrite")
+
+
+@register_pipeline_stage("process_regex_data")
+def process_regx_data(survey_responses_table: str, regex_derived_survey_responses_table: str, regex_lookup_table: str):
+    """
+    Process regex data and combine result with survey responses data
+    """
+    join_on_columns = ["work_main_job_title", "work_main_job_role"]
+    df = extract_from_table(survey_responses_table)
+    if check_table_exists(regex_lookup_table):
+        lookup_df = extract_from_table(regex_lookup_table, True)
+        non_derived_rows = df.join(lookup_df, on=join_on_columns, how="leftanti").select(*join_on_columns).distinct()
+        update_table(add_pattern_matching_flags(non_derived_rows), regex_lookup_table, "append")
+    else:
+        lookup_df = add_pattern_matching_flags(df.select(*join_on_columns).distinct())
+    df = df.join(regex_lookup_table, on=join_on_columns, how="left")
+    update_table(df, regex_derived_survey_responses_table, "overwrite")
 
 
 @register_pipeline_stage("union_survey_response_files")
