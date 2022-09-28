@@ -260,13 +260,13 @@ def generate_fill_forward_df(
     df
         The input dataframe containing the columns to impute
     fill_forward_columns
-        The list of columns to fill-foward
+        The list of columns to fill-forward
     participant_id_column
         The column to use to partition rows - typically this will be the participant id
     visit_datetime_column
-        The visit datatime column
+        The visit datetime column
     record_changed_column
-        An indicator column that tells us whether a record needs to be fill-foward if it equals `record_changed_value
+        An indicator column that tells us whether a record needs to be fill-forward if it equals `record_changed_value
     record_changed_value
         See `record_changed_column` above
 
@@ -392,10 +392,14 @@ def fill_forward_only_to_nulls_in_dataset_based_on_column(
     changed
         Indicator column to capture whether a  record has changed or not
     dataset
-        The name of the source dataset for the record in question
+        The name of the source (survey) dataset for the record in question
     dataset_value
+        Whether this is for survey data v0, v1, v2, v3 given as integers i.e., 0, 1, 2, 3
     list_fill_forward
+        List of columns to be fill-forward
     changed_positive_value
+        A column which captures participant's intention to change the value of their record - for example, if
+        they had changed jobs since last time they filled out the survey. This is used in conjunction with `changed` parameter above.
     """
     window = Window.partitionBy(id).orderBy(date)
 
@@ -429,8 +433,28 @@ def fill_backwards_work_status_v2(
     date_range: List[str] = [],
 ):
     """
-    This function fills backwards as long as it is within upper and lower date defined by list daterange.
+    This function fills backwards as long as it is within upper and lower date defined by list `date_range`.
     And requires a condition column to have specific values only apart from nulls.
+
+    Parameters
+    ----------
+    df
+        The input dataframe
+    date
+        The reference date which will be checked against the `date_range` parameter to determine
+        if a record needs to be imputed
+    id
+        The column to use to partition records
+    fill_backward_column
+        The column to be imputed using fill backward strategy
+    condition_column
+        The column that determines wether an imputation should occur
+    fill_only_backward_column_values
+        The list of values that can be used in fill backward imputation
+    condition_column_values
+        A list of condition values
+    date_range
+        This a list of two elements - first is the min datetime, and the second is the max datetime
     """
     df = df.withColumn("COND_value", F.lit(None))
     df = df.withColumn("COND_not_fill", F.lit(None))
