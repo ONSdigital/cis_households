@@ -12,7 +12,6 @@ from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_random_day_in_month
-from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.udfs import generate_sample_proportional_to_size_udf
@@ -65,119 +64,6 @@ def impute_outside_uk_columns(
         ).otherwise(F.col(outside_country_column)),
     )
     return df
-
-
-def fill_forwards_covid_infection(
-    df: DataFrame,
-    participant_id_column: str,
-    event_date_column: str,
-    reference_date_column: str,
-    fill_forward_columns: List[str],
-    event_indicator_column: str,
-):
-    """
-    Fill forwards a group of columns.
-    Each record is updated to have the latest valid response to the group of columns - where the event date is on or
-    before the reference date (i.e. when the response occured). The event indicator column is set to "Yes" from the
-    first valid contact onwards.
-
-    """
-    # get latest covid date
-    date_exists_df = df.select(participant_id_column, event_date_column, *fill_forward_columns)
-    for col in fill_forward_columns:
-        date_exists_df = date_exists_df.withColumnRenamed(col, f"{col}_ref")
-
-    transformed_df = df.join(
-        date_exists_df.withColumnRenamed(event_date_column, f"{event_date_column}_ref"),
-        on=participant_id_column,
-        how="left",
-    )
-    transformed_df = transformed_df.withColumn(
-        f"{event_date_column}_ref",
-        F.when(
-            F.col(f"{event_date_column}_ref") <= F.col(reference_date_column), F.col(f"{event_date_column}_ref")
-        ).otherwise(None),
-    )
-
-    window = Window.partitionBy(participant_id_column, reference_date_column)
-    transformed_df = transformed_df.withColumn(event_date_column, F.max(F.col(f"{event_date_column}_ref")).over(window))
-    reference_columns = [f"{col}_ref" for col in fill_forward_columns]
-    transformed_df = (
-        transformed_df.filter(
-            (
-                F.col(f"{event_date_column}_ref").eqNullSafe(F.col(event_date_column))
-                & (F.col(event_date_column).isNotNull())
-            )
-            | (
-                F.col(event_date_column).isNull()
-                & (
-                    F.size(F.array_intersect(F.array(*fill_forward_columns), F.array(*reference_columns)))
-                    == len(fill_forward_columns)
-                )
-            )
-        )
-        .distinct()
-        .drop(f"{event_date_column}_ref")
-    )
-    for col, ref_col in zip(fill_forward_columns, reference_columns):
-        transformed_df = transformed_df.drop(col).withColumnRenamed(ref_col, col)
-    transformed_df = transformed_df.withColumn(
-        event_indicator_column, F.when(F.col(event_date_column).isNotNull(), "Yes").otherwise("No")
-    )
-    return transformed_df
-
-
-def fill_forwards_covid_contact(
-    df: DataFrame,
-    participant_id_column: str,
-    event_date_column: str,
-    reference_date_column: str,
-    event_type_column: str,
-    event_indicator_column: str,
-    hierarchy_map: dict,
-):
-    """
-    Fill forwards a group covid contact columns.
-    Each record is updated to have the latest valid response to the group of columns - where the event date is on or
-    before the reference date (i.e. when the response occured). The event indicator column is set to "Yes" from the
-    first valid contact onwards.
-
-    Records with duplicated event_date are deduplication on event_type is deduplicated using the hierarchy_map.
-    """
-    date_exists_df = df.select(participant_id_column, event_date_column)
-    transformed_df = df.join(
-        date_exists_df.withColumnRenamed(event_date_column, f"{event_date_column}_ref"),
-        on=participant_id_column,
-        how="left",
-    )
-    transformed_df = transformed_df.withColumn(
-        f"{event_date_column}_ref",
-        F.when(
-            F.col(f"{event_date_column}_ref") <= F.col(reference_date_column), F.col(f"{event_date_column}_ref")
-        ).otherwise(None),
-    )
-
-    window = Window.partitionBy(participant_id_column, reference_date_column, f"{event_date_column}_ref")
-    transformed_df = update_column_values_from_map(transformed_df, event_type_column, hierarchy_map)
-    transformed_df = transformed_df.withColumn(event_type_column, F.min(event_type_column).over(window))
-
-    reverse_map = {value: key for key, value in hierarchy_map.items()}
-
-    transformed_df = update_column_values_from_map(transformed_df, event_type_column, reverse_map)
-
-    window = Window.partitionBy(participant_id_column, reference_date_column)
-    transformed_df = transformed_df.withColumn(event_date_column, F.max(F.col(f"{event_date_column}_ref")).over(window))
-    transformed_df = (
-        transformed_df.filter(F.col(f"{event_date_column}_ref").eqNullSafe(F.col(event_date_column)))
-        .distinct()
-        .drop(f"{event_date_column}_ref")
-    )
-
-    transformed_df = transformed_df.withColumn(
-        event_indicator_column, F.when(F.col(reference_date_column) >= F.col(event_date_column), "Yes").otherwise("No")
-    )
-
-    return transformed_df
 
 
 def impute_visit_datetime(df: DataFrame, visit_datetime_column: str, sampled_datetime_column: str) -> DataFrame:
