@@ -505,14 +505,11 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
             "blood_taken_datetime",
             "survey_completed_datetime",
             "survey_last_modified_datetime",
-            # "swab_return_date",
-            # "blood_return_date",
-            # "swab_return_future_date",
-            # "blood_return_future_date",
         ],
         secondary_date_columns=[],
-        file_date_column="file_date",
-        min_date="2022-05-01",
+        min_datetime_column_name="participant_completion_window_start_datetime",
+        max_datetime_column_name="participant_completion_window_end_datetime",
+        reference_datetime_column_name="swab_sample_received_consolidation_point_datetime",
         default_timestamp="12:00:00",
     )
     df = update_column_in_time_window(
@@ -2122,6 +2119,23 @@ def union_dependent_derivations(df):
     )
 
     # Derive these after fill forwards and other changes to dates
+    df = fill_forward_event(
+        df=df,
+        event_indicator_column="contact_suspected_positive_covid_last_28_days",
+        event_date_column="last_suspected_covid_contact_date",
+        detail_columns=["last_suspected_covid_contact_type"],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_date",
+    )
+    df = fill_forward_event(
+        df=df,
+        event_indicator_column="contact_known_positive_covid_last_28_days",
+        event_date_column="last_covid_contact_date",
+        detail_columns=["last_covid_contact_type"],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_date",
+    )
+
     df = create_formatted_datetime_string_columns(df)
     return df
 
