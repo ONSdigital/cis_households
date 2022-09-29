@@ -2090,7 +2090,7 @@ def union_dependent_derivations(df):
         event_date_column="think_had_covid_onset_date",
         detail_columns=[
             "other_covid_infection_test",
-            "other_covid_infection_test_result",
+            "other_covid_infection_test_results",
             "think_had_covid_admitted_to_hospital",
             "think_had_covid_contacted_nhs",
             "think_had_covid_symptom_fever",
