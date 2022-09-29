@@ -2556,11 +2556,11 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         ],
         ["is_patient_facing", "healthcare_area"],
     )
-    window = Window.partitionBy("participant_id")
-    df = df.withColumn(
-        "patient_facing_over_20_percent",
-        F.sum(F.when(F.col("is_patient_facing") == "Yes", 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
-    )
+    # window = Window.partitionBy("participant_id")
+    # df = df.withColumn(
+    #     "patient_facing_over_20_percent",
+    #     F.sum(F.when(F.col("is_patient_facing") == "Yes", 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
+    # )
 
     work_status_columns = [col for col in df.columns if "work_status_" in col]
     for work_status_column in work_status_columns:

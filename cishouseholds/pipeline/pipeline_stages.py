@@ -415,10 +415,17 @@ def process_regx_data(survey_responses_table: str, regex_derived_survey_response
         lookup_df = extract_from_table(regex_lookup_table, True)
         non_derived_rows = df.join(lookup_df, on=join_on_columns, how="leftanti").select(*join_on_columns).distinct()
         lookup_df = lookup_df.unionByName(add_pattern_matching_flags(non_derived_rows))
-        update_table(lookup_df, regex_lookup_table, "overwrite")
+        print(
+            f"     - located regex lookup df with {non_derived_rows.count()} additional rows to process"
+        )  # functional
     else:
-        lookup_df = add_pattern_matching_flags(df.select(*join_on_columns).distinct())
-    df = df.join(regex_lookup_table, on=join_on_columns, how="left")
+        df_to_process = df.select(*join_on_columns).distinct()
+        print(
+            f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
+        )  # functional
+        lookup_df = add_pattern_matching_flags(df_to_process)
+    df = df.join(lookup_df, on=join_on_columns, how="left")
+    update_table(lookup_df, regex_lookup_table, "overwrite")
     update_table(df, regex_derived_survey_responses_table, "overwrite")
 
 
