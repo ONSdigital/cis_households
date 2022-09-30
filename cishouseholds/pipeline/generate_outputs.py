@@ -26,7 +26,21 @@ def generate_stratified_sample(
     array_columns: List[str] = [],
 ):
     """
-    Generate a stratified sample of data in multiple separate csv files
+
+    Generate a stratified sample of data in multiple separate csv files for clerical proving review.
+
+    Parameters
+    --------------------------------------
+
+    df: Input dataframe
+    cols: selected columns for forming the stratified sample and creating decision columns for
+        clerical/proving review.
+    rows_per_sample: total number of rows across all sample files.
+    num_files: Number of sample files wanted.
+    output_folder_name: File directory in which you want to save the output files.
+    array_columns: List of columns in an array type.
+
+
     """
     output_directory = "/dapsen/workspace_zone/covserolink/cis_pipeline_proving/proving_outputs/" + output_folder_name
     create_dir(output_directory)
@@ -87,6 +101,19 @@ def map_output_values_and_column_names(df: DataFrame, column_name_map: dict, val
 
 
 def check_columns(col_args, selection_columns, error):
+    """
+    Checking the assertion that for a list of given input arguments all the columns
+    to satisfy those arguments exist in the dataframe.
+
+    Parameters
+    ----------------------------------------
+    col_args: All the column names for the operations that need to be performed on the data.
+    selection_columns: List of columns that need to be selected from the dataframe.
+    error: Specify the type of error to output depending on whether or not you're selecting any columns
+        in the parent function.
+
+
+    """
     arguments = ["group by columns ", "name map", "value map"]
     for argument, check in zip(arguments, col_args):  # type: ignore
         if check is not None:
@@ -112,6 +139,7 @@ def configure_outputs(
 ):
     """
     Customise the output of the pipeline using user inputs
+
     Parameters
     ----------
     df
