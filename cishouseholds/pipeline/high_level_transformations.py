@@ -96,6 +96,7 @@ from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import rename_column_names
+from cishouseholds.edit import replace_sample_barcode
 from cishouseholds.edit import survey_edit_auto_complete
 from cishouseholds.edit import update_column_if_ref_in_list
 from cishouseholds.edit import update_column_in_time_window
@@ -503,14 +504,11 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
             "blood_taken_datetime",
             "survey_completed_datetime",
             "survey_last_modified_datetime",
-            # "swab_return_date",
-            # "blood_return_date",
-            # "swab_return_future_date",
-            # "blood_return_future_date",
         ],
         secondary_date_columns=[],
-        file_date_column="file_date",
-        min_date="2022-05-01",
+        min_datetime_column_name="participant_completion_window_start_datetime",
+        max_datetime_column_name="participant_completion_window_end_datetime",
+        reference_datetime_column_name="swab_sample_received_consolidation_point_datetime",
         default_timestamp="12:00:00",
     )
     df = update_column_in_time_window(
@@ -1960,24 +1958,18 @@ def union_dependent_derivations(df):
         ],
         "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
     }
-    if "swab_sample_barcode_user_entered" in df.columns:
-        for test_type in ["swab", "blood"]:
-            df = df.withColumn(
-                f"{test_type}_sample_barcode_combined",
-                F.when(
-                    F.col(f"{test_type}_sample_barcode_correct") == "No",
-                    F.col(f"{test_type}_sample_barcode_user_entered"),
-                ).otherwise(F.col(f"{test_type}_sample_barcode"))
-                # set to sample_barcode if _sample_barcode_correct is yes or null.
-            )
+
+    df = replace_sample_barcode(df=df)
+
     df = conditionally_replace_columns(
         df,
         {
-            "swab_sample_barcode_combined": "swab_sample_barcode",
-            "blood_sample_barcode_combined": "blood_sample_barcode",
+            "swab_sample_barcode": "swab_sample_barcode_combined",
+            "blood_sample_barcode": "blood_sample_barcode_combined",
         },
         (F.col("survey_response_dataset_major_version") == 3),
     )
+
     df = assign_column_from_mapped_list_key(
         df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
     )

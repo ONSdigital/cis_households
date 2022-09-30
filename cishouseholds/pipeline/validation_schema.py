@@ -398,6 +398,14 @@ validation_schemas = {
         "old_value": string_dict,
         "new_value": string_dict,
     },
+    "csv_lookup_schema_extended": {
+        "id_column_name": string_dict,
+        "id": string_dict,
+        "dataset_name": string_dict,
+        "target_column_name": string_dict,
+        "old_value": string_dict,
+        "new_value": string_dict,
+    },
     "swab_validation_schema": {
         "Sample": {"type": "string", "regex": r"ONS\d{8}"},
         "Result": {"type": "string", "allowed": ["Negative", "Positive", "Void"]},
