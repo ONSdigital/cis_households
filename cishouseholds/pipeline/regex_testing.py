@@ -17,7 +17,7 @@ def match_with_exclusions(patters_to_match, patterns_to_exclude=[]):
 
 # exclusions
 teaching_exclusions = match_with_exclusions(
-    r"EDUCATION|SCHOOL|BUSINESS|STUDYING|LECTURER|PROFESSOR|ACADEMIC|RESEARCH|UNIVERSITY|TEACH|STUDENT|TECHNICIAN|DOCTORATE|PHD|POSTDOCTORAL|AC[AE]DEMIC|RESEAR*CH|LAB(ORATORY)?|DATA|ANAL|STATIST|EPIDEMI|EXAM|EDUCAT|EARLY YEARS|COLL.GE|TEACH|LECTURE|PROFESS|HOUSE *(M[AI]ST(ER|RESS)|PARENT)|COACH|TRAIN|INSTRUCT|TUTOR|LEARN",
+    r"EDUCATION|SCHOOL|BUSINESS SCHOOL|STUDYING|LECTURER|PROFESSOR|ACADEMIC|RESEARCH|UNIVERSITY|TEACH|STUDENT|TECHNICIAN|DOCTORATE|PHD|POSTDOCTORAL|AC[AE]DEMIC|RESEAR*CH|LAB(ORATORY)?|DATA|ANAL|STATIST|EPIDEMI|EXAM|EDUCAT|EARLY YEARS|COLL.GE|TEACH|LECTURE|PROFESS|HOUSE *(M[AI]ST(ER|RESS)|PARENT)|COACH|TRAIN|INSTRUCT|TUTOR|LEARN",
     "MEDICAL",
 )
 catering_exclusions = r"CHEF|SOUS|COOK|CATER|BREWERY|CHEESE|KITCHEN|KFC|CULINARY|FARM(ER|ING)"
@@ -27,16 +27,18 @@ domestic_exclusions = r"DOMESTIC|CLEAN|LAU*ND.*Y"
 call_exclusions = r"ADVI[SC]E|CALL|PHONE"
 construction_exclusions = r"BUILD|CONSTRUCT|RENOVAT|REFIT|ENGINE|PLANT|CR[AI]*NE*|SURVEY(OR)*|DESIGNER|ARCHITECT|TECHNICIAN|MECHAN|MANUFACT|ELECTRIC|CARPENTER|PLUMB|WELD(ER|ING)|PASTER(ER|ING)|\bEE\b|GARDE*N|FURNITURE|MAINT[AIE]*N*[EA]N*CE|\bGAS\b|JOINER|DRAFT"
 religious_exclusions = r"CHAPL[AI]*N|VICAR|CLERGY|MINISTER|PREACH|CHURCH"
-it_exclusions = r"\bI[ \.]*T\.?\b|DIGIT|WEBSITE|NETWORK|DEVELOPER|SOFTWARE|SYSTEM"
+it_exclusions = r"\bI[ \.]*T\.?\b|DIGIT|WEBSITE|NETWORK|DEVELOPER|SOFTWARE|SYSTEM|ONLINE"
 public_service_exclusions = r"CHAIR|CHARITY|CITIZEN|CIVIL|VOLUNT|LIBRAR|TRANSLAT|INVESTIGAT|FIRE ?(WO)?(M[AE]N|FIGHT)|POLICE|POST *(WO)*MAN|PRISON|FIRST AID|SAFETY|\bTAX\b|LI[CS][EA]N[CS]E|LEA*GAL|LAWYER|\bLAW\b|SO*LICITOR"
-transport_exclusions = r"DRIV(E|ER|ING)|PILOT|TRAIN DRIVE|TAXI|LORRY|TRANSPORT|DELIVER|SUPPLY"
-base_non_healthcare = r"AC[AE]DEMIC|LECTURE|DEAN|DOCTOR SCIENCE|DR LAB|DATA ANAL|AC?OUNT(ANT|ANCY)?|WARE *HOUSE|TRADE UNION|SALES (MANAGER|REP)|INVESTIGATION OF+ICE|AC+OUNT|PRISI?ON|DIRECT[OE]R"
+transport_exclusions = (
+    r"DRIV(E|ER|ING)|PILOT(?! (TRIAL|STUDY|TEST|MEDICAL))|TRAIN DRIVE|TAXI|LORRY|TRANSPORT|DELIVER|SUPPLY"
+)
+base_non_healthcare = r"AC[AE]DEMIC|LECTURE|DEAN|CURATOR|DOCTOR SCIENCE|DR LAB|DATA ANAL|AC?OUNT(ANT|ANCY)?|WARE *HOUSE|TRADE UNION|SALES (MANAGER|REP)|INVESTIGATION OF+ICE|AC+OUNT|PRISI?ON|DIRECT[OE]R|FINANC(IAL|E)"
 
 
 # base inclusions
-base_inclusions = r"(PALLIATIVE|INTENSIVE) CARE|TRIAGE|CHIROPRACT"
+base_inclusions = r"(PALLIATIVE|INTENSIVE) CARE|CHIROPRACT|PRIMARY HEALTCHARE"
 
-vet = match_with_exclusions(r"\bVETS*|\bVEN?T[A-Z]*(RY|IAN)|EQUIN|\b(DOG|CAT)|HEDGEHOG|ANIMAL", "VET PEOPLE")
+vet = match_with_exclusions(r"\bVETS*|\bVEN?T[A-Z]*(RY|IAN)|EQUIN|\b(DOG|CAT)|HEDGEHOG|ANIMAL", r"VET PEOPLE|VETERAN")
 hospital_generic = r"HOSPITAL(?!ITY)"
 hc_admin = match_with_exclusions(
     [
@@ -54,7 +56,7 @@ hc_counsellor = match_with_exclusions(
 )
 hc_receptionist = match_with_exclusions(
     [
-        r"RECEPTIONIST|OPTICAL ASSISTANT|RECEPTION *(WORK|DUTIES)",
+        r"RECEPTION|OPTICAL ASSISTANT|RECEPTION *(WORK|DUTIES)",
         r"NHS|HOSPITAL$|OSTEOPATH|OUTPATIENT|HOSPITAL(?!ITY)|MEDICAL|SURG[EA]RY|CLINIC|HEALTH *CARE|DENTAL|DENTIST|\bGP\b|\bDOCTOR|OPTICIAN|OPTICAL|CHIROPRAC|A&E",
     ],
     [
@@ -75,8 +77,8 @@ hc_secretary = match_with_exclusions(
 )
 hc_support = match_with_exclusions(
     [
-        r"SUP+ORT *WORKER",
-        r"HOSPITAL|HEALTH *CARE|MENTAL *HEALTH|MATERNITY|CLINICAL|WARD|NURSE|NURSING(?! *HOME)|SURGERY|A&E|ONCOLOGY|PHLEBOTOM|AMBULANCE|WARD|MIDWIFE|ACCIDENT *(& *|AND *)*EMERGENCY|COVID.*SWA[BP]",
+        r"SUP+ORT *WORKER|ASSISTANT",
+        r"HOSPITAL|HEALTH *CARE|MENTAL *HEALTH|MATERNITY(?! LEAVE)|CLINICAL|WARD|NURSE\b|NURSING(?! *HOME)|SURGERY|A&E|ONCOLOGY|PHLEBOTOM|AMBULANCE|WARD|MIDWIFE|IN *LABOUR|ACCIDENT *(& *|AND *)*EMERGENCY|COVID.*SWA[BP]",
     ],
     [r"BU(IS|SI)NESS SUPPORT", r"LOCAL COUNCIL|DISCHARGE|POST HOSPITAL|HOME NURS", r"HEALTH *CARE ASSIST|\bHCA\b"],
 )
@@ -85,7 +87,8 @@ domestic = match_with_exclusions(
     r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|(?<!NO[NT][ -])MEDICAL|DONOR CARER*|HOSPITAL",
 )
 child_care = match_with_exclusions(
-    r"CHILD *(CARE|MIND)|NANN[YIE]+\b|AU PAIR", r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|MEDICAL|DONOR CARER*|HOSPITAL"
+    r"CHILD *(CARE|MIND)|NANN[YIE]+\b|AU PAIR|(TODDLER|BABY|YOUTH|PLAY) *GROUP",
+    r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|MEDICAL|DONOR CARER*|HOSPITAL",
 )
 informal_care = match_with_exclusions(
     r"(((CAR(E|ING)+|NURSE) (FOR|OF))|LOOKS* *AFTER) *(MUM|MOTHER|DAD|FATHER|SON|D[AU]+GHT|WIFE|HUSB|PARTNER|CHILD|FAM|T*H*E* ELDERLY)",
@@ -96,7 +99,7 @@ house_care = match_with_exclusions(
     r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|(?<!NO[NT][ -])MEDICAL|DONOR CARER*",
 )
 residential_care = match_with_exclusions(
-    r"^CAE?RE*R *(CARE*|NA)*$|(CARE|NURSING) *HOME|(SOCIAL|COMMUNITY|DOMICIL[IA]*RY){1,} *CARE|CARE *(WORK|ASSISTANT)|ASST CARING|CARE SUPPORT WORK|SUPPORT *WORKER *CARE|INDEPEND[EA]NT LIVING",
+    r"^CAE?RE*R *(CARE*|NA)*$|(CARE|NURSING) *HOME|(SOCIAL|COMMUNITY|DOMICIL[IA]*RY|DOMESTIC){1,} *CARE|CARE *(WORK|ASSISTANT)|ASST CARING|CARE SUPPORT WORK|SUPPORT *WORKER *CARE|INDEPEND[EA]NT LIVING|PERSONAL CARE",
     r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|MEDICAL|COMM?UNITY|DONOR CARER*|HOSPITAL|AMBULANCE"
     + "|"
     + call_exclusions,
@@ -107,7 +110,7 @@ pharmacist = match_with_exclusions(
 )
 dietician = match_with_exclusions(r"\bD[EIA]{0,2}[TC][EI]?[CT]+[AEIOU]*[NC(RY)]|\bDIET(RIST)?\b", "DETECTION")
 doctor = match_with_exclusions(
-    r"DOCT[EO]R|\bGP\b|GENERAL PRACTI(CIAN|TION)|\bDR\b|CARDIAC|\A ?(&|AND) ?E\|PHYSI[CT]I[AO]",
+    r"(?<!WITH )DOCT[EO]R|\bGP\b|\Bdr\B|GENERAL PRACTI(CIAN|TION)|\bDR\b|CARDIAC|\A ?(&|AND) ?E\|PHYSI[CT]I[AO]",
     r"LECTURER|DOCTORI*AL|RESEARCH|PHD|STAT|WAR|ANIMAL|SALES*|FINANCE",
 )
 general_practitioner = (
@@ -117,33 +120,31 @@ dentist = match_with_exclusions(r"DENTIS.*|\bDENTAL|ORAL HEALTH", "TECHNIC")
 accident_and_emergency = r"A&E|ACCIDENT (&|AND) EMERGENCY|EMERGENCY ROOM"
 midwife = r"MI*D*.?WI*F.?E.?|MIDWIV|MID*WIF|HEALTH VISITOR"
 nurse = match_with_exclusions(
-    r"N[IU]RS[EY]|MATRON|\bHCA\b", r"N[UI][RS]S[EA]R*[YIEU]+|(CARE|NURSING) *HOME|SCHOOL|TEACHER"
+    r"(?<!WITH )N[IU]RS[EY]|MATRON|\bHCA\b", r"N[UI][RS]S[EA]R*[YIEU]+|(CARE|NURSING) *HOME|SCHOOL|TEACHER"
 )
 paramedic = match_with_exclusions("PARA *MEDIC|AMBUL[AE]NCE", teaching_exclusions)
 covid_test = match_with_exclusions(["COVID", "TEST|SWAB|VAC+INAT|IM+UNIS|SCREEN|WARD"], "LAB|AN[AY]LIST|SCHOOL|MANAGER")
-physiotherapist = match_with_exclusions(
-    r"PH[YI]+SIO|PH[YSIH]+IO\s*THERAPIST|PH[YI]S[IY]CAL\s*REHAB|PH[YI]S[IY]CAL\s*THERAPY",
-    match_with_exclusions(
-        [
-            r"PHSYCOLOGY|PHYCOLOGIST|PYCHLOLOGIST|PHYCOLOGIST|PSYCHOLOGOLOGIST|PHYCOLIGIST|PYSCOLOGIST|PHYSCHOLOGICAL|PSYCHOLOGICIST|PSYCHOLGIST|PSYCHOLOGIST|PSYCHOLOGY|PSYCHOLOGICAL",
-            r"EDUCATION|SCHOOL|BUSINESS|STUDYING|LECTURER|PROFESSOR|ACADEMIC|RESEARCH|UNIVERSITY|TEACHING|TEACH|STUDENT|TECHNICIAN|DOCTORATE|PHD|POSTDOCTORAL|PRISON|OCCUPATION|OCCUPATIONAL|FORENSICS|\bUCL\b",
-        ]
-    ),
+therapist = match_with_exclusions(
+    r"PH[YI]S[IY]CAL\s*REHAB|PH[YI]S[IY]CAL\s*THERAPY|P(HY)?S[A-Z]*[IY]ST|(WHEEL *CHAIR|DISABILITY) THERAP(Y|IST)|PHYSIO\b",
+    r"EDUCATION|SCHOOL|BUSINESS|STUDYING|LECTURER|PROFESSOR|ACADEMIC|RESEARCH|PHYSICIST|UNIVERSITY|TEACHING|TEACH|STUDENT|TECHNICIAN|DOCTORATE|PHD|POSTDOCTORAL|PRISON|OCCUPATION|OCCUPATIONAL|FORENSICS|\bUCL\b",
 )
-hc_theatre = match_with_exclusions("THEATRE", "PERFORMER|ACTOR|STAGE|PLAY|CINEMA|MOVIE")
-social_work = r"SOCIAL.*WORK|FOSTER CARE|CHILD PROTECTION|PROBATION OFFICER|YOUTH OFFENDER|HMP|COMMUNITY WORKER|PRISON OFFIC|SHELTERED (ACC.*N|LIVING)"
+hc_theatre = match_with_exclusions("THEATRE", "PERFORMER|ACTOR|STAGE|PLAY|CINEMA|MOVIE|WARDROBE|PRODUCER|DIRECTOR")
+social_work = match_with_exclusions(
+    r"SOCIAL.*WORK|FOSTER CARE|CHILD PROTECTION|PROBATION OFFICER|OCC?UPATIONAL THERAP|\bOT\b|YOUTH OFFENDER|HMP|COMMUNITY WORKER|PRISON OFFIC|SHELTERED (ACC.*N|LIVING)",
+    "SOCIAL(LY)? DISTANCE",
+)
 support_work = "SUP+ORT *WORKER"
 apprentice = "AP*RENTI[CS]"
-call_operator = match_with_exclusions(
+hc_call_operator = match_with_exclusions(
     [
         r"111|119|999|911|NHS|TRIAGE|EMERGENCY",
         r"ADVI[SC][OE]R|RESPONSE|OPERAT|CALL (HANDLER|CENT(RE|ER)|TAKE)|(TELE)?PHONE|TELE(PHONE)?|COVID",
     ],
-    "CUSTOMER SERVICE|SALES",
+    "CUSTOMER SERVICE|SALES|POLICE|ROADSIDE|\bAA\b|ATTEND",
 )
 
 additional_primary_hc = r"OUTPATIENT"
-additional_secondary_hc = r"ANA?ETH|SURGE(ON|ERY)|\bOPD\b|\bITU\b|(SPEECH|LANGUAGE) THERAPIST|MICROB.*IST|RADIO(GRAPHER|LOGIST|LOGY)|PHYSCOL.*IST|PAEDIATRI[CT]I[AO]N|SONOGRAPHER|VAC+INAT[OE]R|(DIABETIC EYE|RETINAL) SCRE+NER|(PH|F)LEBOTOM|CLINICAL SCIEN|MEDICAL PHYSICIST|CARDIAC PHYSIOLOG|OSTEOPATH|OPTOMOTRIST|PODIATRIST|OBSTETRI|GYNACOLOG|ORTHO(DOENT)?+|OPTI[TC]I[AO]N|CRITICAL CARE PRACTITIONER|HOSPITAL PORTER|PALLIATIVE|DISTRICT NURS|PAEDIATRI[CT]I[AO]N|HAEMATOLOGIST"
+additional_secondary_hc = r"ANA?ETH|(?<!TREE )SURGE(ON|ERY)|\bOPD\b|\bITU\b|(SPEECH|LANGUAGE) THERAPIST|MICROB.*IST|RADIO(GRAPHER|LOGIST|LOGY)|PHYSCOL.*IST|PAEDIATRI[CT]I[AO]N|SONOGRAPHER|VAC+INAT[OE]R|(DIABETIC EYE|RETINAL) SCRE+NER|(PH|F)LEBOTOM|CLINICAL SCIEN|MEDICAL PHYSICIST|CARDIAC PHYSIOLOG|OSTEOPATH|OPTOMOTRIST|PODIATRIST|OBSTETRI|GYNACOLOG|ORTHO(DOENT)?+|OPTI[TC]I[AO]N|CRITICAL CARE PRACTITIONER|HOSPITAL PORTER|PALLIATIVE|DISTRICT NURS|PAEDIATRI[CT]I[AO]N|HAEMATOLOGIST"
 
 other_hc = r"OPTICIAN|OPTHAL.*IST|ACCUP.*RE|THERAPIST|FOOT PRACTI(CIAN|TION)|HOMEOPATHY|PHYSCOT.*IST|\bMORT|HOSPITAL|\bNHS\b|MEDICAL EQUIP|TEACHING MEDICAL|WELLBEING PRACTITIONER"
 
@@ -151,15 +152,15 @@ support_roles = "ASSISTANT"  # supporting types of people
 
 # patient facing
 patient_facing_negative_regex = match_with_exclusions(
-    r"ONLINE|ZOOM|MICROSOFT|MS TEAMS|SKYPE|GOOGLE HANGOUTS?|REMOTE|VIRTUAL|(ONLY|OVER THE) (TELE)?PHONE|((TELE)?PHONE|VIDEO) (CONSULT|CALL|WORK|SUPPORT)|(NO[TN]( CURRENTLY)?|NEVER) (IN PERSON|FACE TO FACE)|SH[EI]+LDING|WORK(ING)? (FROM|AT) HOME|HOME ?BASED|DELIVER(Y|ING)? PRESCRI",
+    r"(NO|LIMITED|NOT) FACE TO FACE|ONLINE|ZOOM|MICROSOFT|MS TEAMS|SKYPE|GOOGLE HANGOUTS?|REMOTE|VIRTUAL|DIGITAL|(ONLY|OVER THE) (TELE)?PHONE|((TELE)?PHONE|VIDEO) (CONSULT|CALL|WORK|SUPPORT)|(NO[TN]( CURRENTLY)?|NEVER) (IN PERSON|FACE TO FACE)|SH[EI]+LDING|WORK(ING)? (FROM|AT) HOME|HOME ?BASED|DELIVER(Y|ING)? PRESCRI|NO (CONTACT|VISITORS)",
     r"(?<!NOT )OFFICE BASED",
 )
-patient_facing_positive_regex = "|".join(
-    [
-        r"PALLIATIVE CARE|(?<!NOT )PATI[EA]NT FACING|(LOOK(S|ING)? AFTER|SEES?|CAR(E|ING) (OF|FOR)) PATI[EA]NTS|(?<!NO )FACE TO FACE|(?<!NOT )FACE TO FACE",
-        r"(?<!NO )(DIRECT )?CONTACT WITH PATI[EA]NTS|CLIENTS COME TO (HER|HIS|THEIR) HOUSE",
-    ]
-)
+# patient_facing_positive_regex = "|".join(
+#     [
+#         r"PALLIATIVE CARE|(?<!NOT )PATI[EA]NT FACING|(LOOK(S|ING)? AFTER|SEES?|CAR(E|ING) (OF|FOR)) PATI[EA]NTS|FACE TO FACE|FACE TO FACE",
+#         r"(?<!NO )(DIRECT )?CONTACT WITH PATI[EA]NTS|CLIENTS COME TO (HER|HIS|THEIR) HOUSE",
+#     ]
+# )
 
 healthcare_classification = {
     "Primary": [
@@ -170,6 +171,8 @@ healthcare_classification = {
         "general_practitioner",
         "paramedic",
         "pharmacist",
+        "doctor",
+        "nurse",
     ],
     "Secondary": [
         "additional_secondary_hc",
@@ -178,14 +181,15 @@ healthcare_classification = {
         "hc_theatre",
         "hospital_generic",
         "midwife",
-        "physiotherapist",
+        "hc_therapist",
+        "base_healthcare",
     ],
-    "Other": ["hc_counsellor", "covid_test"],
+    "Other": ["hc_counsellor", "covid_test", "hc_support", "hc_receptionist"],
 }
 
 social_care_classification = {
+    "Other": ["social_work", "child_care"],
     "Care/Residential home": ["residential_care"],
-    "Other": ["social_work", "child_care", "informal_care", "social_work"],
 }
 
 patient_facing_classification = {
@@ -203,13 +207,15 @@ patient_facing_classification = {
         "hospital_generic",
         "midwife",
         "nurse",
+        "hc_receptionist",
         "paramedic",
         "pharmacist",
-        "physiotherapist",
+        "hc_therapist",
         "social_work",
         "residential_care",
+        "hc_support",
     ],
-    "N": ["call_operator", "covid_test", "hc_admin", "hc_receptionist", "hc_secretary", "domestic"],
+    "N": ["hc_call_operator", "covid_test", "hc_admin", "hc_secretary", "domestic"],
 }
 
 roles_map = {
@@ -224,8 +230,7 @@ roles_map = {
     "hc_counsellor": hc_counsellor,
     "hc_support": hc_support,
     "pharmacist": pharmacist,
-    "call_operator": call_operator,
-    "patient_facing_positive_regex": patient_facing_positive_regex,
+    "call_operator": hc_call_operator,
     "dietician": dietician,
     "doctor": doctor,
     "general_practitioner": general_practitioner,
@@ -233,7 +238,7 @@ roles_map = {
     "midwife": midwife,
     "nurse": nurse,
     "paramedic": paramedic,
-    "physiotherapist": physiotherapist,
+    "hc_therapist": therapist,
     "covid_tester": covid_test,
     "base_healthcare": base_inclusions,
     "base_non_healthcare": base_non_healthcare,
@@ -257,8 +262,19 @@ roles_map = {
     "apprentice": apprentice,
 }
 
-priority_map = {"vet": 2, "construction": 2, "paramedic": 0, "retired": 9}
-
-patient_facing_pattern = RegexPattern(
-    positive_regex_pattern=patient_facing_positive_regex, negative_regex_pattern=patient_facing_negative_regex
-)
+priority_map = {
+    "vet": 3,
+    "construction": 3,
+    "retail": 3,
+    "paramedic": 0,
+    "retired": 9,
+    "teaching": 3,
+    "media": 3,
+    "hc_admin": 3,
+    "hc_secretary": 3,
+    "social_work": 3,
+    "base_non_healthcare": 4,
+    "public_service": 4,
+    "nurse": 2,
+    "informal_care": 8,
+}
