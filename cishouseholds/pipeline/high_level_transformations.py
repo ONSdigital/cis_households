@@ -168,9 +168,11 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     transform and process cis soc data
     """
     # allow nullsafe join on title as soc is sometimes assigned without
-    df = df.filter(F.col("work_main_job_title").isNotNull()).drop_duplicates(
-        ["standard_occupational_classification_code", *join_on_columns]
+    df = df.drop_duplicates(["standard_occupational_classification_code", *join_on_columns])
+    drop_null_title_df = df.filter(F.col("work_main_job_title").isNull()).withColumn(
+        "drop_reason", F.lit("null job title")
     )
+    df = df.filter(F.col("work_main_job_title").isNotNull())
     df = df.withColumn(
         "soc_code_edited_to_uncodeable",
         (F.col("standard_occupational_classification_code").rlike(r".*[^0-9].*|^\s*$"))
@@ -198,27 +200,27 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
 
     # flag non specific soc codes and uncodeable codes
     df = df.withColumn(
-        "DROP",
+        "drop_reason",
         F.when(
             (F.col("LENGTH") != F.max("LENGTH").over(window))
             | (F.col("standard_occupational_classification_code") == "uncodeable"),
-            1,
-        ).otherwise(0),
+            "more specific code available",
+        ).otherwise(None),
     )
-    retain_count = F.sum(F.when(F.col("DROP") == 0, 1).otherwise(0)).over(window)
+    retain_count = F.sum(F.when(F.col("drop_reason").isNull(), 1).otherwise(0)).over(window)
     # flag ambiguous codes from remaining set
     df = df.withColumn(
-        "DROP",
+        "drop_reason",
         F.when(
-            (retain_count > 1) & (F.col("DROP") == 0),
-            2,
-        ).otherwise(F.col("DROP")),
+            (retain_count > 1) & (F.col("drop_reason").isNull()),
+            "ambiguous code",
+        ).otherwise(F.col("drop_reason")),
     ).drop("LENGTH")
     # remove flag from first row of dropped set if all codes from group are flagged
-    df = df.withColumn("DROP", F.when(F.count("*").over(window) == 1, 0).otherwise(F.col("DROP")))
-    resolved_df = df.filter(F.col("DROP") == 0).drop("DROP", "ROW_NUMBER")
-    duplicate_df = df.filter(F.col("DROP") == 2).drop("ROW_NUMBER", "DROP")
-    return duplicate_df, resolved_df
+    df = df.withColumn("drop_reason", F.when(F.count("*").over(window) == 1, None).otherwise(F.col("drop_reason")))
+    resolved_df = df.filter(F.col("drop_reason").isNull()).drop("drop_reason", "ROW_NUMBER")
+    duplicate_df = df.filter(F.col("drop_reason").isNotNull()).drop("ROW_NUMBER")
+    return duplicate_df.unionByName(drop_null_title_df), resolved_df
 
 
 def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
