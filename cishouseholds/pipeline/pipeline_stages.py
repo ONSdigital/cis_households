@@ -1133,11 +1133,12 @@ def sample_file_ETL(
 
 @register_pipeline_stage("generate_sample")
 def sample_df(
-    table_name, filter_condition, selected_cols, rows_per_sample, num_files, output_folder_name, array_columns
+    table_name, sample_type, cols, cols_to_evaluate, rows_per_file, num_files, output_folder_name, filter_condition=None
 ):
     df = extract_from_table(table_name)
-    df = df.filter(eval(filter_condition))
-    generate_sample(df, selected_cols, rows_per_sample, num_files, output_folder_name, array_columns)
+    if filter_condition is not None:
+        df = df.filter(eval(filter_condition))
+    generate_sample(df, sample_type, cols, cols_to_evaluate, rows_per_file, num_files, output_folder_name)
 
 
 @register_pipeline_stage("aggregated_output")
