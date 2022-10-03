@@ -61,7 +61,7 @@ def generate_sample(
             row.sampling_strata: min(row.percentage_sample_required, 1) for row in summary_df.itertuples()
         }
 
-        sampled_df = df.sampleBy("sampling_strata", fractions=sampling_fractions, seed=123456)
+        sampled_df = summary_df.sampleBy("sampling_strata", fractions=sampling_fractions, seed=123456)
 
     elif "rand" in sample_type:
         sampled_df = df.sample((rows_per_file * num_files) / df.count())
