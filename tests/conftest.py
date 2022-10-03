@@ -17,12 +17,14 @@ from pytest_regressions.data_regression import RegressionYamlDumper
 from cishouseholds.hdfs_utils import copy_local_to_hdfs
 from cishouseholds.pipeline.input_file_stages import cis_digital_parameters
 from cishouseholds.pipeline.input_file_stages import generate_input_processing_function
+from cishouseholds.pipeline.input_file_stages import participant_extract_digital_parameters
 from cishouseholds.pipeline.input_file_stages import survey_responses_v0_parameters
 from cishouseholds.pipeline.input_file_stages import survey_responses_v1_parameters
 from cishouseholds.pipeline.input_file_stages import survey_responses_v2_parameters
 from cishouseholds.pyspark_utils import running_in_dev_test
 from dummy_data_generation.helpers import CustomRandom
 from dummy_data_generation.helpers_weight import Distribution
+from dummy_data_generation.schemas import get_participant_extract_data_description
 from dummy_data_generation.schemas import get_survey_responses_digital_data_description
 from dummy_data_generation.schemas import get_voyager_0_data_description
 from dummy_data_generation.schemas import get_voyager_1_data_description
@@ -115,6 +117,23 @@ def responses_digital_ETL_output(pandas_df_to_temporary_csv):
     pandas_df = pd.DataFrame(schema.create(iterations=10))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
     processing_function = generate_input_processing_function(**cis_digital_parameters, include_hadoop_read_write=False)
+    processed_df = processing_function(resource_path=csv_file_path)
+    return processed_df
+
+
+@pytest.fixture(scope="session")
+def participants_digital_ETL_output(pandas_df_to_temporary_csv):
+    """
+    Generate dummy survey responses digital.
+    """
+    schema = Schema(
+        schema=get_participant_extract_data_description(create_mimesis_field(), ["ONS00000000"], ["ONS00000000"])
+    )
+    pandas_df = pd.DataFrame(schema.create(iterations=10))
+    csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
+    processing_function = generate_input_processing_function(
+        **participant_extract_digital_parameters, include_hadoop_read_write=False
+    )
     processed_df = processing_function(resource_path=csv_file_path)
     return processed_df
 

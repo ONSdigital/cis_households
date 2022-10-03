@@ -90,15 +90,13 @@ cis_digital_parameters = {
     "source_file_column": "survey_response_source_file",
 }
 
-participant_extract_parameters = {
+participant_extract_digital_parameters = {
     "stage_name": "participant_extract_ETL",
     "dataset_name": "participant_extract",
     "id_column": "participant_id",
     "validation_schema": validation_schemas["participant_extract_validation_schema"],
     "datetime_column_map": cis_digital_datetime_map,
-    "transformation_functions": [
-        transform_survey_responses_generic,
-    ],
+    "transformation_functions": [],
     "sep": "|",
     "cast_to_double_list": survey_response_cisd_cast_to_double,
     "source_file_column": "survey_response_source_file",

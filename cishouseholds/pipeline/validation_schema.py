@@ -1393,6 +1393,7 @@ validation_schemas = {
         "withdrawn_reason": string_dict,
         "withdrawn_type": string_dict,
         "participant_id": string_dict,
+        "title": string_dict,
         "first_name": string_dict,
         "middle_name": string_dict,
         "last_name": string_dict,
