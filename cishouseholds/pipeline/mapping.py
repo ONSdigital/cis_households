@@ -569,6 +569,11 @@ category_maps = {
             "latest_checkin_date": 1,
             "sample_taken_date": 2,
             "scheduled_date": 3,
+            "swab_taken_datetime": 4,
+            "blood_taken_datetime": 5,
+            "survey_completed_datetime": 6,
+            "survey_last_modified_datetime": 7,
+            "swab_sample_received_consolidation_point_datetime": 8,
         },
         "country_name_12": {"England": 0, "Wales": 1, "Northern Ireland": 2, "Scotland": 3},
         "local_authority_unity_authority_code": {

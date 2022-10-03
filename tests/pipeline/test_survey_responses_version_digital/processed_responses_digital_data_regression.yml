@@ -128,7 +128,7 @@
   face_covering_work_or_education: My face is already covered
   face_covering_work_or_education_raw: I cover my face for other reasons - for example
     for religious or cultural reasons
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Caron
   form_language: English
   form_start_datetime: '2022-01-08 06:34:15.000000'
@@ -571,7 +571,7 @@
   face_covering_outside_of_home: null
   face_covering_work_or_education: Not going to place of work or education
   face_covering_work_or_education_raw: I am not going to my place of work or education
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Forest
   form_language: Welsh
   form_start_datetime: '2022-01-08 07:43:48.000000'
@@ -1017,7 +1017,7 @@
   face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, sometimes
   face_covering_work_or_education_raw: Yes sometimes
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Honey
   form_language: Welsh
   form_start_datetime: '2022-01-09 15:31:41.000000'
@@ -1469,7 +1469,7 @@
   face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, sometimes
   face_covering_work_or_education_raw: Yes sometimes
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Shawnee
   form_language: Welsh
   form_start_datetime: '2022-01-05 02:41:47.000000'
@@ -1914,7 +1914,7 @@
   face_covering_outside_of_home: null
   face_covering_work_or_education: Not going to place of work or education
   face_covering_work_or_education_raw: I am not going to my place of work or education
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Annika
   form_language: Welsh
   form_start_datetime: '2022-01-04 09:57:44.000000'
@@ -2360,7 +2360,7 @@
   face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, always
   face_covering_work_or_education_raw: Yes always
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Shaun
   form_language: English
   form_start_datetime: '2022-01-06 10:18:09.000000'
@@ -2805,7 +2805,7 @@
   face_covering_outside_of_home: null
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: null
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Clemmie
   form_language: English
   form_start_datetime: '2022-01-05 06:12:29.000000'
@@ -3252,7 +3252,7 @@
   face_covering_work_or_education: My face is already covered
   face_covering_work_or_education_raw: I cover my face for other reasons - for example
     for religious or cultural reasons
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Myung
   form_language: Welsh
   form_start_datetime: '2022-01-03 17:37:42.000000'
@@ -3696,7 +3696,7 @@
   face_covering_outside_of_home: null
   face_covering_work_or_education: Never
   face_covering_work_or_education_raw: Never
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Remedios
   form_language: English
   form_start_datetime: '2022-01-08 00:30:18.000000'
@@ -3844,7 +3844,7 @@
   street: null
   study_cohort: Original
   survey_completed_datetime: '2022-01-08 17:54:42.000000'
-  survey_completion_status: Auto Completed
+  survey_completion_status: Partially Completed
   survey_last_modified_datetime: '2022-01-08 03:57:44.000000'
   survey_not_completed_reason_code: Tnr - test not returned
   survey_response_dataset_major_version: 3
@@ -4148,7 +4148,7 @@
   face_covering_work_or_education: My face is already covered
   face_covering_work_or_education_raw: I cover my face for other reasons - for example
     for religious or cultural reasons
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Reiko
   form_language: English
   form_start_datetime: '2022-01-05 20:29:16.000000'
