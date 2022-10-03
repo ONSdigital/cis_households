@@ -30,9 +30,8 @@ def test_survey_edit_auto_complete(spark_session):
         ],
         schema="column_name_to_assign string, completion_window string, file_date string, last_question string",
     )
-    # import pdb; pdb.set_trace()
 
     output_df = survey_edit_auto_complete(
-        input_df, "column_name_to_assign", "completion_window", "last_question", datetime.now().strftime("%d-%m-%Y")
+        input_df, "column_name_to_assign", "completion_window", "last_question", "2022-09-20"
     )
     assert_df_equality(expected_df, output_df, ignore_column_order=True, ignore_row_order=True)

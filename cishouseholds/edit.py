@@ -993,7 +993,7 @@ def survey_edit_auto_complete(
         column_name_to_assign,
         F.when(
             (F.col(column_name_to_assign) == "In progress")
-            & (F.col(completion_window_column) < F.lit(file_date))
+            & (F.col(completion_window_column) < F.to_timestamp(F.lit(file_date)))
             & (F.col(last_question_column).isNotNull()),
             "Auto Completed",
         ).otherwise(F.lit(F.col(column_name_to_assign))),
