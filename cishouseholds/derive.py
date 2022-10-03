@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 from functools import reduce
 from itertools import chain
 from operator import add
@@ -152,7 +153,10 @@ def assign_date_from_filename(df: DataFrame, column_name_to_assign: str, filenam
     ).otherwise(F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 2))
     df = df.withColumn(
         column_name_to_assign,
-        F.to_timestamp(F.concat(date, time), format="yyyyMMdd_HHmmss"),
+        F.to_timestamp(
+            F.concat(F.when(date == "", F.lit(datetime.now().strftime("%Y%m%d"))).otherwise(date), time),
+            format="yyyyMMdd_HHmmss",
+        ),
     )
     return df
 

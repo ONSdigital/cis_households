@@ -32,6 +32,6 @@ def test_survey_edit_auto_complete(spark_session):
     )
 
     output_df = survey_edit_auto_complete(
-        input_df, "column_name_to_assign", "completion_window", "last_question", "2022-09-20"
+        input_df, "column_name_to_assign", "completion_window", "last_question", "file_date"
     )
     assert_df_equality(expected_df, output_df, ignore_column_order=True, ignore_row_order=True)

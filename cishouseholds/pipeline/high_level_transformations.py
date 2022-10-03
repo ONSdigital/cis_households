@@ -1188,7 +1188,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "survey_completion_status",
         "participant_completion_window_end_datetime",
         "face_covering_other_enclosed_places",
-        datetime.now().strftime("%Y%m%d_%H%M"),
+        "file_date",
     )
     df = update_column_values_from_map(
         df,
