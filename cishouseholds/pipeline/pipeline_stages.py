@@ -36,6 +36,7 @@ from cishouseholds.pipeline.design_weights import calculate_design_weights
 from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
+from cishouseholds.pipeline.high_level_transformations import add_pattern_matching_flags
 from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.high_level_transformations import derive_age_based_columns
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
@@ -366,7 +367,7 @@ def process_soc_data(
     inconsistences_resolution_table: str,
     unioned_soc_lookup_table: str,
     transformed_soc_lookup_table: str,
-    duplicate_soc_rows_table: str,
+    coding_errors_table: str,
 ):
     """
     Process soc data and combine result with survey responses data
@@ -375,21 +376,17 @@ def process_soc_data(
     inconsistences_resolution_df = extract_from_table(inconsistences_resolution_table)
     soc_lookup_df = extract_from_table(unioned_soc_lookup_table)
     survey_responses_df = extract_from_table(survey_responses_table)
-    soc_lookup_df = soc_lookup_df.join(
-        inconsistences_resolution_df,
+    soc_lookup_df = soc_lookup_df.distinct().join(
+        inconsistences_resolution_df.distinct(),
         on=join_on_columns,
         how="left",
     )
-    soc_lookup_df = (
-        soc_lookup_df.withColumn(
-            "standard_occupational_classification_code",
-            F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
-        )
-        .distinct()
-        .drop("resolved_soc_code")
-    )
+    soc_lookup_df = soc_lookup_df.withColumn(
+        "standard_occupational_classification_code",
+        F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
+    ).drop("resolved_soc_code")
 
-    duplicate_rows_df, soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
+    coding_errors_df, soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
     survey_responses_df = survey_responses_df.join(soc_lookup_df, on=join_on_columns, how="left")
     survey_responses_df = survey_responses_df.withColumn(
         "standard_occupational_classification_code",
@@ -398,9 +395,34 @@ def process_soc_data(
         ),
     )
 
-    update_table(duplicate_rows_df, duplicate_soc_rows_table, "overwrite", archive=True)
+    update_table(coding_errors_df, coding_errors_table, "overwrite", archive=True)
     update_table(survey_responses_df, soc_coded_survey_responses_table, "overwrite")
     update_table(soc_lookup_df, transformed_soc_lookup_table, "overwrite")
+
+
+@register_pipeline_stage("process_regex_data")
+def process_regx_data(survey_responses_table: str, regex_derived_survey_responses_table: str, regex_lookup_table: str):
+    """
+    Process regex data and combine result with survey responses data
+    """
+    join_on_columns = ["work_main_job_title", "work_main_job_role"]
+    df = extract_from_table(survey_responses_table)
+    if check_table_exists(regex_lookup_table):
+        lookup_df = extract_from_table(regex_lookup_table, True)
+        non_derived_rows = df.join(lookup_df, on=join_on_columns, how="leftanti").select(*join_on_columns).distinct()
+        lookup_df = lookup_df.unionByName(add_pattern_matching_flags(non_derived_rows))
+        print(
+            f"     - located regex lookup df with {non_derived_rows.count()} additional rows to process"
+        )  # functional
+    else:
+        df_to_process = df.select(*join_on_columns).distinct()
+        print(
+            f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
+        )  # functional
+        lookup_df = add_pattern_matching_flags(df_to_process)
+    df = df.join(lookup_df, on=join_on_columns, how="left")
+    update_table(lookup_df, regex_lookup_table, "overwrite")
+    update_table(df, regex_derived_survey_responses_table, "overwrite")
 
 
 @register_pipeline_stage("union_survey_response_files")
