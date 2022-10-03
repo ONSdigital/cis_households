@@ -145,7 +145,7 @@ from cishouseholds.pipeline.regex_patterns import self_employed_regex
 from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
 from cishouseholds.pipeline.regex_testing import healthcare_classification
 from cishouseholds.pipeline.regex_testing import patient_facing_classification
-from cishouseholds.pipeline.regex_testing import patient_facing_negative_regex
+from cishouseholds.pipeline.regex_testing import patient_facing_pattern
 from cishouseholds.pipeline.regex_testing import priority_map
 from cishouseholds.pipeline.regex_testing import roles_map
 from cishouseholds.pipeline.regex_testing import social_care_classification
@@ -2491,6 +2491,15 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         roles=roles_map,
         priority_map=priority_map,
     )
+    # create healthcare area flag
+    df = df.withColumn("healthcare_area", F.lit(None))
+    for healthcare_type, roles in healthcare_classification.items():  # type: ignore
+        df = df.withColumn(
+            "healthcare_area",
+            F.when(F.col("social_care_area").isNotNull(), None)
+            .when(array_contains_any("regex_derived_job_sector", roles), healthcare_type)
+            .otherwise(F.col("healthcare_area")),  # type: ignore
+        )
     # TODO: need to exclude healthcare types from social care matching
     df = df.withColumn("social_care_area", F.lit(None))
     for social_care_type, roles in social_care_classification.items():  # type: ignore
@@ -2501,16 +2510,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             ),
         )
 
-    # create healthcare area flag
-    df = df.withColumn("healthcare_area", F.lit(None))
-    for healthcare_type, roles in healthcare_classification.items():  # type: ignore
-        df = df.withColumn(
-            "healthcare_area",
-            F.when(F.col("social_care_area").isNotNull(), None)
-            .when(array_contains_any("regex_derived_job_sector", roles), healthcare_type)
-            .otherwise(F.col("healthcare_area")),  # type: ignore
-        )
-
     # add boolean flags for working in healthcare or socialcare
     df = df.withColumn("works_healthcare", F.when(F.col("healthcare_area").isNotNull(), "Yes").otherwise("No"))
     df = df.withColumn("works_social_care", F.when(F.col("social_care_area").isNotNull(), "Yes").otherwise("No"))
@@ -2518,30 +2517,17 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = assign_regex_match_result(
         df=df,
         columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        column_name_to_assign="not_patient_facing",
-        positive_regex_pattern=patient_facing_negative_regex,
-        negative_regex_pattern="",
+        column_name_to_assign="is_patient_facing",
+        positive_regex_pattern=patient_facing_pattern.positive_regex_pattern,
+        negative_regex_pattern=patient_facing_pattern.negative_regex_pattern,
     )
     df = df.withColumn(
         "is_patient_facing",
         F.when(
-            array_contains_any("regex_derived_job_sector", patient_facing_classification["Y"])
-            & ~F.col("not_patient_facing"),
+            ((F.col("works_healthcare") == "Yes") | (F.col("is_patient_facing") == True))
+            & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
             "Yes",
         ).otherwise("No"),
-    )
-    df = assign_column_value_from_multiple_column_map(
-        df,
-        "social_care_patient_facing_derived",
-        [
-            ["No", ["No", None]],
-            ["No", ["Yes", None]],
-            ["Yes, care/residential home, resident-facing", ["Yes", "Care/Residential home"]],
-            ["Yes, other social care, resident-facing", ["Yes", "Other"]],
-            ["Yes, care/residential home, non-resident-facing", ["No", "Care/Residential home"]],
-            ["Yes, other social care, non-resident-facing", ["No", "Other"]],
-        ],
-        ["is_patient_facing", "social_care_area"],
     )
     df = assign_column_value_from_multiple_column_map(
         df,
