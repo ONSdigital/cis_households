@@ -130,7 +130,7 @@ from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.pipeline.config import get_config
-from cishouseholds.pipeline.generate_outputs import generate_stratified_sample
+from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.regex_patterns import at_school_pattern
@@ -144,7 +144,7 @@ from cishouseholds.pipeline.regex_patterns import self_employed_regex
 from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
 from cishouseholds.pipeline.regex_testing import healthcare_classification
 from cishouseholds.pipeline.regex_testing import patient_facing_classification
-from cishouseholds.pipeline.regex_testing import patient_facing_negative_regex
+from cishouseholds.pipeline.regex_testing import patient_facing_pattern
 from cishouseholds.pipeline.regex_testing import priority_map
 from cishouseholds.pipeline.regex_testing import roles_map
 from cishouseholds.pipeline.regex_testing import social_care_classification
@@ -508,14 +508,11 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
             "blood_taken_datetime",
             "survey_completed_datetime",
             "survey_last_modified_datetime",
-            # "swab_return_date",
-            # "blood_return_date",
-            # "swab_return_future_date",
-            # "blood_return_future_date",
         ],
         secondary_date_columns=[],
-        file_date_column="file_date",
-        min_date="2022-05-01",
+        min_datetime_column_name="participant_completion_window_start_datetime",
+        max_datetime_column_name="participant_completion_window_end_datetime",
+        reference_datetime_column_name="swab_sample_received_consolidation_point_datetime",
         default_timestamp="12:00:00",
     )
     df = update_column_in_time_window(
@@ -1195,7 +1192,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "survey_completion_status",
         "participant_completion_window_end_datetime",
         "face_covering_other_enclosed_places",
-        datetime.now().strftime("%Y%m%d_%H%M"),
+        "file_date",
     )
     df = update_column_values_from_map(
         df,
@@ -2440,6 +2437,16 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         roles=roles_map,
         priority_map=priority_map,
     )
+    # create healthcare area flag
+    df = df.withColumn("healthcare_area", F.lit(None))
+    for healthcare_type, roles in healthcare_classification.items():  # type: ignore
+        df = df.withColumn(
+            "healthcare_area",
+            F.when(array_contains_any("regex_derived_job_sector", roles), healthcare_type).otherwise(  # type: ignore
+                F.col("healthcare_area")
+            ),
+        )
+
     # TODO: need to exclude healthcare types from social care matching
     df = df.withColumn("social_care_area", F.lit(None))
     for social_care_type, roles in social_care_classification.items():  # type: ignore
@@ -2450,16 +2457,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             ),
         )
 
-    # create healthcare area flag
-    df = df.withColumn("healthcare_area", F.lit(None))
-    for healthcare_type, roles in healthcare_classification.items():  # type: ignore
-        df = df.withColumn(
-            "healthcare_area",
-            F.when(F.col("social_care_area").isNotNull(), None)
-            .when(array_contains_any("regex_derived_job_sector", roles), healthcare_type)
-            .otherwise(F.col("healthcare_area")),  # type: ignore
-        )
-
     # add boolean flags for working in healthcare or socialcare
     df = df.withColumn("works_healthcare", F.when(F.col("healthcare_area").isNotNull(), "Yes").otherwise("No"))
     df = df.withColumn("works_social_care", F.when(F.col("social_care_area").isNotNull(), "Yes").otherwise("No"))
@@ -2467,30 +2464,17 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = assign_regex_match_result(
         df=df,
         columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        column_name_to_assign="not_patient_facing",
-        positive_regex_pattern=patient_facing_negative_regex,
-        negative_regex_pattern="",
+        column_name_to_assign="is_patient_facing",
+        positive_regex_pattern=patient_facing_pattern.positive_regex_pattern,
+        negative_regex_pattern=patient_facing_pattern.negative_regex_pattern,
     )
     df = df.withColumn(
         "is_patient_facing",
         F.when(
-            array_contains_any("regex_derived_job_sector", patient_facing_classification["Y"])
-            & ~F.col("not_patient_facing"),
+            ((F.col("works_healthcare") == "Yes") | (F.col("is_patient_facing") == True))
+            & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
             "Yes",
         ).otherwise("No"),
-    )
-    df = assign_column_value_from_multiple_column_map(
-        df,
-        "social_care_patient_facing_derived",
-        [
-            ["No", ["No", None]],
-            ["No", ["Yes", None]],
-            ["Yes, care/residential home, resident-facing", ["Yes", "Care/Residential home"]],
-            ["Yes, other social care, resident-facing", ["Yes", "Other"]],
-            ["Yes, care/residential home, non-resident-facing", ["No", "Care/Residential home"]],
-            ["Yes, other social care, non-resident-facing", ["No", "Other"]],
-        ],
-        ["is_patient_facing", "social_care_area"],
     )
     df = assign_column_value_from_multiple_column_map(
         df,
@@ -2507,25 +2491,21 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         ],
         ["is_patient_facing", "healthcare_area"],
     )
-    window = Window.partitionBy("participant_id")
-    df = df.withColumn(
-        "patient_facing_over_20_percent",
-        F.sum(F.when(F.col("is_patient_facing") == "Yes", 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
-    )
+    # window = Window.partitionBy("participant_id")
+    # df = df.withColumn(
+    #     "patient_facing_over_20_percent",
+    #     F.sum(F.when(F.col("is_patient_facing") == "Yes", 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
+    # )
 
-    work_status_columns = [col for col in df.columns if "work_status_" in col]
-    for work_status_column in work_status_columns:
-        df = df.withColumn(
-            work_status_column,
-            F.when(F.col("not_working"), "not working")
-            .when(F.col("at_school") | F.col("at_university"), "student")
-            .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
-            .otherwise(F.col(work_status_column)),
-        )
-
-    # temp include for testing
-    df = df.withColumn("work_healthcare", F.when(F.col("work_health_care_area").isNull(), "No").otherwise("Yes"))
-
+    # work_status_columns = [col for col in df.columns if "work_status_" in col]
+    # for work_status_column in work_status_columns:
+    #     df = df.withColumn(
+    #         work_status_column,
+    #         F.when(F.col("not_working"), "not working")
+    #         .when(F.col("at_school") | F.col("at_university"), "student")
+    #         .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
+    #         .otherwise(F.col(work_status_column)),
+    #     )
     return df
 
 
