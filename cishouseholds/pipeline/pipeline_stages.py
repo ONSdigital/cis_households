@@ -33,9 +33,10 @@ from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.design_weights import calculate_design_weights
-from cishouseholds.pipeline.generate_outputs import generate_stratified_sample
+from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
+from cishouseholds.pipeline.high_level_transformations import add_pattern_matching_flags
 from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.high_level_transformations import derive_age_based_columns
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
@@ -397,6 +398,31 @@ def process_soc_data(
     update_table(duplicate_rows_df, duplicate_soc_rows_table, "overwrite", archive=True)
     update_table(survey_responses_df, soc_coded_survey_responses_table, "overwrite")
     update_table(soc_lookup_df, transformed_soc_lookup_table, "overwrite")
+
+
+@register_pipeline_stage("process_regex_data")
+def process_regx_data(survey_responses_table: str, regex_derived_survey_responses_table: str, regex_lookup_table: str):
+    """
+    Process regex data and combine result with survey responses data
+    """
+    join_on_columns = ["work_main_job_title", "work_main_job_role"]
+    df = extract_from_table(survey_responses_table)
+    if check_table_exists(regex_lookup_table):
+        lookup_df = extract_from_table(regex_lookup_table, True)
+        non_derived_rows = df.join(lookup_df, on=join_on_columns, how="leftanti").select(*join_on_columns).distinct()
+        lookup_df = lookup_df.unionByName(add_pattern_matching_flags(non_derived_rows))
+        print(
+            f"     - located regex lookup df with {non_derived_rows.count()} additional rows to process"
+        )  # functional
+    else:
+        df_to_process = df.select(*join_on_columns).distinct()
+        print(
+            f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
+        )  # functional
+        lookup_df = add_pattern_matching_flags(df_to_process)
+    df = df.join(lookup_df, on=join_on_columns, how="left")
+    update_table(lookup_df, regex_lookup_table, "overwrite")
+    update_table(df, regex_derived_survey_responses_table, "overwrite")
 
 
 @register_pipeline_stage("union_survey_response_files")
@@ -1105,13 +1131,13 @@ def sample_file_ETL(
     update_table(design_weights, design_weight_table, write_mode="overwrite", archive=True)
 
 
-@register_pipeline_stage("stratified_sample")
-def stratified_sample(
+@register_pipeline_stage("generate_sample")
+def sample_df(
     table_name, filter_condition, selected_cols, rows_per_sample, num_files, output_folder_name, array_columns
 ):
     df = extract_from_table(table_name)
     df = df.filter(eval(filter_condition))
-    generate_stratified_sample(df, selected_cols, rows_per_sample, num_files, output_folder_name, array_columns)
+    generate_sample(df, selected_cols, rows_per_sample, num_files, output_folder_name, array_columns)
 
 
 @register_pipeline_stage("aggregated_output")

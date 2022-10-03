@@ -9,6 +9,7 @@ def test_assign_date_from_filename(spark_session):
         data=[
             ("xyz_20200511_052100.csv", "2020-05-11 05:21:00"),
             ("xyz_20200511.csv", "2020-05-11 00:00:00"),
+            ("ONSE_CIS_Digital_v1_0_responses_20200511_000000.txt", "2020-05-11 00:00:00"),
         ],
         schema="file string, datetime string",
     )
