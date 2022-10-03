@@ -115,6 +115,7 @@ from cishouseholds.expressions import array_contains_any
 from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
+from cishouseholds.impute import fill_forward_event
 from cishouseholds.impute import fill_forward_from_last_change
 from cishouseholds.impute import fill_forward_from_last_change_marked_subset
 from cishouseholds.impute import fill_forward_only_to_nulls
@@ -144,7 +145,7 @@ from cishouseholds.pipeline.regex_patterns import self_employed_regex
 from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
 from cishouseholds.pipeline.regex_testing import healthcare_classification
 from cishouseholds.pipeline.regex_testing import patient_facing_classification
-from cishouseholds.pipeline.regex_testing import patient_facing_pattern
+from cishouseholds.pipeline.regex_testing import patient_facing_negative_regex
 from cishouseholds.pipeline.regex_testing import priority_map
 from cishouseholds.pipeline.regex_testing import roles_map
 from cishouseholds.pipeline.regex_testing import social_care_classification
@@ -2079,7 +2080,62 @@ def union_dependent_derivations(df):
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
     )
+
+    df = fill_forward_event(
+        df=df,
+        event_indicator_column="think_had_covid",
+        event_date_column="think_had_covid_onset_date",
+        detail_columns=[
+            "other_covid_infection_test",
+            "other_covid_infection_test_result",
+            "think_had_covid_admitted_to_hospital",
+            "think_had_covid_contacted_nhs",
+            "think_had_covid_symptom_fever",
+            "think_had_covid_symptom_muscle_ache",
+            "think_had_covid_symptom_fatigue",
+            "think_had_covid_symptom_sore_throat",
+            "think_had_covid_symptom_cough",
+            "think_had_covid_symptom_shortness_of_breath",
+            "think_had_covid_symptom_headache",
+            "think_had_covid_symptom_nausea_or_vomiting",
+            "think_had_covid_symptom_abdominal_pain",
+            "think_had_covid_symptom_loss_of_appetite",
+            "think_had_covid_symptom_noisy_breathing",
+            "think_had_covid_symptom_runny_nose_or_sneezing",
+            "think_had_covid_symptom_more_trouble_sleeping",
+            "think_had_covid_symptom_diarrhoea",
+            "think_had_covid_symptom_loss_of_taste",
+            "think_had_covid_symptom_loss_of_smell",
+            "think_had_covid_symptom_memory_loss_or_confusion",
+            "think_had_covid_symptom_chest_pain",
+            "think_had_covid_symptom_vertigo_or_dizziness",
+            "think_had_covid_symptom_difficulty_concentrating",
+            "think_had_covid_symptom_anxiety",
+            "think_had_covid_symptom_palpitations",
+            "think_had_covid_symptom_low_mood",
+        ],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+    )
+
     # Derive these after fill forwards and other changes to dates
+    df = fill_forward_event(
+        df=df,
+        event_indicator_column="contact_suspected_positive_covid_last_28_days",
+        event_date_column="last_suspected_covid_contact_date",
+        detail_columns=["last_suspected_covid_contact_type"],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_date",
+    )
+    df = fill_forward_event(
+        df=df,
+        event_indicator_column="contact_known_positive_covid_last_28_days",
+        event_date_column="last_covid_contact_date",
+        detail_columns=["last_covid_contact_type"],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_date",
+    )
+
     df = create_formatted_datetime_string_columns(df)
     return df
 
@@ -2426,61 +2482,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = df.withColumn("work_main_job_title", F.upper(F.col("work_main_job_title")))
     df = df.withColumn("work_main_job_role", F.upper(F.col("work_main_job_role")))
 
-    # add work from home flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=work_from_home_pattern.positive_regex_pattern,
-        negative_regex_pattern=work_from_home_pattern.negative_regex_pattern,
-        column_name_to_assign="is_working_from_home",
-        debug_mode=False,
-    )
-
-    # add at-school flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=at_school_pattern.positive_regex_pattern,
-        negative_regex_pattern=at_school_pattern.negative_regex_pattern,
-        column_name_to_assign="at_school",
-        debug_mode=False,
-    )
-
-    # add at-university flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=at_university_pattern.positive_regex_pattern,
-        negative_regex_pattern=at_university_pattern.negative_regex_pattern,
-        column_name_to_assign="at_university",
-        debug_mode=False,
-    )
-    # add is-retired flag
-    # df = assign_regex_match_result(
-    #     df=df,
-    #     columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-    #     positive_regex_pattern=retired_regex_pattern.positive_regex_pattern,
-    #     negative_regex_pattern=retired_regex_pattern.negative_regex_pattern,
-    #     column_name_to_assign="is_retired",
-    #     debug_mode=False,
-    # )
-
-    # add not-working flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=not_working_pattern.positive_regex_pattern,
-        negative_regex_pattern=not_working_pattern.negative_regex_pattern,
-        column_name_to_assign="not_working",
-    )
-    # add self-employed flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=self_employed_regex.positive_regex_pattern,
-        column_name_to_assign="is_self_employed",
-        debug_mode=False,
-    )
     df = assign_regex_from_map(
         df=df,
         column_name_to_assign="regex_derived_job_sector",
@@ -2488,16 +2489,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         roles=roles_map,
         priority_map=priority_map,
     )
-    # create healthcare area flag
-    df = df.withColumn("healthcare_area", F.lit(None))
-    for healthcare_type, roles in healthcare_classification.items():  # type: ignore
-        df = df.withColumn(
-            "healthcare_area",
-            F.when(array_contains_any("regex_derived_job_sector", roles), healthcare_type).otherwise(  # type: ignore
-                F.col("healthcare_area")
-            ),
-        )
-
     # TODO: need to exclude healthcare types from social care matching
     df = df.withColumn("social_care_area", F.lit(None))
     for social_care_type, roles in social_care_classification.items():  # type: ignore
@@ -2508,6 +2499,16 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             ),
         )
 
+    # create healthcare area flag
+    df = df.withColumn("healthcare_area", F.lit(None))
+    for healthcare_type, roles in healthcare_classification.items():  # type: ignore
+        df = df.withColumn(
+            "healthcare_area",
+            F.when(F.col("social_care_area").isNotNull(), None)
+            .when(array_contains_any("regex_derived_job_sector", roles), healthcare_type)
+            .otherwise(F.col("healthcare_area")),  # type: ignore
+        )
+
     # add boolean flags for working in healthcare or socialcare
     df = df.withColumn("works_healthcare", F.when(F.col("healthcare_area").isNotNull(), "Yes").otherwise("No"))
     df = df.withColumn("works_social_care", F.when(F.col("social_care_area").isNotNull(), "Yes").otherwise("No"))
@@ -2515,17 +2516,30 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = assign_regex_match_result(
         df=df,
         columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        column_name_to_assign="is_patient_facing",
-        positive_regex_pattern=patient_facing_pattern.positive_regex_pattern,
-        negative_regex_pattern=patient_facing_pattern.negative_regex_pattern,
+        column_name_to_assign="not_patient_facing",
+        positive_regex_pattern=patient_facing_negative_regex,
+        negative_regex_pattern="",
     )
     df = df.withColumn(
         "is_patient_facing",
         F.when(
-            ((F.col("works_healthcare") == "Yes") | (F.col("is_patient_facing") == True))
-            & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
+            array_contains_any("regex_derived_job_sector", patient_facing_classification["Y"])
+            & ~F.col("not_patient_facing"),
             "Yes",
         ).otherwise("No"),
+    )
+    df = assign_column_value_from_multiple_column_map(
+        df,
+        "social_care_patient_facing_derived",
+        [
+            ["No", ["No", None]],
+            ["No", ["Yes", None]],
+            ["Yes, care/residential home, resident-facing", ["Yes", "Care/Residential home"]],
+            ["Yes, other social care, resident-facing", ["Yes", "Other"]],
+            ["Yes, care/residential home, non-resident-facing", ["No", "Care/Residential home"]],
+            ["Yes, other social care, non-resident-facing", ["No", "Other"]],
+        ],
+        ["is_patient_facing", "social_care_area"],
     )
     df = assign_column_value_from_multiple_column_map(
         df,
@@ -2557,6 +2571,9 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
             .otherwise(F.col(work_status_column)),
         )
+
+    # temp include for testing
+    df = df.withColumn("work_healthcare", F.when(F.col("work_health_care_area").isNull(), "No").otherwise("Yes"))
 
     return df
 
