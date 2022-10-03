@@ -168,7 +168,9 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     transform and process cis soc data
     """
     # allow nullsafe join on title as soc is sometimes assigned without
-    df = df.filter(F.col("work_main_job_title").isNotNull()).distinct()
+    df = df.filter(F.col("work_main_job_title").isNotNull()).drop_duplicates(
+        ["standard_occupational_classification_code", *join_on_columns]
+    )
     df = df.withColumn(
         "soc_code_edited_to_uncodeable",
         (F.col("standard_occupational_classification_code").rlike(r".*[^0-9].*|^\s*$"))
@@ -214,7 +216,7 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     ).drop("LENGTH")
     # remove flag from first row of dropped set if all codes from group are flagged
     df = df.withColumn("DROP", F.when(F.count("*").over(window) == 1, 0).otherwise(F.col("DROP")))
-    resolved_df = df.filter((F.col("DROP") == 0)).drop("DROP", "ROW_NUMBER")
+    resolved_df = df.filter(F.col("DROP") == 0).drop("DROP", "ROW_NUMBER")
     duplicate_df = df.filter(F.col("DROP") == 2).drop("ROW_NUMBER", "DROP")
     return duplicate_df, resolved_df
 
@@ -1189,7 +1191,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "survey_completion_status",
         "participant_completion_window_end_datetime",
         "face_covering_other_enclosed_places",
-        datetime.now().strftime("%Y%m%d_%H%M"),
+        "file_date",
     )
     df = update_column_values_from_map(
         df,
@@ -2556,25 +2558,21 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         ],
         ["is_patient_facing", "healthcare_area"],
     )
-    window = Window.partitionBy("participant_id")
-    df = df.withColumn(
-        "patient_facing_over_20_percent",
-        F.sum(F.when(F.col("is_patient_facing") == "Yes", 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
-    )
+    # window = Window.partitionBy("participant_id")
+    # df = df.withColumn(
+    #     "patient_facing_over_20_percent",
+    #     F.sum(F.when(F.col("is_patient_facing") == "Yes", 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
+    # )
 
-    work_status_columns = [col for col in df.columns if "work_status_" in col]
-    for work_status_column in work_status_columns:
-        df = df.withColumn(
-            work_status_column,
-            F.when(F.col("not_working"), "not working")
-            .when(F.col("at_school") | F.col("at_university"), "student")
-            .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
-            .otherwise(F.col(work_status_column)),
-        )
-
-    # temp include for testing
-    df = df.withColumn("work_healthcare", F.when(F.col("work_health_care_area").isNull(), "No").otherwise("Yes"))
-
+    # work_status_columns = [col for col in df.columns if "work_status_" in col]
+    # for work_status_column in work_status_columns:
+    #     df = df.withColumn(
+    #         work_status_column,
+    #         F.when(F.col("not_working"), "not working")
+    #         .when(F.col("at_school") | F.col("at_university"), "student")
+    #         .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
+    #         .otherwise(F.col(work_status_column)),
+    #     )
     return df
 
 
