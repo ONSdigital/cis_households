@@ -67,9 +67,8 @@ def generate_sample(
         sampled_df = df.sample((rows_per_file * num_files) / df.count())
 
     sampled_df = (
-        sampled_df.select(*cols_to_output)
-        .repartition(num_files)
-        .sortWithinPartitions("sampling_strata", "participant_id")
+        sampled_df.select(*cols_to_output).repartition(num_files)
+        # .sortWithinPartitions(*sort_by)
     )
 
     for col in cols:
