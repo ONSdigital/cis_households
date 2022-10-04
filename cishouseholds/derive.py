@@ -28,7 +28,8 @@ def assign_regex_from_map(
     df: DataFrame, column_name_to_assign: str, reference_columns: List[str], roles: Mapping, priority_map: Mapping
 ):
     regex_columns = {key: [] for key in [1, *list(priority_map.values())]}  # type: ignore
-
+    df.cache()
+    df = df.repartition(16)
     for title, pattern in roles.items():
         col = F.when(F.coalesce(F.concat(*reference_columns), F.lit("")).rlike(pattern), title)
         if title in priority_map:
@@ -151,7 +152,10 @@ def assign_date_from_filename(df: DataFrame, column_name_to_assign: str, filenam
     ).otherwise(F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 2))
     df = df.withColumn(
         column_name_to_assign,
-        F.to_timestamp(F.concat(date, time), format="yyyyMMdd_HHmmss"),
+        F.to_timestamp(
+            F.concat(F.when(date == "", "20221003").otherwise(date), time),
+            format="yyyyMMdd_HHmmss",
+        ),
     )
     return df
 
