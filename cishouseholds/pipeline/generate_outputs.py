@@ -27,7 +27,7 @@ def generate_sample(
     output_folder_name: str,
 ):
     """
-    Generate a
+    Generate a sample from an input dataframe. Output and sample type can be configured to suit sampling requirements
 
     Parameters
     ----------
