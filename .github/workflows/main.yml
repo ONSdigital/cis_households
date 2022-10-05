@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Full testing
+name: Testing
 
 # Controls when the action will run.
 on:
