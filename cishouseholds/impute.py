@@ -28,6 +28,23 @@ def impute_outside_uk_columns(
     visit_datetime_column: str,
     id_column: str,
 ):
+    """
+    Impute columns related to a survey participant being outside the UK
+
+    Parameters
+    ----------
+    df
+    outside_uk_date_column
+        The column which contains when the participant was outside the UK
+    outside_country_column
+        The column which contains the (non-UK) country the participant was in
+    outside_uk_since_column
+        The column which contains the date since the participant was outside the UK
+    visit_datetime_column
+        Survey visit datetime
+    id_column
+        The column to use to partition records
+    """
     df = df.withColumn(
         outside_uk_since_column,
         F.when(F.col(outside_uk_date_column) < F.lit("2020/04/01"), "No").otherwise(F.col(outside_uk_since_column)),
@@ -181,6 +198,17 @@ def fill_forwards_covid_contact(
 
 
 def impute_visit_datetime(df: DataFrame, visit_datetime_column: str, sampled_datetime_column: str) -> DataFrame:
+    """Imputer visit datetime columns
+
+    Parameters
+    ----------
+    df
+        The input dataframe containing the column to impute
+    visit_datetime_column
+        The visit datetime column
+    sampled_datetime_column
+        The column to use to impute the `visit_datetime_column`
+    """
     df = df.withColumn(
         visit_datetime_column,
         F.when(F.col(visit_datetime_column).isNull(), F.col(sampled_datetime_column)).otherwise(
@@ -244,6 +272,7 @@ def fill_forward_event(
     take the latest event for each visit_datetime forward across all records.
 
     Parameters
+    ----------
     df
     event_indicator_column
         column indicating if an event took place
@@ -337,6 +366,25 @@ def generate_fill_forward_df(
     record_changed_column: str,
     record_changed_value: str,
 ) -> DataFrame:
+    """
+    Generate fill-forward dataframe
+
+    Parameters
+    ----------
+    df
+        The input dataframe containing the columns to impute
+    fill_forward_columns
+        The list of columns to fill-forward
+    participant_id_column
+        The column to use to partition rows - typically this will be the participant id
+    visit_datetime_column
+        The visit datetime column
+    record_changed_column
+        An indicator column that tells us whether a record needs to be fill-forward if it equals `record_changed_value
+    record_changed_value
+        See `record_changed_column` above
+
+    """
     window = Window.partitionBy(participant_id_column).orderBy(F.col(visit_datetime_column).asc())
     df = df.withColumn("ROW_NUMBER", F.row_number().over(window))
 
@@ -441,11 +489,31 @@ def fill_forward_only_to_nulls_in_dataset_based_on_column(
 ) -> DataFrame:
     """
     This function will carry forward values windowed by an id ordered by date.
-    Fills the set of columns in list_fill_forward indepentently, filling non-null values forwards into the row when
+    Fills the set of columns in list_fill_forward independently, filling non-null values forwards into the row when
     all list_fill_forward values in that row are null.
 
     Only fills into Null values on or after specified dataset version and when changed condition is met.
     Though this may include filling the last value from the previous dataset version.
+
+    Parameters
+    ----------
+    df
+        The input dataframe
+    id
+        The column to use to partition rows
+    date
+        A date column
+    changed
+        Indicator column to capture whether a  record has changed or not
+    dataset
+        The name of the source (survey) dataset for the record in question
+    dataset_value
+        Whether this is for survey data v0, v1, v2, v3 given as integers i.e., 0, 1, 2, 3
+    list_fill_forward
+        List of columns to be fill-forward
+    changed_positive_value
+        A column which captures participant's intention to change the value of their record - for example, if
+        they had changed jobs since last time they filled out the survey. This is used in conjunction with `changed` parameter above.
     """
     window = Window.partitionBy(id).orderBy(date)
 
@@ -479,8 +547,28 @@ def fill_backwards_work_status_v2(
     date_range: List[str] = [],
 ):
     """
-    This function fills backwards as long as it is within upper and lower date defined by list daterange.
+    This function fills backwards as long as it is within upper and lower date defined by list `date_range`.
     And requires a condition column to have specific values only apart from nulls.
+
+    Parameters
+    ----------
+    df
+        The input dataframe
+    date
+        The reference date which will be checked against the `date_range` parameter to determine
+        if a record needs to be imputed
+    id
+        The column to use to partition records
+    fill_backward_column
+        The column to be imputed using fill backward strategy
+    condition_column
+        The column that determines wether an imputation should occur
+    fill_only_backward_column_values
+        The list of values that can be used in fill backward imputation
+    condition_column_values
+        A list of condition values
+    date_range
+        This a list of two elements - first is the min datetime, and the second is the max datetime
     """
     df = df.withColumn("COND_value", F.lit(None))
     df = df.withColumn("COND_not_fill", F.lit(None))
@@ -1148,13 +1236,19 @@ def fill_backwards_overriding_not_nulls(
     column_list: List[str],
 ) -> DataFrame:
     """
+    Fill/impute missing values working backwards from the latest known non-null value
+
     Parameters
     ----------
-    df,
-    column_identity,
-    ordering_column,
-    dataset_column,
-    column_list,
+    df
+    column_identity
+        The column to use to partition records
+    ordering_column
+        The column to use to sort records within a partition
+    dataset_column
+        The colum that identifies which dataset we are dealing with
+    column_list
+        List of columns to impute
     """
     window = (
         Window.partitionBy(column_identity)
@@ -1174,14 +1268,19 @@ def edit_multiple_columns_fill_forward(
 ) -> DataFrame:
     """
     This function does the same thing as impute_by_ordered_fill_forward() but fills forward a list of columns
-    based in fill_if_null, if fill_if_null is null will fill forwards from late observation ordered by date column.
+    based on fill_if_null, if fill_if_null is null will fill forwards from late observation ordered by date column.
+
     Parameters
     ----------
     df
-    participant_id
-    received
+    id
+        The column to use to partition records
+    fill_if_null
+        The column to impute if null
     date
+        The column to order records by
     column_fillforward_list
+        A list of column names to fill forward
     """
     window = Window.partitionBy(id).orderBy(date).rowsBetween(Window.unboundedPreceding, Window.currentRow)
 
@@ -1207,13 +1306,24 @@ def impute_date_by_k_nearest_neighbours(
     donor_group_column_conditions: dict = None,
     maximum_distance: int = 4999,
 ) -> DataFrame:
-    """
+    """Impute dates by K-nearest neighbour
+
     Parameters
     ----------
     df
     column_name_to_assign
+    reference_column
     donor_group_columns
     log_file_path
+    minimum_donors
+    donor_group_column_weights
+    donor_group_column_conditions
+    maximum_distance
+
+    See Also
+    --------
+    impute_by_k_nearest_neighbours - for a description of the arguments of this function
+
     """
     df = df.withColumn("_month", F.month(reference_column))
     df = df.withColumn("_year", F.year(reference_column))
