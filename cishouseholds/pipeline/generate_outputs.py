@@ -27,21 +27,24 @@ def generate_sample(
     output_folder_name: str,
 ):
     """
-
-    Generate a stratified sample of data in multiple separate csv files for clerical proving review.
+    Generate a
 
     Parameters
-    --------------------------------------
-
-    df: Input dataframe
-    cols: selected columns for forming the stratified sample and creating decision columns for
-        clerical/proving review.
-    rows_per_sample: total number of rows across all sample files.
-    num_files: Number of sample files wanted.
-    output_folder_name: File directory in which you want to save the output files.
-    array_columns: List of columns in an array type.
-
-
+    ----------
+    df: DataFrame
+        Input dataframe
+    sample_type: str
+        type of sample to generate "strat" for stratified or "rand" for random
+    cols: list[str]
+        columns to select for forming the stratified sample and creating decision columns for clerical/proving review.
+    cols_to_evaluate: list[str]
+        columns within the cols parameter to evaluate against
+    rows_per_file: int
+        total number of rows per sample file
+    num_files: int
+        number of sample files to generate
+    output_folder_name: str
+        File directory in which you want to save the output files.
     """
     output_directory = "/dapsen/workspace_zone/covserolink/cis_pipeline_proving/proving_outputs/" + output_folder_name
     create_dir(output_directory)
@@ -111,13 +114,14 @@ def check_columns(col_args, selection_columns, error):
     to satisfy those arguments exist in the dataframe.
 
     Parameters
-    ----------------------------------------
-    col_args: All the column names for the operations that need to be performed on the data.
-    selection_columns: List of columns that need to be selected from the dataframe.
-    error: Specify the type of error to output depending on whether or not you're selecting any columns
+    ----------
+    col_args
+        All the column names for the operations that need to be performed on the data.
+    selection_columns
+        List of columns that need to be selected from the dataframe.
+    error
+        Specify the type of error to output depending on whether or not you're selecting any columns
         in the parent function.
-
-
     """
     arguments = ["group by columns ", "name map", "value map"]
     for argument, check in zip(arguments, col_args):  # type: ignore
