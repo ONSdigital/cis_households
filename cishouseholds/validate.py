@@ -1,7 +1,9 @@
 import csv
+import inspect
 import re
 from io import StringIO
 from operator import add
+from typing import Dict
 from typing import List
 from typing import Union
 
@@ -12,9 +14,6 @@ from pyspark.sql import Window
 
 from cishouseholds.pipeline.load import add_error_file_log_entry
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-
-# import inspect
-# from typing import Dict
 
 
 def validate_csv_fields(text_file: RDD, delimiter: str = ","):
@@ -215,81 +214,82 @@ class ConfigError(Exception):
     pass
 
 
-# def validate_config_stages(
-#     all_object_function_dict: Dict, stages_to_run: List[str], config_arguments_list_of_dict: List
-# ):
-#     """
-#     Checks that there's a valid input in the pipeline_config.yaml for every stage
-#     input argument.
+def validate_config_stages(
+    all_object_function_dict: Dict, stages_to_run: List[str], config_arguments_dict_of_dict: List
+):
+    """
+    Checks that there's a valid input in the pipeline_config.yaml for every stage
+    input argument.
 
-#     Parameters
-#     ----------
-#     all_function_dict: dictionary of all functions name and function object in pipeline_stages.py
-#     pipeline_stage_list: from the config file all the functions that have been set up to run.
-#     """
-#     error_msg = "\n"
-#     # CHECK: function in config file exists in repo
-#     for config_function_name in stages_to_run:
-#         # check that theres an object function per each of the pipeline stages in the config_file
-#         if config_function_name not in set(list(all_object_function_dict.keys())):
-#             error_msg += f"""  - the {config_function_name} stage function isn't defined. \n"""  # noqa: E501
+    Parameters
+    ----------
+    all_function_dict: dictionary of all functions name and function object in pipeline_stages.py
+    pipeline_stage_list: from the config file all the functions that have been set up to run.
+    """
+    error_msg = "\n"
+    # CHECK: function in config file exists in repo
+    for config_function_name in stages_to_run:
+        # check that theres an object function per each of the pipeline stages in the config_file
+        if config_function_name not in set(list(all_object_function_dict.keys())):
+            error_msg += f"""  - the {config_function_name} stage function isn't defined. \n"""  # noqa: E501
 
-#     # CHECK: run and function exists and run is bool.
-#     for config_function_name in stages_to_run:  # _true
-#         config_arguments_dict = config_arguments_list_of_dict[config_function_name]  # type: ignore
-#         function_config_other_params = [x for x in config_arguments_dict.keys() if (x != "run") and (x != "function")]
+    # CHECK: run and function exists and run is bool.
+    for config_function_name in stages_to_run:  # _true
+        config_arguments_dict = {**config_arguments_dict_of_dict[config_function_name].get("input_tables", {}), **config_arguments_dict_of_dict[config_function_name].get("output_tables", {}), **{k: v for k, v in config_arguments_dict_of_dict[config_function_name].items() if k not in ["input_tables", "output_tables"]}}  # type: ignore
+        function_config_other_params = [x for x in config_arguments_dict.keys() if (x != "function")]
 
-#         # CHECK: for stage function that require when,
-#         # ensure operator and condition exist and stages required are turned on.
-#         if "when" in config_arguments_dict:
-#             if type(config_arguments_dict["when"]) == dict:  # operator type and expected value exists
-#                 if not (
-#                     ("operator" in config_arguments_dict["when"])
-#                     or (config_arguments_dict["when"]["operator"] == "any")
-#                     or (config_arguments_dict["when"]["operator"] == "all")
-#                 ):
-#                     error_msg += f"""  - {config_function_name} stage should have operator as either any or all. \n"""  # noqa: E501
-#                 if "conditions" not in config_arguments_dict["when"]:
-#                     error_msg += f"""  - {config_function_name} stage should have conditions as the stages to have been run. \n"""  # noqa: E501
-#                 else:  # there are conditions and the conditions have run as true
-#                     for function_run_name, status in config_arguments_dict["when"]["conditions"].items():
-#                         list_needed_functions = [
-#                             condition_stage
-#                             for condition_stage in config_arguments_list_of_dict
-#                             if ((config_function_name == function_run_name) and (status == "updated"))
-#                         ]
-#                         for function_run_condition in list_needed_functions:
-#                             if not function_run_condition["run"]:
-#                                 error_msg += f"""  - {config_function_name} stage requires {function_run_name} stage to be turned as True. \n"""  # noqa: E501
-#             else:
-#                 error_msg += (
-#                     f"""  - {config_function_name} stage has the 'when' in the wrong format. \n"""  # noqa: E501
-#                 )
+        # CHECK: for stage function that require when,
+        # ensure operator and condition exist and stages required are turned on.
+        if "when" in config_arguments_dict:
+            if type(config_arguments_dict["when"]) == dict:  # operator type and expected value exists
+                if not (
+                    ("operator" in config_arguments_dict["when"])
+                    or (config_arguments_dict["when"]["operator"] == "any")
+                    or (config_arguments_dict["when"]["operator"] == "all")
+                ):
+                    error_msg += f"""  - {config_function_name} stage should have operator as either any or all. \n"""  # noqa: E501
+                if "conditions" not in config_arguments_dict["when"]:
+                    error_msg += f"""  - {config_function_name} stage should have conditions as the stages to have been run. \n"""  # noqa: E501
+                else:  # there are conditions and the conditions have run as true
+                    for function_run_name, status in config_arguments_dict["when"]["conditions"].items():
+                        list_needed_functions = [
+                            condition_stage
+                            for condition_stage in config_arguments_dict_of_dict
+                            if ((config_function_name == function_run_name) and (status == "updated"))
+                        ]
+                        for function_run_condition in list_needed_functions:
+                            error_msg += f"""  - {config_function_name} stage requires {function_run_condition} stage to be turned as True. \n"""  # noqa: E501
+            else:
+                error_msg += f"""  - {config_function_name} stage when condition should be in dictionary format with conditions and operator. \n"""  # noqa: E501
 
-#         all_func_config_parameters_from_object = inspect.getfullargspec(
-#             all_object_function_dict[config_function_name]["function"]
-#         ).args
-#         input_arguments_needed = [
-#             arg
-#             for arg in all_func_config_parameters_from_object
-#             if "="  # meaning it will check only non default input parameters
-#             not in str(inspect.signature(all_object_function_dict[config_function_name]["function"]).parameters[arg])
-#         ]
+        all_func_config_parameters_from_object = inspect.getfullargspec(
+            all_object_function_dict[config_arguments_dict.get("function", config_function_name)]
+        ).args
+        input_arguments_needed = [
+            arg
+            for arg in all_func_config_parameters_from_object
+            if "="  # meaning it will check only non default input parameters
+            not in str(
+                inspect.signature(
+                    all_object_function_dict[config_arguments_dict.get("function", config_function_name)]
+                ).parameters[arg]
+            )
+        ]
 
-#         if not (set(function_config_other_params) == set(input_arguments_needed)):
+        if not (set(function_config_other_params) == set(input_arguments_needed)):
 
-#             list_not_passed_arg = [x for x in input_arguments_needed if x not in function_config_other_params]
-#             list_of_unrecognised_arg = [
-#                 x
-#                 for x in function_config_other_params
-#                 if ((x not in all_func_config_parameters_from_object) and (x != "when"))
-#             ]
-#             if list_not_passed_arg != []:
-#                 error_msg += f"""  - {config_function_name} stage does not have in the config file: {', '.join(list_not_passed_arg)}.\n"""  # noqa: E501
-#             if list_of_unrecognised_arg != []:
-#                 error_msg += f"""  - {config_function_name} stage have unrecognised as input arguments: {', '.join(list_of_unrecognised_arg)}.\n"""  # noqa: E501
-#     if error_msg != "\n":
-#         raise ConfigError(error_msg)
+            list_not_passed_arg = [x for x in input_arguments_needed if x not in function_config_other_params]
+            list_of_unrecognised_arg = [
+                x
+                for x in function_config_other_params
+                if ((x not in all_func_config_parameters_from_object) and (x != "when"))
+            ]
+            if list_not_passed_arg != []:
+                error_msg += f"""  - {config_function_name} stage does not have in the config file: {', '.join(list_not_passed_arg)}.\n"""  # noqa: E501
+            if list_of_unrecognised_arg != []:
+                error_msg += f"""  - {config_function_name} stage have unrecognised as input arguments: {', '.join(list_of_unrecognised_arg)}.\n"""  # noqa: E501
+    if error_msg != "\n":
+        raise ConfigError(error_msg)
 
 
 def check_lookup_table_joined_columns_unique(df, join_column_list, name_of_df):

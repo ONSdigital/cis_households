@@ -83,11 +83,11 @@ from dummy_data_generation.generate_data import generate_survey_v2_data
 pipeline_stages = {}
 
 
-def register_pipeline_stage(key, dependencies=[]):
+def register_pipeline_stage(key):
     """Decorator to register a pipeline stage function."""
 
     def _add_pipeline_stage(func):
-        pipeline_stages[key] = {"function": func, "dependencies": dependencies}
+        pipeline_stages[key] = func
         return func
 
     return _add_pipeline_stage
@@ -360,7 +360,7 @@ def process_soc_deltas(
     return {"output_survey_table": output_survey_table}
 
 
-@register_pipeline_stage("process_soc_data", dependencies=["process_soc_deltas", "union_survey_response_files"])
+@register_pipeline_stage("process_soc_data")
 def process_soc_data(
     input_survey_table: str,
     output_survey_table: str,
@@ -422,7 +422,7 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
     return {"output_survey_table": output_survey_table}
 
 
-@register_pipeline_stage("replace_design_weights", dependencies=["union_survey_response_files"])
+@register_pipeline_stage("replace_design_weights")
 def replace_design_weights(
     design_weight_lookup_table: str,
     input_survey_table: str,

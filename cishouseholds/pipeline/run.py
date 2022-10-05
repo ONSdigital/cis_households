@@ -19,8 +19,7 @@ from cishouseholds.pipeline.pipeline_stages import pipeline_stages
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.pyspark_utils import get_spark_application_id
 from cishouseholds.pyspark_utils import get_spark_ui_url
-
-# from cishouseholds.validate import validate_config_stages
+from cishouseholds.validate import validate_config_stages
 
 
 class MissingTablesError(Exception):
@@ -47,20 +46,20 @@ def check_conditions(stage_responses: dict, stage_config: dict):
     return False
 
 
-def check_dependencies(stages_to_run, stage_config):
+def check_dependencies(stages_to_run, stages_config):
     required_tables = []
     available_tables = []
     for stage in stages_to_run:  # generate available and required tables from stage config
-        available_tables.extend(stage_config[stage].get("output_tables", {}).values())
-        if "dataset_name" in stage_config[stage]:
-            available_tables.append(f"transformed_{stage_config[stage]['dataset_name']}")
-        input_tables = stage_config[stage].get("input_tables", {})
+        available_tables.extend(stages_config[stage].get("output_tables", {}).values())
+        if "dataset_name" in stages_config[stage]:
+            available_tables.append(f"transformed_{stages_config[stage]['dataset_name']}")
+        input_tables = stages_config[stage].get("input_tables", {})
         if type(input_tables) == dict:
             required_tables.extend(input_tables.values())
         elif type(input_tables) == list:
             required_tables.extend(input_tables)
-        if "tables_to_process" in stage_config[stage]:
-            required_tables.extend(stage_config[stage]["tables_to_process"])
+        if "tables_to_process" in stages_config[stage]:
+            required_tables.extend(stages_config[stage]["tables_to_process"])
     unavailable_tables = [table for table in required_tables if table not in available_tables]
     unavailable_tables = [table for table in unavailable_tables if not check_table_exists(table)]
     missing_tables = ",".join(unavailable_tables)
@@ -82,17 +81,27 @@ def run_from_config():
     os.environ["deployment"] = "hdfs"
 
     spark = get_or_create_spark_session()
-    spark.sparkContext.setCheckpointDir(get_config()["storage"]["checkpoint_directory"])
     config = get_config()
-    pipeline_version = cishouseholds.__version__
-
-    run_datetime = datetime.now()
-    splunk_logger = SplunkLogger(config.get("splunk_log_directory"))
 
     run_config = {k: v for k, v in config["run"].items() if v is not None}
     stages_to_run = []
     for stage_list in run_config.values():
         stages_to_run.extend(stage_list)
+
+    spark.sparkContext.setCheckpointDir(config["storage"]["checkpoint_directory"])
+
+    check_dependencies(stages_to_run, config["stages"])
+
+    validate_config_stages(
+        all_object_function_dict=pipeline_stages,
+        stages_to_run=stages_to_run,
+        config_arguments_dict_of_dict=config["stages"],
+    )
+
+    pipeline_version = cishouseholds.__version__
+
+    run_datetime = datetime.now()
+    splunk_logger = SplunkLogger(config.get("splunk_log_directory"))
 
     with spark_description_set("adding run log entry"):
         run_id = add_run_log_entry(run_datetime)
@@ -101,10 +110,7 @@ def run_from_config():
         add_run_status(run_id, "started")
     pipeline_error_count = None
 
-    check_dependencies(stages_to_run, config["stages"])
-
     try:
-        # validate_config_stages(all_object_function_dict=pipeline_stages,stages_to_run=stages_to_run,config_arguments_list_of_dict=config["stages"])
         print(f"Spark UI: {get_spark_ui_url()}")  # functional
         print(f"Spark application ID: {get_spark_application_id()}")  # functional
         print(f"cishouseholds version number: {pipeline_version}")  # functional
@@ -182,7 +188,7 @@ def run_pipeline_stages(
     current_table = None
 
     for n, stage_name in enumerate(pipeline_stage_list):
-        stage_function_args = inspect.getfullargspec(pipeline_stages[stage_name]["function"]).args
+        stage_function_args = inspect.getfullargspec(pipeline_stages[stage_name]).args
         stage_start = datetime.now()
         stage_success = False
         attempt = 0
@@ -214,7 +220,7 @@ def run_pipeline_stages(
                     stage_input_tables["input_survey_table"] = current_table
                 try:
                     with spark_description_set(stage_name):
-                        result = pipeline_stages[stage_name]["function"](**stage_config)
+                        result = pipeline_stages[stage_name](**stage_config)
                         if result is not None:
                             stage_responses[stage_name] = result.get("status")
                             current_table = result.get("output_survey_table", current_table)
