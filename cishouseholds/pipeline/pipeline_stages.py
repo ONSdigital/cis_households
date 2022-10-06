@@ -62,6 +62,7 @@ from cishouseholds.pipeline.manifest import Manifest
 from cishouseholds.pipeline.mapping import category_maps
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import soc_regex_map
+from cishouseholds.pipeline.reporting import count_variable_option
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import generate_lab_report
 from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
@@ -818,7 +819,7 @@ def report(
 
     valid_df_errors = generate_error_table(valid_survey_responses_errors_table, error_priority_map)
     invalid_df_errors = generate_error_table(invalid_survey_responses_errors_table, error_priority_map)
-
+    soc_uncode_count = count_variable_option(valid_df, "soc_code", "uncodeable")
     processed_file_log = extract_from_table("processed_filenames")
 
     invalid_files_count = 0
@@ -877,6 +878,7 @@ def report(
         valid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails valid data", index=False)
         invalid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails invalid data", index=False)
         duplicated_df.toPandas().to_excel(writer, sheet_name="duplicated record summary", index=False)
+        soc_uncode_count.toPandas().to_excel(writer, sheet_name="'uncodeable' soc code count", index=False)
 
     write_string_to_file(
         output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
