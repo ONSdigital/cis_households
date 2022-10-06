@@ -1822,7 +1822,7 @@ def symptom_column_transformations(df):
     )
     df = assign_true_if_any(
         df=df,
-        column_name_to_assign="think_have_covid_cghfevamn_symptom_group",
+        column_name_to_assign="think_had_covid_cghfevamn_symptom_group",
         reference_columns=[
             "think_had_covid_symptom_cough",
             "think_had_covid_symptom_fever",
@@ -1831,17 +1831,17 @@ def symptom_column_transformations(df):
         ],
         true_false_values=["Yes", "No"],
     )
-    df = assign_true_if_any(
-        df=df,
-        column_name_to_assign="think_have_covid_cghfevamn_symptom_group",
-        reference_columns=[
-            "think_had_covid_symptom_cough",
-            "think_had_covid_symptom_fever",
-            "think_had_covid_symptom_loss_of_smell",
-            "think_had_covid_symptom_loss_of_taste",
-        ],
-        true_false_values=["Yes", "No"],
-    )
+    # df = assign_true_if_any(
+    #     df=df,
+    #     column_name_to_assign="think_have_covid_cghfevamn_symptom_group",
+    #     reference_columns=[
+    #         "think_had_covid_symptom_cough",
+    #         "think_had_covid_symptom_fever",
+    #         "think_had_covid_symptom_loss_of_smell",
+    #         "think_had_covid_symptom_loss_of_taste",
+    #     ],
+    #     true_false_values=["Yes", "No"],
+    # )
     df = assign_any_symptoms_around_visit(
         df=df,
         column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
@@ -1977,6 +1977,9 @@ def union_dependent_derivations(df):
     df = assign_ethnicity_white(
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
+
+    df = derive_work_status_columns(df)
+
     # df = assign_work_patient_facing_now(
     #     df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_patient_facing"
     # )
@@ -2288,18 +2291,18 @@ def fill_forwards_transformations(df):
 
     ## TODO: Not needed until a future release, will leave commented out in code until required
     #
-    df = update_column_if_ref_in_list(
-        df=df,
-        column_name_to_update="work_location",
-        old_value=None,
-        new_value="Not applicable, not currently working",
-        reference_column="work_status_v0",
-        check_list=[
-            "Furloughed (temporarily not working)",
-            "Not working (unemployed, retired, long-term sick etc.)",
-            "Student",
-        ],
-    )
+    # df = update_column_if_ref_in_list(
+    #     df=df,
+    #     column_name_to_update="work_location",
+    #     old_value=None,
+    #     new_value="Not applicable, not currently working",
+    #     reference_column="work_status_v0",
+    #     check_list=[
+    #         "Furloughed (temporarily not working)",
+    #         "Not working (unemployed, retired, long-term sick etc.)",
+    #         "Student",
+    #     ],
+    # )
 
     df = fill_forwards_travel_column(df)
 
