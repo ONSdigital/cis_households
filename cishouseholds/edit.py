@@ -1,5 +1,4 @@
 import re
-from datetime import datetime
 from functools import reduce
 from itertools import chain
 from operator import add
@@ -981,7 +980,7 @@ def survey_edit_auto_complete(
     column_name_to_assign: str,
     completion_window_column: str,
     last_question_column: str,
-    file_date: str = datetime.now().strftime("%Y%m%d_%H%M"),
+    file_date_column: str,
 ):
     """
     Add a status type for the variable survey_completion_status to reflect participants who have filled in the final
@@ -993,10 +992,10 @@ def survey_edit_auto_complete(
         column_name_to_assign,
         F.when(
             (F.col(column_name_to_assign) == "In progress")
-            & (F.col(completion_window_column) < F.lit(file_date))
+            & (F.col(completion_window_column) < F.col(file_date_column))
             & (F.col(last_question_column).isNotNull()),
             "Auto Completed",
-        ).otherwise(F.lit(F.col(column_name_to_assign))),
+        ).otherwise(F.col(column_name_to_assign)),
     )
     return df
 
