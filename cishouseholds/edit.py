@@ -1,5 +1,4 @@
 import re
-from datetime import datetime
 from functools import reduce
 from itertools import chain
 from operator import add
@@ -981,7 +980,7 @@ def survey_edit_auto_complete(
     column_name_to_assign: str,
     completion_window_column: str,
     last_question_column: str,
-    file_date: str = datetime.now().strftime("%Y%m%d_%H%M"),
+    file_date_column: str,
 ):
     """
     Add a status type for the variable survey_completion_status to reflect participants who have filled in the final
@@ -993,11 +992,45 @@ def survey_edit_auto_complete(
         column_name_to_assign,
         F.when(
             (F.col(column_name_to_assign) == "In progress")
-            & (F.col(completion_window_column) < F.lit(file_date))
+            & (F.col(completion_window_column) < F.col(file_date_column))
             & (F.col(last_question_column).isNotNull()),
             "Auto Completed",
-        ).otherwise(F.lit(F.col(column_name_to_assign))),
+        ).otherwise(F.col(column_name_to_assign)),
     )
+    return df
+
+
+def replace_sample_barcode(
+    df: DataFrame,
+):
+    """
+    Creates _sample_barcode_combined fields and uses agreed business logic to utilise either the user entered
+    barcode (_sample_barcode_user_entered) or the pre-assigned barcode (_sample_barcode)
+
+    Parameters
+    ----------
+    df : DataFrame
+        input dataframe with required sample barcode fields
+
+    Returns
+    -------
+    df : DataFrame
+        output dataframe with replaced sample barcodes
+    """
+
+    if "swab_sample_barcode_user_entered" in df.columns:
+        for test_type in ["swab", "blood"]:
+            df = df.withColumn(
+                f"{test_type}_sample_barcode_combined",
+                F.when(
+                    (
+                        (F.col("survey_response_dataset_major_version") == 3)
+                        & (F.col(f"{test_type}_sample_barcode_correct") == "No")
+                        & ~(F.col(f"{test_type}_sample_barcode_user_entered").isNull())
+                    ),
+                    F.col(f"{test_type}_sample_barcode_user_entered"),
+                ).otherwise(F.col(f"{test_type}_sample_barcode")),
+            )
     return df
 
 
@@ -1005,9 +1038,21 @@ def conditionally_replace_columns(
     df: DataFrame, column_to_column_map: Dict[str, str], condition: Optional[object] = True
 ):
     """
-    For CIS Digital responses, the derived values swab_sample_barcode_combined and blood_sample_barcode_combined
-    should replace the value in swab_sample_barcode and blood_sample_barcode respectively, as this takes the user
-    entered one over the auto-allocated one if applicable.
+    Dictionaries for column_to_column_map are to_replace : replace_with formats.
+
+    Parameters
+    ----------
+    df : DataFrame
+        input df
+    column_to_column_map : Dict[str, str]
+        to_replace : replace_with
+    condition : Optional[object]
+        Defaults to True.
+
+    Returns
+    -------
+    df : DataFrame
+        dataframe with replaced column values
     """
 
     for to_replace, replace_with in column_to_column_map.items():
