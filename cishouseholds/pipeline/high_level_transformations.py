@@ -116,6 +116,7 @@ from cishouseholds.expressions import array_contains_any
 from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
+from cishouseholds.impute import fill_forward_event
 from cishouseholds.impute import fill_forward_from_last_change
 from cishouseholds.impute import fill_forward_from_last_change_marked_subset
 from cishouseholds.impute import fill_forward_only_to_nulls
@@ -168,7 +169,11 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     transform and process cis soc data
     """
     # allow nullsafe join on title as soc is sometimes assigned without
-    df = df.filter(F.col("work_main_job_title").isNotNull()).distinct()
+    df = df.drop_duplicates(["standard_occupational_classification_code", *join_on_columns])
+    drop_null_title_df = df.filter(F.col("work_main_job_title").isNull()).withColumn(
+        "drop_reason", F.lit("null job title")
+    )
+    df = df.filter(F.col("work_main_job_title").isNotNull())
     df = df.withColumn(
         "soc_code_edited_to_uncodeable",
         (F.col("standard_occupational_classification_code").rlike(r".*[^0-9].*|^\s*$"))
@@ -196,27 +201,27 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
 
     # flag non specific soc codes and uncodeable codes
     df = df.withColumn(
-        "DROP",
+        "drop_reason",
         F.when(
             (F.col("LENGTH") != F.max("LENGTH").over(window))
             | (F.col("standard_occupational_classification_code") == "uncodeable"),
-            1,
-        ).otherwise(0),
+            "more specific code available",
+        ).otherwise(None),
     )
-    retain_count = F.sum(F.when(F.col("DROP") == 0, 1).otherwise(0)).over(window)
+    retain_count = F.sum(F.when(F.col("drop_reason").isNull(), 1).otherwise(0)).over(window)
     # flag ambiguous codes from remaining set
     df = df.withColumn(
-        "DROP",
+        "drop_reason",
         F.when(
-            (retain_count > 1) & (F.col("DROP") == 0),
-            2,
-        ).otherwise(F.col("DROP")),
+            (retain_count > 1) & (F.col("drop_reason").isNull()),
+            "ambiguous code",
+        ).otherwise(F.col("drop_reason")),
     ).drop("LENGTH")
     # remove flag from first row of dropped set if all codes from group are flagged
-    df = df.withColumn("DROP", F.when(F.count("*").over(window) == 1, 0).otherwise(F.col("DROP")))
-    resolved_df = df.filter((F.col("DROP") == 0)).drop("DROP", "ROW_NUMBER")
-    duplicate_df = df.filter(F.col("DROP") == 2).drop("ROW_NUMBER", "DROP")
-    return duplicate_df, resolved_df
+    df = df.withColumn("drop_reason", F.when(F.count("*").over(window) == 1, None).otherwise(F.col("drop_reason")))
+    resolved_df = df.filter(F.col("drop_reason").isNull()).drop("drop_reason", "ROW_NUMBER")
+    duplicate_df = df.filter(F.col("drop_reason").isNotNull()).drop("ROW_NUMBER")
+    return duplicate_df.unionByName(drop_null_title_df), resolved_df
 
 
 def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
@@ -1189,7 +1194,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "survey_completion_status",
         "participant_completion_window_end_datetime",
         "face_covering_other_enclosed_places",
-        datetime.now().strftime("%Y%m%d_%H%M"),
+        "file_date",
     )
     df = update_column_values_from_map(
         df,
@@ -2083,9 +2088,70 @@ def union_dependent_derivations(df):
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
     )
+    df_2 = get_or_create_spark_session().createDataFrame(
+        df.rdd, schema=df.schema
+    )  # breaks lineage to avoid Java OOM Error
+    df_3 = fill_forward_event(
+        df=df_2,
+        event_indicator_column="think_had_covid",
+        event_date_column="think_had_covid_onset_date",
+        detail_columns=[
+            "other_covid_infection_test",
+            "other_covid_infection_test_results",
+            "think_had_covid_admitted_to_hospital",
+            "think_had_covid_contacted_nhs",
+            "think_had_covid_symptom_fever",
+            "think_had_covid_symptom_muscle_ache",
+            "think_had_covid_symptom_fatigue",
+            "think_had_covid_symptom_sore_throat",
+            "think_had_covid_symptom_cough",
+            "think_had_covid_symptom_shortness_of_breath",
+            "think_had_covid_symptom_headache",
+            "think_had_covid_symptom_nausea_or_vomiting",
+            "think_had_covid_symptom_abdominal_pain",
+            "think_had_covid_symptom_loss_of_appetite",
+            "think_had_covid_symptom_noisy_breathing",
+            "think_had_covid_symptom_runny_nose_or_sneezing",
+            "think_had_covid_symptom_more_trouble_sleeping",
+            "think_had_covid_symptom_diarrhoea",
+            "think_had_covid_symptom_loss_of_taste",
+            "think_had_covid_symptom_loss_of_smell",
+            "think_had_covid_symptom_memory_loss_or_confusion",
+            "think_had_covid_symptom_chest_pain",
+            "think_had_covid_symptom_vertigo_or_dizziness",
+            "think_had_covid_symptom_difficulty_concentrating",
+            "think_had_covid_symptom_anxiety",
+            "think_had_covid_symptom_palpitations",
+            "think_had_covid_symptom_low_mood",
+        ],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+    )
+    df_4 = get_or_create_spark_session().createDataFrame(
+        df_3.rdd, schema=df_3.schema
+    )  # breaks lineage to avoid Java OOM Error
     # Derive these after fill forwards and other changes to dates
-    df = create_formatted_datetime_string_columns(df)
-    return df
+    df_5 = fill_forward_event(
+        df=df_4,
+        event_indicator_column="contact_suspected_positive_covid_last_28_days",
+        event_date_column="last_suspected_covid_contact_date",
+        detail_columns=["last_suspected_covid_contact_type"],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+    )
+    df_6 = get_or_create_spark_session().createDataFrame(
+        df_5.rdd, schema=df_5.schema
+    )  # breaks lineage to avoid Java OOM Error
+    df_7 = fill_forward_event(
+        df=df_6,
+        event_indicator_column="contact_known_positive_covid_last_28_days",
+        event_date_column="last_covid_contact_date",
+        detail_columns=["last_covid_contact_type"],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+    )
+    df_7 = create_formatted_datetime_string_columns(df_7)
+    return df_7
 
 
 def derive_people_in_household_count(df):
@@ -2430,61 +2496,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = df.withColumn("work_main_job_title", F.upper(F.col("work_main_job_title")))
     df = df.withColumn("work_main_job_role", F.upper(F.col("work_main_job_role")))
 
-    # add work from home flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=work_from_home_pattern.positive_regex_pattern,
-        negative_regex_pattern=work_from_home_pattern.negative_regex_pattern,
-        column_name_to_assign="is_working_from_home",
-        debug_mode=False,
-    )
-
-    # add at-school flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=at_school_pattern.positive_regex_pattern,
-        negative_regex_pattern=at_school_pattern.negative_regex_pattern,
-        column_name_to_assign="at_school",
-        debug_mode=False,
-    )
-
-    # add at-university flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=at_university_pattern.positive_regex_pattern,
-        negative_regex_pattern=at_university_pattern.negative_regex_pattern,
-        column_name_to_assign="at_university",
-        debug_mode=False,
-    )
-    # add is-retired flag
-    # df = assign_regex_match_result(
-    #     df=df,
-    #     columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-    #     positive_regex_pattern=retired_regex_pattern.positive_regex_pattern,
-    #     negative_regex_pattern=retired_regex_pattern.negative_regex_pattern,
-    #     column_name_to_assign="is_retired",
-    #     debug_mode=False,
-    # )
-
-    # add not-working flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=not_working_pattern.positive_regex_pattern,
-        negative_regex_pattern=not_working_pattern.negative_regex_pattern,
-        column_name_to_assign="not_working",
-    )
-    # add self-employed flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=self_employed_regex.positive_regex_pattern,
-        column_name_to_assign="is_self_employed",
-        debug_mode=False,
-    )
     df = assign_regex_from_map(
         df=df,
         column_name_to_assign="regex_derived_job_sector",
@@ -2497,11 +2508,10 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     for healthcare_type, roles in healthcare_classification.items():  # type: ignore
         df = df.withColumn(
             "healthcare_area",
-            F.when(array_contains_any("regex_derived_job_sector", roles), healthcare_type).otherwise(  # type: ignore
-                F.col("healthcare_area")
-            ),
+            F.when(F.col("social_care_area").isNotNull(), None)
+            .when(array_contains_any("regex_derived_job_sector", roles), healthcare_type)
+            .otherwise(F.col("healthcare_area")),  # type: ignore
         )
-
     # TODO: need to exclude healthcare types from social care matching
     df = df.withColumn("social_care_area", F.lit(None))
     for social_care_type, roles in social_care_classification.items():  # type: ignore
@@ -2546,22 +2556,21 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         ],
         ["is_patient_facing", "healthcare_area"],
     )
-    window = Window.partitionBy("participant_id")
-    df = df.withColumn(
-        "patient_facing_over_20_percent",
-        F.sum(F.when(F.col("is_patient_facing") == "Yes", 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
-    )
+    # window = Window.partitionBy("participant_id")
+    # df = df.withColumn(
+    #     "patient_facing_over_20_percent",
+    #     F.sum(F.when(F.col("is_patient_facing") == "Yes", 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
+    # )
 
-    work_status_columns = [col for col in df.columns if "work_status_" in col]
-    for work_status_column in work_status_columns:
-        df = df.withColumn(
-            work_status_column,
-            F.when(F.col("not_working"), "not working")
-            .when(F.col("at_school") | F.col("at_university"), "student")
-            .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
-            .otherwise(F.col(work_status_column)),
-        )
-
+    # work_status_columns = [col for col in df.columns if "work_status_" in col]
+    # for work_status_column in work_status_columns:
+    #     df = df.withColumn(
+    #         work_status_column,
+    #         F.when(F.col("not_working"), "not working")
+    #         .when(F.col("at_school") | F.col("at_university"), "student")
+    #         .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
+    #         .otherwise(F.col(work_status_column)),
+    #     )
     return df
 
 
