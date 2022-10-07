@@ -1,6 +1,7 @@
 import pytest
 
 from cishouseholds.merge import union_multiple_tables
+from cishouseholds.pipeline.high_level_transformations import add_pattern_matching_flags
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.pipeline_stages import union_dependent_cleaning
 from cishouseholds.pipeline.pipeline_stages import union_dependent_derivations
@@ -27,6 +28,7 @@ def test_union_dependent_transformations(
         ]
     )
     df = fill_forwards_transformations(df)
+    df = add_pattern_matching_flags(df)
     df_2 = get_or_create_spark_session().createDataFrame(
         df.rdd, schema=df.schema
     )  # breaks lineage to avoid Java OOM Error
