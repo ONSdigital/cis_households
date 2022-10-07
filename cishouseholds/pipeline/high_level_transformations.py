@@ -2073,7 +2073,8 @@ def union_dependent_derivations(df):
     window = Window.partitionBy("participant_id")
     df = df.withColumn(
         "patient_facing_over_20_percent",
-        F.sum(F.when(F.col("is_patient_facing") == "Yes", 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
+        F.sum(F.when(F.col("work_direct_contact_patients_or_clients") == "Yes", 1).otherwise(0)).over(window)
+        / F.sum(F.lit(1)).over(window),
     )
 
     df = fill_forward_from_last_change(
