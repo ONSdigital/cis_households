@@ -132,6 +132,12 @@ from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.generate_outputs import generate_sample
+from cishouseholds.pipeline.healthcare_regex import healthcare_classification
+from cishouseholds.pipeline.healthcare_regex import patient_facing_classification
+from cishouseholds.pipeline.healthcare_regex import patient_facing_pattern
+from cishouseholds.pipeline.healthcare_regex import priority_map
+from cishouseholds.pipeline.healthcare_regex import roles_map
+from cishouseholds.pipeline.healthcare_regex import social_care_classification
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.regex_patterns import at_school_pattern
@@ -143,12 +149,6 @@ from cishouseholds.pipeline.regex_patterns import not_working_pattern
 from cishouseholds.pipeline.regex_patterns import retired_regex_pattern
 from cishouseholds.pipeline.regex_patterns import self_employed_regex
 from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
-from cishouseholds.pipeline.regex_testing import healthcare_classification
-from cishouseholds.pipeline.regex_testing import patient_facing_classification
-from cishouseholds.pipeline.regex_testing import patient_facing_pattern
-from cishouseholds.pipeline.regex_testing import priority_map
-from cishouseholds.pipeline.regex_testing import roles_map
-from cishouseholds.pipeline.regex_testing import social_care_classification
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pipeline.translate import backup_and_replace_translation_lookup_df
 from cishouseholds.pipeline.translate import export_responses_to_be_translated_to_translation_directory
