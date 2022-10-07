@@ -46,25 +46,30 @@ def check_conditions(stage_responses: dict, stage_config: dict):
     return False
 
 
-def check_dependencies(stages_to_run, stages_config):
-    required_tables = []
+def check_dependencies(stages_to_run, stages_config):  # TODO: ensure check in order. look before current stage only
+
     available_tables = []
     for stage in stages_to_run:  # generate available and required tables from stage config
-        available_tables.extend(stages_config[stage].get("output_tables", {}).values())
-        if "dataset_name" in stages_config[stage]:
-            available_tables.append(f"transformed_{stages_config[stage]['dataset_name']}")
+        required_tables = []
         input_tables = stages_config[stage].get("input_tables", {})
+
         if type(input_tables) == dict:
             required_tables.extend(input_tables.values())
         elif type(input_tables) == list:
             required_tables.extend(input_tables)
         if "tables_to_process" in stages_config[stage]:
             required_tables.extend(stages_config[stage]["tables_to_process"])
-    unavailable_tables = [table for table in required_tables if table not in available_tables]
-    unavailable_tables = [table for table in unavailable_tables if not check_table_exists(table)]
-    missing_tables = ",".join(unavailable_tables)
-    if len(unavailable_tables) > 0:
-        raise MissingTablesError(f"Cannot run pipeline missing tables: {missing_tables}")
+
+        unavailable_tables = [table for table in required_tables if not check_table_exists(table)]
+        unavailable_tables = [table for table in unavailable_tables if table not in available_tables]
+        missing_tables = ",".join(unavailable_tables)
+
+        if len(unavailable_tables) > 0:
+            raise MissingTablesError(f"Cannot run pipeline; stage {stage} is missing tables: {missing_tables}")
+
+        available_tables.extend(stages_config[stage].get("output_tables", {}).values())
+        if "dataset_name" in stages_config[stage]:  # handle auto name delta tables
+            available_tables.append(f"transformed_{stages_config[stage]['dataset_name']}")
 
 
 def run_from_config():
@@ -83,19 +88,16 @@ def run_from_config():
     spark = get_or_create_spark_session()
     config = get_config()
 
-    run_config = {k: v for k, v in config["run"].items() if v is not None}
-    stages_to_run = []
-    for stage_list in run_config.values():
-        stages_to_run.extend(stage_list)
+    stages_to_run = config["run"]
 
     spark.sparkContext.setCheckpointDir(config["storage"]["checkpoint_directory"])
 
     check_dependencies(stages_to_run, config["stages"])
 
     validate_config_stages(
-        all_object_function_dict=pipeline_stages,
+        pipeline_stage_functions=pipeline_stages,
         stages_to_run=stages_to_run,
-        config_arguments_dict_of_dict=config["stages"],
+        stages_config=config["stages"],
     )
 
     pipeline_version = cishouseholds.__version__
@@ -188,18 +190,19 @@ def run_pipeline_stages(
     current_table = None
 
     for n, stage_name in enumerate(pipeline_stage_list):
-        stage_function_args = inspect.getfullargspec(pipeline_stages[stage_name]).args
+        stage_config = stage_configs[stage_name]
+        stage_config = {} if stage_config is None else stage_config
+        stage_function_name = stage_config.pop("function", stage_name)
+        stage_function_args = inspect.getfullargspec(pipeline_stages[stage_function_name]).args
         stage_start = datetime.now()
         stage_success = False
         attempt = 0
         complete_status_string = "successfully"
         stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name} at {stage_start}"
-        stage_config = stage_configs[stage_name]
 
         stage_input_tables = stage_config.pop("input_tables", {})
         stage_output_tables = stage_config.pop("output_tables", {})
 
-        stage_config = {} if stage_config is None else stage_config
         if current_table is not None:
             stage_input_tables["input_survey_table"] = current_table
 
@@ -220,7 +223,7 @@ def run_pipeline_stages(
                     stage_input_tables["input_survey_table"] = current_table
                 try:
                     with spark_description_set(stage_name):
-                        result = pipeline_stages[stage_name](**stage_config)
+                        result = pipeline_stages[stage_function_name](**stage_config)
                         if result is not None:
                             stage_responses[stage_name] = result.get("status")
                             current_table = result.get("output_survey_table", current_table)

@@ -32,7 +32,11 @@ def get_config() -> dict:
     for section_name, section_config in configs[0].items():
         if type(section_config) == dict and section_name != "run":
             for key, val in section_config.items():
-                modified_config[section_name].get(key, {}).update(val)
+                if key in modified_config[section_name]:
+                    modified_config[section_name][key].update(val)
+                else:
+                    modified_config[section_name][key] = val
+
         else:
             modified_config[section_name] = section_config
     return modified_config
