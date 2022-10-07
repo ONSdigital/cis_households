@@ -2070,6 +2070,12 @@ def union_dependent_derivations(df):
     )
     df = assign_work_status_group(df, "work_status_group", "work_status_v0")
 
+    window = Window.partitionBy("participant_id")
+    df = df.withColumn(
+        "patient_facing_over_20_percent",
+        F.sum(F.when(F.col("is_patient_facing") == "Yes", 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
+    )
+
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
@@ -2519,8 +2525,8 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         )
 
     # add boolean flags for working in healthcare or socialcare
-    df = df.withColumn("works_healthcare", F.when(F.col("healthcare_area").isNotNull(), "Yes").otherwise("No"))
-    df = df.withColumn("works_social_care", F.when(F.col("social_care_area").isNotNull(), "Yes").otherwise("No"))
+    df = df.withColumn("work_healthcare", F.when(F.col("healthcare_area").isNotNull(), "Yes").otherwise("No"))
+    df = df.withColumn("work_social_care", F.when(F.col("social_care_area").isNotNull(), "Yes").otherwise("No"))
 
     df = assign_regex_match_result(
         df=df,
@@ -2532,14 +2538,14 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "is_patient_facing",
         F.when(
-            ((F.col("works_healthcare") == "Yes") | (F.col("is_patient_facing") == True))
+            ((F.col("work_healthcare") == "Yes") | (F.col("is_patient_facing") == True))
             & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
             "Yes",
         ).otherwise("No"),
     )
     df = assign_column_value_from_multiple_column_map(
         df,
-        "health_care_patient_facing_derived",
+        "work_health_care_patient_facing",
         [
             ["No", ["No", None]],
             ["No", ["Yes", None]],
@@ -2552,11 +2558,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         ],
         ["is_patient_facing", "healthcare_area"],
     )
-    # window = Window.partitionBy("participant_id")
-    # df = df.withColumn(
-    #     "patient_facing_over_20_percent",
-    #     F.sum(F.when(F.col("is_patient_facing") == "Yes", 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
-    # )
 
     # work_status_columns = [col for col in df.columns if "work_status_" in col]
     # for work_status_column in work_status_columns:

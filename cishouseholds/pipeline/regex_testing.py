@@ -275,6 +275,8 @@ priority_map = {
     "social_work": 3,
     "base_non_healthcare": 4,
     "public_service": 4,
+    "hospital_generic": 2,
+    "dentist": 3,
     "nurse": 2,
     "informal_care": 8,
 }
