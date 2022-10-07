@@ -9,6 +9,7 @@ from pyspark.sql import Window
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import get_run_id
+from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
 def generate_lab_report(df: DataFrame) -> DataFrame:
@@ -106,3 +107,37 @@ def generate_error_table(table_name: str, error_priority_map: dict) -> DataFrame
     df = df.withColumn("ORDER", F.col("validation_check_failures"))
     df = update_column_values_from_map(df, "ORDER", error_priority_map, default_value=9999)
     return df.orderBy("ORDER").drop("ORDER")
+
+
+def count_variable_option(df: DataFrame, column_inv: str, column_value: str):
+    """
+    Counts occurence of a specific value in a column
+
+    Parameters
+    --------
+    df
+        Dataframe
+    column_inv
+        column you want the value count from
+    column_value
+        value you want counting in the specified column
+
+    """
+
+    df_filt = df.withColumn("col_value", F.when(F.col(column_inv) == column_value, F.lit(1)).otherwise(0))
+    sum_value = df.count() - df_filt.filter(df_filt["col_value"] == 0).count()
+
+    count_data = [
+        # fmt:off
+        (column_inv, column_value, sum_value)
+        # fmt:on
+    ]
+
+    schema = """
+            column_name string,
+            column_value string,
+            count integer
+            """
+
+    output_df = get_or_create_spark_session().createDataFrame(data=count_data, schema=schema)
+    return output_df
