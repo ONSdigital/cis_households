@@ -2506,39 +2506,39 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         priority_map=priority_map,
     )
     # create healthcare area flag
-    df = df.withColumn("healthcare_area", F.lit(None))
+    df = df.withColumn("work_health_care_area", F.lit(None))
     for healthcare_type, roles in healthcare_classification.items():  # type: ignore
         df = df.withColumn(
-            "healthcare_area",
-            F.when(F.col("social_care_area").isNotNull(), None)
-            .when(array_contains_any("regex_derived_job_sector", roles), healthcare_type)
-            .otherwise(F.col("healthcare_area")),  # type: ignore
+            "work_health_care_area",
+            F.when(array_contains_any("regex_derived_job_sector", roles), healthcare_type).otherwise(
+                F.col("work_health_care_area")
+            ),  # type: ignore
         )
     # TODO: need to exclude healthcare types from social care matching
-    df = df.withColumn("social_care_area", F.lit(None))
+    df = df.withColumn("work_social_care_area", F.lit(None))
     for social_care_type, roles in social_care_classification.items():  # type: ignore
         df = df.withColumn(
-            "social_care_area",
-            F.when(array_contains_any("regex_derived_job_sector", roles), social_care_type).otherwise(  # type: ignore
-                F.col("social_care_area")
-            ),
+            "work_social_care_area",
+            F.when(F.col("work_health_care_area").isNotNull(), None)
+            .when(array_contains_any("regex_derived_job_sector", roles), social_care_type)
+            .otherwise(F.col("work_social_care_area")),  # type: ignore
         )
 
     # add boolean flags for working in healthcare or socialcare
-    df = df.withColumn("work_healthcare", F.when(F.col("healthcare_area").isNotNull(), "Yes").otherwise("No"))
-    df = df.withColumn("work_social_care", F.when(F.col("social_care_area").isNotNull(), "Yes").otherwise("No"))
+    df = df.withColumn("work_health_care", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
+    df = df.withColumn("work_social_care", F.when(F.col("work_social_care_area").isNotNull(), "Yes").otherwise("No"))
 
     df = assign_regex_match_result(
         df=df,
         columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        column_name_to_assign="is_patient_facing",
+        column_name_to_assign="work_direct_contact_patients_or_clients",
         positive_regex_pattern=patient_facing_pattern.positive_regex_pattern,
         negative_regex_pattern=patient_facing_pattern.negative_regex_pattern,
     )
     df = df.withColumn(
-        "is_patient_facing",
+        "work_direct_contact_patients_or_clients",
         F.when(
-            ((F.col("work_healthcare") == "Yes") | (F.col("is_patient_facing") == True))
+            ((F.col("work_health_care") == "Yes") | (F.col("work_direct_contact_patients_or_clients") == True))
             & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
             "Yes",
         ).otherwise("No"),
@@ -2556,7 +2556,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             ["Yes, secondary care, non-patient-facing", ["No", "Secondary"]],
             ["Yes, other healthcare, non-patient-facing", ["No", "Other"]],
         ],
-        ["is_patient_facing", "healthcare_area"],
+        ["work_direct_contact_patients_or_clients", "work_health_care_area"],
     )
 
     # work_status_columns = [col for col in df.columns if "work_status_" in col]
