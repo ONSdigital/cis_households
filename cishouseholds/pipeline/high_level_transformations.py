@@ -2501,6 +2501,8 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     )
     # create healthcare area flag
     df = df.withColumn("healthcare_area", F.lit(None))
+    df = df.withColumn("social_care_area", F.lit(None))
+
     for healthcare_type, roles in healthcare_classification.items():  # type: ignore
         df = df.withColumn(
             "healthcare_area",
@@ -2509,7 +2511,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             .otherwise(F.col("healthcare_area")),  # type: ignore
         )
     # TODO: need to exclude healthcare types from social care matching
-    df = df.withColumn("social_care_area", F.lit(None))
+
     for social_care_type, roles in social_care_classification.items():  # type: ignore
         df = df.withColumn(
             "social_care_area",
