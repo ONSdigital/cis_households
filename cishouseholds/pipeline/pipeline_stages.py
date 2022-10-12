@@ -33,9 +33,10 @@ from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.design_weights import calculate_design_weights
-from cishouseholds.pipeline.generate_outputs import generate_stratified_sample
+from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
+from cishouseholds.pipeline.high_level_transformations import add_pattern_matching_flags
 from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.high_level_transformations import derive_age_based_columns
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
@@ -62,6 +63,7 @@ from cishouseholds.pipeline.manifest import Manifest
 from cishouseholds.pipeline.mapping import category_maps
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import soc_regex_map
+from cishouseholds.pipeline.reporting import count_variable_option
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import generate_lab_report
 from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
@@ -346,14 +348,9 @@ def process_soc_deltas(
         date_from_filename=False,
     )
     for file_path in file_list:
-        error_message, validation_schema, column_name_map, drop_list = normalise_schema(
-            file_path, soc_schema, soc_regex_map
-        )
+        error_message, df = normalise_schema(file_path, soc_schema, soc_regex_map)
         if error_message is None:
-            df = extract_input_data(file_path, validation_schema, ",").drop(*drop_list)
             df = assign_filename_column(df, source_file_column)
-            for actual_column, normalised_column in column_name_map.items():
-                df = df.withColumnRenamed(actual_column, normalised_column)
             dfs.append(df)
         else:
             add_error_file_log_entry(file_path, error_message)  # type: ignore
@@ -371,7 +368,7 @@ def process_soc_data(
     inconsistences_resolution_table: str,
     unioned_soc_lookup_table: str,
     transformed_soc_lookup_table: str,
-    duplicate_soc_rows_table: str,
+    coding_errors_table: str,
 ):
     """
     Process soc data and combine result with survey responses data
@@ -380,26 +377,53 @@ def process_soc_data(
     inconsistences_resolution_df = extract_from_table(inconsistences_resolution_table)
     soc_lookup_df = extract_from_table(unioned_soc_lookup_table)
     survey_responses_df = extract_from_table(survey_responses_table)
-    soc_lookup_df = soc_lookup_df.join(
-        inconsistences_resolution_df,
+    soc_lookup_df = soc_lookup_df.distinct().join(
+        inconsistences_resolution_df.distinct(),
         on=join_on_columns,
         how="left",
     )
-    soc_lookup_df = (
-        soc_lookup_df.withColumn(
-            "standard_occupational_classification_code",
-            F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
-        )
-        .distinct()
-        .drop("resolved_soc_code")
+    soc_lookup_df = soc_lookup_df.withColumn(
+        "standard_occupational_classification_code",
+        F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
+    ).drop("resolved_soc_code")
+
+    coding_errors_df, soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
+    survey_responses_df = survey_responses_df.join(soc_lookup_df, on=join_on_columns, how="left")
+    survey_responses_df = survey_responses_df.withColumn(
+        "standard_occupational_classification_code",
+        F.when(F.col("standard_occupational_classification_code").isNull(), "uncodeable").otherwise(
+            F.col("standard_occupational_classification_code")
+        ),
     )
 
-    duplicate_rows_df, soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
-    survey_responses_df = survey_responses_df.join(soc_lookup_df, on=join_on_columns, how="left")
-
-    update_table(duplicate_rows_df, duplicate_soc_rows_table, "overwrite", archive=True)
+    update_table(coding_errors_df, coding_errors_table, "overwrite", archive=True)
     update_table(survey_responses_df, soc_coded_survey_responses_table, "overwrite")
     update_table(soc_lookup_df, transformed_soc_lookup_table, "overwrite")
+
+
+@register_pipeline_stage("process_regex_data")
+def process_regx_data(survey_responses_table: str, regex_derived_survey_responses_table: str, regex_lookup_table: str):
+    """
+    Process regex data and combine result with survey responses data
+    """
+    join_on_columns = ["work_main_job_title", "work_main_job_role"]
+    df = extract_from_table(survey_responses_table)
+    if check_table_exists(regex_lookup_table):
+        lookup_df = extract_from_table(regex_lookup_table, True)
+        non_derived_rows = df.join(lookup_df, on=join_on_columns, how="leftanti").select(*join_on_columns).distinct()
+        lookup_df = lookup_df.unionByName(add_pattern_matching_flags(non_derived_rows))
+        print(
+            f"     - located regex lookup df with {non_derived_rows.count()} additional rows to process"
+        )  # functional
+    else:
+        df_to_process = df.select(*join_on_columns).distinct()
+        print(
+            f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
+        )  # functional
+        lookup_df = add_pattern_matching_flags(df_to_process)
+    df = df.join(lookup_df, on=join_on_columns, how="left")
+    update_table(lookup_df, regex_lookup_table, "overwrite")
+    update_table(df, regex_derived_survey_responses_table, "overwrite")
 
 
 @register_pipeline_stage("union_survey_response_files")
@@ -773,6 +797,7 @@ def geography_and_imputation_dependent_processing(
         school_year_column="school_year",
         column_name_to_assign="age_group_school_year",
     )
+
     df = reclassify_work_variables(df, spark_session=get_or_create_spark_session(), drop_original_variables=False)
     df = create_formatted_datetime_string_columns(df)
     update_table(df, output_table_name, write_mode="overwrite")
@@ -816,7 +841,7 @@ def report(
 
     valid_df_errors = generate_error_table(valid_survey_responses_errors_table, error_priority_map)
     invalid_df_errors = generate_error_table(invalid_survey_responses_errors_table, error_priority_map)
-
+    soc_uncode_count = count_variable_option(valid_df, "soc_code", "uncodeable")
     processed_file_log = extract_from_table("processed_filenames")
 
     invalid_files_count = 0
@@ -875,6 +900,7 @@ def report(
         valid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails valid data", index=False)
         invalid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails invalid data", index=False)
         duplicated_df.toPandas().to_excel(writer, sheet_name="duplicated record summary", index=False)
+        soc_uncode_count.toPandas().to_excel(writer, sheet_name="'uncodeable' soc code count", index=False)
 
     write_string_to_file(
         output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
@@ -910,6 +936,7 @@ def record_level_interface(
     csv_editing_file
         defines the editing from old values to new values in the HIVE tables
         Columns expected
+            - id_column_name (optional)
             - id
             - dataset_name
             - target_column
@@ -1106,13 +1133,14 @@ def sample_file_ETL(
     update_table(design_weights, design_weight_table, write_mode="overwrite", archive=True)
 
 
-@register_pipeline_stage("stratified_sample")
-def stratified_sample(
-    table_name, filter_condition, selected_cols, rows_per_sample, num_files, output_folder_name, array_columns
+@register_pipeline_stage("generate_sample")
+def sample_df(
+    table_name, sample_type, cols, cols_to_evaluate, rows_per_file, num_files, output_folder_name, filter_condition=None
 ):
     df = extract_from_table(table_name)
-    df = df.filter(eval(filter_condition))
-    generate_stratified_sample(df, selected_cols, rows_per_sample, num_files, output_folder_name, array_columns)
+    if filter_condition is not None:
+        df = df.filter(eval(filter_condition))
+    generate_sample(df, sample_type, cols, cols_to_evaluate, rows_per_file, num_files, output_folder_name)
 
 
 @register_pipeline_stage("aggregated_output")

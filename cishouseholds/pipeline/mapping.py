@@ -247,6 +247,45 @@ category_maps = {
             "Yes, care/residential home, non-resident-facing": 3,
             "Yes, other social care, non-resident-facing": 4,
         },
+        "work_status_v0_original": {
+            "Employed": 1,
+            "Self-employed": 2,
+            "Furloughed (temporarily not working)": 3,
+            "Not working (unemployed, retired, long-term sick etc.)": 4,
+            "Student": 5,
+        },
+        "work_status_v1_original": {
+            "Employed and currently working": 1,
+            "Employed and currently not working": 2,
+            "Self-employed and currently working": 3,
+            "Self-employed and currently not working": 4,
+            "Looking for paid work and able to start": 5,
+            "Not working and not looking for work": 6,
+            "Retired": 7,
+            "Child under 5y not attending child care": 8,
+            "Child under 5y attending child care": 9,
+            "5y and older in full-time education": 10,
+        },
+        "work_status_v2_original": {
+            "Employed and currently working": 1,
+            "Employed and currently not working": 2,
+            "Self-employed and currently working": 3,
+            "Self-employed and currently not working": 4,
+            "Looking for paid work and able to start": 5,
+            "Not working and not looking for work": 6,
+            "Retired": 7,
+            "Child under 4-5y not attending child care": 8,
+            "Child under 4-5y attending child care": 9,
+            "4-5y and older at school/home-school": 10,
+            "Attending college or FE (including if temporarily absent)": 11,
+            "Attending university (including if temporarily absent)": 12,
+        },
+        "work_location_original": {
+            "Working from home": 1,
+            "Working somewhere else (not your home)": 2,
+            "Both (from home and somewhere else)": 3,
+            "Not applicable, not currently working": 4,
+        },
         "work_status_v0": {
             "Employed": 1,
             "Self-employed": 2,
@@ -530,6 +569,11 @@ category_maps = {
             "latest_checkin_date": 1,
             "sample_taken_date": 2,
             "scheduled_date": 3,
+            "swab_taken_datetime": 4,
+            "blood_taken_datetime": 5,
+            "survey_completed_datetime": 6,
+            "survey_last_modified_datetime": 7,
+            "swab_sample_received_consolidation_point_datetime": 8,
         },
         "country_name_12": {"England": 0, "Wales": 1, "Northern Ireland": 2, "Scotland": 3},
         "local_authority_unity_authority_code": {
@@ -2088,8 +2132,8 @@ survey_response_cisd_cast_to_double = [
 ]
 soc_regex_map = {
     "title": "work_main_job_title",
-    "(role)|(responsibilities)": "work_main_job_role",
-    "(code)|(SOC)": "standard_occupational_classification_code",
+    "role|responsibilities": "work_main_job_role",
+    "code|SOC": "standard_occupational_classification_code",
 }
 
 _welsh_yes_no_categories = {

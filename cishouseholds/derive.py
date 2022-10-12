@@ -28,18 +28,10 @@ def assign_regex_from_map(
     df: DataFrame, column_name_to_assign: str, reference_columns: List[str], roles: Mapping, priority_map: Mapping
 ):
     regex_columns = {key: [] for key in [1, *list(priority_map.values())]}  # type: ignore
-
+    df.cache()
+    df = df.repartition(16)
     for title, pattern in roles.items():
-        col = F.when(
-            reduce(
-                or_,
-                [
-                    F.coalesce(F.col(reference_column), F.lit("")).rlike(pattern)
-                    for reference_column in reference_columns
-                ],
-            ),
-            title,
-        )
+        col = F.when(F.coalesce(F.concat(*reference_columns), F.lit("")).rlike(pattern), title)
         if title in priority_map:
             regex_columns[priority_map[title]].append(col)
         else:
@@ -66,10 +58,14 @@ def assign_datetime_from_coalesced_columns_and_log_source(
     column_name_to_assign: str,
     primary_datetime_columns: List[str],
     secondary_date_columns: List[str],
-    file_date_column: str,
-    min_date: str,
+    min_datetime_column_name: str,
+    max_datetime_column_name: str,
+    reference_datetime_column_name: str,
     source_reference_column_name: str,
     default_timestamp: str,
+    min_datetime_offset_value: int = -2,
+    max_datetime_offset_value: int = 0,
+    reference_datetime_days_offset_value: int = -2,
 ):
 
     """
@@ -85,21 +81,38 @@ def assign_datetime_from_coalesced_columns_and_log_source(
         A list of datetime column names which are your primary datetime columns
     secondary_date_columns
         A list of datetime column names which are your secondary datetime columns
-    file_date_column
-        The column that identifies the file date
-    min_date
-        The lower bound on the date
+    min_datetime_column_name
+        The column name to define the minimum datetime
+    max_datetime_column_name
+        The column name to define the maximum datetime
+    reference_datetime_column_name
+        The column name of the reference varaible to define maximum datetime or to impute datetime value with offset
     source_reference_column_name
         A column name to assign the source of the dates
     default_timestamp
         A default timestamp value to use.
+    min_datetime_offset_value
+        The number of days to positively offset the minimum datetime
+    max_datetime_offset_value
+        The number of days to positively offset the maximum datetime
+    reference_datetime_days_offset_value
+        The number of days to positively offset the reference datetime for use as source of final timestamp column
     """
+    MIN_DATE_BOUND = F.col(min_datetime_column_name) + F.expr(f"INTERVAL {min_datetime_offset_value} DAYS")
+    MAX_DATE_BOUND = F.col(max_datetime_column_name) + F.expr(f"INTERVAL {max_datetime_offset_value} DAYS")
+    REF_DATE_OFFSET = F.col(reference_datetime_column_name) + F.expr(
+        f"INTERVAL {reference_datetime_days_offset_value} DAYS"
+    )
     coalesce_columns = [
         F.col(datetime_column) for datetime_column in [*primary_datetime_columns, *secondary_date_columns]
     ]
-    coalesce_columns = [F.when(col.between(F.lit(min_date), F.col(file_date_column)), col) for col in coalesce_columns]
+    coalesce_columns = [
+        F.when(col.between(MIN_DATE_BOUND, F.least(F.col(reference_datetime_column_name), MAX_DATE_BOUND)), col)
+        for col in coalesce_columns
+    ]
+    coalesce_columns = [*coalesce_columns, REF_DATE_OFFSET]
 
-    column_names = primary_datetime_columns + secondary_date_columns
+    column_names = primary_datetime_columns + secondary_date_columns + [reference_datetime_column_name]
     source_columns = [
         F.when(column_object.isNotNull(), column_name)
         for column_object, column_name in zip(coalesce_columns, column_names)
@@ -139,7 +152,10 @@ def assign_date_from_filename(df: DataFrame, column_name_to_assign: str, filenam
     ).otherwise(F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 2))
     df = df.withColumn(
         column_name_to_assign,
-        F.to_timestamp(F.concat(date, time), format="yyyyMMdd_HHmmss"),
+        F.to_timestamp(
+            F.concat(F.when(date == "", "20221003").otherwise(date), time),
+            format="yyyyMMdd_HHmmss",
+        ),
     )
     return df
 
@@ -426,15 +442,19 @@ def assign_multigenerational(
         ),
         on=household_id_column,
     ).distinct()
-
     transformed_df = assign_age_at_date(
         df=transformed_df,
         column_name_to_assign=age_column_name_to_assign,
         base_date=F.col(visit_date_column),
         date_of_birth=F.col(date_of_birth_column),
     )
-    transformed_df = assign_school_year(
-        df=transformed_df,
+
+    transformed_df_2 = spark_session.createDataFrame(
+        transformed_df.rdd, schema=transformed_df.schema
+    )  # breaks lineage to avoid Java OOM Error
+
+    transformed_df_3 = assign_school_year(
+        df=transformed_df_2,
         column_name_to_assign=school_year_column_name_to_assign,
         reference_date_column=visit_date_column,
         dob_column=date_of_birth_column,
@@ -454,19 +474,24 @@ def assign_multigenerational(
     generation_2_present = F.sum(generation_2).over(window) >= 1
     generation_3_present = F.sum(generation_3).over(window) >= 1
 
-    transformed_df = transformed_df.withColumn(
+    transformed_df_4 = spark_session.createDataFrame(
+        transformed_df_3.rdd, schema=transformed_df_3.schema
+    )  # breaks lineage to avoid Java OOM Error
+
+    transformed_df_5 = transformed_df_4.withColumn(
         column_name_to_assign,
         F.when(generation_1_present & generation_2_present & generation_3_present, 1).otherwise(0),
     )
     df = df.join(
-        transformed_df.select(
+        transformed_df_5.select(
+            household_id_column,
             column_name_to_assign,
             age_column_name_to_assign,
             school_year_column_name_to_assign,
             participant_id_column,
             visit_date_column,
         ),
-        on=[participant_id_column, visit_date_column],
+        on=[participant_id_column, household_id_column, visit_date_column],
         how="left",
     )
     return df

@@ -5,6 +5,7 @@ from operator import and_
 from typing import List
 
 import pyspark.sql.functions as F
+from pandas import pandas as pd
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import SparkSession
@@ -32,6 +33,7 @@ from cishouseholds.derive import assign_household_under_2_count
 from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
+from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_regex_from_map
 from cishouseholds.derive import assign_regex_match_result
@@ -82,23 +84,25 @@ from cishouseholds.derive import flag_records_for_work_location_null
 from cishouseholds.derive import flag_records_for_work_location_student
 from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.derive import regex_match_result
-from cishouseholds.derive import translate_column_regex_replace
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_barcode_simple
 from cishouseholds.edit import clean_job_description_string
 from cishouseholds.edit import clean_within_range
+from cishouseholds.edit import conditionally_replace_columns
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import rename_column_names
+from cishouseholds.edit import replace_sample_barcode
 from cishouseholds.edit import survey_edit_auto_complete
 from cishouseholds.edit import update_column_if_ref_in_list
 from cishouseholds.edit import update_column_in_time_window
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
+from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.edit import update_person_count_from_ages
 from cishouseholds.edit import update_strings_to_sentence_case
 from cishouseholds.edit import update_think_have_covid_symptom_any
@@ -111,6 +115,7 @@ from cishouseholds.expressions import array_contains_any
 from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
+from cishouseholds.impute import fill_forward_event
 from cishouseholds.impute import fill_forward_from_last_change
 from cishouseholds.impute import fill_forward_from_last_change_marked_subset
 from cishouseholds.impute import fill_forward_only_to_nulls
@@ -126,31 +131,14 @@ from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.pipeline.config import get_config
-from cishouseholds.pipeline.generate_outputs import generate_stratified_sample
-from cishouseholds.pipeline.mapping import _welsh_ability_to_socially_distance_at_work_or_education_categories
-from cishouseholds.pipeline.mapping import _welsh_blood_kit_missing_categories
-from cishouseholds.pipeline.mapping import _welsh_blood_not_taken_reason_categories
-from cishouseholds.pipeline.mapping import _welsh_blood_sample_not_taken_categories
-from cishouseholds.pipeline.mapping import _welsh_cis_covid_vaccine_number_of_doses_categories
-from cishouseholds.pipeline.mapping import _welsh_contact_type_by_age_group_categories
-from cishouseholds.pipeline.mapping import _welsh_currently_smokes_or_vapes_description_categories
-from cishouseholds.pipeline.mapping import _welsh_face_covering_categories
-from cishouseholds.pipeline.mapping import _welsh_live_with_categories
-from cishouseholds.pipeline.mapping import _welsh_lot_little_not_categories
-from cishouseholds.pipeline.mapping import _welsh_number_of_types_categories
-from cishouseholds.pipeline.mapping import _welsh_other_covid_infection_test_result_categories
-from cishouseholds.pipeline.mapping import _welsh_self_isolating_reason_detailed_categories
-from cishouseholds.pipeline.mapping import _welsh_swab_kit_missing_categories
-from cishouseholds.pipeline.mapping import _welsh_swab_sample_not_taken_categories
-from cishouseholds.pipeline.mapping import _welsh_transport_to_work_education_categories
-from cishouseholds.pipeline.mapping import _welsh_vaccination_type_categories
-from cishouseholds.pipeline.mapping import _welsh_work_location_categories
-from cishouseholds.pipeline.mapping import _welsh_work_sector_categories
-from cishouseholds.pipeline.mapping import _welsh_work_status_digital_categories
-from cishouseholds.pipeline.mapping import _welsh_work_status_education_categories
-from cishouseholds.pipeline.mapping import _welsh_work_status_employment_categories
-from cishouseholds.pipeline.mapping import _welsh_work_status_unemployment_categories
-from cishouseholds.pipeline.mapping import _welsh_yes_no_categories
+from cishouseholds.pipeline.generate_outputs import generate_sample
+from cishouseholds.pipeline.healthcare_regex import healthcare_classification
+from cishouseholds.pipeline.healthcare_regex import patient_facing_classification
+from cishouseholds.pipeline.healthcare_regex import patient_facing_pattern
+from cishouseholds.pipeline.healthcare_regex import priority_map
+from cishouseholds.pipeline.healthcare_regex import roles_map
+from cishouseholds.pipeline.healthcare_regex import social_care_classification
+from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.regex_patterns import at_school_pattern
 from cishouseholds.pipeline.regex_patterns import at_university_pattern
@@ -161,13 +149,14 @@ from cishouseholds.pipeline.regex_patterns import not_working_pattern
 from cishouseholds.pipeline.regex_patterns import retired_regex_pattern
 from cishouseholds.pipeline.regex_patterns import self_employed_regex
 from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
-from cishouseholds.pipeline.regex_testing import healthcare_classification
-from cishouseholds.pipeline.regex_testing import patient_facing_classification
-from cishouseholds.pipeline.regex_testing import patient_facing_pattern
-from cishouseholds.pipeline.regex_testing import priority_map
-from cishouseholds.pipeline.regex_testing import roles_map
-from cishouseholds.pipeline.regex_testing import social_care_classification
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
+from cishouseholds.pipeline.translate import backup_and_replace_translation_lookup_df
+from cishouseholds.pipeline.translate import export_responses_to_be_translated_to_translation_directory
+from cishouseholds.pipeline.translate import get_new_translations_from_completed_translations_directory
+from cishouseholds.pipeline.translate import get_welsh_responses_to_be_translated
+from cishouseholds.pipeline.translate import translate_welsh_fixed_text_responses_digital
+from cishouseholds.pipeline.translate import translate_welsh_free_text_responses_digital
+from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
 
@@ -179,10 +168,15 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     transform and process cis soc data
     """
     # allow nullsafe join on title as soc is sometimes assigned without
-    df = df.filter(F.col("work_main_job_title").isNotNull()).distinct()
+    df = df.drop_duplicates(["standard_occupational_classification_code", *join_on_columns])
+    drop_null_title_df = df.filter(F.col("work_main_job_title").isNull()).withColumn(
+        "drop_reason", F.lit("null job title")
+    )
+    df = df.filter(F.col("work_main_job_title").isNotNull())
     df = df.withColumn(
         "soc_code_edited_to_uncodeable",
-        F.col("standard_occupational_classification_code").rlike(r".*[^0-9].*|^\s*$"),
+        (F.col("standard_occupational_classification_code").rlike(r".*[^0-9].*|^\s*$"))
+        | (F.col("standard_occupational_classification_code").isNull()),
     )
     df = df.withColumn(
         "standard_occupational_classification_code",
@@ -206,27 +200,27 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
 
     # flag non specific soc codes and uncodeable codes
     df = df.withColumn(
-        "DROP",
+        "drop_reason",
         F.when(
             (F.col("LENGTH") != F.max("LENGTH").over(window))
             | (F.col("standard_occupational_classification_code") == "uncodeable"),
-            1,
-        ).otherwise(0),
+            "more specific code available",
+        ).otherwise(None),
     )
-    retain_count = F.sum(F.when(F.col("DROP") == 0, 1).otherwise(0)).over(window)
+    retain_count = F.sum(F.when(F.col("drop_reason").isNull(), 1).otherwise(0)).over(window)
     # flag ambiguous codes from remaining set
     df = df.withColumn(
-        "DROP",
+        "drop_reason",
         F.when(
-            (retain_count > 1) & (F.col("DROP") == 0),
-            2,
-        ).otherwise(F.col("DROP")),
+            (retain_count > 1) & (F.col("drop_reason").isNull()),
+            "ambiguous code",
+        ).otherwise(F.col("drop_reason")),
     ).drop("LENGTH")
     # remove flag from first row of dropped set if all codes from group are flagged
-    df = df.withColumn("DROP", F.when(F.count("*").over(window) == 1, 0).otherwise(F.col("DROP")))
-    resolved_df = df.filter((F.col("DROP") == 0)).drop("DROP", "ROW_NUMBER")
-    duplicate_df = df.filter(F.col("DROP") == 2).drop("ROW_NUMBER", "DROP")
-    return duplicate_df, resolved_df
+    df = df.withColumn("drop_reason", F.when(F.count("*").over(window) == 1, None).otherwise(F.col("drop_reason")))
+    resolved_df = df.filter(F.col("drop_reason").isNull()).drop("drop_reason", "ROW_NUMBER")
+    duplicate_df = df.filter(F.col("drop_reason").isNotNull()).drop("ROW_NUMBER")
+    return duplicate_df.unionByName(drop_null_title_df), resolved_df
 
 
 def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
@@ -408,6 +402,89 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
     return df
 
 
+def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame:
+    """
+    High-level function that manages the translation of both fixed-text and free-text Welsh responses in the
+    CIS Digital response extract.
+
+    Loads values from config to determine if the translation_project_workflow_enabled flag is true, if the
+    translation_project_workflow_enabled flag is true then it works through the translation project workflow to:
+    1. check for new completed free-text translations
+    2. if there are new completed free-text translations then backup and update the translations_lookup_df
+    3. update the df from the translations_lookup_df
+    4. filter the df to get free-text responses to be translated
+    5. export free-text responses to be translated
+
+    If the translation_project_workflow_enabled flag is false then it will just carry out step 3. above.
+    After this check it will update the fixed-text responses in the df.
+
+    This function requires that the config contains a valid translation_lookup_path in the storage dictionary of
+    the pipeline_config file.
+
+    Parameters
+    ----------
+    df :  DataFrame
+        df containing free- or fixed-text responses to translate)
+
+    Returns
+    -------
+    df : DataFrame
+        df incorporating any available translations to free- or fixed-text responses
+    """
+    translation_settings = get_config().get("translation", {"inactive": "inactive"})
+    storage_settings = get_config().get("storage", {"inactive": "inactive"})
+    translation_lookup_path = storage_settings.get("translation_lookup_path", "inactive")
+
+    translation_settings_in_pipeline_config = translation_settings != {"inactive": "inactive"}
+    translation_lookup_path_in_pipeline_config = translation_lookup_path != "inactive"
+
+    if translation_settings_in_pipeline_config:
+
+        translation_directory = translation_settings.get("translation_directory", None)
+        translation_lookup_directory = translation_settings.get("translation_lookup_directory", None)
+        translation_backup_directory = translation_settings.get("translation_backup_directory", None)
+
+        new_translations_df = get_new_translations_from_completed_translations_directory(
+            translation_directory=translation_directory,
+            translation_lookup_path=translation_lookup_path,
+        )
+
+        if new_translations_df.count() > 0:
+
+            translation_lookup_df = extract_lookup_csv(translation_lookup_path, validation_schemas["csv_lookup_schema"])
+
+            new_translations_lookup_df = translation_lookup_df.union(new_translations_df)
+
+            backup_and_replace_translation_lookup_df(
+                new_lookup_df=new_translations_lookup_df,
+                lookup_directory=translation_lookup_directory,
+                backup_directory=translation_backup_directory,
+            )
+
+        df = translate_welsh_free_text_responses_digital(
+            df=df,
+            lookup_path=translation_lookup_path,
+        )
+
+        to_be_translated_df = get_welsh_responses_to_be_translated(df)
+
+        if to_be_translated_df.count() > 0:
+
+            export_responses_to_be_translated_to_translation_directory(
+                to_be_translated_df=to_be_translated_df, translation_directory=translation_directory
+            )
+
+    if translation_lookup_path_in_pipeline_config and not translation_settings_in_pipeline_config:
+        df = translate_welsh_free_text_responses_digital(
+            df=df,
+            lookup_path=translation_lookup_path,
+        )
+
+    df = translate_welsh_fixed_text_responses_digital(df)
+
+    return df
+
+
 def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
     """
     Call transformations to digital data necessary before generic transformations are applied
@@ -432,14 +509,11 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
             "blood_taken_datetime",
             "survey_completed_datetime",
             "survey_last_modified_datetime",
-            # "swab_return_date",
-            # "blood_return_date",
-            # "swab_return_future_date",
-            # "blood_return_future_date",
         ],
         secondary_date_columns=[],
-        file_date_column="file_date",
-        min_date="2022-05-01",
+        min_datetime_column_name="participant_completion_window_start_datetime",
+        max_datetime_column_name="participant_completion_window_end_datetime",
+        reference_datetime_column_name="swab_sample_received_consolidation_point_datetime",
         default_timestamp="12:00:00",
     )
     df = update_column_in_time_window(
@@ -449,188 +523,6 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
         "Telephone",
         ["20-05-2022T21:30:00", "25-05-2022 11:00:00"],
     )
-    return df
-
-
-def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame:
-    """
-    Call functions to translate welsh survey responses from the cis digital questionnaire
-    """
-    digital_yes_no_columns = [
-        "household_invited_to_digital",
-        "household_members_under_2_years_count",
-        "consent_nhs_data_share_yn",
-        "consent_contact_extra_research_yn",
-        "consent_use_of_surplus_blood_samples_yn",
-        "consent_blood_samples_if_positive_yn",
-        "participant_invited_to_digital",
-        "participant_enrolled_digital",
-        "opted_out_of_next_window",
-        "opted_out_of_blood_next_window",
-        "swab_taken",
-        "questionnaire_started_no_incentive",
-        "swab_returned",
-        "blood_taken",
-        "blood_returned",
-        "work_in_additional_paid_employment",
-        "work_nursing_or_residential_care_home",
-        "work_direct_contact_patients_or_clients",
-        "think_have_covid_symptom_fever",
-        "think_have_covid_symptom_headache",
-        "think_have_covid_symptom_muscle_ache",
-        "think_have_covid_symptom_fatigue",
-        "think_have_covid_symptom_nausea_or_vomiting",
-        "think_have_covid_symptom_abdominal_pain",
-        "think_have_covid_symptom_diarrhoea",
-        "think_have_covid_symptom_sore_throat",
-        "think_have_covid_symptom_cough",
-        "think_have_covid_symptom_shortness_of_breath",
-        "think_have_covid_symptom_loss_of_taste",
-        "think_have_covid_symptom_loss_of_smell",
-        "think_have_covid_symptom_more_trouble_sleeping",
-        "think_have_covid_symptom_loss_of_appetite",
-        "think_have_covid_symptom_runny_nose_or_sneezing",
-        "think_have_covid_symptom_noisy_breathing",
-        "think_have_covid_symptom_chest_pain",
-        "think_have_covid_symptom_palpitations",
-        "think_have_covid_symptom_vertigo_or_dizziness",
-        "think_have_covid_symptom_anxiety",
-        "think_have_covid_symptom_low_mood",
-        "think_have_covid_symptom_memory_loss_or_confusion",
-        "think_have_covid_symptom_difficulty_concentrating",
-        "self_isolating",
-        "think_have_covid",
-        "illness_lasting_over_12_months",
-        "ever_smoked_regularly",
-        "currently_smokes_or_vapes",
-        "cis_covid_vaccine_received",
-        "cis_covid_vaccine_type_1",
-        "cis_covid_vaccine_type_2",
-        "cis_covid_vaccine_type_3",
-        "cis_covid_vaccine_type_4",
-        "cis_covid_vaccine_type_5",
-        "cis_covid_vaccine_type_6",
-        "cis_flu_vaccine_received",
-        "been_outside_uk",
-        "think_had_covid",
-        "think_had_covid_any_symptoms",
-        "think_had_covid_symptom_fever",
-        "think_had_covid_symptom_headache",
-        "think_had_covid_symptom_muscle_ache",
-        "think_had_covid_symptom_fatigue",
-        "think_had_covid_symptom_nausea_or_vomiting",
-        "think_had_covid_symptom_abdominal_pain",
-        "think_had_covid_symptom_diarrhoea",
-        "think_had_covid_symptom_sore_throat",
-        "think_had_covid_symptom_cough",
-        "think_had_covid_symptom_shortness_of_breath",
-        "think_had_covid_symptom_loss_of_taste",
-        "think_had_covid_symptom_loss_of_smell",
-        "think_had_covid_symptom_more_trouble_sleeping",
-        "think_had_covid_symptom_loss_of_appetite",
-        "think_had_covid_symptom_runny_nose_or_sneezing",
-        "think_had_covid_symptom_noisy_breathing",
-        "think_had_covid_symptom_chest_pain",
-        "think_had_covid_symptom_palpitations",
-        "think_had_covid_symptom_vertigo_or_dizziness",
-        "think_had_covid_symptom_anxiety",
-        "think_had_covid_symptom_low_mood",
-        "think_had_covid_symptom_memory_loss_or_confusion",
-        "think_had_covid_symptom_difficulty_concentrating",
-        "think_had_covid_contacted_nhs",
-        "think_had_covid_admitted_to_hospital",
-        "other_covid_infection_test",
-        "regularly_lateral_flow_testing",
-        "other_antibody_test",
-        "think_have_long_covid",
-        "think_have_long_covid_symptom_fever",
-        "think_have_long_covid_symptom_headache",
-        "think_have_long_covid_symptom_muscle_ache",
-        "think_have_long_covid_symptom_fatigue",
-        "think_have_long_covid_symptom_nausea_or_vomiting",
-        "think_have_long_covid_symptom_abdominal_pain",
-        "think_have_long_covid_symptom_diarrhoea",
-        "think_have_long_covid_symptom_loss_of_taste",
-        "think_have_long_covid_symptom_loss_of_smell",
-        "think_have_long_covid_symptom_sore_throat",
-        "think_have_long_covid_symptom_cough",
-        "think_have_long_covid_symptom_shortness_of_breath",
-        "think_have_long_covid_symptom_loss_of_appetite",
-        "think_have_long_covid_symptom_chest_pain",
-        "think_have_long_covid_symptom_palpitations",
-        "think_have_long_covid_symptom_vertigo_or_dizziness",
-        "think_have_long_covid_symptom_anxiety",
-        "think_have_long_covid_symptom_low_mood",
-        "think_have_long_covid_symptom_more_trouble_sleeping",
-        "think_have_long_covid_symptom_memory_loss_or_confusion",
-        "think_have_long_covid_symptom_difficulty_concentrating",
-        "think_have_long_covid_symptom_runny_nose_or_sneezing",
-        "think_have_long_covid_symptom_noisy_breathing",
-        "contact_known_positive_covid_last_28_days",
-        "hospital_last_28_days",
-        "other_household_member_hospital_last_28_days",
-        "care_home_last_28_days",
-        "other_household_member_care_home_last_28_days",
-        "work_main_job_changed",
-        "swab_sample_barcode_correct",
-        "blood_sample_barcode_correct",
-        "think_have_covid_symptoms",
-    ]
-    df = apply_value_map_multiple_columns(
-        df,
-        {k: _welsh_yes_no_categories for k in digital_yes_no_columns},
-    )
-    column_editing_map = {
-        "physical_contact_under_18_years": _welsh_contact_type_by_age_group_categories,
-        "physical_contact_18_to_69_years": _welsh_contact_type_by_age_group_categories,
-        "physical_contact_over_70_years": _welsh_contact_type_by_age_group_categories,
-        "social_distance_contact_under_18_years": _welsh_contact_type_by_age_group_categories,
-        "social_distance_contact_18_to_69_years": _welsh_contact_type_by_age_group_categories,
-        "social_distance_contact_over_70_years": _welsh_contact_type_by_age_group_categories,
-        "times_hour_or_longer_another_home_last_7_days": _welsh_number_of_types_categories,
-        "times_hour_or_longer_another_person_your_home_last_7_days": _welsh_number_of_types_categories,
-        "times_shopping_last_7_days": _welsh_number_of_types_categories,
-        "times_socialising_last_7_days": _welsh_number_of_types_categories,
-        "cis_covid_vaccine_type": _welsh_vaccination_type_categories,
-        "cis_covid_vaccine_number_of_doses": _welsh_vaccination_type_categories,
-        "cis_covid_vaccine_type_1": _welsh_vaccination_type_categories,
-        "cis_covid_vaccine_type_2": _welsh_vaccination_type_categories,
-        "cis_covid_vaccine_type_3": _welsh_vaccination_type_categories,
-        "cis_covid_vaccine_type_4": _welsh_vaccination_type_categories,
-        "cis_covid_vaccine_type_5": _welsh_vaccination_type_categories,
-        "cis_covid_vaccine_type_6": _welsh_vaccination_type_categories,
-        "illness_reduces_activity_or_ability": _welsh_lot_little_not_categories,
-        "think_have_long_covid_symptom_reduced_ability": _welsh_lot_little_not_categories,
-        "last_covid_contact_type": _welsh_live_with_categories,
-        "last_suspected_covid_contact_type": _welsh_live_with_categories,
-        "face_covering_work_or_education": _welsh_face_covering_categories,
-        "face_covering_other_enclosed_places": _welsh_face_covering_categories,
-        "swab_not_taken_reason": _welsh_swab_sample_not_taken_categories,
-        "blood_not_taken_reason": _welsh_blood_sample_not_taken_categories,
-        "work_status_digital": _welsh_work_status_digital_categories,
-        "work_status_employment": _welsh_work_status_employment_categories,
-        "work_status_unemployment": _welsh_work_status_unemployment_categories,
-        "work_status_education": _welsh_work_status_education_categories,
-        "work_sector": _welsh_work_sector_categories,
-        "work_location": _welsh_work_location_categories,
-        "transport_to_work_or_education": _welsh_transport_to_work_education_categories,
-        "ability_to_socially_distance_at_work_or_education": _welsh_ability_to_socially_distance_at_work_or_education_categories,
-        "self_isolating_reason_detailed": _welsh_self_isolating_reason_detailed_categories,
-        "cis_covid_vaccine_number_of_doses": _welsh_cis_covid_vaccine_number_of_doses_categories,
-        "other_covid_infection_test_results": _welsh_other_covid_infection_test_result_categories,
-        "other_antibody_test_results": _welsh_other_covid_infection_test_result_categories,  # TODO Check translation values in test file
-    }
-    df = apply_value_map_multiple_columns(df, column_editing_map)
-
-    df = translate_column_regex_replace(
-        df, "currently_smokes_or_vapes_description", _welsh_currently_smokes_or_vapes_description_categories
-    )
-    df = translate_column_regex_replace(df, "blood_not_taken_missing_parts", _welsh_blood_kit_missing_categories)
-    df = translate_column_regex_replace(
-        df, "blood_not_taken_could_not_reason", _welsh_blood_not_taken_reason_categories
-    )
-    df = translate_column_regex_replace(df, "swab_not_taken_missing_parts", _welsh_swab_kit_missing_categories)
-
     return df
 
 
@@ -1203,7 +1095,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         },
         "work_location": {
             "From home meaning in the same grounds or building as your home": "Working from home",
-            "Somewhere else meaning not at your home)": "Working somewhere else (not your home)",
+            "Somewhere else meaning not at your home": "Working somewhere else (not your home)",
             "Both from home and work somewhere else": "Both (from home and somewhere else)",
         },
         "transport_to_work_or_education": {
@@ -1301,7 +1193,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "survey_completion_status",
         "participant_completion_window_end_datetime",
         "face_covering_other_enclosed_places",
-        datetime.now().strftime("%Y%m%d_%H%M"),
+        "file_date",
     )
     df = update_column_values_from_map(
         df,
@@ -1412,7 +1304,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = clean_job_description_string(df, "work_main_job_title")
     df = clean_job_description_string(df, "work_main_job_role")
     df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
-    # df = add_pattern_matching_flags(df)
     return df
 
 
@@ -2072,16 +1963,18 @@ def union_dependent_derivations(df):
         ],
         "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
     }
-    if "swab_sample_barcode_user_entered" in df.columns:
-        for test_type in ["swab", "blood"]:
-            df = df.withColumn(
-                f"{test_type}_sample_barcode_combined",
-                F.when(
-                    F.col(f"{test_type}_sample_barcode_correct") == "No",
-                    F.col(f"{test_type}_sample_barcode_user_entered"),
-                ).otherwise(F.col(f"{test_type}_sample_barcode"))
-                # set to sample_barcode if _sample_barcode_correct is yes or null.
-            )
+
+    df = replace_sample_barcode(df=df)
+
+    df = conditionally_replace_columns(
+        df,
+        {
+            "swab_sample_barcode": "swab_sample_barcode_combined",
+            "blood_sample_barcode": "blood_sample_barcode_combined",
+        },
+        (F.col("survey_response_dataset_major_version") == 3),
+    )
+
     df = assign_column_from_mapped_list_key(
         df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
     )
@@ -2191,9 +2084,70 @@ def union_dependent_derivations(df):
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
     )
+    df_2 = get_or_create_spark_session().createDataFrame(
+        df.rdd, schema=df.schema
+    )  # breaks lineage to avoid Java OOM Error
+    df_3 = fill_forward_event(
+        df=df_2,
+        event_indicator_column="think_had_covid",
+        event_date_column="think_had_covid_onset_date",
+        detail_columns=[
+            "other_covid_infection_test",
+            "other_covid_infection_test_results",
+            "think_had_covid_admitted_to_hospital",
+            "think_had_covid_contacted_nhs",
+            "think_had_covid_symptom_fever",
+            "think_had_covid_symptom_muscle_ache",
+            "think_had_covid_symptom_fatigue",
+            "think_had_covid_symptom_sore_throat",
+            "think_had_covid_symptom_cough",
+            "think_had_covid_symptom_shortness_of_breath",
+            "think_had_covid_symptom_headache",
+            "think_had_covid_symptom_nausea_or_vomiting",
+            "think_had_covid_symptom_abdominal_pain",
+            "think_had_covid_symptom_loss_of_appetite",
+            "think_had_covid_symptom_noisy_breathing",
+            "think_had_covid_symptom_runny_nose_or_sneezing",
+            "think_had_covid_symptom_more_trouble_sleeping",
+            "think_had_covid_symptom_diarrhoea",
+            "think_had_covid_symptom_loss_of_taste",
+            "think_had_covid_symptom_loss_of_smell",
+            "think_had_covid_symptom_memory_loss_or_confusion",
+            "think_had_covid_symptom_chest_pain",
+            "think_had_covid_symptom_vertigo_or_dizziness",
+            "think_had_covid_symptom_difficulty_concentrating",
+            "think_had_covid_symptom_anxiety",
+            "think_had_covid_symptom_palpitations",
+            "think_had_covid_symptom_low_mood",
+        ],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+    )
+    df_4 = get_or_create_spark_session().createDataFrame(
+        df_3.rdd, schema=df_3.schema
+    )  # breaks lineage to avoid Java OOM Error
     # Derive these after fill forwards and other changes to dates
-    df = create_formatted_datetime_string_columns(df)
-    return df
+    df_5 = fill_forward_event(
+        df=df_4,
+        event_indicator_column="contact_suspected_positive_covid_last_28_days",
+        event_date_column="last_suspected_covid_contact_date",
+        detail_columns=["last_suspected_covid_contact_type"],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+    )
+    df_6 = get_or_create_spark_session().createDataFrame(
+        df_5.rdd, schema=df_5.schema
+    )  # breaks lineage to avoid Java OOM Error
+    df_7 = fill_forward_event(
+        df=df_6,
+        event_indicator_column="contact_known_positive_covid_last_28_days",
+        event_date_column="last_covid_contact_date",
+        detail_columns=["last_covid_contact_type"],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+    )
+    df_7 = create_formatted_datetime_string_columns(df_7)
+    return df_7
 
 
 def derive_people_in_household_count(df):
@@ -2538,61 +2492,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = df.withColumn("work_main_job_title", F.upper(F.col("work_main_job_title")))
     df = df.withColumn("work_main_job_role", F.upper(F.col("work_main_job_role")))
 
-    # add work from home flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=work_from_home_pattern.positive_regex_pattern,
-        negative_regex_pattern=work_from_home_pattern.negative_regex_pattern,
-        column_name_to_assign="is_working_from_home",
-        debug_mode=False,
-    )
-
-    # add at-school flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=at_school_pattern.positive_regex_pattern,
-        negative_regex_pattern=at_school_pattern.negative_regex_pattern,
-        column_name_to_assign="at_school",
-        debug_mode=False,
-    )
-
-    # add at-university flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=at_university_pattern.positive_regex_pattern,
-        negative_regex_pattern=at_university_pattern.negative_regex_pattern,
-        column_name_to_assign="at_university",
-        debug_mode=False,
-    )
-    # add is-retired flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=retired_regex_pattern.positive_regex_pattern,
-        negative_regex_pattern=retired_regex_pattern.negative_regex_pattern,
-        column_name_to_assign="is_retired",
-        debug_mode=False,
-    )
-
-    # add not-working flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=not_working_pattern.positive_regex_pattern,
-        negative_regex_pattern=not_working_pattern.negative_regex_pattern,
-        column_name_to_assign="not_working",
-    )
-    # add self-employed flag
-    df = assign_regex_match_result(
-        df=df,
-        columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        positive_regex_pattern=self_employed_regex.positive_regex_pattern,
-        column_name_to_assign="is_self_employed",
-        debug_mode=False,
-    )
     df = assign_regex_from_map(
         df=df,
         column_name_to_assign="regex_derived_job_sector",
@@ -2602,16 +2501,17 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     )
     # create healthcare area flag
     df = df.withColumn("healthcare_area", F.lit(None))
+    df = df.withColumn("social_care_area", F.lit(None))
+
     for healthcare_type, roles in healthcare_classification.items():  # type: ignore
         df = df.withColumn(
             "healthcare_area",
-            F.when(array_contains_any("regex_derived_job_sector", roles), healthcare_type).otherwise(  # type: ignore
-                F.col("healthcare_area")
-            ),
+            F.when(F.col("social_care_area").isNotNull(), None)
+            .when(array_contains_any("regex_derived_job_sector", roles), healthcare_type)
+            .otherwise(F.col("healthcare_area")),  # type: ignore
         )
-
     # TODO: need to exclude healthcare types from social care matching
-    df = df.withColumn("social_care_area", F.lit(None))
+
     for social_care_type, roles in social_care_classification.items():  # type: ignore
         df = df.withColumn(
             "social_care_area",
@@ -2634,64 +2534,41 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "is_patient_facing",
         F.when(
-            ((F.col("works_healthcare") == "Yes") | F.col("is_patient_facing"))
+            ((F.col("works_healthcare") == "Yes") | (F.col("is_patient_facing") == True))
             & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
-            True,
-        ).otherwise(False),
+            "Yes",
+        ).otherwise("No"),
     )
-
     df = assign_column_value_from_multiple_column_map(
         df,
-        "health_care_patient_facing",
+        "health_care_patient_facing_derived",
         [
-            ["No", [False, None]],
-            ["Yes, primary care, patient-facing", [True, "Primary"]],
-            ["Yes, secondary care, patient-facing", [True, "Secondary"]],
-            ["Yes, other healthcare, patient-facing", [True, "Other"]],
-            ["Yes, primary care, non-patient-facing", [False, "Primary"]],
-            ["Yes, secondary care, non-patient-facing", [False, "Secondary"]],
-            ["Yes, other healthcare, non-patient-facing", [False, "Other"]],
+            ["No", ["No", None]],
+            ["No", ["Yes", None]],
+            ["Yes, primary care, patient-facing", ["Yes", "Primary"]],
+            ["Yes, secondary care, patient-facing", ["Yes", "Secondary"]],
+            ["Yes, other healthcare, patient-facing", ["Yes", "Other"]],
+            ["Yes, primary care, non-patient-facing", ["No", "Primary"]],
+            ["Yes, secondary care, non-patient-facing", ["No", "Secondary"]],
+            ["Yes, other healthcare, non-patient-facing", ["No", "Other"]],
         ],
         ["is_patient_facing", "healthcare_area"],
     )
-
-    window = Window.partitionBy("participant_id")
-    df = df.withColumn(
-        "patient_facing_over_20_percent",
-        F.sum(F.when(F.col("is_patient_facing"), 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
-    )
-
-    work_status_columns = [col for col in df.columns if "work_status_" in col]
-    for work_status_column in work_status_columns:
-        df = df.withColumn(
-            work_status_column,
-            F.when(F.col("not_working"), "not working")
-            .when(F.col("at_school") | F.col("at_university"), "student")
-            .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
-            .otherwise(F.col(work_status_column)),
-        )
-
-    # # Temp table generations:
-    # df = df.withColumn("work_healthcare", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
-    # sh_df = df.filter(
-    #     (F.col("work_social_care") != F.col("works_social_care"))
-    #     | (F.col("work_healthcare") != F.col("works_healthcare"))
+    # window = Window.partitionBy("participant_id")
+    # df = df.withColumn(
+    #     "patient_facing_over_20_percent",
+    #     F.sum(F.when(F.col("is_patient_facing") == "Yes", 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
     # )
-    # h_df = df.filter(F.col("work_healthcare") != F.col("works_healthcare"))
-    # cols_added = [
-    #     "is_patient_facing",
-    #     "works_healthcare",
-    #     "works_social_care",
-    #     "work_health_care_patient_facing",
-    #     "social_care_area",
-    #     "healthcare_area",
-    #     "regex_derived_job_sector",
-    # ]
-    # generate_stratified_sample(
-    #     sh_df, cols_added, 500, 5, "healthcare_social_care_inconsistences", ["regex_derived_job_sector"]
-    # )
-    # generate_stratified_sample(h_df, cols_added, 500, 5, "healthcare_inconsistences", ["regex_derived_job_sector"])
 
+    # work_status_columns = [col for col in df.columns if "work_status_" in col]
+    # for work_status_column in work_status_columns:
+    #     df = df.withColumn(
+    #         work_status_column,
+    #         F.when(F.col("not_working"), "not working")
+    #         .when(F.col("at_school") | F.col("at_university"), "student")
+    #         .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
+    #         .otherwise(F.col(work_status_column)),
+    #     )
     return df
 
 
