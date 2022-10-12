@@ -35,7 +35,9 @@ def union_multiple_tables(tables: List[DataFrame]) -> DataFrame:
     return merged_df
 
 
-def null_safe_join(left_df: DataFrame, right_df: DataFrame, null_safe_on: list=[], null_unsafe_on: list=[], how="left"):
+def null_safe_join(
+    left_df: DataFrame, right_df: DataFrame, null_safe_on: list = [], null_unsafe_on: list = [], how="left"
+):
     """
     Performs a join on equal columns, where a subset of the join columns can be null safe.
 
