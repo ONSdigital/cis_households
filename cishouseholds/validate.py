@@ -265,7 +265,11 @@ def validate_config_stages(pipeline_stage_functions: Dict, stages_to_run: List[s
             else:
                 error_msg += f"""  - {function_name} stage when condition should be in dictionary format with conditions and operator. \n"""  # noqa: E501
 
-        all_func_config_parameters_from_object = inspect.getfullargspec(pipeline_stage_functions[function_name]).args
+        all_func_config_parameters_from_object = [
+            arg
+            for arg in inspect.getfullargspec(pipeline_stage_functions[function_name]).args
+            if arg != "input_survey_table"
+        ]
         input_arguments_needed = [
             arg
             for arg in all_func_config_parameters_from_object
