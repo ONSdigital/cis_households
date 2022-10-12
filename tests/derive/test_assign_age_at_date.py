@@ -8,7 +8,12 @@ from cishouseholds.derive import assign_age_at_date
 @pytest.fixture
 def expected_df(spark_session):
     return spark_session.createDataFrame(
-        data=[("2021-07-21", "1995-02-05", 26), ("2021-07-21", None, None)],
+        data=[
+            ("2021-07-21", "1995-02-05", 26),
+            ("2021-07-21", None, None),
+            ("2020-10-25", "1967-09-16", 53),
+            ("2021-10-17", "1967-09-16", 53),
+        ],
         schema="base_date string, date_of_birth string, age_at_date integer",
     )
 
