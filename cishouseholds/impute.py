@@ -262,6 +262,7 @@ def fill_forward_event(
     df: DataFrame,
     event_indicator_column: str,
     event_date_column: str,
+    event_date_tolerance: int,
     detail_columns: List[str],
     participant_id_column: str,
     visit_datetime_column: str,
@@ -285,8 +286,37 @@ def fill_forward_event(
     """
     event_columns = [event_date_column, event_indicator_column, *detail_columns]
 
+    grouping_window = Window.partitionBy(participant_id_column, event_date_column).orderBy("REF_EVENT_DATE")
     window = Window.partitionBy(participant_id_column, visit_datetime_column).orderBy(F.desc(event_date_column))
     filter_window = Window.partitionBy(participant_id_column, event_date_column).orderBy(visit_datetime_column)
+
+    event_dates_df = df.select(participant_id_column, event_date_column).distinct()
+
+    event_dates_df = event_dates_df.join(
+        event_dates_df.filter(F.col(event_date_column).isNotNull()).withColumnRenamed(
+            event_date_column, "REF_EVENT_DATE"
+        ),
+        on=participant_id_column,
+        how="left",
+    )
+    event_dates_df = (
+        event_dates_df.withColumn(
+            "RESOLVED_EVENT_DATE",
+            F.first(
+                F.when(
+                    F.abs(F.datediff(F.col("REF_EVENT_DATE"), F.col(event_date_column))) <= event_date_tolerance,
+                    F.col("REF_EVENT_DATE"),
+                ),
+                True,
+            ).over(grouping_window),
+        )
+        .drop("REF_EVENT_DATE")
+        .distinct()
+    )
+    event_dates_df = event_dates_df.filter(F.col("RESOLVED_EVENT_DATE").isNotNull())
+
+    df = df.join(event_dates_df, on=[participant_id_column, event_date_column], how="left")
+    df = df.withColumn(event_date_column, F.col("RESOLVED_EVENT_DATE")).drop("RESOLVED_EVENT_DATE")
 
     filtered_df = (
         df.filter((F.col(event_date_column).isNotNull()) & (F.col(event_date_column) <= F.col(visit_datetime_column)))
@@ -295,11 +325,15 @@ def fill_forward_event(
         .drop("ROW_NUMBER")
     )  # filter valid events prioritizing the first occupance of an event
 
-    df = (
-        df.drop(*event_columns)
-        .join(filtered_df.select(participant_id_column, *event_columns), on=participant_id_column, how="left")
-        .withColumn("DROP_EVENT", F.col(event_date_column) > F.col(visit_datetime_column))
-    )
+    if filtered_df.count() > 0:
+        df = (
+            df.drop(*event_columns)
+            .join(filtered_df.select(participant_id_column, *event_columns), on=participant_id_column, how="left")
+            .withColumn("DROP_EVENT", F.col(event_date_column) > F.col(visit_datetime_column))
+        )
+    else:
+        df = df.withColumn("DROP_EVENT", F.lit(False))
+
     for col in event_columns:
         df = df.withColumn(col, F.when(F.col("DROP_EVENT"), None).otherwise(F.col(col)))
 
