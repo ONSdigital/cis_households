@@ -10,8 +10,8 @@ def test_fill_forward_event(spark_session):
             (1,"2019-12-01","B","2020-01-01","some detail"),
             (1,"2020-01-05","C","2020-01-01","some detail"),
             (1,"2020-01-06","D",None,        "some detail"),
-            (1,"2020-02-08","E","2020-02-07","some detail"),
-            (1,"2020-03-01","F","2020-03-02","some detail")
+            (1,"2020-01-08","E","2020-01-07","some different detail"),
+            (1,"2020-02-01","F","2020-02-02","some other detail")
         # fmt:on
     ]
     expected_data = [
@@ -19,9 +19,9 @@ def test_fill_forward_event(spark_session):
             (1,"2019-12-01","No",  None,        None),
             (1,"2020-01-05","Yes","2020-01-01","some detail"),
             (1,"2020-01-06","Yes","2020-01-01","some detail"),
-            (1,"2020-01-07","Yes","2020-01-07","some detail"),
-            (1,"2020-02-08","Yes","2020-02-07","some detail"),
-            (1,"2020-03-01","Yes","2020-02-07","some detail")
+            (1,"2020-01-07","Yes","2020-01-07","some different detail"),
+            (1,"2020-01-08","Yes","2020-01-07","some different detail"),
+            (1,"2020-02-01","Yes","2020-01-07","some different detail")
         # fmt:on
     ]
     input_data_specific_case_1 = [
@@ -70,21 +70,20 @@ def test_fill_forward_event(spark_session):
             event_indicator string,
             event_date string,
             detail string"""
-            
+
     input_df = spark_session.createDataFrame(data=input_data, schema=schema)
-    input_df_2 =  spark_session.createDataFrame(data=input_data_specific_case_1, schema=schema)
-    input_df_3 =  spark_session.createDataFrame(data=input_data_specific_case_2, schema=schema)
+    input_df_2 = spark_session.createDataFrame(data=input_data_specific_case_1, schema=schema)
+    input_df_3 = spark_session.createDataFrame(data=input_data_specific_case_2, schema=schema)
 
     expected_df = spark_session.createDataFrame(data=expected_data, schema=schema)
-    expected_df = spark_session.createDataFrame(data=expected_data_specific_case_1, schema=schema)
-    expected_df = spark_session.createDataFrame(data=expected_data_specific_case_2, schema=schema)
-
+    expected_df_specific_case_1 = spark_session.createDataFrame(data=expected_data_specific_case_1, schema=schema)
+    expected_df_specific_case_2 = spark_session.createDataFrame(data=expected_data_specific_case_2, schema=schema)
 
     output_df_1 = fill_forward_event(
         df=input_df,
         event_indicator_column="event_indicator",
         event_date_column="event_date",
-        even_date_tolerance=7,
+        event_date_tolerance=0,
         detail_columns=["detail"],
         participant_id_column="participant_id",
         visit_datetime_column="visit_date",
@@ -94,7 +93,7 @@ def test_fill_forward_event(spark_session):
         df=input_df_2,
         event_indicator_column="event_indicator",
         event_date_column="event_date",
-        even_date_tolerance=7,
+        event_date_tolerance=7,
         detail_columns=["detail"],
         participant_id_column="participant_id",
         visit_datetime_column="visit_date",
@@ -104,12 +103,16 @@ def test_fill_forward_event(spark_session):
         df=input_df_3,
         event_indicator_column="event_indicator",
         event_date_column="event_date",
-        even_date_tolerance=7,
+        event_date_tolerance=7,
         detail_columns=["detail"],
         participant_id_column="participant_id",
         visit_datetime_column="visit_date",
     )
 
     assert_df_equality(output_df_1, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
-    assert_df_equality(output_df_2, expected_data_specific_case_1, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
-    assert_df_equality(output_df_3, expected_data_specific_case_2, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
+    assert_df_equality(
+        output_df_2, expected_df_specific_case_1, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True
+    )
+    assert_df_equality(
+        output_df_3, expected_df_specific_case_2, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True
+    )

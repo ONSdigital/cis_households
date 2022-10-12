@@ -2091,6 +2091,7 @@ def union_dependent_derivations(df):
         df=df_2,
         event_indicator_column="think_had_covid",
         event_date_column="think_had_covid_onset_date",
+        event_date_tolerance=7,
         detail_columns=[
             "other_covid_infection_test",
             "other_covid_infection_test_results",
@@ -2131,6 +2132,7 @@ def union_dependent_derivations(df):
         df=df_4,
         event_indicator_column="contact_suspected_positive_covid_last_28_days",
         event_date_column="last_suspected_covid_contact_date",
+        event_date_tolerance=7,
         detail_columns=["last_suspected_covid_contact_type"],
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",
@@ -2142,6 +2144,7 @@ def union_dependent_derivations(df):
         df=df_6,
         event_indicator_column="contact_known_positive_covid_last_28_days",
         event_date_column="last_covid_contact_date",
+        event_date_tolerance=7,
         detail_columns=["last_covid_contact_type"],
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",

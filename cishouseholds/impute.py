@@ -262,7 +262,7 @@ def fill_forward_event(
     df: DataFrame,
     event_indicator_column: str,
     event_date_column: str,
-    even_date_tolerance: int,
+    event_date_tolerance: int,
     detail_columns: List[str],
     participant_id_column: str,
     visit_datetime_column: str,
@@ -290,15 +290,33 @@ def fill_forward_event(
     window = Window.partitionBy(participant_id_column, visit_datetime_column).orderBy(F.desc(event_date_column))
     filter_window = Window.partitionBy(participant_id_column, event_date_column).orderBy(visit_datetime_column)
 
-    event_dates_df = df.select(participant_id_column,event_date_column).distinct()
-    
-    event_dates_df = event_dates_df.join(event_dates_df.filter(F.col(event_date_column).isNotNull()).withColumnRenamed(event_date_column,"REF_EVENT_DATE"),on=participant_id_column,how="left")
-    resolved_event_date = F.when(F.abs(F.datediff(F.col("REF_EVENT_DATE"),F.col(event_date_column)))<even_date_tolerance,F.col("REF_EVENT_DATE"))
-    resolved_event_date = F.first(resolved_event_date,True).over(grouping_window)
-    event_dates_df = event_dates_df.withColumn("RESOLVED_EVENT_DATE",resolved_event_date).drop("REF_EVENT_DATE").distinct().filter(F.col("RESOLVED_EVENT_DATE").isNotNull())
+    event_dates_df = df.select(participant_id_column, event_date_column).distinct()
 
-    df = df.join(event_dates_df,on=[participant_id_column,event_date_column],how="left").withColumn(event_date_column,F.col("RESOLVED_EVENT_DATE")).drop("RESOLVED_EVENT_DATE")
-    df.show()
+    event_dates_df = event_dates_df.join(
+        event_dates_df.filter(F.col(event_date_column).isNotNull()).withColumnRenamed(
+            event_date_column, "REF_EVENT_DATE"
+        ),
+        on=participant_id_column,
+        how="left",
+    )
+    event_dates_df = (
+        event_dates_df.withColumn(
+            "RESOLVED_EVENT_DATE",
+            F.first(
+                F.when(
+                    F.abs(F.datediff(F.col("REF_EVENT_DATE"), F.col(event_date_column))) <= event_date_tolerance,
+                    F.col("REF_EVENT_DATE"),
+                ),
+                True,
+            ).over(grouping_window),
+        )
+        .drop("REF_EVENT_DATE")
+        .distinct()
+    )
+    event_dates_df = event_dates_df.filter(F.col("RESOLVED_EVENT_DATE").isNotNull())
+
+    df = df.join(event_dates_df, on=[participant_id_column, event_date_column], how="left")
+    df = df.withColumn(event_date_column, F.col("RESOLVED_EVENT_DATE")).drop("RESOLVED_EVENT_DATE")
 
     filtered_df = (
         df.filter((F.col(event_date_column).isNotNull()) & (F.col(event_date_column) <= F.col(visit_datetime_column)))
@@ -314,7 +332,8 @@ def fill_forward_event(
             .withColumn("DROP_EVENT", F.col(event_date_column) > F.col(visit_datetime_column))
         )
     else:
-        df = df.withColumn("DROP_EVENT",F.lit(False))
+        df = df.withColumn("DROP_EVENT", F.lit(False))
+
     for col in event_columns:
         df = df.withColumn(col, F.when(F.col("DROP_EVENT"), None).otherwise(F.col(col)))
 
