@@ -233,9 +233,9 @@ def validate_config_stages(pipeline_stage_functions: Dict, stages_to_run: List[s
             error_msg += f"""  - the {function_name} stage function isn't defined. \n"""  # noqa: E501
 
         config_arguments_dict = {
-            **stages_config[function_name].get("input_tables", {}),
-            **stages_config[function_name].get("output_tables", {}),
-            **{k: v for k, v in stages_config[function_name].items() if k not in ["input_tables", "output_tables"]},
+            **stages_config[stage_name].get("input_tables", {}),  # type: ignore
+            **stages_config[stage_name].get("output_tables", {}),  # type: ignore
+            **{k: v for k, v in stages_config[stage_name].items() if k not in ["input_tables", "output_tables"]},  # type: ignore
         }  # type: ignore
         function_config_other_params = [x for x in config_arguments_dict.keys() if (x != "function")]
 

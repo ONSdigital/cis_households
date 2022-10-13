@@ -25,8 +25,7 @@ def get_config() -> dict:
                 " An empty dictionary will be used by default for this run."
             )  # functional
         else:
-            with open(config_location) as fh:
-                configs.append(yaml.load(fh, Loader=yaml.FullLoader))
+            configs.append(get_secondary_config(config_location))
 
     modified_config = {k: v for k, v in configs[1].items()}
     for section_name, section_config in configs[0].items():

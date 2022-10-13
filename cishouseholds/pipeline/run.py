@@ -87,7 +87,6 @@ def run_from_config():
 
     spark = get_or_create_spark_session()
     config = get_config()
-
     stages_to_run = config["run"]
 
     spark.sparkContext.setCheckpointDir(config["storage"]["checkpoint_directory"])
