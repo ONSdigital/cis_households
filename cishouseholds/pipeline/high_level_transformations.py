@@ -452,7 +452,9 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
 
         if new_translations_df.count() > 0:
 
-            translation_lookup_df = extract_lookup_csv(translation_lookup_path, validation_schemas["csv_lookup_schema"])
+            translation_lookup_df = extract_lookup_csv(
+                translation_lookup_path, validation_schemas["csv_lookup_schema_extended"]
+            )
 
             new_translations_lookup_df = translation_lookup_df.union(new_translations_df)
 

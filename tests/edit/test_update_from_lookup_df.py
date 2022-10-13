@@ -14,6 +14,7 @@ def test_update_from_lookup_df(spark_session):
             ("id1", "3", None, "D", None, None),  # Non existent column just prints warning
             ("id1", "5", None, "B", None, None),  # Non existent id should not be joined
             ("id2", "A", None, "C", "0", "1"),  # edits multiple rows given same id
+            ("id2", "A", None, "B", "10", "20"),  # added based on ticket 2586 scenario to test
         ],
         schema="""id_column_name string, id string, dataset_name string, target_column_name string, old_value string, new_value string""",
     )

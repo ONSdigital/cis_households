@@ -461,8 +461,11 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str = 
         pivoted_lookup_df = (
             temp_lookup_df.groupBy("id")
             .pivot("target_column_name")
-            .agg(F.first("old_value").alias("old_value"), F.first("new_value").alias("new_value"))
-            .drop("old_value", "new_value")
+            .agg(
+                F.first("old_value").alias(f"{id_column}_old_value"),
+                F.first("new_value").alias(f"{id_column}_new_value"),
+            )
+            .drop(f"{id_column}_old_value", f"{id_column}_new_value")
         )
         df = df.join(pivoted_lookup_df, on=(pivoted_lookup_df["id"] == df[id_column]), how="left").drop(
             pivoted_lookup_df["id"]
@@ -478,14 +481,17 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str = 
                 column_to_edit,
                 F.when(
                     F.col(column_to_edit).eqNullSafe(
-                        F.col(f"{column_to_edit}_old_value").cast(df.schema[column_to_edit].dataType)
+                        F.col(f"{column_to_edit}_{id_column}_old_value").cast(df.schema[column_to_edit].dataType)
                     ),
-                    F.col(f"{column_to_edit}_new_value").cast(df.schema[column_to_edit].dataType),
+                    F.col(f"{column_to_edit}_{id_column}_new_value").cast(df.schema[column_to_edit].dataType),
                 ).otherwise(F.col(column_to_edit)),
             )
 
         drop_list.extend(
-            [*[f"{col}_old_value" for col in columns_to_edit], *[f"{col}_new_value" for col in columns_to_edit]]
+            [
+                *[f"{col}_{id_column}_old_value" for col in columns_to_edit],
+                *[f"{col}_{id_column}_new_value" for col in columns_to_edit],
+            ]
         )
 
     return df.drop(*drop_list)
