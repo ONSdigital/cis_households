@@ -289,11 +289,11 @@ def fill_forward_event(
     filter_window = Window.partitionBy(participant_id_column, event_date_column).orderBy(visit_datetime_column)
 
     filtered_df = (
-        df.filter((F.col(event_date_column).isNotNull()) & (F.col(event_date_column) <= F.col(visit_datetime_column)))
-        .withColumn("ROW_NUMBER", F.row_number().over(filter_window))
+        filtered_df.withColumn("ROW_NUMBER", F.row_number().over(filter_window))
         .filter(F.col("ROW_NUMBER") == 1)
         .drop("ROW_NUMBER")
-    )  # filter valid events prioritizing the first occupance of an event
+    )
+    # filter valid events prioritizing the first occupance of an event
 
     df = (
         df.drop(*event_columns)
