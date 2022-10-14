@@ -1248,6 +1248,7 @@ category_maps = {
         },
         "swab_sample_barcode_correct": _yes_no_categories,
         "blood_sample_barcode_correct": _yes_no_categories,
+        "vaccinated_against_flu": _yes_no_categories,
         "age_group_5_intervals": {
             "2-11": 1,
             "12-19": 2,
