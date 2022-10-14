@@ -1386,5 +1386,6 @@ validation_schemas = {
         "other_antibody_test_positive_date": string_dict,
         "other_antibody_test_negative_date": string_dict,
         "form_language": string_dict,
+        "vaccinated_against_flu": string_dict,
     },
 }
