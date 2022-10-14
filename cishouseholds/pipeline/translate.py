@@ -336,6 +336,7 @@ def translate_welsh_fixed_text_responses_digital(df: DataFrame) -> DataFrame:
         "blood_sample_barcode_correct",
         "vaccinated_against_flu",
         "think_have_covid_symptoms",
+        "contact_suspected_positive_covid_last_28_days",
     ]
     df = apply_value_map_multiple_columns(
         df,
