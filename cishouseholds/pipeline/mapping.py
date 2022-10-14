@@ -411,9 +411,9 @@ category_maps = {
         },
         "other_antibody_test_location": {"In the NHS (e.g. GP, hospital)": 1, "Private lab": 2, "Home test": 3},
         "think_have_long_covid_symptom_reduced_ability": {
-            "Not at all": 4,
-            "Yes a little": 5,
-            "Yes a lot": 6,
+            "Not at all": 1,
+            "Yes a little": 2,
+            "Yes a lot": 3,
         },
         "participant_withdrawal_type": {
             "Withdrawn": 1,
