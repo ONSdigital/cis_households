@@ -2090,11 +2090,13 @@ def union_dependent_derivations(df):
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
     )
-    df_2 = get_or_create_spark_session().createDataFrame(
-        df.rdd, schema=df.schema
-    )  # breaks lineage to avoid Java OOM Error
-    df_3 = fill_forward_event(
-        df=df_2,
+    # df_2 = get_or_create_spark_session().createDataFrame(
+    #     df.rdd, schema=df.schema
+    # )  # breaks lineage to avoid Java OOM Error
+    df.cache()
+    df = df.repartition(16)
+    df = fill_forward_event(
+        df=df,
         event_indicator_column="think_had_covid",
         event_date_column="think_had_covid_onset_date",
         event_date_tolerance=7,
@@ -2130,12 +2132,12 @@ def union_dependent_derivations(df):
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",
     )
-    df_4 = get_or_create_spark_session().createDataFrame(
-        df_3.rdd, schema=df_3.schema
-    )  # breaks lineage to avoid Java OOM Error
+    # df_4 = get_or_create_spark_session().createDataFrame(
+    #     df_3.rdd, schema=df_3.schema
+    # )  # breaks lineage to avoid Java OOM Error
     # Derive these after fill forwards and other changes to dates
-    df_5 = fill_forward_event(
-        df=df_4,
+    df = fill_forward_event(
+        df=df,
         event_indicator_column="contact_suspected_positive_covid_last_28_days",
         event_date_column="last_suspected_covid_contact_date",
         event_date_tolerance=7,
@@ -2143,11 +2145,11 @@ def union_dependent_derivations(df):
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",
     )
-    df_6 = get_or_create_spark_session().createDataFrame(
-        df_5.rdd, schema=df_5.schema
-    )  # breaks lineage to avoid Java OOM Error
-    df_7 = fill_forward_event(
-        df=df_6,
+    # df_6 = get_or_create_spark_session().createDataFrame(
+    #     df_5.rdd, schema=df_5.schema
+    # )  # breaks lineage to avoid Java OOM Error
+    df = fill_forward_event(
+        df=df,
         event_indicator_column="contact_known_positive_covid_last_28_days",
         event_date_column="last_covid_contact_date",
         event_date_tolerance=7,
@@ -2155,8 +2157,8 @@ def union_dependent_derivations(df):
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",
     )
-    df_7 = create_formatted_datetime_string_columns(df_7)
-    return df_7
+    df = create_formatted_datetime_string_columns(df)
+    return df
 
 
 def derive_people_in_household_count(df):
