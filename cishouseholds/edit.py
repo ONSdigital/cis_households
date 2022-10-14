@@ -14,7 +14,25 @@ from pyspark.sql import DataFrame
 
 from cishouseholds.expressions import all_columns_null
 from cishouseholds.expressions import any_column_not_null
+from cishouseholds.expressions import set_date_component
 from cishouseholds.expressions import sum_within_row
+
+
+def correct_date_ranges(df: DataFrame, columns_to_edit: List[str], visit_date_column: str, min_year: str):
+    """
+    Correct datetime columns given a range
+    """
+    for col in columns_to_edit:
+        df = df.withColumn(
+            col,
+            F.when(
+                (F.col(col) > F.col(visit_date_column))
+                & (F.col(col).isNotNull())
+                & (F.col(visit_date_column) > min_year),
+                set_date_component("year", visit_date_column, min_year),
+            ),
+        )
+    return df
 
 
 def clean_job_description_string(df: DataFrame, column_name_to_assign: str):
