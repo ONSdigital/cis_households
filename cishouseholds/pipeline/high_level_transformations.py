@@ -13,7 +13,6 @@ from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.derive import assign_age_at_date
-from cishouseholds.derive import assign_any_symptoms_around_visit
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_column_regex_match
@@ -1460,37 +1459,37 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
     df = update_column_values_from_map(df=df, column="work_status_v2", map=work_status_dict["work_status_v2"])
 
     ## Not needed in release 1. Confirm that these are v2-only when pulling them back in, as they should likely be union dependent.
-    df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
-    df = assign_column_given_proportion(
-        df=df,
-        column_name_to_assign="ever_work_person_facing_or_social_care",
-        groupby_column="participant_id",
-        reference_columns=["work_social_care"],
-        count_if=["Yes, care/residential home, resident-facing", "Yes, other social care, resident-facing"],
-        true_false_values=["Yes", "No"],
-    )
-    df = assign_column_given_proportion(
-        df=df,
-        column_name_to_assign="ever_care_home_worker",
-        groupby_column="participant_id",
-        reference_columns=["work_social_care", "work_nursing_or_residential_care_home"],
-        count_if=["Yes, care/residential home, resident-facing"],
-        true_false_values=["Yes", "No"],
-    )
-    df = assign_column_given_proportion(
-        df=df,
-        column_name_to_assign="ever_had_long_term_health_condition",
-        groupby_column="participant_id",
-        reference_columns=["illness_lasting_over_12_months"],
-        count_if=["Yes"],
-        true_false_values=["Yes", "No"],
-    )
-    df = assign_ever_had_long_term_health_condition_or_disabled(
-        df=df,
-        column_name_to_assign="ever_had_long_term_health_condition_or_disabled",
-        health_conditions_column="illness_lasting_over_12_months",
-        condition_impact_column="illness_reduces_activity_or_ability",
-    )
+    # df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
+    # df = assign_column_given_proportion(
+    #     df=df,
+    #     column_name_to_assign="ever_work_person_facing_or_social_care",
+    #     groupby_column="participant_id",
+    #     reference_columns=["work_social_care"],
+    #     count_if=["Yes, care/residential home, resident-facing", "Yes, other social care, resident-facing"],
+    #     true_false_values=["Yes", "No"],
+    # )
+    # df = assign_column_given_proportion(
+    #     df=df,
+    #     column_name_to_assign="ever_care_home_worker",
+    #     groupby_column="participant_id",
+    #     reference_columns=["work_social_care", "work_nursing_or_residential_care_home"],
+    #     count_if=["Yes, care/residential home, resident-facing"],
+    #     true_false_values=["Yes", "No"],
+    # )
+    # df = assign_column_given_proportion(
+    #     df=df,
+    #     column_name_to_assign="ever_had_long_term_health_condition",
+    #     groupby_column="participant_id",
+    #     reference_columns=["illness_lasting_over_12_months"],
+    #     count_if=["Yes"],
+    #     true_false_values=["Yes", "No"],
+    # )
+    # df = assign_ever_had_long_term_health_condition_or_disabled(
+    #     df=df,
+    #     column_name_to_assign="ever_had_long_term_health_condition_or_disabled",
+    #     health_conditions_column="illness_lasting_over_12_months",
+    #     condition_impact_column="illness_reduces_activity_or_ability",
+    # )
     return df
 
 
@@ -1794,50 +1793,39 @@ def symptom_column_transformations(df):
         count_if_value="Yes",
     )
     # TODO - not needed until later release
-    df = update_think_have_covid_symptom_any(
-        df=df,
-        column_name_to_update="think_have_covid_symptom_any",
-        count_reference_column="think_have_covid_symptom_count",
-    )
+    # df = update_think_have_covid_symptom_any(
+    #     df=df,
+    #     column_name_to_update="think_have_covid_symptom_any",
+    #     count_reference_column="think_have_covid_symptom_count",
+    # )
 
-    df = assign_true_if_any(
-        df=df,
-        column_name_to_assign="any_think_have_covid_symptom_or_now",
-        reference_columns=["think_have_covid_symptom_any", "think_have_covid"],
-        true_false_values=["Yes", "No"],
-    )
+    # df = assign_true_if_any(
+    #     df=df,
+    #     column_name_to_assign="any_think_have_covid_symptom_or_now",
+    #     reference_columns=["think_have_covid_symptom_any", "think_have_covid"],
+    #     true_false_values=["Yes", "No"],
+    # )
 
-    df = assign_any_symptoms_around_visit(
-        df=df,
-        column_name_to_assign="any_symptoms_around_visit",
-        symptoms_bool_column="any_think_have_covid_symptom_or_now",
-        id_column="participant_id",
-        visit_date_column="visit_datetime",
-        visit_id_column="visit_id",
-    )
+    # df = assign_any_symptoms_around_visit(
+    #     df=df,
+    #     column_name_to_assign="any_symptoms_around_visit",
+    #     symptoms_bool_column="any_think_have_covid_symptom_or_now",
+    #     id_column="participant_id",
+    #     visit_date_column="visit_datetime",
+    #     visit_id_column="visit_id",
+    # )
 
-    df = assign_true_if_any(
-        df=df,
-        column_name_to_assign="think_have_covid_cghfevamn_symptom_group",
-        reference_columns=[
-            "think_have_covid_symptom_cough",
-            "think_have_covid_symptom_fever",
-            "think_have_covid_symptom_loss_of_smell",
-            "think_have_covid_symptom_loss_of_taste",
-        ],
-        true_false_values=["Yes", "No"],
-    )
-    df = assign_true_if_any(
-        df=df,
-        column_name_to_assign="think_had_covid_cghfevamn_symptom_group",
-        reference_columns=[
-            "think_had_covid_symptom_cough",
-            "think_had_covid_symptom_fever",
-            "think_had_covid_symptom_loss_of_smell",
-            "think_had_covid_symptom_loss_of_taste",
-        ],
-        true_false_values=["Yes", "No"],
-    )
+    # df = assign_true_if_any(
+    #     df=df,
+    #     column_name_to_assign="think_have_covid_cghfevamn_symptom_group",
+    #     reference_columns=[
+    #         "think_have_covid_symptom_cough",
+    #         "think_have_covid_symptom_fever",
+    #         "think_have_covid_symptom_loss_of_smell",
+    #         "think_have_covid_symptom_loss_of_taste",
+    #     ],
+    #     true_false_values=["Yes", "No"],
+    # )
     # df = assign_true_if_any(
     #     df=df,
     #     column_name_to_assign="think_have_covid_cghfevamn_symptom_group",
@@ -1849,14 +1837,25 @@ def symptom_column_transformations(df):
     #     ],
     #     true_false_values=["Yes", "No"],
     # )
-    df = assign_any_symptoms_around_visit(
-        df=df,
-        column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
-        id_column="participant_id",
-        symptoms_bool_column="think_have_covid_cghfevamn_symptom_group",
-        visit_date_column="visit_datetime",
-        visit_id_column="visit_id",
-    )
+    # df = assign_true_if_any(
+    #     df=df,
+    #     column_name_to_assign="think_have_covid_cghfevamn_symptom_group",
+    #     reference_columns=[
+    #         "think_had_covid_symptom_cough",
+    #         "think_had_covid_symptom_fever",
+    #         "think_had_covid_symptom_loss_of_smell",
+    #         "think_had_covid_symptom_loss_of_taste",
+    #     ],
+    #     true_false_values=["Yes", "No"],
+    # )
+    # df = assign_any_symptoms_around_visit(
+    #     df=df,
+    #     column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
+    #     id_column="participant_id",
+    #     symptoms_bool_column="think_have_covid_cghfevamn_symptom_group",
+    #     visit_date_column="visit_datetime",
+    #     visit_id_column="visit_id",
+    # )
     return df
 
 
@@ -1984,9 +1983,6 @@ def union_dependent_derivations(df):
     df = assign_ethnicity_white(
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
-
-    df = derive_work_status_columns(df)
-
     # df = assign_work_patient_facing_now(
     #     df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_patient_facing"
     # )
@@ -1996,63 +1992,63 @@ def union_dependent_derivations(df):
     #     "work_status_v0",
     #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     # )
-    df = assign_first_visit(
-        df=df,
-        column_name_to_assign="household_first_visit_datetime",
-        id_column="participant_id",
-        visit_date_column="visit_datetime",
-    )
-    df = assign_last_visit(
-        df=df,
-        column_name_to_assign="last_attended_visit_datetime",
-        id_column="participant_id",
-        visit_status_column="participant_visit_status",
-        visit_date_column="visit_datetime",
-    )
-    df = assign_date_difference(
-        df=df,
-        column_name_to_assign="days_since_enrolment",
-        start_reference_column="household_first_visit_datetime",
-        end_reference_column="last_attended_visit_datetime",
-    )
-    df = assign_date_difference(
-        df=df,
-        column_name_to_assign="household_weeks_since_survey_enrolment",
-        start_reference_column="survey start",
-        end_reference_column="visit_datetime",
-        format="weeks",
-    )
-    df = assign_named_buckets(
-        df,
-        reference_column="days_since_enrolment",
-        column_name_to_assign="visit_number",
-        map={
-            0: 0,
-            4: 1,
-            11: 2,
-            18: 3,
-            25: 4,
-            43: 5,
-            71: 6,
-            99: 7,
-            127: 8,
-            155: 9,
-            183: 10,
-            211: 11,
-            239: 12,
-            267: 13,
-            295: 14,
-            323: 15,
-        },
-    )
-    df = assign_any_symptoms_around_visit(
-        df=df,
-        column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
-        symptoms_bool_column="think_have_covid_cghfevamn_symptom_group",
-        id_column="participant_id",
-        visit_date_column="visit_datetime",
-        visit_id_column="visit_id",
-    )
+    # df = assign_first_visit(
+    #     df=df,
+    #     column_name_to_assign="household_first_visit_datetime",
+    #     id_column="participant_id",
+    #     visit_date_column="visit_datetime",
+    # )
+    # df = assign_last_visit(
+    #     df=df,
+    #     column_name_to_assign="last_attended_visit_datetime",
+    #     id_column="participant_id",
+    #     visit_status_column="participant_visit_status",
+    #     visit_date_column="visit_datetime",
+    # )
+    # df = assign_date_difference(
+    #     df=df,
+    #     column_name_to_assign="days_since_enrolment",
+    #     start_reference_column="household_first_visit_datetime",
+    #     end_reference_column="last_attended_visit_datetime",
+    # )
+    # df = assign_date_difference(
+    #     df=df,
+    #     column_name_to_assign="household_weeks_since_survey_enrolment",
+    #     start_reference_column="survey start",
+    #     end_reference_column="visit_datetime",
+    #     format="weeks",
+    # )
+    # df = assign_named_buckets(
+    #     df,
+    #     reference_column="days_since_enrolment",
+    #     column_name_to_assign="visit_number",
+    #     map={
+    #         0: 0,
+    #         4: 1,
+    #         11: 2,
+    #         18: 3,
+    #         25: 4,
+    #         43: 5,
+    #         71: 6,
+    #         99: 7,
+    #         127: 8,
+    #         155: 9,
+    #         183: 10,
+    #         211: 11,
+    #         239: 12,
+    #         267: 13,
+    #         295: 14,
+    #         323: 15,
+    #     },
+    # )
+    # df = assign_any_symptoms_around_visit(
+    #     df=df,
+    #     column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
+    #     symptoms_bool_column="think_have_covid_cghfevamn_symptom_group",
+    #     id_column="participant_id",
+    #     visit_date_column="visit_datetime",
+    #     visit_id_column="visit_id",
+    # )
     df = derive_people_in_household_count(df)
     df = update_column_values_from_map(
         df=df,
@@ -2359,18 +2355,18 @@ def fill_forwards_transformations(df):
 
     ## TODO: Not needed until a future release, will leave commented out in code until required
     #
-    # df = update_column_if_ref_in_list(
-    #     df=df,
-    #     column_name_to_update="work_location",
-    #     old_value=None,
-    #     new_value="Not applicable, not currently working",
-    #     reference_column="work_status_v0",
-    #     check_list=[
-    #         "Furloughed (temporarily not working)",
-    #         "Not working (unemployed, retired, long-term sick etc.)",
-    #         "Student",
-    #     ],
-    # )
+    #    df = update_column_if_ref_in_list(
+    #        df=df,
+    #        column_name_to_update="work_location",
+    #        old_value=None,
+    #        new_value="Not applicable, not currently working",
+    #        reference_column="work_status_v0",
+    #        check_list=[
+    #            "Furloughed (temporarily not working)",
+    #            "Not working (unemployed, retired, long-term sick etc.)",
+    #            "Student",
+    #        ],
+    #    )
 
     df = fill_forwards_travel_column(df)
 
