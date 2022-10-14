@@ -1257,7 +1257,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "work_health_care_area",
         "work_status_v1",
         "work_status_v2",
-        "work_social_care",
         "work_not_from_home_days_per_week",
         "work_location",
         "sex",
@@ -2495,6 +2494,26 @@ def derive_overall_vaccination(df: DataFrame) -> DataFrame:
 
 def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     """Add result of various regex pattern matchings"""
+    df = df.drop(
+        "work_healthcare_patient_facing_original",
+        "work_social_care_original",
+        "work_care_nursing_home_original",
+        "work_direct_contact_patients_or_clients_original",
+    )
+    df = assign_raw_copies(
+        df,
+        [
+            "work_healthcare_patient_facing",
+            "work_health_care_area",
+            "work_social_care",
+            "work_nursing_or_residential_care_home",
+            "work_direct_contact_patients_or_clients",
+            "patient_facing_over_20_percent",
+            "works_healthcare",
+            "work_patient_facing_now",
+        ],
+        "original",
+    )
 
     df = df.withColumn("work_main_job_title", F.upper(F.col("work_main_job_title")))
     df = df.withColumn("work_main_job_role", F.upper(F.col("work_main_job_role")))
@@ -2526,8 +2545,8 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         )
 
     # add boolean flags for working in healthcare or socialcare
-    df = df.withColumn("work_health_care", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
-    df = df.withColumn("work_social_care", F.when(F.col("work_social_care_area").isNotNull(), "Yes").otherwise("No"))
+    df = df.withColumn("works_healthcare", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
+    # df = df.withColumn("work_social_care", F.when(F.col("work_social_care_area").isNotNull(), "Yes").otherwise("No"))
 
     df = assign_regex_match_result(
         df=df,
@@ -2539,14 +2558,14 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "work_direct_contact_patients_or_clients",
         F.when(
-            ((F.col("work_health_care") == "Yes") | (F.col("work_direct_contact_patients_or_clients") == True))
+            ((F.col("works_healthcare") == "Yes") | (F.col("work_direct_contact_patients_or_clients") == True))
             & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
             "Yes",
         ).otherwise("No"),
     )
     df = assign_column_value_from_multiple_column_map(
         df,
-        "work_health_care_patient_facing",
+        "work_healthcare_patient_facing",
         [
             ["No", ["No", None]],
             ["No", ["Yes", None]],
@@ -2561,7 +2580,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     )
     df = assign_column_value_from_multiple_column_map(
         df,
-        "work_social_care_patient_facing",
+        "work_social_care",
         [
             ["No", ["No", None]],
             ["No", ["Yes", None]],
@@ -2570,7 +2589,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             ["Yes, care/residential home, non-resident-facing", ["No", "Care/Residential home"]],
             ["Yes, other social care, non-resident-facing", ["No", "Other"]],
         ],
-        ["is_patient_facing", "social_care_area"],
+        ["work_direct_contact_patients_or_clients", "work_social_care_area"],
     )
 
     # work_status_columns = [col for col in df.columns if "work_status_" in col]

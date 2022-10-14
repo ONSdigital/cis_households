@@ -1613,10 +1613,10 @@ def assign_grouped_variable_from_days_since(
     )
 
 
-def assign_raw_copies(df: DataFrame, reference_columns: list) -> DataFrame:
-    """Create a copy of each column in a list, with a '_raw' suffix."""
+def assign_raw_copies(df: DataFrame, reference_columns: list, suffix: str = "raw") -> DataFrame:
+    """Create a copy of each column in a list, with a new suffix."""
     for column in reference_columns:
-        df = df.withColumn(column + "_raw", F.col(column).cast(df.schema[column].dataType))
+        df = df.withColumn(column + "_" + suffix, F.col(column).cast(df.schema[column].dataType))
     return df
 
 
