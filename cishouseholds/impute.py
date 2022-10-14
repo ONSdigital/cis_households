@@ -290,40 +290,41 @@ def fill_forward_event(
     window = Window.partitionBy(participant_id_column, visit_datetime_column).orderBy(F.desc(event_date_column))
     filter_window = Window.partitionBy(participant_id_column, event_date_column).orderBy(visit_datetime_column)
 
-    event_dates_df = df.select(participant_id_column, event_date_column).distinct()
+    filtered_df = df.filter(
+        (F.col(event_date_column).isNotNull()) & (F.col(event_date_column) <= F.col(visit_datetime_column))
+    )
+    event_dates_df = filtered_df.select(participant_id_column, event_date_column).distinct()
 
-    event_dates_df = event_dates_df.join(
-        event_dates_df.filter(F.col(event_date_column).isNotNull()).withColumnRenamed(
-            event_date_column, "REF_EVENT_DATE"
-        ),
+    filtered_df = filtered_df.join(
+        event_dates_df.withColumnRenamed(event_date_column, "REF_EVENT_DATE"),
         on=participant_id_column,
         how="left",
     )
-    event_dates_df = (
-        event_dates_df.withColumn(
-            "RESOLVED_EVENT_DATE",
-            F.first(
-                F.when(
-                    F.abs(F.datediff(F.col("REF_EVENT_DATE"), F.col(event_date_column))) <= event_date_tolerance,
-                    F.col("REF_EVENT_DATE"),
-                ),
-                True,
-            ).over(grouping_window),
-        )
-        .drop("REF_EVENT_DATE")
-        .distinct()
-    )
-    event_dates_df = event_dates_df.filter(F.col("RESOLVED_EVENT_DATE").isNotNull())
-
-    df = df.join(event_dates_df, on=[participant_id_column, event_date_column], how="left")
-    df = df.withColumn(event_date_column, F.col("RESOLVED_EVENT_DATE")).drop("RESOLVED_EVENT_DATE")
 
     filtered_df = (
-        df.filter((F.col(event_date_column).isNotNull()) & (F.col(event_date_column) <= F.col(visit_datetime_column)))
-        .withColumn("ROW_NUMBER", F.row_number().over(filter_window))
+        (
+            filtered_df.withColumn(
+                "RESOLVED_EVENT_DATE",
+                F.first(
+                    F.when(
+                        F.abs(F.datediff(F.col("REF_EVENT_DATE"), F.col(event_date_column))) <= event_date_tolerance,
+                        F.col("REF_EVENT_DATE"),
+                    ),
+                    True,
+                ).over(grouping_window),
+            ).drop("REF_EVENT_DATE")
+        )
+        .filter(F.col("RESOLVED_EVENT_DATE").isNotNull())
+        .distinct()
+    )
+
+    filtered_df = filtered_df.withColumn(event_date_column, F.col("RESOLVED_EVENT_DATE")).drop("RESOLVED_EVENT_DATE")
+    filtered_df = (
+        filtered_df.withColumn("ROW_NUMBER", F.row_number().over(filter_window))
         .filter(F.col("ROW_NUMBER") == 1)
         .drop("ROW_NUMBER")
-    )  # filter valid events prioritizing the first occupance of an event
+    )
+    # filter valid events prioritizing the first occupance of an event
 
     if filtered_df.count() > 0:
         df = (
