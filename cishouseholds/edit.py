@@ -18,25 +18,42 @@ from cishouseholds.expressions import set_date_component
 from cishouseholds.expressions import sum_within_row
 
 
-def correct_date_ranges(df: DataFrame, columns_to_edit: List[str], visit_date_column: str, min_year: Union[str,int]):
+def correct_date_ranges(df: DataFrame, columns_to_edit: List[str], visit_date_column: str, min_date: str):
     """
     Correct datetime columns given a range
     """
     for col in columns_to_edit:
         df = df.withColumn(
             col,
-            F.when(
-                (F.col(col) > F.col(visit_date_column))
-                & (F.col(col).isNotNull()),
+            F.to_timestamp(
                 F.when(
-                    (F.month(col)<F.month(visit_date_column))&(F.dayofmonth(col)<F.dayofmonth(visit_date_column)),set_date_component(col,"year",min_year)).when(
-                    F.add_months(col,-1)<=F.col(visit_date_column),F.add_months(col,-1)
-                ).when(
-                    (F.year(col)>2019) & (F.col(col)<=F.col(visit_date_column)),set_date_component(col,"year",F.year())
+                    (F.col(col) > F.col(visit_date_column)) & (F.col(col).isNotNull()),
+                    F.when(
+                        set_date_component(col, "year", F.year(visit_date_column)) <= F.col(visit_date_column),
+                        set_date_component(col, "year", F.year(visit_date_column)),
+                    )
+                    .when(F.add_months(col, -1) <= F.col(visit_date_column), F.add_months(col, -1))
+                    .when(
+                        (F.year(col) > 2020),
+                        set_date_component(col, "year", F.year(visit_date_column) - 1),
+                    )
+                    .when(
+                        (F.year(col) == 2020) & (F.month(col) >= 8) & (F.datediff(visit_date_column, col) < -50),
+                        set_date_component(col, "year", F.year(visit_date_column) - 1),
+                    ),
                 )
+                .when(
+                    (F.col(col) < min_date) & (F.col(col).isNotNull()),
+                    F.when(
+                        set_date_component(col, "year", F.year(visit_date_column)) <= F.col(visit_date_column),
+                        set_date_component(col, "year", F.year(visit_date_column)),
+                    )
+                    .when(F.add_months(col, -1) <= F.col(visit_date_column), F.add_months(col, -1))
+                    .when((F.year(col) > 2019), set_date_component(col, "year", F.year(visit_date_column) - 1)),
+                )
+                .otherwise("ERROR")
             ),
         )
-        df.show()
     return df
 
 
