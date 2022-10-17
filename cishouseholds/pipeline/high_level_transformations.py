@@ -167,70 +167,54 @@ def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
     """
     transform and process participant extract data received from cis digital
     """
-    # "ons_household_id": string_dict,
-    # "participant_survey_status": string_dict,
-    ### "withdrawn_reason": string_dict,
-    # "withdrawn_type": string_dict,
-    # "participant_id": string_dict,
-    # "title": string_dict,
-    # "first_name": string_dict,
-    # "middle_name": string_dict,
-    # "last_name": string_dict,
-    # "date_of_birth": string_dict,
-    # "email_address": string_dict,
-    # "sex": string_dict,
-    # "ethnic_group": string_dict,
-    ### "ethnicity": string_dict,
-    # "ethnicity_other": string_dict,
-    # "consent_contact_extra_research_yn": string_dict,
-    # "consent_use_of_surplus_blood_samples_yn": string_dict,
-    # "consent_blood_samples_if_positive_yn": string_dict,
-    # "existing_participant_digital_opt_in_status": string_dict,
-    # "existing_participant_digital_opt_in_datetime": string_dict,
-    # "household_invited_to_digital": string_dict,
-    # "household_digital_enrolment_invited_datetime": string_dict,
-    # "participant_invited_to_digital": string_dict,
-    # "participant_enrolled_digital": string_dict,
-    # "participant_digital_enrolment_datetime": string_dict,
-    # "digital_entry_pack_sent_datetime": string_dict,
-    # "digital_entry_pack_status": string_dict,
-    # "existing_participant_digital_opt_in_reminder_1_due_datetime": string_dict,
-    # "existing_participant_digital_opt_in_reminder_1_sent_datetime": string_dict,
-    # "existing_participant_digital_opt_in_reminder_1_status": string_dict,
-    # "existing_participant_digital_opt_in_reminder_2_due_datetime": string_dict,
-    # "existing_participant_digital_opt_in_reminder_2_sent_datetime": string_dict,
-    # "existing_participant_digital_opt_in_reminder_2_status": string_dict,
-
     col_val_map = {
+        "participant_withdrawal_reason": {
+            "Moving Location": "Moving location",
+            "Bad experience with tester / survey": "Bad experience with interviewer/survey",
+            "Swab / blood process too distressing": "Swab/blood process too distressing",
+            "Do NOT Reinstate": "",
+        },
         "ethnicity": {
             "African": "Black,Caribbean,African-African",
             "Caribbean": "Black,Caribbean,Afro-Caribbean",
-            "Any other Black or African or Caribbean background": "Any other Black background",
-            "Any other Black| African| Carribbean": "Any other Black background",
+            "Any other Black or African or Carribbean background": "Any other Black background",
             "Any other Mixed/Multiple background": "Any other Mixed background",
             "Bangladeshi": "Asian or Asian British-Bangladeshi",
             "Chinese": "Asian or Asian British-Chinese",
             "English, Welsh, Scottish, Northern Irish or British": "White-British",
-            "English| Welsh| Scottish| Northern Irish or British": "White-British",
             "Indian": "Asian or Asian British-Indian",
             "Irish": "White-Irish",
             "Pakistani": "Asian or Asian British-Pakistani",
             "White and Asian": "Mixed-White & Asian",
             "White and Black African": "Mixed-White & Black African",
             "White and Black Caribbean": "Mixed-White & Black Caribbean",
-            "Roma": "White-Gypsy or Irish Traveller",
-            "White-Roma": "White-Gypsy or Irish Traveller",
             "Gypsy or Irish Traveller": "White-Gypsy or Irish Traveller",
             "Arab": "Other ethnic group-Arab",
-            "Any other white": "Any other white background",
-        },
-        "participant_withdrawal_reason": {
-            "Bad experience with tester / survey": "Bad experience with interviewer/survey",
-            "Swab / blood process too distressing": "Swab/blood process too distressing",
-            "Swab / blood process to distressing": "Swab/blood process too distressing",
-            "Do NOT Reinstate": "Do not reinstate",
         },
     }
+
+    ethnicity_map = {
+        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
+        "Asian": [
+            "Asian or Asian British-Indian",
+            "Asian or Asian British-Pakistani",
+            "Asian or Asian British-Bangladeshi",
+            "Asian or Asian British-Chinese",
+            "Any other Asian background",
+        ],
+        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
+        "Mixed": [
+            "Mixed-White & Black Caribbean",
+            "Mixed-White & Black African",
+            "Mixed-White & Asian",
+            "Any other Mixed background",
+        ],
+        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
+    }
+
+    df = assign_column_from_mapped_list_key(
+        df=df, column_name_to_assign="ethnicity_group", reference_column="ethnic_group", map=ethnicity_map
+    )
 
     df = apply_value_map_multiple_columns(df, col_val_map)
     return df

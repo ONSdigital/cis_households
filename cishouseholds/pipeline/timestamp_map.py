@@ -54,7 +54,6 @@ survey_responses_v0_datetime_map = {
 
 cis_digital_datetime_map = {
     "yyyy-MM-dd'T'HH:mm:ss'Z'": [
-        "household_digital_enrolment_invited_datetime",
         "participant_completion_window_start_datetime",
         "participant_completion_window_end_datetime",
         "swab_taken_datetime",
