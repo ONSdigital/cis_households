@@ -18,7 +18,7 @@ from cishouseholds.expressions import set_date_component
 from cishouseholds.expressions import sum_within_row
 
 
-def correct_date_ranges(df: DataFrame, columns_to_edit: List[str], visit_date_column: str, min_year: str):
+def correct_date_ranges(df: DataFrame, columns_to_edit: List[str], visit_date_column: str, min_year: Union[str,int]):
     """
     Correct datetime columns given a range
     """
@@ -27,11 +27,16 @@ def correct_date_ranges(df: DataFrame, columns_to_edit: List[str], visit_date_co
             col,
             F.when(
                 (F.col(col) > F.col(visit_date_column))
-                & (F.col(col).isNotNull())
-                & (F.col(visit_date_column) > min_year),
-                set_date_component("year", visit_date_column, min_year),
+                & (F.col(col).isNotNull()),
+                F.when(
+                    (F.month(col)<F.month(visit_date_column))&(F.dayofmonth(col)<F.dayofmonth(visit_date_column)),set_date_component(col,"year",min_year)).when(
+                    F.add_months(col,-1)<=F.col(visit_date_column),F.add_months(col,-1)
+                ).when(
+                    (F.year(col)>2019) & (F.col(col)<=F.col(visit_date_column)),set_date_component(col,"year",F.year())
+                )
             ),
         )
+        df.show()
     return df
 
 

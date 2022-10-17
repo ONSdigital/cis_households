@@ -2,11 +2,22 @@ from functools import reduce
 from operator import add
 from operator import and_
 from operator import or_
-from typing import Any
+from typing import Any,Union
 from typing import List
 
 import pyspark.sql.functions as F
 
+def set_date_component(date_column:str,date_component:str,set_to:Union[str,int]):
+    set_to = str(set_to)
+    regex_lookup = {
+        "year":r"^\d{4,4}(?=-)",
+        "month":r"(?<=-)\d{2,2}(?=-)",
+        "day":r"\d{2,2}(?=-)$"
+    }
+    datetime = F.date_format(date_column,"yyyy-MM-dd HH:mm:ss")
+    split_datetime = F.split(datetime," ")
+    new_date = F.regexp_replace(split_datetime.getItem(0),regex_lookup[date_component],set_to)
+    return F.to_timestamp(F.concat_ws(" ",new_date,split_datetime.getItem(1)))
 
 def any_column_not_null(column_list: list):
     "Expression that evaluates true if any column is not null."
