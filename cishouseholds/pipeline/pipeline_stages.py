@@ -442,6 +442,25 @@ def union_survey_response_files(tables_to_union: List, unioned_survey_responses_
     union_dataframes_to_hive(unioned_survey_responses_table, df_list)
 
 
+@register_pipeline_stage("join_blood_positive_lookup")
+def join_blood_positive_lookup(lookup_table_name: str, input_survey_table: str, output_survey_table: str):
+    """
+    Stage to join blood positive lookup table
+    """
+    blood_positive_lookup_df = extract_from_table(lookup_table_name)
+    df = extract_from_table(input_survey_table)
+    df = df.join(
+        blood_positive_lookup_df,
+        on=(
+            (df.ons_household_id == blood_positive_lookup_df.ons_h_id)
+            & (df.participant_id == blood_positive_lookup_df.participant_id)
+        ),
+        how="left",
+    )
+    df = df.withColumn("blood_past_positive_flag", F.when(F.col("blood_past_positive_flag").isNull(), 0).otherwise(1))
+    update_table(df, output_survey_table, "overwrite")
+
+
 @register_pipeline_stage("replace_design_weights")
 def replace_design_weights(
     design_weight_lookup_table: str,
