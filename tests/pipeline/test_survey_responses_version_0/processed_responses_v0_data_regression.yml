@@ -151,7 +151,6 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_social_care: 'No'
-  work_social_care_raw: 'No'
   work_status_v0: Its main implementation is the Glasgow Haskell Compiler.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
@@ -307,7 +306,6 @@
   work_not_from_home_days_per_week: '5'
   work_not_from_home_days_per_week_raw: '5'
   work_social_care: 'Yes'
-  work_social_care_raw: 'Yes'
   work_status_v0: Where are my pants?
 - any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
@@ -465,7 +463,6 @@
   work_not_from_home_days_per_week: '7'
   work_not_from_home_days_per_week_raw: '7'
   work_social_care: 'Yes'
-  work_social_care_raw: 'Yes'
   work_status_v0: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
 - any_household_members_over_2_years_and_not_present: null
@@ -626,7 +623,6 @@
   work_not_from_home_days_per_week: '1'
   work_not_from_home_days_per_week_raw: '1'
   work_social_care: 'No'
-  work_social_care_raw: 'No'
   work_status_v0: Ports are used to communicate with the external world.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
@@ -782,7 +778,6 @@
   work_not_from_home_days_per_week: '0'
   work_not_from_home_days_per_week_raw: '0'
   work_social_care: 'Yes'
-  work_social_care_raw: 'Yes'
   work_status_v0: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
 - any_household_members_over_2_years_and_not_present: null
@@ -940,7 +935,6 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_social_care: 'Yes'
-  work_social_care_raw: 'Yes'
   work_status_v0: Where are my pants?
 - any_household_members_over_2_years_and_not_present: null
   bad_email: null
@@ -1098,7 +1092,6 @@
   work_not_from_home_days_per_week: '6'
   work_not_from_home_days_per_week_raw: '6'
   work_social_care: 'Yes'
-  work_social_care_raw: 'Yes'
   work_status_v0: Haskell is a standardized, general-purpose purely functional programming
     language, with non-strict semantics and strong static typing.
 - any_household_members_over_2_years_and_not_present: 'Yes'
@@ -1256,7 +1249,6 @@
   work_not_from_home_days_per_week: '2'
   work_not_from_home_days_per_week_raw: '2'
   work_social_care: null
-  work_social_care_raw: null
   work_status_v0: Any element of a tuple can be accessed in constant time.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
@@ -1410,7 +1402,6 @@
   work_not_from_home_days_per_week: '0'
   work_not_from_home_days_per_week_raw: '0'
   work_social_care: 'Yes'
-  work_social_care_raw: 'Yes'
   work_status_v0: Any element of a tuple can be accessed in constant time.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: null
@@ -1570,6 +1561,5 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_social_care: 'Yes'
-  work_social_care_raw: 'Yes'
   work_status_v0: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.

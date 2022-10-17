@@ -504,10 +504,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_social_care_raw
-  nullable: true
-  type: string
-- metadata: {}
   name: work_not_from_home_days_per_week_raw
   nullable: true
   type: string
