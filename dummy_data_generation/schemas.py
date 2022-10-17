@@ -2882,4 +2882,5 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "other_antibody_test_positive_date": _("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021),
         "other_antibody_test_negative_date": _("datetime.formatted_datetime", fmt="%d/%m/%Y", start=2020, end=2021),
         "form_language": _("choice", items=["Welsh", "English"]),
+        "vaccinated_against_flu": _("choice", items=yes_no_none_choice),
     }

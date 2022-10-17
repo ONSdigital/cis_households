@@ -1260,6 +1260,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: vaccinated_against_flu
+  nullable: true
+  type: string
+- metadata: {}
   name: survey_response_source_file
   nullable: false
   type: string
