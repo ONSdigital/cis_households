@@ -156,12 +156,6 @@ category_maps = {
         "cis_covid_vaccine_received": _yes_no_categories,
         "cis_flu_vaccine_received": _yes_no_categories,
         "did_not_attend_inferred": _yes_no_categories,
-        "ever_work_person_facing_or_social_care": _yes_no_categories,
-        "ever_care_home_worker": _yes_no_categories,
-        "ever_had_long_term_health_condition": _yes_no_categories,
-        "any_think_have_covid_symptom_or_now": _yes_no_categories,
-        "think_have_covid_cghfevamn_symptom_group": _yes_no_categories,
-        "think_had_covid_cghfevamn_symptom_group": _yes_no_categories,
         "digital_survey_mode_preference": {"Online": 0, "Telephone": 1},
         "digital_communication_preference": {"Email": 0, "Letter": 1},
         "sample_return_preference": {"Post": 0, "Courier": 1},
@@ -411,9 +405,9 @@ category_maps = {
         },
         "other_antibody_test_location": {"In the NHS (e.g. GP, hospital)": 1, "Private lab": 2, "Home test": 3},
         "think_have_long_covid_symptom_reduced_ability": {
-            "Not at all": 4,
-            "Yes a little": 5,
-            "Yes a lot": 6,
+            "Not at all": 1,
+            "Yes a little": 2,
+            "Yes a lot": 3,
         },
         "participant_withdrawal_type": {
             "Withdrawn": 1,
@@ -1254,6 +1248,7 @@ category_maps = {
         },
         "swab_sample_barcode_correct": _yes_no_categories,
         "blood_sample_barcode_correct": _yes_no_categories,
+        "vaccinated_against_flu": _yes_no_categories,
         "age_group_5_intervals": {
             "2-11": 1,
             "12-19": 2,
@@ -2212,7 +2207,9 @@ _welsh_lot_little_not_categories = {
 
 _welsh_live_with_categories = {
     "Rhywun rwy'n byw gydag ef": "Someone I live with",
+    "Rhywun rwy`n byw gydag ef": "Someone I live with",
     "Rhywun sy'n byw gyda fi": "Someone I live with",
+    "Rhywun sy`n byw gyda fi": "Someone I live with",
     "Rhywun nad wyf yn byw gydag ef": "Someone I do not live with",
     "Rhywun sy ddim yn byw gyda fi": "Someone I do not live with",
 }
@@ -2233,6 +2230,7 @@ _welsh_face_covering_categories = {
 
 _welsh_swab_sample_not_taken_categories = {
     "Rhoddais gynnig arni ond nid oeddwn i'n gallu ei chymryd": "I tried but could not take it",
+    "Rhoddais gynnig arni ond nid oeddwn i`n gallu ei chymryd": "I tried but could not take it",
     "Nid oeddwin i am ei chymryd y mis hwn": "I did not want to take it this month",
     "Roedd y pecyn prawf swab wedi'i ddifrodi": "The swab test kit arrived damaged",
     "Roedd darnau ar goll o'r pecyn prawf swab": "The swab test kit arrived with parts missing",
@@ -2257,6 +2255,7 @@ _welsh_blood_sample_not_taken_categories = {
     "Rhoddais gynnig arni ond nid oeddwn i'n gallu ei chymryd": "I tried but could not take it",
     "Gofynnais am beidio â chael pecyn prawf gwaed y mis hwn": "I asked not to receive a blood test kit this month",
     "Penderfynais beidio â'i chymryd y mis hwn": "I decided not to take it this month",
+    "Penderfynais beidio â`i chymryd y mis hwn": "I decided not to take it this month",
     "Roedd y pecyn prawf gwaed wedi'i ddifrodi": "The blood test kit arrived damaged",
     "Roedd darnau ar goll o'r pecyn prawf gwaed": "The blood test kit arrived with parts missing",
     "Roedd darnau ar goll o`r pecyn prawf gwaed": "The blood test kit arrived with parts missing",
@@ -2266,9 +2265,12 @@ _welsh_blood_sample_not_taken_categories = {
 
 _welsh_blood_kit_missing_categories = {
     "Tiwb prawf sampl bach. Dyma'r tiwb a ddefnyddir i gasglu'r gwaed.": "Small sample test tube. This is the tube that is used to collect the blood.",  # noqa: E501
+    "Tiwb prawf sampl bach. Dyma'r tiwb a ddefnyddir i gasglu`r gwaed.": "Small sample test tube. This is the tube that is used to collect the blood.",  # noqa: E501
     "Tiwb cario sampl mawr â chod bar arno. Dyma'r tiwb rydych chi'n rhoi'r tiwb prawf sampl bach ynddo ar ôl casglu gwaed.": "Large sample carrier tube with barcode on. This is the tube that you put the small sample test tube in to after collecting blood.",  # noqa: E501
+    "Tiwb cario sampl mawr â chod bar arno. Dyma'r tiwb rydych chi'n rhoi`r tiwb prawf sampl bach ynddo ar ôl casglu gwaed.": "Large sample carrier tube with barcode on. This is the tube that you put the small sample test tube in to after collecting blood.",  # noqa: E501
     "Bag bioberyglon y gellir ei ailselio â phad amsugno ynddo": "Re-sealable biohazard bag with absorbent pad",
     "Copi o'ch cod bar gwaed": "Copy of your blood barcode",
+    "Copi o`ch cod bar gwaed": "Copy of your blood barcode",
     "Lawnsedi": "Lancets",
     "Plasteri": "Plasters",
     "Weips alcohol": "Alcohol wipes",
@@ -2280,17 +2282,23 @@ _welsh_blood_kit_missing_categories = {
 }
 
 _welsh_blood_not_taken_reason_categories = {
+    "Rhoddais gynnig arni ond nid oeddwn i'n gallu ei chymryd": "I tried but could not take it",
+    "Rhoddais gynnig arni ond nid oeddwn i`n gallu ei chymryd": "I tried but could not take it",
     "Nid oeddwn i'n gallu cael digon o waed i mewn i'r pot": "I couldn't get enough blood into the pot",
+    "Nid oeddwn i'n gallu cael digon o waed i mewn i`r pot": "I couldn't get enough blood into the pot",
     "Daeth yr hylif allan o'r pot": "The pot spilled",
     "Roedd gen i glais neu roeddwn i mewn poen": "I had bruising or pain",
     "Nid oeddwn i'n teimlo'n dda": "I felt unwell",
     "Arall, nodwch": "Other please specify",
+    "Penderfynais beidio â`i chymryd y mis hwn": "I decided not to take it this month",
+    "Penderfynais beidio â'i chymryd y mis hwn": "I decided not to take it this month",
 }
 
 _welsh_work_status_digital_categories = {
     "Cyflogedig": "Employed",
     "Hunangyflogedig": "Self-employed",
     "Ddim mewn gwaith â thâl. Mae hyn yn cynnwys bod yn ddi-waith, wedi ymddeol neu'n gwneud gwaith gwirfoddol": "Not in paid work. This includes being unemployed, retired or doing voluntary work",  # noqa: E501
+    "Ddim mewn gwaith â thâl. Mae hyn yn cynnwys bod yn ddi-waith, wedi ymddeol neu`n gwneud gwaith gwirfoddol": "Not in paid work. This includes being unemployed, retired or doing voluntary work",  # noqa: E501
     "Mewn addysg": "In education",
 }
 
@@ -2298,11 +2306,13 @@ _welsh_work_status_employment_categories = {
     "Gweithio ar hyn o bryd. Mae hyn yn cynnwys os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall am lai na 4 wythnos": "Currently working. This includes if you are on sick or other leave for less than 4 weeks",  # noqa: E501
     "Gweithio ar hyn o bryd. Mae hyn yn cynnwys os ydych chi`n absennol oherwydd salwch neu`n absennol am reswm arall am lai na 4 wythnos": "Currently working. This includes if you are on sick or other leave for less than 4 weeks",  # noqa: E501
     "Ddim yn gweithio ar hyn o bryd - er enghraifft os ydych chi'n absennol oherwydd salwch neu'n absennol am reswm arall fel mamolaeth neu dadolaeth am fwy na 4 wythnos": "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+    "Ddim yn gweithio ar hyn o bryd - er enghraifft os ydych chi`n absennol oherwydd salwch neu`n absennol am reswm arall fel mamolaeth neu dadolaeth am fwy na 4 wythnos": "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
 }
 
 _welsh_work_status_unemployment_categories = {
     "Yn chwilio am waith â thâl ac yn gallu dechrau": "Looking for paid work and able to start",
     "Ddim yn chwilio am waith â thâl. Mae hyn yn cynnwys gofalu am y cartref neu'r teulu neu ddim am gael swydd neu'n anabl neu'n sâl am gyfnod hir": "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
+    "Ddim yn chwilio am waith â thâl. Mae hyn yn cynnwys gofalu am y cartref neu`r teulu neu ddim am gael swydd neu'n anabl neu`n sâl am gyfnod hir": "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
     "Wedi ymddeol": "Retired",
 }
 
@@ -2335,6 +2345,7 @@ _welsh_work_sector_categories = {
 
 _welsh_work_location_categories = {
     "Gartref, gan olygu ar yr un safle neu yn yr un adeilad â'ch cartref": "From home meaning in the same grounds or building as your home",  # noqa: E501
+    "Gartref, gan olygu ar yr un safle neu yn yr un adeilad â`ch cartref": "From home meaning in the same grounds or building as your home",  # noqa: E501
     "Yn rhywle arall, gan olygu nid yn eich cartref": "Somewhere else meaning not at your home",
     "Yn rhywle arall - gan olygu nid yn eich cartref": "Somewhere else meaning not at your home",
     "Gartref ac yn rhywle arall": "Both from home and somewhere else",
@@ -2354,9 +2365,13 @@ _welsh_transport_to_work_education_categories = {
 
 _welsh_ability_to_socially_distance_at_work_or_education_categories = {
     "Hawdd cadw 2 fetr ar wahân. Nid yw'n broblem cadw draw cymaint â hyn oddi wrth bobl eraill": "Easy to maintain 2 metres apart. It is not a problem to stay this far away from other people",  # noqa: E501
+    "Hawdd cadw 2 fetr ar wahân. Nid yw`n broblem cadw draw cymaint â hyn oddi wrth bobl eraill": "Easy to maintain 2 metres apart. It is not a problem to stay this far away from other people",  # noqa: E501
+    "Hawdd cadw 2 fetr ar wahân. Nid yw&#39;n broblem cadw draw cymaint â hyn oddi wrth bobl eraill": "Easy to maintain 2 metres apart. It is not a problem to stay this far away from other people",  # noqa: E501
     "Cymharol hawdd cadw 2 fetr ar wahân. Gallwch chi fod 2 fetr i ffwrdd oddi wrth bobl eraill y rhan fwyaf o'r amser": "Relatively easy to maintain 2 metres apart. Most of the time you can be 2 meters away from other people",  # noqa: E501
+    "Cymharol hawdd cadw 2 fetr ar wahân. Gallwch chi fod 2 fetr i ffwrdd oddi wrth bobl eraill y rhan fwyaf o`r amser": "Relatively easy to maintain 2 metres apart. Most of the time you can be 2 meters away from other people",  # noqa: E501
     "Cymharol hawdd cadw 2 fetr ar wahân. Gallwch chi fod 2 fetr i ffwrdd oddi wrth bobl eraill y rhan fwyaf or amser": "Relatively easy to maintain 2 metres apart. Most of the time you can be 2 meters away from other people",  # noqa: E501
     "Anodd cadw 2 fetr ar wahân. Ond gallwch chi fod o leiaf 1 metr i ffwrdd oddi wrth bobl eraill fel arfer": "Difficult to maintain 2 metres apart. But you can usually be at least 1 metre away from other people",  # noqa: E501
+    "Anodd cadw 2 fetr ar wahân.  Ond gallwch chi fod o leiaf 1 metr i ffwrdd oddi wrth bobl eraill fel arfer": "Difficult to maintain 2 metres apart. But you can usually be at least 1 metre away from other people",  # noqa: E501
     "Anodd iawn bod mwy nag 1 metr i ffwrdd. Mae eich gwaith yn golygu eich bod chi mewn cysylltiad agos ag eraill yn rheolaidd": "Very difficult to be more than 1 metre away. Your work means you are in close contact with others on a regular basis",  # noqa: E501
 }
 
