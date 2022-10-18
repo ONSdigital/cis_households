@@ -7,6 +7,8 @@ def test_assign_age_group_school_year(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             ("England", 6, 2, "02-6SY"),
+            ("England", 4, None, "02-6SY"),
+            ("Scotland", 4, None, "02-6SY"),
             ("Northern Ireland", 9, 5, "02-6SY"),
             ("Scotland", 11, 7, "07SY-11SY"),
             ("Wales", 15, 10, "07SY-11SY"),

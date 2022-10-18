@@ -1113,7 +1113,8 @@ def assign_age_group_school_year(
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            (F.col(age_column) >= 2) & (F.col(age_column) <= 12) & (F.col(school_year_column) <= 6),
+            ((F.col(age_column) >= 2) & (F.col(age_column) <= 12))
+            & ((F.col(school_year_column) <= 6) | (F.col(school_year_column).isNull())),
             "02-6SY",
         )
         .when(
