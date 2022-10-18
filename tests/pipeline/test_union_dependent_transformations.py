@@ -28,7 +28,6 @@ def test_union_dependent_transformations(
         ]
     )
     df = fill_forwards_transformations(df)
-    df = add_pattern_matching_flags(df)
     df_2 = get_or_create_spark_session().createDataFrame(
         df.rdd, schema=df.schema
     )  # breaks lineage to avoid Java OOM Error
