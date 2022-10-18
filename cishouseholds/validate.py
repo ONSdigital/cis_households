@@ -288,7 +288,7 @@ def validate_config_stages(pipeline_stage_functions: Dict, stages_to_run: List[s
             if list_not_passed_arg != []:
                 error_msg += f"""  - {function_name} stage does not have in the config file: {', '.join(list_not_passed_arg)}.\n"""  # noqa: E501
             if list_of_unrecognised_arg != []:
-                error_msg += f"""  - {function_name} stage have unrecognised as input arguments: {', '.join(list_of_unrecognised_arg)}.\n"""  # noqa: E501
+                error_msg += f"""  - {function_name} stage has unrecognised input arguments: {', '.join(list_of_unrecognised_arg)}.\n"""  # noqa: E501
     if error_msg != "\n":
         raise ConfigError(error_msg)
 
