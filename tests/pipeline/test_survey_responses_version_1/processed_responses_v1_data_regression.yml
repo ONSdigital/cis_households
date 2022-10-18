@@ -30,7 +30,7 @@
   ethnicity_other: Do you come here often?
   ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: 'Yes'
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Janyce
   gender: Prefer not to say
   hh_id: 021263322966
@@ -236,7 +236,7 @@
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
   ever_smoked_regularly: null
   face_covering_outside_of_home: 'No'
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Tyrone
   gender: null
   hh_id: '919192147365'
@@ -448,7 +448,7 @@
     must obey the so-called ""port protocol."""'
   ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: 'No'
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Belkis
   gender: null
   hh_id: '955705581901'
@@ -657,7 +657,7 @@
     space station with the power to destroy entire planets.
   ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: null
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Jae
   gender: null
   hh_id: '876960826911'
@@ -867,7 +867,7 @@
   ethnicity_other: Type classes first appeared in the Haskell programming language.
   ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: null
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Jenee
   gender: Female
   hh_id: '602276804025'
@@ -1079,7 +1079,7 @@
   ethnicity_other: Tuples are containers for a fixed number of Erlang data types.
   ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: 'Yes'
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Alan
   gender: Prefer not to say
   hh_id: 001674039598
@@ -1284,7 +1284,7 @@
   ethnicity_other: Atoms are used within a program to denote distinguished values.
   ever_smoked_regularly: 'No'
   face_covering_outside_of_home: null
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Shaun
   gender: Female
   hh_id: 044476904382
@@ -1496,7 +1496,7 @@
     D2, ... Dn.
   ever_smoked_regularly: 'Yes'
   face_covering_outside_of_home: 'No'
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Maple
   gender: Female
   hh_id: '890407714528'
@@ -1706,7 +1706,7 @@
   ethnicity_other: The arguments can be primitive data types or compound data types.
   ever_smoked_regularly: 'No'
   face_covering_outside_of_home: 'No'
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Ira
   gender: null
   hh_id: '456442497105'
@@ -1911,7 +1911,7 @@
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
   ever_smoked_regularly: 'No'
   face_covering_outside_of_home: 'No'
-  file_date: null
+  file_date: '2022-10-03 00:00:00.000000'
   first_name: Buck
   gender: Male
   hh_id: '788221784619'

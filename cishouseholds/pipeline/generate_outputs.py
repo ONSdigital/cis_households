@@ -17,59 +17,80 @@ from cishouseholds.extract import list_contents
 from cishouseholds.hdfs_utils import create_dir
 
 
-def generate_stratified_sample(
+def generate_sample(
     df: DataFrame,
+    sample_type: str,
     cols: List[str],
-    rows_per_sample: int,
+    cols_to_evaluate: List[str],
+    rows_per_file: int,
     num_files: int,
     output_folder_name: str,
-    array_columns: List[str] = [],
 ):
     """
-    Generate a stratified sample of data in multiple separate csv files
+    Generate a sample from an input dataframe. Output and sample type can be configured to suit sampling requirements
+
+    Parameters
+    ----------
+    df: DataFrame
+        Input dataframe
+    sample_type: str
+        type of sample to generate "strat" for stratified or "rand" for random
+    cols: list[str]
+        columns to select for forming the stratified sample and creating decision columns for clerical/proving review.
+    cols_to_evaluate: list[str]
+        columns within the cols parameter to evaluate against
+    rows_per_file: int
+        total number of rows per sample file
+    num_files: int
+        number of sample files to generate
+    output_folder_name: str
+        File directory in which you want to save the output files.
     """
     output_directory = "/dapsen/workspace_zone/covserolink/cis_pipeline_proving/proving_outputs/" + output_folder_name
     create_dir(output_directory)
 
-    df = df.withColumn("sampling_strata", F.concat_ws("-", *[F.col(col) for col in cols]))
-    for col in cols:
+    for col in cols_to_evaluate:
         df = df.withColumn(f"{col}_decision", F.lit(0))
 
-    summary_df = (
-        df.groupBy("sampling_strata")
-        .agg(
-            F.countDistinct("participant_id").alias("n_distinct_participants"),
-            F.count("participant_id").alias("n_records"),
-        )
-        .withColumn(
-            "n_stratum", F.count(F.col("sampling_strata")).over(Window().rangeBetween(-sys.maxsize, sys.maxsize))
-        )
-        .withColumn("n_sample_required", F.lit(rows_per_sample) / F.col("n_stratum"))
-        .withColumn("percentage_sample_required", F.col("n_sample_required") / F.col("n_records"))
-        .orderBy("sampling_strata")
-        .toPandas()
-    )
-
-    sampling_fractions = {
-        row.sampling_strata: min(row.percentage_sample_required, 1) for row in summary_df.itertuples()
-    }
-
     cols_to_output = [
-        "participant_id",
-        "work_main_job_title",
-        "work_main_job_role",
         *cols,
-        *[f"{col}_decision" for col in cols],
+        *[f"{col}_decision" for col in cols_to_evaluate],
     ]
 
+    if "strat" in sample_type:
+        df = df.withColumn("sampling_strata", F.concat_ws("-", *[F.col(col) for col in cols]))
+        summary_df = (
+            df.groupBy("sampling_strata")
+            .agg(
+                F.countDistinct("participant_id").alias("n_distinct_participants"),
+                F.count("participant_id").alias("n_records"),
+            )
+            .withColumn(
+                "n_stratum", F.count(F.col("sampling_strata")).over(Window().rangeBetween(-sys.maxsize, sys.maxsize))
+            )
+            .withColumn("n_sample_required", F.lit(rows_per_file))
+            .withColumn("percentage_sample_required", F.col("n_sample_required") / F.col("n_records"))
+            .orderBy("sampling_strata")
+            .toPandas()
+        )
+
+        sampling_fractions = {
+            row.sampling_strata: min(row.percentage_sample_required, 1) for row in summary_df.itertuples()
+        }
+
+        sampled_df = summary_df.sampleBy("sampling_strata", fractions=sampling_fractions, seed=123456)
+
+    elif "rand" in sample_type:
+        sampled_df = df.sample((rows_per_file * num_files) / df.count())
+
     sampled_df = (
-        df.sampleBy("sampling_strata", fractions=sampling_fractions, seed=123456)
-        .select(*cols_to_output)
-        .repartition(num_files)
-        .sortWithinPartitions("sampling_strata", "participant_id")
+        sampled_df.select(*cols_to_output).repartition(num_files)
+        # .sortWithinPartitions(*sort_by)
     )
-    for col in array_columns:
+
+    for col in cols:
         sampled_df = sampled_df.withColumn(col, F.col(col).cast("string"))
+
     sampled_df.write.option("header", True).mode("overwrite").csv(output_directory)
 
 
@@ -87,6 +108,20 @@ def map_output_values_and_column_names(df: DataFrame, column_name_map: dict, val
 
 
 def check_columns(col_args, selection_columns, error):
+    """
+    Checking the assertion that for a list of given input arguments all the columns
+    to satisfy those arguments exist in the dataframe.
+
+    Parameters
+    ----------
+    col_args
+        All the column names for the operations that need to be performed on the data.
+    selection_columns
+        List of columns that need to be selected from the dataframe.
+    error
+        Specify the type of error to output depending on whether or not you're selecting any columns
+        in the parent function.
+    """
     arguments = ["group by columns ", "name map", "value map"]
     for argument, check in zip(arguments, col_args):  # type: ignore
         if check is not None:
@@ -112,6 +147,7 @@ def configure_outputs(
 ):
     """
     Customise the output of the pipeline using user inputs
+
     Parameters
     ----------
     df
