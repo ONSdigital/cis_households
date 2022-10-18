@@ -1,5 +1,4 @@
 import re
-from datetime import datetime
 from functools import reduce
 from itertools import chain
 from operator import add
@@ -154,7 +153,7 @@ def assign_date_from_filename(df: DataFrame, column_name_to_assign: str, filenam
     df = df.withColumn(
         column_name_to_assign,
         F.to_timestamp(
-            F.concat(F.when(date == "", F.lit(datetime.now().strftime("%Y%m%d"))).otherwise(date), time),
+            F.concat(F.when(date == "", "20221003").otherwise(date), time),
             format="yyyyMMdd_HHmmss",
         ),
     )
@@ -1114,7 +1113,8 @@ def assign_age_group_school_year(
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            (F.col(age_column) >= 2) & (F.col(age_column) <= 12) & (F.col(school_year_column) <= 6),
+            ((F.col(age_column) >= 2) & (F.col(age_column) <= 12))
+            & ((F.col(school_year_column) <= 6) | (F.col(school_year_column).isNull())),
             "02-6SY",
         )
         .when(
@@ -1135,12 +1135,12 @@ def assign_age_group_school_year(
             (
                 (F.col(country_column).isin("England", "Wales"))
                 & ((F.col(age_column) >= 16) & (F.col(age_column) <= 24))
-                & (F.col(school_year_column) >= 12)
+                & ((F.col(school_year_column) >= 12) | (F.col(school_year_column).isNull()))
             )
             | (
                 (F.col(country_column).isin("Scotland", "Northern Ireland"))
                 & ((F.col(age_column) >= 15) & (F.col(age_column) <= 24))
-                & (F.col(school_year_column) >= 12)
+                & ((F.col(school_year_column) >= 12) | (F.col(school_year_column).isNull()))
             ),
             "12SY-24",
         )

@@ -115,7 +115,6 @@ from cishouseholds.expressions import array_contains_any
 from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
-from cishouseholds.impute import fill_forward_event
 from cishouseholds.impute import fill_forward_from_last_change
 from cishouseholds.impute import fill_forward_from_last_change_marked_subset
 from cishouseholds.impute import fill_forward_only_to_nulls
@@ -132,6 +131,12 @@ from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.generate_outputs import generate_sample
+from cishouseholds.pipeline.healthcare_regex import healthcare_classification
+from cishouseholds.pipeline.healthcare_regex import patient_facing_classification
+from cishouseholds.pipeline.healthcare_regex import patient_facing_pattern
+from cishouseholds.pipeline.healthcare_regex import priority_map
+from cishouseholds.pipeline.healthcare_regex import roles_map
+from cishouseholds.pipeline.healthcare_regex import social_care_classification
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.regex_patterns import at_school_pattern
@@ -143,12 +148,6 @@ from cishouseholds.pipeline.regex_patterns import not_working_pattern
 from cishouseholds.pipeline.regex_patterns import retired_regex_pattern
 from cishouseholds.pipeline.regex_patterns import self_employed_regex
 from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
-from cishouseholds.pipeline.regex_testing import healthcare_classification
-from cishouseholds.pipeline.regex_testing import patient_facing_classification
-from cishouseholds.pipeline.regex_testing import patient_facing_pattern
-from cishouseholds.pipeline.regex_testing import priority_map
-from cishouseholds.pipeline.regex_testing import roles_map
-from cishouseholds.pipeline.regex_testing import social_care_classification
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pipeline.translate import backup_and_replace_translation_lookup_df
 from cishouseholds.pipeline.translate import export_responses_to_be_translated_to_translation_directory
@@ -508,7 +507,9 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
 
         if new_translations_df.count() > 0:
 
-            translation_lookup_df = extract_lookup_csv(translation_lookup_path, validation_schemas["csv_lookup_schema"])
+            translation_lookup_df = extract_lookup_csv(
+                translation_lookup_path, validation_schemas["csv_lookup_schema_extended"]
+            )
 
             new_translations_lookup_df = translation_lookup_df.union(new_translations_df)
 
@@ -2141,62 +2142,7 @@ def union_dependent_derivations(df):
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
     )
-
-    df = fill_forward_event(
-        df=df,
-        event_indicator_column="think_had_covid",
-        event_date_column="think_had_covid_onset_date",
-        detail_columns=[
-            "other_covid_infection_test",
-            "other_covid_infection_test_result",
-            "think_had_covid_admitted_to_hospital",
-            "think_had_covid_contacted_nhs",
-            "think_had_covid_symptom_fever",
-            "think_had_covid_symptom_muscle_ache",
-            "think_had_covid_symptom_fatigue",
-            "think_had_covid_symptom_sore_throat",
-            "think_had_covid_symptom_cough",
-            "think_had_covid_symptom_shortness_of_breath",
-            "think_had_covid_symptom_headache",
-            "think_had_covid_symptom_nausea_or_vomiting",
-            "think_had_covid_symptom_abdominal_pain",
-            "think_had_covid_symptom_loss_of_appetite",
-            "think_had_covid_symptom_noisy_breathing",
-            "think_had_covid_symptom_runny_nose_or_sneezing",
-            "think_had_covid_symptom_more_trouble_sleeping",
-            "think_had_covid_symptom_diarrhoea",
-            "think_had_covid_symptom_loss_of_taste",
-            "think_had_covid_symptom_loss_of_smell",
-            "think_had_covid_symptom_memory_loss_or_confusion",
-            "think_had_covid_symptom_chest_pain",
-            "think_had_covid_symptom_vertigo_or_dizziness",
-            "think_had_covid_symptom_difficulty_concentrating",
-            "think_had_covid_symptom_anxiety",
-            "think_had_covid_symptom_palpitations",
-            "think_had_covid_symptom_low_mood",
-        ],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
-    )
-
     # Derive these after fill forwards and other changes to dates
-    df = fill_forward_event(
-        df=df,
-        event_indicator_column="contact_suspected_positive_covid_last_28_days",
-        event_date_column="last_suspected_covid_contact_date",
-        detail_columns=["last_suspected_covid_contact_type"],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_date",
-    )
-    df = fill_forward_event(
-        df=df,
-        event_indicator_column="contact_known_positive_covid_last_28_days",
-        event_date_column="last_covid_contact_date",
-        detail_columns=["last_covid_contact_type"],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_date",
-    )
-
     df = create_formatted_datetime_string_columns(df)
     return df
 
@@ -2552,6 +2498,8 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     )
     # create healthcare area flag
     df = df.withColumn("healthcare_area", F.lit(None))
+    df = df.withColumn("social_care_area", F.lit(None))
+
     for healthcare_type, roles in healthcare_classification.items():  # type: ignore
         df = df.withColumn(
             "healthcare_area",
@@ -2560,7 +2508,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             .otherwise(F.col("healthcare_area")),  # type: ignore
         )
     # TODO: need to exclude healthcare types from social care matching
-    df = df.withColumn("social_care_area", F.lit(None))
+
     for social_care_type, roles in social_care_classification.items():  # type: ignore
         df = df.withColumn(
             "social_care_area",

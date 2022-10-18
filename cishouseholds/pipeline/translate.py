@@ -74,7 +74,9 @@ def get_new_translations_from_completed_translations_directory(
         if _.endswith(".xlsx")
     ]
 
-    new_translations = pd.DataFrame(columns=["id", "dataset_name", "target_column_name", "old_value", "new_value"])
+    new_translations = pd.DataFrame(
+        columns=["id_column_name", "id", "dataset_name", "target_column_name", "old_value", "new_value"]
+    )
     for path in list_of_file_paths:
         translated_workbook = pd.ExcelFile(path, engine="openpyxl")
         translated_sheets = translated_workbook.sheet_names
@@ -90,12 +92,15 @@ def get_new_translations_from_completed_translations_directory(
                 continue
             sheet_translation = (
                 sheet_translation.dropna()
-                .assign(id=sheet, dataset_name=None)
-                .reindex(columns=["id", "dataset_name", "target_column_name", "original", "translated"])
+                .assign(id_column_name="id", id=sheet, dataset_name=None)
+                .reindex(
+                    columns=["id_column_name", "id", "dataset_name", "target_column_name", "original", "translated"]
+                )
                 .rename(columns={"original": "old_value", "translated": "new_value"})
             )
             if len(sheet_translation) > 0:
                 sheet_translation.loc[sheet_translation.index.max() + 1] = [
+                    "id",
                     sheet,
                     None,
                     "form_language",
@@ -109,14 +114,14 @@ def get_new_translations_from_completed_translations_directory(
             shutil.move(path, os.path.join(completed_translations_directory, "processed/"))
 
     translation_lookup_df = extract_lookup_csv(
-        translation_lookup_path, validation_schemas["csv_lookup_schema"]
+        translation_lookup_path, validation_schemas["csv_lookup_schema_extended"]
     ).toPandas()
 
     filtered_new_translations = new_translations[~new_translations["id"].isin(translation_lookup_df["id"])]
     spark_session = get_or_create_spark_session()
     new_translations_df = spark_session.createDataFrame(
         filtered_new_translations,
-        schema="id string, dataset_name string, target_column_name string, old_value string, new_value string",
+        schema="id_column_name string, id string, dataset_name string, target_column_name string, old_value string, new_value string",
     )
 
     return new_translations_df
@@ -329,7 +334,9 @@ def translate_welsh_fixed_text_responses_digital(df: DataFrame) -> DataFrame:
         "work_main_job_changed",
         "swab_sample_barcode_correct",
         "blood_sample_barcode_correct",
+        "vaccinated_against_flu",
         "think_have_covid_symptoms",
+        "contact_suspected_positive_covid_last_28_days",
     ]
     df = apply_value_map_multiple_columns(
         df,
@@ -410,7 +417,7 @@ def translate_welsh_free_text_responses_digital(
     """
 
     df = df.withColumn("id", F.concat(F.lit(F.col("participant_id")), F.lit(F.col("participant_completion_window_id"))))
-    translation_lookup_df = extract_lookup_csv(lookup_path, validation_schemas["csv_lookup_schema"])
+    translation_lookup_df = extract_lookup_csv(lookup_path, validation_schemas["csv_lookup_schema_extended"])
     df = update_from_lookup_df(df, translation_lookup_df, id_column="id")
     df = df.drop("id")
 
