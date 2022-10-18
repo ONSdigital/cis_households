@@ -1134,12 +1134,12 @@ def assign_age_group_school_year(
             (
                 (F.col(country_column).isin("England", "Wales"))
                 & ((F.col(age_column) >= 16) & (F.col(age_column) <= 24))
-                & (F.col(school_year_column) >= 12)
+                & ((F.col(school_year_column) >= 12) | (F.col(school_year_column).isNull()))
             )
             | (
                 (F.col(country_column).isin("Scotland", "Northern Ireland"))
                 & ((F.col(age_column) >= 15) & (F.col(age_column) <= 24))
-                & (F.col(school_year_column) >= 12)
+                & ((F.col(school_year_column) >= 12) | (F.col(school_year_column).isNull()))
             ),
             "12SY-24",
         )
