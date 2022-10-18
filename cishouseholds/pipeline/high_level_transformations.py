@@ -115,7 +115,6 @@ from cishouseholds.expressions import array_contains_any
 from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
-from cishouseholds.impute import fill_forward_event
 from cishouseholds.impute import fill_forward_from_last_change
 from cishouseholds.impute import fill_forward_from_last_change_marked_subset
 from cishouseholds.impute import fill_forward_only_to_nulls
@@ -2087,22 +2086,6 @@ def union_dependent_derivations(df):
         record_changed_value="Yes",
     )
     # Derive these after fill forwards and other changes to dates
-    df = fill_forward_event(
-        df=df,
-        event_indicator_column="contact_suspected_positive_covid_last_28_days",
-        event_date_column="last_suspected_covid_contact_date",
-        detail_columns=["last_suspected_covid_contact_type"],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_date",
-    )
-    df = fill_forward_event(
-        df=df,
-        event_indicator_column="contact_known_positive_covid_last_28_days",
-        event_date_column="last_covid_contact_date",
-        detail_columns=["last_covid_contact_type"],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_date",
-    )
     df = create_formatted_datetime_string_columns(df)
     return df
 
