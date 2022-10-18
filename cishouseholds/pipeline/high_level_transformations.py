@@ -115,7 +115,6 @@ from cishouseholds.expressions import array_contains_any
 from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
-from cishouseholds.impute import fill_forward_event
 from cishouseholds.impute import fill_forward_from_last_change
 from cishouseholds.impute import fill_forward_from_last_change_marked_subset
 from cishouseholds.impute import fill_forward_only_to_nulls
@@ -2086,70 +2085,7 @@ def union_dependent_derivations(df):
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
     )
-    # df_2 = get_or_create_spark_session().createDataFrame(
-    #     df.rdd, schema=df.schema
-    # )  # breaks lineage to avoid Java OOM Error
-    df.cache()
-    df = df.repartition(16)
-    df = fill_forward_event(
-        df=df,
-        event_indicator_column="think_had_covid",
-        event_date_column="think_had_covid_onset_date",
-        detail_columns=[
-            "other_covid_infection_test",
-            "other_covid_infection_test_results",
-            "think_had_covid_admitted_to_hospital",
-            "think_had_covid_contacted_nhs",
-            "think_had_covid_symptom_fever",
-            "think_had_covid_symptom_muscle_ache",
-            "think_had_covid_symptom_fatigue",
-            "think_had_covid_symptom_sore_throat",
-            "think_had_covid_symptom_cough",
-            "think_had_covid_symptom_shortness_of_breath",
-            "think_had_covid_symptom_headache",
-            "think_had_covid_symptom_nausea_or_vomiting",
-            "think_had_covid_symptom_abdominal_pain",
-            "think_had_covid_symptom_loss_of_appetite",
-            "think_had_covid_symptom_noisy_breathing",
-            "think_had_covid_symptom_runny_nose_or_sneezing",
-            "think_had_covid_symptom_more_trouble_sleeping",
-            "think_had_covid_symptom_diarrhoea",
-            "think_had_covid_symptom_loss_of_taste",
-            "think_had_covid_symptom_loss_of_smell",
-            "think_had_covid_symptom_memory_loss_or_confusion",
-            "think_had_covid_symptom_chest_pain",
-            "think_had_covid_symptom_vertigo_or_dizziness",
-            "think_had_covid_symptom_difficulty_concentrating",
-            "think_had_covid_symptom_anxiety",
-            "think_had_covid_symptom_palpitations",
-            "think_had_covid_symptom_low_mood",
-        ],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
-    )
-    # df_4 = get_or_create_spark_session().createDataFrame(
-    #     df_3.rdd, schema=df_3.schema
-    # )  # breaks lineage to avoid Java OOM Error
     # Derive these after fill forwards and other changes to dates
-    df = fill_forward_event(
-        df=df,
-        event_indicator_column="contact_suspected_positive_covid_last_28_days",
-        event_date_column="last_suspected_covid_contact_date",
-        detail_columns=["last_suspected_covid_contact_type"],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
-    )
-    # df_6 = get_or_create_spark_session().createDataFrame(
-    #     df_5.rdd, schema=df_5.schema
-    # )  # breaks lineage to avoid Java OOM Error
-    df = fill_forward_event(
-        df=df,
-        event_indicator_column="contact_known_positive_covid_last_28_days",
-        event_date_column="last_covid_contact_date",
-        detail_columns=["last_covid_contact_type"],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
-    )
     df = create_formatted_datetime_string_columns(df)
     return df
 
