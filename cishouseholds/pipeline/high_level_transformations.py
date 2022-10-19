@@ -2090,6 +2090,14 @@ def union_dependent_derivations(df):
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
     )
+    df = create_formatted_datetime_string_columns(df)
+    return df
+
+
+def fill_forward_events_for_key_columns(df):
+    """
+    Function that contains
+    """
     # df_2 = get_or_create_spark_session().createDataFrame(
     #     df.rdd, schema=df.schema
     # )  # breaks lineage to avoid Java OOM Error
@@ -2157,7 +2165,6 @@ def union_dependent_derivations(df):
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",
     )
-    df = create_formatted_datetime_string_columns(df)
     return df
 
 

@@ -40,6 +40,7 @@ from cishouseholds.pipeline.high_level_transformations import add_pattern_matchi
 from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.high_level_transformations import derive_age_based_columns
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
+from cishouseholds.pipeline.high_level_transformations import fill_forward_events_for_key_columns
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
@@ -495,6 +496,23 @@ def execute_union_dependent_transformations(unioned_survey_table: str, transform
     df = union_dependent_cleaning(df)
     df = union_dependent_derivations(df)
     update_table(df, transformed_table, write_mode="overwrite")
+
+
+@register_pipeline_stage("fill_forwards_events")
+def execute_fill_forwards_events(survey_response_table: str, fill_forwards_table: str):
+    """
+    Separates out the fill_forwards_event implementation of last observation carried forwards (LOCF) logic from STATA code
+
+    Parameters
+    ----------
+    survey_response_table
+        input table name for table containing the combined survey responses tables
+    fill_forwards_table
+        output table name for table with applied fill_forwards_event dependent on complete survey dataset
+    """
+    df = extract_from_table(survey_response_table)
+    df = fill_forward_events_for_key_columns(df)
+    update_table(df, fill_forwards_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("validate_survey_responses")
