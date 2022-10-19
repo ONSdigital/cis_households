@@ -249,7 +249,7 @@
     within single quotes and an escape convention exists which allows any character
     to be used within an atom.
   regularly_lateral_flow_testing: 'Yes'
-  sample_collection_courier_datetime: '2022-01-09 15:31:48.000000'
+  sample_collection_courier_datetime: '2022-01-09 00:00:00.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-06 17:17:10.000000'
   sample_kit_dispatched_datetime: '2022-01-01 22:47:47.000000'
   sample_kit_not_dispatched_code: null
@@ -1144,7 +1144,7 @@
   reason_for_not_consenting_9: The Galactic Empire is nearing completion of the Death
     Star, a space station with the power to destroy entire planets.
   regularly_lateral_flow_testing: null
-  sample_collection_courier_datetime: '2022-01-06 05:06:10.000000'
+  sample_collection_courier_datetime: '2022-01-06 00:00:00.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-05 21:06:50.000000'
   sample_kit_dispatched_datetime: '2022-01-09 17:14:28.000000'
   sample_kit_not_dispatched_code: 'Yes'
@@ -1591,7 +1591,7 @@
   reason_for_not_consenting_9: Haskell features a type system with type inference
     and lazy evaluation.
   regularly_lateral_flow_testing: 'Yes'
-  sample_collection_courier_datetime: '2022-01-05 10:59:27.000000'
+  sample_collection_courier_datetime: '2022-01-05 00:00:00.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-01 07:59:46.000000'
   sample_kit_dispatched_datetime: '2022-01-09 19:51:24.000000'
   sample_kit_not_dispatched_code: null
@@ -2481,7 +2481,7 @@
   reason_for_not_consenting_9: In 1989 the building was heavily damaged by fire, but
     it has since been restored.
   regularly_lateral_flow_testing: null
-  sample_collection_courier_datetime: '2022-01-01 01:16:24.000000'
+  sample_collection_courier_datetime: '2022-01-01 00:00:00.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-04 03:58:47.000000'
   sample_kit_dispatched_datetime: '2022-01-04 10:09:44.000000'
   sample_kit_not_dispatched_code: null
@@ -2925,7 +2925,7 @@
     data types.
   reason_for_not_consenting_9: Do you have any idea why this is not working?
   regularly_lateral_flow_testing: 'No'
-  sample_collection_courier_datetime: '2022-01-01 00:05:15.000000'
+  sample_collection_courier_datetime: '2022-01-01 00:00:00.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-03 13:58:24.000000'
   sample_kit_dispatched_datetime: '2022-01-05 22:21:15.000000'
   sample_kit_not_dispatched_code: 'Yes'
@@ -3374,7 +3374,7 @@
   reason_for_not_consenting_9: He looked inquisitively at his keyboard and wrote another
     sentence.
   regularly_lateral_flow_testing: 'No'
-  sample_collection_courier_datetime: '2022-01-05 07:11:22.000000'
+  sample_collection_courier_datetime: '2022-01-05 00:00:00.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-08 09:34:37.000000'
   sample_kit_dispatched_datetime: '2022-01-09 11:16:11.000000'
   sample_kit_not_dispatched_code: 'No'
@@ -3823,7 +3823,7 @@
   reason_for_not_consenting_9: In 1989 the building was heavily damaged by fire, but
     it has since been restored.
   regularly_lateral_flow_testing: 'Yes'
-  sample_collection_courier_datetime: '2022-01-03 18:35:01.000000'
+  sample_collection_courier_datetime: '2022-01-03 00:00:00.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-09 02:10:48.000000'
   sample_kit_dispatched_datetime: null
   sample_kit_not_dispatched_code: 'No'
@@ -4275,7 +4275,7 @@
   reason_for_not_consenting_9: The sequential subset of Erlang supports eager evaluation,
     single assignment, and dynamic typing.
   regularly_lateral_flow_testing: null
-  sample_collection_courier_datetime: '2022-01-07 21:25:12.000000'
+  sample_collection_courier_datetime: '2022-01-07 00:00:00.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-02 03:43:57.000000'
   sample_kit_dispatched_datetime: '2022-01-07 20:17:24.000000'
   sample_kit_not_dispatched_code: 'Yes'
