@@ -171,6 +171,7 @@ def delete_tables_stage(
     Deletes HIVE tables. For use at the start of a pipeline run, to reset pipeline logs and data.
     Should not be used in production, as all tables may be deleted.
     Use one or more of the optional parameters.
+
     Parameters
     ----------
     prefix
@@ -252,10 +253,12 @@ def generate_input_processing_function(
     """
     Generate an input file processing stage function and register it.
     Returns dataframe for use in testing.
+
     Parameters
     ----------
     include_hadoop_read_write
         set to False for use in testing on non-hadoop environments
+
     Notes
     -----
     See underlying functions for other parameter documentation.
@@ -429,6 +432,7 @@ def process_regx_data(input_survey_table: str, output_survey_table: str, regex_l
 def union_survey_response_files(tables_to_process: List, output_survey_table: str):
     """
     Union survey response for v0, v1 and v2, and write to table.
+
     Parameters
     ----------
     tables_to_process
@@ -531,6 +535,7 @@ def validate_survey_responses(
     """
     Populate error column with outcomes of specific validation checks against fully
     transformed survey dataset.
+
     Parameters
     ----------
     survey_responses_table
@@ -588,6 +593,7 @@ def lookup_based_editing(
 ):
     """
     Edit columns based on mappings from lookup files. Often used to correct data quality issues.
+
     Parameters
     ----------
     input_survey_table
@@ -623,6 +629,7 @@ def lookup_based_editing(
 def join_vaccination_data(participant_records_table, nims_table, vaccination_data_table):
     """
     Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.
+
     Parameters
     ----------
     participant_records_table
@@ -654,6 +661,7 @@ def impute_demographic_columns(input_survey_table: str, imputed_values_table: st
     Also outputs a table of survey response records with imputed values.
     Note that this stage depends on geography information from the sample files being available
     (from sample file processing).
+
     Parameters
     ----------
     survey_responses_table
@@ -691,6 +699,7 @@ def calculate_household_level_populations(
     calculation.
     Combines several lookup tables to get the necessary geographies linked to households, then sums households by
     CIS area and country code.
+
     Parameters
     ----------
     address_lookup_table
@@ -732,6 +741,7 @@ def join_geographic_data(
 ):
     """
     Join weights file onto survey data by household id.
+
     Parameters
     ----------
     geographic_table
@@ -760,6 +770,7 @@ def geography_and_imputation_dependent_processing(
 ):
     """
     Processing that depends on geographies and and imputed demographic infromation.
+
     Parameters
     ----------
     input_survey_table
@@ -831,6 +842,7 @@ def report(
     """
     Create a excel spreadsheet with multiple sheets to summarise key data from various
     tables regarding the running of the pipeline; using overall and most recent statistics.
+
     Parameters
     ----------
     unique_id_column
