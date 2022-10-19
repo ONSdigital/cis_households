@@ -40,6 +40,7 @@ from cishouseholds.pipeline.high_level_transformations import add_pattern_matchi
 from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.high_level_transformations import derive_age_based_columns
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
+from cishouseholds.pipeline.high_level_transformations import fill_forward_events_for_key_columns
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
@@ -169,9 +170,7 @@ def delete_tables_stage(
     """
     Deletes HIVE tables. For use at the start of a pipeline run, to reset pipeline logs and data.
     Should not be used in production, as all tables may be deleted.
-
     Use one or more of the optional parameters.
-
     Parameters
     ----------
     prefix
@@ -252,14 +251,11 @@ def generate_input_processing_function(
 ):
     """
     Generate an input file processing stage function and register it.
-
     Returns dataframe for use in testing.
-
     Parameters
     ----------
     include_hadoop_read_write
         set to False for use in testing on non-hadoop environments
-
     Notes
     -----
     See underlying functions for other parameter documentation.
@@ -503,6 +499,24 @@ def execute_union_dependent_transformations(input_survey_table: str, output_surv
     return {"output_survey_table": output_survey_table}
 
 
+@register_pipeline_stage("fill_forwards_events")
+def execute_fill_forwards_events(input_survey_table: str, output_survey_table: str):
+    """
+    Separates out the fill_forwards_event implementation of last observation carried forwards (LOCF) logic from STATA code
+
+    Parameters
+    ----------
+    survey_response_table
+        input table name for table containing the combined survey responses tables
+    fill_forwards_table
+        output table name for table with applied fill_forwards_event dependent on complete survey dataset
+    """
+    df = extract_from_table(input_survey_table)
+    df = fill_forward_events_for_key_columns(df)
+    update_table(df, output_survey_table, write_mode="overwrite")
+    return {"output_survey_table": output_survey_table}
+
+
 @register_pipeline_stage("validate_survey_responses")
 def validate_survey_responses(
     input_survey_table: str,
@@ -517,7 +531,6 @@ def validate_survey_responses(
     """
     Populate error column with outcomes of specific validation checks against fully
     transformed survey dataset.
-
     Parameters
     ----------
     survey_responses_table
@@ -575,7 +588,6 @@ def lookup_based_editing(
 ):
     """
     Edit columns based on mappings from lookup files. Often used to correct data quality issues.
-
     Parameters
     ----------
     input_survey_table
@@ -611,7 +623,6 @@ def lookup_based_editing(
 def join_vaccination_data(participant_records_table, nims_table, vaccination_data_table):
     """
     Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.
-
     Parameters
     ----------
     participant_records_table
@@ -635,18 +646,14 @@ def join_vaccination_data(participant_records_table, nims_table, vaccination_dat
 def impute_demographic_columns(input_survey_table: str, imputed_values_table: str, output_survey_table: str):
     """
     Impute values for sex, ethnicity and date of birth.
-
     Assumes that columns to be imputed have been filled forwards, as the latest value from each participant is used.
     Specific imputations are carried out for for each key demographic column. The resulting columns should have no
     missing values.
-
     Stores imputed values in a lookup table, for reuse in subsequent imputation rounds. This table is also backed up
     with a datetime suffix.
     Also outputs a table of survey response records with imputed values.
-
     Note that this stage depends on geography information from the sample files being available
     (from sample file processing).
-
     Parameters
     ----------
     survey_responses_table
@@ -682,10 +689,8 @@ def calculate_household_level_populations(
     """
     Calculate counts of households by CIS area 20 and country code 12 geographical groups used in the design weight
     calculation.
-
     Combines several lookup tables to get the necessary geographies linked to households, then sums households by
     CIS area and country code.
-
     Parameters
     ----------
     address_lookup_table
@@ -727,7 +732,6 @@ def join_geographic_data(
 ):
     """
     Join weights file onto survey data by household id.
-
     Parameters
     ----------
     geographic_table
@@ -756,7 +760,6 @@ def geography_and_imputation_dependent_processing(
 ):
     """
     Processing that depends on geographies and and imputed demographic infromation.
-
     Parameters
     ----------
     input_survey_table
@@ -850,7 +853,7 @@ def report(
 
     valid_df_errors = generate_error_table(valid_survey_responses_errors_table, error_priority_map)
     invalid_df_errors = generate_error_table(invalid_survey_responses_errors_table, error_priority_map)
-    soc_uncode_count = count_variable_option(valid_df, "standard_occupational_classification_code", "uncodeable")
+    soc_uncode_count = count_variable_option(valid_df, "soc_code", "uncodeable")
     processed_file_log = extract_from_table("processed_filenames")
 
     invalid_files_count = 0
