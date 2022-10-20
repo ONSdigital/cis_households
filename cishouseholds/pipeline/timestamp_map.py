@@ -78,7 +78,6 @@ cis_digital_datetime_map = {
         "opted_out_of_next_window_datetime",
         "opted_out_of_blood_next_window_datetime",
         "sample_kit_dispatched_datetime",
-        "sample_collection_courier_datetime",
         "sample_collection_kit_received_delivery_partner_datetime",
         "survey_last_modified_datetime",
         "survey_completed_datetime",
@@ -120,5 +119,6 @@ cis_digital_datetime_map = {
         "other_antibody_test_positive_date",  # tempvar
         "other_antibody_test_last_negative_date",
         "other_antibody_test_negative_date",  # tempvar
+        "sample_collection_courier_datetime",
     ],
 }
