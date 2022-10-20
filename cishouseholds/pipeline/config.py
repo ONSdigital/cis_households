@@ -31,7 +31,7 @@ def get_config() -> dict:
     for section_name, section_config in configs[0].items():
         if type(section_config) == dict and section_name != "run":
             for key, val in section_config.items():
-                if key in modified_config[section_name]:
+                if key in modified_config[section_name] and type(modified_config[section_name][key]) == dict:
                     modified_config[section_name][key].update(val)
                 else:
                     modified_config[section_name][key] = val
