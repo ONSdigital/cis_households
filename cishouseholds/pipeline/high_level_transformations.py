@@ -2563,23 +2563,35 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         )
 
     # add boolean flags for working in healthcare or socialcare
+    df = df.withColumn(
+        "works_healthcare_original", F.when(F.col("work_health_care_area_raw").isNull(), "No").otherwise("Yes")
+    )
     df = df.withColumn("works_healthcare", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
-    # df = df.withColumn("work_social_care", F.when(F.col("work_social_care_area").isNotNull(), "Yes").otherwise("No"))
 
     df = assign_regex_match_result(
         df=df,
         columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        column_name_to_assign="work_direct_contact_patients_or_clients",
+        column_name_to_assign="work_direct_contact_patients_or_clients_regex_derived",
         positive_regex_pattern=patient_facing_pattern.positive_regex_pattern,
         negative_regex_pattern=patient_facing_pattern.negative_regex_pattern,
     )
     df = df.withColumn(
         "work_direct_contact_patients_or_clients",
         F.when(
-            ((F.col("works_healthcare") == "Yes") | (F.col("work_direct_contact_patients_or_clients") == True))
+            (F.col("works_healthcare_original") == "Yes")
+            & (F.col("works_healthcare") == "Yes")
+            & (F.col("work_direct_contact_patients_or_clients").isNotNull()),
+            F.col("work_direct_contact_patients_or_clients"),
+        )
+        .when(
+            (
+                (F.col("works_healthcare") == "Yes")
+                | (F.col("work_direct_contact_patients_or_clients_regex_derived") == True)
+            )
             & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
             "Yes",
-        ).otherwise("No"),
+        )
+        .otherwise("No"),
     )
     df = assign_column_value_from_multiple_column_map(
         df,
