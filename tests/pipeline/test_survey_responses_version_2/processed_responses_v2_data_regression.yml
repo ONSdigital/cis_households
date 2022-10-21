@@ -281,7 +281,9 @@
   voucher_type_preference: Email
   which_symptoms_last_7_days: Fever
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_original: 'No'
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area_original: Other healthcare (e.g. mental health)
   work_health_care_area_raw: Other healthcare (e.g. mental health)
   work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
   work_in_additional_paid_employment: null
@@ -299,6 +301,7 @@
   work_not_from_home_days_per_week: '1'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_original: 'No'
   work_person_facing_now: 'No'
   work_sector: Retail sector (incl. wholesale)
   work_sector_other: I don't even care.
@@ -589,7 +592,9 @@
   voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Sore  Throat
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_original: 'No'
   work_health_care_area: Yes, in secondary care, e.g. hospital
+  work_health_care_area_original: Secondary care (e.g. hospital)
   work_health_care_area_raw: Secondary care (e.g. hospital)
   work_health_care_patient_facing: Yes, secondary care, non-patient-facing
   work_in_additional_paid_employment: 'Yes'
@@ -607,6 +612,7 @@
   work_not_from_home_days_per_week: '5'
   work_not_from_home_days_per_week_raw: '5'
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
   work_person_facing_now: 'No'
   work_sector: Food production, agriculture, farming
   work_sector_other: Any element of a tuple can be accessed in constant time.
@@ -900,7 +906,9 @@
   voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: null
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_original: 'No'
   work_health_care_area: null
+  work_health_care_area_original: null
   work_health_care_area_raw: null
   work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'Yes'
@@ -917,6 +925,7 @@
   work_not_from_home_days_per_week: '0.5'
   work_not_from_home_days_per_week_raw: up to 1
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
   work_person_facing_now: 'No'
   work_sector: Armed forces
   work_sector_other: Ports are created with the built-in function open_port.
@@ -1210,7 +1219,9 @@
   voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Weakness/tiredness
   work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_original: 'Yes'
   work_health_care_area: null
+  work_health_care_area_original: null
   work_health_care_area_raw: null
   work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'No'
@@ -1229,6 +1240,7 @@
   work_not_from_home_days_per_week: '3'
   work_not_from_home_days_per_week_raw: '3'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_original: 'No'
   work_person_facing_now: 'No'
   work_sector: Armed forces
   work_sector_other: The Galactic Empire is nearing completion of the Death Star,
@@ -1527,7 +1539,9 @@
   voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Fever
   work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_original: 'Yes'
   work_health_care_area: Yes, in secondary care, e.g. hospital
+  work_health_care_area_original: Secondary care (e.g. hospital)
   work_health_care_area_raw: Secondary care (e.g. hospital)
   work_health_care_patient_facing: Yes, secondary care, patient-facing
   work_in_additional_paid_employment: 'No'
@@ -1549,6 +1563,7 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_original: 'No'
   work_person_facing_now: 'No'
   work_sector: Arts,Entertainment or Recreation
   work_sector_other: I don't even care.
@@ -1843,7 +1858,9 @@
   voucher_type_preference: Email
   which_symptoms_last_7_days: Weakness/tiredness
   work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_original: 'Yes'
   work_health_care_area: Primary care (e.g. GP, dentist)
+  work_health_care_area_original: Primary care (e.g. GP, dentist)
   work_health_care_area_raw: Primary care (e.g. GP, dentist)
   work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'Yes'
@@ -1867,6 +1884,7 @@
   work_not_from_home_days_per_week: null
   work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
   work_person_facing_now: null
   work_sector: null
   work_sector_other: Atoms are used within a program to denote distinguished values.
@@ -2162,7 +2180,9 @@
   voucher_type_preference: Email
   which_symptoms_last_7_days: null
   work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_original: null
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area_original: Other healthcare (e.g. mental health)
   work_health_care_area_raw: Other healthcare (e.g. mental health)
   work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
   work_in_additional_paid_employment: null
@@ -2178,6 +2198,7 @@
   work_not_from_home_days_per_week: '0'
   work_not_from_home_days_per_week_raw: '0'
   work_nursing_or_residential_care_home: null
+  work_nursing_or_residential_care_home_original: null
   work_person_facing_now: 'No'
   work_sector: Transport (incl. storage, logistic)
   work_sector_other: Erlang is a general-purpose, concurrent, functional programming
@@ -2471,7 +2492,9 @@
   voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Fever
   work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_original: null
   work_health_care_area: null
+  work_health_care_area_original: null
   work_health_care_area_raw: null
   work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'No'
@@ -2490,6 +2513,7 @@
   work_not_from_home_days_per_week: '0.5'
   work_not_from_home_days_per_week_raw: up to 1
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
   work_person_facing_now: 'No'
   work_sector: Transport (incl. storage, logistic)
   work_sector_other: The sequential subset of Erlang supports eager evaluation, single
@@ -2783,7 +2807,9 @@
   voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Sore  Throat
   work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_original: null
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area_original: Other healthcare (e.g. mental health)
   work_health_care_area_raw: Other healthcare (e.g. mental health)
   work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
   work_in_additional_paid_employment: 'Yes'
@@ -2803,6 +2829,7 @@
   work_not_from_home_days_per_week: '7'
   work_not_from_home_days_per_week_raw: '7'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_original: 'No'
   work_person_facing_now: 'No'
   work_sector: Other occupation sector
   work_sector_other: Haskell features a type system with type inference and lazy evaluation.
@@ -3101,7 +3128,9 @@
   voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Muscle ache
   work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_original: null
   work_health_care_area: Primary care (e.g. GP, dentist)
+  work_health_care_area_original: Primary care (e.g. GP, dentist)
   work_health_care_area_raw: Primary care (e.g. GP, dentist)
   work_health_care_patient_facing: null
   work_in_additional_paid_employment: null
@@ -3122,6 +3151,7 @@
   work_not_from_home_days_per_week: '1'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_original: 'No'
   work_person_facing_now: 'No'
   work_sector: Civil service or Local Government
   work_sector_other: Haskell features a type system with type inference and lazy evaluation.
