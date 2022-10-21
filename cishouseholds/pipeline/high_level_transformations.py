@@ -1256,8 +1256,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "think_have_covid_symptom_any",
         "work_main_job_title",
         "work_main_job_role",
-        "work_health_care_patient_facing",
-        "work_health_care_area",
         "work_status_v1",
         "work_status_v2",
         "work_not_from_home_days_per_week",
@@ -1267,6 +1265,15 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "blood_sample_barcode",
         "swab_sample_barcode",
     ]
+    original_copy_list = [
+        "work_healthcare_patient_facing",
+        "work_health_care_area",
+        "work_social_care",
+        "work_nursing_or_residential_care_home",
+        "work_direct_contact_patients_or_clients",
+        "work_patient_facing_now",
+    ]
+    df = assign_raw_copies(df, [column for column in original_copy_list if column in df.columns], "original")
     df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
     df = assign_unique_id_column(
         df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
@@ -2517,18 +2524,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         "work_social_care_original",
         "work_care_nursing_home_original",
         "work_direct_contact_patients_or_clients_original",
-    )
-    df = assign_raw_copies(
-        df,
-        [
-            "work_healthcare_patient_facing",
-            "work_health_care_area",
-            "work_social_care",
-            "work_nursing_or_residential_care_home",
-            "work_direct_contact_patients_or_clients",
-            "work_patient_facing_now",
-        ],
-        "original",
     )
 
     df = df.withColumn("work_main_job_title", F.upper(F.col("work_main_job_title")))
