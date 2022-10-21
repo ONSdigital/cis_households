@@ -1254,6 +1254,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     raw_copy_list = [
         "think_had_covid_any_symptoms",
         "think_have_covid_symptom_any",
+        "work_health_care_area",
         "work_main_job_title",
         "work_main_job_role",
         "work_status_v1",
@@ -1273,8 +1274,20 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "work_direct_contact_patients_or_clients",
         "work_patient_facing_now",
     ]
-    df = assign_raw_copies(df, [column for column in original_copy_list if column in df.columns], "original")
+
+    healthcare_area_mapper = {
+        "Primary care for example in a GP or dentist": "Primary",
+        "Secondary care for example in a hospital": "Secondary",
+        "Yes, in secondary care, e.g. hospital": "Secondary",
+        "Yes, in other healthcare settings, e.g. mental health": "Other",
+        "Yes, in primary care, e.g. GP,dentist": "Primary",
+        "Another type of healthcare-for example mental health services?": "Other",
+    }
+
     df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
+    df = update_column_values_from_map(df, "work_health_care_area", healthcare_area_mapper)
+    df = assign_raw_copies(df, [column for column in original_copy_list if column in df.columns], "original")
+
     df = assign_unique_id_column(
         df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
     )
@@ -2556,9 +2569,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         )
 
     # add boolean flags for working in healthcare or socialcare
-    df = df.withColumn(
-        "works_healthcare_original", F.when(F.col("work_health_care_area_raw").isNull(), "No").otherwise("Yes")
-    )
+
     df = df.withColumn("works_healthcare", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
 
     df = assign_regex_match_result(
@@ -2571,8 +2582,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "work_direct_contact_patients_or_clients",
         F.when(
-            (F.col("works_healthcare_original") == "Yes")
-            & (F.col("works_healthcare") == "Yes")
+            (F.col("work_health_care_area_original") == F.col("work_health_care_area"))
             & (F.col("work_direct_contact_patients_or_clients").isNotNull()),
             F.col("work_direct_contact_patients_or_clients"),
         )
