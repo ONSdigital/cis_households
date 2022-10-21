@@ -500,10 +500,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_health_care_patient_facing_raw
-  nullable: true
-  type: string
-- metadata: {}
   name: work_not_from_home_days_per_week_raw
   nullable: true
   type: string
@@ -525,6 +521,10 @@ fields:
   type: string
 - metadata: {}
   name: swab_sample_barcode_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_social_care_original
   nullable: true
   type: string
 - metadata: {}
