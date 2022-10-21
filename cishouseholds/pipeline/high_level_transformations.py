@@ -2532,12 +2532,12 @@ def derive_overall_vaccination(df: DataFrame) -> DataFrame:
 
 def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     """Add result of various regex pattern matchings"""
-    df = df.drop(
-        "work_healthcare_patient_facing_original",
-        "work_social_care_original",
-        "work_care_nursing_home_original",
-        "work_direct_contact_patients_or_clients_original",
-    )
+    # df = df.drop(
+    #     "work_healthcare_patient_facing_original",
+    #     "work_social_care_original",
+    #     "work_care_nursing_home_original",
+    #     "work_direct_contact_patients_or_clients_original",
+    # )
 
     df = df.withColumn("work_main_job_title", F.upper(F.col("work_main_job_title")))
     df = df.withColumn("work_main_job_role", F.upper(F.col("work_main_job_role")))
