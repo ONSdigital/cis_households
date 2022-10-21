@@ -237,7 +237,9 @@ def validate_config_stages(pipeline_stage_functions: Dict, stages_to_run: List[s
             **stages_config[stage_name].get("output_tables", {}),  # type: ignore
             **{k: v for k, v in stages_config[stage_name].items() if k not in ["input_tables", "output_tables"]},  # type: ignore
         }  # type: ignore
-        function_config_other_params = [x for x in config_arguments_dict.keys() if (x != "function")]
+        function_config_other_params = [
+            x for x in config_arguments_dict.keys() if (x not in ["function", "input_survey_table"])
+        ]
 
         # CHECK: for stage function that require when,
         # ensure operator and condition exist and stages required are turned on.
@@ -268,7 +270,7 @@ def validate_config_stages(pipeline_stage_functions: Dict, stages_to_run: List[s
         all_func_config_parameters_from_object = [
             arg
             for arg in inspect.getfullargspec(pipeline_stage_functions[function_name]).args
-            if arg != "input_survey_table"
+            if "input_survey_table" not in arg
         ]
         input_arguments_needed = [
             arg
@@ -288,7 +290,7 @@ def validate_config_stages(pipeline_stage_functions: Dict, stages_to_run: List[s
             if list_not_passed_arg != []:
                 error_msg += f"""  - {function_name} stage does not have in the config file: {', '.join(list_not_passed_arg)}.\n"""  # noqa: E501
             if list_of_unrecognised_arg != []:
-                error_msg += f"""  - {function_name} stage have unrecognised as input arguments: {', '.join(list_of_unrecognised_arg)}.\n"""  # noqa: E501
+                error_msg += f"""  - {function_name} stage has unrecognised input arguments: {', '.join(list_of_unrecognised_arg)}.\n"""  # noqa: E501
     if error_msg != "\n":
         raise ConfigError(error_msg)
 
