@@ -285,6 +285,8 @@ def fill_forward_event(
     visit_datetime_column
     """
     event_columns = [event_date_column, event_indicator_column, *detail_columns]
+    null_visit_df = df.filter(F.col(visit_datetime_column).isNull())
+    df = df.filter(F.col(visit_datetime_column).isNotNull())
 
     grouping_window = Window.partitionBy(participant_id_column, event_date_column).orderBy("REF_EVENT_DATE")
     window = Window.partitionBy(participant_id_column, visit_datetime_column).orderBy(F.desc(event_date_column))
@@ -341,7 +343,7 @@ def fill_forward_event(
     df = df.withColumn(event_indicator_column, F.when(F.col(event_date_column).isNull(), "No").otherwise("Yes"))
     df = df.drop("DROP_EVENT").distinct().withColumn("ROW_NUMBER", F.row_number().over(window))
     df = df.filter(F.col("ROW_NUMBER") == 1).drop("ROW_NUMBER")
-    return df
+    return df.unionByName(null_visit_df)
 
 
 def fill_forward_from_last_change_marked_subset(
