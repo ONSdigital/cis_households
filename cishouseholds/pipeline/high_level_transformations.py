@@ -2526,8 +2526,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             "work_social_care",
             "work_nursing_or_residential_care_home",
             "work_direct_contact_patients_or_clients",
-            "patient_facing_over_20_percent",
-            "works_healthcare",
             "work_patient_facing_now",
         ],
         "original",
