@@ -1285,7 +1285,8 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     }
 
     df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
-    df = update_column_values_from_map(df, "work_health_care_area", healthcare_area_mapper)
+    if "work_health_care_area" in df.columns:
+        df = update_column_values_from_map(df, "work_health_care_area", healthcare_area_mapper)
     df = assign_raw_copies(df, [column for column in original_copy_list if column in df.columns], "original")
 
     df = assign_unique_id_column(
