@@ -53,6 +53,8 @@ def check_dependencies(stages_to_run, stages_config):  # TODO: ensure check in o
         required_tables = []
         input_tables = stages_config[stage].get("input_tables", {})
 
+        function = stages_config[stage].get("function", stage)
+
         if type(input_tables) == dict:
             required_tables.extend(input_tables.values())
         elif type(input_tables) == list:
@@ -60,8 +62,19 @@ def check_dependencies(stages_to_run, stages_config):  # TODO: ensure check in o
         if "tables_to_process" in stages_config[stage]:
             required_tables.extend(stages_config[stage]["tables_to_process"])
 
-        unavailable_tables = [table for table in required_tables if not check_table_exists(table)]
-        unavailable_tables = [table for table in unavailable_tables if table not in available_tables]
+        unavailable_tables = [
+            table for table in required_tables if not check_table_exists(table)
+        ]  # remove existing tables
+        unavailable_tables = [
+            table for table in unavailable_tables if table not in available_tables
+        ]  # remove tables that will be created
+        optional_input_args = [
+            arg
+            for arg in inspect.getfullargspec(pipeline_stages[function]).args
+            if "="  # meaning it will check only non default input parameters
+            in str(inspect.signature(pipeline_stages[function]).parameters[arg])
+        ]
+        unavailable_tables = [table for table in unavailable_tables if table not in optional_input_args]
         missing_tables = ",".join(unavailable_tables)
 
         if len(unavailable_tables) > 0:
@@ -202,9 +215,6 @@ def run_pipeline_stages(
         stage_input_tables = stage_config.pop("input_tables", {})
         stage_output_tables = stage_config.pop("output_tables", {})
 
-        if current_table is not None:
-            stage_input_tables["input_survey_table"] = current_table
-
         stage_config.update(stage_input_tables)
         stage_config.update(stage_output_tables)
 
@@ -217,7 +227,9 @@ def run_pipeline_stages(
                         add_run_status(run_id, "retry", stage_text, "")
                 attempt_start = datetime.now()
                 if (
-                    "input_survey_table" in stage_function_args and current_table is not None
+                    "input_survey_table" in stage_function_args
+                    and current_table is not None
+                    and "input_survey_table" not in stage_config
                 ):  # automatically add input table name
                     stage_input_tables["input_survey_table"] = current_table
                 try:
