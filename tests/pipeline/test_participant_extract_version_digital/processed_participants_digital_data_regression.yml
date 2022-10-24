@@ -6,7 +6,8 @@
   digital_entry_pack_status: Its main implementation is the Glasgow Haskell Compiler.
   email_address: null
   ethnic_group: Black or African or Caribbean or Black British
-  ethnicity: White and Black Caribbean
+  ethnicity: Mixed-White & Black Caribbean
+  ethnicity_group: null
   ethnicity_other: Where are my pants?
   existing_participant_digital_opt_in_datetime: '2020-12-04 21:47:57.000000'
   existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 05:24:08.000000'
@@ -43,6 +44,7 @@
   email_address: null
   ethnic_group: White
   ethnicity: English| Welsh| Scottish| Northern Irish or British
+  ethnicity_group: null
   ethnicity_other: The Galactic Empire is nearing completion of the Death Star, a
     space station with the power to destroy entire planets.
   existing_participant_digital_opt_in_datetime: '2022-11-12 14:57:33.000000'
@@ -80,7 +82,8 @@
     language.
   email_address: null
   ethnic_group: Asian or Asian British
-  ethnicity: Caribbean
+  ethnicity: Black,Caribbean,Afro-Caribbean
+  ethnicity_group: null
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
   existing_participant_digital_opt_in_datetime: '2020-11-09 22:59:43.000000'
@@ -117,7 +120,8 @@
     single assignment, and dynamic typing.
   email_address: null
   ethnic_group: Black or African or Caribbean or Black British
-  ethnicity: Irish
+  ethnicity: White-Irish
+  ethnicity_group: null
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
   existing_participant_digital_opt_in_datetime: '2022-05-18 00:43:46.000000'
@@ -152,7 +156,8 @@
   digital_entry_pack_status: Do you have any idea why this is not working?
   email_address: balate1925@gsnail.ac.uk
   ethnic_group: Asian or Asian British
-  ethnicity: Irish
+  ethnicity: White-Irish
+  ethnicity_group: null
   ethnicity_other: Any element of a tuple can be accessed in constant time.
   existing_participant_digital_opt_in_datetime: '2020-02-24 15:52:04.000000'
   existing_participant_digital_opt_in_reminder_1_due_datetime: null
@@ -189,7 +194,8 @@
     programming language, with non-strict semantics and strong static typing.
   email_address: calefacient1935@gsnail.ac.uk
   ethnic_group: Black or African or Caribbean or Black British
-  ethnicity: Pakistani
+  ethnicity: Asian or Asian British-Pakistani
+  ethnicity_group: null
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
   existing_participant_digital_opt_in_datetime: '2020-04-27 01:51:20.000000'
   existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-07 06:47:53.000000'
@@ -225,7 +231,8 @@
     these messages must obey the so-called ""port protocol."""'
   email_address: null
   ethnic_group: Mixed/Multiple Ethnic Groups
-  ethnicity: White and Black Caribbean
+  ethnicity: Mixed-White & Black Caribbean
+  ethnicity_group: null
   ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
   existing_participant_digital_opt_in_datetime: '2022-05-27 20:32:38.000000'
   existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 11:09:05.000000'
@@ -261,7 +268,8 @@
     for systems.
   email_address: fortes2058@gsnail.ac.uk
   ethnic_group: White
-  ethnicity: Arab
+  ethnicity: Other ethnic group-Arab
+  ethnicity_group: null
   ethnicity_other: Atoms are used within a program to denote distinguished values.
   existing_participant_digital_opt_in_datetime: '2021-01-25 05:44:27.000000'
   existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-09 00:42:38.000000'
@@ -286,7 +294,7 @@
   participant_survey_status: Complete
   sex: Female
   title: Dr.
-  withdrawn_reason: Moving Location
+  withdrawn_reason: Moving location
   withdrawn_type: Withdrawn
 - consent_blood_samples_if_positive_yn: null
   consent_contact_extra_research_yn: null
@@ -296,7 +304,8 @@
   digital_entry_pack_status: Ports are created with the built-in function open_port.
   email_address: ladybird1985@gsnail.ac.uk
   ethnic_group: Asian or Asian British
-  ethnicity: Arab
+  ethnicity: Other ethnic group-Arab
+  ethnicity_group: null
   ethnicity_other: Erlang is known for its designs that are well suited for systems.
   existing_participant_digital_opt_in_datetime: '2022-05-24 18:27:57.000000'
   existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 20:01:59.000000'
@@ -331,7 +340,8 @@
   digital_entry_pack_status: Its main implementation is the Glasgow Haskell Compiler.
   email_address: null
   ethnic_group: Black or African or Caribbean or Black British
-  ethnicity: African
+  ethnicity: Black,Caribbean,African-African
+  ethnicity_group: null
   ethnicity_other: Make me a sandwich.
   existing_participant_digital_opt_in_datetime: '2020-09-10 20:39:56.000000'
   existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-05 13:09:24.000000'

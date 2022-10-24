@@ -169,7 +169,7 @@ def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
     transform and process participant extract data received from cis digital
     """
     col_val_map = {
-        "participant_withdrawal_reason": {
+        "withdrawn_reason": {
             "Moving Location": "Moving location",
             "Bad experience with tester / survey": "Bad experience with interviewer/survey",
             "Swab / blood process too distressing": "Swab/blood process too distressing",
