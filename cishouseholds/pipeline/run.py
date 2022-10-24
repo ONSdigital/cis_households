@@ -60,8 +60,19 @@ def check_dependencies(stages_to_run, stages_config):  # TODO: ensure check in o
         if "tables_to_process" in stages_config[stage]:
             required_tables.extend(stages_config[stage]["tables_to_process"])
 
-        unavailable_tables = [table for table in required_tables if not check_table_exists(table)]
-        unavailable_tables = [table for table in unavailable_tables if table not in available_tables]
+        unavailable_tables = [
+            table for table in required_tables if not check_table_exists(table)
+        ]  # remove existing tables
+        unavailable_tables = [
+            table for table in unavailable_tables if table not in available_tables
+        ]  # remove tables that will be created
+        optional_input_args = [
+            arg
+            for arg in inspect.getfullargspec(pipeline_stages[stage]).args
+            if "="  # meaning it will check only non default input parameters
+            in str(inspect.signature(pipeline_stages[stage]).parameters[arg])
+        ]
+        unavailable_tables = [table for table in unavailable_tables if table not in optional_input_args]
         missing_tables = ",".join(unavailable_tables)
 
         if len(unavailable_tables) > 0:
