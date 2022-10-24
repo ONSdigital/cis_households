@@ -225,7 +225,9 @@ def run_pipeline_stages(
                         add_run_status(run_id, "retry", stage_text, "")
                 attempt_start = datetime.now()
                 if (
-                    "input_survey_table" in stage_function_args and current_table is not None
+                    "input_survey_table" in stage_function_args
+                    and current_table is not None
+                    and "input_survey_table" not in stage_config
                 ):  # automatically add input table name
                     stage_input_tables["input_survey_table"] = current_table
                 try:
