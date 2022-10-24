@@ -404,13 +404,13 @@ def process_soc_data(
 
 
 @register_pipeline_stage("process_regex_data")
-def process_regex_data(input_survey_table: str, output_survey_table: str, regex_lookup_table: Optional[str] = None):
+def process_regex_data(input_survey_table: str, output_survey_table: str, regex_lookup_table: str):
     """
     Process regex data and combine result with survey responses data
     """
     join_on_columns = ["work_main_job_title", "work_main_job_role"]
     df = extract_from_table(input_survey_table)
-    if regex_lookup_table is not None and check_table_exists(regex_lookup_table):
+    if check_table_exists(regex_lookup_table):
         lookup_df = extract_from_table(regex_lookup_table, True)
         non_derived_rows = df.join(lookup_df, on=join_on_columns, how="leftanti").select(*join_on_columns).distinct()
         lookup_df = lookup_df.unionByName(add_pattern_matching_flags(non_derived_rows))
