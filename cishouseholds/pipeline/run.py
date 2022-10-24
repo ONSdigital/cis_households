@@ -213,9 +213,6 @@ def run_pipeline_stages(
         stage_input_tables = stage_config.pop("input_tables", {})
         stage_output_tables = stage_config.pop("output_tables", {})
 
-        if current_table is not None:
-            stage_input_tables["input_survey_table"] = current_table
-
         stage_config.update(stage_input_tables)
         stage_config.update(stage_output_tables)
 
