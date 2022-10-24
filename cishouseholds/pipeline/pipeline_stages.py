@@ -417,7 +417,7 @@ def process_regex_data(input_survey_table: str, output_survey_table: str, regex_
             f"     - located regex lookup df with {non_derived_rows.count()} additional rows to process"
         )  # functional
     else:
-        df_to_process = df.select(*join_on_columns).distinct()
+        df_to_process = df.dropDuplicates(join_on_columns)
         print(
             f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
         )  # functional

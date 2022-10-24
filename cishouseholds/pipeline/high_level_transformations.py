@@ -2596,6 +2596,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     #     "work_care_nursing_home_original",
     #     "work_direct_contact_patients_or_clients_original",
     # )
+    input_columns = df.columns
 
     df = df.withColumn("work_main_job_title", F.upper(F.col("work_main_job_title")))
     df = df.withColumn("work_main_job_role", F.upper(F.col("work_main_job_role")))
@@ -2698,7 +2699,9 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     #         .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
     #         .otherwise(F.col(work_status_column)),
     #     )
-    return df
+    return df.select(
+        *[col for col in df.columns if col in ["work_main_job_title", "work_main_job_role"] or col not in input_columns]
+    )
 
 
 def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
