@@ -21,6 +21,7 @@ from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.expressions import any_column_matches_regex
 from cishouseholds.expressions import any_column_null
+from cishouseholds.merge import null_safe_join
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -432,7 +433,7 @@ def assign_multigenerational(
             "school_year_ref_day",
         ],
     )
-    transformed_df = df.groupBy(household_id_column, visit_date_column).count().drop("count")
+    transformed_df = df.select(household_id_column, visit_date_column).distinct()
     transformed_df = transformed_df.join(
         df.select(
             household_id_column,
@@ -442,6 +443,7 @@ def assign_multigenerational(
         ),
         on=household_id_column,
     ).distinct()
+
     transformed_df = assign_age_at_date(
         df=transformed_df,
         column_name_to_assign=age_column_name_to_assign,
@@ -449,12 +451,8 @@ def assign_multigenerational(
         date_of_birth=F.col(date_of_birth_column),
     )
 
-    transformed_df_2 = spark_session.createDataFrame(
-        transformed_df.rdd, schema=transformed_df.schema
-    )  # breaks lineage to avoid Java OOM Error
-
-    transformed_df_3 = assign_school_year(
-        df=transformed_df_2,
+    transformed_df = assign_school_year(
+        df=transformed_df,
         column_name_to_assign=school_year_column_name_to_assign,
         reference_date_column=visit_date_column,
         dob_column=date_of_birth_column,
@@ -474,16 +472,14 @@ def assign_multigenerational(
     generation_2_present = F.sum(generation_2).over(window) >= 1
     generation_3_present = F.sum(generation_3).over(window) >= 1
 
-    transformed_df_4 = spark_session.createDataFrame(
-        transformed_df_3.rdd, schema=transformed_df_3.schema
-    )  # breaks lineage to avoid Java OOM Error
-
-    transformed_df_5 = transformed_df_4.withColumn(
+    transformed_df = transformed_df.withColumn(
         column_name_to_assign,
         F.when(generation_1_present & generation_2_present & generation_3_present, 1).otherwise(0),
     )
-    df = df.join(
-        transformed_df_5.select(
+
+    df = null_safe_join(
+        df,
+        transformed_df.select(
             household_id_column,
             column_name_to_assign,
             age_column_name_to_assign,
@@ -491,7 +487,8 @@ def assign_multigenerational(
             participant_id_column,
             visit_date_column,
         ),
-        on=[participant_id_column, household_id_column, visit_date_column],
+        null_safe_on=[participant_id_column, household_id_column, visit_date_column],
+        null_unsafe_on=[],
         how="left",
     )
     return df
