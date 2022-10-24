@@ -2595,7 +2595,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     #     "work_care_nursing_home_original",
     #     "work_direct_contact_patients_or_clients_original",
     # )
-    input_columns = df.columns
 
     df = df.withColumn("work_main_job_title", F.upper(F.col("work_main_job_title")))
     df = df.withColumn("work_main_job_role", F.upper(F.col("work_main_job_role")))
@@ -2682,7 +2681,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         ],
         ["work_direct_contact_patients_or_clients", "work_social_care_area"],
     )
-
     # work_status_columns = [col for col in df.columns if "work_status_" in col]
     # for work_status_column in work_status_columns:
     #     df = df.withColumn(
@@ -2693,7 +2691,15 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     #         .otherwise(F.col(work_status_column)),
     #     )
     return df.select(
-        *[col for col in df.columns if col in ["work_main_job_title", "work_main_job_role"] or col not in input_columns]
+        "work_main_job_title",
+        "work_main_job_role",
+        "work_direct_contact_patients_or_clients",
+        "work_social_care_area",
+        "work_health_care_area",
+        "work_healthcare_patient_facing",
+        "work_social_care",
+        "works_healthcare",
+        "regex_derived_job_sector",
     )
 
 
