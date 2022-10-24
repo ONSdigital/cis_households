@@ -1298,6 +1298,25 @@ category_maps = {
             "50-69": 6,
             "70+": 7,
         },
+        "digital_entry_pack_status": {
+            "Re-Sent": 1,
+            "Sent": 2,
+            "Reattempt": 3,
+            "Failed": 4,
+            "delivered": 5,
+        },
+        "existing_participant_digital_opt_in_reminder_1_status": {
+            "temporary-failure": 1,
+            "permanent-failure": 2,
+            "Sent": 3,
+            "delivered": 4,
+        },
+        "existing_participant_digital_opt_in_reminder_2_status": {
+            "temporary-failure": 1,
+            "permanent-failure": 2,
+            "Sent": 3,
+            "delivered": 4,
+        },
     }
 }
 
@@ -2073,6 +2092,11 @@ column_name_maps = {
         "eth11ni": "ethnicity_aps_northen_ireland",
         "pwta18": "person_level_weight_aps_18",
         "age": "age",
+    },
+    "participant_extract_digital_map": {
+        "withdrawn_reason": "participant_withdrawal_reason",
+        "withdrawn_type": "participant_withdrawal_type",
+        "existing_participant_digital_opt_in_reminder_2_status": "",  # picklist
     },
 }
 
