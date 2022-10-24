@@ -2079,13 +2079,13 @@ def union_dependent_derivations(df):
     df = assign_first_visit(
         df=df,
         column_name_to_assign="household_first_visit_datetime",
-        id_column="participant_id",
+        id_column="ons_household_id",
         visit_date_column="visit_datetime",
     )
     df = assign_last_visit(
         df=df,
         column_name_to_assign="last_attended_visit_datetime",
-        id_column="participant_id",
+        id_column="ons_household_id",
         visit_status_column="participant_visit_status",
         visit_date_column="visit_datetime",
     )
