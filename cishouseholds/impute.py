@@ -266,6 +266,7 @@ def fill_forward_event(
     detail_columns: List[str],
     participant_id_column: str,
     visit_datetime_column: str,
+    visit_id_column: str,
 ):
     """
     Fill forwards all columns associated with an event.
@@ -283,13 +284,16 @@ def fill_forward_event(
         additional columns relating to the event
     participant_id_column
     visit_datetime_column
+    visit_id_column
     """
     event_columns = [event_date_column, event_indicator_column, *detail_columns]
     null_visit_df = df.filter(F.col(visit_datetime_column).isNull())
     df = df.filter(F.col(visit_datetime_column).isNotNull())
 
     grouping_window = Window.partitionBy(participant_id_column, event_date_column).orderBy("REF_EVENT_DATE")
-    window = Window.partitionBy(participant_id_column, visit_datetime_column).orderBy(F.desc(event_date_column))
+    window = Window.partitionBy(participant_id_column, visit_datetime_column, visit_id_column).orderBy(
+        F.desc(event_date_column)
+    )
     filter_window = Window.partitionBy(participant_id_column, event_date_column).orderBy(visit_datetime_column)
 
     filtered_df = df.filter(
