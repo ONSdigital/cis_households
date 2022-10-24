@@ -44,7 +44,6 @@ from cishouseholds.derive import assign_true_if_any
 from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import assign_visit_order
 from cishouseholds.derive import assign_work_health_care
-from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import assign_work_status_group
@@ -2684,12 +2683,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         ["work_direct_contact_patients_or_clients", "work_social_care_area"],
     )
 
-    df = assign_work_patient_facing_now(
-        df,
-        "work_patient_facing_now",
-        age_column="age_at_visit",
-        work_healthcare_column="work_health_care_patient_facing",
-    )
     # work_status_columns = [col for col in df.columns if "work_status_" in col]
     # for work_status_column in work_status_columns:
     #     df = df.withColumn(
