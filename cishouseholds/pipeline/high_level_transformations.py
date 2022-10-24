@@ -1762,6 +1762,10 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     """
     Transformations that are specific to version 2 survey responses.
     """
+    raw_copy_list = ["cis_covid_vaccine_number_of_doses"]
+
+    df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
+
     df = assign_taken_column(df=df, column_name_to_assign="swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df=df, column_name_to_assign="blood_taken", reference_column="blood_sample_barcode")
 
