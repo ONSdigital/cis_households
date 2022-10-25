@@ -44,7 +44,6 @@ from cishouseholds.derive import assign_true_if_any
 from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import assign_visit_order
 from cishouseholds.derive import assign_work_health_care
-from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import assign_work_status_group
@@ -1763,6 +1762,10 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     """
     Transformations that are specific to version 2 survey responses.
     """
+    raw_copy_list = ["cis_covid_vaccine_number_of_doses"]
+
+    df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
+
     df = assign_taken_column(df=df, column_name_to_assign="swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df=df, column_name_to_assign="blood_taken", reference_column="blood_sample_barcode")
 
@@ -2076,13 +2079,13 @@ def union_dependent_derivations(df):
     df = assign_first_visit(
         df=df,
         column_name_to_assign="household_first_visit_datetime",
-        id_column="participant_id",
+        id_column="ons_household_id",
         visit_date_column="visit_datetime",
     )
     df = assign_last_visit(
         df=df,
         column_name_to_assign="last_attended_visit_datetime",
-        id_column="participant_id",
+        id_column="ons_household_id",
         visit_status_column="participant_visit_status",
         visit_date_column="visit_datetime",
     )
@@ -2682,13 +2685,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         ],
         ["work_direct_contact_patients_or_clients", "work_social_care_area"],
     )
-
-    df = assign_work_patient_facing_now(
-        df,
-        "work_patient_facing_now",
-        age_column="age_at_visit",
-        work_healthcare_column="work_health_care_patient_facing",
-    )
     # work_status_columns = [col for col in df.columns if "work_status_" in col]
     # for work_status_column in work_status_columns:
     #     df = df.withColumn(
@@ -2698,7 +2694,17 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     #         .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
     #         .otherwise(F.col(work_status_column)),
     #     )
-    return df
+    return df.select(
+        "work_main_job_title",
+        "work_main_job_role",
+        "work_direct_contact_patients_or_clients",
+        "work_social_care_area",
+        "work_health_care_area",
+        "work_healthcare_patient_facing",
+        "work_social_care",
+        "works_healthcare",
+        "regex_derived_job_sector",
+    )
 
 
 def flag_records_to_reclassify(df: DataFrame) -> DataFrame:

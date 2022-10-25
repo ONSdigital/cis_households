@@ -17,6 +17,7 @@ from cishouseholds.derive import assign_age_group_school_year
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_multigenerational
 from cishouseholds.derive import assign_outward_postcode
+from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import household_level_populations
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
@@ -403,7 +404,7 @@ def process_soc_data(
 
 
 @register_pipeline_stage("process_regex_data")
-def process_regx_data(input_survey_table: str, output_survey_table: str, regex_lookup_table: str):
+def process_regex_data(input_survey_table: str, output_survey_table: str, regex_lookup_table: str):
     """
     Process regex data and combine result with survey responses data
     """
@@ -417,11 +418,12 @@ def process_regx_data(input_survey_table: str, output_survey_table: str, regex_l
             f"     - located regex lookup df with {non_derived_rows.count()} additional rows to process"
         )  # functional
     else:
-        df_to_process = df.select(*join_on_columns).distinct()
+        df_to_process = df.dropDuplicates(join_on_columns)
         print(
             f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
         )  # functional
         lookup_df = add_pattern_matching_flags(df_to_process)
+    df = df.drop(*[col for col in df.columns if col in lookup_df.columns])
     df = df.join(lookup_df, on=join_on_columns, how="left")
     update_table(lookup_df, regex_lookup_table, "overwrite")
     update_table(df, output_survey_table, "overwrite")
@@ -819,7 +821,12 @@ def geography_and_imputation_dependent_processing(
         school_year_column="school_year",
         column_name_to_assign="age_group_school_year",
     )
-
+    df = assign_work_patient_facing_now(
+        df,
+        "work_patient_facing_now",
+        age_column="age_at_visit",
+        work_healthcare_column="work_health_care_patient_facing",
+    )
     df = reclassify_work_variables(df, spark_session=get_or_create_spark_session(), drop_original_variables=False)
     df = create_formatted_datetime_string_columns(df)
     update_table(df, output_survey_table, write_mode="overwrite")
