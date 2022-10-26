@@ -1388,7 +1388,7 @@ validation_schemas = {
         "form_language": string_dict,
         "vaccinated_against_flu": string_dict,
     },
-    "participant_extract_validation_schema": {
+    "participant_extract_digital_validation_schema": {
         "ons_household_id": string_dict,
         "participant_survey_status": string_dict,
         "withdrawn_reason": string_dict,
@@ -1399,7 +1399,6 @@ validation_schemas = {
         "middle_name": string_dict,
         "last_name": string_dict,
         "date_of_birth": string_dict,
-        "email_address": string_dict,
         "sex": string_dict,
         "ethnic_group": string_dict,
         "ethnicity": string_dict,

@@ -40,10 +40,6 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: email_address
-  nullable: true
-  type: string
-- metadata: {}
   name: sex
   nullable: true
   type: string

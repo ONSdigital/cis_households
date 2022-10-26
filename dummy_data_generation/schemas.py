@@ -96,7 +96,7 @@ def get_swab_testkit_data_description(_):
     }
 
 
-def get_participant_extract_data_description(_, blood_barcodes, swab_barcodes):
+def get_participant_extract_digital_data_description(_, blood_barcodes, swab_barcodes):
     return lambda: {  # noqa: E731
         "ons_household_id": _("random.custom_code", mask="############", digit="#"),
         "participant_survey_status": _("choice", items=["Active", "Complete", "Withdrawn"]),
@@ -128,7 +128,6 @@ def get_participant_extract_data_description(_, blood_barcodes, swab_barcodes):
         "middle_name": _("person.first_name"),
         "last_name": _("person.last_name"),
         "date_of_birth": _("datetime.formatted_datetime", start=1980, end=2021, fmt=digital_datetime_format),
-        "email_address": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
         "sex": _("choice", items=["Female", "Male"]),
         "ethnic_group": _(
             "choice",
