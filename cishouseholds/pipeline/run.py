@@ -55,8 +55,6 @@ def check_dependencies(stages_to_run, stages_config):  # TODO: ensure check in o
 
         function = stages_config[stage].get("function", stage)
 
-        optional_tables = ["regex_lookup_table"]
-
         if type(input_tables) == dict:
             required_tables.extend(input_tables.values())
         elif type(input_tables) == list:
@@ -76,7 +74,6 @@ def check_dependencies(stages_to_run, stages_config):  # TODO: ensure check in o
             if "="  # meaning it will check only non default input parameters
             in str(inspect.signature(pipeline_stages[function]).parameters[arg])
         ]
-        unavailable_tables = [table for table in unavailable_tables if table not in optional_tables]
         unavailable_tables = [table for table in unavailable_tables if table not in optional_input_args]
         missing_tables = ",".join(unavailable_tables)
 
