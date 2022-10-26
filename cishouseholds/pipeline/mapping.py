@@ -156,13 +156,22 @@ category_maps = {
         "cis_covid_vaccine_received": _yes_no_categories,
         "cis_flu_vaccine_received": _yes_no_categories,
         "did_not_attend_inferred": _yes_no_categories,
+        "ever_work_person_facing_or_social_care": _yes_no_categories,
+        "ever_care_home_worker": _yes_no_categories,
+        "ever_had_long_term_health_condition": _yes_no_categories,
+        "ever_had_long_term_health_condition_or_disabled": _yes_no_categories,
+        "any_think_have_covid_symptom_or_now": _yes_no_categories,
+        "any_symptoms_around_visit": _yes_no_categories,
+        "symptoms_around_cghfevamn_symptom_group": _yes_no_categories,
+        "think_have_covid_cghfevamn_symptom_group": _yes_no_categories,
+        "think_had_covid_cghfevamn_symptom_group": _yes_no_categories,
         "digital_survey_mode_preference": {"Online": 0, "Telephone": 1},
         "digital_communication_preference": {"Email": 0, "Letter": 1},
         "sample_return_preference": {"Post": 0, "Courier": 1},
         "survey_not_completed_reason_code": {
-            "FNR - Full Non Response": 0,
-            "QNR - Questionnaire No Return": 1,
-            "TNR - Test Not Returned": 2,
+            "Fnr - full non response": 0,
+            "Qnr - questionnaire no return": 1,
+            "Tnr - test not returned": 2,
         },
         "blood_consolidation_point_error": consolidation_categories,
         "swab_consolidation_point_error": consolidation_categories,
@@ -203,9 +212,10 @@ category_maps = {
             "Any other ethnic group": 18,
         },
         "ethnicity_white": {
-            "Non-White": 0,
+            "Non-White": 2,
             "White": 1,
         },
+        "ethnicity_group": {"White": 1, "Asian": 2, "Black": 3, "Mixed": 4, "Other": 5},
         "illness_reduces_activity_or_ability": {"Not at all": 0, "Yes, a little": 1, "Yes, a lot": 2},
         "work_sector": {
             "Teaching and education": 1,
@@ -962,6 +972,7 @@ category_maps = {
             "W06000024": 383,
         },
         "cis_area_code_20": {
+            "J00000000": 0,
             "J06000101": 1,
             "J06000102": 2,
             "J06000103": 3,
@@ -1291,6 +1302,25 @@ category_maps = {
             "35-49": 5,
             "50-69": 6,
             "70+": 7,
+        },
+        "digital_entry_pack_status": {
+            "Re-Sent": 1,
+            "Sent": 2,
+            "Reattempt": 3,
+            "Failed": 4,
+            "delivered": 5,
+        },
+        "existing_participant_digital_opt_in_reminder_1_status": {
+            "temporary-failure": 1,
+            "permanent-failure": 2,
+            "Sent": 3,
+            "delivered": 4,
+        },
+        "existing_participant_digital_opt_in_reminder_2_status": {
+            "temporary-failure": 1,
+            "permanent-failure": 2,
+            "Sent": 3,
+            "delivered": 4,
         },
     }
 }
@@ -2067,6 +2097,11 @@ column_name_maps = {
         "eth11ni": "ethnicity_aps_northen_ireland",
         "pwta18": "person_level_weight_aps_18",
         "age": "age",
+    },
+    "participant_extract_digital_map": {
+        "withdrawn_reason": "participant_withdrawal_reason",
+        "withdrawn_type": "participant_withdrawal_type",
+        "existing_participant_digital_opt_in_reminder_2_status": "",  # picklist
     },
 }
 

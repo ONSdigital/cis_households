@@ -177,7 +177,9 @@
   which_symptoms_last_7_days: She spent her earliest years reading classic literature,
     and writing poetry.
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_original: 'No'
   work_health_care_area: 'Yes'
+  work_health_care_area_original: 'Yes'
   work_health_care_area_raw: 'Yes'
   work_health_care_patient_facing: null
   work_location: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear down this wall!
@@ -197,6 +199,7 @@
   work_not_from_home_days_per_week: I'm gonna make him an offer he can't refuse.
   work_not_from_home_days_per_week_raw: I'm gonna make him an offer he can't refuse.
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
   work_sector: Haskell features a type system with type inference and lazy evaluation.
   work_sector_other: Make me a sandwich.
   work_social_care: 'No'
@@ -384,7 +387,9 @@
   which_symptoms_last_7_days: '"Messages can be sent to and received from ports, but
     these messages must obey the so-called ""port protocol."""'
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_original: 'No'
   work_health_care_area: 'Yes'
+  work_health_care_area_original: 'Yes'
   work_health_care_area_raw: 'Yes'
   work_health_care_patient_facing: null
   work_location: Mama always said life was like a box of chocolates. You never know
@@ -404,6 +409,7 @@
   work_not_from_home_days_per_week_raw: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
   work_sector: Atoms can contain any character if they are enclosed within single
     quotes and an escape convention exists which allows any character to be used within
     an atom.
@@ -597,7 +603,9 @@
   which_symptoms_last_7_days: She spent her earliest years reading classic literature,
     and writing poetry.
   work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_original: null
   work_health_care_area: 'No'
+  work_health_care_area_original: 'No'
   work_health_care_area_raw: 'No'
   work_health_care_patient_facing: 'No'
   work_location: '"You''ve got to ask yourself one question: ""Do I feel lucky?""
@@ -616,6 +624,7 @@
   work_not_from_home_days_per_week: Here's looking at you, kid.
   work_not_from_home_days_per_week_raw: Here's looking at you, kid.
   work_nursing_or_residential_care_home: null
+  work_nursing_or_residential_care_home_original: null
   work_sector: Haskell is a standardized, general-purpose purely functional programming
     language, with non-strict semantics and strong static typing.
   work_sector_other: Do you come here often?
@@ -801,7 +810,9 @@
   visit_id: DHVF-8042076275
   which_symptoms_last_7_days: Any element of a tuple can be accessed in constant time.
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_original: 'No'
   work_health_care_area: 'No'
+  work_health_care_area_original: 'No'
   work_health_care_area_raw: 'No'
   work_health_care_patient_facing: 'No'
   work_location: One morning I shot an elephant in my pajamas. How he got in my pajamas,
@@ -821,6 +832,7 @@
   work_not_from_home_days_per_week_raw: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
   work_nursing_or_residential_care_home: null
+  work_nursing_or_residential_care_home_original: null
   work_sector: The sequential subset of Erlang supports eager evaluation, single assignment,
     and dynamic typing.
   work_sector_other: '"Messages can be sent to and received from ports, but these
@@ -1014,7 +1026,9 @@
   visit_id: DVH-0165258086
   which_symptoms_last_7_days: Do you have any idea why this is not working?
   work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_original: null
   work_health_care_area: null
+  work_health_care_area_original: null
   work_health_care_area_raw: null
   work_health_care_patient_facing: null
   work_location: Those who refuse to learn from history are condemned to repeat it.
@@ -1036,6 +1050,7 @@
   work_not_from_home_days_per_week_raw: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
   work_sector: Ports are created with the built-in function open_port.
   work_sector_other: Do you come here often?
   work_social_care: 'No'
@@ -1225,7 +1240,9 @@
   visit_id: DVH-0765261449
   which_symptoms_last_7_days: Any element of a tuple can be accessed in constant time.
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_original: 'No'
   work_health_care_area: 'Yes'
+  work_health_care_area_original: 'Yes'
   work_health_care_area_raw: 'Yes'
   work_health_care_patient_facing: null
   work_location: You're gonna need a bigger boat.
@@ -1246,6 +1263,7 @@
   work_not_from_home_days_per_week_raw: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
   work_sector: I don't even care.
   work_sector_other: Atoms are used within a program to denote distinguished values.
   work_social_care: 'No'
@@ -1432,7 +1450,9 @@
   which_symptoms_last_7_days: They are written as strings of consecutive alphanumeric
     characters, the first character being lowercase.
   work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_original: null
   work_health_care_area: null
+  work_health_care_area_original: null
   work_health_care_area_raw: null
   work_health_care_patient_facing: null
   work_location: Houston, we have a problem.
@@ -1455,6 +1475,7 @@
   work_not_from_home_days_per_week_raw: Get your stinking paws off me, you damned
     dirty ape.
   work_nursing_or_residential_care_home: null
+  work_nursing_or_residential_care_home_original: null
   work_sector: Haskell is a standardized, general-purpose purely functional programming
     language, with non-strict semantics and strong static typing.
   work_sector_other: I don't even care.
@@ -1646,7 +1667,9 @@
   which_symptoms_last_7_days: Tuples are containers for a fixed number of Erlang data
     types.
   work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_original: null
   work_health_care_area: 'No'
+  work_health_care_area_original: 'No'
   work_health_care_area_raw: 'No'
   work_health_care_patient_facing: 'No'
   work_location: Houston, we have a problem.
@@ -1663,6 +1686,7 @@
   work_not_from_home_days_per_week_raw: Those who refuse to learn from history are
     condemned to repeat it.
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
   work_sector: Erlang is a general-purpose, concurrent, functional programming language.
   work_sector_other: Atoms are used within a program to denote distinguished values.
   work_social_care: 'No'
@@ -1853,7 +1877,9 @@
   which_symptoms_last_7_days: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
     are D1, D2, ... Dn.
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_original: 'No'
   work_health_care_area: 'Yes'
+  work_health_care_area_original: 'Yes'
   work_health_care_area_raw: 'Yes'
   work_health_care_patient_facing: null
   work_location: You're gonna need a bigger boat.
@@ -1870,6 +1896,7 @@
   work_not_from_home_days_per_week_raw: Mr. Gorbachev, open this gate! Mr. Gorbachev,
     tear down this wall!
   work_nursing_or_residential_care_home: null
+  work_nursing_or_residential_care_home_original: null
   work_sector: The sequential subset of Erlang supports eager evaluation, single assignment,
     and dynamic typing.
   work_sector_other: The Galactic Empire is nearing completion of the Death Star,
@@ -2060,7 +2087,9 @@
   visit_id: DVH-8988073988
   which_symptoms_last_7_days: Make me a sandwich.
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_original: 'No'
   work_health_care_area: 'Yes'
+  work_health_care_area_original: 'Yes'
   work_health_care_area_raw: 'Yes'
   work_health_care_patient_facing: null
   work_location: The only thing we have to fear is fear itself.
@@ -2085,6 +2114,7 @@
   work_not_from_home_days_per_week_raw: A census taker once tried to test me. I ate
     his liver with some fava beans and a nice Chianti.
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
   work_sector: Type classes first appeared in the Haskell programming language.
   work_sector_other: Ports are created with the built-in function open_port.
   work_social_care: 'No'
