@@ -38,6 +38,18 @@ def get_config() -> dict:
 
         else:
             modified_config[section_name] = section_config
+
+    for stage_name, config in modified_config["stages"].items():
+        if (
+            "input_stage" in config
+            and config["input_stage"] in modified_config["stages"]
+            and "output_tables" in modified_config["stages"][config["input_stage"]]
+        ):
+            modified_config["stages"][stage_name]["input_survey_table"] = modified_config["stages"][
+                config["input_stage"]
+            ]["output_tables"]["output_survey_table"]
+            del modified_config["stages"][stage_name]["input_stage"]
+
     return modified_config
 
 
