@@ -347,7 +347,8 @@ def fill_forward_event(
     df = df.withColumn(event_indicator_column, F.when(F.col(event_date_column).isNull(), "No").otherwise("Yes"))
     df = df.drop("DROP_EVENT").distinct().withColumn("ROW_NUMBER", F.row_number().over(window))
     df = df.filter(F.col("ROW_NUMBER") == 1).drop("ROW_NUMBER")
-    return df.unionByName(null_visit_df)
+    df = df.unionByName(null_visit_df)
+    return df
 
 
 def fill_forward_from_last_change_marked_subset(
