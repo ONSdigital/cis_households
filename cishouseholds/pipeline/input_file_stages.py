@@ -3,6 +3,7 @@ from cishouseholds.pipeline.high_level_transformations import clean_survey_respo
 from cishouseholds.pipeline.high_level_transformations import clean_survey_responses_version_2
 from cishouseholds.pipeline.high_level_transformations import derive_additional_v1_2_columns
 from cishouseholds.pipeline.high_level_transformations import pre_generic_digital_transformations
+from cishouseholds.pipeline.high_level_transformations import transform_participant_extract_digital
 from cishouseholds.pipeline.high_level_transformations import transform_survey_responses_generic
 from cishouseholds.pipeline.high_level_transformations import transform_survey_responses_version_0_delta
 from cishouseholds.pipeline.high_level_transformations import transform_survey_responses_version_1_delta
@@ -18,6 +19,24 @@ from cishouseholds.pipeline.timestamp_map import survey_responses_v0_datetime_ma
 from cishouseholds.pipeline.timestamp_map import survey_responses_v1_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v2_datetime_map
 from cishouseholds.pipeline.validation_schema import validation_schemas
+
+cis_digital_parameters = {
+    "stage_name": "survey_responses_version_digital_ETL",
+    "dataset_name": "survey_responses_digital",
+    "id_column": "participant_completion_window_id",
+    "validation_schema": validation_schemas["cis_digital_validation_schema"],
+    "datetime_column_map": cis_digital_datetime_map,
+    "transformation_functions": [
+        translate_welsh_survey_responses_version_digital,
+        pre_generic_digital_transformations,
+        transform_survey_responses_generic,
+        transform_survey_responses_version_digital_delta,
+        assign_has_been_columns,
+    ],
+    "sep": "|",
+    "cast_to_double_list": survey_response_cisd_cast_to_double,
+    "source_file_column": "survey_response_source_file",
+}
 
 survey_responses_v2_parameters = {
     "stage_name": "survey_responses_version_2_ETL",
@@ -72,18 +91,14 @@ survey_responses_v0_parameters = {
     "source_file_column": "survey_response_source_file",
 }
 
-cis_digital_parameters = {
-    "stage_name": "survey_responses_version_digital_ETL",
-    "dataset_name": "survey_responses_digital",
-    "id_column": "participant_completion_window_id",
-    "validation_schema": validation_schemas["cis_digital_validation_schema"],
+participant_extract_digital_parameters = {
+    "stage_name": "participant_extract_ETL",
+    "dataset_name": "participant_extract",
+    "id_column": "participant_id",
+    "validation_schema": validation_schemas["participant_extract_validation_schema"],
     "datetime_column_map": cis_digital_datetime_map,
     "transformation_functions": [
-        translate_welsh_survey_responses_version_digital,
-        pre_generic_digital_transformations,
-        transform_survey_responses_generic,
-        transform_survey_responses_version_digital_delta,
-        assign_has_been_columns,
+        transform_participant_extract_digital,
     ],
     "sep": "|",
     "cast_to_double_list": survey_response_cisd_cast_to_double,

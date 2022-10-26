@@ -13,6 +13,7 @@ from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.derive import assign_age_at_date
+from cishouseholds.derive import assign_any_symptoms_around_visit
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_column_regex_match
@@ -43,7 +44,6 @@ from cishouseholds.derive import assign_true_if_any
 from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import assign_visit_order
 from cishouseholds.derive import assign_work_health_care
-from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import assign_work_status_group
@@ -161,6 +161,63 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate_class import SparkValidate
 
 # from cishouseholds.pipeline.regex_patterns import healthcare_bin_pattern
+
+
+def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
+    """
+    transform and process participant extract data received from cis digital
+    """
+    col_val_map = {
+        "withdrawn_reason": {
+            "Moving Location": "Moving location",
+            "Bad experience with tester / survey": "Bad experience with interviewer/survey",
+            "Swab / blood process too distressing": "Swab/blood process too distressing",
+            "Do NOT Reinstate": "",
+        },
+        "ethnicity": {
+            "African": "Black,Caribbean,African-African",
+            "Caribbean": "Black,Caribbean,Afro-Caribbean",
+            "Any other Black or African or Carribbean background": "Any other Black background",
+            "Any other Mixed/Multiple background": "Any other Mixed background",
+            "Bangladeshi": "Asian or Asian British-Bangladeshi",
+            "Chinese": "Asian or Asian British-Chinese",
+            "English, Welsh, Scottish, Northern Irish or British": "White-British",
+            "Indian": "Asian or Asian British-Indian",
+            "Irish": "White-Irish",
+            "Pakistani": "Asian or Asian British-Pakistani",
+            "White and Asian": "Mixed-White & Asian",
+            "White and Black African": "Mixed-White & Black African",
+            "White and Black Caribbean": "Mixed-White & Black Caribbean",
+            "Gypsy or Irish Traveller": "White-Gypsy or Irish Traveller",
+            "Arab": "Other ethnic group-Arab",
+        },
+    }
+
+    ethnicity_map = {
+        "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
+        "Asian": [
+            "Asian or Asian British-Indian",
+            "Asian or Asian British-Pakistani",
+            "Asian or Asian British-Bangladeshi",
+            "Asian or Asian British-Chinese",
+            "Any other Asian background",
+        ],
+        "Black": ["Black,Caribbean,African-African", "Black,Caribbean,Afro-Caribbean", "Any other Black background"],
+        "Mixed": [
+            "Mixed-White & Black Caribbean",
+            "Mixed-White & Black African",
+            "Mixed-White & Asian",
+            "Any other Mixed background",
+        ],
+        "Other": ["Other ethnic group-Arab", "Any other ethnic group"],
+    }
+
+    df = assign_column_from_mapped_list_key(
+        df=df, column_name_to_assign="ethnicity_group", reference_column="ethnic_group", map=ethnicity_map
+    )
+
+    df = apply_value_map_multiple_columns(df, col_val_map)
+    return df
 
 
 def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFrame:
@@ -1253,13 +1310,11 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     raw_copy_list = [
         "think_had_covid_any_symptoms",
         "think_have_covid_symptom_any",
+        "work_health_care_area",
         "work_main_job_title",
         "work_main_job_role",
-        "work_health_care_patient_facing",
-        "work_health_care_area",
         "work_status_v1",
         "work_status_v2",
-        "work_social_care",
         "work_not_from_home_days_per_week",
         "work_location",
         "sex",
@@ -1267,7 +1322,29 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "blood_sample_barcode",
         "swab_sample_barcode",
     ]
+    original_copy_list = [
+        "work_healthcare_patient_facing",
+        "work_health_care_area",
+        "work_social_care",
+        "work_nursing_or_residential_care_home",
+        "work_direct_contact_patients_or_clients",
+        "work_patient_facing_now",
+    ]
+
+    healthcare_area_mapper = {
+        "Primary care for example in a GP or dentist": "Primary",
+        "Secondary care for example in a hospital": "Secondary",
+        "Yes, in secondary care, e.g. hospital": "Secondary",
+        "Yes, in other healthcare settings, e.g. mental health": "Other",
+        "Yes, in primary care, e.g. GP,dentist": "Primary",
+        "Another type of healthcare-for example mental health services?": "Other",
+    }
+
     df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
+    if "work_health_care_area" in df.columns:
+        df = update_column_values_from_map(df, "work_health_care_area", healthcare_area_mapper)
+    df = assign_raw_copies(df, [column for column in original_copy_list if column in df.columns], "original")
+
     df = assign_unique_id_column(
         df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
     )
@@ -1459,37 +1536,37 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
     df = update_column_values_from_map(df=df, column="work_status_v2", map=work_status_dict["work_status_v2"])
 
     ## Not needed in release 1. Confirm that these are v2-only when pulling them back in, as they should likely be union dependent.
-    # df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
-    # df = assign_column_given_proportion(
-    #     df=df,
-    #     column_name_to_assign="ever_work_person_facing_or_social_care",
-    #     groupby_column="participant_id",
-    #     reference_columns=["work_social_care"],
-    #     count_if=["Yes, care/residential home, resident-facing", "Yes, other social care, resident-facing"],
-    #     true_false_values=["Yes", "No"],
-    # )
-    # df = assign_column_given_proportion(
-    #     df=df,
-    #     column_name_to_assign="ever_care_home_worker",
-    #     groupby_column="participant_id",
-    #     reference_columns=["work_social_care", "work_nursing_or_residential_care_home"],
-    #     count_if=["Yes, care/residential home, resident-facing"],
-    #     true_false_values=["Yes", "No"],
-    # )
-    # df = assign_column_given_proportion(
-    #     df=df,
-    #     column_name_to_assign="ever_had_long_term_health_condition",
-    #     groupby_column="participant_id",
-    #     reference_columns=["illness_lasting_over_12_months"],
-    #     count_if=["Yes"],
-    #     true_false_values=["Yes", "No"],
-    # )
-    # df = assign_ever_had_long_term_health_condition_or_disabled(
-    #     df=df,
-    #     column_name_to_assign="ever_had_long_term_health_condition_or_disabled",
-    #     health_conditions_column="illness_lasting_over_12_months",
-    #     condition_impact_column="illness_reduces_activity_or_ability",
-    # )
+    df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
+    df = assign_column_given_proportion(
+        df=df,
+        column_name_to_assign="ever_work_person_facing_or_social_care",
+        groupby_column="participant_id",
+        reference_columns=["work_social_care"],
+        count_if=["Yes, care/residential home, resident-facing", "Yes, other social care, resident-facing"],
+        true_false_values=["Yes", "No"],
+    )
+    df = assign_column_given_proportion(
+        df=df,
+        column_name_to_assign="ever_care_home_worker",
+        groupby_column="participant_id",
+        reference_columns=["work_social_care", "work_nursing_or_residential_care_home"],
+        count_if=["Yes, care/residential home, resident-facing"],
+        true_false_values=["Yes", "No"],
+    )
+    df = assign_column_given_proportion(
+        df=df,
+        column_name_to_assign="ever_had_long_term_health_condition",
+        groupby_column="participant_id",
+        reference_columns=["illness_lasting_over_12_months"],
+        count_if=["Yes"],
+        true_false_values=["Yes", "No"],
+    )
+    df = assign_ever_had_long_term_health_condition_or_disabled(
+        df=df,
+        column_name_to_assign="ever_had_long_term_health_condition_or_disabled",
+        health_conditions_column="illness_lasting_over_12_months",
+        condition_impact_column="illness_reduces_activity_or_ability",
+    )
     return df
 
 
@@ -1685,6 +1762,10 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     """
     Transformations that are specific to version 2 survey responses.
     """
+    raw_copy_list = ["cis_covid_vaccine_number_of_doses"]
+
+    df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
+
     df = assign_taken_column(df=df, column_name_to_assign="swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df=df, column_name_to_assign="blood_taken", reference_column="blood_sample_barcode")
 
@@ -1793,39 +1874,50 @@ def symptom_column_transformations(df):
         count_if_value="Yes",
     )
     # TODO - not needed until later release
-    # df = update_think_have_covid_symptom_any(
-    #     df=df,
-    #     column_name_to_update="think_have_covid_symptom_any",
-    #     count_reference_column="think_have_covid_symptom_count",
-    # )
+    df = update_think_have_covid_symptom_any(
+        df=df,
+        column_name_to_update="think_have_covid_symptom_any",
+        count_reference_column="think_have_covid_symptom_count",
+    )
 
-    # df = assign_true_if_any(
-    #     df=df,
-    #     column_name_to_assign="any_think_have_covid_symptom_or_now",
-    #     reference_columns=["think_have_covid_symptom_any", "think_have_covid"],
-    #     true_false_values=["Yes", "No"],
-    # )
+    df = assign_true_if_any(
+        df=df,
+        column_name_to_assign="any_think_have_covid_symptom_or_now",
+        reference_columns=["think_have_covid_symptom_any", "think_have_covid"],
+        true_false_values=["Yes", "No"],
+    )
 
-    # df = assign_any_symptoms_around_visit(
-    #     df=df,
-    #     column_name_to_assign="any_symptoms_around_visit",
-    #     symptoms_bool_column="any_think_have_covid_symptom_or_now",
-    #     id_column="participant_id",
-    #     visit_date_column="visit_datetime",
-    #     visit_id_column="visit_id",
-    # )
+    df = assign_any_symptoms_around_visit(
+        df=df,
+        column_name_to_assign="any_symptoms_around_visit",
+        symptoms_bool_column="any_think_have_covid_symptom_or_now",
+        id_column="participant_id",
+        visit_date_column="visit_datetime",
+        visit_id_column="visit_id",
+    )
 
-    # df = assign_true_if_any(
-    #     df=df,
-    #     column_name_to_assign="think_have_covid_cghfevamn_symptom_group",
-    #     reference_columns=[
-    #         "think_have_covid_symptom_cough",
-    #         "think_have_covid_symptom_fever",
-    #         "think_have_covid_symptom_loss_of_smell",
-    #         "think_have_covid_symptom_loss_of_taste",
-    #     ],
-    #     true_false_values=["Yes", "No"],
-    # )
+    df = assign_true_if_any(
+        df=df,
+        column_name_to_assign="think_have_covid_cghfevamn_symptom_group",
+        reference_columns=[
+            "think_have_covid_symptom_cough",
+            "think_have_covid_symptom_fever",
+            "think_have_covid_symptom_loss_of_smell",
+            "think_have_covid_symptom_loss_of_taste",
+        ],
+        true_false_values=["Yes", "No"],
+    )
+    df = assign_true_if_any(
+        df=df,
+        column_name_to_assign="think_had_covid_cghfevamn_symptom_group",
+        reference_columns=[
+            "think_had_covid_symptom_cough",
+            "think_had_covid_symptom_fever",
+            "think_had_covid_symptom_loss_of_smell",
+            "think_had_covid_symptom_loss_of_taste",
+        ],
+        true_false_values=["Yes", "No"],
+    )
     # df = assign_true_if_any(
     #     df=df,
     #     column_name_to_assign="think_have_covid_cghfevamn_symptom_group",
@@ -1837,25 +1929,14 @@ def symptom_column_transformations(df):
     #     ],
     #     true_false_values=["Yes", "No"],
     # )
-    # df = assign_true_if_any(
-    #     df=df,
-    #     column_name_to_assign="think_have_covid_cghfevamn_symptom_group",
-    #     reference_columns=[
-    #         "think_had_covid_symptom_cough",
-    #         "think_had_covid_symptom_fever",
-    #         "think_had_covid_symptom_loss_of_smell",
-    #         "think_had_covid_symptom_loss_of_taste",
-    #     ],
-    #     true_false_values=["Yes", "No"],
-    # )
-    # df = assign_any_symptoms_around_visit(
-    #     df=df,
-    #     column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
-    #     id_column="participant_id",
-    #     symptoms_bool_column="think_have_covid_cghfevamn_symptom_group",
-    #     visit_date_column="visit_datetime",
-    #     visit_id_column="visit_id",
-    # )
+    df = assign_any_symptoms_around_visit(
+        df=df,
+        column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
+        id_column="participant_id",
+        symptoms_bool_column="think_have_covid_cghfevamn_symptom_group",
+        visit_date_column="visit_datetime",
+        visit_id_column="visit_id",
+    )
     return df
 
 
@@ -1983,6 +2064,9 @@ def union_dependent_derivations(df):
     df = assign_ethnicity_white(
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
+
+    df = derive_work_status_columns(df)
+
     # df = assign_work_patient_facing_now(
     #     df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_patient_facing"
     # )
@@ -1992,63 +2076,63 @@ def union_dependent_derivations(df):
     #     "work_status_v0",
     #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     # )
-    # df = assign_first_visit(
-    #     df=df,
-    #     column_name_to_assign="household_first_visit_datetime",
-    #     id_column="participant_id",
-    #     visit_date_column="visit_datetime",
-    # )
-    # df = assign_last_visit(
-    #     df=df,
-    #     column_name_to_assign="last_attended_visit_datetime",
-    #     id_column="participant_id",
-    #     visit_status_column="participant_visit_status",
-    #     visit_date_column="visit_datetime",
-    # )
-    # df = assign_date_difference(
-    #     df=df,
-    #     column_name_to_assign="days_since_enrolment",
-    #     start_reference_column="household_first_visit_datetime",
-    #     end_reference_column="last_attended_visit_datetime",
-    # )
-    # df = assign_date_difference(
-    #     df=df,
-    #     column_name_to_assign="household_weeks_since_survey_enrolment",
-    #     start_reference_column="survey start",
-    #     end_reference_column="visit_datetime",
-    #     format="weeks",
-    # )
-    # df = assign_named_buckets(
-    #     df,
-    #     reference_column="days_since_enrolment",
-    #     column_name_to_assign="visit_number",
-    #     map={
-    #         0: 0,
-    #         4: 1,
-    #         11: 2,
-    #         18: 3,
-    #         25: 4,
-    #         43: 5,
-    #         71: 6,
-    #         99: 7,
-    #         127: 8,
-    #         155: 9,
-    #         183: 10,
-    #         211: 11,
-    #         239: 12,
-    #         267: 13,
-    #         295: 14,
-    #         323: 15,
-    #     },
-    # )
-    # df = assign_any_symptoms_around_visit(
-    #     df=df,
-    #     column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
-    #     symptoms_bool_column="think_have_covid_cghfevamn_symptom_group",
-    #     id_column="participant_id",
-    #     visit_date_column="visit_datetime",
-    #     visit_id_column="visit_id",
-    # )
+    df = assign_first_visit(
+        df=df,
+        column_name_to_assign="household_first_visit_datetime",
+        id_column="ons_household_id",
+        visit_date_column="visit_datetime",
+    )
+    df = assign_last_visit(
+        df=df,
+        column_name_to_assign="last_attended_visit_datetime",
+        id_column="ons_household_id",
+        visit_status_column="participant_visit_status",
+        visit_date_column="visit_datetime",
+    )
+    df = assign_date_difference(
+        df=df,
+        column_name_to_assign="days_since_enrolment",
+        start_reference_column="household_first_visit_datetime",
+        end_reference_column="last_attended_visit_datetime",
+    )
+    df = assign_date_difference(
+        df=df,
+        column_name_to_assign="household_weeks_since_survey_enrolment",
+        start_reference_column="survey start",
+        end_reference_column="visit_datetime",
+        format="weeks",
+    )
+    df = assign_named_buckets(
+        df,
+        reference_column="days_since_enrolment",
+        column_name_to_assign="visit_number",
+        map={
+            0: 0,
+            4: 1,
+            11: 2,
+            18: 3,
+            25: 4,
+            43: 5,
+            71: 6,
+            99: 7,
+            127: 8,
+            155: 9,
+            183: 10,
+            211: 11,
+            239: 12,
+            267: 13,
+            295: 14,
+            323: 15,
+        },
+    )
+    df = assign_any_symptoms_around_visit(
+        df=df,
+        column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
+        symptoms_bool_column="think_have_covid_cghfevamn_symptom_group",
+        id_column="participant_id",
+        visit_date_column="visit_datetime",
+        visit_id_column="visit_id",
+    )
     df = derive_people_in_household_count(df)
     df = update_column_values_from_map(
         df=df,
@@ -2072,6 +2156,13 @@ def union_dependent_derivations(df):
     )
     df = assign_work_status_group(df, "work_status_group", "work_status_v0")
 
+    window = Window.partitionBy("participant_id")
+    df = df.withColumn(
+        "patient_facing_over_20_percent",
+        F.sum(F.when(F.col("work_direct_contact_patients_or_clients") == "Yes", 1).otherwise(0)).over(window)
+        / F.sum(F.lit(1)).over(window),
+    )
+
     df = fill_forward_from_last_change(
         df=df,
         fill_forward_columns=[
@@ -2086,6 +2177,14 @@ def union_dependent_derivations(df):
         record_changed_column="cis_covid_vaccine_received",
         record_changed_value="Yes",
     )
+    df = create_formatted_datetime_string_columns(df)
+    return df
+
+
+def fill_forward_events_for_key_columns(df):
+    """
+    Function that contains
+    """
     # df_2 = get_or_create_spark_session().createDataFrame(
     #     df.rdd, schema=df.schema
     # )  # breaks lineage to avoid Java OOM Error
@@ -2095,6 +2194,7 @@ def union_dependent_derivations(df):
         df=df,
         event_indicator_column="think_had_covid",
         event_date_column="think_had_covid_onset_date",
+        event_date_tolerance=7,
         detail_columns=[
             "other_covid_infection_test",
             "other_covid_infection_test_results",
@@ -2135,6 +2235,7 @@ def union_dependent_derivations(df):
         df=df,
         event_indicator_column="contact_suspected_positive_covid_last_28_days",
         event_date_column="last_suspected_covid_contact_date",
+        event_date_tolerance=7,
         detail_columns=["last_suspected_covid_contact_type"],
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",
@@ -2146,11 +2247,11 @@ def union_dependent_derivations(df):
         df=df,
         event_indicator_column="contact_known_positive_covid_last_28_days",
         event_date_column="last_covid_contact_date",
+        event_date_tolerance=7,
         detail_columns=["last_covid_contact_type"],
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",
     )
-    df = create_formatted_datetime_string_columns(df)
     return df
 
 
@@ -2357,18 +2458,18 @@ def fill_forwards_transformations(df):
 
     ## TODO: Not needed until a future release, will leave commented out in code until required
     #
-    #    df = update_column_if_ref_in_list(
-    #        df=df,
-    #        column_name_to_update="work_location",
-    #        old_value=None,
-    #        new_value="Not applicable, not currently working",
-    #        reference_column="work_status_v0",
-    #        check_list=[
-    #            "Furloughed (temporarily not working)",
-    #            "Not working (unemployed, retired, long-term sick etc.)",
-    #            "Student",
-    #        ],
-    #    )
+    # df = update_column_if_ref_in_list(
+    #     df=df,
+    #     column_name_to_update="work_location",
+    #     old_value=None,
+    #     new_value="Not applicable, not currently working",
+    #     reference_column="work_status_v0",
+    #     check_list=[
+    #         "Furloughed (temporarily not working)",
+    #         "Not working (unemployed, retired, long-term sick etc.)",
+    #         "Student",
+    #     ],
+    # )
 
     df = fill_forwards_travel_column(df)
 
@@ -2492,6 +2593,12 @@ def derive_overall_vaccination(df: DataFrame) -> DataFrame:
 
 def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     """Add result of various regex pattern matchings"""
+    # df = df.drop(
+    #     "work_healthcare_patient_facing_original",
+    #     "work_social_care_original",
+    #     "work_care_nursing_home_original",
+    #     "work_direct_contact_patients_or_clients_original",
+    # )
 
     df = df.withColumn("work_main_job_title", F.upper(F.col("work_main_job_title")))
     df = df.withColumn("work_main_job_role", F.upper(F.col("work_main_job_role")))
@@ -2504,48 +2611,55 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         priority_map=priority_map,
     )
     # create healthcare area flag
-    df = df.withColumn("healthcare_area", F.lit(None))
-    df = df.withColumn("social_care_area", F.lit(None))
-
+    df = df.withColumn("work_health_care_area", F.lit(None))
     for healthcare_type, roles in healthcare_classification.items():  # type: ignore
         df = df.withColumn(
-            "healthcare_area",
-            F.when(F.col("social_care_area").isNotNull(), None)
-            .when(array_contains_any("regex_derived_job_sector", roles), healthcare_type)
-            .otherwise(F.col("healthcare_area")),  # type: ignore
+            "work_health_care_area",
+            F.when(array_contains_any("regex_derived_job_sector", roles), healthcare_type).otherwise(
+                F.col("work_health_care_area")
+            ),  # type: ignore
         )
     # TODO: need to exclude healthcare types from social care matching
-
+    df = df.withColumn("work_social_care_area", F.lit(None))
     for social_care_type, roles in social_care_classification.items():  # type: ignore
         df = df.withColumn(
-            "social_care_area",
-            F.when(array_contains_any("regex_derived_job_sector", roles), social_care_type).otherwise(  # type: ignore
-                F.col("social_care_area")
-            ),
+            "work_social_care_area",
+            F.when(F.col("work_health_care_area").isNotNull(), None)
+            .when(array_contains_any("regex_derived_job_sector", roles), social_care_type)
+            .otherwise(F.col("work_social_care_area")),  # type: ignore
         )
 
     # add boolean flags for working in healthcare or socialcare
-    df = df.withColumn("works_healthcare", F.when(F.col("healthcare_area").isNotNull(), "Yes").otherwise("No"))
-    df = df.withColumn("works_social_care", F.when(F.col("social_care_area").isNotNull(), "Yes").otherwise("No"))
+
+    df = df.withColumn("works_healthcare", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
 
     df = assign_regex_match_result(
         df=df,
         columns_to_check_in=["work_main_job_title", "work_main_job_role"],
-        column_name_to_assign="is_patient_facing",
+        column_name_to_assign="work_direct_contact_patients_or_clients_regex_derived",
         positive_regex_pattern=patient_facing_pattern.positive_regex_pattern,
         negative_regex_pattern=patient_facing_pattern.negative_regex_pattern,
     )
     df = df.withColumn(
-        "is_patient_facing",
+        "work_direct_contact_patients_or_clients",
         F.when(
-            ((F.col("works_healthcare") == "Yes") | (F.col("is_patient_facing") == True))
+            (F.col("work_health_care_area_original") == F.col("work_health_care_area"))
+            & (F.col("work_direct_contact_patients_or_clients").isNotNull()),
+            F.col("work_direct_contact_patients_or_clients"),
+        )
+        .when(
+            (
+                (F.col("works_healthcare") == "Yes")
+                | (F.col("work_direct_contact_patients_or_clients_regex_derived") == True)
+            )
             & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
             "Yes",
-        ).otherwise("No"),
+        )
+        .otherwise("No"),
     )
     df = assign_column_value_from_multiple_column_map(
         df,
-        "health_care_patient_facing_derived",
+        "work_healthcare_patient_facing",
         [
             ["No", ["No", None]],
             ["No", ["Yes", None]],
@@ -2556,14 +2670,21 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             ["Yes, secondary care, non-patient-facing", ["No", "Secondary"]],
             ["Yes, other healthcare, non-patient-facing", ["No", "Other"]],
         ],
-        ["is_patient_facing", "healthcare_area"],
+        ["work_direct_contact_patients_or_clients", "work_health_care_area"],
     )
-    # window = Window.partitionBy("participant_id")
-    # df = df.withColumn(
-    #     "patient_facing_over_20_percent",
-    #     F.sum(F.when(F.col("is_patient_facing") == "Yes", 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window),
-    # )
-
+    df = assign_column_value_from_multiple_column_map(
+        df,
+        "work_social_care",
+        [
+            ["No", ["No", None]],
+            ["No", ["Yes", None]],
+            ["Yes, care/residential home, resident-facing", ["Yes", "Care/Residential home"]],
+            ["Yes, other social care, resident-facing", ["Yes", "Other"]],
+            ["Yes, care/residential home, non-resident-facing", ["No", "Care/Residential home"]],
+            ["Yes, other social care, non-resident-facing", ["No", "Other"]],
+        ],
+        ["work_direct_contact_patients_or_clients", "work_social_care_area"],
+    )
     # work_status_columns = [col for col in df.columns if "work_status_" in col]
     # for work_status_column in work_status_columns:
     #     df = df.withColumn(
@@ -2573,7 +2694,17 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     #         .when(F.array_contains(F.col("regex_derived_job_sector"), "apprentice"), "working")
     #         .otherwise(F.col(work_status_column)),
     #     )
-    return df
+    return df.select(
+        "work_main_job_title",
+        "work_main_job_role",
+        "work_direct_contact_patients_or_clients",
+        "work_social_care_area",
+        "work_health_care_area",
+        "work_healthcare_patient_facing",
+        "work_social_care",
+        "works_healthcare",
+        "regex_derived_job_sector",
+    )
 
 
 def flag_records_to_reclassify(df: DataFrame) -> DataFrame:

@@ -20,6 +20,7 @@
   cis_covid_vaccine_date_3: '2022-01-03 00:00:00.000000'
   cis_covid_vaccine_date_4: '2022-01-09 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_number_of_doses_raw: 3 or more
   cis_covid_vaccine_offered: null
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: From a research study/trial
@@ -63,7 +64,11 @@
   ethnic_group: Asian or Asian British
   ethnicity: Asian or Asian British-Chinese
   ethnicity_other: I don't even care.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
   ever_smoked_regularly: 'Yes'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Yes, sometimes
   face_covering_outside_of_home: null
   face_covering_work_or_education: Never
@@ -277,7 +282,9 @@
   voucher_type_preference: Email
   which_symptoms_last_7_days: Fever
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_original: 'No'
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area_original: Other healthcare (e.g. mental health)
   work_health_care_area_raw: Other healthcare (e.g. mental health)
   work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
   work_in_additional_paid_employment: null
@@ -295,6 +302,8 @@
   work_not_from_home_days_per_week: '1'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_original: 'No'
+  work_person_facing_now: 'No'
   work_sector: Retail sector (incl. wholesale)
   work_sector_other: I don't even care.
   work_social_care: 'No'
@@ -324,6 +333,7 @@
   cis_covid_vaccine_date_3: '2022-01-07 00:00:00.000000'
   cis_covid_vaccine_date_4: '2022-01-09 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_number_of_doses_raw: 3 or more
   cis_covid_vaccine_offered: 'No'
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: null
@@ -368,7 +378,11 @@
   ethnicity: Black,Caribbean,Afro-Caribbean
   ethnicity_other: Initially composing light-hearted and irreverent works, he also
     wrote serious, sombre and religious pieces beginning in the 1930s.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
   ever_smoked_regularly: null
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Never
   face_covering_outside_of_home: null
   face_covering_work_or_education: Never
@@ -580,7 +594,9 @@
   voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Sore  Throat
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_original: 'No'
   work_health_care_area: Yes, in secondary care, e.g. hospital
+  work_health_care_area_original: Secondary care (e.g. hospital)
   work_health_care_area_raw: Secondary care (e.g. hospital)
   work_health_care_patient_facing: Yes, secondary care, non-patient-facing
   work_in_additional_paid_employment: 'Yes'
@@ -598,6 +614,8 @@
   work_not_from_home_days_per_week: '5'
   work_not_from_home_days_per_week_raw: '5'
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
+  work_person_facing_now: 'No'
   work_sector: Food production, agriculture, farming
   work_sector_other: Any element of a tuple can be accessed in constant time.
   work_social_care: 'No'
@@ -629,6 +647,7 @@
   cis_covid_vaccine_date_3: null
   cis_covid_vaccine_date_4: null
   cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_number_of_doses_raw: 3 or more
   cis_covid_vaccine_offered: 'Yes'
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: Sinovac
@@ -672,7 +691,11 @@
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Mixed-White & Black African
   ethnicity_other: Make me a sandwich.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'Yes'
+  ever_had_long_term_health_condition_or_disabled: 'No'
   ever_smoked_regularly: null
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: My face is already covered
   face_covering_work_or_education: Yes, sometimes
@@ -886,7 +909,9 @@
   voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: null
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_original: 'No'
   work_health_care_area: null
+  work_health_care_area_original: null
   work_health_care_area_raw: null
   work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'Yes'
@@ -903,6 +928,8 @@
   work_not_from_home_days_per_week: '0.5'
   work_not_from_home_days_per_week_raw: up to 1
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
+  work_person_facing_now: 'No'
   work_sector: Armed forces
   work_sector_other: Ports are created with the built-in function open_port.
   work_social_care: 'No'
@@ -932,6 +959,7 @@
   cis_covid_vaccine_date_3: '2022-01-09 00:00:00.000000'
   cis_covid_vaccine_date_4: '2022-01-02 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: '1'
+  cis_covid_vaccine_number_of_doses_raw: '1'
   cis_covid_vaccine_offered: 'No'
   cis_covid_vaccine_received: null
   cis_covid_vaccine_type: Valneva
@@ -976,7 +1004,11 @@
   ethnicity: Mixed-White & Asian
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
   ever_smoked_regularly: 'Yes'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Yes, sometimes
   face_covering_outside_of_home: My face is already covered
   face_covering_work_or_education: Yes, always
@@ -1191,7 +1223,9 @@
   voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Weakness/tiredness
   work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_original: 'Yes'
   work_health_care_area: null
+  work_health_care_area_original: null
   work_health_care_area_raw: null
   work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'No'
@@ -1210,6 +1244,8 @@
   work_not_from_home_days_per_week: '3'
   work_not_from_home_days_per_week_raw: '3'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_original: 'No'
+  work_person_facing_now: 'No'
   work_sector: Armed forces
   work_sector_other: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
@@ -1245,6 +1281,7 @@
   cis_covid_vaccine_date_3: '2022-01-09 00:00:00.000000'
   cis_covid_vaccine_date_4: null
   cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_number_of_doses_raw: 3 or more
   cis_covid_vaccine_offered: null
   cis_covid_vaccine_received: null
   cis_covid_vaccine_type: Moderna
@@ -1289,7 +1326,11 @@
   ethnicity: Other ethnic group-Arab
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
   ever_smoked_regularly: null
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Yes, always
   face_covering_outside_of_home: Yes, at work/school only
   face_covering_work_or_education: Yes, always
@@ -1503,7 +1544,9 @@
   voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Fever
   work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_original: 'Yes'
   work_health_care_area: Yes, in secondary care, e.g. hospital
+  work_health_care_area_original: Secondary care (e.g. hospital)
   work_health_care_area_raw: Secondary care (e.g. hospital)
   work_health_care_patient_facing: Yes, secondary care, patient-facing
   work_in_additional_paid_employment: 'No'
@@ -1525,6 +1568,8 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_original: 'No'
+  work_person_facing_now: 'No'
   work_sector: Arts,Entertainment or Recreation
   work_sector_other: I don't even care.
   work_social_care: 'No'
@@ -1555,6 +1600,7 @@
   cis_covid_vaccine_date_3: '2022-01-07 00:00:00.000000'
   cis_covid_vaccine_date_4: null
   cis_covid_vaccine_number_of_doses: null
+  cis_covid_vaccine_number_of_doses_raw: null
   cis_covid_vaccine_offered: null
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: Moderna
@@ -1598,7 +1644,11 @@
   ethnic_group: White
   ethnicity: White-British
   ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'Yes'
+  ever_had_long_term_health_condition_or_disabled: 'Yes'
   ever_smoked_regularly: 'Yes'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: null
   face_covering_work_or_education: null
@@ -1814,7 +1864,9 @@
   voucher_type_preference: Email
   which_symptoms_last_7_days: Weakness/tiredness
   work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_original: 'Yes'
   work_health_care_area: Primary care (e.g. GP, dentist)
+  work_health_care_area_original: Primary care (e.g. GP, dentist)
   work_health_care_area_raw: Primary care (e.g. GP, dentist)
   work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'Yes'
@@ -1838,6 +1890,8 @@
   work_not_from_home_days_per_week: null
   work_not_from_home_days_per_week_raw: null
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
+  work_person_facing_now: null
   work_sector: null
   work_sector_other: Atoms are used within a program to denote distinguished values.
   work_social_care: null
@@ -1868,6 +1922,7 @@
   cis_covid_vaccine_date_3: null
   cis_covid_vaccine_date_4: '2022-01-01 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: null
+  cis_covid_vaccine_number_of_doses_raw: null
   cis_covid_vaccine_offered: 'No'
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: Sinopharm
@@ -1912,7 +1967,11 @@
   ethnicity: Black,Caribbean,African-African
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
   ever_smoked_regularly: 'No'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Never
   face_covering_outside_of_home: My face is already covered
   face_covering_work_or_education: Yes, always
@@ -2128,7 +2187,9 @@
   voucher_type_preference: Email
   which_symptoms_last_7_days: null
   work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_original: null
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area_original: Other healthcare (e.g. mental health)
   work_health_care_area_raw: Other healthcare (e.g. mental health)
   work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
   work_in_additional_paid_employment: null
@@ -2144,6 +2205,8 @@
   work_not_from_home_days_per_week: '0'
   work_not_from_home_days_per_week_raw: '0'
   work_nursing_or_residential_care_home: null
+  work_nursing_or_residential_care_home_original: null
+  work_person_facing_now: 'No'
   work_sector: Transport (incl. storage, logistic)
   work_sector_other: Erlang is a general-purpose, concurrent, functional programming
     language.
@@ -2175,6 +2238,7 @@
   cis_covid_vaccine_date_3: null
   cis_covid_vaccine_date_4: '2022-01-09 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: '1'
+  cis_covid_vaccine_number_of_doses_raw: '1'
   cis_covid_vaccine_offered: null
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: From a research study/trial
@@ -2218,7 +2282,11 @@
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Black,Caribbean,Afro-Caribbean
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'Yes'
+  ever_had_long_term_health_condition_or_disabled: 'Yes'
   ever_smoked_regularly: 'Yes'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Yes, sometimes
   face_covering_outside_of_home: Yes, usually both Work/school/other
   face_covering_work_or_education: null
@@ -2432,7 +2500,9 @@
   voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Fever
   work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_original: null
   work_health_care_area: null
+  work_health_care_area_original: null
   work_health_care_area_raw: null
   work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'No'
@@ -2451,6 +2521,8 @@
   work_not_from_home_days_per_week: '0.5'
   work_not_from_home_days_per_week_raw: up to 1
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
+  work_person_facing_now: 'No'
   work_sector: Transport (incl. storage, logistic)
   work_sector_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
@@ -2481,6 +2553,7 @@
   cis_covid_vaccine_date_3: null
   cis_covid_vaccine_date_4: '2022-01-05 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: null
+  cis_covid_vaccine_number_of_doses_raw: null
   cis_covid_vaccine_offered: 'Yes'
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: From a research study/trial
@@ -2524,7 +2597,11 @@
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Mixed-White & Black Caribbean
   ethnicity_other: Ports are used to communicate with the external world.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'Yes'
+  ever_had_long_term_health_condition_or_disabled: 'Yes'
   ever_smoked_regularly: null
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: null
   face_covering_outside_of_home: 'No'
   face_covering_work_or_education: Yes, sometimes
@@ -2739,7 +2816,9 @@
   voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Sore  Throat
   work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_original: null
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area_original: Other healthcare (e.g. mental health)
   work_health_care_area_raw: Other healthcare (e.g. mental health)
   work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
   work_in_additional_paid_employment: 'Yes'
@@ -2759,6 +2838,8 @@
   work_not_from_home_days_per_week: '7'
   work_not_from_home_days_per_week_raw: '7'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_original: 'No'
+  work_person_facing_now: 'No'
   work_sector: Other occupation sector
   work_sector_other: Haskell features a type system with type inference and lazy evaluation.
   work_social_care: 'No'
@@ -2793,6 +2874,7 @@
   cis_covid_vaccine_date_3: '2022-01-07 00:00:00.000000'
   cis_covid_vaccine_date_4: null
   cis_covid_vaccine_number_of_doses: '1'
+  cis_covid_vaccine_number_of_doses_raw: '1'
   cis_covid_vaccine_offered: 'Yes'
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: Novavax
@@ -2837,7 +2919,11 @@
   ethnicity: Mixed-White & Black Caribbean
   ethnicity_other: She spent her earliest years reading classic literature, and writing
     poetry.
+  ever_care_home_worker: 'No'
+  ever_had_long_term_health_condition: 'No'
+  ever_had_long_term_health_condition_or_disabled: 'No'
   ever_smoked_regularly: 'Yes'
+  ever_work_person_facing_or_social_care: 'No'
   face_covering_other_enclosed_places: Yes, always
   face_covering_outside_of_home: Yes, in other situations only
   face_covering_work_or_education: Yes, sometimes
@@ -3052,7 +3138,9 @@
   voucher_type_preference: Paper(Post)
   which_symptoms_last_7_days: Muscle ache
   work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_original: null
   work_health_care_area: Primary care (e.g. GP, dentist)
+  work_health_care_area_original: Primary care (e.g. GP, dentist)
   work_health_care_area_raw: Primary care (e.g. GP, dentist)
   work_health_care_patient_facing: null
   work_in_additional_paid_employment: null
@@ -3073,6 +3161,8 @@
   work_not_from_home_days_per_week: '1'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_original: 'No'
+  work_person_facing_now: 'No'
   work_sector: Civil service or Local Government
   work_sector_other: Haskell features a type system with type inference and lazy evaluation.
   work_social_care: 'No'

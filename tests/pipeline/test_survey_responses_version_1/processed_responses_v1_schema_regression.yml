@@ -656,15 +656,15 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: work_health_care_area_raw
+  nullable: true
+  type: string
+- metadata: {}
   name: work_main_job_title_raw
   nullable: true
   type: string
 - metadata: {}
   name: work_main_job_role_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_health_care_area_raw
   nullable: true
   type: string
 - metadata: {}
@@ -693,6 +693,18 @@ fields:
   type: string
 - metadata: {}
   name: swab_sample_barcode_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_health_care_area_original
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_nursing_or_residential_care_home_original
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_direct_contact_patients_or_clients_original
   nullable: true
   type: string
 - metadata: {}
