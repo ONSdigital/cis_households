@@ -457,7 +457,7 @@ def join_blood_positive_lookup(lookup_table_name: str, input_survey_table: str, 
         ),
         how="left",
     )
-    df = df.withColumn("blood_past_positive_flag", F.when(F.col("blood_past_positive_flag").isNull(), 0).otherwise(1))
+    df = df.withColumn("blood_past_positive_flag", F.when(F.col("blood_past_positive").isNull(), 0).otherwise(1))
     update_table(df, output_survey_table, "overwrite")
 
 
