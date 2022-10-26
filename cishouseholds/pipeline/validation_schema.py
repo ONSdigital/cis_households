@@ -204,6 +204,10 @@ validation_schemas = {
         "main_job_responsibilities": string_dict,
         "Gold SOC2010 code": string_dict,
     },
+    "blood_past_positive_schema": {
+        "ons_household_id": string_dict,
+        "blood_past_positive": integer_dict,
+    },
     "travel_schema": {"been_outside_uk_last_country_old": string_dict, "been_outside_uk_last_country_new": string_dict},
     "tenure_schema": {
         "UAC": string_dict,

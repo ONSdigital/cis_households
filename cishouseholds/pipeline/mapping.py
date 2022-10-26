@@ -1359,6 +1359,10 @@ column_name_maps = {
         "main_job_responsibilities": "work_main_job_role",
         "Gold SOC2010 code": "resolved_soc_code",
     },
+    "blood_past_positive_name_map": {
+        "ons_household_id": "ons_household_id",
+        "blood_past_positive": "blood_past_positive",
+    },
     "swab_variable_name_map": {
         "Sample": "swab_sample_barcode",
         "Result": "pcr_result_classification",
