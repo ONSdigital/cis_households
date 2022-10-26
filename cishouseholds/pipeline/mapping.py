@@ -169,9 +169,9 @@ category_maps = {
         "digital_communication_preference": {"Email": 0, "Letter": 1},
         "sample_return_preference": {"Post": 0, "Courier": 1},
         "survey_not_completed_reason_code": {
-            "FNR - Full Non Response": 0,
-            "QNR - Questionnaire No Return": 1,
-            "TNR - Test Not Returned": 2,
+            "Fnr - full non response": 0,
+            "Qnr - questionnaire no return": 1,
+            "Tnr - test not returned": 2,
         },
         "blood_consolidation_point_error": consolidation_categories,
         "swab_consolidation_point_error": consolidation_categories,
@@ -212,9 +212,10 @@ category_maps = {
             "Any other ethnic group": 18,
         },
         "ethnicity_white": {
-            "Non-White": 0,
+            "Non-White": 2,
             "White": 1,
         },
+        "ethnicity_group": {"White": 1, "Asian": 2, "Black": 3, "Mixed": 4, "Other": 5},
         "illness_reduces_activity_or_ability": {"Not at all": 0, "Yes, a little": 1, "Yes, a lot": 2},
         "work_sector": {
             "Teaching and education": 1,
@@ -971,6 +972,7 @@ category_maps = {
             "W06000024": 383,
         },
         "cis_area_code_20": {
+            "J00000000": 0,
             "J06000101": 1,
             "J06000102": 2,
             "J06000103": 3,
