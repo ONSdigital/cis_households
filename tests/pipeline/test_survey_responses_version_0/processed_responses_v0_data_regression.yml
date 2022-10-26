@@ -137,6 +137,7 @@
   which_symptoms_last_7_days: null
   work_health_care_area: 'No'
   work_health_care_patient_facing: 'No'
+  work_health_care_patient_facing_original: 'No'
   work_location: Its main implementation is the Glasgow Haskell Compiler.
   work_location_raw: Its main implementation is the Glasgow Haskell Compiler.
   work_main_job_role: THE SYNTAX D1D2DN DENOTES A TUPLE WHOSE ARGUMENTS ARE D1 D2  DN
@@ -291,6 +292,7 @@
   which_symptoms_last_7_days: 'No'
   work_health_care_area: 'Yes'
   work_health_care_patient_facing: 'Yes'
+  work_health_care_patient_facing_original: 'Yes'
   work_location: I don't even care.
   work_location_raw: I don't even care.
   work_main_job_role: INITIALLY COMPOSING LIGHT HEARTED AND IRREVERENT WORKS HE ALSO
@@ -446,6 +448,7 @@
   which_symptoms_last_7_days: null
   work_health_care_area: 'No'
   work_health_care_patient_facing: 'No'
+  work_health_care_patient_facing_original: 'No'
   work_location: The Galactic Empire is nearing completion of the Death Star, a space
     station with the power to destroy entire planets.
   work_location_raw: The Galactic Empire is nearing completion of the Death Star,
@@ -608,6 +611,7 @@
   which_symptoms_last_7_days: null
   work_health_care_area: null
   work_health_care_patient_facing: null
+  work_health_care_patient_facing_original: null
   work_location: Tuples are containers for a fixed number of Erlang data types.
   work_location_raw: Tuples are containers for a fixed number of Erlang data types.
   work_main_job_role: ITS MAIN IMPLEMENTATION IS THE GLASGOW HASKELL COMPILER
@@ -765,6 +769,7 @@
   which_symptoms_last_7_days: 'Yes'
   work_health_care_area: 'Yes'
   work_health_care_patient_facing: 'Yes'
+  work_health_care_patient_facing_original: 'Yes'
   work_location: Do you come here often?
   work_location_raw: Do you come here often?
   work_main_job_role: PORTS ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
@@ -921,6 +926,7 @@
   which_symptoms_last_7_days: 'Yes'
   work_health_care_area: 'No'
   work_health_care_patient_facing: 'No'
+  work_health_care_patient_facing_original: 'No'
   work_location: Atoms are used within a program to denote distinguished values.
   work_location_raw: Atoms are used within a program to denote distinguished values.
   work_main_job_role: ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL PROGRAMMING
@@ -1078,6 +1084,7 @@
   which_symptoms_last_7_days: 'Yes'
   work_health_care_area: null
   work_health_care_patient_facing: null
+  work_health_care_patient_facing_original: null
   work_location: Where are my pants?
   work_location_raw: Where are my pants?
   work_main_job_role: HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
@@ -1234,6 +1241,7 @@
   which_symptoms_last_7_days: null
   work_health_care_area: null
   work_health_care_patient_facing: null
+  work_health_care_patient_facing_original: null
   work_location: Make me a sandwich.
   work_location_raw: Make me a sandwich.
   work_main_job_role: MAKE ME A SANDWICH
@@ -1388,6 +1396,7 @@
   which_symptoms_last_7_days: 'No'
   work_health_care_area: 'Yes'
   work_health_care_patient_facing: 'Yes'
+  work_health_care_patient_facing_original: 'Yes'
   work_location: Where are my pants?
   work_location_raw: Where are my pants?
   work_main_job_role: ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
@@ -1544,6 +1553,7 @@
   which_symptoms_last_7_days: 'Yes'
   work_health_care_area: 'Yes'
   work_health_care_patient_facing: 'Yes'
+  work_health_care_patient_facing_original: 'Yes'
   work_location: Make me a sandwich.
   work_location_raw: Make me a sandwich.
   work_main_job_role: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE BUT IT HAS
