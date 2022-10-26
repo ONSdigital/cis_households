@@ -873,7 +873,7 @@ def report(
 
     valid_df_errors = generate_error_table(valid_survey_responses_errors_table, error_priority_map)
     invalid_df_errors = generate_error_table(invalid_survey_responses_errors_table, error_priority_map)
-    soc_uncode_count = count_variable_option(valid_df, "soc_code", "uncodeable")
+    soc_uncode_count = count_variable_option(valid_df, "standard_occupational_classification_code", "uncodeable")
     processed_file_log = extract_from_table("processed_filenames")
 
     invalid_files_count = 0
