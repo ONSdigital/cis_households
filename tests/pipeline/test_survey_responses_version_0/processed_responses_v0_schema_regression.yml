@@ -524,6 +524,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: work_health_care_patient_facing_original
+  nullable: true
+  type: string
+- metadata: {}
   name: work_social_care_original
   nullable: true
   type: string
