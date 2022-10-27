@@ -2231,6 +2231,7 @@ def fill_forward_events_for_key_columns(df):
         ],
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",
+        visit_id_column="visit_id",
     )
     # df_4 = get_or_create_spark_session().createDataFrame(
     #     df_3.rdd, schema=df_3.schema
@@ -2244,6 +2245,7 @@ def fill_forward_events_for_key_columns(df):
         detail_columns=["last_suspected_covid_contact_type"],
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",
+        visit_id_column="visit_id",
     )
     # df_6 = get_or_create_spark_session().createDataFrame(
     #     df_5.rdd, schema=df_5.schema
@@ -2256,6 +2258,7 @@ def fill_forward_events_for_key_columns(df):
         detail_columns=["last_covid_contact_type"],
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",
+        visit_id_column="visit_id",
     )
     return df
 
