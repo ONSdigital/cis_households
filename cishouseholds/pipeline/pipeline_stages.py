@@ -404,19 +404,20 @@ def process_soc_data(
 
 
 @register_pipeline_stage("process_regex_data")
-def process_regex_data(input_survey_table: str, output_survey_table: str, regex_lookup_table: str):
+def process_regex_data(input_survey_table: str, output_survey_table: str, regex_lookup_table: Optional[str] = None):
     """
     Process regex data and combine result with survey responses data
     """
     join_on_columns = ["work_main_job_title", "work_main_job_role"]
     df = extract_from_table(input_survey_table)
-    if check_table_exists(regex_lookup_table):
+    if regex_lookup_table is not None and check_table_exists(regex_lookup_table):
         lookup_df = extract_from_table(regex_lookup_table, True)
-        non_derived_rows = df.join(lookup_df, on=join_on_columns, how="leftanti").select(*join_on_columns).distinct()
-        lookup_df = lookup_df.unionByName(add_pattern_matching_flags(non_derived_rows))
+        non_derived_rows = df.join(lookup_df, on=join_on_columns, how="leftanti")
+        non_derived_rows = non_derived_rows.dropDuplicates(join_on_columns)
         print(
             f"     - located regex lookup df with {non_derived_rows.count()} additional rows to process"
         )  # functional
+        lookup_df = lookup_df.unionByName(add_pattern_matching_flags(non_derived_rows))
     else:
         df_to_process = df.dropDuplicates(join_on_columns)
         print(
@@ -446,6 +447,25 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
 
     union_dataframes_to_hive(output_survey_table, df_list)
     return {"output_survey_table": output_survey_table}
+
+
+@register_pipeline_stage("join_blood_positive_lookup")
+def join_blood_positive_lookup(lookup_table_name: str, input_survey_table: str, output_survey_table: str):
+    """
+    Stage to join blood positive lookup table
+    """
+    blood_positive_lookup_df = extract_from_table(lookup_table_name)
+    df = extract_from_table(input_survey_table)
+    df = df.join(
+        blood_positive_lookup_df,
+        on=(
+            (df.ons_household_id == blood_positive_lookup_df.ons_h_id)
+            & (df.participant_id == blood_positive_lookup_df.participant_id)
+        ),
+        how="left",
+    )
+    df = df.withColumn("blood_past_positive_flag", F.when(F.col("blood_past_positive").isNull(), 0).otherwise(1))
+    update_table(df, output_survey_table, "overwrite")
 
 
 @register_pipeline_stage("replace_design_weights")
@@ -872,7 +892,7 @@ def report(
 
     valid_df_errors = generate_error_table(valid_survey_responses_errors_table, error_priority_map)
     invalid_df_errors = generate_error_table(invalid_survey_responses_errors_table, error_priority_map)
-    soc_uncode_count = count_variable_option(valid_df, "soc_code", "uncodeable")
+    soc_uncode_count = count_variable_option(valid_df, "standard_occupational_classification_code", "uncodeable")
     processed_file_log = extract_from_table("processed_filenames")
 
     invalid_files_count = 0
