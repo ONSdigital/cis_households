@@ -132,7 +132,7 @@ def test_fill_forward_event_4(spark_session):
     input_data = [
         # fmt:off
             (1,"2020-06-01",1,"No", "2020-01-01","detail1"),
-            (1,"2020-06-02",1,"Yes","2020-01-02","detail2"),
+            (1,"2020-06-01",2,"Yes","2020-01-02","detail2"),
             (1,None,        3,"Yes","2020-01-03","detail3"),
             (1,None,        4,"Yes","2020-09-01","different detail"),
             (1,"2021-01-06",5,None,  None,       "some detail"),
@@ -143,7 +143,7 @@ def test_fill_forward_event_4(spark_session):
     expected_data = [
         # fmt:off
             (1,"2020-06-01",1,"Yes","2020-01-01","detail1"),
-            (1,"2020-06-02",1,"Yes","2020-01-01","detail1"),
+            (1,"2020-06-01",2,"Yes","2020-01-01","detail1"),
             (1,None,        3,"Yes","2020-01-03","detail3"),
             (1,None,        4,"Yes","2020-09-01","different detail"),
             (1,"2021-01-06",5,"Yes","2020-01-01","detail1"),
