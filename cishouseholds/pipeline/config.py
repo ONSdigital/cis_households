@@ -39,7 +39,7 @@ def get_config() -> dict:
         else:
             modified_config[section_name] = section_config
 
-    for stage_name, config in modified_config["stages"].items():
+    for stage_name, config in modified_config.get("stages", {}).items():
         if (
             "input_stage" in config
             and config["input_stage"] in modified_config["stages"]
