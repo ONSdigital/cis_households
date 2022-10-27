@@ -398,8 +398,8 @@ def process_soc_data(
     )
 
     update_table(coding_errors_df, coding_errors_table, "overwrite", archive=True)
-    update_table(survey_responses_df, output_survey_table, "overwrite")
     update_table(soc_lookup_df, transformed_soc_lookup_table, "overwrite")
+    update_table(survey_responses_df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
 
@@ -424,7 +424,7 @@ def process_regex_data(input_survey_table: str, output_survey_table: str, regex_
             f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
         )  # functional
         lookup_df = add_pattern_matching_flags(df_to_process)
-    df = df.drop(*[col for col in df.columns if col in lookup_df.columns])
+    df = df.drop(*[col for col in df.columns if col in lookup_df.columns and col not in join_on_columns])
     df = df.join(lookup_df, on=join_on_columns, how="left")
     update_table(lookup_df, regex_lookup_table, "overwrite")
     update_table(df, output_survey_table, "overwrite")

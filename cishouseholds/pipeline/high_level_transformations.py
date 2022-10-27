@@ -2191,7 +2191,10 @@ def fill_forward_events_for_key_columns(df):
     #     df.rdd, schema=df.schema
     # )  # breaks lineage to avoid Java OOM Error
     df.cache()
-    df = df.repartition(16)
+    dynamic_partitions_from_config = int(
+        (int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions")) / 2)
+    )
+    df = df.repartition(dynamic_partitions_from_config)
     df = fill_forward_event(
         df=df,
         event_indicator_column="think_had_covid",
@@ -2636,7 +2639,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
 
     # add boolean flags for working in healthcare or socialcare
 
-    df = df.withColumn("works_healthcare", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
+    df = df.withColumn("works_health_care", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
 
     df = assign_regex_match_result(
         df=df,
@@ -2654,7 +2657,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         )
         .when(
             (
-                (F.col("works_healthcare") == "Yes")
+                (F.col("works_health_care") == "Yes")
                 | (F.col("work_direct_contact_patients_or_clients_regex_derived") == True)
             )
             & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
@@ -2707,7 +2710,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         "work_health_care_area",
         "work_health_care_patient_facing",
         "work_social_care",
-        "works_healthcare",
+        "works_health_care",
         "regex_derived_job_sector",
     )
 
