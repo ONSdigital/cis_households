@@ -2191,8 +2191,8 @@ def fill_forward_events_for_key_columns(df):
     #     df.rdd, schema=df.schema
     # )  # breaks lineage to avoid Java OOM Error
     df.cache()
-    dynamic_partitions_from_config = (
-        int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions")) / 2
+    dynamic_partitions_from_config = int(
+        (int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions")) / 2)
     )
     df = df.repartition(dynamic_partitions_from_config)
     df = fill_forward_event(
