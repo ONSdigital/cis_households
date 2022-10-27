@@ -1323,7 +1323,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "swab_sample_barcode",
     ]
     original_copy_list = [
-        "work_healthcare_patient_facing",
+        "work_health_care_patient_facing",
         "work_health_care_area",
         "work_social_care",
         "work_nursing_or_residential_care_home",
@@ -2157,10 +2157,12 @@ def union_dependent_derivations(df):
     df = assign_work_status_group(df, "work_status_group", "work_status_v0")
 
     window = Window.partitionBy("participant_id")
+    patient_facing_percentage = F.sum(
+        F.when(F.col("work_direct_contact_patients_or_clients") == "Yes", 1).otherwise(0)
+    ).over(window) / F.sum(F.lit(1)).over(window)
+
     df = df.withColumn(
-        "patient_facing_over_20_percent",
-        F.sum(F.when(F.col("work_direct_contact_patients_or_clients") == "Yes", 1).otherwise(0)).over(window)
-        / F.sum(F.lit(1)).over(window),
+        "patient_facing_over_20_percent", F.when(patient_facing_percentage >= 0.2, "Yes").otherwise("No")
     )
 
     df = fill_forward_from_last_change(
@@ -2594,7 +2596,7 @@ def derive_overall_vaccination(df: DataFrame) -> DataFrame:
 def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     """Add result of various regex pattern matchings"""
     # df = df.drop(
-    #     "work_healthcare_patient_facing_original",
+    #     "work_health_care_patient_facing_original",
     #     "work_social_care_original",
     #     "work_care_nursing_home_original",
     #     "work_direct_contact_patients_or_clients_original",
@@ -2659,7 +2661,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     )
     df = assign_column_value_from_multiple_column_map(
         df,
-        "work_healthcare_patient_facing",
+        "work_health_care_patient_facing",
         [
             ["No", ["No", None]],
             ["No", ["Yes", None]],
@@ -2700,7 +2702,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         "work_direct_contact_patients_or_clients",
         "work_social_care_area",
         "work_health_care_area",
-        "work_healthcare_patient_facing",
+        "work_health_care_patient_facing",
         "work_social_care",
         "works_healthcare",
         "regex_derived_job_sector",
