@@ -458,14 +458,12 @@ def join_blood_positive_lookup(lookup_table_name: str, input_survey_table: str, 
     df = extract_from_table(input_survey_table)
     df = df.join(
         blood_positive_lookup_df,
-        on=(
-            (df.ons_household_id == blood_positive_lookup_df.ons_h_id)
-            & (df.participant_id == blood_positive_lookup_df.participant_id)
-        ),
+        on="ons_household_id",
         how="left",
     )
     df = df.withColumn("blood_past_positive_flag", F.when(F.col("blood_past_positive").isNull(), 0).otherwise(1))
     update_table(df, output_survey_table, "overwrite")
+    return {"output_survey_table": output_survey_table}
 
 
 @register_pipeline_stage("replace_design_weights")
