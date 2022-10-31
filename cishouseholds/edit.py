@@ -18,28 +18,50 @@ from cishouseholds.expressions import set_date_component
 from cishouseholds.expressions import sum_within_row
 
 
-def correct_date_ranges(df: DataFrame, columns_to_edit: List[str], visit_date_column: str, min_date: str):
+def correct_date_ranges(
+    df: DataFrame, columns_to_edit: List[str], participant_id_column: str, visit_date_column: str, min_date: str
+):
     """
     Correct datetime columns given a range
     """
     for col in columns_to_edit:
-        df = df.withColumn(
+        date_ref = (
+            df.withColumn(col, F.when(F.col(col) <= F.col(visit_date_column), F.col(col)))
+            .select(participant_id_column, col)
+            .filter(F.col(col).isNotNull())
+            .withColumnRenamed(col, f"{col}_ref")
+            .withColumnRenamed(participant_id_column, "IDREF")
+            .distinct()
+        )
+        joined_df = df.join(
+            date_ref,
+            (F.month(df[col]) == F.month(date_ref[f"{col}_ref"]))
+            & (F.dayofmonth(df[col]) == F.dayofmonth(date_ref[f"{col}_ref"]))
+            & (df[participant_id_column] == date_ref["IDREF"]),
+            how="left",
+        ).drop("IDREF")
+
+        joined_df = joined_df.withColumn(
             col,
             F.to_timestamp(
                 F.when(
                     (F.col(col) > F.col(visit_date_column)) & (F.col(col).isNotNull()),
-                    F.when(
+                    F.when(F.add_months(col, -1) <= F.col(visit_date_column), F.add_months(col, -1))
+                    .when(
+                        (F.col(f"{col}_ref") <= F.col(visit_date_column)) & (F.col(f"{col}_ref").isNotNull()),
+                        F.col(f"{col}_ref"),
+                    )
+                    .when(
+                        (F.year(col) - 1 > 2020) & (F.add_months(col, -12) <= F.col(visit_date_column)),
+                        F.add_months(col, -12),
+                    )
+                    .when(
                         set_date_component(col, "year", F.year(visit_date_column)) <= F.col(visit_date_column),
                         set_date_component(col, "year", F.year(visit_date_column)),
                     )
-                    .when(F.add_months(col, -1) <= F.col(visit_date_column), F.add_months(col, -1))
                     .when(
-                        (F.year(col) > 2020),
-                        set_date_component(col, "year", F.year(visit_date_column) - 1),
-                    )
-                    .when(
-                        (F.year(col) == 2020) & (F.month(col) >= 8) & (F.datediff(visit_date_column, col) < -50),
-                        set_date_component(col, "year", F.year(visit_date_column) - 1),
+                        (F.month(col) >= 8) & (set_date_component(col, "year", 2019) <= F.col(visit_date_column)),
+                        set_date_component(col, "year", 2019),
                     ),
                 )
                 .when(
@@ -51,10 +73,10 @@ def correct_date_ranges(df: DataFrame, columns_to_edit: List[str], visit_date_co
                     .when(F.add_months(col, -1) <= F.col(visit_date_column), F.add_months(col, -1))
                     .when((F.year(col) > 2019), set_date_component(col, "year", F.year(visit_date_column) - 1)),
                 )
-                .otherwise("ERROR")
+                .otherwise(F.col(col))
             ),
-        )
-    return df
+        ).drop(f"{col}_ref")
+    return joined_df
 
 
 def clean_job_description_string(df: DataFrame, column_name_to_assign: str):
