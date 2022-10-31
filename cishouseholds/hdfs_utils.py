@@ -84,26 +84,16 @@ def delete_file(path: str):
     return _perform(command)
 
 
-def delete_dir(path: str, spark: SparkSession):
+def delete_dir(path: str):
     """
-    Delete a directory. Uses 'hadoop fs -rm -r'.
+    Delete a directory. Uses 'hadoop fs -rmdir'.
 
     Returns
     -------
     True for successfully completed operation. Else False.
     """
-    if " " in path:
-        return False
-
-    sc = spark.sparkContext
-    fs = sc._jvm.org.apache.hadoop.fs.FileSystem.get(sc._jsc.hadoopConfiguration())
-
-    # make sure the folder exists before deleting it
-    if fs.exists(sc._jvm.org.apache.hadoop.fs.Path(path)):
-        fs.delete(sc._jvm.org.apache.hadoop.fs.Path(path))
-        print(f"Deleted directory: {path}")  # functional
-        return True
-    return False
+    command = ["hadoop", "fs", "-rmdir", path]
+    return _perform(command)
 
 
 def rename(from_path: str, to_path: str, overwrite=False) -> bool:
