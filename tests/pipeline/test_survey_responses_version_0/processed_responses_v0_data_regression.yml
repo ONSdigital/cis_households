@@ -137,7 +137,7 @@
   which_symptoms_last_7_days: null
   work_health_care_area: 'No'
   work_health_care_patient_facing: 'No'
-  work_health_care_patient_facing_raw: 'No'
+  work_health_care_patient_facing_original: 'No'
   work_location: Its main implementation is the Glasgow Haskell Compiler.
   work_location_raw: Its main implementation is the Glasgow Haskell Compiler.
   work_main_job_role: THE SYNTAX D1D2DN DENOTES A TUPLE WHOSE ARGUMENTS ARE D1 D2  DN
@@ -151,7 +151,7 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_social_care: 'No'
-  work_social_care_raw: 'No'
+  work_social_care_original: 'No'
   work_status_v0: Its main implementation is the Glasgow Haskell Compiler.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
@@ -292,7 +292,7 @@
   which_symptoms_last_7_days: 'No'
   work_health_care_area: 'Yes'
   work_health_care_patient_facing: 'Yes'
-  work_health_care_patient_facing_raw: 'Yes'
+  work_health_care_patient_facing_original: 'Yes'
   work_location: I don't even care.
   work_location_raw: I don't even care.
   work_main_job_role: INITIALLY COMPOSING LIGHT HEARTED AND IRREVERENT WORKS HE ALSO
@@ -307,7 +307,7 @@
   work_not_from_home_days_per_week: '5'
   work_not_from_home_days_per_week_raw: '5'
   work_social_care: 'Yes'
-  work_social_care_raw: 'Yes'
+  work_social_care_original: 'Yes'
   work_status_v0: Where are my pants?
 - any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
@@ -448,7 +448,7 @@
   which_symptoms_last_7_days: null
   work_health_care_area: 'No'
   work_health_care_patient_facing: 'No'
-  work_health_care_patient_facing_raw: 'No'
+  work_health_care_patient_facing_original: 'No'
   work_location: The Galactic Empire is nearing completion of the Death Star, a space
     station with the power to destroy entire planets.
   work_location_raw: The Galactic Empire is nearing completion of the Death Star,
@@ -465,7 +465,7 @@
   work_not_from_home_days_per_week: '7'
   work_not_from_home_days_per_week_raw: '7'
   work_social_care: 'Yes'
-  work_social_care_raw: 'Yes'
+  work_social_care_original: 'Yes'
   work_status_v0: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
 - any_household_members_over_2_years_and_not_present: null
@@ -611,7 +611,7 @@
   which_symptoms_last_7_days: null
   work_health_care_area: null
   work_health_care_patient_facing: null
-  work_health_care_patient_facing_raw: null
+  work_health_care_patient_facing_original: null
   work_location: Tuples are containers for a fixed number of Erlang data types.
   work_location_raw: Tuples are containers for a fixed number of Erlang data types.
   work_main_job_role: ITS MAIN IMPLEMENTATION IS THE GLASGOW HASKELL COMPILER
@@ -626,7 +626,7 @@
   work_not_from_home_days_per_week: '1'
   work_not_from_home_days_per_week_raw: '1'
   work_social_care: 'No'
-  work_social_care_raw: 'No'
+  work_social_care_original: 'No'
   work_status_v0: Ports are used to communicate with the external world.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
@@ -769,7 +769,7 @@
   which_symptoms_last_7_days: 'Yes'
   work_health_care_area: 'Yes'
   work_health_care_patient_facing: 'Yes'
-  work_health_care_patient_facing_raw: 'Yes'
+  work_health_care_patient_facing_original: 'Yes'
   work_location: Do you come here often?
   work_location_raw: Do you come here often?
   work_main_job_role: PORTS ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
@@ -782,7 +782,7 @@
   work_not_from_home_days_per_week: '0'
   work_not_from_home_days_per_week_raw: '0'
   work_social_care: 'Yes'
-  work_social_care_raw: 'Yes'
+  work_social_care_original: 'Yes'
   work_status_v0: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
 - any_household_members_over_2_years_and_not_present: null
@@ -926,7 +926,7 @@
   which_symptoms_last_7_days: 'Yes'
   work_health_care_area: 'No'
   work_health_care_patient_facing: 'No'
-  work_health_care_patient_facing_raw: 'No'
+  work_health_care_patient_facing_original: 'No'
   work_location: Atoms are used within a program to denote distinguished values.
   work_location_raw: Atoms are used within a program to denote distinguished values.
   work_main_job_role: ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL PROGRAMMING
@@ -940,7 +940,7 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_social_care: 'Yes'
-  work_social_care_raw: 'Yes'
+  work_social_care_original: 'Yes'
   work_status_v0: Where are my pants?
 - any_household_members_over_2_years_and_not_present: null
   bad_email: null
@@ -1084,7 +1084,7 @@
   which_symptoms_last_7_days: 'Yes'
   work_health_care_area: null
   work_health_care_patient_facing: null
-  work_health_care_patient_facing_raw: null
+  work_health_care_patient_facing_original: null
   work_location: Where are my pants?
   work_location_raw: Where are my pants?
   work_main_job_role: HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
@@ -1098,7 +1098,7 @@
   work_not_from_home_days_per_week: '6'
   work_not_from_home_days_per_week_raw: '6'
   work_social_care: 'Yes'
-  work_social_care_raw: 'Yes'
+  work_social_care_original: 'Yes'
   work_status_v0: Haskell is a standardized, general-purpose purely functional programming
     language, with non-strict semantics and strong static typing.
 - any_household_members_over_2_years_and_not_present: 'Yes'
@@ -1241,7 +1241,7 @@
   which_symptoms_last_7_days: null
   work_health_care_area: null
   work_health_care_patient_facing: null
-  work_health_care_patient_facing_raw: null
+  work_health_care_patient_facing_original: null
   work_location: Make me a sandwich.
   work_location_raw: Make me a sandwich.
   work_main_job_role: MAKE ME A SANDWICH
@@ -1256,7 +1256,7 @@
   work_not_from_home_days_per_week: '2'
   work_not_from_home_days_per_week_raw: '2'
   work_social_care: null
-  work_social_care_raw: null
+  work_social_care_original: null
   work_status_v0: Any element of a tuple can be accessed in constant time.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: false
@@ -1396,7 +1396,7 @@
   which_symptoms_last_7_days: 'No'
   work_health_care_area: 'Yes'
   work_health_care_patient_facing: 'Yes'
-  work_health_care_patient_facing_raw: 'Yes'
+  work_health_care_patient_facing_original: 'Yes'
   work_location: Where are my pants?
   work_location_raw: Where are my pants?
   work_main_job_role: ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
@@ -1410,7 +1410,7 @@
   work_not_from_home_days_per_week: '0'
   work_not_from_home_days_per_week_raw: '0'
   work_social_care: 'Yes'
-  work_social_care_raw: 'Yes'
+  work_social_care_original: 'Yes'
   work_status_v0: Any element of a tuple can be accessed in constant time.
 - any_household_members_over_2_years_and_not_present: null
   bad_email: null
@@ -1553,7 +1553,7 @@
   which_symptoms_last_7_days: 'Yes'
   work_health_care_area: 'Yes'
   work_health_care_patient_facing: 'Yes'
-  work_health_care_patient_facing_raw: 'Yes'
+  work_health_care_patient_facing_original: 'Yes'
   work_location: Make me a sandwich.
   work_location_raw: Make me a sandwich.
   work_main_job_role: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE BUT IT HAS
@@ -1570,6 +1570,6 @@
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
   work_social_care: 'Yes'
-  work_social_care_raw: 'Yes'
+  work_social_care_original: 'Yes'
   work_status_v0: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.

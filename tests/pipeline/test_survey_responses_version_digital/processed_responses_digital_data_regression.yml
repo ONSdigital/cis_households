@@ -249,7 +249,7 @@
     within single quotes and an escape convention exists which allows any character
     to be used within an atom.
   regularly_lateral_flow_testing: 'Yes'
-  sample_collection_courier_datetime: '2022-01-09 15:31:48.000000'
+  sample_collection_courier_datetime: '2022-01-09 00:00:00.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-06 17:17:10.000000'
   sample_kit_dispatched_datetime: '2022-01-01 22:47:47.000000'
   sample_kit_not_dispatched_code: null
@@ -409,8 +409,10 @@
   voucher_type_preference: Paper
   which_symptoms_last_7_days: think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_sore_throat;think_have_covid_symptom_shortness_of_breath;think_have_covid_symptom_chest_pain;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_memory_loss_or_confusion
   work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_original: Prefer not to say
   work_direct_contact_patients_or_clients_raw: Prefer not to say
   work_health_care_area: Yes, in secondary care, e.g. hospital
+  work_health_care_area_original: Secondary care - for example in a hospital
   work_health_care_area_raw: Secondary care - for example in a hospital
   work_in_additional_paid_employment: 'No'
   work_in_additional_paid_employment_raw: 'No'
@@ -427,6 +429,7 @@
   work_not_from_home_days_per_week: '3'
   work_not_from_home_days_per_week_raw: '3'
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
   work_nursing_or_residential_care_home_raw: 'Yes'
   work_sector: Personal services (e.g. hairdressers)
   work_sector_other: Make me a sandwich.
@@ -855,8 +858,10 @@
   voucher_type_preference: Paper
   which_symptoms_last_7_days: think_have_covid_symptom_shortness_of_breath;think_have_covid_symptom_loss_of_smell;think_have_covid_symptom_loss_of_appetite;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_low_mood;think_have_covid_symptom_memory_loss_or_confusion
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_original: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: Yes, in secondary care, e.g. hospital
+  work_health_care_area_original: Secondary care - for example in a hospital
   work_health_care_area_raw: Secondary care - for example in a hospital
   work_in_additional_paid_employment: null
   work_in_additional_paid_employment_raw: Prefer not to say
@@ -875,6 +880,7 @@
   work_not_from_home_days_per_week: '5'
   work_not_from_home_days_per_week_raw: '5'
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
   work_nursing_or_residential_care_home_raw: 'Yes'
   work_sector: Information technology and communication
   work_sector_other: The arguments can be primitive data types or compound data types.
@@ -1144,7 +1150,7 @@
   reason_for_not_consenting_9: The Galactic Empire is nearing completion of the Death
     Star, a space station with the power to destroy entire planets.
   regularly_lateral_flow_testing: null
-  sample_collection_courier_datetime: '2022-01-06 05:06:10.000000'
+  sample_collection_courier_datetime: '2022-01-06 00:00:00.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-05 21:06:50.000000'
   sample_kit_dispatched_datetime: '2022-01-09 17:14:28.000000'
   sample_kit_not_dispatched_code: 'Yes'
@@ -1304,8 +1310,10 @@
   voucher_type_preference: null
   which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_headache;think_have_covid_symptom_muscle_ache;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_cough;think_have_covid_symptom_palpitations;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_low_mood
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_original: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: null
+  work_health_care_area_original: null
   work_health_care_area_raw: null
   work_in_additional_paid_employment: 'Yes'
   work_in_additional_paid_employment_raw: 'Yes'
@@ -1325,6 +1333,7 @@
   work_not_from_home_days_per_week: '6'
   work_not_from_home_days_per_week_raw: '2'
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
   work_nursing_or_residential_care_home_raw: 'Yes'
   work_sector: Financial services.This includes insurance
   work_sector_other: I don't even care.
@@ -1591,7 +1600,7 @@
   reason_for_not_consenting_9: Haskell features a type system with type inference
     and lazy evaluation.
   regularly_lateral_flow_testing: 'Yes'
-  sample_collection_courier_datetime: '2022-01-05 10:59:27.000000'
+  sample_collection_courier_datetime: '2022-01-05 00:00:00.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-01 07:59:46.000000'
   sample_kit_dispatched_datetime: '2022-01-09 19:51:24.000000'
   sample_kit_not_dispatched_code: null
@@ -1752,8 +1761,10 @@
   voucher_type_preference: Paper
   which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_fatigue;think_have_covid_symptom_cough;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_anxiety
   work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_original: 'Yes'
   work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in secondary care, e.g. hospital
+  work_health_care_area_original: Secondary care - for example in a hospital
   work_health_care_area_raw: Secondary care - for example in a hospital
   work_in_additional_paid_employment: null
   work_in_additional_paid_employment_raw: Prefer not to say
@@ -1773,6 +1784,7 @@
   work_not_from_home_days_per_week: '1'
   work_not_from_home_days_per_week_raw: '1'
   work_nursing_or_residential_care_home: null
+  work_nursing_or_residential_care_home_original: Prefer not to say
   work_nursing_or_residential_care_home_raw: Prefer not to say
   work_sector: Arts,Entertainment or Recreation
   work_sector_other: It is also a garbage-collected runtime system.
@@ -2198,8 +2210,10 @@
   voucher_type_preference: email_address
   which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_diarrhoea;think_have_covid_symptom_shortness_of_breath;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_memory_loss_or_confusion;think_have_covid_symptom_difficulty_concentrating
   work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_original: 'Yes'
   work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: Yes, in primary care, e.g. GP, dentist
+  work_health_care_area_original: Primary care - for example in a GP or dentist
   work_health_care_area_raw: Primary care - for example in a GP or dentist
   work_in_additional_paid_employment: null
   work_in_additional_paid_employment_raw: Prefer not to say
@@ -2216,6 +2230,7 @@
   work_not_from_home_days_per_week: '3'
   work_not_from_home_days_per_week_raw: '2'
   work_nursing_or_residential_care_home: null
+  work_nursing_or_residential_care_home_original: Prefer not to say
   work_nursing_or_residential_care_home_raw: Prefer not to say
   work_sector: Social care
   work_sector_other: Do you come here often?
@@ -2481,7 +2496,7 @@
   reason_for_not_consenting_9: In 1989 the building was heavily damaged by fire, but
     it has since been restored.
   regularly_lateral_flow_testing: null
-  sample_collection_courier_datetime: '2022-01-01 01:16:24.000000'
+  sample_collection_courier_datetime: '2022-01-01 00:00:00.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-04 03:58:47.000000'
   sample_kit_dispatched_datetime: '2022-01-04 10:09:44.000000'
   sample_kit_not_dispatched_code: null
@@ -2641,8 +2656,10 @@
   voucher_type_preference: null
   which_symptoms_last_7_days: think_have_covid_symptom_muscle_ache;think_have_covid_symptom_sore_throat;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_smell;think_have_covid_symptom_loss_of_appetite;think_have_covid_symptom_chest_pain;think_have_covid_symptom_anxiety;think_have_covid_symptom_low_mood;think_have_covid_symptom_memory_loss_or_confusion
   work_direct_contact_patients_or_clients: 'Yes'
+  work_direct_contact_patients_or_clients_original: 'Yes'
   work_direct_contact_patients_or_clients_raw: 'Yes'
   work_health_care_area: null
+  work_health_care_area_original: null
   work_health_care_area_raw: null
   work_in_additional_paid_employment: null
   work_in_additional_paid_employment_raw: Prefer not to say
@@ -2659,6 +2676,7 @@
   work_not_from_home_days_per_week: '6'
   work_not_from_home_days_per_week_raw: '6'
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
   work_nursing_or_residential_care_home_raw: 'Yes'
   work_sector: Other occupation sector
   work_sector_other: Ports are created with the built-in function open_port.
@@ -2925,7 +2943,7 @@
     data types.
   reason_for_not_consenting_9: Do you have any idea why this is not working?
   regularly_lateral_flow_testing: 'No'
-  sample_collection_courier_datetime: '2022-01-01 00:05:15.000000'
+  sample_collection_courier_datetime: '2022-01-01 00:00:00.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-03 13:58:24.000000'
   sample_kit_dispatched_datetime: '2022-01-05 22:21:15.000000'
   sample_kit_not_dispatched_code: 'Yes'
@@ -3086,8 +3104,10 @@
   voucher_type_preference: null
   which_symptoms_last_7_days: think_have_covid_symptom_fatigue;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_palpitations;think_have_covid_symptom_anxiety;think_have_covid_symptom_memory_loss_or_confusion
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_original: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: Yes, in secondary care, e.g. hospital
+  work_health_care_area_original: Secondary care - for example in a hospital
   work_health_care_area_raw: Secondary care - for example in a hospital
   work_in_additional_paid_employment: null
   work_in_additional_paid_employment_raw: Prefer not to say
@@ -3105,6 +3125,7 @@
   work_not_from_home_days_per_week: '2'
   work_not_from_home_days_per_week_raw: '0'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_original: 'No'
   work_nursing_or_residential_care_home_raw: 'No'
   work_sector: Other occupation sector
   work_sector_other: It is also a garbage-collected runtime system.
@@ -3374,7 +3395,7 @@
   reason_for_not_consenting_9: He looked inquisitively at his keyboard and wrote another
     sentence.
   regularly_lateral_flow_testing: 'No'
-  sample_collection_courier_datetime: '2022-01-05 07:11:22.000000'
+  sample_collection_courier_datetime: '2022-01-05 00:00:00.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-08 09:34:37.000000'
   sample_kit_dispatched_datetime: '2022-01-09 11:16:11.000000'
   sample_kit_not_dispatched_code: 'No'
@@ -3534,8 +3555,11 @@
   voucher_type_preference: email_address
   which_symptoms_last_7_days: think_have_covid_symptom_fatigue;think_have_covid_symptom_sore_throat;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_smell;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_loss_of_appetite
   work_direct_contact_patients_or_clients: null
+  work_direct_contact_patients_or_clients_original: Prefer not to say
   work_direct_contact_patients_or_clients_raw: Prefer not to say
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area_original: Another type of healthcare - for example mental
+    health services
   work_health_care_area_raw: Another type of healthcare - for example mental health
     services
   work_in_additional_paid_employment: null
@@ -3554,6 +3578,7 @@
   work_not_from_home_days_per_week: '6'
   work_not_from_home_days_per_week_raw: '6'
   work_nursing_or_residential_care_home: null
+  work_nursing_or_residential_care_home_original: Prefer not to say
   work_nursing_or_residential_care_home_raw: Prefer not to say
   work_sector: Information technology and communication
   work_sector_other: Type classes first appeared in the Haskell programming language.
@@ -3823,7 +3848,7 @@
   reason_for_not_consenting_9: In 1989 the building was heavily damaged by fire, but
     it has since been restored.
   regularly_lateral_flow_testing: 'Yes'
-  sample_collection_courier_datetime: '2022-01-03 18:35:01.000000'
+  sample_collection_courier_datetime: '2022-01-03 00:00:00.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-09 02:10:48.000000'
   sample_kit_dispatched_datetime: null
   sample_kit_not_dispatched_code: 'No'
@@ -3985,8 +4010,10 @@
   voucher_type_preference: Paper
   which_symptoms_last_7_days: think_have_covid_symptom_fatigue;think_have_covid_symptom_sore_throat;think_have_covid_symptom_palpitations;think_have_covid_symptom_anxiety
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_original: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: null
+  work_health_care_area_original: null
   work_health_care_area_raw: null
   work_in_additional_paid_employment: 'Yes'
   work_in_additional_paid_employment_raw: 'Yes'
@@ -4003,6 +4030,7 @@
   work_not_from_home_days_per_week: '5'
   work_not_from_home_days_per_week_raw: '5'
   work_nursing_or_residential_care_home: 'No'
+  work_nursing_or_residential_care_home_original: 'No'
   work_nursing_or_residential_care_home_raw: 'No'
   work_sector: Civil service or Local Government
   work_sector_other: Atoms can contain any character if they are enclosed within single
@@ -4275,7 +4303,7 @@
   reason_for_not_consenting_9: The sequential subset of Erlang supports eager evaluation,
     single assignment, and dynamic typing.
   regularly_lateral_flow_testing: null
-  sample_collection_courier_datetime: '2022-01-07 21:25:12.000000'
+  sample_collection_courier_datetime: '2022-01-07 00:00:00.000000'
   sample_collection_kit_received_delivery_partner_datetime: '2022-01-02 03:43:57.000000'
   sample_kit_dispatched_datetime: '2022-01-07 20:17:24.000000'
   sample_kit_not_dispatched_code: 'Yes'
@@ -4436,8 +4464,11 @@
   voucher_type_preference: email_address
   which_symptoms_last_7_days: think_have_covid_symptom_muscle_ache;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_sore_throat;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_smell;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_palpitations;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_difficulty_concentrating
   work_direct_contact_patients_or_clients: 'No'
+  work_direct_contact_patients_or_clients_original: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
   work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area_original: Another type of healthcare - for example mental
+    health services
   work_health_care_area_raw: Another type of healthcare - for example mental health
     services
   work_in_additional_paid_employment: 'No'
@@ -4459,6 +4490,7 @@
   work_not_from_home_days_per_week: '2'
   work_not_from_home_days_per_week_raw: '0'
   work_nursing_or_residential_care_home: 'Yes'
+  work_nursing_or_residential_care_home_original: 'Yes'
   work_nursing_or_residential_care_home_raw: 'Yes'
   work_sector: Arts,Entertainment or Recreation
   work_sector_other: Make me a sandwich.

@@ -15,6 +15,7 @@ from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.extract import list_contents
 from cishouseholds.hdfs_utils import create_dir
+from cishouseholds.pipeline.config import get_config
 
 
 def generate_sample(
@@ -46,7 +47,7 @@ def generate_sample(
     output_folder_name: str
         File directory in which you want to save the output files.
     """
-    output_directory = "/dapsen/workspace_zone/covserolink/cis_pipeline_proving/proving_outputs/" + output_folder_name
+    output_directory = get_config()["sample_directory"] + output_folder_name
     create_dir(output_directory)
 
     for col in cols_to_evaluate:
