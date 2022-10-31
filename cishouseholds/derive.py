@@ -701,31 +701,22 @@ def assign_column_given_proportion(
     """
     window = Window.partitionBy(groupby_column)
 
-    df = df.withColumn("TEMP", F.lit(0))
     df = df.withColumn(column_name_to_assign, F.lit("No"))
 
-    for col in reference_columns:
-        df = df.withColumn(
-            "TEMP",
-            F.when(F.col(col).isin(count_if), 1).when(F.col(col).isNotNull(), F.col("TEMP")).otherwise(None),
-        )
-        df = df.withColumn(
-            column_name_to_assign,
-            F.when(
-                (
-                    F.sum(F.when(F.col("TEMP") == 1, 1).otherwise(0)).over(window)
-                    / F.sum(F.when(F.col("TEMP").isNotNull(), 1).otherwise(0)).over(window)
-                    >= 0.3
-                ),
-                1,
-            ).otherwise(0),
-        )
+    row_result = F.coalesce(*[F.when(F.col(col).isin(count_if), 1) for col in reference_columns])
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.sum(F.when(row_result == 1, 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window) >= 0.3),
+            1,
+        ).otherwise(0),
+    )
     df = df.withColumn(column_name_to_assign, F.max(column_name_to_assign).over(window))
     df = df.withColumn(
         column_name_to_assign,
         F.when(F.col(column_name_to_assign) == 1, true_false_values[0]).otherwise(true_false_values[1]),
     )
-    return df.drop("TEMP")
+    return df
 
 
 def count_value_occurrences_in_column_subset_row_wise(
