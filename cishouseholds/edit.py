@@ -52,7 +52,7 @@ def correct_date_ranges(
                         F.col(f"{col}_ref"),
                     )
                     .when(
-                        (F.year(col) - 1 > 2020) & (F.add_months(col, -12) <= F.col(visit_date_column)),
+                        (F.year(col) - 1 >= 2020) & (F.add_months(col, -12) <= F.col(visit_date_column)),
                         F.add_months(col, -12),
                     )
                     .when(
