@@ -53,6 +53,8 @@ def check_dependencies(stages_to_run, stages_config):  # TODO: ensure check in o
         required_tables = []
         input_tables = stages_config[stage].get("input_tables", {})
 
+        function = stages_config[stage].get("function", stage)
+
         if type(input_tables) == dict:
             required_tables.extend(input_tables.values())
         elif type(input_tables) == list:
@@ -68,9 +70,9 @@ def check_dependencies(stages_to_run, stages_config):  # TODO: ensure check in o
         ]  # remove tables that will be created
         optional_input_args = [
             arg
-            for arg in inspect.getfullargspec(pipeline_stages[stage]).args
+            for arg in inspect.getfullargspec(pipeline_stages[function]).args
             if "="  # meaning it will check only non default input parameters
-            in str(inspect.signature(pipeline_stages[stage]).parameters[arg])
+            in str(inspect.signature(pipeline_stages[function]).parameters[arg])
         ]
         unavailable_tables = [table for table in unavailable_tables if table not in optional_input_args]
         missing_tables = ",".join(unavailable_tables)
@@ -225,11 +227,11 @@ def run_pipeline_stages(
                         add_run_status(run_id, "retry", stage_text, "")
                 attempt_start = datetime.now()
                 if (
-                    "input_survey_table" in stage_function_args
-                    and current_table is not None
+                    current_table is not None
+                    and "input_survey_table" in stage_function_args
                     and "input_survey_table" not in stage_config
                 ):  # automatically add input table name
-                    stage_input_tables["input_survey_table"] = current_table
+                    stage_config["input_survey_table"] = current_table
                 try:
                     with spark_description_set(stage_name):
                         result = pipeline_stages[stage_function_name](**stage_config)

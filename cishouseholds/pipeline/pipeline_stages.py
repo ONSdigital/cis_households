@@ -83,7 +83,6 @@ from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 
-
 pipeline_stages = {}
 
 
@@ -398,8 +397,8 @@ def process_soc_data(
     )
 
     update_table(coding_errors_df, coding_errors_table, "overwrite", archive=True)
-    update_table(survey_responses_df, output_survey_table, "overwrite")
     update_table(soc_lookup_df, transformed_soc_lookup_table, "overwrite")
+    update_table(survey_responses_df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
 
@@ -412,17 +411,19 @@ def process_regex_data(input_survey_table: str, output_survey_table: str, regex_
     df = extract_from_table(input_survey_table)
     if regex_lookup_table is not None and check_table_exists(regex_lookup_table):
         lookup_df = extract_from_table(regex_lookup_table, True)
-        non_derived_rows = df.join(lookup_df, on=join_on_columns, how="leftanti").select(*join_on_columns).distinct()
-        lookup_df = lookup_df.unionByName(add_pattern_matching_flags(non_derived_rows))
+        non_derived_rows = df.join(lookup_df, on=join_on_columns, how="leftanti")
+        non_derived_rows = non_derived_rows.dropDuplicates(join_on_columns)
         print(
             f"     - located regex lookup df with {non_derived_rows.count()} additional rows to process"
         )  # functional
+        lookup_df = lookup_df.unionByName(add_pattern_matching_flags(non_derived_rows))
     else:
         df_to_process = df.dropDuplicates(join_on_columns)
         print(
             f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
         )  # functional
         lookup_df = add_pattern_matching_flags(df_to_process)
+    df = df.drop(*[col for col in df.columns if col in lookup_df.columns and col not in join_on_columns])
     df = df.join(lookup_df, on=join_on_columns, how="left")
     update_table(lookup_df, regex_lookup_table, "overwrite")
     update_table(df, output_survey_table, "overwrite")
@@ -444,6 +445,23 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
     df_list = [extract_from_table(table) for table in tables_to_process]
 
     union_dataframes_to_hive(output_survey_table, df_list)
+    return {"output_survey_table": output_survey_table}
+
+
+@register_pipeline_stage("join_blood_positive_lookup")
+def join_blood_positive_lookup(lookup_table_name: str, input_survey_table: str, output_survey_table: str):
+    """
+    Stage to join blood positive lookup table
+    """
+    blood_positive_lookup_df = extract_from_table(lookup_table_name)
+    df = extract_from_table(input_survey_table)
+    df = df.join(
+        blood_positive_lookup_df,
+        on="ons_household_id",
+        how="left",
+    )
+    df = df.withColumn("blood_past_positive_flag", F.when(F.col("blood_past_positive").isNull(), 0).otherwise(1))
+    update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
 
@@ -871,7 +889,7 @@ def report(
 
     valid_df_errors = generate_error_table(valid_survey_responses_errors_table, error_priority_map)
     invalid_df_errors = generate_error_table(invalid_survey_responses_errors_table, error_priority_map)
-    soc_uncode_count = count_variable_option(valid_df, "soc_code", "uncodeable")
+    soc_uncode_count = count_variable_option(valid_df, "standard_occupational_classification_code", "uncodeable")
     processed_file_log = extract_from_table("processed_filenames")
 
     invalid_files_count = 0

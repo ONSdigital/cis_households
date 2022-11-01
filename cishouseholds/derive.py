@@ -21,6 +21,7 @@ from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.expressions import any_column_matches_regex
 from cishouseholds.expressions import any_column_null
+from cishouseholds.merge import null_safe_join
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -29,7 +30,10 @@ def assign_regex_from_map(
 ):
     regex_columns = {key: [] for key in [1, *list(priority_map.values())]}  # type: ignore
     df.cache()
-    df = df.repartition(16)
+    dynamic_partitions_from_config = int(
+        (int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions")) / 2)
+    )
+    df = df.repartition(dynamic_partitions_from_config)
     for title, pattern in roles.items():
         col = F.when(F.coalesce(F.concat(*reference_columns), F.lit("")).rlike(pattern), title)
         if title in priority_map:
@@ -432,7 +436,7 @@ def assign_multigenerational(
             "school_year_ref_day",
         ],
     )
-    transformed_df = df.groupBy(household_id_column, visit_date_column).count().drop("count")
+    transformed_df = df.select(household_id_column, visit_date_column).distinct()
     transformed_df = transformed_df.join(
         df.select(
             household_id_column,
@@ -442,6 +446,7 @@ def assign_multigenerational(
         ),
         on=household_id_column,
     ).distinct()
+
     transformed_df = assign_age_at_date(
         df=transformed_df,
         column_name_to_assign=age_column_name_to_assign,
@@ -449,12 +454,8 @@ def assign_multigenerational(
         date_of_birth=F.col(date_of_birth_column),
     )
 
-    transformed_df_2 = spark_session.createDataFrame(
-        transformed_df.rdd, schema=transformed_df.schema
-    )  # breaks lineage to avoid Java OOM Error
-
-    transformed_df_3 = assign_school_year(
-        df=transformed_df_2,
+    transformed_df = assign_school_year(
+        df=transformed_df,
         column_name_to_assign=school_year_column_name_to_assign,
         reference_date_column=visit_date_column,
         dob_column=date_of_birth_column,
@@ -474,16 +475,14 @@ def assign_multigenerational(
     generation_2_present = F.sum(generation_2).over(window) >= 1
     generation_3_present = F.sum(generation_3).over(window) >= 1
 
-    transformed_df_4 = spark_session.createDataFrame(
-        transformed_df_3.rdd, schema=transformed_df_3.schema
-    )  # breaks lineage to avoid Java OOM Error
-
-    transformed_df_5 = transformed_df_4.withColumn(
+    transformed_df = transformed_df.withColumn(
         column_name_to_assign,
         F.when(generation_1_present & generation_2_present & generation_3_present, 1).otherwise(0),
     )
-    df = df.join(
-        transformed_df_5.select(
+
+    df = null_safe_join(
+        df,
+        transformed_df.select(
             household_id_column,
             column_name_to_assign,
             age_column_name_to_assign,
@@ -491,7 +490,8 @@ def assign_multigenerational(
             participant_id_column,
             visit_date_column,
         ),
-        on=[participant_id_column, household_id_column, visit_date_column],
+        null_safe_on=[participant_id_column, household_id_column, visit_date_column],
+        null_unsafe_on=[],
         how="left",
     )
     return df
@@ -701,31 +701,22 @@ def assign_column_given_proportion(
     """
     window = Window.partitionBy(groupby_column)
 
-    df = df.withColumn("TEMP", F.lit(0))
     df = df.withColumn(column_name_to_assign, F.lit("No"))
 
-    for col in reference_columns:
-        df = df.withColumn(
-            "TEMP",
-            F.when(F.col(col).isin(count_if), 1).when(F.col(col).isNotNull(), F.col("TEMP")).otherwise(None),
-        )
-        df = df.withColumn(
-            column_name_to_assign,
-            F.when(
-                (
-                    F.sum(F.when(F.col("TEMP") == 1, 1).otherwise(0)).over(window)
-                    / F.sum(F.when(F.col("TEMP").isNotNull(), 1).otherwise(0)).over(window)
-                    >= 0.3
-                ),
-                1,
-            ).otherwise(0),
-        )
+    row_result = F.coalesce(*[F.when(F.col(col).isin(count_if), 1) for col in reference_columns])
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.sum(F.when(row_result == 1, 1).otherwise(0)).over(window) / F.sum(F.lit(1)).over(window) >= 0.3),
+            1,
+        ).otherwise(0),
+    )
     df = df.withColumn(column_name_to_assign, F.max(column_name_to_assign).over(window))
     df = df.withColumn(
         column_name_to_assign,
         F.when(F.col(column_name_to_assign) == 1, true_false_values[0]).otherwise(true_false_values[1]),
     )
-    return df.drop("TEMP")
+    return df
 
 
 def count_value_occurrences_in_column_subset_row_wise(

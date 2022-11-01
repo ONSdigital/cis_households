@@ -1323,7 +1323,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "swab_sample_barcode",
     ]
     original_copy_list = [
-        "work_healthcare_patient_facing",
+        "work_health_care_patient_facing",
         "work_health_care_area",
         "work_social_care",
         "work_nursing_or_residential_care_home",
@@ -1762,6 +1762,10 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     """
     Transformations that are specific to version 2 survey responses.
     """
+    raw_copy_list = ["cis_covid_vaccine_number_of_doses"]
+
+    df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
+
     df = assign_taken_column(df=df, column_name_to_assign="swab_taken", reference_column="swab_sample_barcode")
     df = assign_taken_column(df=df, column_name_to_assign="blood_taken", reference_column="blood_sample_barcode")
 
@@ -2075,13 +2079,13 @@ def union_dependent_derivations(df):
     df = assign_first_visit(
         df=df,
         column_name_to_assign="household_first_visit_datetime",
-        id_column="participant_id",
+        id_column="ons_household_id",
         visit_date_column="visit_datetime",
     )
     df = assign_last_visit(
         df=df,
         column_name_to_assign="last_attended_visit_datetime",
-        id_column="participant_id",
+        id_column="ons_household_id",
         visit_status_column="participant_visit_status",
         visit_date_column="visit_datetime",
     )
@@ -2153,10 +2157,12 @@ def union_dependent_derivations(df):
     df = assign_work_status_group(df, "work_status_group", "work_status_v0")
 
     window = Window.partitionBy("participant_id")
+    patient_facing_percentage = F.sum(
+        F.when(F.col("work_direct_contact_patients_or_clients") == "Yes", 1).otherwise(0)
+    ).over(window) / F.sum(F.lit(1)).over(window)
+
     df = df.withColumn(
-        "patient_facing_over_20_percent",
-        F.sum(F.when(F.col("work_direct_contact_patients_or_clients") == "Yes", 1).otherwise(0)).over(window)
-        / F.sum(F.lit(1)).over(window),
+        "patient_facing_over_20_percent", F.when(patient_facing_percentage >= 0.2, "Yes").otherwise("No")
     )
 
     df = fill_forward_from_last_change(
@@ -2185,7 +2191,10 @@ def fill_forward_events_for_key_columns(df):
     #     df.rdd, schema=df.schema
     # )  # breaks lineage to avoid Java OOM Error
     df.cache()
-    df = df.repartition(16)
+    dynamic_partitions_from_config = int(
+        (int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions")) / 2)
+    )
+    df = df.repartition(dynamic_partitions_from_config)
     df = fill_forward_event(
         df=df,
         event_indicator_column="think_had_covid",
@@ -2222,6 +2231,7 @@ def fill_forward_events_for_key_columns(df):
         ],
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",
+        visit_id_column="visit_id",
     )
     # df_4 = get_or_create_spark_session().createDataFrame(
     #     df_3.rdd, schema=df_3.schema
@@ -2235,6 +2245,7 @@ def fill_forward_events_for_key_columns(df):
         detail_columns=["last_suspected_covid_contact_type"],
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",
+        visit_id_column="visit_id",
     )
     # df_6 = get_or_create_spark_session().createDataFrame(
     #     df_5.rdd, schema=df_5.schema
@@ -2247,6 +2258,7 @@ def fill_forward_events_for_key_columns(df):
         detail_columns=["last_covid_contact_type"],
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",
+        visit_id_column="visit_id",
     )
     return df
 
@@ -2590,12 +2602,11 @@ def derive_overall_vaccination(df: DataFrame) -> DataFrame:
 def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     """Add result of various regex pattern matchings"""
     # df = df.drop(
-    #     "work_healthcare_patient_facing_original",
+    #     "work_health_care_patient_facing_original",
     #     "work_social_care_original",
     #     "work_care_nursing_home_original",
     #     "work_direct_contact_patients_or_clients_original",
     # )
-    input_columns = df.columns
 
     df = df.withColumn("work_main_job_title", F.upper(F.col("work_main_job_title")))
     df = df.withColumn("work_main_job_role", F.upper(F.col("work_main_job_role")))
@@ -2628,7 +2639,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
 
     # add boolean flags for working in healthcare or socialcare
 
-    df = df.withColumn("works_healthcare", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
+    df = df.withColumn("works_health_care", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
 
     df = assign_regex_match_result(
         df=df,
@@ -2646,7 +2657,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         )
         .when(
             (
-                (F.col("works_healthcare") == "Yes")
+                (F.col("works_health_care") == "Yes")
                 | (F.col("work_direct_contact_patients_or_clients_regex_derived") == True)
             )
             & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
@@ -2656,7 +2667,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     )
     df = assign_column_value_from_multiple_column_map(
         df,
-        "work_healthcare_patient_facing",
+        "work_health_care_patient_facing",
         [
             ["No", ["No", None]],
             ["No", ["Yes", None]],
@@ -2682,7 +2693,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         ],
         ["work_direct_contact_patients_or_clients", "work_social_care_area"],
     )
-
     # work_status_columns = [col for col in df.columns if "work_status_" in col]
     # for work_status_column in work_status_columns:
     #     df = df.withColumn(
@@ -2693,7 +2703,15 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     #         .otherwise(F.col(work_status_column)),
     #     )
     return df.select(
-        *[col for col in df.columns if col in ["work_main_job_title", "work_main_job_role"] or col not in input_columns]
+        "work_main_job_title",
+        "work_main_job_role",
+        "work_direct_contact_patients_or_clients",
+        "work_social_care_area",
+        "work_health_care_area",
+        "work_health_care_patient_facing",
+        "work_social_care",
+        "works_health_care",
+        "regex_derived_job_sector",
     )
 
 
