@@ -18,6 +18,7 @@ def test_correct_date_ranges(spark_session):
             ("2021-01-01", "2020-01-03", 5),  # valid
             ("2021-01-02", "2121-03-03", 5),  # valid answer pulled from another row
             ("2021-03-01", "2020-03-03", 5),  # valid
+            ("2021-07-22", "2021-10-11", 6),  # can be shifted back by a year to 2020
         ],
         schema=schema,
     )
@@ -33,6 +34,7 @@ def test_correct_date_ranges(spark_session):
             ("2021-01-01", "2020-01-03", 5),  # valid answer pulled from another row
             ("2021-01-02", "2020-03-03", 5),  # valid answer pulled from another row
             ("2021-03-01", "2020-03-03", 5),  # valid answer pulled from another row
+            ("2021-07-22", "2020-10-11", 6),  # shifted back a year as >=2020
         ],
         schema=schema,
     )
