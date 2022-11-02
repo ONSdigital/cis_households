@@ -1373,7 +1373,7 @@
   ons_household_id: '248046164260'
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: null
-  other_antibody_test_last_negative_date: '2022-01-07 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2021-12-07 00:00:00.000000'
   other_antibody_test_location: In the NHS (e.g. GP, hospital)
   other_antibody_test_results: Any tests negative, but none positive
   other_covid_infection_test: 'No'

@@ -92,6 +92,7 @@ from cishouseholds.edit import clean_job_description_string
 from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import conditionally_replace_columns
 from cishouseholds.edit import convert_null_if_not_in_list
+from cishouseholds.edit import correct_date_ranges
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
@@ -1349,6 +1350,22 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
     )
     df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
+    date_cols_to_correct = [
+        col
+        for col in [
+            "last_covid_contact_date",
+            "last_suspected_covid_contact_date",
+            "think_had_covid_onset_date",
+            "think_have_covid_onset_date",
+            "been_outside_uk",
+            "other_covid_infection_test_first_positive_date",
+            "other_covid_infection_test_last_negative_date",
+            "other_antibody_test_first_positive",
+            "other_antibody_test_last_negative_date",
+        ]
+        if col in df.columns
+    ]
+    df = correct_date_ranges(df, date_cols_to_correct, "participant_id", "visit_datetime", "2019-01-01")
     df = assign_column_regex_match(
         df,
         "bad_email",

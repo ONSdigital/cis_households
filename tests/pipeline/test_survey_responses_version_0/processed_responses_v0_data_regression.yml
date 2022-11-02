@@ -328,8 +328,8 @@
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1985-10-14 00:00:00.000000'
-  days_since_think_had_covid: -5
-  days_since_think_had_covid_group: null
+  days_since_think_had_covid: 26
+  days_since_think_had_covid_group: 15-28
   email_address: null
   ethnicity: Mixed-White & Black African
   file_date: '2022-10-03 00:00:00.000000'
@@ -412,7 +412,7 @@
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_contacted_nhs: 'Yes'
-  think_had_covid_onset_date: '2022-01-07 00:00:00.000000'
+  think_had_covid_onset_date: '2021-12-07 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'No'
   think_had_covid_symptom_cough: 'No'
   think_had_covid_symptom_diarrhoea: 'No'
@@ -1277,8 +1277,8 @@
   contact_suspected_positive_covid_last_28_days: 'No'
   county: North Yorkshire
   date_of_birth: '1994-09-20 00:00:00.000000'
-  days_since_think_had_covid: -1
-  days_since_think_had_covid_group: null
+  days_since_think_had_covid: 30
+  days_since_think_had_covid_group: 29-60
   email_address: paraflocculus2029@gsnail.ac.uk
   ethnicity: White-British
   file_date: '2022-10-03 00:00:00.000000'
@@ -1360,7 +1360,7 @@
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_contacted_nhs: null
-  think_had_covid_onset_date: '2022-01-03 00:00:00.000000'
+  think_had_covid_onset_date: '2021-12-03 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: null
   think_had_covid_symptom_cough: 'Yes'
   think_had_covid_symptom_diarrhoea: null
@@ -1431,8 +1431,8 @@
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   date_of_birth: '1982-12-15 00:00:00.000000'
-  days_since_think_had_covid: -1
-  days_since_think_had_covid_group: null
+  days_since_think_had_covid: 30
+  days_since_think_had_covid_group: 29-60
   email_address: null
   ethnicity: Asian or Asian British-Indian
   file_date: '2022-10-03 00:00:00.000000'
@@ -1517,7 +1517,7 @@
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'No'
   think_had_covid_contacted_nhs: 'No'
-  think_had_covid_onset_date: '2022-01-08 00:00:00.000000'
+  think_had_covid_onset_date: '2021-12-08 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'No'
   think_had_covid_symptom_cough: 'No'
   think_had_covid_symptom_diarrhoea: 'No'
