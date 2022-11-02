@@ -38,6 +38,7 @@ def get_config() -> dict:
 
         else:
             modified_config[section_name] = section_config
+
     return modified_config
 
 
