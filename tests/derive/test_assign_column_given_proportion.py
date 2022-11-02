@@ -5,17 +5,23 @@ from cishouseholds.derive import assign_column_given_proportion
 
 def test_assign_column_given_proportion(spark_session):
     expected_df = spark_session.createDataFrame(
+        # fmt: off
         data=[
-            (1, 1, 0, 0),
-            (1, 0, 0, 0),
-            (1, 0, 0, 0),
-            (1, 0, None, 0),
-            (2, None, 0, 0),
-            (3, 1, 0, 1),
-            (4, 1, 1, 1),
+            (1, 1,    0,    0),
+            (1, 0,    None, 0),
+            (1, None, 0,    0),
+            (1, 0,    None, 0),
+            (2, None, 0,    0),
+            (3, 1,    0,    1),
+            (4, 1,    1,    1),
             (4, None, None, 1),
             (5, None, None, 0),
+            (6, None, None, 1),
+            (6, 1,    None, 1),
+            (6, None, None, 1),
+            (6, None, None, 1),
         ],
+        # fmt: on
         schema="""
         id integer,
         col1 integer,
