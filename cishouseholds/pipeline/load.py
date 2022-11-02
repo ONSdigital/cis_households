@@ -17,7 +17,7 @@ class TableNotFoundError(Exception):
 
 
 def delete_tables(
-    prefix: str = None,
+    prefix: bool = False,
     table_names: Union[str, List[str]] = None,
     pattern: str = None,
     protected_tables: List[str] = [],
@@ -41,6 +41,7 @@ def delete_tables(
     spark_session = get_or_create_spark_session()
     config = get_config()
     storage_config = config["storage"]
+    table_prefix = storage_config["table_prefix"]
 
     def drop_tables(table_names: List[str]):
         for table_name in table_names:
@@ -50,25 +51,27 @@ def delete_tables(
                 print(f"dropping table: {storage_config['database']}.{table_name}")  # functional
                 spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
 
-    protected_tables = [f"{storage_config['table_prefix']}{table_name}" for table_name in protected_tables]
+    protected_tables = [f"{table_prefix}{table_name}" for table_name in protected_tables]
 
     if table_names is not None:
         if type(table_names) != list:
             table_names = [table_names]  # type:ignore
-        table_names = [f"{storage_config['table_prefix']}{table_name}" for table_name in table_names]
+        table_names = [f"{table_prefix}{table_name}" for table_name in table_names]
         drop_tables(table_names)
 
     if pattern is not None:
         tables = (
-            spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{pattern}'")
+            spark_session.sql(
+                f"SHOW TABLES FROM {storage_config['database']} WHERE Tables_in_{storage_config['database']} LIKE '{table_prefix}*' AND Tables_in_{storage_config['database']} LIKE '{pattern}'"
+            )
             .select("tableName")
             .toPandas()["tableName"]
             .tolist()
         )
         drop_tables(tables)
-    if prefix is not None:
+    if prefix:
         tables = (
-            spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{prefix}*'")
+            spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{table_prefix}*'")
             .select("tableName")
             .toPandas()["tableName"]
             .tolist()
