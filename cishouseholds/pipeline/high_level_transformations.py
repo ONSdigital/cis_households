@@ -2185,16 +2185,8 @@ def union_dependent_derivations(df):
 
 def fill_forward_events_for_key_columns(df):
     """
-    Function that contains
+    Function that contains all fill_forward_event calls required to implement STATA-based last observation carried forward logic.
     """
-    # df_2 = get_or_create_spark_session().createDataFrame(
-    #     df.rdd, schema=df.schema
-    # )  # breaks lineage to avoid Java OOM Error
-    # df.cache()
-    # dynamic_partitions_from_config = int(
-    #     (int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions")) / 2)
-    # )
-    # df = df.repartition(dynamic_partitions_from_config)
     df = fill_forward_event(
         df=df,
         event_indicator_column="think_had_covid",
@@ -2233,9 +2225,6 @@ def fill_forward_events_for_key_columns(df):
         visit_datetime_column="visit_datetime",
         visit_id_column="visit_id",
     )
-    # df_4 = get_or_create_spark_session().createDataFrame(
-    #     df_3.rdd, schema=df_3.schema
-    # )  # breaks lineage to avoid Java OOM Error
     # Derive these after fill forwards and other changes to dates
     df = fill_forward_event(
         df=df,
@@ -2247,9 +2236,6 @@ def fill_forward_events_for_key_columns(df):
         visit_datetime_column="visit_datetime",
         visit_id_column="visit_id",
     )
-    # df_6 = get_or_create_spark_session().createDataFrame(
-    #     df_5.rdd, schema=df_5.schema
-    # )  # breaks lineage to avoid Java OOM Error
     df = fill_forward_event(
         df=df,
         event_indicator_column="contact_known_positive_covid_last_28_days",

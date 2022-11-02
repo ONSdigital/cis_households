@@ -30,11 +30,6 @@ def assign_regex_from_map(
     df: DataFrame, column_name_to_assign: str, reference_columns: List[str], roles: Mapping, priority_map: Mapping
 ):
     regex_columns = {key: [] for key in [1, *list(priority_map.values())]}  # type: ignore
-    # df.cache()
-    # dynamic_partitions_from_config = int(
-    #     (int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions")) / 2)
-    # )
-    # df = df.repartition(dynamic_partitions_from_config)
     for title, pattern in roles.items():
         col = F.when(F.coalesce(F.concat(*reference_columns), F.lit("")).rlike(pattern), title)
         if title in priority_map:
