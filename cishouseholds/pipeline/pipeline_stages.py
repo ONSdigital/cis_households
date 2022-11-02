@@ -83,7 +83,6 @@ from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 
-
 pipeline_stages = {}
 
 
@@ -162,7 +161,7 @@ def backup_files(file_list: List[str], backup_directory: str):
 
 @register_pipeline_stage("delete_tables")
 def delete_tables_stage(
-    prefix: str = None,
+    prefix: bool = False,
     table_names: Union[str, List[str]] = None,
     pattern: str = None,
     protected_tables: List[str] = [],
@@ -198,7 +197,7 @@ def generate_dummy_data(output_directory):
     historic_bloods_dir = raw_dir / "historic_blood"
     historic_swabs_dir = raw_dir / "historic_swab"
     historic_survey_dir = raw_dir / "historic_survey"
-    cis_soc_direcory = raw_dir / "cis_soc"
+    cis_soc_directory = raw_dir / "cis_soc"
 
     for directory in [
         swab_dir,
@@ -217,7 +216,7 @@ def generate_dummy_data(output_directory):
     file_datetime = datetime.now()
     file_date = datetime.strftime(file_datetime, format="%Y%m%d")
 
-    generate_cis_soc_data(directory=cis_soc_direcory, file_date=file_date, records=50)
+    generate_cis_soc_data(directory=cis_soc_directory, file_date=file_date, records=50)
 
     generate_survey_v0_data(directory=survey_dir, file_date=file_date, records=50, swab_barcodes=[], blood_barcodes=[])
     generate_survey_v1_data(directory=survey_dir, file_date=file_date, records=50, swab_barcodes=[], blood_barcodes=[])
@@ -398,8 +397,8 @@ def process_soc_data(
     )
 
     update_table(coding_errors_df, coding_errors_table, "overwrite", archive=True)
-    update_table(survey_responses_df, output_survey_table, "overwrite")
     update_table(soc_lookup_df, transformed_soc_lookup_table, "overwrite")
+    update_table(survey_responses_df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
 
@@ -424,7 +423,7 @@ def process_regex_data(input_survey_table: str, output_survey_table: str, regex_
             f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
         )  # functional
         lookup_df = add_pattern_matching_flags(df_to_process)
-    df = df.drop(*[col for col in df.columns if col in lookup_df.columns])
+    df = df.drop(*[col for col in df.columns if col in lookup_df.columns and col not in join_on_columns])
     df = df.join(lookup_df, on=join_on_columns, how="left")
     update_table(lookup_df, regex_lookup_table, "overwrite")
     update_table(df, output_survey_table, "overwrite")
@@ -458,14 +457,12 @@ def join_blood_positive_lookup(lookup_table_name: str, input_survey_table: str, 
     df = extract_from_table(input_survey_table)
     df = df.join(
         blood_positive_lookup_df,
-        on=(
-            (df.ons_household_id == blood_positive_lookup_df.ons_h_id)
-            & (df.participant_id == blood_positive_lookup_df.participant_id)
-        ),
+        on="ons_household_id",
         how="left",
     )
     df = df.withColumn("blood_past_positive_flag", F.when(F.col("blood_past_positive").isNull(), 0).otherwise(1))
     update_table(df, output_survey_table, "overwrite")
+    return {"output_survey_table": output_survey_table}
 
 
 @register_pipeline_stage("replace_design_weights")
