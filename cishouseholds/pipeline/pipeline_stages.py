@@ -163,7 +163,7 @@ def backup_files(file_list: List[str], backup_directory: str):
 
 @register_pipeline_stage("delete_tables")
 def delete_tables_stage(
-    prefix: str = None,
+    prefix: bool = False,
     table_names: Union[str, List[str]] = None,
     pattern: str = None,
     protected_tables: List[str] = [],
@@ -199,7 +199,7 @@ def generate_dummy_data(output_directory):
     historic_bloods_dir = raw_dir / "historic_blood"
     historic_swabs_dir = raw_dir / "historic_swab"
     historic_survey_dir = raw_dir / "historic_survey"
-    cis_soc_direcory = raw_dir / "cis_soc"
+    cis_soc_directory = raw_dir / "cis_soc"
 
     for directory in [
         swab_dir,
@@ -218,7 +218,7 @@ def generate_dummy_data(output_directory):
     file_datetime = datetime.now()
     file_date = datetime.strftime(file_datetime, format="%Y%m%d")
 
-    generate_cis_soc_data(directory=cis_soc_direcory, file_date=file_date, records=50)
+    generate_cis_soc_data(directory=cis_soc_directory, file_date=file_date, records=50)
 
     generate_survey_v0_data(directory=survey_dir, file_date=file_date, records=50, swab_barcodes=[], blood_barcodes=[])
     generate_survey_v1_data(directory=survey_dir, file_date=file_date, records=50, swab_barcodes=[], blood_barcodes=[])
