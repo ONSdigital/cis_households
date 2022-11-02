@@ -13,7 +13,7 @@
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
-  care_home_last_28_days: Participant Would Not/Could Not Answer
+  care_home_last_28_days: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: '2022-01-02 00:00:00.000000'
   cis_covid_vaccine_date_2: null
@@ -155,7 +155,7 @@
   person_not_present_age_6: 86.0
   person_not_present_age_7: 10.0
   person_not_present_age_8: 56.0
-  physical_contact_18_to_69_years: Participant Would Not/Could Not Answer
+  physical_contact_18_to_69_years: null
   physical_contact_over_70_years: 21 or more
   physical_contact_under_18_years: 21 or more
   postcode: PS0F2CG
@@ -471,7 +471,7 @@
   person_not_present_age_8: 44.0
   physical_contact_18_to_69_years: 11-20
   physical_contact_over_70_years: 21 or more
-  physical_contact_under_18_years: Participant Would Not/Could Not Answer
+  physical_contact_under_18_years: null
   postcode: TE4H2TC
   reconsented_blood: 'False'
   regularly_lateral_flow_testing: 'No'
@@ -786,7 +786,7 @@
   person_not_present_age_8: 18.0
   physical_contact_18_to_69_years: 21 or more
   physical_contact_over_70_years: 1-5
-  physical_contact_under_18_years: Participant Would Not/Could Not Answer
+  physical_contact_under_18_years: null
   postcode: null
   reconsented_blood: 'True'
   regularly_lateral_flow_testing: null
@@ -952,7 +952,7 @@
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
-  care_home_last_28_days: Participant Would Not/Could Not Answer
+  care_home_last_28_days: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: null
   cis_covid_vaccine_date_2: null
@@ -1421,7 +1421,7 @@
   person_not_present_age_8: 2.0
   physical_contact_18_to_69_years: null
   physical_contact_over_70_years: 6-10
-  physical_contact_under_18_years: Participant Would Not/Could Not Answer
+  physical_contact_under_18_years: null
   postcode: null
   reconsented_blood: 'True'
   regularly_lateral_flow_testing: 'No'
@@ -1436,7 +1436,7 @@
   smokes_hookah_shisha_pipes: null
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
-  social_distance_contact_18_to_69_years: Participant Would Not/Could Not Answer
+  social_distance_contact_18_to_69_years: null
   social_distance_contact_over_70_years: '0'
   social_distance_contact_under_18_years: 21 or more
   street: Glendon
@@ -1593,7 +1593,7 @@
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
-  care_home_last_28_days: Participant Would Not/Could Not Answer
+  care_home_last_28_days: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: null
   cis_covid_vaccine_date_2: '2022-01-02 00:00:00.000000'
@@ -1915,7 +1915,7 @@
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
-  care_home_last_28_days: Participant Would Not/Could Not Answer
+  care_home_last_28_days: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: '2022-01-02 00:00:00.000000'
   cis_covid_vaccine_date_2: null
@@ -2335,8 +2335,8 @@
   other_covid_infection_test_first_positive_date: '2022-01-03 00:00:00.000000'
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: One or more positive test(s)
-  other_household_member_care_home_last_28_days: Participant Would Not/Could Not Answer
-  other_household_member_hospital_last_28_days: Participant Would Not/Could Not Answer
+  other_household_member_care_home_last_28_days: null
+  other_household_member_hospital_last_28_days: null
   participant_id: DHR-593586857022
   participant_survey_status: Completed
   participant_testing_group: null
@@ -2376,7 +2376,7 @@
   person_not_present_age_8: 61.0
   physical_contact_18_to_69_years: 6-10
   physical_contact_over_70_years: 21 or more
-  physical_contact_under_18_years: Participant Would Not/Could Not Answer
+  physical_contact_under_18_years: null
   postcode: null
   reconsented_blood: 'True'
   regularly_lateral_flow_testing: 'Yes'
@@ -2431,7 +2431,7 @@
   think_had_covid_symptom_sore_throat: 'No'
   think_had_covid_symptom_vertigo_or_dizziness: null
   think_had_covid_which_symptoms: null
-  think_have_covid: Participant Would Not/Could Not Answer
+  think_have_covid: null
   think_have_covid_onset_date: '2022-01-06 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: 'Yes'
@@ -2485,8 +2485,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: null
   think_have_long_covid_symptoms: Worry/anxiety
   times_hour_or_longer_another_home_last_7_days: '6'
-  times_hour_or_longer_another_person_your_home_last_7_days: Participant Would Not/Could
-    Not Answer
+  times_hour_or_longer_another_person_your_home_last_7_days: null
   times_outside_shopping_or_socialising_last_7_days: 5
   times_shopping_last_7_days: '4'
   times_socialising_last_7_days: '2'
@@ -2546,7 +2545,7 @@
   blood_sample_barcode: ONS00000000
   blood_sample_barcode_raw: ONS00000000
   blood_taken: 'Yes'
-  care_home_last_28_days: Participant Would Not/Could Not Answer
+  care_home_last_28_days: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_date_1: '2022-01-07 00:00:00.000000'
   cis_covid_vaccine_date_2: null
@@ -2801,8 +2800,7 @@
   think_have_long_covid_symptom_vertigo_or_dizziness: 'No'
   think_have_long_covid_symptoms: Nausea/vomiting
   times_hour_or_longer_another_home_last_7_days: '5'
-  times_hour_or_longer_another_person_your_home_last_7_days: Participant Would Not/Could
-    Not Answer
+  times_hour_or_longer_another_person_your_home_last_7_days: null
   times_outside_shopping_or_socialising_last_7_days: 0
   times_shopping_last_7_days: '0'
   times_socialising_last_7_days: null
@@ -3070,7 +3068,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_had_covid_which_symptoms: 'Yes'
-  think_have_covid: Participant Would Not/Could Not Answer
+  think_have_covid: null
   think_have_covid_onset_date: '2022-01-03 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: null
