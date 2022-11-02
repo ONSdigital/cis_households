@@ -2190,11 +2190,11 @@ def fill_forward_events_for_key_columns(df):
     # df_2 = get_or_create_spark_session().createDataFrame(
     #     df.rdd, schema=df.schema
     # )  # breaks lineage to avoid Java OOM Error
-    df.cache()
-    dynamic_partitions_from_config = int(
-        (int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions")) / 2)
-    )
-    df = df.repartition(dynamic_partitions_from_config)
+    # df.cache()
+    # dynamic_partitions_from_config = int(
+    #     (int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions")) / 2)
+    # )
+    # df = df.repartition(dynamic_partitions_from_config)
     df = fill_forward_event(
         df=df,
         event_indicator_column="think_had_covid",
