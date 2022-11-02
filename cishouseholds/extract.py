@@ -45,6 +45,8 @@ def list_contents(path: str, recursive: Optional[bool] = False, date_from_filena
     if date_from_filename:
         df["upload_date"] = df["filename"].str.extract((r"(\d{8})(?:_\d{4}|_\d{6})?(?=.csv|.txt)"), expand=False)
         df["upload_date"] = pd.to_datetime(df["upload_date"], errors="coerce", format="%Y%m%d")
+    else:
+        df["upload_date"] = pd.to_datetime(df["upload_date"], errors="coerce", format="%Y-%m-%d")
     return df
 
 
@@ -53,9 +55,10 @@ def get_files_by_date(
     start_date: Optional[Union[str, datetime]] = None,
     end_date: Optional[Union[str, datetime]] = None,
     date_from_filename: bool = True,
-) -> List:
+    return_complete_df: bool = False,
+) -> Union[List[str], DataFrame]:
     """
-    Get a list of hdfs file paths for a given set of date critera and parent path on hdfs.
+    Get a list of hdfs file paths for a given set of date criteria and parent path on hdfs.
 
     Parameters
     ----------
@@ -80,7 +83,8 @@ def get_files_by_date(
         if isinstance(end_date, str):
             end_date = datetime.strptime(end_date, "%Y-%m-%d")
         file_df = file_df[file_df["upload_date"].dt.date <= end_date]
-
+    if return_complete_df:
+        return file_df
     file_list = file_df["file_path"].tolist()
     return file_list
 
