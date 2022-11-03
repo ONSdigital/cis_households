@@ -295,6 +295,7 @@ def transform_cis_soc_data(
     )
     resolved_df = soc_lookup_df.filter(F.col("drop_reason").isNull()).drop("drop_reason", "ROW_NUMBER")
     duplicate_df = soc_lookup_df.filter(F.col("drop_reason").isNotNull()).drop("ROW_NUMBER")
+
     return duplicate_df.unionByName(drop_null_title_df), resolved_df
 
 
