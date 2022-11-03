@@ -240,10 +240,9 @@ category_maps = {
             "NA(Not currently working)": 99,
         },
         "work_health_care_area": {
-            "No": 0,
-            "Yes, in primary care, e.g. GP, dentist": 1,
-            "Yes, in secondary care, e.g. hospital": 2,
-            "Yes, in other healthcare settings, e.g. mental health": 3,
+            "Primary": 1,
+            "Secondary": 2,
+            "Other": 3,
         },
         "work_health_care_patient_facing": {
             "No": 0,
