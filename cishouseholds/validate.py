@@ -225,6 +225,7 @@ def validate_config_stages(pipeline_stage_functions: Dict, stages_to_run: List[s
     pipeline_stage_list: from the config file all the functions that have been set up to run.
     """
     error_msg = "\n"
+    optional_parameters = ["function", "input_survey_table", "input_stage"]
     # CHECK: function in config file exists in repo
     for stage_name in stages_to_run:
         # check that theres an object function per each of the pipeline stages in the config_file
@@ -237,9 +238,7 @@ def validate_config_stages(pipeline_stage_functions: Dict, stages_to_run: List[s
             **stages_config[stage_name].get("output_tables", {}),  # type: ignore
             **{k: v for k, v in stages_config[stage_name].items() if k not in ["input_tables", "output_tables"]},  # type: ignore
         }  # type: ignore
-        function_config_other_params = [
-            x for x in config_arguments_dict.keys() if (x not in ["function", "input_survey_table"])
-        ]
+        function_config_other_params = [x for x in config_arguments_dict.keys() if (x not in optional_parameters)]
 
         # CHECK: for stage function that require when,
         # ensure operator and condition exist and stages required are turned on.

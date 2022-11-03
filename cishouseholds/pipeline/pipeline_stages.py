@@ -21,6 +21,8 @@ from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import household_level_populations
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
+from cishouseholds.expressions import all_columns_null
+from cishouseholds.expressions import any_column_not_null
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.hdfs_utils import copy
 from cishouseholds.hdfs_utils import copy_local_to_hdfs
@@ -82,7 +84,6 @@ from dummy_data_generation.generate_data import generate_nims_table
 from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
-
 
 pipeline_stages = {}
 
@@ -162,7 +163,7 @@ def backup_files(file_list: List[str], backup_directory: str):
 
 @register_pipeline_stage("delete_tables")
 def delete_tables_stage(
-    prefix: str = None,
+    prefix: bool = False,
     table_names: Union[str, List[str]] = None,
     pattern: str = None,
     protected_tables: List[str] = [],
@@ -198,7 +199,7 @@ def generate_dummy_data(output_directory):
     historic_bloods_dir = raw_dir / "historic_blood"
     historic_swabs_dir = raw_dir / "historic_swab"
     historic_survey_dir = raw_dir / "historic_survey"
-    cis_soc_direcory = raw_dir / "cis_soc"
+    cis_soc_directory = raw_dir / "cis_soc"
 
     for directory in [
         swab_dir,
@@ -217,7 +218,7 @@ def generate_dummy_data(output_directory):
     file_datetime = datetime.now()
     file_date = datetime.strftime(file_datetime, format="%Y%m%d")
 
-    generate_cis_soc_data(directory=cis_soc_direcory, file_date=file_date, records=50)
+    generate_cis_soc_data(directory=cis_soc_directory, file_date=file_date, records=50)
 
     generate_survey_v0_data(directory=survey_dir, file_date=file_date, records=50, swab_barcodes=[], blood_barcodes=[])
     generate_survey_v1_data(directory=survey_dir, file_date=file_date, records=50, swab_barcodes=[], blood_barcodes=[])
@@ -377,7 +378,11 @@ def process_soc_data(
     join_on_columns = ["work_main_job_title", "work_main_job_role"]
     inconsistences_resolution_df = extract_from_table(inconsistences_resolution_table)
     soc_lookup_df = extract_from_table(unioned_soc_lookup_table)
-    survey_responses_df = extract_from_table(input_survey_table)
+    df = extract_from_table(input_survey_table)
+    unjoinable_df = df.filter(all_columns_null(join_on_columns)).withColumn(
+        "standard_occupational_classification_code", F.lit("uncodeable")
+    )
+    df = df.filter(any_column_not_null(join_on_columns))
     soc_lookup_df = soc_lookup_df.distinct().join(
         inconsistences_resolution_df.distinct(),
         on=join_on_columns,
@@ -389,17 +394,18 @@ def process_soc_data(
     ).drop("resolved_soc_code")
 
     coding_errors_df, soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
-    survey_responses_df = survey_responses_df.join(soc_lookup_df, on=join_on_columns, how="left")
-    survey_responses_df = survey_responses_df.withColumn(
+    soc_join_df = soc_lookup_df  # .dropDuplicates(join_on_columns)
+    df = df.join(soc_join_df, on=join_on_columns, how="left")
+    df = df.withColumn(
         "standard_occupational_classification_code",
         F.when(F.col("standard_occupational_classification_code").isNull(), "uncodeable").otherwise(
             F.col("standard_occupational_classification_code")
         ),
     )
-
+    df = union_multiple_tables([df, unjoinable_df])
     update_table(coding_errors_df, coding_errors_table, "overwrite", archive=True)
     update_table(soc_lookup_df, transformed_soc_lookup_table, "overwrite")
-    update_table(survey_responses_df, output_survey_table, "overwrite")
+    update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
 
@@ -410,6 +416,8 @@ def process_regex_data(input_survey_table: str, output_survey_table: str, regex_
     """
     join_on_columns = ["work_main_job_title", "work_main_job_role"]
     df = extract_from_table(input_survey_table)
+    unjoinable_df = df.filter(all_columns_null(join_on_columns))
+    df = df.filter(any_column_not_null(join_on_columns))
     if regex_lookup_table is not None and check_table_exists(regex_lookup_table):
         lookup_df = extract_from_table(regex_lookup_table, True)
         non_derived_rows = df.join(lookup_df, on=join_on_columns, how="leftanti")
@@ -426,6 +434,7 @@ def process_regex_data(input_survey_table: str, output_survey_table: str, regex_
         lookup_df = add_pattern_matching_flags(df_to_process)
     df = df.drop(*[col for col in df.columns if col in lookup_df.columns and col not in join_on_columns])
     df = df.join(lookup_df, on=join_on_columns, how="left")
+    df = union_multiple_tables([df, unjoinable_df])
     update_table(lookup_df, regex_lookup_table, "overwrite")
     update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}

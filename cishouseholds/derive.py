@@ -20,6 +20,7 @@ from pyspark.sql import Window
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.expressions import any_column_matches_regex
+from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import any_column_null
 from cishouseholds.merge import null_safe_join
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -29,11 +30,6 @@ def assign_regex_from_map(
     df: DataFrame, column_name_to_assign: str, reference_columns: List[str], roles: Mapping, priority_map: Mapping
 ):
     regex_columns = {key: [] for key in [1, *list(priority_map.values())]}  # type: ignore
-    df.cache()
-    dynamic_partitions_from_config = int(
-        (int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions")) / 2)
-    )
-    df = df.repartition(dynamic_partitions_from_config)
     for title, pattern in roles.items():
         col = F.when(F.coalesce(F.concat(*reference_columns), F.lit("")).rlike(pattern), title)
         if title in priority_map:
@@ -701,31 +697,26 @@ def assign_column_given_proportion(
     """
     window = Window.partitionBy(groupby_column)
 
-    df = df.withColumn("TEMP", F.lit(0))
     df = df.withColumn(column_name_to_assign, F.lit("No"))
 
-    for col in reference_columns:
-        df = df.withColumn(
-            "TEMP",
-            F.when(F.col(col).isin(count_if), 1).when(F.col(col).isNotNull(), F.col("TEMP")).otherwise(None),
-        )
-        df = df.withColumn(
-            column_name_to_assign,
-            F.when(
-                (
-                    F.sum(F.when(F.col("TEMP") == 1, 1).otherwise(0)).over(window)
-                    / F.sum(F.when(F.col("TEMP").isNotNull(), 1).otherwise(0)).over(window)
-                    >= 0.3
-                ),
-                1,
-            ).otherwise(0),
-        )
+    row_result = F.coalesce(*[F.when(F.col(col).isin(count_if), 1) for col in reference_columns])
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (
+                F.sum(F.when(row_result == 1, 1).otherwise(0)).over(window)
+                / F.sum(F.when(any_column_not_null(reference_columns), 1)).over(window)
+                >= 0.3
+            ),
+            1,
+        ).otherwise(0),
+    )
     df = df.withColumn(column_name_to_assign, F.max(column_name_to_assign).over(window))
     df = df.withColumn(
         column_name_to_assign,
         F.when(F.col(column_name_to_assign) == 1, true_false_values[0]).otherwise(true_false_values[1]),
     )
-    return df.drop("TEMP")
+    return df
 
 
 def count_value_occurrences_in_column_subset_row_wise(
