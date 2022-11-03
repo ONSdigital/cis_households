@@ -375,8 +375,8 @@ def process_soc_deltas(
     update_table(coding_errors_df, coding_errors_table, mode)
 
 
-@register_pipeline_stage("join_lookup_tables")
-def join_lookup_tables(
+@register_pipeline_stage("join_lookup_table")
+def join_lookup_table(
     input_survey_table: str,
     output_survey_table: str,
     lookup_table_name: str,
