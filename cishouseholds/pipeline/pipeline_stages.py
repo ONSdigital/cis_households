@@ -400,7 +400,7 @@ def join_lookup_tables(
     return {"output_survey_table": output_survey_table}
 
 
-@register_pipeline_stage("process_regex_data")
+@register_pipeline_stage("create_regex_lookup")
 def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[str] = None):
     """
     Create or update regex lookup table
