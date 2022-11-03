@@ -298,7 +298,8 @@ def fill_forward_event(
 
     filtered_df = df.filter(
         (F.col(event_date_column).isNotNull()) & (F.col(event_date_column) <= F.col(visit_datetime_column))
-    )
+    ).cache()
+
     event_dates_df = filtered_df.select(participant_id_column, event_date_column).distinct()
 
     filtered_df = filtered_df.join(
