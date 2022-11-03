@@ -415,14 +415,14 @@ def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[st
         print(
             f"     - located regex lookup df with {non_derived_rows.count()} additional rows to process"
         )  # functional
-        lookup_df = lookup_df.unionByName(add_pattern_matching_flags(non_derived_rows))
+        update_table(add_pattern_matching_flags(non_derived_rows), regex_lookup_table, "append")
     else:
         df_to_process = df.dropDuplicates(join_on_columns)
         print(
             f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
         )  # functional
         lookup_df = add_pattern_matching_flags(df_to_process)
-    update_table(lookup_df, regex_lookup_table, "overwrite")
+        update_table(lookup_df, regex_lookup_table, "overwrite")
 
 
 @register_pipeline_stage("union_survey_response_files")
@@ -612,10 +612,10 @@ def lookup_based_editing(
     ----------
     input_survey_table
         input table name for reference table
-    cohort_lookup_path
-        input file path name for cohort corrections lookup file
-    travel_countries_lookup_path
-        input file path name for travel_countries corrections lookup file
+    cohort_lookup_table
+        input file path name for cohort corrections lookup table
+    travel_countries_lookup_table
+        input file path name for travel_countries corrections lookup table
     edited_table
     """
 
