@@ -2719,6 +2719,12 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         ],
         ["work_direct_contact_patients_or_clients", "work_social_care_area"],
     )
+    df = assign_column_value_from_multiple_column_map(
+        df,
+        "work_patient_facing_clean",
+        [["Yes", ["Yes", "Yes"]], ["No", ["No", "Yes"]], ["Not working in health care", ["No", "No"]]],
+        ["work_direct_contact_patients_or_clients", "works_health_care"],
+    )
     # work_status_columns = [col for col in df.columns if "work_status_" in col]
     # for work_status_column in work_status_columns:
     #     df = df.withColumn(
