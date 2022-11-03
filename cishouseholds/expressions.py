@@ -23,6 +23,11 @@ def any_column_not_null(column_list: list):
     return reduce(or_, [F.col(column).isNotNull() for column in column_list])
 
 
+def all_columns_not_null(column_list: list):
+    "Expression that evaluates true if all columns are null."
+    return reduce(and_, [F.col(column).isNotNull() for column in column_list])
+
+
 def array_contains_any(array_column: str, values: List):
     "check if array column contains any value in list"
     return reduce(or_, [F.array_contains(array_column, val) for val in values])

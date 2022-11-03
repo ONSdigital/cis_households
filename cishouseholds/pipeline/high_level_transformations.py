@@ -372,6 +372,23 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
         ],
     )
 
+    v1_times_value_map = {
+        "None": 0,
+        "1": 1,
+        "2": 2,
+        "3": 3,
+        "4": 4,
+        "5": 5,
+        "6": 6,
+        "7 times or more": 7,
+        "Participant Would Not/Could Not Answer": None,
+    }
+    v1_column_editing_map = {
+        "times_hour_or_longer_another_home_last_7_days": v1_times_value_map,
+        "times_hour_or_longer_another_person_your_home_last_7_days": v1_times_value_map,
+    }
+    df = apply_value_map_multiple_columns(df, v1_column_editing_map)
+
     df = df.withColumn("work_main_job_changed", F.lit(None).cast("string"))
     fill_forward_columns = [
         "work_main_job_title",
@@ -1615,6 +1632,17 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "work_not_from_home_days_per_week",
             "times_shopping_last_7_days",
             "times_socialising_last_7_days",
+            "physical_contact_under_18_years",
+            "physical_contact_18_to_69_years",
+            "physical_contact_over_70_years",
+            "social_distance_contact_under_18_years",
+            "social_distance_contact_18_to_69_years",
+            "social_distance_contact_over_70_years",
+            "hospital_last_28_days",
+            "care_home_last_28_days",
+            "other_household_member_care_home_last_28_days",
+            "other_household_member_hospital_last_28_days",
+            "think_have_covid",
         ],
     )
 
@@ -1635,7 +1663,17 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
         },
     )
 
-    times_value_map = {"None": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7 times or more": 7}
+    v2_times_value_map = {
+        "None": 0,
+        "1": 1,
+        "2": 2,
+        "3": 3,
+        "4": 4,
+        "5": 5,
+        "6": 6,
+        "7 times or more": 7,
+        "Participant Would Not/Could Not Answer": None,
+    }
     column_editing_map = {
         "deferred": {"Deferred 1": "Deferred"},
         "work_location": {
@@ -1648,9 +1686,11 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Both (working from home and working somewhere else)": "Both (from home and somewhere else)",
             "Both (work from home and work somewhere else)": "Both (from home and somewhere else)",
         },
-        "times_outside_shopping_or_socialising_last_7_days": times_value_map,
-        "times_shopping_last_7_days": times_value_map,
-        "times_socialising_last_7_days": times_value_map,
+        "times_outside_shopping_or_socialising_last_7_days": v2_times_value_map,
+        "times_shopping_last_7_days": v2_times_value_map,
+        "times_socialising_last_7_days": v2_times_value_map,
+        "times_hour_or_longer_another_home_last_7_days": v2_times_value_map,
+        "times_hour_or_longer_another_person_your_home_last_7_days": v2_times_value_map,
         "work_sector": {
             "Social Care": "Social care",
             "Transport (incl. storage or logistic)": "Transport (incl. storage, logistic)",
@@ -2202,16 +2242,8 @@ def union_dependent_derivations(df):
 
 def fill_forward_events_for_key_columns(df):
     """
-    Function that contains
+    Function that contains all fill_forward_event calls required to implement STATA-based last observation carried forward logic.
     """
-    # df_2 = get_or_create_spark_session().createDataFrame(
-    #     df.rdd, schema=df.schema
-    # )  # breaks lineage to avoid Java OOM Error
-    df.cache()
-    dynamic_partitions_from_config = int(
-        (int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions")) / 2)
-    )
-    df = df.repartition(dynamic_partitions_from_config)
     df = fill_forward_event(
         df=df,
         event_indicator_column="think_had_covid",
@@ -2250,9 +2282,6 @@ def fill_forward_events_for_key_columns(df):
         visit_datetime_column="visit_datetime",
         visit_id_column="visit_id",
     )
-    # df_4 = get_or_create_spark_session().createDataFrame(
-    #     df_3.rdd, schema=df_3.schema
-    # )  # breaks lineage to avoid Java OOM Error
     # Derive these after fill forwards and other changes to dates
     df = fill_forward_event(
         df=df,
@@ -2264,9 +2293,6 @@ def fill_forward_events_for_key_columns(df):
         visit_datetime_column="visit_datetime",
         visit_id_column="visit_id",
     )
-    # df_6 = get_or_create_spark_session().createDataFrame(
-    #     df_5.rdd, schema=df_5.schema
-    # )  # breaks lineage to avoid Java OOM Error
     df = fill_forward_event(
         df=df,
         event_indicator_column="contact_known_positive_covid_last_28_days",
@@ -2709,6 +2735,12 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
             ["Yes, other social care, non-resident-facing", ["No", "Other"]],
         ],
         ["work_direct_contact_patients_or_clients", "work_social_care_area"],
+    )
+    df = assign_column_value_from_multiple_column_map(
+        df,
+        "work_patient_facing_clean",
+        [["Yes", ["Yes", "Yes"]], ["No", ["No", "Yes"]], ["Not working in health care", ["No", "No"]]],
+        ["work_direct_contact_patients_or_clients", "works_health_care"],
     )
     # work_status_columns = [col for col in df.columns if "work_status_" in col]
     # for work_status_column in work_status_columns:

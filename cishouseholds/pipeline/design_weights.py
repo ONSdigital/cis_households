@@ -375,6 +375,33 @@ def calculate_raw_design_weight_swabs(
     previous_design_weight_column
         design weight values already present on the data
     """
+    """One off join for Northern Ireland sample drawn in Sep 2022, not using cis area code."""
+    # df_ni = (
+    #     df.drop("number_of_households_by_cis_area", "cis_area_code_20")
+    #     .filter(F.col("country_name_12") == "Northern Ireland")
+    #     .join(
+    #         household_level_populations_df.select(
+    #             "number_of_households_by_cis_area", "number_of_households_by_country", "cis_area_code_20"
+    #         ).distinct(),
+    #         on="country_name_12",
+    #         how="left",
+    #     )
+    # )
+
+    # df_gb = (
+    #     df.drop("number_of_households_by_cis_area")
+    #     .filter(F.col("country_name_12") != "Northern Ireland")
+    #     .join(
+    #         household_level_populations_df.select(
+    #             "number_of_households_by_cis_area", "number_of_households_by_country", "cis_area_code_20"
+    #         ).distinct(),
+    #         on="cis_area_code_20",
+    #         how="left",
+    #     ).drop(household_level_populations_df.country_name_12)
+    # )
+
+    # df = df_ni.unionByName(df_gb).distinct()
+
     df = df.drop("number_of_households_by_cis_area").join(
         household_level_populations_df.select(
             "number_of_households_by_cis_area", "number_of_households_by_country", "cis_area_code_20"
