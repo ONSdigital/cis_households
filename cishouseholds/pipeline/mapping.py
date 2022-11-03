@@ -269,6 +269,7 @@ category_maps = {
             "<=15": 2,
             ">=75": 3,
         },
+        "work_patient_facing_clean": {"No": 0, "Yes": 1, "Not working in health care": 3},
         "work_social_care": {
             "No": 0,
             "Yes, care/residential home, resident-facing": 1,
