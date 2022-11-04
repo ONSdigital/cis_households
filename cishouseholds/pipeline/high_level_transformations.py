@@ -1559,7 +1559,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         column_name_to_assign="ever_work_person_facing_or_social_care",
         groupby_column="participant_id",
         reference_columns=["work_social_care"],
-        count_if=["Yes, care/residential home, resident-facing", "Yes, other social care, resident-facing"],
+        count_if=["Yes, care/residential home, resident-facing", "Yes, other social care, resident-facing", "Yes"],
         true_false_values=["Yes", "No"],
     )
     df = assign_column_given_proportion(
