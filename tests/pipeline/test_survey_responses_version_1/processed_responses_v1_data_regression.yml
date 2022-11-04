@@ -273,7 +273,7 @@
   ons_household_id: '919192147365'
   other_antibody_test: 'No'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
-  other_antibody_test_last_negative_date: '2022-01-03 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2021-12-03 00:00:00.000000'
   other_antibody_test_location: You're gonna need a bigger boat.
   other_antibody_test_results: Negative
   other_covid_infection_test: 'No'
@@ -699,7 +699,7 @@
   ons_household_id: '876960826911'
   other_antibody_test: 'No'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
-  other_antibody_test_last_negative_date: '2022-01-07 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2021-12-07 00:00:00.000000'
   other_antibody_test_location: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   other_antibody_test_results: Negative
@@ -1121,7 +1121,7 @@
   ons_household_id: '602276804025'
   other_antibody_test: 'Yes'
   other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
-  other_antibody_test_last_negative_date: '2022-01-09 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2021-12-09 00:00:00.000000'
   other_antibody_test_location: Those who refuse to learn from history are condemned
     to repeat it.
   other_antibody_test_results: Negative
@@ -1762,7 +1762,7 @@
   ons_household_id: '456442497105'
   other_antibody_test: null
   other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
-  other_antibody_test_last_negative_date: '2022-01-08 00:00:00.000000'
+  other_antibody_test_last_negative_date: '2021-12-08 00:00:00.000000'
   other_antibody_test_location: Those who refuse to learn from history are condemned
     to repeat it.
   other_antibody_test_results: Negative
