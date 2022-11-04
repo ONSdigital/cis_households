@@ -425,7 +425,7 @@ def process_regex_data(input_survey_table: str, output_survey_table: str, regex_
         print(
             f"     - located regex lookup df with {non_derived_rows.count()} additional rows to process"
         )  # functional
-        lookup_df = lookup_df.unionByName(add_pattern_matching_flags(non_derived_rows))
+        lookup_df = lookup_df.union(add_pattern_matching_flags(non_derived_rows))
     else:
         df_to_process = df.dropDuplicates(join_on_columns)
         print(
