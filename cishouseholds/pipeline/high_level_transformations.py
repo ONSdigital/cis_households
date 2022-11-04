@@ -1382,7 +1382,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         ]
         if col in df.columns
     ]
-    df = correct_date_ranges(df, date_cols_to_correct, "participant_id", "visit_datetime", "2019-01-01")
+    # df = correct_date_ranges(df, date_cols_to_correct, "participant_id", "visit_datetime", "2019-01-01")
     df = assign_column_regex_match(
         df,
         "bad_email",
