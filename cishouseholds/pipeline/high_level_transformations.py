@@ -131,6 +131,7 @@ from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
+from cishouseholds.merge import null_safe_join
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.healthcare_regex import healthcare_classification
@@ -221,29 +222,43 @@ def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
     return df
 
 
-def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFrame:
+def transform_cis_soc_data(
+    soc_lookup_df: DataFrame, inconsistences_resolution_df: DataFrame, join_on_columns: List[str]
+) -> DataFrame:
     """
     transform and process cis soc data
     """
-    # allow nullsafe join on title as soc is sometimes assigned without
-    df = df.drop_duplicates(["standard_occupational_classification_code", *join_on_columns])
-    drop_null_title_df = df.filter(F.col("work_main_job_title").isNull()).withColumn(
+
+    soc_lookup_df = soc_lookup_df.drop_duplicates(["standard_occupational_classification_code", *join_on_columns])
+    drop_null_title_df = soc_lookup_df.filter(F.col("work_main_job_title").isNull()).withColumn(
         "drop_reason", F.lit("null job title")
     )
-    df = df.filter(F.col("work_main_job_title").isNotNull())
-    df = df.withColumn(
-        "soc_code_edited_to_uncodeable",
-        (F.col("standard_occupational_classification_code").rlike(r".*[^0-9].*|^\s*$"))
-        | (F.col("standard_occupational_classification_code").isNull()),
-    )
-    df = df.withColumn(
-        "standard_occupational_classification_code",
-        F.when(F.col("soc_code_edited_to_uncodeable"), "uncodeable").otherwise(
-            F.col("standard_occupational_classification_code")
-        ),
-    ).drop("soc_code_edited_to_uncodeable")
 
-    df = df.withColumn(
+    # cleanup soc lookup df and resolve inconsistences
+    soc_lookup_df = soc_lookup_df.filter(F.col("work_main_job_title").isNotNull())
+
+    # allow nullsafe join on title as soc is sometimes assigned without job role
+    soc_lookup_df = null_safe_join(
+        soc_lookup_df.distinct(), inconsistences_resolution_df.distinct(), null_safe_on=join_on_columns, how="left"
+    )
+
+    soc_lookup_df = soc_lookup_df.withColumn(
+        "standard_occupational_classification_code",
+        F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
+    ).drop("resolved_soc_code")
+
+    # normalise uncodeable values
+    soc_lookup_df = soc_lookup_df.withColumn(
+        "standard_occupational_classification_code",
+        F.when(
+            (F.col("standard_occupational_classification_code").rlike(r".*[^0-9].*|^\s*$"))
+            | (F.col("standard_occupational_classification_code").isNull()),
+            "uncodeable",
+        ).otherwise(F.col("standard_occupational_classification_code")),
+    )
+
+    # decide on rows to drop
+    soc_lookup_df = soc_lookup_df.withColumn(
         "LENGTH",
         F.length(
             F.when(
@@ -257,7 +272,7 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     window = Window.partitionBy(*join_on_columns)
 
     # flag non specific soc codes and uncodeable codes
-    df = df.withColumn(
+    soc_lookup_df = soc_lookup_df.withColumn(
         "drop_reason",
         F.when(
             (F.col("LENGTH") != F.max("LENGTH").over(window))
@@ -267,17 +282,21 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     )
     retain_count = F.sum(F.when(F.col("drop_reason").isNull(), 1).otherwise(0)).over(window)
     # flag ambiguous codes from remaining set
-    df = df.withColumn(
+    soc_lookup_df = soc_lookup_df.withColumn(
         "drop_reason",
         F.when(
             (retain_count > 1) & (F.col("drop_reason").isNull()),
             "ambiguous code",
         ).otherwise(F.col("drop_reason")),
     ).drop("LENGTH")
+
     # remove flag from first row of dropped set if all codes from group are flagged
-    df = df.withColumn("drop_reason", F.when(F.count("*").over(window) == 1, None).otherwise(F.col("drop_reason")))
-    resolved_df = df.filter(F.col("drop_reason").isNull()).drop("drop_reason", "ROW_NUMBER")
-    duplicate_df = df.filter(F.col("drop_reason").isNotNull()).drop("ROW_NUMBER")
+    soc_lookup_df = soc_lookup_df.withColumn(
+        "drop_reason", F.when(F.count("*").over(window) == 1, None).otherwise(F.col("drop_reason"))
+    )
+    resolved_df = soc_lookup_df.filter(F.col("drop_reason").isNull()).drop("drop_reason", "ROW_NUMBER")
+    duplicate_df = soc_lookup_df.filter(F.col("drop_reason").isNotNull()).drop("ROW_NUMBER")
+
     return duplicate_df.unionByName(drop_null_title_df), resolved_df
 
 
