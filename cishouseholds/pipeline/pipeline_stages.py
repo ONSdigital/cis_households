@@ -431,6 +431,7 @@ def process_regex_data(input_survey_table: str, output_survey_table: str, regex_
         print(
             f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
         )  # functional
+        df = df.repartition(64)
         lookup_df = add_pattern_matching_flags(df_to_process)
     df = df.drop(*[col for col in df.columns if col in lookup_df.columns and col not in join_on_columns])
     df = df.join(lookup_df, on=join_on_columns, how="left")
