@@ -1587,8 +1587,11 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         df = update_column_values_from_map(df=df, column=column, map=work_status_dict[column])
 
     df = update_column_values_from_map(df=df, column="work_status_v2", map=work_status_dict["work_status_v2"])
+    return df
 
-    ## Not needed in release 1. Confirm that these are v2-only when pulling them back in, as they should likely be union dependent.
+
+def create_ever_vars(df: DataFrame) -> DataFrame:
+
     df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
     df = assign_column_given_proportion(
         df=df,
@@ -2141,7 +2144,7 @@ def union_dependent_derivations(df):
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
 
-    df = derive_work_status_columns(df)
+    df = create_ever_vars(df)
 
     # df = assign_work_patient_facing_now(
     #     df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_patient_facing"
