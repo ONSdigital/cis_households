@@ -1162,9 +1162,9 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Other employment sector please specify": "Other occupation sector",
         },
         "work_health_care_area": {
-            "Primary care - for example in a GP or dentist": "Yes, in primary care, e.g. GP, dentist",
-            "Secondary care - for example in a hospital": "Yes, in secondary care, e.g. hospital",
-            "Another type of healthcare - for example mental health services": "Yes, in other healthcare settings, e.g. mental health",  # noqa: E501
+            "Primary care - for example in a GP or dentist": "Primary",
+            "Secondary care - for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
         },
         "illness_reduces_activity_or_ability": {
             "Yes a little": "Yes, a little",
@@ -1712,13 +1712,13 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Other occupation sector (specify)": "Other occupation sector",
         },
         "work_health_care_area": {
-            "Primary Care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
-            "Primary care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
-            "Secondary Care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
-            "Secondary care (e.g. hospital.)": "Yes, in secondary care, e.g. hospital",
-            "Secondary care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
-            "Other Healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
-            "Other healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
+            "Primary Care (e.g. GP or dentist)": "Primary",
+            "Primary care (e.g. GP or dentist)": "Primary",
+            "Secondary Care (e.g. hospital)": "Secondary",
+            "Secondary care (e.g. hospital.)": "Secondary",
+            "Secondary care (e.g. hospital)": "Secondary",
+            "Other Healthcare (e.g. mental health)": "Other",
+            "Other healthcare (e.g. mental health)": "Other",
         },
         "face_covering_outside_of_home": {
             "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
