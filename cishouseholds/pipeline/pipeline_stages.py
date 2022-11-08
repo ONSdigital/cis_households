@@ -332,7 +332,7 @@ def process_soc_deltas(
     source_file_column: str,
     soc_lookup_table: str,
     coding_errors_table: str,
-    inconsistences_resolution_table: str,
+    inconsistencies_resolution_table: str,
     include_processed=False,
     include_invalid=False,
     latest_only=False,
@@ -343,7 +343,7 @@ def process_soc_deltas(
     Process soc data and combine result with survey responses data
     """
     join_on_columns = ["work_main_job_title", "work_main_job_role"]
-    inconsistences_resolution_df = extract_from_table(inconsistences_resolution_table)
+    inconsistencies_resolution_df = extract_from_table(inconsistencies_resolution_table)
 
     dfs: List[DataFrame] = []
     file_list = get_files_to_be_processed(
@@ -367,7 +367,7 @@ def process_soc_deltas(
 
     soc_lookup_df = union_multiple_tables(dfs)
     coding_errors_df, soc_lookup_df = transform_cis_soc_data(
-        soc_lookup_df, inconsistences_resolution_df, join_on_columns
+        soc_lookup_df, inconsistencies_resolution_df, join_on_columns
     )
 
     mode = "overwrite" if include_processed else "append"
