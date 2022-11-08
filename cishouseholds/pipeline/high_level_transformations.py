@@ -391,6 +391,15 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
         ],
     )
 
+    health_care_area_map = {
+        "Primary care for example in a GP or dentist": "Primary",
+        "Secondary care for example in a hospital": "Secondary",
+        "Yes, in secondary care, e.g. hospital": "Secondary",
+        "Yes, in other healthcare settings, e.g. mental health": "Other",
+        "Yes, in primary care, e.g. GP,dentist": "Primary",
+        "Another type of healthcare-for example mental health services?": "Other",
+    }
+
     v1_times_value_map = {
         "None": 0,
         "1": 1,
@@ -405,6 +414,7 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
     v1_column_editing_map = {
         "times_hour_or_longer_another_home_last_7_days": v1_times_value_map,
         "times_hour_or_longer_another_person_your_home_last_7_days": v1_times_value_map,
+        "work_health_care_area": health_care_area_map,
     }
     df = apply_value_map_multiple_columns(df, v1_column_editing_map)
 
