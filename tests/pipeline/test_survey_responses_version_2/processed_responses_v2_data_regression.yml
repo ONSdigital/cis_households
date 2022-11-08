@@ -283,10 +283,10 @@
   which_symptoms_last_7_days: Fever
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_original: 'No'
-  work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area: Other
   work_health_care_area_original: Other healthcare (e.g. mental health)
   work_health_care_area_raw: Other healthcare (e.g. mental health)
-  work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
+  work_health_care_patient_facing: null
   work_in_additional_paid_employment: null
   work_location: null
   work_location_raw: null
@@ -595,10 +595,10 @@
   which_symptoms_last_7_days: Sore  Throat
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_original: 'No'
-  work_health_care_area: Yes, in secondary care, e.g. hospital
+  work_health_care_area: Secondary
   work_health_care_area_original: Secondary care (e.g. hospital)
   work_health_care_area_raw: Secondary care (e.g. hospital)
-  work_health_care_patient_facing: Yes, secondary care, non-patient-facing
+  work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'Yes'
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
@@ -1545,10 +1545,10 @@
   which_symptoms_last_7_days: Fever
   work_direct_contact_patients_or_clients: 'Yes'
   work_direct_contact_patients_or_clients_original: 'Yes'
-  work_health_care_area: Yes, in secondary care, e.g. hospital
+  work_health_care_area: Secondary
   work_health_care_area_original: Secondary care (e.g. hospital)
   work_health_care_area_raw: Secondary care (e.g. hospital)
-  work_health_care_patient_facing: Yes, secondary care, patient-facing
+  work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'No'
   work_location: Both (from home and somewhere else)
   work_location_raw: Both (work from home and work somewhere else)
@@ -2188,10 +2188,10 @@
   which_symptoms_last_7_days: null
   work_direct_contact_patients_or_clients: null
   work_direct_contact_patients_or_clients_original: null
-  work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area: Other
   work_health_care_area_original: Other healthcare (e.g. mental health)
   work_health_care_area_raw: Other healthcare (e.g. mental health)
-  work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
+  work_health_care_patient_facing: null
   work_in_additional_paid_employment: null
   work_location: Working from home
   work_location_raw: From home (in the same grounds or building as your home)
@@ -2815,10 +2815,10 @@
   which_symptoms_last_7_days: Sore  Throat
   work_direct_contact_patients_or_clients: null
   work_direct_contact_patients_or_clients_original: null
-  work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area: Other
   work_health_care_area_original: Other healthcare (e.g. mental health)
   work_health_care_area_raw: Other healthcare (e.g. mental health)
-  work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
+  work_health_care_patient_facing: null
   work_in_additional_paid_employment: 'Yes'
   work_location: Working from home
   work_location_raw: From home (in the same grounds or building as your home)
