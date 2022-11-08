@@ -389,11 +389,13 @@ def join_lookup_table(
     """
     lookup_df = extract_from_table(lookup_table_name)
     df = extract_from_table(input_survey_table)
-    unjoinable_df = df.filter(all_columns_null(join_on_columns))
-    df = left_join_keep_right(df, lookup_df, join_on_columns)
 
+    unjoinable_df = df.filter(all_columns_null(join_on_columns))
     for col, val in unjoinable_values.items():
         unjoinable_df.withColumn(col, F.lit(val))
+
+    df = df.filter(any_column_not_null(join_on_columns))
+    df = left_join_keep_right(df, lookup_df, join_on_columns)
 
     df = union_multiple_tables([df, unjoinable_df])
     update_table(df, output_survey_table, "overwrite")
