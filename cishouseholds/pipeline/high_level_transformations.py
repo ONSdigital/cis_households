@@ -309,12 +309,12 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
 
     column_editing_map = {
         "work_health_care_area": {
-            "Yes, primary care, patient-facing": "Yes, in primary care, e.g. GP, dentist",
-            "Yes, secondary care, patient-facing": "Yes, in secondary care, e.g. hospital",
-            "Yes, other healthcare, patient-facing": "Yes, in other healthcare settings, e.g. mental health",
-            "Yes, primary care, non-patient-facing": "Yes, in primary care, e.g. GP, dentist",
-            "Yes, secondary care, non-patient-facing": "Yes, in secondary care, e.g. hospital",
-            "Yes, other healthcare, non-patient-facing": "Yes, in other healthcare settings, e.g. mental health",
+            "Yes, primary care, patient-facing": "Primary",
+            "Yes, secondary care, patient-facing": "Secondary",
+            "Yes, other healthcare, patient-facing": "Other",
+            "Yes, primary care, non-patient-facing": "Primary",
+            "Yes, secondary care, non-patient-facing": "Secondary",
+            "Yes, other healthcare, non-patient-facing": "Other",
         },
         "work_location": {
             "Both (working from home and working outside of your home)": "Both (from home and somewhere else)",
@@ -1349,18 +1349,18 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "work_patient_facing_now",
     ]
 
-    healthcare_area_mapper = {
-        "Primary care for example in a GP or dentist": "Primary",
-        "Secondary care for example in a hospital": "Secondary",
-        "Yes, in secondary care, e.g. hospital": "Secondary",
-        "Yes, in other healthcare settings, e.g. mental health": "Other",
-        "Yes, in primary care, e.g. GP,dentist": "Primary",
-        "Another type of healthcare-for example mental health services?": "Other",
-    }
+    # healthcare_area_mapper = {
+    #     "Primary care for example in a GP or dentist": "Primary",
+    #     "Secondary care for example in a hospital": "Secondary",
+    #     "Yes, in secondary care, e.g. hospital": "Secondary",
+    #     "Yes, in other healthcare settings, e.g. mental health": "Other",
+    #     "Yes, in primary care, e.g. GP,dentist": "Primary",
+    #     "Another type of healthcare-for example mental health services?": "Other",
+    # }
 
     df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
-    if "work_health_care_area" in df.columns:
-        df = update_column_values_from_map(df, "work_health_care_area", healthcare_area_mapper)
+    # if "work_health_care_area" in df.columns:
+    #     df = update_column_values_from_map(df, "work_health_care_area", healthcare_area_mapper)
     df = assign_raw_copies(df, [column for column in original_copy_list if column in df.columns], "original")
 
     df = assign_unique_id_column(
