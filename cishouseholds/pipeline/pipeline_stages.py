@@ -839,6 +839,12 @@ def geography_and_imputation_dependent_processing(
         age_column="age_at_visit",
         work_healthcare_column="work_health_care_patient_facing",
     )
+    # df = update_work_facing_now_column(
+    #     df,
+    #     "work_patient_facing_now",
+    #     "work_status_v0",
+    #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
+    # )
     df = reclassify_work_variables(df, spark_session=get_or_create_spark_session(), drop_original_variables=False)
     df = create_formatted_datetime_string_columns(df)
     update_table(df, output_survey_table, write_mode="overwrite")

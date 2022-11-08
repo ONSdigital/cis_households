@@ -1590,9 +1590,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
     return df
 
 
-def create_ever_vars(df: DataFrame) -> DataFrame:
-
-    df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
+def create_ever_variable_columns(df: DataFrame) -> DataFrame:
     df = assign_column_given_proportion(
         df=df,
         column_name_to_assign="ever_work_person_facing_or_social_care",
@@ -1952,7 +1950,6 @@ def symptom_column_transformations(df):
         ],
         count_if_value="Yes",
     )
-    # TODO - not needed until later release
     df = update_think_have_covid_symptom_any(
         df=df,
         column_name_to_update="think_have_covid_symptom_any",
@@ -2144,17 +2141,10 @@ def union_dependent_derivations(df):
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
 
-    df = create_ever_vars(df)
+    df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
 
-    # df = assign_work_patient_facing_now(
-    #     df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_patient_facing"
-    # )
-    # df = update_work_facing_now_column(
-    #     df,
-    #     "work_patient_facing_now",
-    #     "work_status_v0",
-    #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
-    # )
+    df = create_ever_variable_columns(df)
+
     df = assign_first_visit(
         df=df,
         column_name_to_assign="household_first_visit_datetime",
