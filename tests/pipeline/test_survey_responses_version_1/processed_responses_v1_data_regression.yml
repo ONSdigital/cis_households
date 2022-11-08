@@ -178,9 +178,9 @@
     and writing poetry.
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_original: 'No'
-  work_health_care_area: 'Yes'
-  work_health_care_area_original: 'Yes'
-  work_health_care_area_raw: 'Yes'
+  work_health_care_area: null
+  work_health_care_area_original: null
+  work_health_care_area_raw: null
   work_health_care_patient_facing: null
   work_location: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear down this wall!
   work_location_raw: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear down this
@@ -388,9 +388,9 @@
     these messages must obey the so-called ""port protocol."""'
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_original: 'No'
-  work_health_care_area: 'Yes'
-  work_health_care_area_original: 'Yes'
-  work_health_care_area_raw: 'Yes'
+  work_health_care_area: Primary
+  work_health_care_area_original: Yes, in primary care, e.g. GP,dentist
+  work_health_care_area_raw: Yes, in primary care, e.g. GP,dentist
   work_health_care_patient_facing: null
   work_location: Mama always said life was like a box of chocolates. You never know
     what you're gonna get.
@@ -604,10 +604,10 @@
     and writing poetry.
   work_direct_contact_patients_or_clients: null
   work_direct_contact_patients_or_clients_original: null
-  work_health_care_area: 'No'
-  work_health_care_area_original: 'No'
-  work_health_care_area_raw: 'No'
-  work_health_care_patient_facing: 'No'
+  work_health_care_area: Other
+  work_health_care_area_original: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area_raw: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_patient_facing: null
   work_location: '"You''ve got to ask yourself one question: ""Do I feel lucky?""
     Well, do ya? Punk!"'
   work_location_raw: '"You''ve got to ask yourself one question: ""Do I feel lucky?""
@@ -811,10 +811,10 @@
   which_symptoms_last_7_days: Any element of a tuple can be accessed in constant time.
   work_direct_contact_patients_or_clients: 'Yes'
   work_direct_contact_patients_or_clients_original: 'Yes'
-  work_health_care_area: null
-  work_health_care_area_original: null
-  work_health_care_area_raw: null
-  work_health_care_patient_facing: null
+  work_health_care_area: 'No'
+  work_health_care_area_original: 'No'
+  work_health_care_area_raw: 'No'
+  work_health_care_patient_facing: 'No'
   work_location: One morning I shot an elephant in my pajamas. How he got in my pajamas,
     I don't know.
   work_location_raw: One morning I shot an elephant in my pajamas. How he got in my
@@ -1025,9 +1025,9 @@
   which_symptoms_last_7_days: Any element of a tuple can be accessed in constant time.
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_original: 'No'
-  work_health_care_area: 'Yes'
-  work_health_care_area_original: 'Yes'
-  work_health_care_area_raw: 'Yes'
+  work_health_care_area: null
+  work_health_care_area_original: null
+  work_health_care_area_raw: null
   work_health_care_patient_facing: null
   work_location: You're gonna need a bigger boat.
   work_location_raw: You're gonna need a bigger boat.
@@ -1236,10 +1236,10 @@
   which_symptoms_last_7_days: Do you have any idea why this is not working?
   work_direct_contact_patients_or_clients: null
   work_direct_contact_patients_or_clients_original: null
-  work_health_care_area: null
-  work_health_care_area_original: null
-  work_health_care_area_raw: null
-  work_health_care_patient_facing: null
+  work_health_care_area: 'No'
+  work_health_care_area_original: 'No'
+  work_health_care_area_raw: 'No'
+  work_health_care_patient_facing: 'No'
   work_location: Those who refuse to learn from history are condemned to repeat it.
   work_location_raw: Those who refuse to learn from history are condemned to repeat
     it.
@@ -1451,10 +1451,10 @@
     characters, the first character being lowercase.
   work_direct_contact_patients_or_clients: null
   work_direct_contact_patients_or_clients_original: null
-  work_health_care_area: null
-  work_health_care_area_original: null
-  work_health_care_area_raw: null
-  work_health_care_patient_facing: null
+  work_health_care_area: 'No'
+  work_health_care_area_original: 'No'
+  work_health_care_area_raw: 'No'
+  work_health_care_patient_facing: 'No'
   work_location: Houston, we have a problem.
   work_location_raw: Houston, we have a problem.
   work_main_job_changed: 'Yes'
@@ -1668,10 +1668,10 @@
     types.
   work_direct_contact_patients_or_clients: null
   work_direct_contact_patients_or_clients_original: null
-  work_health_care_area: 'No'
-  work_health_care_area_original: 'No'
-  work_health_care_area_raw: 'No'
-  work_health_care_patient_facing: 'No'
+  work_health_care_area: Other
+  work_health_care_area_original: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area_raw: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_patient_facing: null
   work_location: Houston, we have a problem.
   work_location_raw: Houston, we have a problem.
   work_main_job_changed: 'Yes'
@@ -1878,9 +1878,9 @@
     are D1, D2, ... Dn.
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_original: 'No'
-  work_health_care_area: 'Yes'
-  work_health_care_area_original: 'Yes'
-  work_health_care_area_raw: 'Yes'
+  work_health_care_area: Primary
+  work_health_care_area_original: Yes, in primary care, e.g. GP,dentist
+  work_health_care_area_raw: Yes, in primary care, e.g. GP,dentist
   work_health_care_patient_facing: null
   work_location: You're gonna need a bigger boat.
   work_location_raw: You're gonna need a bigger boat.
@@ -2088,9 +2088,9 @@
   which_symptoms_last_7_days: Make me a sandwich.
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_original: 'No'
-  work_health_care_area: 'Yes'
-  work_health_care_area_original: 'Yes'
-  work_health_care_area_raw: 'Yes'
+  work_health_care_area: Primary
+  work_health_care_area_original: Yes, in primary care, e.g. GP,dentist
+  work_health_care_area_raw: Yes, in primary care, e.g. GP,dentist
   work_health_care_patient_facing: null
   work_location: The only thing we have to fear is fear itself.
   work_location_raw: The only thing we have to fear is fear itself.
