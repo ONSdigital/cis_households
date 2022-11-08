@@ -389,11 +389,13 @@ def join_lookup_table(
     """
     lookup_df = extract_from_table(lookup_table_name)
     df = extract_from_table(input_survey_table)
-    unjoinable_df = df.filter(all_columns_null(join_on_columns))
-    df = left_join_keep_right(df, lookup_df, join_on_columns)
 
+    unjoinable_df = df.filter(all_columns_null(join_on_columns))
     for col, val in unjoinable_values.items():
         unjoinable_df.withColumn(col, F.lit(val))
+
+    df = df.filter(any_column_not_null(join_on_columns))
+    df = left_join_keep_right(df, lookup_df, join_on_columns)
 
     df = union_multiple_tables([df, unjoinable_df])
     update_table(df, output_survey_table, "overwrite")
@@ -421,6 +423,9 @@ def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[st
         print(
             f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
         )  # functional
+        df_to_process = df_to_process.repartition(
+            get_or_create_spark_session().sparkContext.getConf.get("spark.sql.shuffle.partitions") / 2
+        )
         lookup_df = add_pattern_matching_flags(df_to_process)
         update_table(lookup_df, regex_lookup_table, "overwrite")
 
@@ -839,6 +844,12 @@ def geography_and_imputation_dependent_processing(
         age_column="age_at_visit",
         work_healthcare_column="work_health_care_patient_facing",
     )
+    # df = update_work_facing_now_column(
+    #     df,
+    #     "work_patient_facing_now",
+    #     "work_status_v0",
+    #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
+    # )
     df = reclassify_work_variables(df, spark_session=get_or_create_spark_session(), drop_original_variables=False)
     df = create_formatted_datetime_string_columns(df)
     update_table(df, output_survey_table, write_mode="overwrite")
