@@ -66,6 +66,7 @@ def assign_datetime_from_coalesced_columns_and_log_source(
     min_datetime_offset_value: int = -2,
     max_datetime_offset_value: int = 0,
     reference_datetime_days_offset_value: int = -2,
+    final_fallback_column: str = None,
 ):
 
     """
@@ -97,6 +98,8 @@ def assign_datetime_from_coalesced_columns_and_log_source(
         The number of days to positively offset the maximum datetime
     reference_datetime_days_offset_value
         The number of days to positively offset the reference datetime for use as source of final timestamp column
+    final_fallback_column
+        a final fallback column to use if all others are null
     """
     MIN_DATE_BOUND = F.col(min_datetime_column_name) + F.expr(f"INTERVAL {min_datetime_offset_value} DAYS")
     MAX_DATE_BOUND = F.col(max_datetime_column_name) + F.expr(f"INTERVAL {max_datetime_offset_value} DAYS")
@@ -117,6 +120,9 @@ def assign_datetime_from_coalesced_columns_and_log_source(
         F.when(column_object.isNotNull(), column_name)
         for column_object, column_name in zip(coalesce_columns, column_names)
     ]
+    if final_fallback_column is not None:
+        source_columns.append(final_fallback_column)
+
     df = df.withColumn(source_reference_column_name, F.coalesce(*source_columns))
     df = df.withColumn(
         column_name_to_assign,
