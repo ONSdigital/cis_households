@@ -101,11 +101,11 @@ def register_pipeline_stage(key):
 
 
 @register_pipeline_stage("blind_csv_to_table")
-def blind_csv_to_table(path: str, table_name: str):
+def blind_csv_to_table(path: str, table_name: str, sep: str = "|"):
     """
     Convert a single csv file to a HDFS table by inferring a schema
     """
-    df = extract_input_data(path, None, ",")
+    df = extract_input_data(path, None, sep)
     df = update_table(df, table_name, "overwrite")
 
 
