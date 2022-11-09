@@ -411,7 +411,7 @@
   work_direct_contact_patients_or_clients: null
   work_direct_contact_patients_or_clients_original: Prefer not to say
   work_direct_contact_patients_or_clients_raw: Prefer not to say
-  work_health_care_area: Yes, in secondary care, e.g. hospital
+  work_health_care_area: Secondary
   work_health_care_area_original: Secondary care - for example in a hospital
   work_health_care_area_raw: Secondary care - for example in a hospital
   work_in_additional_paid_employment: 'No'
@@ -860,7 +860,7 @@
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_original: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
-  work_health_care_area: Yes, in secondary care, e.g. hospital
+  work_health_care_area: Secondary
   work_health_care_area_original: Secondary care - for example in a hospital
   work_health_care_area_raw: Secondary care - for example in a hospital
   work_in_additional_paid_employment: null
@@ -1763,7 +1763,7 @@
   work_direct_contact_patients_or_clients: 'Yes'
   work_direct_contact_patients_or_clients_original: 'Yes'
   work_direct_contact_patients_or_clients_raw: 'Yes'
-  work_health_care_area: Yes, in secondary care, e.g. hospital
+  work_health_care_area: Secondary
   work_health_care_area_original: Secondary care - for example in a hospital
   work_health_care_area_raw: Secondary care - for example in a hospital
   work_in_additional_paid_employment: null
@@ -2212,7 +2212,7 @@
   work_direct_contact_patients_or_clients: 'Yes'
   work_direct_contact_patients_or_clients_original: 'Yes'
   work_direct_contact_patients_or_clients_raw: 'Yes'
-  work_health_care_area: Yes, in primary care, e.g. GP, dentist
+  work_health_care_area: Primary
   work_health_care_area_original: Primary care - for example in a GP or dentist
   work_health_care_area_raw: Primary care - for example in a GP or dentist
   work_in_additional_paid_employment: null
@@ -3106,7 +3106,7 @@
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_original: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
-  work_health_care_area: Yes, in secondary care, e.g. hospital
+  work_health_care_area: Secondary
   work_health_care_area_original: Secondary care - for example in a hospital
   work_health_care_area_raw: Secondary care - for example in a hospital
   work_in_additional_paid_employment: null
@@ -3557,7 +3557,7 @@
   work_direct_contact_patients_or_clients: null
   work_direct_contact_patients_or_clients_original: Prefer not to say
   work_direct_contact_patients_or_clients_raw: Prefer not to say
-  work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area: Other
   work_health_care_area_original: Another type of healthcare - for example mental
     health services
   work_health_care_area_raw: Another type of healthcare - for example mental health
@@ -4466,7 +4466,7 @@
   work_direct_contact_patients_or_clients: 'No'
   work_direct_contact_patients_or_clients_original: 'No'
   work_direct_contact_patients_or_clients_raw: 'No'
-  work_health_care_area: Yes, in other healthcare settings, e.g. mental health
+  work_health_care_area: Other
   work_health_care_area_original: Another type of healthcare - for example mental
     health services
   work_health_care_area_raw: Another type of healthcare - for example mental health
