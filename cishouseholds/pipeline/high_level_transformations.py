@@ -391,6 +391,15 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
         ],
     )
 
+    health_care_area_map = {
+        "Primary care for example in a GP or dentist": "Primary",
+        "Secondary care for example in a hospital": "Secondary",
+        "Yes, in secondary care, e.g. hospital": "Secondary",
+        "Yes, in other healthcare settings, e.g. mental health": "Other",
+        "Yes, in primary care, e.g. GP,dentist": "Primary",
+        "Another type of healthcare-for example mental health services?": "Other",
+    }
+
     v1_times_value_map = {
         "None": 0,
         "1": 1,
@@ -405,6 +414,7 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
     v1_column_editing_map = {
         "times_hour_or_longer_another_home_last_7_days": v1_times_value_map,
         "times_hour_or_longer_another_person_your_home_last_7_days": v1_times_value_map,
+        "work_health_care_area": health_care_area_map,
     }
     df = apply_value_map_multiple_columns(df, v1_column_editing_map)
 
@@ -1577,9 +1587,10 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         df = update_column_values_from_map(df=df, column=column, map=work_status_dict[column])
 
     df = update_column_values_from_map(df=df, column="work_status_v2", map=work_status_dict["work_status_v2"])
+    return df
 
-    ## Not needed in release 1. Confirm that these are v2-only when pulling them back in, as they should likely be union dependent.
-    df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
+
+def create_ever_variable_columns(df: DataFrame) -> DataFrame:
     df = assign_column_given_proportion(
         df=df,
         column_name_to_assign="ever_work_person_facing_or_social_care",
@@ -1939,7 +1950,6 @@ def symptom_column_transformations(df):
         ],
         count_if_value="Yes",
     )
-    # TODO - not needed until later release
     df = update_think_have_covid_symptom_any(
         df=df,
         column_name_to_update="think_have_covid_symptom_any",
@@ -2131,17 +2141,10 @@ def union_dependent_derivations(df):
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
 
-    df = derive_work_status_columns(df)
+    df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
 
-    # df = assign_work_patient_facing_now(
-    #     df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_patient_facing"
-    # )
-    # df = update_work_facing_now_column(
-    #     df,
-    #     "work_patient_facing_now",
-    #     "work_status_v0",
-    #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
-    # )
+    df = create_ever_variable_columns(df)
+
     df = assign_first_visit(
         df=df,
         column_name_to_assign="household_first_visit_datetime",

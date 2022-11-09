@@ -15,9 +15,9 @@ from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.load import add_error_file_log_entry
 from cishouseholds.pipeline.mapping import _welsh_ability_to_socially_distance_at_work_or_education_categories
-from cishouseholds.pipeline.mapping import _welsh_blood_kit_missing_categories
+from cishouseholds.pipeline.mapping import _welsh_blood_not_taken_could_not_reason_categories
+from cishouseholds.pipeline.mapping import _welsh_blood_not_taken_missing_parts_categories
 from cishouseholds.pipeline.mapping import _welsh_blood_not_taken_reason_categories
-from cishouseholds.pipeline.mapping import _welsh_blood_sample_not_taken_categories
 from cishouseholds.pipeline.mapping import _welsh_cis_covid_vaccine_number_of_doses_categories
 from cishouseholds.pipeline.mapping import _welsh_contact_type_by_age_group_categories
 from cishouseholds.pipeline.mapping import _welsh_currently_smokes_or_vapes_description_categories
@@ -27,7 +27,7 @@ from cishouseholds.pipeline.mapping import _welsh_lot_little_not_categories
 from cishouseholds.pipeline.mapping import _welsh_number_of_types_categories
 from cishouseholds.pipeline.mapping import _welsh_other_covid_infection_test_result_categories
 from cishouseholds.pipeline.mapping import _welsh_self_isolating_reason_detailed_categories
-from cishouseholds.pipeline.mapping import _welsh_swab_kit_missing_categories
+from cishouseholds.pipeline.mapping import _welsh_swab_not_taken_missing_parts_categories
 from cishouseholds.pipeline.mapping import _welsh_swab_sample_not_taken_categories
 from cishouseholds.pipeline.mapping import _welsh_transport_to_work_education_categories
 from cishouseholds.pipeline.mapping import _welsh_vaccination_type_categories
@@ -337,6 +337,7 @@ def translate_welsh_fixed_text_responses_digital(df: DataFrame) -> DataFrame:
         "vaccinated_against_flu",
         "think_have_covid_symptoms",
         "contact_suspected_positive_covid_last_28_days",
+        "hours_a_day_with_someone_else_at_home",
     ]
     df = apply_value_map_multiple_columns(
         df,
@@ -368,7 +369,7 @@ def translate_welsh_fixed_text_responses_digital(df: DataFrame) -> DataFrame:
         "face_covering_work_or_education": _welsh_face_covering_categories,
         "face_covering_other_enclosed_places": _welsh_face_covering_categories,
         "swab_not_taken_reason": _welsh_swab_sample_not_taken_categories,
-        "blood_not_taken_reason": _welsh_blood_sample_not_taken_categories,
+        "blood_not_taken_reason": _welsh_blood_not_taken_reason_categories,
         "work_status_digital": _welsh_work_status_digital_categories,
         "work_status_employment": _welsh_work_status_employment_categories,
         "work_status_unemployment": _welsh_work_status_unemployment_categories,
@@ -386,11 +387,15 @@ def translate_welsh_fixed_text_responses_digital(df: DataFrame) -> DataFrame:
     df = translate_column_regex_replace(
         df, "currently_smokes_or_vapes_description", _welsh_currently_smokes_or_vapes_description_categories
     )
-    df = translate_column_regex_replace(df, "blood_not_taken_missing_parts", _welsh_blood_kit_missing_categories)
     df = translate_column_regex_replace(
-        df, "blood_not_taken_could_not_reason", _welsh_blood_not_taken_reason_categories
+        df, "blood_not_taken_missing_parts", _welsh_blood_not_taken_missing_parts_categories
     )
-    df = translate_column_regex_replace(df, "swab_not_taken_missing_parts", _welsh_swab_kit_missing_categories)
+    df = translate_column_regex_replace(
+        df, "blood_not_taken_could_not_reason", _welsh_blood_not_taken_could_not_reason_categories
+    )
+    df = translate_column_regex_replace(
+        df, "swab_not_taken_missing_parts", _welsh_swab_not_taken_missing_parts_categories
+    )
 
     return df
 
