@@ -141,7 +141,7 @@ def csv_to_table(file_operations: list):
 @register_pipeline_stage("backup_files")
 def backup_files(file_list: List[str], backup_directory: str):
     """
-    Backup a list of files on the local or hdfs file system to a hdfs backup directory
+    Backup a list of files on the local or HDFS file system to a HDFS backup directory.
     """
     storage_dir = (
         backup_directory + "/" + get_config()["storage"]["table_prefix"] + datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -179,17 +179,24 @@ def delete_tables_stage(
     Parameters
     ----------
     prefix
-        remove all tables with a given table name prefix (see config for current prefix)
+        boolean to remove all tables with current config table prefix
     table_names
-        one or more absolute table names to delete (including prefix)
+        one or more absolute table names to delete (current config prefix added automatically)
     pattern
-        drop tables where table name matches pattern in SQL format (e.g. "%_responses_%")
+        drop tables where table with the current config prefix and name matches pattern in SQL format (e.g. "%_responses_%")
+    protected_tables
+        list of tables to be protected from any call of this stage
+    drop_protected_tables
+        boolean to drop protected tables
     """
     delete_tables(prefix, table_names, pattern, protected_tables, drop_protected_tables)
 
 
 @register_pipeline_stage("generate_dummy_data")
 def generate_dummy_data(output_directory):
+    """
+    Generates dummy input table data for Voyager 0, 1, 2, CIS-Digital, and CIS-SOC-code schemas
+    """
     raw_dir = Path(output_directory) / "generated_data"
     swab_dir = raw_dir / "swab"
     blood_dir = raw_dir / "blood"
@@ -281,6 +288,38 @@ def generate_input_processing_function(
         source_file_column=source_file_column,
         write_mode=write_mode,
     ):
+        """
+        Extracts data from csv file to a HIVE table. Parameters control
+        which csv file is retrieved from the resource path
+
+        Parameters
+        ----------
+        resource_path
+            path containing one or more csv files
+        dataset_name
+            _description_, by default dataset_name
+        id_column : str, optional
+            string specifying unique id column in csv file
+        latest_only : bool, optional
+            read only the most recent csv file in the resource path
+        start_date : date, optional
+            filter csv files found in the resource path by those after start_date
+        end_date : date, optional
+            filter csv files found in the resource path by those before end_date
+        include_processed : bool, optional
+            read csv files that have already been read
+        include_invalid : bool, optional
+            read csv files that have not previously matched validation checks
+        source_file_column : _type_, optional
+            _description_, by default source_file_column
+        write_mode : _type_, optional
+            _description_, by default write_mode
+
+        Returns
+        -------
+        dataframe
+            saves dataframe to HIVE table
+        """
         file_path_list = [resource_path]
 
         if include_hadoop_read_write:
@@ -384,8 +423,20 @@ def join_lookup_table(
     join_on_columns: List[str] = ["work_main_job_title", "work_main_job_role"],
 ):
     """
-    Join lookup table to survey data handling nulls and assigning
-    default values to unjoinable data
+    Filters input_survey_table into an unjoinable_df, where all join_on_columns are null, and and applies any
+    unjoinable_values to the unjoinable_df.
+    Lookup_df is then joined onto the df containing non-null values in join_on_columns
+    The df and unjoinable_df are then recombined into an output_survey_table
+
+    Parameters
+    ----------
+    input_survey_table
+    output_survey_table
+    lookup_table_name
+    unjoinable_values: dict
+        dictionary containing {column_name: value_to_assign} pairs to be added to unjoinable_data
+    join_on_column: list
+        list of columns to join on, defaults to ["work_main_job_title", "work_main_job_role"]
     """
     lookup_df = extract_from_table(lookup_table_name)
     df = extract_from_table(input_survey_table)
@@ -405,7 +456,16 @@ def join_lookup_table(
 @register_pipeline_stage("create_regex_lookup")
 def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[str] = None):
     """
-    Create or update regex lookup table
+    Create or update a regex_lookup_table from an input_survey_table which is filtered
+    to include only rows with non-null values in join_on_columns.
+    If a regex_lookup_table is a parameter and exists then load the filtered df and get distinct value
+    combinations for join_on_columns that are not already in the regex_lookup_table, and update the regex_lookup_table;
+    otherwise create regex_lookup_table from distinct value combinations
+
+    Parameters
+    ----------
+    input_survey_table
+    regex_lookup_table
     """
     join_on_columns = ["work_main_job_title", "work_main_job_role"]
     df = extract_from_table(input_survey_table)
@@ -433,7 +493,7 @@ def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[st
 @register_pipeline_stage("union_survey_response_files")
 def union_survey_response_files(tables_to_process: List, output_survey_table: str):
     """
-    Union survey response for v0, v1 and v2, and write to table.
+    Union list of tables_to_process, and write to table.
 
     Parameters
     ----------
@@ -475,6 +535,15 @@ def replace_design_weights(
     """
     Temporary stage to replace design weights by lookup.
     Also makes temporary edits to fix raw data issues in geographies.
+
+    Parameters
+    ----------
+    design_weight_lookup_table
+    input_survey_table
+    output_survey_table
+    design_weight_columns: list
+        list of columns to be replaced with values from design_weight_lookup_table
+
     """
     design_weight_lookup = extract_from_table(design_weight_lookup_table)
     df = extract_from_table(input_survey_table)
@@ -509,10 +578,8 @@ def execute_union_dependent_transformations(input_survey_table: str, output_surv
 
     Parameters
     ----------
-    unioned_survey_table
-        input table name for table containing the combined survey responses tables
-    transformed_table
-        output table name for table with applied transformations dependent on complete survey dataset
+    input_survey_table
+    output_survey_table
     """
     df = extract_from_table(input_survey_table)
     df = fill_forwards_transformations(df)
@@ -529,10 +596,8 @@ def execute_fill_forwards_events(input_survey_table: str, output_survey_table: s
 
     Parameters
     ----------
-    survey_response_table
-        input table name for table containing the combined survey responses tables
-    fill_forwards_table
-        output table name for table with applied fill_forwards_event dependent on complete survey dataset
+    input_survey_table
+    output_survey_table
     """
     df = extract_from_table(input_survey_table)
     df = fill_forward_events_for_key_columns(df)
@@ -557,16 +622,21 @@ def validate_survey_responses(
 
     Parameters
     ----------
-    survey_responses_table
-        input table name for fully transformed survey table
+    input_survey_table
     duplicate_count_column_name
         column name in which to count duplicates of rows within the dataframe
     validation_failure_flag_column
         name for error column wherein each of the validation checks results are appended
-    valid_survey_responses_table
+    output_survey_table
         table containing results that passed the error checking process
     invalid_survey_responses_table
         table containing results that failed the error checking process
+    valid_validation_failures_table
+        table containing valid failures from the error checking process
+    invalid_validation_failures_table
+        table containing invalid failures from the error checking process
+    id_column
+        string specifying id column in input_survey_table
     """
     unioned_survey_responses = extract_from_table(input_survey_table)
     valid_survey_responses, erroneous_survey_responses = validation_ETL(
@@ -611,17 +681,19 @@ def lookup_based_editing(
     output_survey_table: str,
 ):
     """
-    Edit columns based on mappings from lookup files. Often used to correct data quality issues.
+    Edit columns based on mappings from lookup tables. Often used to correct data quality issues.
+    Requires lookup_tables to exist or be created prior to being called
 
     Parameters
     ----------
     input_survey_table
-        input table name for reference table
     cohort_lookup_table
-        input file path name for cohort corrections lookup table
+        input table name for cohort corrections lookup table
     travel_countries_lookup_table
-        input file path name for travel_countries corrections lookup table
-    edited_table
+        input table name for travel_countries corrections lookup table
+    tenure_group_table
+        input table name for tenure_group corrections lookup table
+    output_survey_table
     """
 
     df = extract_from_table(input_survey_table)
@@ -683,12 +755,10 @@ def impute_demographic_columns(input_survey_table: str, imputed_values_table: st
 
     Parameters
     ----------
-    survey_responses_table
-        name of HIVE table containing survey responses for imputation, containing `key_columns`
+    input_survey_table
     imputed_values_table
         name of HIVE table containing previously imputed values by participant
-    survey_responses_imputed_table
-        name of HIVE table to write survey responses following imputation
+    output_survey_table
     """
     imputed_value_lookup_df = None
     if check_table_exists(imputed_values_table):
