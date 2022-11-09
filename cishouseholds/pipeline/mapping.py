@@ -169,6 +169,7 @@ category_maps = {
         "symptoms_around_cghfevamn_symptom_group": _yes_no_categories,
         "think_have_covid_cghfevamn_symptom_group": _yes_no_categories,
         "think_had_covid_cghfevamn_symptom_group": _yes_no_categories,
+        "work_person_facing_now": _yes_no_categories,
         "digital_survey_mode_preference": {"Online": 0, "Telephone": 1},
         "digital_communication_preference": {"Email": 0, "Letter": 1},
         "sample_return_preference": {"Post": 0, "Courier": 1},
@@ -265,10 +266,10 @@ category_maps = {
         "work_patient_facing_now": {
             "No": 0,
             "Yes": 1,
-            "<=15": 2,
-            ">=75": 3,
+            "<=15y": -8,
+            ">=75y": -9,
         },
-        "work_patient_facing_clean": {"No": 0, "Yes": 1, "Not working in health care": 3},
+        "work_patient_facing_clean": {"No": 0, "Yes": 1, "Not working in health care": 2},
         "work_social_care": {
             "No": 0,
             "Yes, care/residential home, resident-facing": 1,
