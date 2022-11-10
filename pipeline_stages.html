@@ -175,7 +175,7 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.blind_csv_to_table">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">blind_csv_to_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.blind_csv_to_table" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">blind_csv_to_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'|'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.blind_csv_to_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a single csv file to a HDFS table by inferring a schema</p>
 </dd></dl>
 
@@ -511,6 +511,7 @@ Optionally also point to an update map to be used for the variable name mapping 
 <li><p><strong>outgoing_directory</strong> – path to write output CSV files on HDFS</p></li>
 <li><p><strong>tables_to_csv_config_file</strong> – path to YAML config file to define input tables and output CSV names</p></li>
 <li><p><strong>category_map</strong> – name of the category map for converting category strings to integers</p></li>
+<li><p><strong>filter</strong> – a dictionary of column to value list maps that where the row cell must contain a value in given list to be output to CSV</p></li>
 <li><p><strong>dry_run</strong> – when set to True, will delete files after they are written (for testing). Default is False.</p></li>
 </ul>
 </dd>
