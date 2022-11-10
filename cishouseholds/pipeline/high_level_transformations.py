@@ -1192,8 +1192,9 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         },
         "work_health_care_area": {
             "Secondary care for example in a hospital": "Secondary",
-            "Another type of healthcare - for example mental health services?"
+            "Another type of healthcare - for example mental health services?": "Other",
             "Primary care - for example in a GP or dentist": "Primary",
+            "Yes, in primary care, e.g. GP, dentist": "Primary",
             "Secondary care - for example in a hospital": "Secondary",
             "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
         },
@@ -2049,6 +2050,14 @@ def union_dependent_cleaning(df):
             "Swab / blood process too distressing": "Swab/blood process too distressing",
             "Swab / blood process to distressing": "Swab/blood process too distressing",
             "Do NOT Reinstate": "Do not reinstate",
+        },
+        "work_health_care_area": {
+            "Secondary care for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services?": "Other",
+            "Primary care - for example in a GP or dentist": "Primary",
+            "Yes, in primary care, e.g. GP, dentist": "Primary",
+            "Secondary care - for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
         },
     }
 
