@@ -1192,7 +1192,10 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Other employment sector please specify": "Other occupation sector",
         },
         "work_health_care_area": {
+            "Secondary care for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services?": "Other",
             "Primary care - for example in a GP or dentist": "Primary",
+            "Yes, in primary care, e.g. GP, dentist": "Primary",
             "Secondary care - for example in a hospital": "Secondary",
             "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
         },
@@ -1746,6 +1749,8 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Secondary care (e.g. hospital)": "Secondary",
             "Other Healthcare (e.g. mental health)": "Other",
             "Other healthcare (e.g. mental health)": "Other",
+            "Participant Would Not/Could Not Answer": None,
+            "Primary care for example in a GP or dentist": "Primary",
         },
         "face_covering_outside_of_home": {
             "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
@@ -2052,6 +2057,14 @@ def union_dependent_cleaning(df):
             "Swab / blood process too distressing": "Swab/blood process too distressing",
             "Swab / blood process to distressing": "Swab/blood process too distressing",
             "Do NOT Reinstate": "Do not reinstate",
+        },
+        "work_health_care_area": {
+            "Secondary care for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services?": "Other",
+            "Primary care - for example in a GP or dentist": "Primary",
+            "Yes, in primary care, e.g. GP, dentist": "Primary",
+            "Secondary care - for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
         },
     }
 
