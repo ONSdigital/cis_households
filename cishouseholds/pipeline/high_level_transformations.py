@@ -1405,9 +1405,10 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = assign_raw_copies(df, date_cols_to_correct, "pdc")
     df = correct_date_ranges(df, date_cols_to_correct, "participant_id", "visit_datetime", "2019-08-01")
     df = df.withColumn(
-        "CHECK",
+        "any_date_corrected",
         F.when(reduce(or_, [~F.col(col).eqNullSafe(F.col(f"{col}_pdc")) for col in date_cols_to_correct]), "Yes"),
     )
+    df = df.drop(*[f"{col}_pdc" for col in date_cols_to_correct])
     df = assign_column_regex_match(
         df,
         "bad_email",
