@@ -1,4 +1,5 @@
-- any_household_members_over_2_years_and_not_present: 'Yes'
+- any_date_corrected: null
+  any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
@@ -153,7 +154,8 @@
   work_social_care: 'No'
   work_social_care_original: 'No'
   work_status_v0: Its main implementation is the Glasgow Haskell Compiler.
-- any_household_members_over_2_years_and_not_present: 'No'
+- any_date_corrected: null
+  any_household_members_over_2_years_and_not_present: 'No'
   bad_email: null
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
@@ -312,7 +314,8 @@
   work_social_care_original: 'No'
   work_status_v0: Haskell is a standardized, general-purpose purely functional programming
     language, with non-strict semantics and strong static typing.
-- any_household_members_over_2_years_and_not_present: 'No'
+- any_date_corrected: 'Yes'
+  any_household_members_over_2_years_and_not_present: 'No'
   bad_email: false
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: null
@@ -473,7 +476,8 @@
   work_social_care_original: 'Yes'
   work_status_v0: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
-- any_household_members_over_2_years_and_not_present: null
+- any_date_corrected: null
+  any_household_members_over_2_years_and_not_present: null
   bad_email: false
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
@@ -629,7 +633,8 @@
   work_social_care: 'Yes'
   work_social_care_original: 'Yes'
   work_status_v0: Where are my pants?
-- any_household_members_over_2_years_and_not_present: 'Yes'
+- any_date_corrected: 'Yes'
+  any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
@@ -788,7 +793,8 @@
   work_social_care_original: 'Yes'
   work_status_v0: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
-- any_household_members_over_2_years_and_not_present: null
+- any_date_corrected: null
+  any_household_members_over_2_years_and_not_present: null
   bad_email: false
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
@@ -945,7 +951,8 @@
   work_social_care_original: 'Yes'
   work_status_v0: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
-- any_household_members_over_2_years_and_not_present: null
+- any_date_corrected: null
+  any_household_members_over_2_years_and_not_present: null
   bad_email: false
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
@@ -1102,7 +1109,8 @@
   work_social_care: 'Yes'
   work_social_care_original: 'Yes'
   work_status_v0: Where are my pants?
-- any_household_members_over_2_years_and_not_present: 'Yes'
+- any_date_corrected: null
+  any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: false
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: null
@@ -1259,7 +1267,8 @@
   work_social_care: 'No'
   work_social_care_original: 'No'
   work_status_v0: Any element of a tuple can be accessed in constant time.
-- any_household_members_over_2_years_and_not_present: null
+- any_date_corrected: 'Yes'
+  any_household_members_over_2_years_and_not_present: null
   bad_email: false
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: 1.0
@@ -1413,7 +1422,8 @@
   work_social_care: 'Yes'
   work_social_care_original: 'Yes'
   work_status_v0: Any element of a tuple can be accessed in constant time.
-- any_household_members_over_2_years_and_not_present: null
+- any_date_corrected: null
+  any_household_members_over_2_years_and_not_present: null
   bad_email: false
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: null

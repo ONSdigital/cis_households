@@ -3,6 +3,7 @@
   accepted_fingerprick_invite: null
   additional_consent_requirement: 'Yes'
   agreed_to_additional_consent_visit: 'Yes'
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: null
   bad_email: false
@@ -311,6 +312,7 @@
   accepted_fingerprick_invite: 'Yes'
   additional_consent_requirement: 'No'
   agreed_to_additional_consent_visit: 'No'
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
   bad_email: false
@@ -620,6 +622,7 @@
   accepted_fingerprick_invite: null
   additional_consent_requirement: null
   agreed_to_additional_consent_visit: 'No'
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'No'
   bad_email: null
@@ -927,6 +930,7 @@
   accepted_fingerprick_invite: 'No'
   additional_consent_requirement: null
   agreed_to_additional_consent_visit: null
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: 'Yes'
   approached_for_blood_samples: 'No'
   bad_email: null
@@ -1244,6 +1248,7 @@
   accepted_fingerprick_invite: 'No'
   additional_consent_requirement: 'Yes'
   agreed_to_additional_consent_visit: 'No'
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: null
   bad_email: false
@@ -1558,6 +1563,7 @@
   accepted_fingerprick_invite: 'Yes'
   additional_consent_requirement: 'No'
   agreed_to_additional_consent_visit: null
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
   bad_email: false
@@ -1875,6 +1881,7 @@
   accepted_fingerprick_invite: 'Yes'
   additional_consent_requirement: null
   agreed_to_additional_consent_visit: 'Yes'
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'No'
   bad_email: false
@@ -2186,6 +2193,7 @@
   accepted_fingerprick_invite: null
   additional_consent_requirement: 'Yes'
   agreed_to_additional_consent_visit: null
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'Yes'
   bad_email: null
@@ -2495,6 +2503,7 @@
   accepted_fingerprick_invite: null
   additional_consent_requirement: 'Yes'
   agreed_to_additional_consent_visit: null
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: null
   bad_email: false
@@ -2810,6 +2819,7 @@
   accepted_fingerprick_invite: 'No'
   additional_consent_requirement: null
   agreed_to_additional_consent_visit: 'No'
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: 'Yes'
   approached_for_blood_samples: null
   bad_email: false
