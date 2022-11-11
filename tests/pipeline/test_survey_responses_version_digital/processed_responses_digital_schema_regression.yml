@@ -1,5 +1,9 @@
 fields:
 - metadata: {}
+  name: participant_id
+  nullable: true
+  type: string
+- metadata: {}
   name: ons_household_id
   nullable: true
   type: string
@@ -205,10 +209,6 @@ fields:
   type: string
 - metadata: {}
   name: participant_withdrawal_type
-  nullable: true
-  type: string
-- metadata: {}
-  name: participant_id
   nullable: true
   type: string
 - metadata: {}
@@ -1350,6 +1350,10 @@ fields:
 - metadata: {}
   name: unique_participant_response_id
   nullable: false
+  type: string
+- metadata: {}
+  name: any_date_corrected
+  nullable: true
   type: string
 - metadata: {}
   name: bad_email
