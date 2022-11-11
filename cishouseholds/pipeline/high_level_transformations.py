@@ -132,6 +132,7 @@ from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.merge import null_safe_join
+from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.healthcare_regex import healthcare_classification
@@ -3201,3 +3202,22 @@ def reclassify_work_variables(
         )
 
     return _df5
+
+
+def get_differences(base_df: DataFrame, compare_df: DataFrame, unique_id_column: str, diff_sample_size: int = 10):
+    cols_to_check = [col for col in base_df.columns if col in compare_df.columns and col != unique_id_column]
+    for col in cols_to_check:
+        compare_df = compare_df.withColumnRenamed(col, f"{col}_ref")
+
+    df = base_df.join(compare_df, on=unique_id_column, how="left")
+
+    dfs = []
+
+    for col in cols_to_check:
+        df = df.withColumn(f"{col}_diff", F.when(F.col(col).eqNullSafe(F.col(f"{col}_ref")), 0).otherwise(1))
+        diffs_df = df.filter(F.col(f"{col}_diff") == 1).limit(diff_sample_size)
+        if diffs_df.count() > 0:
+            dfs.append(diffs_df.select(unique_id_column).withColumn("column_name", F.lit(col)))
+
+    counts_df = df.select([F.sum(F.col(f"{c}_diff")).alias(c).cast("integer") for c in cols_to_check])
+    return counts_df, union_multiple_tables(dfs)

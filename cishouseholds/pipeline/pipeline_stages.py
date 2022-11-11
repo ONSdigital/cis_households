@@ -47,6 +47,7 @@ from cishouseholds.pipeline.high_level_transformations import derive_age_based_c
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forward_events_for_key_columns
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
+from cishouseholds.pipeline.high_level_transformations import get_differences
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
 from cishouseholds.pipeline.high_level_transformations import reclassify_work_variables
@@ -854,6 +855,26 @@ def geography_and_imputation_dependent_processing(
     df = create_formatted_datetime_string_columns(df)
     update_table(df, output_survey_table, write_mode="overwrite")
     return {"output_survey_table": output_survey_table}
+
+
+@register_pipeline_stage("compare_tables")
+def compare(
+    base_table_name: str,
+    table_name_to_compare: str,
+    counts_df_table_name: str,
+    diff_samples_table_name: str,
+    unique_id_column: str = "unique_participant_response_id",
+    num_samples: int = 10,
+):
+    """
+    Create an output that holds information about differences between 2 tables
+    """
+    base_df = extract_from_table(base_table_name)
+    compare_df = extract_from_table(table_name_to_compare)
+
+    counts_df, difference_sample_df = get_differences(base_df, compare_df, unique_id_column, num_samples)
+    update_table(counts_df, counts_df_table_name, "overwrite")
+    update_table(difference_sample_df, diff_samples_table_name, "overwrite")
 
 
 @register_pipeline_stage("report")
