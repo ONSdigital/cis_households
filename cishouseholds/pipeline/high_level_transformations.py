@@ -1614,7 +1614,7 @@ def create_ever_variable_columns(df: DataFrame) -> DataFrame:
         column_name_to_assign="ever_care_home_worker",
         groupby_column="participant_id",
         reference_columns=["work_social_care", "work_nursing_or_residential_care_home"],
-        count_if=["Yes, care/residential home, resident-facing"],
+        count_if=["Yes", "Yes, care/residential home, resident-facing"],
         true_false_values=["Yes", "No"],
     )
     df = assign_column_given_proportion(
