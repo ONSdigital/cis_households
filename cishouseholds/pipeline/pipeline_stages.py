@@ -101,11 +101,11 @@ def register_pipeline_stage(key):
 
 
 @register_pipeline_stage("blind_csv_to_table")
-def blind_csv_to_table(path: str, table_name: str):
+def blind_csv_to_table(path: str, table_name: str, sep: str = "|"):
     """
     Convert a single csv file to a HDFS table by inferring a schema
     """
-    df = extract_input_data(path, None, ",")
+    df = extract_input_data(path, None, sep)
     df = update_table(df, table_name, "overwrite")
 
 
@@ -1041,6 +1041,8 @@ def tables_to_csv(
         path to YAML config file to define input tables and output CSV names
     category_map
         name of the category map for converting category strings to integers
+    filter
+        a dictionary of column to value list maps that where the row cell must contain a value in given list to be output to CSV
     dry_run
         when set to True, will delete files after they are written (for testing). Default is False.
     """
@@ -1060,7 +1062,8 @@ def tables_to_csv(
         if missing_columns:
             raise ValueError(f"Columns missing in {table['table_name']}: {missing_columns}")
         if len(filter.keys()) > 0:
-            df = df.filter(reduce(and_, [F.col(col) == val for col, val in filter.items()]))
+            filter = {key: val if type(val) == list else [val] for key, val in filter.items()}
+            df = df.filter(reduce(and_, [F.col(col).isin(val) for col, val in filter.items()]))
         df = df.select(*columns_to_select)
         if category_map_dictionary is not None:
             df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
