@@ -1106,6 +1106,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
     )
     df = df.withColumn("times_outside_shopping_or_socialising_last_7_days", F.lit(None))
     raw_copy_list = [
+        "ethnicity",
         "participant_survey_status",
         "participant_withdrawal_type",
         "survey_response_type",
@@ -1312,6 +1313,10 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "In progress": "Partially Completed",
             "Submitted": "Completed",
         },
+    )
+    df = df.withColumn(
+        "ethnicity",
+        F.when(F.col("ethnicity").isNull(), "Any other ethnic group").otherwise(F.col("ethnicity")),
     )
     df = derive_had_symptom_last_7days_from_digital(
         df,
