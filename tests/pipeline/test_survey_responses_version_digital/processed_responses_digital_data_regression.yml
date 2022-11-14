@@ -108,8 +108,9 @@
   education_in_person_days_per_week: null
   email_address: artiste1919@gsnail.ac.uk
   ethnic_group: White
-  ethnicity: White and Black African
+  ethnicity: White and Black Caribbean
   ethnicity_other: Ports are used to communicate with the external world.
+  ethnicity_raw: White and Black Caribbean
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: '2022-04-17 08:08:59.000000'
@@ -558,8 +559,9 @@
   education_in_person_days_per_week: null
   email_address: balate1925@gsnail.ac.uk
   ethnic_group: Asian or Asian British
-  ethnicity: Indian
+  ethnicity: Any other Mixed/Multiple background
   ethnicity_other: I don't even care.
+  ethnicity_raw: Any other Mixed/Multiple background
   ever_smoked_regularly: 'No'
   ever_smoked_regularly_raw: 'No'
   existing_participant_digital_opt_in_datetime: '2020-07-11 08:55:04.000000'
@@ -1009,8 +1011,9 @@
   education_in_person_days_per_week: '6'
   email_address: null
   ethnic_group: Other Ethnic Group
-  ethnicity: Caribbean or Black British
+  ethnicity: African
   ethnicity_other: Erlang is known for its designs that are well suited for systems.
+  ethnicity_raw: African
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   existing_participant_digital_opt_in_datetime: '2020-02-05 20:10:50.000000'
@@ -1459,9 +1462,10 @@
   education_in_person_days_per_week: '1'
   email_address: coater1966@gsnail.ac.uk
   ethnic_group: Asian or Asian British
-  ethnicity: Any other ethnic group
+  ethnicity: Caribbean or Black British
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
+  ethnicity_raw: Caribbean or Black British
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: '2021-11-24 05:39:36.000000'
@@ -1914,8 +1918,9 @@
   education_in_person_days_per_week: '3'
   email_address: null
   ethnic_group: Asian or Asian British
-  ethnicity: Gypsy or Irish Traveller
+  ethnicity: Irish
   ethnicity_other: Its main implementation is the Glasgow Haskell Compiler.
+  ethnicity_raw: Irish
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   existing_participant_digital_opt_in_datetime: '2020-10-14 01:01:05.000000'
@@ -2360,8 +2365,9 @@
   education_in_person_days_per_week: '6'
   email_address: ladybird1985@gsnail.ac.uk
   ethnic_group: White
-  ethnicity: Any other ethnic group
+  ethnicity: Caribbean or Black British
   ethnicity_other: Atoms are used within a program to denote distinguished values.
+  ethnicity_raw: Caribbean or Black British
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   existing_participant_digital_opt_in_datetime: '2022-12-16 04:12:18.000000'
@@ -2810,9 +2816,10 @@
   education_in_person_days_per_week: '2'
   email_address: null
   ethnic_group: Mixed/Multiple Ethnic Groups
-  ethnicity: English| Welsh| Scottish| Northern Irish or British
+  ethnicity: Any other ethnic group
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
+  ethnicity_raw: null
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   existing_participant_digital_opt_in_datetime: '2021-04-04 03:42:27.000000'
@@ -3261,9 +3268,10 @@
   education_in_person_days_per_week: null
   email_address: null
   ethnic_group: Black or African or Caribbean or Black British
-  ethnicity: Any other ethnic group
+  ethnicity: Caribbean or Black British
   ethnicity_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
+  ethnicity_raw: Caribbean or Black British
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: '2020-02-29 22:57:09.000000'
@@ -3712,9 +3720,10 @@
   education_in_person_days_per_week: null
   email_address: depict1972@gsnail.ac.uk
   ethnic_group: Other Ethnic Group
-  ethnicity: White and Black Caribbean
+  ethnicity: Any other white
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
+  ethnicity_raw: Any other white
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   existing_participant_digital_opt_in_datetime: '2020-02-24 15:52:04.000000'
@@ -4168,9 +4177,10 @@
   education_in_person_days_per_week: '2'
   email_address: null
   ethnic_group: Mixed/Multiple Ethnic Groups
-  ethnicity: Caribbean
+  ethnicity: African
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
+  ethnicity_raw: African
   ever_smoked_regularly: 'No'
   ever_smoked_regularly_raw: 'No'
   existing_participant_digital_opt_in_datetime: '2021-08-21 11:10:23.000000'
