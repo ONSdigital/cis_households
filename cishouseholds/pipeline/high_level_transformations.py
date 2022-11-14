@@ -2,6 +2,7 @@
 from datetime import datetime
 from functools import reduce
 from operator import and_
+from operator import or_
 from typing import List
 
 import pyspark.sql.functions as F
@@ -92,6 +93,7 @@ from cishouseholds.edit import clean_job_description_string
 from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import conditionally_replace_columns
 from cishouseholds.edit import convert_null_if_not_in_list
+from cishouseholds.edit import correct_date_ranges
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
@@ -130,6 +132,7 @@ from cishouseholds.impute import impute_latest_date_flag
 from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
+from cishouseholds.merge import null_safe_join
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.healthcare_regex import healthcare_classification
@@ -220,29 +223,43 @@ def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
     return df
 
 
-def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFrame:
+def transform_cis_soc_data(
+    soc_lookup_df: DataFrame, inconsistences_resolution_df: DataFrame, join_on_columns: List[str]
+) -> DataFrame:
     """
     transform and process cis soc data
     """
-    # allow nullsafe join on title as soc is sometimes assigned without
-    df = df.drop_duplicates(["standard_occupational_classification_code", *join_on_columns])
-    drop_null_title_df = df.filter(F.col("work_main_job_title").isNull()).withColumn(
+
+    soc_lookup_df = soc_lookup_df.drop_duplicates(["standard_occupational_classification_code", *join_on_columns])
+    drop_null_title_df = soc_lookup_df.filter(F.col("work_main_job_title").isNull()).withColumn(
         "drop_reason", F.lit("null job title")
     )
-    df = df.filter(F.col("work_main_job_title").isNotNull())
-    df = df.withColumn(
-        "soc_code_edited_to_uncodeable",
-        (F.col("standard_occupational_classification_code").rlike(r".*[^0-9].*|^\s*$"))
-        | (F.col("standard_occupational_classification_code").isNull()),
-    )
-    df = df.withColumn(
-        "standard_occupational_classification_code",
-        F.when(F.col("soc_code_edited_to_uncodeable"), "uncodeable").otherwise(
-            F.col("standard_occupational_classification_code")
-        ),
-    ).drop("soc_code_edited_to_uncodeable")
 
-    df = df.withColumn(
+    # cleanup soc lookup df and resolve inconsistences
+    soc_lookup_df = soc_lookup_df.filter(F.col("work_main_job_title").isNotNull())
+
+    # allow nullsafe join on title as soc is sometimes assigned without job role
+    soc_lookup_df = null_safe_join(
+        soc_lookup_df.distinct(), inconsistences_resolution_df.distinct(), null_safe_on=join_on_columns, how="left"
+    )
+
+    soc_lookup_df = soc_lookup_df.withColumn(
+        "standard_occupational_classification_code",
+        F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
+    ).drop("resolved_soc_code")
+
+    # normalise uncodeable values
+    soc_lookup_df = soc_lookup_df.withColumn(
+        "standard_occupational_classification_code",
+        F.when(
+            (F.col("standard_occupational_classification_code").rlike(r".*[^0-9].*|^\s*$"))
+            | (F.col("standard_occupational_classification_code").isNull()),
+            "uncodeable",
+        ).otherwise(F.col("standard_occupational_classification_code")),
+    )
+
+    # decide on rows to drop
+    soc_lookup_df = soc_lookup_df.withColumn(
         "LENGTH",
         F.length(
             F.when(
@@ -256,7 +273,7 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     window = Window.partitionBy(*join_on_columns)
 
     # flag non specific soc codes and uncodeable codes
-    df = df.withColumn(
+    soc_lookup_df = soc_lookup_df.withColumn(
         "drop_reason",
         F.when(
             (F.col("LENGTH") != F.max("LENGTH").over(window))
@@ -266,17 +283,21 @@ def transform_cis_soc_data(df: DataFrame, join_on_columns: List[str]) -> DataFra
     )
     retain_count = F.sum(F.when(F.col("drop_reason").isNull(), 1).otherwise(0)).over(window)
     # flag ambiguous codes from remaining set
-    df = df.withColumn(
+    soc_lookup_df = soc_lookup_df.withColumn(
         "drop_reason",
         F.when(
             (retain_count > 1) & (F.col("drop_reason").isNull()),
             "ambiguous code",
         ).otherwise(F.col("drop_reason")),
     ).drop("LENGTH")
+
     # remove flag from first row of dropped set if all codes from group are flagged
-    df = df.withColumn("drop_reason", F.when(F.count("*").over(window) == 1, None).otherwise(F.col("drop_reason")))
-    resolved_df = df.filter(F.col("drop_reason").isNull()).drop("drop_reason", "ROW_NUMBER")
-    duplicate_df = df.filter(F.col("drop_reason").isNotNull()).drop("ROW_NUMBER")
+    soc_lookup_df = soc_lookup_df.withColumn(
+        "drop_reason", F.when(F.count("*").over(window) == 1, None).otherwise(F.col("drop_reason"))
+    )
+    resolved_df = soc_lookup_df.filter(F.col("drop_reason").isNull()).drop("drop_reason", "ROW_NUMBER")
+    duplicate_df = soc_lookup_df.filter(F.col("drop_reason").isNotNull()).drop("ROW_NUMBER")
+
     return duplicate_df.unionByName(drop_null_title_df), resolved_df
 
 
@@ -308,12 +329,12 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
 
     column_editing_map = {
         "work_health_care_area": {
-            "Yes, primary care, patient-facing": "Yes, in primary care, e.g. GP, dentist",
-            "Yes, secondary care, patient-facing": "Yes, in secondary care, e.g. hospital",
-            "Yes, other healthcare, patient-facing": "Yes, in other healthcare settings, e.g. mental health",
-            "Yes, primary care, non-patient-facing": "Yes, in primary care, e.g. GP, dentist",
-            "Yes, secondary care, non-patient-facing": "Yes, in secondary care, e.g. hospital",
-            "Yes, other healthcare, non-patient-facing": "Yes, in other healthcare settings, e.g. mental health",
+            "Yes, primary care, patient-facing": "Primary",
+            "Yes, secondary care, patient-facing": "Secondary",
+            "Yes, other healthcare, patient-facing": "Other",
+            "Yes, primary care, non-patient-facing": "Primary",
+            "Yes, secondary care, non-patient-facing": "Secondary",
+            "Yes, other healthcare, non-patient-facing": "Other",
         },
         "work_location": {
             "Both (working from home and working outside of your home)": "Both (from home and somewhere else)",
@@ -370,6 +391,33 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
             "work_not_from_home_days_per_week",
         ],
     )
+
+    health_care_area_map = {
+        "Primary care for example in a GP or dentist": "Primary",
+        "Secondary care for example in a hospital": "Secondary",
+        "Yes, in secondary care, e.g. hospital": "Secondary",
+        "Yes, in other healthcare settings, e.g. mental health": "Other",
+        "Yes, in primary care, e.g. GP,dentist": "Primary",
+        "Another type of healthcare-for example mental health services?": "Other",
+    }
+
+    v1_times_value_map = {
+        "None": 0,
+        "1": 1,
+        "2": 2,
+        "3": 3,
+        "4": 4,
+        "5": 5,
+        "6": 6,
+        "7 times or more": 7,
+        "Participant Would Not/Could Not Answer": None,
+    }
+    v1_column_editing_map = {
+        "times_hour_or_longer_another_home_last_7_days": v1_times_value_map,
+        "times_hour_or_longer_another_person_your_home_last_7_days": v1_times_value_map,
+        "work_health_care_area": health_care_area_map,
+    }
+    df = apply_value_map_multiple_columns(df, v1_column_editing_map)
 
     df = df.withColumn("work_main_job_changed", F.lit(None).cast("string"))
     fill_forward_columns = [
@@ -1144,9 +1192,12 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Other employment sector please specify": "Other occupation sector",
         },
         "work_health_care_area": {
-            "Primary care - for example in a GP or dentist": "Yes, in primary care, e.g. GP, dentist",
-            "Secondary care - for example in a hospital": "Yes, in secondary care, e.g. hospital",
-            "Another type of healthcare - for example mental health services": "Yes, in other healthcare settings, e.g. mental health",  # noqa: E501
+            "Secondary care for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services?": "Other",
+            "Primary care - for example in a GP or dentist": "Primary",
+            "Yes, in primary care, e.g. GP, dentist": "Primary",
+            "Secondary care - for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
         },
         "illness_reduces_activity_or_ability": {
             "Yes a little": "Yes, a little",
@@ -1323,7 +1374,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "swab_sample_barcode",
     ]
     original_copy_list = [
-        "work_healthcare_patient_facing",
+        "work_health_care_patient_facing",
         "work_health_care_area",
         "work_social_care",
         "work_nursing_or_residential_care_home",
@@ -1331,24 +1382,36 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "work_patient_facing_now",
     ]
 
-    healthcare_area_mapper = {
-        "Primary care for example in a GP or dentist": "Primary",
-        "Secondary care for example in a hospital": "Secondary",
-        "Yes, in secondary care, e.g. hospital": "Secondary",
-        "Yes, in other healthcare settings, e.g. mental health": "Other",
-        "Yes, in primary care, e.g. GP,dentist": "Primary",
-        "Another type of healthcare-for example mental health services?": "Other",
-    }
-
     df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
-    if "work_health_care_area" in df.columns:
-        df = update_column_values_from_map(df, "work_health_care_area", healthcare_area_mapper)
+
     df = assign_raw_copies(df, [column for column in original_copy_list if column in df.columns], "original")
 
     df = assign_unique_id_column(
         df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
     )
     df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
+    date_cols_to_correct = [
+        col
+        for col in [
+            "last_covid_contact_date",
+            "last_suspected_covid_contact_date",
+            "think_had_covid_onset_date",
+            "think_have_covid_onset_date",
+            "been_outside_uk_latest_date",
+            "other_covid_infection_test_first_positive_date",
+            "other_covid_infection_test_last_negative_date",
+            "other_antibody_test_first_positive_date",
+            "other_antibody_test_last_negative_date",
+        ]
+        if col in df.columns
+    ]
+    df = assign_raw_copies(df, date_cols_to_correct, "pdc")
+    df = correct_date_ranges(df, date_cols_to_correct, "participant_id", "visit_datetime", "2019-08-01")
+    df = df.withColumn(
+        "any_date_corrected",
+        F.when(reduce(or_, [~F.col(col).eqNullSafe(F.col(f"{col}_pdc")) for col in date_cols_to_correct]), "Yes"),
+    )
+    df = df.drop(*[f"{col}_pdc" for col in date_cols_to_correct])
     df = assign_column_regex_match(
         df,
         "bad_email",
@@ -1534,15 +1597,16 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         df = update_column_values_from_map(df=df, column=column, map=work_status_dict[column])
 
     df = update_column_values_from_map(df=df, column="work_status_v2", map=work_status_dict["work_status_v2"])
+    return df
 
-    ## Not needed in release 1. Confirm that these are v2-only when pulling them back in, as they should likely be union dependent.
-    df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
+
+def create_ever_variable_columns(df: DataFrame) -> DataFrame:
     df = assign_column_given_proportion(
         df=df,
         column_name_to_assign="ever_work_person_facing_or_social_care",
         groupby_column="participant_id",
         reference_columns=["work_social_care"],
-        count_if=["Yes, care/residential home, resident-facing", "Yes, other social care, resident-facing"],
+        count_if=["Yes, care/residential home, resident-facing", "Yes, other social care, resident-facing", "Yes"],
         true_false_values=["Yes", "No"],
     )
     df = assign_column_given_proportion(
@@ -1550,7 +1614,7 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
         column_name_to_assign="ever_care_home_worker",
         groupby_column="participant_id",
         reference_columns=["work_social_care", "work_nursing_or_residential_care_home"],
-        count_if=["Yes, care/residential home, resident-facing"],
+        count_if=["Yes", "Yes, care/residential home, resident-facing"],
         true_false_values=["Yes", "No"],
     )
     df = assign_column_given_proportion(
@@ -1598,6 +1662,17 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "work_not_from_home_days_per_week",
             "times_shopping_last_7_days",
             "times_socialising_last_7_days",
+            "physical_contact_under_18_years",
+            "physical_contact_18_to_69_years",
+            "physical_contact_over_70_years",
+            "social_distance_contact_under_18_years",
+            "social_distance_contact_18_to_69_years",
+            "social_distance_contact_over_70_years",
+            "hospital_last_28_days",
+            "care_home_last_28_days",
+            "other_household_member_care_home_last_28_days",
+            "other_household_member_hospital_last_28_days",
+            "think_have_covid",
         ],
     )
 
@@ -1618,7 +1693,17 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
         },
     )
 
-    times_value_map = {"None": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7 times or more": 7}
+    v2_times_value_map = {
+        "None": 0,
+        "1": 1,
+        "2": 2,
+        "3": 3,
+        "4": 4,
+        "5": 5,
+        "6": 6,
+        "7 times or more": 7,
+        "Participant Would Not/Could Not Answer": None,
+    }
     column_editing_map = {
         "deferred": {"Deferred 1": "Deferred"},
         "work_location": {
@@ -1631,9 +1716,11 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Both (working from home and working somewhere else)": "Both (from home and somewhere else)",
             "Both (work from home and work somewhere else)": "Both (from home and somewhere else)",
         },
-        "times_outside_shopping_or_socialising_last_7_days": times_value_map,
-        "times_shopping_last_7_days": times_value_map,
-        "times_socialising_last_7_days": times_value_map,
+        "times_outside_shopping_or_socialising_last_7_days": v2_times_value_map,
+        "times_shopping_last_7_days": v2_times_value_map,
+        "times_socialising_last_7_days": v2_times_value_map,
+        "times_hour_or_longer_another_home_last_7_days": v2_times_value_map,
+        "times_hour_or_longer_another_person_your_home_last_7_days": v2_times_value_map,
         "work_sector": {
             "Social Care": "Social care",
             "Transport (incl. storage or logistic)": "Transport (incl. storage, logistic)",
@@ -1655,13 +1742,15 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Other occupation sector (specify)": "Other occupation sector",
         },
         "work_health_care_area": {
-            "Primary Care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
-            "Primary care (e.g. GP or dentist)": "Yes, in primary care, e.g. GP, dentist",
-            "Secondary Care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
-            "Secondary care (e.g. hospital.)": "Yes, in secondary care, e.g. hospital",
-            "Secondary care (e.g. hospital)": "Yes, in secondary care, e.g. hospital",
-            "Other Healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
-            "Other healthcare (e.g. mental health)": "Yes, in other healthcare settings, e.g. mental health",
+            "Primary Care (e.g. GP or dentist)": "Primary",
+            "Primary care (e.g. GP or dentist)": "Primary",
+            "Secondary Care (e.g. hospital)": "Secondary",
+            "Secondary care (e.g. hospital.)": "Secondary",
+            "Secondary care (e.g. hospital)": "Secondary",
+            "Other Healthcare (e.g. mental health)": "Other",
+            "Other healthcare (e.g. mental health)": "Other",
+            "Participant Would Not/Could Not Answer": None,
+            "Primary care for example in a GP or dentist": "Primary",
         },
         "face_covering_outside_of_home": {
             "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
@@ -1873,7 +1962,6 @@ def symptom_column_transformations(df):
         ],
         count_if_value="Yes",
     )
-    # TODO - not needed until later release
     df = update_think_have_covid_symptom_any(
         df=df,
         column_name_to_update="think_have_covid_symptom_any",
@@ -1970,6 +2058,14 @@ def union_dependent_cleaning(df):
             "Swab / blood process to distressing": "Swab/blood process too distressing",
             "Do NOT Reinstate": "Do not reinstate",
         },
+        "work_health_care_area": {
+            "Secondary care for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services?": "Other",
+            "Primary care - for example in a GP or dentist": "Primary",
+            "Yes, in primary care, e.g. GP, dentist": "Primary",
+            "Secondary care - for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
+        },
     }
 
     df = apply_value_map_multiple_columns(df, col_val_map)
@@ -2065,17 +2161,10 @@ def union_dependent_derivations(df):
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
 
-    df = derive_work_status_columns(df)
+    df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
 
-    # df = assign_work_patient_facing_now(
-    #     df, "work_patient_facing_now", age_column="age_at_visit", work_healthcare_column="work_health_care_patient_facing"
-    # )
-    # df = update_work_facing_now_column(
-    #     df,
-    #     "work_patient_facing_now",
-    #     "work_status_v0",
-    #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
-    # )
+    df = create_ever_variable_columns(df)
+
     df = assign_first_visit(
         df=df,
         column_name_to_assign="household_first_visit_datetime",
@@ -2157,10 +2246,12 @@ def union_dependent_derivations(df):
     df = assign_work_status_group(df, "work_status_group", "work_status_v0")
 
     window = Window.partitionBy("participant_id")
+    patient_facing_percentage = F.sum(
+        F.when(F.col("work_direct_contact_patients_or_clients") == "Yes", 1).otherwise(0)
+    ).over(window) / F.sum(F.lit(1)).over(window)
+
     df = df.withColumn(
-        "patient_facing_over_20_percent",
-        F.sum(F.when(F.col("work_direct_contact_patients_or_clients") == "Yes", 1).otherwise(0)).over(window)
-        / F.sum(F.lit(1)).over(window),
+        "patient_facing_over_20_percent", F.when(patient_facing_percentage >= 0.2, "Yes").otherwise("No")
     )
 
     df = fill_forward_from_last_change(
@@ -2183,13 +2274,8 @@ def union_dependent_derivations(df):
 
 def fill_forward_events_for_key_columns(df):
     """
-    Function that contains
+    Function that contains all fill_forward_event calls required to implement STATA-based last observation carried forward logic.
     """
-    # df_2 = get_or_create_spark_session().createDataFrame(
-    #     df.rdd, schema=df.schema
-    # )  # breaks lineage to avoid Java OOM Error
-    df.cache()
-    df = df.repartition(16)
     df = fill_forward_event(
         df=df,
         event_indicator_column="think_had_covid",
@@ -2226,10 +2312,8 @@ def fill_forward_events_for_key_columns(df):
         ],
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",
+        visit_id_column="visit_id",
     )
-    # df_4 = get_or_create_spark_session().createDataFrame(
-    #     df_3.rdd, schema=df_3.schema
-    # )  # breaks lineage to avoid Java OOM Error
     # Derive these after fill forwards and other changes to dates
     df = fill_forward_event(
         df=df,
@@ -2239,10 +2323,8 @@ def fill_forward_events_for_key_columns(df):
         detail_columns=["last_suspected_covid_contact_type"],
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",
+        visit_id_column="visit_id",
     )
-    # df_6 = get_or_create_spark_session().createDataFrame(
-    #     df_5.rdd, schema=df_5.schema
-    # )  # breaks lineage to avoid Java OOM Error
     df = fill_forward_event(
         df=df,
         event_indicator_column="contact_known_positive_covid_last_28_days",
@@ -2251,6 +2333,7 @@ def fill_forward_events_for_key_columns(df):
         detail_columns=["last_covid_contact_type"],
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",
+        visit_id_column="visit_id",
     )
     return df
 
@@ -2594,7 +2677,7 @@ def derive_overall_vaccination(df: DataFrame) -> DataFrame:
 def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     """Add result of various regex pattern matchings"""
     # df = df.drop(
-    #     "work_healthcare_patient_facing_original",
+    #     "work_health_care_patient_facing_original",
     #     "work_social_care_original",
     #     "work_care_nursing_home_original",
     #     "work_direct_contact_patients_or_clients_original",
@@ -2631,7 +2714,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
 
     # add boolean flags for working in healthcare or socialcare
 
-    df = df.withColumn("works_healthcare", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
+    df = df.withColumn("works_health_care", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
 
     df = assign_regex_match_result(
         df=df,
@@ -2649,7 +2732,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         )
         .when(
             (
-                (F.col("works_healthcare") == "Yes")
+                (F.col("works_health_care") == "Yes")
                 | (F.col("work_direct_contact_patients_or_clients_regex_derived") == True)
             )
             & (~array_contains_any("regex_derived_job_sector", patient_facing_classification["N"])),
@@ -2659,7 +2742,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     )
     df = assign_column_value_from_multiple_column_map(
         df,
-        "work_healthcare_patient_facing",
+        "work_health_care_patient_facing",
         [
             ["No", ["No", None]],
             ["No", ["Yes", None]],
@@ -2685,6 +2768,12 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         ],
         ["work_direct_contact_patients_or_clients", "work_social_care_area"],
     )
+    df = assign_column_value_from_multiple_column_map(
+        df,
+        "work_patient_facing_clean",
+        [["Yes", ["Yes", "Yes"]], ["No", ["No", "Yes"]], ["Not working in health care", ["No", "No"]]],
+        ["work_direct_contact_patients_or_clients", "works_health_care"],
+    )
     # work_status_columns = [col for col in df.columns if "work_status_" in col]
     # for work_status_column in work_status_columns:
     #     df = df.withColumn(
@@ -2700,9 +2789,10 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         "work_direct_contact_patients_or_clients",
         "work_social_care_area",
         "work_health_care_area",
-        "work_healthcare_patient_facing",
+        "work_health_care_patient_facing",
+        "work_patient_facing_clean",
         "work_social_care",
-        "works_healthcare",
+        "works_health_care",
         "regex_derived_job_sector",
     )
 

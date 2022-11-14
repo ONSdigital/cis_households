@@ -3,6 +3,7 @@ from functools import reduce
 from io import BytesIO
 from operator import and_
 from pathlib import Path
+from typing import Dict
 from typing import List
 from typing import Optional
 from typing import Union
@@ -21,6 +22,8 @@ from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import household_level_populations
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
+from cishouseholds.expressions import all_columns_null
+from cishouseholds.expressions import any_column_not_null
 from cishouseholds.extract import get_files_to_be_processed
 from cishouseholds.hdfs_utils import copy
 from cishouseholds.hdfs_utils import copy_local_to_hdfs
@@ -29,6 +32,7 @@ from cishouseholds.hdfs_utils import isdir
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.impute import post_imputation_wrapper
+from cishouseholds.merge import left_join_keep_right
 from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
@@ -83,7 +87,6 @@ from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
 
-
 pipeline_stages = {}
 
 
@@ -98,11 +101,11 @@ def register_pipeline_stage(key):
 
 
 @register_pipeline_stage("blind_csv_to_table")
-def blind_csv_to_table(path: str, table_name: str):
+def blind_csv_to_table(path: str, table_name: str, sep: str = "|"):
     """
     Convert a single csv file to a HDFS table by inferring a schema
     """
-    df = extract_input_data(path, None, ",")
+    df = extract_input_data(path, None, sep)
     df = update_table(df, table_name, "overwrite")
 
 
@@ -162,7 +165,7 @@ def backup_files(file_list: List[str], backup_directory: str):
 
 @register_pipeline_stage("delete_tables")
 def delete_tables_stage(
-    prefix: str = None,
+    prefix: bool = False,
     table_names: Union[str, List[str]] = None,
     pattern: str = None,
     protected_tables: List[str] = [],
@@ -198,7 +201,7 @@ def generate_dummy_data(output_directory):
     historic_bloods_dir = raw_dir / "historic_blood"
     historic_swabs_dir = raw_dir / "historic_swab"
     historic_survey_dir = raw_dir / "historic_survey"
-    cis_soc_direcory = raw_dir / "cis_soc"
+    cis_soc_directory = raw_dir / "cis_soc"
 
     for directory in [
         swab_dir,
@@ -217,7 +220,7 @@ def generate_dummy_data(output_directory):
     file_datetime = datetime.now()
     file_date = datetime.strftime(file_datetime, format="%Y%m%d")
 
-    generate_cis_soc_data(directory=cis_soc_direcory, file_date=file_date, records=50)
+    generate_cis_soc_data(directory=cis_soc_directory, file_date=file_date, records=50)
 
     generate_survey_v0_data(directory=survey_dir, file_date=file_date, records=50, swab_barcodes=[], blood_barcodes=[])
     generate_survey_v1_data(directory=survey_dir, file_date=file_date, records=50, swab_barcodes=[], blood_barcodes=[])
@@ -327,7 +330,9 @@ def generate_input_processing_function(
 def process_soc_deltas(
     soc_file_pattern: str,
     source_file_column: str,
-    output_survey_table: str,
+    soc_lookup_table: str,
+    coding_errors_table: str,
+    inconsistencies_resolution_table: str,
     include_processed=False,
     include_invalid=False,
     latest_only=False,
@@ -337,6 +342,9 @@ def process_soc_deltas(
     """
     Process soc data and combine result with survey responses data
     """
+    join_on_columns = ["work_main_job_title", "work_main_job_role"]
+    inconsistencies_resolution_df = extract_from_table(inconsistencies_resolution_table)
+
     dfs: List[DataFrame] = []
     file_list = get_files_to_be_processed(
         resource_path=soc_file_pattern,
@@ -347,6 +355,7 @@ def process_soc_deltas(
         include_invalid=include_invalid,
         date_from_filename=False,
     )
+
     for file_path in file_list:
         error_message, df = normalise_schema(file_path, soc_schema, soc_regex_map)
         if error_message is None:
@@ -355,80 +364,70 @@ def process_soc_deltas(
         else:
             add_error_file_log_entry(file_path, error_message)  # type: ignore
             print(error_message)  # functional
-    if include_processed:
-        union_dataframes_to_hive(output_survey_table, dfs)
-    else:
-        update_table(union_multiple_tables(dfs), output_survey_table, "append")
-    return {"output_survey_table": output_survey_table}
+
+    soc_lookup_df = union_multiple_tables(dfs)
+    coding_errors_df, soc_lookup_df = transform_cis_soc_data(
+        soc_lookup_df, inconsistencies_resolution_df, join_on_columns
+    )
+
+    mode = "overwrite" if include_processed else "append"
+    update_table(soc_lookup_df, soc_lookup_table, mode)
+    update_table(coding_errors_df, coding_errors_table, mode)
 
 
-@register_pipeline_stage("process_soc_data")
-def process_soc_data(
+@register_pipeline_stage("join_lookup_table")
+def join_lookup_table(
     input_survey_table: str,
     output_survey_table: str,
-    inconsistences_resolution_table: str,
-    unioned_soc_lookup_table: str,
-    transformed_soc_lookup_table: str,
-    coding_errors_table: str,
+    lookup_table_name: str,
+    unjoinable_values: Dict[str, Union[str, int]] = {},
+    join_on_columns: List[str] = ["work_main_job_title", "work_main_job_role"],
 ):
     """
-    Process soc data and combine result with survey responses data
+    Join lookup table to survey data handling nulls and assigning
+    default values to unjoinable data
     """
-    join_on_columns = ["work_main_job_title", "work_main_job_role"]
-    inconsistences_resolution_df = extract_from_table(inconsistences_resolution_table)
-    soc_lookup_df = extract_from_table(unioned_soc_lookup_table)
-    survey_responses_df = extract_from_table(input_survey_table)
-    soc_lookup_df = soc_lookup_df.distinct().join(
-        inconsistences_resolution_df.distinct(),
-        on=join_on_columns,
-        how="left",
-    )
-    soc_lookup_df = soc_lookup_df.withColumn(
-        "standard_occupational_classification_code",
-        F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
-    ).drop("resolved_soc_code")
+    lookup_df = extract_from_table(lookup_table_name)
+    df = extract_from_table(input_survey_table)
 
-    coding_errors_df, soc_lookup_df = transform_cis_soc_data(soc_lookup_df, join_on_columns)
-    survey_responses_df = survey_responses_df.join(soc_lookup_df, on=join_on_columns, how="left")
-    survey_responses_df = survey_responses_df.withColumn(
-        "standard_occupational_classification_code",
-        F.when(F.col("standard_occupational_classification_code").isNull(), "uncodeable").otherwise(
-            F.col("standard_occupational_classification_code")
-        ),
-    )
+    unjoinable_df = df.filter(all_columns_null(join_on_columns))
+    for col, val in unjoinable_values.items():
+        unjoinable_df.withColumn(col, F.lit(val))
 
-    update_table(coding_errors_df, coding_errors_table, "overwrite", archive=True)
-    update_table(survey_responses_df, output_survey_table, "overwrite")
-    update_table(soc_lookup_df, transformed_soc_lookup_table, "overwrite")
+    df = df.filter(any_column_not_null(join_on_columns))
+    df = left_join_keep_right(df, lookup_df, join_on_columns)
+
+    df = union_multiple_tables([df, unjoinable_df])
+    update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
 
-@register_pipeline_stage("process_regex_data")
-def process_regex_data(input_survey_table: str, output_survey_table: str, regex_lookup_table: str):
+@register_pipeline_stage("create_regex_lookup")
+def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[str] = None):
     """
-    Process regex data and combine result with survey responses data
+    Create or update regex lookup table
     """
     join_on_columns = ["work_main_job_title", "work_main_job_role"]
     df = extract_from_table(input_survey_table)
-    if check_table_exists(regex_lookup_table):
+    df = df.filter(any_column_not_null(join_on_columns))
+    if regex_lookup_table is not None and check_table_exists(regex_lookup_table):
         lookup_df = extract_from_table(regex_lookup_table, True)
         non_derived_rows = df.join(lookup_df, on=join_on_columns, how="leftanti")
         non_derived_rows = non_derived_rows.dropDuplicates(join_on_columns)
         print(
             f"     - located regex lookup df with {non_derived_rows.count()} additional rows to process"
         )  # functional
-        lookup_df = lookup_df.unionByName(add_pattern_matching_flags(non_derived_rows))
+        update_table(add_pattern_matching_flags(non_derived_rows), regex_lookup_table, "append")
     else:
         df_to_process = df.dropDuplicates(join_on_columns)
         print(
             f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
         )  # functional
+        df_to_process = df_to_process.repartition(
+            get_or_create_spark_session().sparkContext.getConf.get("spark.sql.shuffle.partitions") / 2
+        )
         lookup_df = add_pattern_matching_flags(df_to_process)
-    df = df.drop(*[col for col in df.columns if col in lookup_df.columns])
-    df = df.join(lookup_df, on=join_on_columns, how="left")
-    update_table(lookup_df, regex_lookup_table, "overwrite")
-    update_table(df, output_survey_table, "overwrite")
-    return {"output_survey_table": output_survey_table}
+        update_table(lookup_df, regex_lookup_table, "overwrite")
 
 
 @register_pipeline_stage("union_survey_response_files")
@@ -446,6 +445,23 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
     df_list = [extract_from_table(table) for table in tables_to_process]
 
     union_dataframes_to_hive(output_survey_table, df_list)
+    return {"output_survey_table": output_survey_table}
+
+
+@register_pipeline_stage("join_blood_positive_lookup")
+def join_blood_positive_lookup(lookup_table_name: str, input_survey_table: str, output_survey_table: str):
+    """
+    Stage to join blood positive lookup table
+    """
+    blood_positive_lookup_df = extract_from_table(lookup_table_name)
+    df = extract_from_table(input_survey_table)
+    df = df.join(
+        blood_positive_lookup_df,
+        on="ons_household_id",
+        how="left",
+    )
+    df = df.withColumn("blood_past_positive_flag", F.when(F.col("blood_past_positive").isNull(), 0).otherwise(1))
+    update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
 
@@ -601,10 +617,10 @@ def lookup_based_editing(
     ----------
     input_survey_table
         input table name for reference table
-    cohort_lookup_path
-        input file path name for cohort corrections lookup file
-    travel_countries_lookup_path
-        input file path name for travel_countries corrections lookup file
+    cohort_lookup_table
+        input file path name for cohort corrections lookup table
+    travel_countries_lookup_table
+        input file path name for travel_countries corrections lookup table
     edited_table
     """
 
@@ -828,6 +844,12 @@ def geography_and_imputation_dependent_processing(
         age_column="age_at_visit",
         work_healthcare_column="work_health_care_patient_facing",
     )
+    # df = update_work_facing_now_column(
+    #     df,
+    #     "work_patient_facing_now",
+    #     "work_status_v0",
+    #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
+    # )
     df = reclassify_work_variables(df, spark_session=get_or_create_spark_session(), drop_original_variables=False)
     df = create_formatted_datetime_string_columns(df)
     update_table(df, output_survey_table, write_mode="overwrite")
@@ -873,7 +895,7 @@ def report(
 
     valid_df_errors = generate_error_table(valid_survey_responses_errors_table, error_priority_map)
     invalid_df_errors = generate_error_table(invalid_survey_responses_errors_table, error_priority_map)
-    soc_uncode_count = count_variable_option(valid_df, "soc_code", "uncodeable")
+    soc_uncode_count = count_variable_option(valid_df, "standard_occupational_classification_code", "uncodeable")
     processed_file_log = extract_from_table("processed_filenames")
 
     invalid_files_count = 0
@@ -1019,6 +1041,8 @@ def tables_to_csv(
         path to YAML config file to define input tables and output CSV names
     category_map
         name of the category map for converting category strings to integers
+    filter
+        a dictionary of column to value list maps that where the row cell must contain a value in given list to be output to CSV
     dry_run
         when set to True, will delete files after they are written (for testing). Default is False.
     """
@@ -1038,7 +1062,8 @@ def tables_to_csv(
         if missing_columns:
             raise ValueError(f"Columns missing in {table['table_name']}: {missing_columns}")
         if len(filter.keys()) > 0:
-            df = df.filter(reduce(and_, [F.col(col) == val for col, val in filter.items()]))
+            filter = {key: val if type(val) == list else [val] for key, val in filter.items()}
+            df = df.filter(reduce(and_, [F.col(col).isin(val) for col, val in filter.items()]))
         df = df.select(*columns_to_select)
         if category_map_dictionary is not None:
             df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)

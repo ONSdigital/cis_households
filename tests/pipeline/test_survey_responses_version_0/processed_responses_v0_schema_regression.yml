@@ -1,5 +1,9 @@
 fields:
 - metadata: {}
+  name: participant_id
+  nullable: true
+  type: string
+- metadata: {}
   name: ons_household_id
   nullable: true
   type: string
@@ -201,10 +205,6 @@ fields:
   type: double
 - metadata: {}
   name: person_9_reason_for_not_consenting
-  nullable: true
-  type: string
-- metadata: {}
-  name: participant_id
   nullable: true
   type: string
 - metadata: {}
@@ -524,6 +524,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: work_health_care_patient_facing_original
+  nullable: true
+  type: string
+- metadata: {}
   name: work_social_care_original
   nullable: true
   type: string
@@ -535,6 +539,10 @@ fields:
   name: file_date
   nullable: true
   type: timestamp
+- metadata: {}
+  name: any_date_corrected
+  nullable: true
+  type: string
 - metadata: {}
   name: bad_email
   nullable: true

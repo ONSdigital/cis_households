@@ -266,6 +266,7 @@ def fill_forward_event(
     detail_columns: List[str],
     participant_id_column: str,
     visit_datetime_column: str,
+    visit_id_column: str,
 ):
     """
     Fill forwards all columns associated with an event.
@@ -283,16 +284,22 @@ def fill_forward_event(
         additional columns relating to the event
     participant_id_column
     visit_datetime_column
+    visit_id_column
     """
     event_columns = [event_date_column, event_indicator_column, *detail_columns]
+    null_visit_df = df.filter(F.col(visit_datetime_column).isNull())
+    df = df.filter(F.col(visit_datetime_column).isNotNull())
 
     grouping_window = Window.partitionBy(participant_id_column, event_date_column).orderBy("REF_EVENT_DATE")
-    window = Window.partitionBy(participant_id_column, visit_datetime_column).orderBy(F.desc(event_date_column))
+    window = Window.partitionBy(participant_id_column, visit_datetime_column, visit_id_column).orderBy(
+        F.desc(event_date_column)
+    )
     filter_window = Window.partitionBy(participant_id_column, event_date_column).orderBy(visit_datetime_column)
 
     filtered_df = df.filter(
         (F.col(event_date_column).isNotNull()) & (F.col(event_date_column) <= F.col(visit_datetime_column))
-    )
+    ).cache()
+
     event_dates_df = filtered_df.select(participant_id_column, event_date_column).distinct()
 
     filtered_df = filtered_df.join(
@@ -341,6 +348,7 @@ def fill_forward_event(
     df = df.withColumn(event_indicator_column, F.when(F.col(event_date_column).isNull(), "No").otherwise("Yes"))
     df = df.drop("DROP_EVENT").distinct().withColumn("ROW_NUMBER", F.row_number().over(window))
     df = df.filter(F.col("ROW_NUMBER") == 1).drop("ROW_NUMBER")
+    df = df.unionByName(null_visit_df)
     return df
 
 

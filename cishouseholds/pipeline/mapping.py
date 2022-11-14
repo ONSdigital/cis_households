@@ -1,14 +1,14 @@
 from typing import Dict
 
 _times_in_last_7_day_categories = {
-    "None": 0,
+    "0": 0,
     "1": 1,
     "2": 2,
     "3": 3,
     "4": 4,
     "5": 5,
     "6": 6,
-    "7 times or more": 7,
+    "7": 7,
 }
 
 consolidation_categories = {
@@ -58,7 +58,11 @@ category_maps = {
         "smokes_hookah_shisha_pipes": _yes_no_categories,
         "smokes_nothing_now": _yes_no_categories,
         "work_nursing_or_residential_care_home": _yes_no_categories,
+        "work_nursing_or_residential_care_home_original": _yes_no_categories,
         "work_direct_contact_patients_or_clients": _yes_no_categories,
+        "work_direct_contact_patients_or_clients_original": _yes_no_categories,
+        "patient_facing_over_20_percent": _yes_no_categories,
+        "works_health_care": _yes_no_categories,
         "think_have_covid_symptom_any": _yes_no_categories,
         "think_have_covid_symptom_fever": _yes_no_categories,
         "think_have_covid_symptom_muscle_ache": _yes_no_categories,
@@ -165,6 +169,7 @@ category_maps = {
         "symptoms_around_cghfevamn_symptom_group": _yes_no_categories,
         "think_have_covid_cghfevamn_symptom_group": _yes_no_categories,
         "think_had_covid_cghfevamn_symptom_group": _yes_no_categories,
+        "work_person_facing_now": _yes_no_categories,
         "digital_survey_mode_preference": {"Online": 0, "Telephone": 1},
         "digital_communication_preference": {"Email": 0, "Letter": 1},
         "sample_return_preference": {"Post": 0, "Courier": 1},
@@ -236,10 +241,9 @@ category_maps = {
             "NA(Not currently working)": 99,
         },
         "work_health_care_area": {
-            "No": 0,
-            "Yes, in primary care, e.g. GP, dentist": 1,
-            "Yes, in secondary care, e.g. hospital": 2,
-            "Yes, in other healthcare settings, e.g. mental health": 3,
+            "Primary": 1,
+            "Secondary": 2,
+            "Other": 3,
         },
         "work_health_care_patient_facing": {
             "No": 0,
@@ -250,7 +254,30 @@ category_maps = {
             "Yes, secondary care, non-patient-facing": 5,
             "Yes, other healthcare, non-patient-facing": 6,
         },
+        "work_health_care_patient_facing_original": {
+            "No": 0,
+            "Yes, primary care, patient-facing": 1,
+            "Yes, secondary care, patient-facing": 2,
+            "Yes, other healthcare, patient-facing": 3,
+            "Yes, primary care, non-patient-facing": 4,
+            "Yes, secondary care, non-patient-facing": 5,
+            "Yes, other healthcare, non-patient-facing": 6,
+        },
+        "work_patient_facing_now": {
+            "No": 0,
+            "Yes": 1,
+            "<=15y": -8,
+            ">=75y": -9,
+        },
+        "work_patient_facing_clean": {"No": 0, "Yes": 1, "Not working in health care": 2},
         "work_social_care": {
+            "No": 0,
+            "Yes, care/residential home, resident-facing": 1,
+            "Yes, other social care, resident-facing": 2,
+            "Yes, care/residential home, non-resident-facing": 3,
+            "Yes, other social care, non-resident-facing": 4,
+        },
+        "work_social_care_original": {
             "No": 0,
             "Yes, care/residential home, resident-facing": 1,
             "Yes, other social care, resident-facing": 2,
@@ -1333,6 +1360,10 @@ column_name_maps = {
         "main_job_responsibilities": "work_main_job_role",
         "Gold SOC2010 code": "resolved_soc_code",
     },
+    "blood_past_positive_name_map": {
+        "ons_household_id": "ons_household_id",
+        "blood_past_positive": "blood_past_positive",
+    },
     "swab_variable_name_map": {
         "Sample": "swab_sample_barcode",
         "Result": "pcr_result_classification",
@@ -2210,6 +2241,7 @@ _welsh_contact_type_by_age_group_categories = {
     "21 neu fwy": "21 or more",
     "Ddim yn gwybod": "Don't know",
     "Byddai'n well gen i beidio â dweud": "Prefer not to say",
+    "Byddai`n well gen i beidio â dweud": "Prefer not to say",
     "Byddain well gen i beidio â dweud": "Prefer not to say",
 }
 
@@ -2218,6 +2250,7 @@ _welsh_number_of_types_categories = {
     "7 gwaith neu fwy": "7 times or more",
     "Ddim yn gwybod": "Don't know",
     "Byddai'n well gen i beidio â dweud": "Prefer not to say",
+    "Byddai`n well gen i beidio â dweud": "Prefer not to say",
     "Byddain well gen i beidio â dweud": "Prefer not to say",
 }
 
@@ -2274,7 +2307,7 @@ _welsh_swab_sample_not_taken_categories = {
     "Mae fy nghyfnod profi bron â dod i ben ac nid yw fy mhecyn prawf swab wedi cyrraedd": "I am near the end of my testing window and my swab test kit has not arrived",  # noqa: E501
 }
 
-_welsh_swab_kit_missing_categories = {
+_welsh_swab_not_taken_missing_parts_categories = {
     "Pot sampl â hylif yn y gwaelod a chod bar arno": "Sample pot with fluid in the bottom and barcode on",
     "Ffon swab": "Swab stick",
     "Bag bioberyglon y gellir ei ailselio â phad amsugno ynddo": "Re-sealable biohazard bag with absorbent pad",
@@ -2286,8 +2319,9 @@ _welsh_swab_kit_missing_categories = {
     "Arall nodwch": "Other please specify",
 }
 
-_welsh_blood_sample_not_taken_categories = {
+_welsh_blood_not_taken_reason_categories = {
     "Rhoddais gynnig arni ond nid oeddwn i'n gallu ei chymryd": "I tried but could not take it",
+    "Rhoddais gynnig arni ond nid oeddwn i`n gallu ei chymryd": "I tried but could not take it",
     "Gofynnais am beidio â chael pecyn prawf gwaed y mis hwn": "I asked not to receive a blood test kit this month",
     "Penderfynais beidio â'i chymryd y mis hwn": "I decided not to take it this month",
     "Penderfynais beidio â`i chymryd y mis hwn": "I decided not to take it this month",
@@ -2298,9 +2332,11 @@ _welsh_blood_sample_not_taken_categories = {
     "Mae fy nghyfnod profi bron â dod i ben ac nid yw fy mhecyn prawf gwaed wedi cyrraedd": "I am near the end of my testing window and my blood test kit has not arrived",  # noqa: E501
 }
 
-_welsh_blood_kit_missing_categories = {
+_welsh_blood_not_taken_missing_parts_categories = {
     "Tiwb prawf sampl bach. Dyma'r tiwb a ddefnyddir i gasglu'r gwaed.": "Small sample test tube. This is the tube that is used to collect the blood.",  # noqa: E501
+    "Tiwb prawf sampl bach. Dyma`r tiwb a ddefnyddir i gasglu`r gwaed.": "Small sample test tube. This is the tube that is used to collect the blood.",  # noqa: E501
     "Tiwb prawf sampl bach. Dyma'r tiwb a ddefnyddir i gasglu`r gwaed.": "Small sample test tube. This is the tube that is used to collect the blood.",  # noqa: E501
+    "Tiwb prawf sampl bach. Dyma`r tiwb a ddefnyddir i gasglu'r gwaed.": "Small sample test tube. This is the tube that is used to collect the blood.",  # noqa: E501
     "Tiwb cario sampl mawr â chod bar arno. Dyma'r tiwb rydych chi'n rhoi'r tiwb prawf sampl bach ynddo ar ôl casglu gwaed.": "Large sample carrier tube with barcode on. This is the tube that you put the small sample test tube in to after collecting blood.",  # noqa: E501
     "Tiwb cario sampl mawr â chod bar arno. Dyma'r tiwb rydych chi'n rhoi`r tiwb prawf sampl bach ynddo ar ôl casglu gwaed.": "Large sample carrier tube with barcode on. This is the tube that you put the small sample test tube in to after collecting blood.",  # noqa: E501
     "Bag bioberyglon y gellir ei ailselio â phad amsugno ynddo": "Re-sealable biohazard bag with absorbent pad",
@@ -2316,11 +2352,13 @@ _welsh_blood_kit_missing_categories = {
     "Arall nodwch": "Other please specify",
 }
 
-_welsh_blood_not_taken_reason_categories = {
+_welsh_blood_not_taken_could_not_reason_categories = {
     "Rhoddais gynnig arni ond nid oeddwn i'n gallu ei chymryd": "I tried but could not take it",
     "Rhoddais gynnig arni ond nid oeddwn i`n gallu ei chymryd": "I tried but could not take it",
     "Nid oeddwn i'n gallu cael digon o waed i mewn i'r pot": "I couldn't get enough blood into the pot",
     "Nid oeddwn i'n gallu cael digon o waed i mewn i`r pot": "I couldn't get enough blood into the pot",
+    "Nid oeddwn yn gallu cael digon o waed i mewn i'r pot": "I couldn't get enough blood into the pot",
+    "Nid oeddwn yn gallu cael digon o waed i mewn i`r pot": "I couldn't get enough blood into the pot",
     "Daeth yr hylif allan o'r pot": "The pot spilled",
     "Roedd gen i glais neu roeddwn i mewn poen": "I had bruising or pain",
     "Nid oeddwn i'n teimlo'n dda": "I felt unwell",
@@ -2334,6 +2372,8 @@ _welsh_work_status_digital_categories = {
     "Hunangyflogedig": "Self-employed",
     "Ddim mewn gwaith â thâl. Mae hyn yn cynnwys bod yn ddi-waith, wedi ymddeol neu'n gwneud gwaith gwirfoddol": "Not in paid work. This includes being unemployed, retired or doing voluntary work",  # noqa: E501
     "Ddim mewn gwaith â thâl. Mae hyn yn cynnwys bod yn ddi-waith, wedi ymddeol neu`n gwneud gwaith gwirfoddol": "Not in paid work. This includes being unemployed, retired or doing voluntary work",  # noqa: E501
+    "Ddim mewn gwaith â thâl - Mae hyn yn cynnwys bod yn ddi-waith wedi ymddeol neu'n gwneud gwaith gwirfoddol": "Not in paid work. This includes being unemployed, retired or doing voluntary work",  # noqa: E501
+    "Ddim mewn gwaith â thâl - Mae hyn yn cynnwys bod yn ddi-waith wedi ymddeol neu`n gwneud gwaith gwirfoddol": "Not in paid work. This includes being unemployed, retired or doing voluntary work",  # noqa: E501
     "Mewn addysg": "In education",
 }
 
@@ -2347,7 +2387,7 @@ _welsh_work_status_employment_categories = {
 _welsh_work_status_unemployment_categories = {
     "Yn chwilio am waith â thâl ac yn gallu dechrau": "Looking for paid work and able to start",
     "Ddim yn chwilio am waith â thâl. Mae hyn yn cynnwys gofalu am y cartref neu'r teulu neu ddim am gael swydd neu'n anabl neu'n sâl am gyfnod hir": "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
-    "Ddim yn chwilio am waith â thâl. Mae hyn yn cynnwys gofalu am y cartref neu`r teulu neu ddim am gael swydd neu'n anabl neu`n sâl am gyfnod hir": "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
+    "Ddim yn chwilio am waith â thâl. Mae hyn yn cynnwys gofalu am y cartref neu`r teulu neu ddim am gael swydd neu`n anabl neu`n sâl am gyfnod hir": "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
     "Wedi ymddeol": "Retired",
 }
 
@@ -2381,6 +2421,8 @@ _welsh_work_sector_categories = {
 _welsh_work_location_categories = {
     "Gartref, gan olygu ar yr un safle neu yn yr un adeilad â'ch cartref": "From home meaning in the same grounds or building as your home",  # noqa: E501
     "Gartref, gan olygu ar yr un safle neu yn yr un adeilad â`ch cartref": "From home meaning in the same grounds or building as your home",  # noqa: E501
+    "Gartref - gan olygu ar yr un safle neu yn yr un adeilad â'ch cartref": "From home meaning in the same grounds or building as your home",  # noqa: E501
+    "Gartref - gan olygu ar yr un safle neu yn yr un adeilad â`ch cartref": "From home meaning in the same grounds or building as your home",  # noqa: E501
     "Yn rhywle arall, gan olygu nid yn eich cartref": "Somewhere else meaning not at your home",
     "Yn rhywle arall - gan olygu nid yn eich cartref": "Somewhere else meaning not at your home",
     "Gartref ac yn rhywle arall": "Both from home and somewhere else",

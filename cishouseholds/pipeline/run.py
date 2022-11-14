@@ -55,8 +55,6 @@ def check_dependencies(stages_to_run, stages_config):  # TODO: ensure check in o
 
         function = stages_config[stage].get("function", stage)
 
-        optional_tables = ["regex_lookup_table"]
-
         if type(input_tables) == dict:
             required_tables.extend(input_tables.values())
         elif type(input_tables) == list:
@@ -76,7 +74,6 @@ def check_dependencies(stages_to_run, stages_config):  # TODO: ensure check in o
             if "="  # meaning it will check only non default input parameters
             in str(inspect.signature(pipeline_stages[function]).parameters[arg])
         ]
-        unavailable_tables = [table for table in unavailable_tables if table not in optional_tables]
         unavailable_tables = [table for table in unavailable_tables if table not in optional_input_args]
         missing_tables = ",".join(unavailable_tables)
 
@@ -209,6 +206,7 @@ def run_pipeline_stages(
         stage_config = {} if stage_config is None else stage_config
         stage_function_name = stage_config.pop("function", stage_name)
         stage_function_args = inspect.getfullargspec(pipeline_stages[stage_function_name]).args
+
         stage_start = datetime.now()
         stage_success = False
         attempt = 0
@@ -224,17 +222,29 @@ def run_pipeline_stages(
         print(stage_text)  # functional
         if check_conditions(stage_responses=stage_responses, stage_config=stage_config):
             stage_config.pop("when", None)
+            if (  # try to add input survey table from input stage
+                "input_stage" in stage_config
+                and stage_config["input_stage"] in stage_configs
+                and "output_tables" in stage_configs[stage_config["input_stage"]]
+                and "input_survey_table" in stage_function_args
+            ):
+                stage_config["input_survey_table"] = stage_configs[stage_config["input_stage"]]["output_tables"][
+                    "output_survey_table"
+                ]
+                del stage_config["input_stage"]
+
+            if (  # try to add input survey table directly
+                current_table is not None
+                and "input_survey_table" in stage_function_args
+                and "input_survey_table" not in stage_config
+            ):  # automatically add input table name
+                stage_config["input_survey_table"] = current_table
+
             while not stage_success and attempt < retry_count + 1:
                 if attempt != 0:
                     with spark_description_set("adding run status"):
                         add_run_status(run_id, "retry", stage_text, "")
                 attempt_start = datetime.now()
-                if (
-                    current_table is not None
-                    and "input_survey_table" in stage_function_args
-                    and "input_survey_table" not in stage_config
-                ):  # automatically add input table name
-                    stage_config["input_survey_table"] = current_table
                 try:
                     with spark_description_set(stage_name):
                         result = pipeline_stages[stage_function_name](**stage_config)
