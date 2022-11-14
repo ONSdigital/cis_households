@@ -865,13 +865,31 @@ def compare(
     diff_samples_table_name: str,
     unique_id_column: str = "unique_participant_response_id",
     num_samples: int = 10,
+    select_columns: List[str] = [],  # type: ignore
 ):
     """
     Create an output that holds information about differences between 2 tables
+
+    Parameters
+    ----------
+    base_table_name
+    table_name_to_compare
+    counts_df_table_name
+    diff_samples_table_name
+    unique_id_column
+        column containing unique id common to base an compare dataframes
+    num_samples
+        number of examples of each differing row to provide in the output table
+    select_columns
+        optional subset of columns to evaluate
     """
     base_df = extract_from_table(base_table_name)
     compare_df = extract_from_table(table_name_to_compare)
-
+    if len(select_columns) > 0:
+        if unique_id_column not in select_columns:
+            select_columns = [unique_id_column, *select_columns]
+            compare_df = compare_df.select(*select_columns)
+            base_df = base_df.select(*select_columns)
     counts_df, difference_sample_df = get_differences(base_df, compare_df, unique_id_column, num_samples)
     update_table(counts_df, counts_df_table_name, "overwrite")
     update_table(difference_sample_df, diff_samples_table_name, "overwrite")
