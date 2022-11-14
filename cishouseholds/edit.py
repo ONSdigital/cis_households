@@ -1091,19 +1091,19 @@ def replace_sample_barcode(
         output dataframe with replaced sample barcodes
     """
 
-    if "blood_sample_barcode_user_entered" in df.columns:
-        df = df.withColumn(
-            "blood_sample_barcode_combined",
-            F.when(
-                (
-                    (F.col("survey_response_dataset_major_version") == 3)
-                    & (F.col("blood_sample_barcode_correct") == "No")
-                    & ~(F.col("blood_sample_barcode_user_entered").isNull())
-                ),
-                F.col("blood_sample_barcode_user_entered"),
-            ).otherwise(F.col("blood_sample_barcode")),
-        )
-    return df
+    if "swab_sample_barcode_user_entered" in df.columns:
+        for test_type in ["swab", "blood"]:
+            df = df.withColumn(
+                f"{test_type}_sample_barcode_combined",
+                F.when(
+                    (
+                        (F.col("survey_response_dataset_major_version") == 3)
+                        & (F.col(f"{test_type}_sample_barcode_correct") == "No")
+                        & ~(F.col(f"{test_type}_sample_barcode_user_entered").isNull())
+                    ),
+                    F.col(f"{test_type}_sample_barcode_user_entered"),
+                ).otherwise(F.col(f"{test_type}_sample_barcode")),
+            )
 
 
 def conditionally_replace_columns(
