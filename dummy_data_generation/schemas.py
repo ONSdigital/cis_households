@@ -182,6 +182,19 @@ def get_participant_extract_digital_data_description(_, blood_barcodes, swab_bar
             end=2022,
             fmt=digital_datetime_format,
         ),
+        "existing_participant_opt_out_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_date_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
         "household_invited_to_digital": _("choice", items=yes_no_none_choice),
         "household_digital_enrolment_invited_datetime": _(
             "discrete_distribution",

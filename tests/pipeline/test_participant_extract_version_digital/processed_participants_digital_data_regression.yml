@@ -9,22 +9,23 @@
   ethnicity_group: null
   ethnicity_other: Where are my pants?
   existing_participant_digital_opt_in_datetime: '2020-12-04 21:47:57.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 05:24:08.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 11:24:22.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-03 11:24:22.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 00:12:48.000000'
   existing_participant_digital_opt_in_reminder_1_status: Haskell is a standardized,
     general-purpose purely functional programming language, with non-strict semantics
     and strong static typing.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-03 00:12:48.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-07 15:04:40.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-07 15:04:40.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-07 02:10:01.000000'
   existing_participant_digital_opt_in_reminder_2_status: Make me a sandwich.
   existing_participant_digital_opt_in_status: null
+  existing_participant_opt_out_date: '2022-01-06'
   first_name: Annika
-  household_digital_enrolment_invited_datetime: '2022-01-06 18:06:58.000000'
+  household_digital_enrolment_invited_datetime: null
   household_invited_to_digital: null
   last_name: Day
   middle_name: Hank
   ons_household_id: '602276804025'
-  participant_digital_enrolment_datetime: null
+  participant_digital_enrolment_datetime: '2020-10-14 01:01:05.000000'
   participant_enrolled_digital: 'Yes'
   participant_id: DHR-016525808631
   participant_invited_to_digital: null
@@ -46,23 +47,24 @@
   ethnicity_other: The Galactic Empire is nearing completion of the Death Star, a
     space station with the power to destroy entire planets.
   existing_participant_digital_opt_in_datetime: '2022-11-12 14:57:33.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 21:48:58.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 12:02:32.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-02 12:57:57.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-07 13:29:28.000000'
   existing_participant_digital_opt_in_reminder_1_status: In 1989 the building was
     heavily damaged by fire, but it has since been restored.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-06 17:18:28.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-04 06:48:13.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-02 11:17:41.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: null
   existing_participant_digital_opt_in_reminder_2_status: Initially composing light-hearted
     and irreverent works, he also wrote serious, sombre and religious pieces beginning
     in the 1930s.
   existing_participant_digital_opt_in_status: Participant Opted In
+  existing_participant_opt_out_date: '2022-01-06'
   first_name: Wilburn
-  household_digital_enrolment_invited_datetime: '2022-01-03 02:16:58.000000'
+  household_digital_enrolment_invited_datetime: '2022-01-06 11:34:20.000000'
   household_invited_to_digital: null
   last_name: Barton
   middle_name: Caron
   ons_household_id: '571295570558'
-  participant_digital_enrolment_datetime: null
+  participant_digital_enrolment_datetime: '2020-04-08 02:21:01.000000'
   participant_enrolled_digital: null
   participant_id: DHR-190156218256
   participant_invited_to_digital: 'No'
@@ -84,17 +86,18 @@
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
   existing_participant_digital_opt_in_datetime: '2020-11-09 22:59:43.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-02 23:36:54.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-06 07:16:52.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 06:03:25.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-07 06:47:53.000000'
   existing_participant_digital_opt_in_reminder_1_status: Do you have any idea why
     this is not working?
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-08 06:50:13.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-01 01:24:13.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-04 01:29:38.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-02 09:35:00.000000'
   existing_participant_digital_opt_in_reminder_2_status: The arguments can be primitive
     data types or compound data types.
   existing_participant_digital_opt_in_status: Participant Opted Out
+  existing_participant_opt_out_date: '2022-01-08'
   first_name: Honey
-  household_digital_enrolment_invited_datetime: '2022-01-05 21:42:26.000000'
+  household_digital_enrolment_invited_datetime: '2022-01-01 01:24:13.000000'
   household_invited_to_digital: null
   last_name: Hunt
   middle_name: Gale
@@ -121,16 +124,17 @@
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
   existing_participant_digital_opt_in_datetime: '2022-05-18 00:43:46.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-07 13:37:19.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-05 19:49:30.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 18:07:43.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-06 04:42:29.000000'
   existing_participant_digital_opt_in_reminder_1_status: He looked inquisitively at
     his keyboard and wrote another sentence.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-09 18:11:34.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-04 09:45:48.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-07 08:11:15.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-01 09:53:53.000000'
   existing_participant_digital_opt_in_reminder_2_status: Where are my pants?
   existing_participant_digital_opt_in_status: Participant Opted In
+  existing_participant_opt_out_date: '2022-01-08'
   first_name: Myung
-  household_digital_enrolment_invited_datetime: '2022-01-08 06:20:22.000000'
+  household_digital_enrolment_invited_datetime: null
   household_invited_to_digital: null
   last_name: Stanley
   middle_name: Melaine
@@ -155,18 +159,19 @@
   ethnicity_group: null
   ethnicity_other: Any element of a tuple can be accessed in constant time.
   existing_participant_digital_opt_in_datetime: '2020-02-24 15:52:04.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: null
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 01:13:33.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-04 07:57:32.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-02 21:15:12.000000'
   existing_participant_digital_opt_in_reminder_1_status: Atoms are used within a program
     to denote distinguished values.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: null
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-01 17:14:06.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-03 09:40:01.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-09 10:19:02.000000'
   existing_participant_digital_opt_in_reminder_2_status: Initially composing light-hearted
     and irreverent works, he also wrote serious, sombre and religious pieces beginning
     in the 1930s.
   existing_participant_digital_opt_in_status: null
+  existing_participant_opt_out_date: '2022-01-06'
   first_name: My
-  household_digital_enrolment_invited_datetime: '2022-01-07 08:11:15.000000'
+  household_digital_enrolment_invited_datetime: '2022-01-04 06:48:13.000000'
   household_invited_to_digital: 'No'
   last_name: Ford
   middle_name: Yuri
@@ -192,17 +197,18 @@
   ethnicity_group: null
   ethnicity_other: Haskell features a type system with type inference and lazy evaluation.
   existing_participant_digital_opt_in_datetime: '2020-04-27 01:51:20.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-07 06:47:53.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-04 01:29:38.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 20:01:59.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-01 20:53:26.000000'
   existing_participant_digital_opt_in_reminder_1_status: Type classes first appeared
     in the Haskell programming language.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-02 09:35:00.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-09 14:45:28.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: null
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: null
   existing_participant_digital_opt_in_reminder_2_status: The sequential subset of
     Erlang supports eager evaluation, single assignment, and dynamic typing.
   existing_participant_digital_opt_in_status: Participant Opted In
+  existing_participant_opt_out_date: '2022-01-09'
   first_name: Alan
-  household_digital_enrolment_invited_datetime: '2022-01-08 06:03:25.000000'
+  household_digital_enrolment_invited_datetime: '2022-01-04 00:42:15.000000'
   household_invited_to_digital: 'Yes'
   last_name: Gomez
   middle_name: Remedios
@@ -228,22 +234,23 @@
   ethnicity_group: null
   ethnicity_other: He looked inquisitively at his keyboard and wrote another sentence.
   existing_participant_digital_opt_in_datetime: '2022-05-27 20:32:38.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 11:09:05.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-06 13:36:00.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: null
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 02:16:58.000000'
   existing_participant_digital_opt_in_reminder_1_status: The arguments can be primitive
     data types or compound data types.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-08 18:07:43.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-06 04:42:29.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 21:48:58.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: null
   existing_participant_digital_opt_in_reminder_2_status: Erlang is known for its designs
     that are well suited for systems.
   existing_participant_digital_opt_in_status: Participant Opted In
+  existing_participant_opt_out_date: '2022-01-03'
   first_name: Humberto
-  household_digital_enrolment_invited_datetime: '2022-01-05 23:14:26.000000'
+  household_digital_enrolment_invited_datetime: null
   household_invited_to_digital: null
   last_name: Lynch
   middle_name: Shaun
   ons_household_id: '219547810444'
-  participant_digital_enrolment_datetime: null
+  participant_digital_enrolment_datetime: '2020-06-25 05:34:49.000000'
   participant_enrolled_digital: 'No'
   participant_id: DHR-769043821442
   participant_invited_to_digital: 'No'
@@ -264,17 +271,18 @@
   ethnicity_group: null
   ethnicity_other: Atoms are used within a program to denote distinguished values.
   existing_participant_digital_opt_in_datetime: '2021-01-25 05:44:27.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-09 00:42:38.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-01 18:46:43.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-04 19:08:06.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: null
   existing_participant_digital_opt_in_reminder_1_status: Erlang is known for its designs
     that are well suited for systems.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-04 19:08:06.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: null
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-02 23:13:32.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-05 13:09:24.000000'
   existing_participant_digital_opt_in_reminder_2_status: Erlang is a general-purpose,
     concurrent, functional programming language.
   existing_participant_digital_opt_in_status: null
+  existing_participant_opt_out_date: '2022-01-09'
   first_name: Crystle
-  household_digital_enrolment_invited_datetime: '2022-01-07 02:10:01.000000'
+  household_digital_enrolment_invited_datetime: '2022-01-01 18:46:43.000000'
   household_invited_to_digital: 'Yes'
   last_name: Ball
   middle_name: Reiko
@@ -299,17 +307,18 @@
   ethnicity_group: null
   ethnicity_other: Erlang is known for its designs that are well suited for systems.
   existing_participant_digital_opt_in_datetime: '2022-05-24 18:27:57.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 20:01:59.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: null
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-05 19:49:30.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-09 18:11:34.000000'
   existing_participant_digital_opt_in_reminder_1_status: Do you come here often?
-  existing_participant_digital_opt_in_reminder_2_due_datetime: null
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-06 10:24:17.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-04 09:45:48.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-05 23:14:26.000000'
   existing_participant_digital_opt_in_reminder_2_status: Haskell is a standardized,
     general-purpose purely functional programming language, with non-strict semantics
     and strong static typing.
   existing_participant_digital_opt_in_status: null
+  existing_participant_opt_out_date: '2022-01-08'
   first_name: Donnell
-  household_digital_enrolment_invited_datetime: '2022-01-04 00:42:15.000000'
+  household_digital_enrolment_invited_datetime: '2022-01-07 13:37:19.000000'
   household_invited_to_digital: null
   last_name: Brock
   middle_name: Maple
@@ -334,15 +343,16 @@
   ethnicity_group: null
   ethnicity_other: Make me a sandwich.
   existing_participant_digital_opt_in_datetime: '2020-09-10 20:39:56.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-05 13:09:24.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-01 05:43:54.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-06 20:22:30.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-05 21:42:26.000000'
   existing_participant_digital_opt_in_reminder_1_status: I don't even care.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-02 18:56:56.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-06 20:22:30.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-02 23:36:54.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-06 07:16:52.000000'
   existing_participant_digital_opt_in_reminder_2_status: Make me a sandwich.
   existing_participant_digital_opt_in_status: Participant Opted Out
+  existing_participant_opt_out_date: '2022-01-01'
   first_name: Clora
-  household_digital_enrolment_invited_datetime: '2022-01-02 23:13:32.000000'
+  household_digital_enrolment_invited_datetime: '2022-01-02 18:56:56.000000'
   household_invited_to_digital: 'Yes'
   last_name: Lane
   middle_name: Joette
