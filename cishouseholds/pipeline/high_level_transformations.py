@@ -2070,15 +2070,19 @@ def union_dependent_cleaning(df):
         },
     }
     date_cols_to_correct = [
-        "last_covid_contact_date",
-        "last_suspected_covid_contact_date",
-        "think_had_covid_onset_date",
-        "think_have_covid_onset_date",
-        "been_outside_uk_latest_date",
-        "other_covid_infection_test_first_positive_date",
-        "other_covid_infection_test_last_negative_date",
-        "other_antibody_test_first_positive_date",
-        "other_antibody_test_last_negative_date",
+        col
+        for col in [
+            "last_covid_contact_date",
+            "last_suspected_covid_contact_date",
+            "think_had_covid_onset_date",
+            "think_have_covid_onset_date",
+            "been_outside_uk_latest_date",
+            "other_covid_infection_test_first_positive_date",
+            "other_covid_infection_test_last_negative_date",
+            "other_antibody_test_first_positive_date",
+            "other_antibody_test_last_negative_date",
+        ]
+        if col in df.columns
     ]
     df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime")
     df = remove_incorrect_dates(df, date_cols_to_correct, "visit_datetime", "2019-08-01")
