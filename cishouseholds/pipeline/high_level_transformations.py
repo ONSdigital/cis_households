@@ -2160,15 +2160,6 @@ def union_dependent_derivations(df):
 
     df = replace_sample_barcode(df=df)
 
-    df = conditionally_replace_columns(
-        df,
-        {
-            "swab_sample_barcode": "swab_sample_barcode_combined",
-            "blood_sample_barcode": "blood_sample_barcode_combined",
-        },
-        (F.col("survey_response_dataset_major_version") == 3),
-    )
-
     df = assign_column_from_mapped_list_key(
         df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
     )
