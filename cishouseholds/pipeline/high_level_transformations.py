@@ -1106,7 +1106,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
     )
     df = df.withColumn("times_outside_shopping_or_socialising_last_7_days", F.lit(None))
     raw_copy_list = [
-        "ethnicity",
         "participant_survey_status",
         "participant_withdrawal_type",
         "survey_response_type",
