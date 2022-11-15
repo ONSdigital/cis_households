@@ -3218,4 +3218,15 @@ def get_differences(base_df: DataFrame, compare_df: DataFrame, unique_id_column:
             dfs.append(diffs_df.select(unique_id_column).withColumn("column_name", F.lit(col)))
 
     counts_df = df.select([F.sum(F.col(f"{c}_diff")).alias(c).cast("integer") for c in cols_to_check])
+    counts_df = counts_df.select(
+        F.explode(
+            F.array(
+                [
+                    F.struct(F.lit(col).alias("column_name"), F.col(col).alias("difference_count"))
+                    for col in counts_df.columns
+                ]
+            )
+        ).alias("kvs")
+    )
+    counts_df = counts_df.select("kvs.column_name", "kvs.difference_count")
     return counts_df, union_multiple_tables(dfs)
