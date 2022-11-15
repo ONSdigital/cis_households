@@ -110,7 +110,6 @@
   ethnic_group: White
   ethnicity: White and Black Caribbean
   ethnicity_other: Ports are used to communicate with the external world.
-  ethnicity_raw: White and Black Caribbean
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: '2022-04-17 08:08:59.000000'
@@ -561,7 +560,6 @@
   ethnic_group: Asian or Asian British
   ethnicity: Any other Mixed/Multiple background
   ethnicity_other: I don't even care.
-  ethnicity_raw: Any other Mixed/Multiple background
   ever_smoked_regularly: 'No'
   ever_smoked_regularly_raw: 'No'
   existing_participant_digital_opt_in_datetime: '2020-07-11 08:55:04.000000'
@@ -1013,7 +1011,6 @@
   ethnic_group: Other Ethnic Group
   ethnicity: African
   ethnicity_other: Erlang is known for its designs that are well suited for systems.
-  ethnicity_raw: African
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   existing_participant_digital_opt_in_datetime: '2020-02-05 20:10:50.000000'
@@ -1465,7 +1462,6 @@
   ethnicity: Caribbean or Black British
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
-  ethnicity_raw: Caribbean or Black British
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: '2021-11-24 05:39:36.000000'
@@ -1920,7 +1916,6 @@
   ethnic_group: Asian or Asian British
   ethnicity: Irish
   ethnicity_other: Its main implementation is the Glasgow Haskell Compiler.
-  ethnicity_raw: Irish
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   existing_participant_digital_opt_in_datetime: '2020-10-14 01:01:05.000000'
@@ -2367,7 +2362,6 @@
   ethnic_group: White
   ethnicity: Caribbean or Black British
   ethnicity_other: Atoms are used within a program to denote distinguished values.
-  ethnicity_raw: Caribbean or Black British
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   existing_participant_digital_opt_in_datetime: '2022-12-16 04:12:18.000000'
@@ -2819,7 +2813,6 @@
   ethnicity: Any other ethnic group
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
-  ethnicity_raw: null
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   existing_participant_digital_opt_in_datetime: '2021-04-04 03:42:27.000000'
@@ -3271,7 +3264,6 @@
   ethnicity: Caribbean or Black British
   ethnicity_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
-  ethnicity_raw: Caribbean or Black British
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: '2020-02-29 22:57:09.000000'
@@ -3723,7 +3715,6 @@
   ethnicity: Any other white
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
-  ethnicity_raw: Any other white
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   existing_participant_digital_opt_in_datetime: '2020-02-24 15:52:04.000000'
@@ -4180,7 +4171,6 @@
   ethnicity: African
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
-  ethnicity_raw: African
   ever_smoked_regularly: 'No'
   ever_smoked_regularly_raw: 'No'
   existing_participant_digital_opt_in_datetime: '2021-08-21 11:10:23.000000'

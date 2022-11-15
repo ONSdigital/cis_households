@@ -1624,10 +1624,6 @@ fields:
   nullable: true
   type: integer
 - metadata: {}
-  name: ethnicity_raw
-  nullable: true
-  type: string
-- metadata: {}
   name: participant_survey_status_raw
   nullable: true
   type: string
