@@ -1104,6 +1104,7 @@ def replace_sample_barcode(
                     F.col(f"{test_type}_sample_barcode_user_entered"),
                 ).otherwise(F.col(f"{test_type}_sample_barcode")),
             )
+    return df
 
 
 def conditionally_replace_columns(
