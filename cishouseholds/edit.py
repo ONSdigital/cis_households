@@ -101,7 +101,7 @@ def correct_date_ranges(df: DataFrame, columns_to_edit: List[str], visit_date_co
                         set_date_component(col, "year", F.year(visit_date_column)) <= F.col(visit_date_column),
                         set_date_component(col, "year", F.year(visit_date_column)),
                     )
-                    .when(F.add_months(col, -1) <= F.col(visit_date_column), F.add_months(col, -1))
+                    .when(F.add_months(col, 1) <= F.col(visit_date_column), F.add_months(col, 1))
                     .when((F.year(col) > 2019), set_date_component(col, "year", F.year(visit_date_column) - 1))
                     .otherwise(F.col(col)),
                 )

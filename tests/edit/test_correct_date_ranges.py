@@ -22,6 +22,8 @@ def test_correct_date_ranges(spark_session):
             ("2021-03-01", "2020-03-03", 5, "J"),  # valid
             ("2022-03-01", "2021-03-03", 5, "K"),  # second permissable replacement for C
             ("2021-07-22", "2021-10-11", 6, "L"),  # can be shifted back by a year to 2020
+            ("2020-10-11", "2012-07-22", 7, "M"),  # past date given visit date year
+            ("2020-10-11", "2019-07-02", 8, "N"),  # date shifted forward by a month is correct
         ],
         schema=schema,
     )
@@ -40,6 +42,8 @@ def test_correct_date_ranges(spark_session):
             ("2021-03-01", "2020-03-03", 5,"J"),  # valid answer pulled from another row
             ("2022-03-01", "2021-03-03", 5,"K"),  # second permissable replacement for C
             ("2021-07-22", "2020-10-11", 6,"L"),  # shifted back a year as >=2020
+            ("2020-10-11", "2020-07-22", 7,"M"),  # past date given visit date year
+            ("2020-10-11", "2020-07-02", 8,"N")   # date shifted forward by a month is correct
         ],
         # fmt: on
         schema=schema,
@@ -56,6 +60,4 @@ def test_correct_date_ranges(spark_session):
 
     output_df = remove_incorrect_dates(output_df, ["date1"], "visit_date", "2019-08-01")
 
-    output_df = output_df.orderBy("key")
-
-    assert_df_equality(output_df, dfs[1], ignore_column_order=True, ignore_row_order=True)
+    assert_df_equality(output_df, dfs[1], ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
