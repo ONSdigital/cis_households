@@ -2080,7 +2080,7 @@ def union_dependent_cleaning(df):
         "other_antibody_test_first_positive_date",
         "other_antibody_test_last_negative_date",
     ]
-    df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime", "2019-08-01")
+    df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime")
     df = remove_incorrect_dates(df, date_cols_to_correct, "visit_datetime", "2019-08-01")
 
     df = apply_value_map_multiple_columns(df, col_val_map)
