@@ -891,7 +891,7 @@ def compare(
             compare_df = compare_df.select(*select_columns)
             base_df = base_df.select(*select_columns)
     counts_df, difference_sample_df = get_differences(base_df, compare_df, unique_id_column, num_samples)
-    total = counts_df.select(F.sum(F.col("difference_count"))).select("difference_count").collect()[0][0]
+    total = counts_df.select(F.sum(F.col("difference_count"))).collect()[0][0]
     print(f"     {table_name_to_compare} contained {total} differences to {base_table_name}")  # functional
     update_table(counts_df, counts_df_table_name, "overwrite")
     update_table(difference_sample_df, diff_samples_table_name, "overwrite")
