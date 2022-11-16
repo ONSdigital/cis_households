@@ -40,5 +40,7 @@ def test_get_differences(spark_session):
     )
     output_df_counts, output_df_diffs = get_differences(input_df_base, input_df_compare, "id")
 
-    assert_df_equality(counts_df, output_df_counts, ignore_nullable=True)
-    assert_df_equality(diffs_df, output_df_diffs, ignore_nullable=True)
+    assert_df_equality(
+        counts_df, output_df_counts, ignore_nullable=True, ignore_column_order=True, ignore_row_order=True
+    )
+    assert_df_equality(diffs_df, output_df_diffs, ignore_nullable=True, ignore_column_order=True, ignore_row_order=True)

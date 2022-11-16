@@ -3203,21 +3203,43 @@ def reclassify_work_variables(
 
 
 def get_differences(base_df: DataFrame, compare_df: DataFrame, unique_id_column: str, diff_sample_size: int = 10):
+    window = Window.partitionBy("column_name").orderBy("column_name")
     cols_to_check = [col for col in base_df.columns if col in compare_df.columns and col != unique_id_column]
+
     for col in cols_to_check:
         compare_df = compare_df.withColumnRenamed(col, f"{col}_ref")
 
     df = base_df.join(compare_df, on=unique_id_column, how="left")
 
-    dfs = []
+    diffs_df = df.select(
+        [
+            F.when(F.col(col).eqNullSafe(F.col(f"{col}_ref")), None).otherwise(F.col(unique_id_column)).alias(col)
+            for col in cols_to_check
+        ]
+    )
+    diffs_df = diffs_df.select(
+        F.explode(
+            F.array(
+                [
+                    F.struct(F.lit(col).alias("column_name"), F.col(col).alias(unique_id_column))
+                    for col in diffs_df.columns
+                ]
+            )
+        ).alias("kvs")
+    )
+    diffs_df = (
+        diffs_df.select("kvs.column_name", f"kvs.{unique_id_column}")
+        .filter(F.col(unique_id_column).isNotNull())
+        .withColumn("ROW", F.row_number().over(window))
+        .filter(F.col("ROW") < diff_sample_size)
+    ).drop("ROW")
 
-    for col in cols_to_check:
-        df = df.withColumn(f"{col}_diff", F.when(F.col(col).eqNullSafe(F.col(f"{col}_ref")), 0).otherwise(1))
-        diffs_df = df.filter(F.col(f"{col}_diff") == 1).limit(diff_sample_size)
-        if diffs_df.count() > 0:
-            dfs.append(diffs_df.select(unique_id_column).withColumn("column_name", F.lit(col)))
-
-    counts_df = df.select([F.sum(F.col(f"{c}_diff")).alias(c).cast("integer") for c in cols_to_check])
+    counts_df = df.select(
+        [
+            F.sum(F.when(F.col(c).eqNullSafe(F.col(f"{c}_ref")), 0).otherwise(1)).alias(c).cast("integer")
+            for c in cols_to_check
+        ]
+    )
     counts_df = counts_df.select(
         F.explode(
             F.array(
@@ -3229,4 +3251,4 @@ def get_differences(base_df: DataFrame, compare_df: DataFrame, unique_id_column:
         ).alias("kvs")
     )
     counts_df = counts_df.select("kvs.column_name", "kvs.difference_count")
-    return counts_df, union_multiple_tables(dfs)
+    return counts_df, diffs_df
