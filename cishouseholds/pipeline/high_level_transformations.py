@@ -1315,6 +1315,10 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Submitted": "Completed",
         },
     )
+    df = df.withColumn(
+        "ethnicity",
+        F.when(F.col("ethnicity").isNull(), "Any other ethnic group").otherwise(F.col("ethnicity")),
+    )
     df = derive_had_symptom_last_7days_from_digital(
         df,
         "think_have_covid_symptom_any",
