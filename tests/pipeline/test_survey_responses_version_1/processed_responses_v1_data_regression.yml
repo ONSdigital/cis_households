@@ -1,4 +1,5 @@
 - ability_to_socially_distance_at_work_or_education: 'No'
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: null
   bad_email: false
   been_outside_uk_last_country: 'NO'
@@ -208,6 +209,7 @@
   work_status_v1_raw: Here's looking at you, kid.
   work_status_v2: Here's looking at you, kid.
 - ability_to_socially_distance_at_work_or_education: 'No'
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: null
   been_outside_uk_last_country: 'NO'
@@ -421,6 +423,7 @@
   work_status_v1_raw: Here's looking at you, kid.
   work_status_v2: Here's looking at you, kid.
 - ability_to_socially_distance_at_work_or_education: null
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
   been_outside_uk_last_country: 'YES'
@@ -634,6 +637,7 @@
   work_status_v1_raw: The only thing we have to fear is fear itself.
   work_status_v2: The only thing we have to fear is fear itself.
 - ability_to_socially_distance_at_work_or_education: null
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
   been_outside_uk_last_country: 'NO'
@@ -847,6 +851,7 @@
   work_status_v2: A census taker once tried to test me. I ate his liver with some
     fava beans and a nice Chianti.
 - ability_to_socially_distance_at_work_or_education: 'Yes'
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: null
   bad_email: false
   been_outside_uk_last_country: 'NO'
@@ -1056,6 +1061,7 @@
   work_status_v1_raw: I'm gonna make him an offer he can't refuse.
   work_status_v2: I'm gonna make him an offer he can't refuse.
 - ability_to_socially_distance_at_work_or_education: 'No'
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: false
   been_outside_uk_last_country: 'YES'
@@ -1272,6 +1278,7 @@
   work_status_v2: A census taker once tried to test me. I ate his liver with some
     fava beans and a nice Chianti.
 - ability_to_socially_distance_at_work_or_education: 'No'
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: null
   bad_email: false
   been_outside_uk_last_country: null
@@ -1485,6 +1492,7 @@
   work_status_v1_raw: Here's looking at you, kid.
   work_status_v2: Here's looking at you, kid.
 - ability_to_socially_distance_at_work_or_education: 'Yes'
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: null
   been_outside_uk_last_country: null
@@ -1699,6 +1707,7 @@
   work_status_v2: Mama always said life was like a box of chocolates. You never know
     what you're gonna get.
 - ability_to_socially_distance_at_work_or_education: 'Yes'
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: false
   been_outside_uk_last_country: null
@@ -1907,6 +1916,7 @@
   work_status_v1_raw: Frankly, my dear, I don't give a damn.
   work_status_v2: Frankly, my dear, I don't give a damn.
 - ability_to_socially_distance_at_work_or_education: 'No'
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: false
   been_outside_uk_last_country: 'NO'

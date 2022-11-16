@@ -2,6 +2,7 @@
 from datetime import datetime
 from functools import reduce
 from operator import and_
+from operator import or_
 from typing import List
 
 import pyspark.sql.functions as F
@@ -1191,7 +1192,10 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Other employment sector please specify": "Other occupation sector",
         },
         "work_health_care_area": {
+            "Secondary care for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services?": "Other",
             "Primary care - for example in a GP or dentist": "Primary",
+            "Yes, in primary care, e.g. GP, dentist": "Primary",
             "Secondary care - for example in a hospital": "Secondary",
             "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
         },
@@ -1393,15 +1397,21 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
             "last_suspected_covid_contact_date",
             "think_had_covid_onset_date",
             "think_have_covid_onset_date",
-            "been_outside_uk",
+            "been_outside_uk_latest_date",
             "other_covid_infection_test_first_positive_date",
             "other_covid_infection_test_last_negative_date",
-            "other_antibody_test_first_positive",
+            "other_antibody_test_first_positive_date",
             "other_antibody_test_last_negative_date",
         ]
         if col in df.columns
     ]
-    df = correct_date_ranges(df, date_cols_to_correct, "participant_id", "visit_datetime", "2019-01-01")
+    df = assign_raw_copies(df, date_cols_to_correct, "pdc")
+    df = correct_date_ranges(df, date_cols_to_correct, "participant_id", "visit_datetime", "2019-08-01")
+    df = df.withColumn(
+        "any_date_corrected",
+        F.when(reduce(or_, [~F.col(col).eqNullSafe(F.col(f"{col}_pdc")) for col in date_cols_to_correct]), "Yes"),
+    )
+    df = df.drop(*[f"{col}_pdc" for col in date_cols_to_correct])
     df = assign_column_regex_match(
         df,
         "bad_email",
@@ -1604,7 +1614,7 @@ def create_ever_variable_columns(df: DataFrame) -> DataFrame:
         column_name_to_assign="ever_care_home_worker",
         groupby_column="participant_id",
         reference_columns=["work_social_care", "work_nursing_or_residential_care_home"],
-        count_if=["Yes, care/residential home, resident-facing"],
+        count_if=["Yes", "Yes, care/residential home, resident-facing"],
         true_false_values=["Yes", "No"],
     )
     df = assign_column_given_proportion(
@@ -1739,6 +1749,8 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Secondary care (e.g. hospital)": "Secondary",
             "Other Healthcare (e.g. mental health)": "Other",
             "Other healthcare (e.g. mental health)": "Other",
+            "Participant Would Not/Could Not Answer": None,
+            "Primary care for example in a GP or dentist": "Primary",
         },
         "face_covering_outside_of_home": {
             "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
@@ -2046,6 +2058,14 @@ def union_dependent_cleaning(df):
             "Swab / blood process to distressing": "Swab/blood process too distressing",
             "Do NOT Reinstate": "Do not reinstate",
         },
+        "work_health_care_area": {
+            "Secondary care for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services?": "Other",
+            "Primary care - for example in a GP or dentist": "Primary",
+            "Yes, in primary care, e.g. GP, dentist": "Primary",
+            "Secondary care - for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
+        },
     }
 
     df = apply_value_map_multiple_columns(df, col_val_map)
@@ -2124,15 +2144,6 @@ def union_dependent_derivations(df):
     }
 
     df = replace_sample_barcode(df=df)
-
-    df = conditionally_replace_columns(
-        df,
-        {
-            "swab_sample_barcode": "swab_sample_barcode_combined",
-            "blood_sample_barcode": "blood_sample_barcode_combined",
-        },
-        (F.col("survey_response_dataset_major_version") == 3),
-    )
 
     df = assign_column_from_mapped_list_key(
         df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
