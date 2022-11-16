@@ -108,7 +108,7 @@
   education_in_person_days_per_week: null
   email_address: artiste1919@gsnail.ac.uk
   ethnic_group: White
-  ethnicity: White and Black African
+  ethnicity: White and Black Caribbean
   ethnicity_other: Ports are used to communicate with the external world.
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
@@ -558,7 +558,7 @@
   education_in_person_days_per_week: null
   email_address: balate1925@gsnail.ac.uk
   ethnic_group: Asian or Asian British
-  ethnicity: Indian
+  ethnicity: Any other Mixed/Multiple background
   ethnicity_other: I don't even care.
   ever_smoked_regularly: 'No'
   ever_smoked_regularly_raw: 'No'
@@ -1009,7 +1009,7 @@
   education_in_person_days_per_week: '6'
   email_address: null
   ethnic_group: Other Ethnic Group
-  ethnicity: Caribbean or Black British
+  ethnicity: African
   ethnicity_other: Erlang is known for its designs that are well suited for systems.
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
@@ -1459,7 +1459,7 @@
   education_in_person_days_per_week: '1'
   email_address: coater1966@gsnail.ac.uk
   ethnic_group: Asian or Asian British
-  ethnicity: Any other ethnic group
+  ethnicity: Caribbean or Black British
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
   ever_smoked_regularly: 'Yes'
@@ -1914,7 +1914,7 @@
   education_in_person_days_per_week: '3'
   email_address: null
   ethnic_group: Asian or Asian British
-  ethnicity: Gypsy or Irish Traveller
+  ethnicity: Irish
   ethnicity_other: Its main implementation is the Glasgow Haskell Compiler.
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
@@ -2360,7 +2360,7 @@
   education_in_person_days_per_week: '6'
   email_address: ladybird1985@gsnail.ac.uk
   ethnic_group: White
-  ethnicity: Any other ethnic group
+  ethnicity: Caribbean or Black British
   ethnicity_other: Atoms are used within a program to denote distinguished values.
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
@@ -2810,7 +2810,7 @@
   education_in_person_days_per_week: '2'
   email_address: null
   ethnic_group: Mixed/Multiple Ethnic Groups
-  ethnicity: English| Welsh| Scottish| Northern Irish or British
+  ethnicity: Any other ethnic group
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
   ever_smoked_regularly: null
@@ -3261,7 +3261,7 @@
   education_in_person_days_per_week: null
   email_address: null
   ethnic_group: Black or African or Caribbean or Black British
-  ethnicity: Any other ethnic group
+  ethnicity: Caribbean or Black British
   ethnicity_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
   ever_smoked_regularly: 'Yes'
@@ -3712,7 +3712,7 @@
   education_in_person_days_per_week: null
   email_address: depict1972@gsnail.ac.uk
   ethnic_group: Other Ethnic Group
-  ethnicity: White and Black Caribbean
+  ethnicity: Any other white
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
   ever_smoked_regularly: null
@@ -4168,7 +4168,7 @@
   education_in_person_days_per_week: '2'
   email_address: null
   ethnic_group: Mixed/Multiple Ethnic Groups
-  ethnicity: Caribbean
+  ethnicity: African
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
   ever_smoked_regularly: 'No'
