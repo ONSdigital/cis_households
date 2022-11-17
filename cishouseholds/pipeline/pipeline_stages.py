@@ -247,6 +247,55 @@ def generate_dummy_data(output_directory):
     generate_nims_table(get_full_table_name("cis_nims_20210101"), participant_ids)
 
 
+@register_pipeline_stage("process_soc_deltas")
+def process_soc_deltas(
+    soc_file_pattern: str,
+    source_file_column: str,
+    soc_lookup_table: str,
+    coding_errors_table: str,
+    inconsistencies_resolution_table: str,
+    include_processed=False,
+    include_invalid=False,
+    latest_only=False,
+    start_date=None,
+    end_date=None,
+):
+    """
+    Process soc data and combine result with survey responses data
+    """
+    join_on_columns = ["work_main_job_title", "work_main_job_role"]
+    inconsistencies_resolution_df = extract_from_table(inconsistencies_resolution_table)
+
+    dfs: List[DataFrame] = []
+    file_list = get_files_to_be_processed(
+        resource_path=soc_file_pattern,
+        latest_only=latest_only,
+        start_date=start_date,
+        end_date=end_date,
+        include_processed=include_processed,
+        include_invalid=include_invalid,
+        date_from_filename=False,
+    )
+
+    for file_path in file_list:
+        error_message, df = normalise_schema(file_path, soc_schema, soc_regex_map)
+        if error_message is None:
+            df = assign_filename_column(df, source_file_column)
+            dfs.append(df)
+        else:
+            add_error_file_log_entry(file_path, error_message)  # type: ignore
+            print(error_message)  # functional
+
+    soc_lookup_df = union_multiple_tables(dfs)
+    coding_errors_df, soc_lookup_df = transform_cis_soc_data(
+        soc_lookup_df, inconsistencies_resolution_df, join_on_columns
+    )
+
+    mode = "overwrite" if include_processed else "append"
+    update_table(soc_lookup_df, soc_lookup_table, mode)
+    update_table(coding_errors_df, coding_errors_table, mode)
+
+
 def generate_input_processing_function(
     stage_name,
     dataset_name,
@@ -365,53 +414,22 @@ def generate_input_processing_function(
     return _inner_function
 
 
-@register_pipeline_stage("process_soc_deltas")
-def process_soc_deltas(
-    soc_file_pattern: str,
-    source_file_column: str,
-    soc_lookup_table: str,
-    coding_errors_table: str,
-    inconsistencies_resolution_table: str,
-    include_processed=False,
-    include_invalid=False,
-    latest_only=False,
-    start_date=None,
-    end_date=None,
-):
+@register_pipeline_stage("union_survey_response_files")
+def union_survey_response_files(tables_to_process: List, output_survey_table: str):
     """
-    Process soc data and combine result with survey responses data
+    Union list of tables_to_process, and write to table.
+
+    Parameters
+    ----------
+    tables_to_process
+        input tables for extracting each of the transformed survey responses tables
+    output_survey_table
+        output table name for the combine file of all unioned survey responses
     """
-    join_on_columns = ["work_main_job_title", "work_main_job_role"]
-    inconsistencies_resolution_df = extract_from_table(inconsistencies_resolution_table)
+    df_list = [extract_from_table(table) for table in tables_to_process]
 
-    dfs: List[DataFrame] = []
-    file_list = get_files_to_be_processed(
-        resource_path=soc_file_pattern,
-        latest_only=latest_only,
-        start_date=start_date,
-        end_date=end_date,
-        include_processed=include_processed,
-        include_invalid=include_invalid,
-        date_from_filename=False,
-    )
-
-    for file_path in file_list:
-        error_message, df = normalise_schema(file_path, soc_schema, soc_regex_map)
-        if error_message is None:
-            df = assign_filename_column(df, source_file_column)
-            dfs.append(df)
-        else:
-            add_error_file_log_entry(file_path, error_message)  # type: ignore
-            print(error_message)  # functional
-
-    soc_lookup_df = union_multiple_tables(dfs)
-    coding_errors_df, soc_lookup_df = transform_cis_soc_data(
-        soc_lookup_df, inconsistencies_resolution_df, join_on_columns
-    )
-
-    mode = "overwrite" if include_processed else "append"
-    update_table(soc_lookup_df, soc_lookup_table, mode)
-    update_table(coding_errors_df, coding_errors_table, mode)
+    union_dataframes_to_hive(output_survey_table, df_list)
+    return {"output_survey_table": output_survey_table}
 
 
 @register_pipeline_stage("join_lookup_table")
@@ -490,24 +508,6 @@ def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[st
         update_table(lookup_df, regex_lookup_table, "overwrite")
 
 
-@register_pipeline_stage("union_survey_response_files")
-def union_survey_response_files(tables_to_process: List, output_survey_table: str):
-    """
-    Union list of tables_to_process, and write to table.
-
-    Parameters
-    ----------
-    tables_to_process
-        input tables for extracting each of the transformed survey responses tables
-    output_survey_table
-        output table name for the combine file of all unioned survey responses
-    """
-    df_list = [extract_from_table(table) for table in tables_to_process]
-
-    union_dataframes_to_hive(output_survey_table, df_list)
-    return {"output_survey_table": output_survey_table}
-
-
 @register_pipeline_stage("join_blood_positive_lookup")
 def join_blood_positive_lookup(lookup_table_name: str, input_survey_table: str, output_survey_table: str):
     """
@@ -522,6 +522,115 @@ def join_blood_positive_lookup(lookup_table_name: str, input_survey_table: str, 
     )
     df = df.withColumn("blood_past_positive_flag", F.when(F.col("blood_past_positive").isNull(), 0).otherwise(1))
     update_table(df, output_survey_table, "overwrite")
+    return {"output_survey_table": output_survey_table}
+
+
+@register_pipeline_stage("lookup_based_editing")
+def lookup_based_editing(
+    input_survey_table: str,
+    cohort_lookup_table: str,
+    travel_countries_lookup_table: str,
+    tenure_group_table: str,
+    output_survey_table: str,
+):
+    """
+    Edit columns based on mappings from lookup tables. Often used to correct data quality issues.
+    Requires lookup_tables to exist or be created prior to being called
+
+    Parameters
+    ----------
+    input_survey_table
+    cohort_lookup_table
+        input table name for cohort corrections lookup table
+    travel_countries_lookup_table
+        input table name for travel_countries corrections lookup table
+    tenure_group_table
+        input table name for tenure_group corrections lookup table
+    output_survey_table
+    """
+
+    df = extract_from_table(input_survey_table)
+    cohort_lookup = extract_from_table(cohort_lookup_table)
+    travel_countries_lookup = extract_from_table(travel_countries_lookup_table)
+    tenure_group = extract_from_table(tenure_group_table).select(
+        "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
+    )
+    for lookup_table_name, lookup_df, join_on_column_list in zip(
+        [cohort_lookup_table, travel_countries_lookup_table, tenure_group_table],
+        [cohort_lookup, travel_countries_lookup, tenure_group],
+        [["participant_id", "old_cohort"], ["been_outside_uk_last_country_old"], ["UAC"]],
+    ):
+        check_lookup_table_joined_columns_unique(
+            df=lookup_df, join_column_list=join_on_column_list, name_of_df=lookup_table_name
+        )
+
+    df = transform_from_lookups(df, cohort_lookup, travel_countries_lookup, tenure_group)
+    update_table(df, output_survey_table, write_mode="overwrite")
+    return {"output_survey_table": output_survey_table}
+
+
+@register_pipeline_stage("union_dependent_transformations")
+def execute_union_dependent_transformations(input_survey_table: str, output_survey_table: str):
+    """
+    Transformations that require the union of the different input survey response files.
+    Includes filling forwards or backwards over time and deriving new information over time.
+
+    Parameters
+    ----------
+    input_survey_table
+    output_survey_table
+    """
+    df = extract_from_table(input_survey_table)
+    df = fill_forwards_transformations(df)
+    df = union_dependent_cleaning(df)
+    df = union_dependent_derivations(df)
+    update_table(df, output_survey_table, write_mode="overwrite")
+    return {"output_survey_table": output_survey_table}
+
+
+@register_pipeline_stage("fill_forwards_events")
+def execute_fill_forwards_events(input_survey_table: str, output_survey_table: str):
+    """
+    Separates out the fill_forwards_event implementation of last observation carried forwards (LOCF) logic from STATA code
+
+    Parameters
+    ----------
+    input_survey_table
+    output_survey_table
+    """
+    df = extract_from_table(input_survey_table)
+    df = fill_forward_events_for_key_columns(df)
+    update_table(df, output_survey_table, write_mode="overwrite")
+    return {"output_survey_table": output_survey_table}
+
+
+@register_pipeline_stage("join_geographic_data")
+def join_geographic_data(
+    geographic_table: str,
+    input_survey_table: str,
+    output_survey_table: str,
+    id_column: str,
+):
+    """
+    Join weights file onto survey data by household id.
+
+    Parameters
+    ----------
+    geographic_table
+        input table name for household data with geographic data
+    survey_responses_table
+        input table for individual participant responses
+    geographic_responses_table
+        output table name for joined survey responses and household geographic data
+    id_column
+        column containing id to join the 2 input tables
+    """
+    design_weights_df = extract_from_table(geographic_table)
+    survey_responses_df = extract_from_table(input_survey_table)
+    geographic_survey_df = survey_responses_df.drop("postcode", "region_code").join(
+        design_weights_df, on=id_column, how="left"
+    )
+    update_table(geographic_survey_df, output_survey_table, write_mode="overwrite")
     return {"output_survey_table": output_survey_table}
 
 
@@ -570,176 +679,6 @@ def replace_design_weights(
     return {"output_survey_table": output_survey_table}
 
 
-@register_pipeline_stage("union_dependent_transformations")
-def execute_union_dependent_transformations(input_survey_table: str, output_survey_table: str):
-    """
-    Transformations that require the union of the different input survey response files.
-    Includes filling forwards or backwards over time and deriving new information over time.
-
-    Parameters
-    ----------
-    input_survey_table
-    output_survey_table
-    """
-    df = extract_from_table(input_survey_table)
-    df = fill_forwards_transformations(df)
-    df = union_dependent_cleaning(df)
-    df = union_dependent_derivations(df)
-    update_table(df, output_survey_table, write_mode="overwrite")
-    return {"output_survey_table": output_survey_table}
-
-
-@register_pipeline_stage("fill_forwards_events")
-def execute_fill_forwards_events(input_survey_table: str, output_survey_table: str):
-    """
-    Separates out the fill_forwards_event implementation of last observation carried forwards (LOCF) logic from STATA code
-
-    Parameters
-    ----------
-    input_survey_table
-    output_survey_table
-    """
-    df = extract_from_table(input_survey_table)
-    df = fill_forward_events_for_key_columns(df)
-    update_table(df, output_survey_table, write_mode="overwrite")
-    return {"output_survey_table": output_survey_table}
-
-
-@register_pipeline_stage("validate_survey_responses")
-def validate_survey_responses(
-    input_survey_table: str,
-    duplicate_count_column_name: str,
-    validation_failure_flag_column: str,
-    output_survey_table: str,
-    invalid_survey_responses_table: str,
-    valid_validation_failures_table: str,
-    invalid_validation_failures_table: str,
-    id_column: str,
-):
-    """
-    Populate error column with outcomes of specific validation checks against fully
-    transformed survey dataset.
-
-    Parameters
-    ----------
-    input_survey_table
-    duplicate_count_column_name
-        column name in which to count duplicates of rows within the dataframe
-    validation_failure_flag_column
-        name for error column wherein each of the validation checks results are appended
-    output_survey_table
-        table containing results that passed the error checking process
-    invalid_survey_responses_table
-        table containing results that failed the error checking process
-    valid_validation_failures_table
-        table containing valid failures from the error checking process
-    invalid_validation_failures_table
-        table containing invalid failures from the error checking process
-    id_column
-        string specifying id column in input_survey_table
-    """
-    unioned_survey_responses = extract_from_table(input_survey_table)
-    valid_survey_responses, erroneous_survey_responses = validation_ETL(
-        df=unioned_survey_responses,
-        validation_check_failure_column_name=validation_failure_flag_column,
-        duplicate_count_column_name=duplicate_count_column_name,
-    )
-
-    validation_check_failures_valid_data_df = (
-        (
-            valid_survey_responses.select(id_column, validation_failure_flag_column).withColumn(
-                "validation_check_failures", F.explode(validation_failure_flag_column)
-            )
-        )
-        .withColumn("run_id", F.lit(get_run_id()))
-        .drop(validation_failure_flag_column)
-    )
-
-    validation_check_failures_invalid_data_df = (
-        (
-            erroneous_survey_responses.select(id_column, validation_failure_flag_column).withColumn(
-                "validation_check_failures", F.explode(validation_failure_flag_column)
-            )
-        )
-        .withColumn("run_id", F.lit(get_run_id()))
-        .drop(validation_failure_flag_column)
-    )
-
-    update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
-    update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
-    update_table(valid_survey_responses, output_survey_table, write_mode="overwrite", archive=True)
-    update_table(erroneous_survey_responses, invalid_survey_responses_table, write_mode="overwrite")
-    return {"output_survey_table": output_survey_table}
-
-
-@register_pipeline_stage("lookup_based_editing")
-def lookup_based_editing(
-    input_survey_table: str,
-    cohort_lookup_table: str,
-    travel_countries_lookup_table: str,
-    tenure_group_table: str,
-    output_survey_table: str,
-):
-    """
-    Edit columns based on mappings from lookup tables. Often used to correct data quality issues.
-    Requires lookup_tables to exist or be created prior to being called
-
-    Parameters
-    ----------
-    input_survey_table
-    cohort_lookup_table
-        input table name for cohort corrections lookup table
-    travel_countries_lookup_table
-        input table name for travel_countries corrections lookup table
-    tenure_group_table
-        input table name for tenure_group corrections lookup table
-    output_survey_table
-    """
-
-    df = extract_from_table(input_survey_table)
-    cohort_lookup = extract_from_table(cohort_lookup_table)
-    travel_countries_lookup = extract_from_table(travel_countries_lookup_table)
-    tenure_group = extract_from_table(tenure_group_table).select(
-        "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
-    )
-    for lookup_table_name, lookup_df, join_on_column_list in zip(
-        [cohort_lookup_table, travel_countries_lookup_table, tenure_group_table],
-        [cohort_lookup, travel_countries_lookup, tenure_group],
-        [["participant_id", "old_cohort"], ["been_outside_uk_last_country_old"], ["UAC"]],
-    ):
-        check_lookup_table_joined_columns_unique(
-            df=lookup_df, join_column_list=join_on_column_list, name_of_df=lookup_table_name
-        )
-
-    df = transform_from_lookups(df, cohort_lookup, travel_countries_lookup, tenure_group)
-    update_table(df, output_survey_table, write_mode="overwrite")
-    return {"output_survey_table": output_survey_table}
-
-
-@register_pipeline_stage("join_vaccination_data")
-def join_vaccination_data(participant_records_table, nims_table, vaccination_data_table):
-    """
-    Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.
-
-    Parameters
-    ----------
-    participant_records_table
-        input table containing participant level records to join
-    nims_table
-        nims table containing records to be joined to participant table
-    vaccination_data_table
-        output table name for the joined nims and participant table
-    """
-    participant_df = extract_from_table(participant_records_table)
-    nims_df = extract_from_table(nims_table)
-    nims_df = nims_transformations(nims_df)
-
-    participant_df = participant_df.join(nims_df, on="participant_id", how="left")
-    participant_df = derive_overall_vaccination(participant_df)
-
-    update_table(participant_df, vaccination_data_table, write_mode="overwrite")
-
-
 @register_pipeline_stage("impute_demographic_columns")
 def impute_demographic_columns(input_survey_table: str, imputed_values_table: str, output_survey_table: str):
     """
@@ -772,82 +711,6 @@ def impute_demographic_columns(input_survey_table: str, imputed_values_table: st
 
     update_table(new_imputed_value_lookup, imputed_values_table, "overwrite", archive=True)
     update_table(df_with_imputed_values, output_survey_table, "overwrite")
-    return {"output_survey_table": output_survey_table}
-
-
-@register_pipeline_stage("calculate_household_level_populations")
-def calculate_household_level_populations(
-    address_lookup_table,
-    postcode_lookup_table,
-    lsoa_cis_lookup_table,
-    country_lookup_table,
-    household_level_populations_table,
-):
-    """
-    Calculate counts of households by CIS area 20 and country code 12 geographical groups used in the design weight
-    calculation.
-    Combines several lookup tables to get the necessary geographies linked to households, then sums households by
-    CIS area and country code.
-
-    Parameters
-    ----------
-    address_lookup_table
-        addressbase HIVE table name
-    postcode_lookup_table
-        NSPL postcode lookup HIVE table name to join onto addressbase to get LSOA 11 and country code 12
-    lsoa_cis_lookup_table
-        LSOA 11 to CIS lookup HIVE table name to get CIS area codes
-    country_lookup_table
-        country lookup HIVE table name to get country names from country code 12
-    household_level_populations_table
-        HIVE table to write household level populations to
-    """
-    address_lookup_df = extract_from_table(address_lookup_table).select("unique_property_reference_code", "postcode")
-    postcode_lookup_df = (
-        extract_from_table(postcode_lookup_table)
-        .select("postcode", "lower_super_output_area_code_11", "country_code_12")
-        .distinct()
-    )
-    lsoa_cis_lookup_df = (
-        extract_from_table(lsoa_cis_lookup_table)
-        .select("lower_super_output_area_code_11", "cis_area_code_20")
-        .distinct()
-    )
-    country_lookup_df = extract_from_table(country_lookup_table).select("country_code_12", "country_name_12").distinct()
-
-    household_info_df = household_level_populations(
-        address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df
-    )
-    update_table(household_info_df, household_level_populations_table, write_mode="overwrite")
-
-
-@register_pipeline_stage("join_geographic_data")
-def join_geographic_data(
-    geographic_table: str,
-    input_survey_table: str,
-    output_survey_table: str,
-    id_column: str,
-):
-    """
-    Join weights file onto survey data by household id.
-
-    Parameters
-    ----------
-    geographic_table
-        input table name for household data with geographic data
-    survey_responses_table
-        input table for individual participant responses
-    geographic_responses_table
-        output table name for joined survey responses and household geographic data
-    id_column
-        column containing id to join the 2 input tables
-    """
-    design_weights_df = extract_from_table(geographic_table)
-    survey_responses_df = extract_from_table(input_survey_table)
-    geographic_survey_df = survey_responses_df.drop("postcode", "region_code").join(
-        design_weights_df, on=id_column, how="left"
-    )
-    update_table(geographic_survey_df, output_survey_table, write_mode="overwrite")
     return {"output_survey_table": output_survey_table}
 
 
@@ -923,6 +786,73 @@ def geography_and_imputation_dependent_processing(
     df = reclassify_work_variables(df, spark_session=get_or_create_spark_session(), drop_original_variables=False)
     df = create_formatted_datetime_string_columns(df)
     update_table(df, output_survey_table, write_mode="overwrite")
+    return {"output_survey_table": output_survey_table}
+
+
+@register_pipeline_stage("validate_survey_responses")
+def validate_survey_responses(
+    input_survey_table: str,
+    duplicate_count_column_name: str,
+    validation_failure_flag_column: str,
+    output_survey_table: str,
+    invalid_survey_responses_table: str,
+    valid_validation_failures_table: str,
+    invalid_validation_failures_table: str,
+    id_column: str,
+):
+    """
+    Populate error column with outcomes of specific validation checks against fully
+    transformed survey dataset.
+
+    Parameters
+    ----------
+    input_survey_table
+    duplicate_count_column_name
+        column name in which to count duplicates of rows within the dataframe
+    validation_failure_flag_column
+        name for error column wherein each of the validation checks results are appended
+    output_survey_table
+        table containing results that passed the error checking process
+    invalid_survey_responses_table
+        table containing results that failed the error checking process
+    valid_validation_failures_table
+        table containing valid failures from the error checking process
+    invalid_validation_failures_table
+        table containing invalid failures from the error checking process
+    id_column
+        string specifying id column in input_survey_table
+    """
+    unioned_survey_responses = extract_from_table(input_survey_table)
+    valid_survey_responses, erroneous_survey_responses = validation_ETL(
+        df=unioned_survey_responses,
+        validation_check_failure_column_name=validation_failure_flag_column,
+        duplicate_count_column_name=duplicate_count_column_name,
+    )
+
+    validation_check_failures_valid_data_df = (
+        (
+            valid_survey_responses.select(id_column, validation_failure_flag_column).withColumn(
+                "validation_check_failures", F.explode(validation_failure_flag_column)
+            )
+        )
+        .withColumn("run_id", F.lit(get_run_id()))
+        .drop(validation_failure_flag_column)
+    )
+
+    validation_check_failures_invalid_data_df = (
+        (
+            erroneous_survey_responses.select(id_column, validation_failure_flag_column).withColumn(
+                "validation_check_failures", F.explode(validation_failure_flag_column)
+            )
+        )
+        .withColumn("run_id", F.lit(get_run_id()))
+        .drop(validation_failure_flag_column)
+    )
+
+    update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
+    update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
+    update_table(valid_survey_responses, output_survey_table, write_mode="overwrite", archive=True)
+    update_table(erroneous_survey_responses, invalid_survey_responses_table, write_mode="overwrite")
     return {"output_survey_table": output_survey_table}
 
 
@@ -1040,53 +970,6 @@ def lab_report(input_survey_table: str, swab_report_table: str, blood_report_tab
     update_table(blood_df, blood_report_table, "overwrite")
 
 
-@register_pipeline_stage("record_level_interface")
-def record_level_interface(
-    input_survey_table: str,
-    csv_editing_file: str,
-    unique_id_column: str,
-    unique_id_list: List,
-    output_survey_table: str,
-    filtered_survey_responses_table: str,
-):
-    """
-    This stage does two type of edits in a given table from HIVE given an unique_id column.
-    Either value level editing or filtering editing.
-
-    Parameters
-    ----------
-    survey_responses_table
-        HIVE table containing responses to edit
-    csv_editing_file
-        defines the editing from old values to new values in the HIVE tables
-        Columns expected
-            - id_column_name (optional)
-            - id
-            - dataset_name
-            - target_column
-            - old_value
-            - new_value
-    unique_id_column
-        unique id that will be edited
-    unique_id_list
-        list of ids to be filtered
-    edited_survey_responses_table
-        HIVE table to write edited responses
-    filtered_survey_responses_table
-        HIVE table when they have been filtered out from survey responses
-    """
-    df = extract_from_table(input_survey_table)
-
-    filtered_out_df = df.filter(F.col(unique_id_column).isin(unique_id_list))
-    update_table(filtered_out_df, filtered_survey_responses_table, "overwrite")
-
-    lookup_df = extract_lookup_csv(csv_editing_file, validation_schemas["csv_lookup_schema"])
-    filtered_in_df = df.filter(~F.col(unique_id_column).isin(unique_id_list))
-    edited_df = update_from_lookup_df(filtered_in_df, lookup_df, id_column=unique_id_column)
-    update_table(edited_df, output_survey_table, "overwrite")
-    return {"output_survey_table": output_survey_table}
-
-
 @register_pipeline_stage("tables_to_csv")
 def tables_to_csv(
     outgoing_directory,
@@ -1159,6 +1042,133 @@ def tables_to_csv(
             sep=sep,
         )
     manifest.write_manifest()
+
+
+@register_pipeline_stage("generate_sample")
+def sample_df(
+    table_name, sample_type, cols, cols_to_evaluate, rows_per_file, num_files, output_folder_name, filter_condition=None
+):
+    df = extract_from_table(table_name)
+    if filter_condition is not None:
+        df = df.filter(eval(filter_condition))
+    generate_sample(df, sample_type, cols, cols_to_evaluate, rows_per_file, num_files, output_folder_name)
+
+
+@register_pipeline_stage("join_vaccination_data")
+def join_vaccination_data(participant_records_table, nims_table, vaccination_data_table):
+    """
+    Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.
+
+    Parameters
+    ----------
+    participant_records_table
+        input table containing participant level records to join
+    nims_table
+        nims table containing records to be joined to participant table
+    vaccination_data_table
+        output table name for the joined nims and participant table
+    """
+    participant_df = extract_from_table(participant_records_table)
+    nims_df = extract_from_table(nims_table)
+    nims_df = nims_transformations(nims_df)
+
+    participant_df = participant_df.join(nims_df, on="participant_id", how="left")
+    participant_df = derive_overall_vaccination(participant_df)
+
+    update_table(participant_df, vaccination_data_table, write_mode="overwrite")
+
+
+@register_pipeline_stage("calculate_household_level_populations")
+def calculate_household_level_populations(
+    address_lookup_table,
+    postcode_lookup_table,
+    lsoa_cis_lookup_table,
+    country_lookup_table,
+    household_level_populations_table,
+):
+    """
+    Calculate counts of households by CIS area 20 and country code 12 geographical groups used in the design weight
+    calculation.
+    Combines several lookup tables to get the necessary geographies linked to households, then sums households by
+    CIS area and country code.
+
+    Parameters
+    ----------
+    address_lookup_table
+        addressbase HIVE table name
+    postcode_lookup_table
+        NSPL postcode lookup HIVE table name to join onto addressbase to get LSOA 11 and country code 12
+    lsoa_cis_lookup_table
+        LSOA 11 to CIS lookup HIVE table name to get CIS area codes
+    country_lookup_table
+        country lookup HIVE table name to get country names from country code 12
+    household_level_populations_table
+        HIVE table to write household level populations to
+    """
+    address_lookup_df = extract_from_table(address_lookup_table).select("unique_property_reference_code", "postcode")
+    postcode_lookup_df = (
+        extract_from_table(postcode_lookup_table)
+        .select("postcode", "lower_super_output_area_code_11", "country_code_12")
+        .distinct()
+    )
+    lsoa_cis_lookup_df = (
+        extract_from_table(lsoa_cis_lookup_table)
+        .select("lower_super_output_area_code_11", "cis_area_code_20")
+        .distinct()
+    )
+    country_lookup_df = extract_from_table(country_lookup_table).select("country_code_12", "country_name_12").distinct()
+
+    household_info_df = household_level_populations(
+        address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df
+    )
+    update_table(household_info_df, household_level_populations_table, write_mode="overwrite")
+
+
+@register_pipeline_stage("record_level_interface")
+def record_level_interface(
+    input_survey_table: str,
+    csv_editing_file: str,
+    unique_id_column: str,
+    unique_id_list: List,
+    output_survey_table: str,
+    filtered_survey_responses_table: str,
+):
+    """
+    This stage does two type of edits in a given table from HIVE given an unique_id column.
+    Either value level editing or filtering editing.
+
+    Parameters
+    ----------
+    survey_responses_table
+        HIVE table containing responses to edit
+    csv_editing_file
+        defines the editing from old values to new values in the HIVE tables
+        Columns expected
+            - id_column_name (optional)
+            - id
+            - dataset_name
+            - target_column
+            - old_value
+            - new_value
+    unique_id_column
+        unique id that will be edited
+    unique_id_list
+        list of ids to be filtered
+    edited_survey_responses_table
+        HIVE table to write edited responses
+    filtered_survey_responses_table
+        HIVE table when they have been filtered out from survey responses
+    """
+    df = extract_from_table(input_survey_table)
+
+    filtered_out_df = df.filter(F.col(unique_id_column).isin(unique_id_list))
+    update_table(filtered_out_df, filtered_survey_responses_table, "overwrite")
+
+    lookup_df = extract_lookup_csv(csv_editing_file, validation_schemas["csv_lookup_schema"])
+    filtered_in_df = df.filter(~F.col(unique_id_column).isin(unique_id_list))
+    edited_df = update_from_lookup_df(filtered_in_df, lookup_df, id_column=unique_id_column)
+    update_table(edited_df, output_survey_table, "overwrite")
+    return {"output_survey_table": output_survey_table}
 
 
 @register_pipeline_stage("sample_file_ETL")
@@ -1269,16 +1279,6 @@ def sample_file_ETL(
         tranche_strata_columns,
     )
     update_table(design_weights, design_weight_table, write_mode="overwrite", archive=True)
-
-
-@register_pipeline_stage("generate_sample")
-def sample_df(
-    table_name, sample_type, cols, cols_to_evaluate, rows_per_file, num_files, output_folder_name, filter_condition=None
-):
-    df = extract_from_table(table_name)
-    if filter_condition is not None:
-        df = df.filter(eval(filter_condition))
-    generate_sample(df, sample_type, cols, cols_to_evaluate, rows_per_file, num_files, output_folder_name)
 
 
 @register_pipeline_stage("aggregated_output")
