@@ -1,9 +1,5 @@
 fields:
 - metadata: {}
-  name: participant_id
-  nullable: true
-  type: string
-- metadata: {}
   name: ons_household_id
   nullable: true
   type: string
@@ -205,6 +201,10 @@ fields:
   type: double
 - metadata: {}
   name: person_9_reason_for_not_consenting
+  nullable: true
+  type: string
+- metadata: {}
+  name: participant_id
   nullable: true
   type: string
 - metadata: {}
