@@ -135,6 +135,7 @@ from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.merge import null_safe_join
+from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.healthcare_regex import healthcare_classification
@@ -3221,3 +3222,55 @@ def reclassify_work_variables(
         )
 
     return _df5
+
+
+def get_differences(base_df: DataFrame, compare_df: DataFrame, unique_id_column: str, diff_sample_size: int = 10):
+    window = Window.partitionBy("column_name").orderBy("column_name")
+    cols_to_check = [col for col in base_df.columns if col in compare_df.columns and col != unique_id_column]
+
+    for col in cols_to_check:
+        compare_df = compare_df.withColumnRenamed(col, f"{col}_ref")
+
+    df = base_df.join(compare_df, on=unique_id_column, how="left")
+
+    diffs_df = df.select(
+        [
+            F.when(F.col(col).eqNullSafe(F.col(f"{col}_ref")), None).otherwise(F.col(unique_id_column)).alias(col)
+            for col in cols_to_check
+        ]
+    )
+    diffs_df = diffs_df.select(
+        F.explode(
+            F.array(
+                [
+                    F.struct(F.lit(col).alias("column_name"), F.col(col).alias(unique_id_column))
+                    for col in diffs_df.columns
+                ]
+            )
+        ).alias("kvs")
+    )
+    diffs_df = (
+        diffs_df.select("kvs.column_name", f"kvs.{unique_id_column}")
+        .filter(F.col(unique_id_column).isNotNull())
+        .withColumn("ROW", F.row_number().over(window))
+        .filter(F.col("ROW") < diff_sample_size)
+    ).drop("ROW")
+
+    counts_df = df.select(
+        [
+            F.sum(F.when(F.col(c).eqNullSafe(F.col(f"{c}_ref")), 0).otherwise(1)).alias(c).cast("integer")
+            for c in cols_to_check
+        ]
+    )
+    counts_df = counts_df.select(
+        F.explode(
+            F.array(
+                [
+                    F.struct(F.lit(col).alias("column_name"), F.col(col).alias("difference_count"))
+                    for col in counts_df.columns
+                ]
+            )
+        ).alias("kvs")
+    )
+    counts_df = counts_df.select("kvs.column_name", "kvs.difference_count")
+    return counts_df, diffs_df
