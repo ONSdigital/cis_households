@@ -1096,6 +1096,7 @@ def tables_to_csv(
     sep="|",
     extension=".txt",
     dry_run=False,
+    accept_missing=True,
 ):
     """
     Writes data from an existing HIVE table to csv output, including mapping of column names and values.
@@ -1115,6 +1116,8 @@ def tables_to_csv(
         a dictionary of column to value list maps that where the row cell must contain a value in given list to be output to CSV
     dry_run
         when set to True, will delete files after they are written (for testing). Default is False.
+    accept_missing
+        remove missing columns from map if not in dataframe
     """
     output_datetime = datetime.today()
     output_datetime_str = output_datetime.strftime("%Y%m%d_%H%M%S")
@@ -1127,16 +1130,23 @@ def tables_to_csv(
 
     for table in config_file["create_tables"]:
         df = extract_from_table(table["table_name"])
-        columns_to_select = [element for element in table["column_name_map"].keys()]
-        missing_columns = set(columns_to_select) - set(df.columns)
-        if missing_columns:
-            raise ValueError(f"Columns missing in {table['table_name']}: {missing_columns}")
+        if table["column_name_map"] is not None:
+            if accept_missing:
+                columns_to_select = [element for element in table["column_name_map"].keys() if element in df.columns]
+            else:
+                columns_to_select = [element for element in table["column_name_map"].keys()]
+                missing_columns = set(columns_to_select) - set(df.columns)
+                if missing_columns:
+                    raise ValueError(f"Columns missing in {table['table_name']}: {missing_columns}")
+
+            df = df.select(*columns_to_select)
+
         if len(filter.keys()) > 0:
             filter = {key: val if type(val) == list else [val] for key, val in filter.items()}
             df = df.filter(reduce(and_, [F.col(col).isin(val) for col, val in filter.items()]))
-        df = df.select(*columns_to_select)
-        if category_map_dictionary is not None:
-            df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
+
+        df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
+
         file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
         write_csv_rename(df, file_path, sep, extension)
         file_path = file_path.with_suffix(extension)
