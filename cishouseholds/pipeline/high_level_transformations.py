@@ -94,9 +94,11 @@ from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import conditionally_replace_columns
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import correct_date_ranges
+from cishouseholds.edit import correct_date_ranges_union_dependent
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
+from cishouseholds.edit import remove_incorrect_dates
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import replace_sample_barcode
 from cishouseholds.edit import survey_edit_auto_complete
@@ -1314,6 +1316,10 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Submitted": "Completed",
         },
     )
+    df = df.withColumn(
+        "ethnicity",
+        F.when(F.col("ethnicity").isNull(), "Any other ethnic group").otherwise(F.col("ethnicity")),
+    )
     df = derive_had_symptom_last_7days_from_digital(
         df,
         "think_have_covid_symptom_any",
@@ -1407,7 +1413,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         if col in df.columns
     ]
     df = assign_raw_copies(df, date_cols_to_correct, "pdc")
-    df = correct_date_ranges(df, date_cols_to_correct, "participant_id", "visit_datetime", "2019-08-01")
+    df = correct_date_ranges(df, date_cols_to_correct, "visit_datetime", "2019-08-01")
     df = df.withColumn(
         "any_date_corrected",
         F.when(reduce(or_, [~F.col(col).eqNullSafe(F.col(f"{col}_pdc")) for col in date_cols_to_correct]), "Yes"),
@@ -2068,6 +2074,23 @@ def union_dependent_cleaning(df):
             "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
         },
     }
+    date_cols_to_correct = [
+        col
+        for col in [
+            "last_covid_contact_date",
+            "last_suspected_covid_contact_date",
+            "think_had_covid_onset_date",
+            "think_have_covid_onset_date",
+            "been_outside_uk_latest_date",
+            "other_covid_infection_test_first_positive_date",
+            "other_covid_infection_test_last_negative_date",
+            "other_antibody_test_first_positive_date",
+            "other_antibody_test_last_negative_date",
+        ]
+        if col in df.columns
+    ]
+    df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime")
+    df = remove_incorrect_dates(df, date_cols_to_correct, "visit_datetime", "2019-08-01")
 
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
