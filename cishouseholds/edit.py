@@ -16,6 +16,7 @@ from pyspark.sql import Window
 from cishouseholds.expressions import all_columns_null
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import any_column_null
+from cishouseholds.expressions import count_occurrence_in_row
 from cishouseholds.expressions import set_date_component
 from cishouseholds.expressions import sum_within_row
 
@@ -431,9 +432,9 @@ def update_face_covering_outside_of_home(
     return df
 
 
-def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
+def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: str):
     """
-    Update value to no if symptoms are ongoing
+    Update value to no if count of original 12 symptoms is 0 otherwise set to Yes
 
     Parameters
     ----------
@@ -441,8 +442,22 @@ def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: st
     column_name_to_update
     count_reference_column
     """
+    original_symptoms = [
+        "think_have_covid_symptom_muscle_ache_myalgia",
+        "think_have_covid_symptom_fatigue_weakness",
+        "think_have_covid_symptom_sore_throat",
+        "think_have_covid_symptom_shortness_of_breath",
+        "think_have_covid_symptom_nausea_vomiting",
+        "think_have_covid_symptom_abdominal_pain",
+        "think_have_covid_symptom_diarrhoea",
+        "think_have_covid_symptom_loss_of_smell",
+        "think_have_covid_symptom_loss_of_taste",
+        "think_have_covid_symptom_headache",
+        "think_have_covid_symptom_cough",
+        "think_have_covid_symptom_fever",
+    ]
     df = df.withColumn(
-        column_name_to_update, F.when(F.col(count_reference_column) > 0, "Yes").otherwise(F.col(column_name_to_update))
+        column_name_to_update, F.when(count_occurrence_in_row(original_symptoms, "Yes") > 0, "Yes").otherwise("No")
     )
     return df
 
