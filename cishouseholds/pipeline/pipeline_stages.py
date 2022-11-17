@@ -47,6 +47,7 @@ from cishouseholds.pipeline.high_level_transformations import derive_age_based_c
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forward_events_for_key_columns
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
+from cishouseholds.pipeline.high_level_transformations import get_differences
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
 from cishouseholds.pipeline.high_level_transformations import reclassify_work_variables
@@ -1042,6 +1043,46 @@ def tables_to_csv(
             sep=sep,
         )
     manifest.write_manifest()
+
+
+@register_pipeline_stage("compare_tables")
+def compare(
+    base_table_name: str,
+    table_name_to_compare: str,
+    counts_df_table_name: str,
+    diff_samples_table_name: str,
+    unique_id_column: str = "unique_participant_response_id",
+    num_samples: int = 10,
+    select_columns: List[str] = [],  # type: ignore
+):
+    """
+    Create an output that holds information about differences between 2 tables
+
+    Parameters
+    ----------
+    base_table_name
+    table_name_to_compare
+    counts_df_table_name
+    diff_samples_table_name
+    unique_id_column
+        column containing unique id common to base an compare dataframes
+    num_samples
+        number of examples of each differing row to provide in the output table
+    select_columns
+        optional subset of columns to evaluate
+    """
+    base_df = extract_from_table(base_table_name)
+    compare_df = extract_from_table(table_name_to_compare)
+    if len(select_columns) > 0:
+        if unique_id_column not in select_columns:
+            select_columns = [unique_id_column, *select_columns]
+            compare_df = compare_df.select(*select_columns)
+            base_df = base_df.select(*select_columns)
+    counts_df, difference_sample_df = get_differences(base_df, compare_df, unique_id_column, num_samples)
+    total = counts_df.select(F.sum(F.col("difference_count"))).collect()[0][0]
+    print(f"     {table_name_to_compare} contained {total} differences to {base_table_name}")  # functional
+    update_table(counts_df, counts_df_table_name, "overwrite")
+    update_table(difference_sample_df, diff_samples_table_name, "overwrite")
 
 
 @register_pipeline_stage("generate_sample")
