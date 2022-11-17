@@ -440,7 +440,6 @@ def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: st
     ----------
     df
     column_name_to_update
-    count_reference_column
     """
     original_symptoms = [
         "think_have_covid_symptom_muscle_ache_myalgia",
