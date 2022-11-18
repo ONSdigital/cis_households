@@ -31,6 +31,7 @@ from cishouseholds.hdfs_utils import create_dir
 from cishouseholds.hdfs_utils import isdir
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
+from cishouseholds.impute import fill_forward_only_to_nulls
 from cishouseholds.impute import post_imputation_wrapper
 from cishouseholds.merge import left_join_keep_right
 from cishouseholds.merge import union_dataframes_to_hive
@@ -852,6 +853,18 @@ def geography_and_imputation_dependent_processing(
     #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     # )
     df = reclassify_work_variables(df, spark_session=get_or_create_spark_session(), drop_original_variables=False)
+    df = fill_forward_only_to_nulls(
+        df,
+        id="participant_id",
+        date="visit_datetime",
+        list_fill_forward=[
+            "work_status_v0",
+            "work_status_v1",
+            "work_status_v2",
+            "work_location",
+            "work_not_from_home_days_per_week",
+        ],
+    )
     df = create_formatted_datetime_string_columns(df)
     update_table(df, output_survey_table, write_mode="overwrite")
     return {"output_survey_table": output_survey_table}
