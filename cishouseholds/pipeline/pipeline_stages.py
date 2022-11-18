@@ -104,7 +104,16 @@ def register_pipeline_stage(key):
 @register_pipeline_stage("blind_csv_to_table")
 def blind_csv_to_table(path: str, table_name: str, sep: str = "|"):
     """
-    Convert a single csv file to a HDFS table by inferring a schema
+    Converts a single csv file to a HIVE table by inferring a schema
+
+    Parameters
+    ----------
+    path : str
+        HSFS or local path for csv file
+    table_name : str
+        table name to assign to created HIVE table
+    sep : str, optional
+        separator used in file provided in path, by default "|"
     """
     df = extract_input_data(path, None, sep)
     df = update_table(df, table_name, "overwrite")
@@ -113,7 +122,9 @@ def blind_csv_to_table(path: str, table_name: str, sep: str = "|"):
 @register_pipeline_stage("csv_to_table")
 def csv_to_table(file_operations: list):
     """
-    Convert a list of csv files into HDFS tables. Requires a schema.
+    Converts a list of csv files into HDFS tables. Requires a schema
+
+    Check extract_lookup_csv for parameter documentation.
     """
     for file in file_operations:
         if file["schema"] not in validation_schemas:
@@ -141,8 +152,21 @@ def csv_to_table(file_operations: list):
 
 @register_pipeline_stage("backup_files")
 def backup_files(file_list: List[str], backup_directory: str):
+    # """
+    # Backup a list of files on the local or HDFS file system to a HDFS backup directory.
+    # """
     """
     Backup a list of files on the local or HDFS file system to a HDFS backup directory.
+
+    Parameters
+    ----------
+    file_list : List[str]
+    backup_directory : str
+
+    Raises
+    ------
+    FileNotFoundError
+        if directory cannot be created on HDFS
     """
     storage_dir = (
         backup_directory + "/" + get_config()["storage"]["table_prefix"] + datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -262,7 +286,31 @@ def process_soc_deltas(
     end_date=None,
 ):
     """
-    Process soc data and combine result with survey responses data
+    Process soc data and combine result with survey responses data, requires a inconsistencies_reoslution_table
+    to exist as a HIVE table
+
+    Parameters
+    ----------
+    soc_file_pattern : str
+        HDFS or local file path pattern for relevant soc Batch* files
+    source_file_column : str
+        name to assign to source_file_column
+    soc_lookup_table : str
+        name to assign to output HIVE soc_lookup_table
+    coding_errors_table : str
+        name to assign to output HIVE coding_errors_table
+    inconsistencies_resolution_table : str
+        name of HIVE table containing inconsistencies resolutions
+    include_processed : bool, optional
+        whether to include files recorded as processed in processed_filenames HIVE table, by default False
+    include_invalid : bool, optional
+        whether to include files recorded as invalid in error_file_log HIVE table, by default False
+    latest_only : bool, optional
+        whether to only use the latest file matching the soc_file_pattern, by default False
+    start_date : _type_, optional
+        before which no file matching the soc_file_pattern will be included, by default None
+    end_date : _type_, optional
+        after which no file matching the soc_file_pattern will be included, by default None
     """
     join_on_columns = ["work_main_job_title", "work_main_job_role"]
     inconsistencies_resolution_df = extract_from_table(inconsistencies_resolution_table)
