@@ -2259,6 +2259,7 @@ _welsh_vaccination_type_categories = {
     "O astudiaeth ymchwil/treial": "From a research study/trial",
     "Brechlyn arall, nodwch": "Another vaccine please specify",
     "Ddim yn gwybod pa fath": "I don't know the type",
+    "Brechlyn arall - nodwch": "Another vaccine please specify",
 }
 
 _welsh_lot_little_not_categories = {
