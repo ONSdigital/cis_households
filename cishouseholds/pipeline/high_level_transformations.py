@@ -621,6 +621,7 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
         max_datetime_column_name="participant_completion_window_end_datetime",
         reference_datetime_column_name="swab_sample_received_consolidation_point_datetime",
         default_timestamp="12:00:00",
+        final_fallback_column="participant_completion_window_start_datetime",
     )
     df = update_column_in_time_window(
         df,
