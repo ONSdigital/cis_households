@@ -45,7 +45,6 @@ from cishouseholds.derive import assign_true_if_any
 from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import assign_visit_order
 from cishouseholds.derive import assign_work_health_care
-from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import assign_work_status_group
 from cishouseholds.derive import clean_postcode
@@ -1170,8 +1169,15 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "Another vaccine please specify": "Other / specify",
         "I don't know the type": "Don't know type",
         "Or Another vaccine please specify": "Other / specify",  # changed from "Other /specify"
-        "I do not know the type": "Don't know Type",
-        "Or do you not know which one you had?": "Don't know Type",
+        "I do not know the type": "Don't know type",
+        "Or do you not know which one you had?": "Don't know type",
+        "I don&#39;t know the type": "Don't know type",
+        "I don&amp;#39;t know the type": "Don't know type",
+        "I dont know the type": "Don't know type",
+        "Janssen / Johnson&amp;Johnson": "Janssen/Johnson&Johnson",
+        "Janssen / Johnson&amp;amp;Johnson": "Janssen/Johnson&Johnson",
+        "Oxford also known as AstraZeneca": "Oxford/AstraZeneca",
+        "Pfizer also known as BioNTech": "Pfizer/BioNTech",
     }
     column_editing_map = {
         "participant_survey_status": {"Complete": "Completed"},

@@ -971,7 +971,7 @@
   cis_covid_vaccine_type_4_raw: Sinopharm
   cis_covid_vaccine_type_5: Moderna
   cis_covid_vaccine_type_5_raw: Moderna
-  cis_covid_vaccine_type_6: Don't know Type
+  cis_covid_vaccine_type_6: Don't know type
   cis_covid_vaccine_type_6_raw: I do not know the type
   cis_covid_vaccine_type_other: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
@@ -2309,14 +2309,14 @@
   cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_number_of_doses_raw: null
   cis_covid_vaccine_received: 'No'
-  cis_covid_vaccine_type: Don't know Type
+  cis_covid_vaccine_type: Don't know type
   cis_covid_vaccine_type_1: null
   cis_covid_vaccine_type_1_raw: null
   cis_covid_vaccine_type_2: null
   cis_covid_vaccine_type_2_raw: null
   cis_covid_vaccine_type_3: Valneva
   cis_covid_vaccine_type_3_raw: Valneva
-  cis_covid_vaccine_type_4: Don't know Type
+  cis_covid_vaccine_type_4: Don't know type
   cis_covid_vaccine_type_4_raw: Or do you not know which one you had?
   cis_covid_vaccine_type_5: Novavax
   cis_covid_vaccine_type_5_raw: Novavax
@@ -3212,13 +3212,13 @@
   cis_covid_vaccine_type: Pfizer/BioNTech
   cis_covid_vaccine_type_1: Sputnik
   cis_covid_vaccine_type_1_raw: Sputnik
-  cis_covid_vaccine_type_2: Don't know Type
+  cis_covid_vaccine_type_2: Don't know type
   cis_covid_vaccine_type_2_raw: I do not know the type
-  cis_covid_vaccine_type_3: Don't know Type
+  cis_covid_vaccine_type_3: Don't know type
   cis_covid_vaccine_type_3_raw: Or do you not know which one you had?
   cis_covid_vaccine_type_4: Valneva
   cis_covid_vaccine_type_4_raw: Valneva
-  cis_covid_vaccine_type_5: Don't know Type
+  cis_covid_vaccine_type_5: Don't know type
   cis_covid_vaccine_type_5_raw: I do not know the type
   cis_covid_vaccine_type_6: Other / specify
   cis_covid_vaccine_type_6_raw: Another vaccine please specify
@@ -3672,7 +3672,7 @@
   cis_covid_vaccine_type_3_raw: Pfizer / BioNTech
   cis_covid_vaccine_type_4: Oxford/AstraZeneca
   cis_covid_vaccine_type_4_raw: Oxford / AstraZeneca
-  cis_covid_vaccine_type_5: Don't know Type
+  cis_covid_vaccine_type_5: Don't know type
   cis_covid_vaccine_type_5_raw: I do not know the type
   cis_covid_vaccine_type_6: Novavax
   cis_covid_vaccine_type_6_raw: Novavax
