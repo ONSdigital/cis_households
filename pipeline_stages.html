@@ -170,13 +170,33 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.backup_files">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">backup_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backup_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.backup_files" title="Permalink to this definition">¶</a></dt>
-<dd><p>Backup a list of files on the local or hdfs file system to a hdfs backup directory</p>
+<dd><p>Backup a list of files on the local or HDFS file system to a HDFS backup directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_list</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – </p></li>
+<li><p><strong>backup_directory</strong> (<em>str</em>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – if directory cannot be created on HDFS</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.blind_csv_to_table">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">blind_csv_to_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'|'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.blind_csv_to_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert a single csv file to a HDFS table by inferring a schema</p>
+<dd><p>Converts a single csv file to a HIVE table by inferring a schema</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – HSFS or local path for csv file</p></li>
+<li><p><strong>table_name</strong> (<em>str</em>) – table name to assign to created HIVE table</p></li>
+<li><p><strong>sep</strong> (<em>str</em><em>, </em><em>optional</em>) – separator used in file provided in path, by default “|”</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -221,13 +241,26 @@ CIS area and country code.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.create_regex_lookup">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">create_regex_lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex_lookup_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.create_regex_lookup" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create or update regex lookup table</p>
+<dd><p>Create or update a regex_lookup_table from an input_survey_table which is filtered
+to include only rows with non-null values in join_on_columns.
+If a regex_lookup_table is a parameter and exists then load the filtered df and get distinct value
+combinations for join_on_columns that are not already in the regex_lookup_table, and update the regex_lookup_table;
+otherwise create regex_lookup_table from distinct value combinations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_survey_table</strong> – </p></li>
+<li><p><strong>regex_lookup_table</strong> – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.csv_to_table">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">csv_to_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_operations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.csv_to_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert a list of csv files into HDFS tables. Requires a schema.</p>
+<dd><p>Converts a list of csv files into HDFS tables. Requires a schema</p>
+<p>Check extract_lookup_csv for parameter documentation.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -239,9 +272,11 @@ Use one or more of the optional parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>prefix</strong> – remove all tables with a given table name prefix (see config for current prefix)</p></li>
-<li><p><strong>table_names</strong> – one or more absolute table names to delete (including prefix)</p></li>
-<li><p><strong>pattern</strong> – drop tables where table name matches pattern in SQL format (e.g. “%_responses_%”)</p></li>
+<li><p><strong>prefix</strong> – boolean to remove all tables with current config table prefix</p></li>
+<li><p><strong>table_names</strong> – one or more absolute table names to delete (current config prefix added automatically)</p></li>
+<li><p><strong>pattern</strong> – drop tables where table with the current config prefix and name matches pattern in SQL format (e.g. “%_responses_%”)</p></li>
+<li><p><strong>protected_tables</strong> – list of tables to be protected from any call of this stage</p></li>
+<li><p><strong>drop_protected_tables</strong> – boolean to drop protected tables</p></li>
 </ul>
 </dd>
 </dl>
@@ -254,8 +289,8 @@ Use one or more of the optional parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>survey_response_table</strong> – input table name for table containing the combined survey responses tables</p></li>
-<li><p><strong>fill_forwards_table</strong> – output table name for table with applied fill_forwards_event dependent on complete survey dataset</p></li>
+<li><p><strong>input_survey_table</strong> – </p></li>
+<li><p><strong>output_survey_table</strong> – </p></li>
 </ul>
 </dd>
 </dl>
@@ -269,11 +304,17 @@ Includes filling forwards or backwards over time and deriving new information ov
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>unioned_survey_table</strong> – input table name for table containing the combined survey responses tables</p></li>
-<li><p><strong>transformed_table</strong> – output table name for table with applied transformations dependent on complete survey dataset</p></li>
+<li><p><strong>input_survey_table</strong> – </p></li>
+<li><p><strong>output_survey_table</strong> – </p></li>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.generate_dummy_data">
+<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">generate_dummy_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_directory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.generate_dummy_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates dummy input table data for Voyager 0, 1, 2, CIS-Digital, and CIS-SOC-code schemas</p>
 </dd></dl>
 
 <dl class="py function">
@@ -320,9 +361,9 @@ Note that this stage depends on geography information from the sample files bein
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>survey_responses_table</strong> – name of HIVE table containing survey responses for imputation, containing <cite>key_columns</cite></p></li>
+<li><p><strong>input_survey_table</strong> – </p></li>
 <li><p><strong>imputed_values_table</strong> – name of HIVE table containing previously imputed values by participant</p></li>
-<li><p><strong>survey_responses_imputed_table</strong> – name of HIVE table to write survey responses following imputation</p></li>
+<li><p><strong>output_survey_table</strong> – </p></li>
 </ul>
 </dd>
 </dl>
@@ -353,8 +394,21 @@ Note that this stage depends on geography information from the sample files bein
 <dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.join_lookup_table">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">join_lookup_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lookup_table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unjoinable_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_on_columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['work_main_job_title',</span> <span class="pre">'work_main_job_role']</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.join_lookup_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Join lookup table to survey data handling nulls and assigning
-default values to unjoinable data</p>
+<dd><p>Filters input_survey_table into an unjoinable_df, where all join_on_columns are null, and and applies any
+unjoinable_values to the unjoinable_df.
+Lookup_df is then joined onto the df containing non-null values in join_on_columns
+The df and unjoinable_df are then recombined into an output_survey_table</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_survey_table</strong> – </p></li>
+<li><p><strong>output_survey_table</strong> – </p></li>
+<li><p><strong>lookup_table_name</strong> – </p></li>
+<li><p><strong>unjoinable_values</strong> (<em>dict</em>) – dictionary containing {column_name: value_to_assign} pairs to be added to unjoinable_data</p></li>
+<li><p><strong>join_on_column</strong> (<em>list</em>) – list of columns to join on, defaults to [“work_main_job_title”, “work_main_job_role”]</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -381,14 +435,16 @@ default values to unjoinable data</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.lookup_based_editing">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">lookup_based_editing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cohort_lookup_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">travel_countries_lookup_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tenure_group_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.lookup_based_editing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Edit columns based on mappings from lookup files. Often used to correct data quality issues.</p>
+<dd><p>Edit columns based on mappings from lookup tables. Often used to correct data quality issues.
+Requires lookup_tables to exist or be created prior to being called</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>input_survey_table</strong> – input table name for reference table</p></li>
-<li><p><strong>cohort_lookup_table</strong> – input file path name for cohort corrections lookup table</p></li>
-<li><p><strong>travel_countries_lookup_table</strong> – input file path name for travel_countries corrections lookup table</p></li>
-<li><p><strong>edited_table</strong> – </p></li>
+<li><p><strong>input_survey_table</strong> – </p></li>
+<li><p><strong>cohort_lookup_table</strong> – input table name for cohort corrections lookup table</p></li>
+<li><p><strong>travel_countries_lookup_table</strong> – input table name for travel_countries corrections lookup table</p></li>
+<li><p><strong>tenure_group_table</strong> – input table name for tenure_group corrections lookup table</p></li>
+<li><p><strong>output_survey_table</strong> – </p></li>
 </ul>
 </dd>
 </dl>
@@ -397,7 +453,24 @@ default values to unjoinable data</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.process_soc_deltas">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">process_soc_deltas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">soc_file_pattern</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_file_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">soc_lookup_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coding_errors_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inconsistencies_resolution_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_processed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_invalid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latest_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.process_soc_deltas" title="Permalink to this definition">¶</a></dt>
-<dd><p>Process soc data and combine result with survey responses data</p>
+<dd><p>Process soc data and combine result with survey responses data, requires a inconsistencies_reoslution_table
+to exist as a HIVE table</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>soc_file_pattern</strong> (<em>str</em>) – HDFS or local file path pattern for relevant soc Batch* files</p></li>
+<li><p><strong>source_file_column</strong> (<em>str</em>) – name to assign to source_file_column</p></li>
+<li><p><strong>soc_lookup_table</strong> (<em>str</em>) – name to assign to output HIVE soc_lookup_table</p></li>
+<li><p><strong>coding_errors_table</strong> (<em>str</em>) – name to assign to output HIVE coding_errors_table</p></li>
+<li><p><strong>inconsistencies_resolution_table</strong> (<em>str</em>) – name of HIVE table containing inconsistencies resolutions</p></li>
+<li><p><strong>include_processed</strong> (<em>bool</em><em>, </em><em>optional</em>) – whether to include files recorded as processed in processed_filenames HIVE table, by default False</p></li>
+<li><p><strong>include_invalid</strong> (<em>bool</em><em>, </em><em>optional</em>) – whether to include files recorded as invalid in error_file_log HIVE table, by default False</p></li>
+<li><p><strong>latest_only</strong> (<em>bool</em><em>, </em><em>optional</em>) – whether to only use the latest file matching the soc_file_pattern, by default False</p></li>
+<li><p><strong>start_date</strong> (<em>_type_</em><em>, </em><em>optional</em>) – before which no file matching the soc_file_pattern will be included, by default None</p></li>
+<li><p><strong>end_date</strong> (<em>_type_</em><em>, </em><em>optional</em>) – after which no file matching the soc_file_pattern will be included, by default None</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -442,6 +515,16 @@ Columns expected</p>
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">replace_design_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">design_weight_lookup_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">design_weight_columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.replace_design_weights" title="Permalink to this definition">¶</a></dt>
 <dd><p>Temporary stage to replace design weights by lookup.
 Also makes temporary edits to fix raw data issues in geographies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>design_weight_lookup_table</strong> – </p></li>
+<li><p><strong>input_survey_table</strong> – </p></li>
+<li><p><strong>output_survey_table</strong> – </p></li>
+<li><p><strong>design_weight_columns</strong> (<em>list</em>) – list of columns to be replaced with values from design_weight_lookup_table</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -541,7 +624,7 @@ Optionally also point to an update map to be used for the variable name mapping 
 <dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.union_survey_response_files">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">union_survey_response_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tables_to_process</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.union_survey_response_files" title="Permalink to this definition">¶</a></dt>
-<dd><p>Union survey response for v0, v1 and v2, and write to table.</p>
+<dd><p>Union list of tables_to_process, and write to table.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -560,11 +643,14 @@ transformed survey dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>survey_responses_table</strong> – input table name for fully transformed survey table</p></li>
+<li><p><strong>input_survey_table</strong> – </p></li>
 <li><p><strong>duplicate_count_column_name</strong> – column name in which to count duplicates of rows within the dataframe</p></li>
 <li><p><strong>validation_failure_flag_column</strong> – name for error column wherein each of the validation checks results are appended</p></li>
-<li><p><strong>valid_survey_responses_table</strong> – table containing results that passed the error checking process</p></li>
+<li><p><strong>output_survey_table</strong> – table containing results that passed the error checking process</p></li>
 <li><p><strong>invalid_survey_responses_table</strong> – table containing results that failed the error checking process</p></li>
+<li><p><strong>valid_validation_failures_table</strong> – table containing valid failures from the error checking process</p></li>
+<li><p><strong>invalid_validation_failures_table</strong> – table containing invalid failures from the error checking process</p></li>
+<li><p><strong>id_column</strong> – string specifying id column in input_survey_table</p></li>
 </ul>
 </dd>
 </dl>
