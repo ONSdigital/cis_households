@@ -1,4 +1,5 @@
 - ability_to_socially_distance_at_work_or_education: 'No'
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: null
   bad_email: false
   been_outside_uk_last_country: 'NO'
@@ -62,7 +63,7 @@
   no_email_address: 0.0
   ons_household_id: 021263322966
   other_antibody_test: 'No'
-  other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
+  other_antibody_test_first_positive_date: '2021-12-06 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-03 00:00:00.000000'
   other_antibody_test_location: I'm gonna make him an offer he can't refuse.
   other_antibody_test_results: Negative
@@ -208,6 +209,7 @@
   work_status_v1_raw: Here's looking at you, kid.
   work_status_v2: Here's looking at you, kid.
 - ability_to_socially_distance_at_work_or_education: 'No'
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: null
   been_outside_uk_last_country: 'NO'
@@ -272,7 +274,7 @@
   no_email_address: 1.0
   ons_household_id: '919192147365'
   other_antibody_test: 'No'
-  other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
+  other_antibody_test_first_positive_date: '2021-12-04 00:00:00.000000'
   other_antibody_test_last_negative_date: '2021-12-03 00:00:00.000000'
   other_antibody_test_location: You're gonna need a bigger boat.
   other_antibody_test_results: Negative
@@ -421,6 +423,7 @@
   work_status_v1_raw: Here's looking at you, kid.
   work_status_v2: Here's looking at you, kid.
 - ability_to_socially_distance_at_work_or_education: null
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
   been_outside_uk_last_country: 'YES'
@@ -634,6 +637,7 @@
   work_status_v1_raw: The only thing we have to fear is fear itself.
   work_status_v2: The only thing we have to fear is fear itself.
 - ability_to_socially_distance_at_work_or_education: null
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
   been_outside_uk_last_country: 'NO'
@@ -698,7 +702,7 @@
   no_email_address: 0.0
   ons_household_id: '876960826911'
   other_antibody_test: 'No'
-  other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
+  other_antibody_test_first_positive_date: '2021-12-04 00:00:00.000000'
   other_antibody_test_last_negative_date: '2021-12-07 00:00:00.000000'
   other_antibody_test_location: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
@@ -847,6 +851,7 @@
   work_status_v2: A census taker once tried to test me. I ate his liver with some
     fava beans and a nice Chianti.
 - ability_to_socially_distance_at_work_or_education: 'Yes'
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: null
   bad_email: false
   been_outside_uk_last_country: 'NO'
@@ -1056,6 +1061,7 @@
   work_status_v1_raw: I'm gonna make him an offer he can't refuse.
   work_status_v2: I'm gonna make him an offer he can't refuse.
 - ability_to_socially_distance_at_work_or_education: 'No'
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: false
   been_outside_uk_last_country: 'YES'
@@ -1272,6 +1278,7 @@
   work_status_v2: A census taker once tried to test me. I ate his liver with some
     fava beans and a nice Chianti.
 - ability_to_socially_distance_at_work_or_education: 'No'
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: null
   bad_email: false
   been_outside_uk_last_country: null
@@ -1485,6 +1492,7 @@
   work_status_v1_raw: Here's looking at you, kid.
   work_status_v2: Here's looking at you, kid.
 - ability_to_socially_distance_at_work_or_education: 'Yes'
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: null
   been_outside_uk_last_country: null
@@ -1549,7 +1557,7 @@
   no_email_address: 0.0
   ons_household_id: '890407714528'
   other_antibody_test: null
-  other_antibody_test_first_positive_date: '2022-01-08 00:00:00.000000'
+  other_antibody_test_first_positive_date: '2021-12-08 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-01 00:00:00.000000'
   other_antibody_test_location: The only thing we have to fear is fear itself.
   other_antibody_test_results: Negative
@@ -1699,6 +1707,7 @@
   work_status_v2: Mama always said life was like a box of chocolates. You never know
     what you're gonna get.
 - ability_to_socially_distance_at_work_or_education: 'Yes'
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: false
   been_outside_uk_last_country: null
@@ -1761,7 +1770,7 @@
   no_email_address: 1.0
   ons_household_id: '456442497105'
   other_antibody_test: null
-  other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
+  other_antibody_test_first_positive_date: '2021-12-06 00:00:00.000000'
   other_antibody_test_last_negative_date: '2021-12-08 00:00:00.000000'
   other_antibody_test_location: Those who refuse to learn from history are condemned
     to repeat it.
@@ -1907,6 +1916,7 @@
   work_status_v1_raw: Frankly, my dear, I don't give a damn.
   work_status_v2: Frankly, my dear, I don't give a damn.
 - ability_to_socially_distance_at_work_or_education: 'No'
+  any_date_corrected: null
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: false
   been_outside_uk_last_country: 'NO'

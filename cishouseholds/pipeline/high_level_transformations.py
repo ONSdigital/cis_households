@@ -2,6 +2,7 @@
 from datetime import datetime
 from functools import reduce
 from operator import and_
+from operator import or_
 from typing import List
 
 import pyspark.sql.functions as F
@@ -93,9 +94,11 @@ from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import conditionally_replace_columns
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import correct_date_ranges
+from cishouseholds.edit import correct_date_ranges_union_dependent
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
+from cishouseholds.edit import remove_incorrect_dates
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import replace_sample_barcode
 from cishouseholds.edit import survey_edit_auto_complete
@@ -132,6 +135,7 @@ from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.merge import null_safe_join
+from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.healthcare_regex import healthcare_classification
@@ -1312,6 +1316,10 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Submitted": "Completed",
         },
     )
+    df = df.withColumn(
+        "ethnicity",
+        F.when(F.col("ethnicity").isNull(), "Any other ethnic group").otherwise(F.col("ethnicity")),
+    )
     df = derive_had_symptom_last_7days_from_digital(
         df,
         "think_have_covid_symptom_any",
@@ -1396,15 +1404,21 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
             "last_suspected_covid_contact_date",
             "think_had_covid_onset_date",
             "think_have_covid_onset_date",
-            "been_outside_uk",
+            "been_outside_uk_latest_date",
             "other_covid_infection_test_first_positive_date",
             "other_covid_infection_test_last_negative_date",
-            "other_antibody_test_first_positive",
+            "other_antibody_test_first_positive_date",
             "other_antibody_test_last_negative_date",
         ]
         if col in df.columns
     ]
-    df = correct_date_ranges(df, date_cols_to_correct, "participant_id", "visit_datetime", "2019-01-01")
+    df = assign_raw_copies(df, date_cols_to_correct, "pdc")
+    df = correct_date_ranges(df, date_cols_to_correct, "visit_datetime", "2019-08-01")
+    df = df.withColumn(
+        "any_date_corrected",
+        F.when(reduce(or_, [~F.col(col).eqNullSafe(F.col(f"{col}_pdc")) for col in date_cols_to_correct]), "Yes"),
+    )
+    df = df.drop(*[f"{col}_pdc" for col in date_cols_to_correct])
     df = assign_column_regex_match(
         df,
         "bad_email",
@@ -1607,7 +1621,7 @@ def create_ever_variable_columns(df: DataFrame) -> DataFrame:
         column_name_to_assign="ever_care_home_worker",
         groupby_column="participant_id",
         reference_columns=["work_social_care", "work_nursing_or_residential_care_home"],
-        count_if=["Yes, care/residential home, resident-facing"],
+        count_if=["Yes", "Yes, care/residential home, resident-facing"],
         true_false_values=["Yes", "No"],
     )
     df = assign_column_given_proportion(
@@ -2060,6 +2074,23 @@ def union_dependent_cleaning(df):
             "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
         },
     }
+    date_cols_to_correct = [
+        col
+        for col in [
+            "last_covid_contact_date",
+            "last_suspected_covid_contact_date",
+            "think_had_covid_onset_date",
+            "think_have_covid_onset_date",
+            "been_outside_uk_latest_date",
+            "other_covid_infection_test_first_positive_date",
+            "other_covid_infection_test_last_negative_date",
+            "other_antibody_test_first_positive_date",
+            "other_antibody_test_last_negative_date",
+        ]
+        if col in df.columns
+    ]
+    df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime")
+    df = remove_incorrect_dates(df, date_cols_to_correct, "visit_datetime", "2019-08-01")
 
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
@@ -2137,15 +2168,6 @@ def union_dependent_derivations(df):
     }
 
     df = replace_sample_barcode(df=df)
-
-    df = conditionally_replace_columns(
-        df,
-        {
-            "swab_sample_barcode": "swab_sample_barcode_combined",
-            "blood_sample_barcode": "blood_sample_barcode_combined",
-        },
-        (F.col("survey_response_dataset_major_version") == 3),
-    )
 
     df = assign_column_from_mapped_list_key(
         df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
@@ -3201,3 +3223,55 @@ def reclassify_work_variables(
         )
 
     return _df5
+
+
+def get_differences(base_df: DataFrame, compare_df: DataFrame, unique_id_column: str, diff_sample_size: int = 10):
+    window = Window.partitionBy("column_name").orderBy("column_name")
+    cols_to_check = [col for col in base_df.columns if col in compare_df.columns and col != unique_id_column]
+
+    for col in cols_to_check:
+        compare_df = compare_df.withColumnRenamed(col, f"{col}_ref")
+
+    df = base_df.join(compare_df, on=unique_id_column, how="left")
+
+    diffs_df = df.select(
+        [
+            F.when(F.col(col).eqNullSafe(F.col(f"{col}_ref")), None).otherwise(F.col(unique_id_column)).alias(col)
+            for col in cols_to_check
+        ]
+    )
+    diffs_df = diffs_df.select(
+        F.explode(
+            F.array(
+                [
+                    F.struct(F.lit(col).alias("column_name"), F.col(col).alias(unique_id_column))
+                    for col in diffs_df.columns
+                ]
+            )
+        ).alias("kvs")
+    )
+    diffs_df = (
+        diffs_df.select("kvs.column_name", f"kvs.{unique_id_column}")
+        .filter(F.col(unique_id_column).isNotNull())
+        .withColumn("ROW", F.row_number().over(window))
+        .filter(F.col("ROW") < diff_sample_size)
+    ).drop("ROW")
+
+    counts_df = df.select(
+        [
+            F.sum(F.when(F.col(c).eqNullSafe(F.col(f"{c}_ref")), 0).otherwise(1)).alias(c).cast("integer")
+            for c in cols_to_check
+        ]
+    )
+    counts_df = counts_df.select(
+        F.explode(
+            F.array(
+                [
+                    F.struct(F.lit(col).alias("column_name"), F.col(col).alias("difference_count"))
+                    for col in counts_df.columns
+                ]
+            )
+        ).alias("kvs")
+    )
+    counts_df = counts_df.select("kvs.column_name", "kvs.difference_count")
+    return counts_df, diffs_df

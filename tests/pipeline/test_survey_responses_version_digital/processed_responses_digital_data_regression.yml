@@ -6,6 +6,7 @@
     works, he also wrote serious, sombre and religious pieces beginning in the 1930s.
   allocated_swab_barcode_not_used_reason: She spent her earliest years reading classic
     literature, and writing poetry.
+  any_date_corrected: 'Yes'
   bad_email: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: India
@@ -107,7 +108,7 @@
   education_in_person_days_per_week: null
   email_address: artiste1919@gsnail.ac.uk
   ethnic_group: White
-  ethnicity: White and Black African
+  ethnicity: White and Black Caribbean
   ethnicity_other: Ports are used to communicate with the external world.
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
@@ -160,7 +161,7 @@
   infant_age_months_7: null
   infant_age_months_8: 56.0
   language_preference: English
-  last_covid_contact_date: '2022-01-03 00:00:00.000000'
+  last_covid_contact_date: '2021-12-03 00:00:00.000000'
   last_covid_contact_type: Living in your own home
   last_covid_contact_type_raw: Someone I live with
   last_name: Romero
@@ -183,8 +184,8 @@
   other_antibody_test_results_raw: One or more tests were negative for antibodies
     and none were positive
   other_covid_infection_test: null
-  other_covid_infection_test_first_positive_date: '2022-01-08 00:00:00.000000'
-  other_covid_infection_test_last_negative_date: '2022-01-04 00:00:00.000000'
+  other_covid_infection_test_first_positive_date: '2021-12-08 00:00:00.000000'
+  other_covid_infection_test_last_negative_date: '2021-12-04 00:00:00.000000'
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
@@ -450,6 +451,7 @@
   allocated_blood_barcode_not_used_reason: Make me a sandwich.
   allocated_swab_barcode_not_used_reason: Erlang is a general-purpose, concurrent,
     functional programming language.
+  any_date_corrected: 'Yes'
   bad_email: false
   been_outside_uk: null
   been_outside_uk_last_country: Congo
@@ -546,8 +548,8 @@
   currently_smokes_or_vapes_description: Hookah or shisha pipes
   currently_smokes_or_vapes_raw: Prefer not to say
   date_of_birth: '1982-08-08 00:00:00.000000'
-  days_since_think_had_covid: -1.0
-  days_since_think_had_covid_group: null
+  days_since_think_had_covid: 30.0
+  days_since_think_had_covid_group: 29-60
   digital_communication_preference: Email
   digital_entry_pack_sent_datetime: '2021-06-21 16:25:43.000000'
   digital_entry_pack_status: Ports are used to communicate with the external world.
@@ -556,7 +558,7 @@
   education_in_person_days_per_week: null
   email_address: balate1925@gsnail.ac.uk
   ethnic_group: Asian or Asian British
-  ethnicity: Indian
+  ethnicity: Any other Mixed/Multiple background
   ethnicity_other: I don't even care.
   ever_smoked_regularly: 'No'
   ever_smoked_regularly_raw: 'No'
@@ -609,11 +611,11 @@
   infant_age_months_7: null
   infant_age_months_8: null
   language_preference: English
-  last_covid_contact_date: '2022-01-02 00:00:00.000000'
+  last_covid_contact_date: '2021-12-02 00:00:00.000000'
   last_covid_contact_type: null
   last_covid_contact_type_raw: null
   last_name: Meyers
-  last_suspected_covid_contact_date: '2022-01-09 00:00:00.000000'
+  last_suspected_covid_contact_date: '2021-12-09 00:00:00.000000'
   last_suspected_covid_contact_type: Someone you do not live with
   last_suspected_covid_contact_type_raw: Someone you do not live with
   long_covid_symptoms: think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_diarrhoea;think_have_long_covid_symptom_loss_of_taste;think_have_long_covid_symptom_cough;think_have_long_covid_symptom_loss_of_appetite;think_have_long_covid_symptom_runny_nose_or_sneezing
@@ -632,7 +634,7 @@
   other_antibody_test_results_raw: One or more tests were positive for antibodies
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: null
-  other_covid_infection_test_last_negative_date: '2022-01-09 00:00:00.000000'
+  other_covid_infection_test_last_negative_date: '2021-12-09 00:00:00.000000'
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
@@ -762,7 +764,7 @@
   think_had_covid_any_symptoms: 'Yes'
   think_had_covid_any_symptoms_raw: 'Yes'
   think_had_covid_contacted_nhs: 'Yes'
-  think_had_covid_onset_date: '2022-01-02 00:00:00.000000'
+  think_had_covid_onset_date: '2021-12-02 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'Yes'
   think_had_covid_symptom_anxiety: null
   think_had_covid_symptom_chest_pain: null
@@ -788,7 +790,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: null
   think_had_covid_which_symptoms: ''
   think_have_covid: null
-  think_have_covid_onset_date: '2022-01-06 00:00:00.000000'
+  think_have_covid_onset_date: '2021-12-06 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: 'No'
   think_have_covid_symptom_any: 'Yes'
@@ -902,6 +904,7 @@
     in constant time.
   allocated_swab_barcode_not_used_reason: Atoms are used within a program to denote
     distinguished values.
+  any_date_corrected: 'Yes'
   bad_email: null
   been_outside_uk: null
   been_outside_uk_last_country: Philippines
@@ -1006,7 +1009,7 @@
   education_in_person_days_per_week: '6'
   email_address: null
   ethnic_group: Other Ethnic Group
-  ethnicity: Caribbean or Black British
+  ethnicity: African
   ethnicity_other: Erlang is known for its designs that are well suited for systems.
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
@@ -1060,7 +1063,7 @@
   infant_age_months_7: 24.0
   infant_age_months_8: null
   language_preference: Welsh
-  last_covid_contact_date: '2022-01-07 00:00:00.000000'
+  last_covid_contact_date: '2021-12-07 00:00:00.000000'
   last_covid_contact_type: null
   last_covid_contact_type_raw: null
   last_name: Hunt
@@ -1084,7 +1087,7 @@
     and none were positive
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: null
-  other_covid_infection_test_last_negative_date: '2022-01-07 00:00:00.000000'
+  other_covid_infection_test_last_negative_date: '2021-12-07 00:00:00.000000'
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
@@ -1240,7 +1243,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'No'
   think_had_covid_which_symptoms: ''
   think_have_covid: null
-  think_have_covid_onset_date: '2022-01-06 00:00:00.000000'
+  think_have_covid_onset_date: '2021-12-06 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: 'No'
   think_have_covid_symptom_any: 'Yes'
@@ -1353,6 +1356,7 @@
     Haskell Compiler.
   allocated_swab_barcode_not_used_reason: The Galactic Empire is nearing completion
     of the Death Star, a space station with the power to destroy entire planets.
+  any_date_corrected: 'Yes'
   bad_email: false
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Zimbabwe
@@ -1445,8 +1449,8 @@
   currently_smokes_or_vapes_description: Vape or E-cigarettes
   currently_smokes_or_vapes_raw: 'Yes'
   date_of_birth: '2012-05-22 00:00:00.000000'
-  days_since_think_had_covid: -2.0
-  days_since_think_had_covid_group: null
+  days_since_think_had_covid: 29.0
+  days_since_think_had_covid_group: 29-60
   digital_communication_preference: Email
   digital_entry_pack_sent_datetime: '2021-09-27 00:19:18.000000'
   digital_entry_pack_status: Make me a sandwich.
@@ -1455,7 +1459,7 @@
   education_in_person_days_per_week: '1'
   email_address: coater1966@gsnail.ac.uk
   ethnic_group: Asian or Asian British
-  ethnicity: Any other ethnic group
+  ethnicity: Caribbean or Black British
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
   ever_smoked_regularly: 'Yes'
@@ -1665,7 +1669,7 @@
   think_had_covid_any_symptoms: 'No'
   think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: null
-  think_had_covid_onset_date: '2022-01-08 00:00:00.000000'
+  think_had_covid_onset_date: '2021-12-08 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'Yes'
   think_had_covid_symptom_anxiety: 'Yes'
   think_had_covid_symptom_chest_pain: 'Yes'
@@ -1804,6 +1808,7 @@
   allocated_blood_barcode_not_used_reason: Do you have any idea why this is not working?
   allocated_swab_barcode_not_used_reason: Type classes first appeared in the Haskell
     programming language.
+  any_date_corrected: 'Yes'
   bad_email: null
   been_outside_uk: null
   been_outside_uk_last_country: Israel
@@ -1899,8 +1904,8 @@
   currently_smokes_or_vapes_description: Cigarettes
   currently_smokes_or_vapes_raw: 'No'
   date_of_birth: '2020-02-01 00:00:00.000000'
-  days_since_think_had_covid: -5.0
-  days_since_think_had_covid_group: null
+  days_since_think_had_covid: 26.0
+  days_since_think_had_covid_group: 15-28
   digital_communication_preference: null
   digital_entry_pack_sent_datetime: '2020-09-20 00:35:12.000000'
   digital_entry_pack_status: I don't even care.
@@ -1909,7 +1914,7 @@
   education_in_person_days_per_week: '3'
   email_address: null
   ethnic_group: Asian or Asian British
-  ethnicity: Gypsy or Irish Traveller
+  ethnicity: Irish
   ethnicity_other: Its main implementation is the Glasgow Haskell Compiler.
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
@@ -1966,7 +1971,7 @@
   last_covid_contact_type: null
   last_covid_contact_type_raw: null
   last_name: Day
-  last_suspected_covid_contact_date: '2022-01-06 00:00:00.000000'
+  last_suspected_covid_contact_date: '2021-12-06 00:00:00.000000'
   last_suspected_covid_contact_type: null
   last_suspected_covid_contact_type_raw: null
   long_covid_symptoms: think_have_long_covid_symptom_diarrhoea;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_more_trouble_sleeping;think_have_long_covid_symptom_difficulty_concentrating
@@ -1984,7 +1989,7 @@
   other_antibody_test_results: null
   other_antibody_test_results_raw: null
   other_covid_infection_test: 'Yes'
-  other_covid_infection_test_first_positive_date: '2022-01-05 00:00:00.000000'
+  other_covid_infection_test_first_positive_date: '2021-12-05 00:00:00.000000'
   other_covid_infection_test_last_negative_date: '2022-01-03 00:00:00.000000'
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
@@ -2114,7 +2119,7 @@
   think_had_covid_any_symptoms: null
   think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'Yes'
-  think_had_covid_onset_date: '2022-01-09 00:00:00.000000'
+  think_had_covid_onset_date: '2021-12-09 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'No'
   think_had_covid_symptom_anxiety: 'Yes'
   think_had_covid_symptom_chest_pain: 'No'
@@ -2249,6 +2254,7 @@
     alphanumeric characters, the first character being lowercase.
   allocated_swab_barcode_not_used_reason: Its main implementation is the Glasgow Haskell
     Compiler.
+  any_date_corrected: 'Yes'
   bad_email: false
   been_outside_uk: null
   been_outside_uk_last_country: Oman
@@ -2354,7 +2360,7 @@
   education_in_person_days_per_week: '6'
   email_address: ladybird1985@gsnail.ac.uk
   ethnic_group: White
-  ethnicity: Any other ethnic group
+  ethnicity: Caribbean or Black British
   ethnicity_other: Atoms are used within a program to denote distinguished values.
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
@@ -2412,7 +2418,7 @@
   last_covid_contact_type: null
   last_covid_contact_type_raw: null
   last_name: Bolton
-  last_suspected_covid_contact_date: '2022-01-07 00:00:00.000000'
+  last_suspected_covid_contact_date: '2021-12-07 00:00:00.000000'
   last_suspected_covid_contact_type: Outside your home
   last_suspected_covid_contact_type_raw: Someone I do not live with
   long_covid_symptoms: think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_cough;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_low_mood;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_noisy_breathing
@@ -2431,7 +2437,7 @@
   other_antibody_test_results_raw: One or more tests were negative for antibodies
     and none were positive
   other_covid_infection_test: 'Yes'
-  other_covid_infection_test_first_positive_date: '2022-01-05 00:00:00.000000'
+  other_covid_infection_test_first_positive_date: '2021-12-05 00:00:00.000000'
   other_covid_infection_test_last_negative_date: '2022-01-01 00:00:00.000000'
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
@@ -2697,6 +2703,7 @@
     external world.
   allocated_swab_barcode_not_used_reason: Ports are created with the built-in function
     open_port.
+  any_date_corrected: 'Yes'
   bad_email: null
   been_outside_uk: 'No'
   been_outside_uk_last_country: Dominican Republic
@@ -2803,7 +2810,7 @@
   education_in_person_days_per_week: '2'
   email_address: null
   ethnic_group: Mixed/Multiple Ethnic Groups
-  ethnicity: English| Welsh| Scottish| Northern Irish or British
+  ethnicity: Any other ethnic group
   ethnicity_other: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
   ever_smoked_regularly: null
@@ -2857,7 +2864,7 @@
   infant_age_months_7: null
   infant_age_months_8: null
   language_preference: null
-  last_covid_contact_date: '2022-01-05 00:00:00.000000'
+  last_covid_contact_date: '2021-12-05 00:00:00.000000'
   last_covid_contact_type: Living in your own home
   last_covid_contact_type_raw: Someone I live with
   last_name: Gross
@@ -2880,7 +2887,7 @@
   other_antibody_test_results_raw: Waiting for all results
   other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: '2022-01-04 00:00:00.000000'
-  other_covid_infection_test_last_negative_date: '2022-01-06 00:00:00.000000'
+  other_covid_infection_test_last_negative_date: '2021-12-06 00:00:00.000000'
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
@@ -3034,7 +3041,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'No'
   think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
-  think_have_covid_onset_date: '2022-01-07 00:00:00.000000'
+  think_have_covid_onset_date: '2021-12-07 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_anxiety: 'Yes'
   think_have_covid_symptom_any: 'Yes'
@@ -3147,6 +3154,7 @@
     basis
   allocated_blood_barcode_not_used_reason: Where are my pants?
   allocated_swab_barcode_not_used_reason: I don't even care.
+  any_date_corrected: 'Yes'
   bad_email: null
   been_outside_uk: 'No'
   been_outside_uk_last_country: Malta
@@ -3253,7 +3261,7 @@
   education_in_person_days_per_week: null
   email_address: null
   ethnic_group: Black or African or Caribbean or Black British
-  ethnicity: Any other ethnic group
+  ethnicity: Caribbean or Black British
   ethnicity_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
   ever_smoked_regularly: 'Yes'
@@ -3323,14 +3331,14 @@
   opted_out_of_next_window: null
   opted_out_of_next_window_datetime: '2022-01-02 15:49:21.000000'
   other_antibody_test: 'No'
-  other_antibody_test_first_positive_date: '2022-01-02 00:00:00.000000'
+  other_antibody_test_first_positive_date: '2021-12-02 00:00:00.000000'
   other_antibody_test_last_negative_date: '2021-12-02 00:00:00.000000'
   other_antibody_test_negative_date: null
   other_antibody_test_positive_date: null
   other_antibody_test_results: Waiting for all results
   other_antibody_test_results_raw: Waiting for all results
   other_covid_infection_test: null
-  other_covid_infection_test_first_positive_date: '2022-01-02 00:00:00.000000'
+  other_covid_infection_test_first_positive_date: '2021-12-02 00:00:00.000000'
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
@@ -3485,7 +3493,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
-  think_have_covid_onset_date: '2022-01-04 00:00:00.000000'
+  think_have_covid_onset_date: '2021-12-04 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_any: 'Yes'
@@ -3600,6 +3608,7 @@
     works, he also wrote serious, sombre and religious pieces beginning in the 1930s.
   allocated_swab_barcode_not_used_reason: Haskell features a type system with type
     inference and lazy evaluation.
+  any_date_corrected: 'Yes'
   bad_email: false
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Bangladesh
@@ -3703,7 +3712,7 @@
   education_in_person_days_per_week: null
   email_address: depict1972@gsnail.ac.uk
   ethnic_group: Other Ethnic Group
-  ethnicity: White and Black Caribbean
+  ethnicity: Any other white
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
   ever_smoked_regularly: null
@@ -3762,7 +3771,7 @@
   last_covid_contact_type: Outside your home
   last_covid_contact_type_raw: Someone I do not live with
   last_name: Cervantes
-  last_suspected_covid_contact_date: '2022-01-08 00:00:00.000000'
+  last_suspected_covid_contact_date: '2021-12-08 00:00:00.000000'
   last_suspected_covid_contact_type: Living in your own home
   last_suspected_covid_contact_type_raw: Someone I live with
   long_covid_symptoms: think_have_long_covid_symptom_headache;think_have_long_covid_symptom_diarrhoea;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_loss_of_appetite;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_anxiety
@@ -4052,6 +4061,7 @@
     Haskell Compiler.
   allocated_swab_barcode_not_used_reason: The syntax {D1,D2,...,Dn} denotes a tuple
     whose arguments are D1, D2, ... Dn.
+  any_date_corrected: 'Yes'
   bad_email: null
   been_outside_uk: null
   been_outside_uk_last_country: Poland
@@ -4158,7 +4168,7 @@
   education_in_person_days_per_week: '2'
   email_address: null
   ethnic_group: Mixed/Multiple Ethnic Groups
-  ethnicity: Caribbean
+  ethnicity: African
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
   ever_smoked_regularly: 'No'
@@ -4235,7 +4245,7 @@
   other_antibody_test_results: null
   other_antibody_test_results_raw: null
   other_covid_infection_test: 'Yes'
-  other_covid_infection_test_first_positive_date: '2022-01-08 00:00:00.000000'
+  other_covid_infection_test_first_positive_date: '2021-12-08 00:00:00.000000'
   other_covid_infection_test_last_negative_date: '2022-01-01 00:00:00.000000'
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
