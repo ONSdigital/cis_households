@@ -3,7 +3,7 @@
   accepted_fingerprick_invite: null
   additional_consent_requirement: 'Yes'
   agreed_to_additional_consent_visit: 'Yes'
-  any_date_corrected: null
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: null
   bad_email: false
@@ -112,7 +112,7 @@
   other_antibody_test_location: null
   other_antibody_test_results: All Tests failed
   other_covid_infection_test: null
-  other_covid_infection_test_first_positive_date: '2022-01-08 00:00:00.000000'
+  other_covid_infection_test_first_positive_date: '2021-12-08 00:00:00.000000'
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: One or more positive test(s)
   other_household_member_care_home_last_28_days: 'Yes'
@@ -312,7 +312,7 @@
   accepted_fingerprick_invite: 'Yes'
   additional_consent_requirement: 'No'
   agreed_to_additional_consent_visit: 'No'
-  any_date_corrected: null
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
   bad_email: false
@@ -520,7 +520,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_had_covid_which_symptoms: Maybe
   think_have_covid: 'No'
-  think_have_covid_onset_date: '2022-01-09 00:00:00.000000'
+  think_have_covid_onset_date: '2021-12-09 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: 'No'
   think_have_covid_symptom_any: 'No'
@@ -622,7 +622,7 @@
   accepted_fingerprick_invite: null
   additional_consent_requirement: null
   agreed_to_additional_consent_visit: 'No'
-  any_date_corrected: null
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'No'
   bad_email: null
@@ -677,8 +677,8 @@
   currently_smokes_or_vapes: Vape/e-cigarettes
   currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
   date_of_birth: '1997-02-07 18:56:00.000000'
-  days_since_think_had_covid: -1.0
-  days_since_think_had_covid_group: null
+  days_since_think_had_covid: 30.0
+  days_since_think_had_covid_group: 29-60
   deferred: Deferred
   email_address: null
   ethnic_group: Black or African or Caribbean or Black British
@@ -731,7 +731,7 @@
   other_antibody_test_location: Home test
   other_antibody_test_results: Any tests negative, but none positive
   other_covid_infection_test: 'No'
-  other_covid_infection_test_first_positive_date: '2022-01-05 00:00:00.000000'
+  other_covid_infection_test_first_positive_date: '2021-12-05 00:00:00.000000'
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_results: Waiting for all results
   other_household_member_care_home_last_28_days: null
@@ -805,7 +805,7 @@
   think_had_covid_any_symptoms: 'No'
   think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: 'No'
-  think_had_covid_onset_date: '2022-01-05 00:00:00.000000'
+  think_had_covid_onset_date: '2021-12-05 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: null
   think_had_covid_symptom_anxiety: 'Yes'
   think_had_covid_symptom_chest_pain: 'Yes'
@@ -930,7 +930,7 @@
   accepted_fingerprick_invite: 'No'
   additional_consent_requirement: null
   agreed_to_additional_consent_visit: null
-  any_date_corrected: null
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: 'Yes'
   approached_for_blood_samples: 'No'
   bad_email: null
@@ -1026,7 +1026,7 @@
   last_covid_contact_date: null
   last_covid_contact_type: Living in your own home
   last_name: Cervantes
-  last_suspected_covid_contact_date: '2022-01-03 00:00:00.000000'
+  last_suspected_covid_contact_date: '2021-12-03 00:00:00.000000'
   last_suspected_covid_contact_type: null
   middle_name: Jae
   no_email_address: 0.0
@@ -1035,13 +1035,13 @@
   not_attended_reason: On Holiday
   ons_household_id: '352206298026'
   other_antibody_test: null
-  other_antibody_test_first_positive_date: '2022-01-06 00:00:00.000000'
+  other_antibody_test_first_positive_date: '2021-12-06 00:00:00.000000'
   other_antibody_test_last_negative_date: null
   other_antibody_test_location: Private lab
   other_antibody_test_results: Waiting for all results
   other_covid_infection_test: null
   other_covid_infection_test_first_positive_date: null
-  other_covid_infection_test_last_negative_date: '2022-01-03 00:00:00.000000'
+  other_covid_infection_test_last_negative_date: '2021-12-03 00:00:00.000000'
   other_covid_infection_test_results: Any tests negative, but none positive
   other_household_member_care_home_last_28_days: 'No'
   other_household_member_hospital_last_28_days: 'Yes'
@@ -1141,7 +1141,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'No'
   think_had_covid_which_symptoms: null
   think_have_covid: 'No'
-  think_have_covid_onset_date: '2022-01-06 00:00:00.000000'
+  think_have_covid_onset_date: '2021-12-06 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_any: 'Yes'
@@ -1341,10 +1341,10 @@
   infant_age_months_6: 1.0
   infant_age_months_7: 6.0
   infant_age_months_8: 6.0
-  last_covid_contact_date: '2022-01-04 00:00:00.000000'
+  last_covid_contact_date: '2021-12-04 00:00:00.000000'
   last_covid_contact_type: null
   last_name: Meyers
-  last_suspected_covid_contact_date: '2022-01-07 00:00:00.000000'
+  last_suspected_covid_contact_date: '2021-12-07 00:00:00.000000'
   last_suspected_covid_contact_type: Living in your own home
   middle_name: Buck
   no_email_address: 0.0
@@ -1359,7 +1359,7 @@
   other_antibody_test_results: Any tests negative, but none positive
   other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: null
-  other_covid_infection_test_last_negative_date: '2022-01-06 00:00:00.000000'
+  other_covid_infection_test_last_negative_date: '2021-12-06 00:00:00.000000'
   other_covid_infection_test_results: One or more positive test(s)
   other_household_member_care_home_last_28_days: 'No'
   other_household_member_hospital_last_28_days: 'Yes'
@@ -1458,7 +1458,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: null
   think_had_covid_which_symptoms: null
   think_have_covid: 'Yes'
-  think_have_covid_onset_date: '2022-01-09 00:00:00.000000'
+  think_have_covid_onset_date: '2021-12-09 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_anxiety: 'No'
   think_have_covid_symptom_any: null
@@ -1563,7 +1563,7 @@
   accepted_fingerprick_invite: 'Yes'
   additional_consent_requirement: 'No'
   agreed_to_additional_consent_visit: null
-  any_date_corrected: null
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: null
   approached_for_blood_samples: 'No'
   bad_email: false
@@ -1667,13 +1667,13 @@
   not_attended_reason: Living Away
   ons_household_id: '296617139656'
   other_antibody_test: 'Yes'
-  other_antibody_test_first_positive_date: '2022-01-08 00:00:00.000000'
+  other_antibody_test_first_positive_date: '2021-12-08 00:00:00.000000'
   other_antibody_test_last_negative_date: null
   other_antibody_test_location: null
   other_antibody_test_results: Any tests negative, but none positive
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: null
-  other_covid_infection_test_last_negative_date: '2022-01-09 00:00:00.000000'
+  other_covid_infection_test_last_negative_date: '2021-12-09 00:00:00.000000'
   other_covid_infection_test_results: Any tests negative, but none positive
   other_household_member_care_home_last_28_days: 'Yes'
   other_household_member_hospital_last_28_days: null
@@ -1774,7 +1774,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: null
   think_had_covid_which_symptoms: 'Yes'
   think_have_covid: 'Yes'
-  think_have_covid_onset_date: '2022-01-09 00:00:00.000000'
+  think_have_covid_onset_date: '2021-12-09 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: 'Yes'
   think_have_covid_symptom_any: 'Yes'
@@ -1881,7 +1881,7 @@
   accepted_fingerprick_invite: 'Yes'
   additional_consent_requirement: null
   agreed_to_additional_consent_visit: 'Yes'
-  any_date_corrected: null
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'No'
   bad_email: false
@@ -1985,13 +1985,13 @@
   not_attended_reason: Other
   ons_household_id: '217846198988'
   other_antibody_test: null
-  other_antibody_test_first_positive_date: '2022-01-07 00:00:00.000000'
+  other_antibody_test_first_positive_date: '2021-12-07 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-01 00:00:00.000000'
   other_antibody_test_location: null
   other_antibody_test_results: All Tests failed
   other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: '2022-01-01 00:00:00.000000'
-  other_covid_infection_test_last_negative_date: '2022-01-07 00:00:00.000000'
+  other_covid_infection_test_last_negative_date: '2021-12-07 00:00:00.000000'
   other_covid_infection_test_results: Any tests negative, but none positive
   other_household_member_care_home_last_28_days: null
   other_household_member_hospital_last_28_days: null
@@ -2503,7 +2503,7 @@
   accepted_fingerprick_invite: null
   additional_consent_requirement: 'Yes'
   agreed_to_additional_consent_visit: null
-  any_date_corrected: null
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: null
   bad_email: false
@@ -2558,8 +2558,8 @@
   currently_smokes_or_vapes: Cigar
   currently_smokes_or_vapes_description: Yes, cigar
   date_of_birth: null
-  days_since_think_had_covid: -3.0
-  days_since_think_had_covid_group: null
+  days_since_think_had_covid: 28.0
+  days_since_think_had_covid_group: 15-28
   deferred: Deferred
   email_address: dashed1989@gsnail.ac.uk
   ethnic_group: Mixed/Multiple Ethnic Groups
@@ -2597,7 +2597,7 @@
   last_covid_contact_date: null
   last_covid_contact_type: Living in your own home
   last_name: Mosley
-  last_suspected_covid_contact_date: '2022-01-05 00:00:00.000000'
+  last_suspected_covid_contact_date: '2021-12-05 00:00:00.000000'
   last_suspected_covid_contact_type: null
   middle_name: Quinn
   no_email_address: 1.0
@@ -2606,7 +2606,7 @@
   not_attended_reason: At Work
   ons_household_id: '352709577630'
   other_antibody_test: 'Yes'
-  other_antibody_test_first_positive_date: '2022-01-04 00:00:00.000000'
+  other_antibody_test_first_positive_date: '2021-12-04 00:00:00.000000'
   other_antibody_test_last_negative_date: '2022-01-01 00:00:00.000000'
   other_antibody_test_location: In the NHS (e.g. GP, hospital)
   other_antibody_test_results: All Tests failed
@@ -2686,7 +2686,7 @@
   think_had_covid_any_symptoms: null
   think_had_covid_any_symptoms_raw: null
   think_had_covid_contacted_nhs: 'Yes'
-  think_had_covid_onset_date: '2022-01-06 00:00:00.000000'
+  think_had_covid_onset_date: '2021-12-06 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'No'
   think_had_covid_symptom_anxiety: 'No'
   think_had_covid_symptom_chest_pain: null
