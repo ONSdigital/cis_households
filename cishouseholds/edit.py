@@ -11,46 +11,76 @@ from typing import Union
 
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
+from pyspark.sql import Window
 
 from cishouseholds.expressions import all_columns_null
 from cishouseholds.expressions import any_column_not_null
+from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import set_date_component
 from cishouseholds.expressions import sum_within_row
 
 
-def correct_date_ranges(
-    df: DataFrame, columns_to_edit: List[str], participant_id_column: str, visit_date_column: str, min_date: str
+def correct_date_ranges_union_dependent(
+    df: DataFrame, columns_to_edit: List[str], participant_id_column: str, visit_date_column: str
 ):
     """
-    Correct datetime columns given a range
+    Correct datetime columns given a range looking across all rows
     """
     for col in columns_to_edit:
+        df = df.withColumn("MONTH", F.month(df[col])).withColumn("DAY", F.dayofmonth(df[col]))
         date_ref = (
             df.withColumn(col, F.when(F.col(col) <= F.col(visit_date_column), F.col(col)))
-            .select(participant_id_column, col)
-            .filter(F.col(col).isNotNull())
-            .withColumnRenamed(col, f"{col}_ref")
-            .withColumnRenamed(participant_id_column, "IDREF")
+            .select(participant_id_column, col, "MONTH", "DAY")
+            .filter((~any_column_null([col, "MONTH", "DAY"])))
             .distinct()
         )
+
         joined_df = df.join(
-            date_ref,
-            (F.month(df[col]) == F.month(date_ref[f"{col}_ref"]))
-            & (F.dayofmonth(df[col]) == F.dayofmonth(date_ref[f"{col}_ref"]))
-            & (df[participant_id_column] == date_ref["IDREF"]),
+            date_ref.withColumnRenamed(col, f"{col}_ref"),
+            [participant_id_column, "MONTH", "DAY"],
             how="left",
-        ).drop("IDREF")
+        ).filter((F.col(f"{col}_ref") < F.col(visit_date_column)) | (F.col(f"{col}_ref").isNull()))
+
+        joined_df = joined_df.withColumn("DIFF", F.datediff(F.col(visit_date_column), F.col(f"{col}_ref")))
+        window = Window.partitionBy(participant_id_column, visit_date_column, col).orderBy("DIFF")
+        joined_df = joined_df.withColumn("ROW", F.row_number().over(window))
+        joined_df = joined_df.filter(F.col("ROW") == 1)
 
         joined_df = joined_df.withColumn(
             col,
             F.to_timestamp(
                 F.when(
+                    (F.col(col) > F.col(visit_date_column))
+                    & (F.col(col).isNotNull())
+                    & ((F.col(f"{col}_ref") <= F.col(visit_date_column)))
+                    & (F.col(f"{col}_ref").isNotNull()),
+                    F.col(f"{col}_ref"),
+                ).otherwise(F.col(col))
+            ),
+        ).drop(f"{col}_ref")
+    return joined_df.drop("MONTH", "DAY", "DIFF", "ROW")
+
+
+def remove_incorrect_dates(df: DataFrame, columns_to_edit: List[str], visit_date_column: str, min_date: str):
+    """
+    removes out of range dates
+    """
+    for col in columns_to_edit:
+        df = df.withColumn(col, F.when((F.col(col) < F.col(visit_date_column)) & (F.col(col) > min_date), F.col(col)))
+    return df
+
+
+def correct_date_ranges(df: DataFrame, columns_to_edit: List[str], visit_date_column: str, min_date: str):
+    """
+    Correct datetime columns given a range
+    """
+    for col in columns_to_edit:
+        df = df.withColumn(
+            col,
+            F.to_timestamp(
+                F.when(
                     (F.col(col) > F.col(visit_date_column)) & (F.col(col).isNotNull()),
                     F.when(F.add_months(col, -1) <= F.col(visit_date_column), F.add_months(col, -1))
-                    .when(
-                        (F.col(f"{col}_ref") <= F.col(visit_date_column)) & (F.col(f"{col}_ref").isNotNull()),
-                        F.col(f"{col}_ref"),
-                    )
                     .when(
                         (F.year(col) - 1 >= 2020) & (F.add_months(col, -12) <= F.col(visit_date_column)),
                         F.add_months(col, -12),
@@ -62,7 +92,8 @@ def correct_date_ranges(
                     .when(
                         (F.month(col) >= 8) & (set_date_component(col, "year", 2019) <= F.col(visit_date_column)),
                         set_date_component(col, "year", 2019),
-                    ),
+                    )
+                    .otherwise(F.col(col)),
                 )
                 .when(
                     (F.col(col) < min_date) & (F.col(col).isNotNull()),
@@ -70,13 +101,14 @@ def correct_date_ranges(
                         set_date_component(col, "year", F.year(visit_date_column)) <= F.col(visit_date_column),
                         set_date_component(col, "year", F.year(visit_date_column)),
                     )
-                    .when(F.add_months(col, -1) <= F.col(visit_date_column), F.add_months(col, -1))
-                    .when((F.year(col) > 2019), set_date_component(col, "year", F.year(visit_date_column) - 1)),
+                    .when(F.add_months(col, 1) <= F.col(visit_date_column), F.add_months(col, 1))
+                    .when((F.year(col) > 2019), set_date_component(col, "year", F.year(visit_date_column) - 1))
+                    .otherwise(F.col(col)),
                 )
                 .otherwise(F.col(col))
             ),
-        ).drop(f"{col}_ref")
-    return joined_df
+        )
+    return df
 
 
 def clean_job_description_string(df: DataFrame, column_name_to_assign: str):
