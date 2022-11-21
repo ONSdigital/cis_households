@@ -1008,7 +1008,6 @@ def assign_work_patient_facing_now(
 def assign_work_person_facing_now(
     df: DataFrame,
     column_name_to_assign: str,
-    age_column: str,
     work_patient_facing_now_column: str,
     work_social_care_column: str,
     age_at_visit_column: str,
