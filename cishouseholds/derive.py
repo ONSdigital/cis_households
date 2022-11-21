@@ -1008,6 +1008,7 @@ def assign_work_patient_facing_now(
 def assign_work_person_facing_now(
     df: DataFrame,
     column_name_to_assign: str,
+    age_column: str,
     work_patient_facing_now_column: str,
     work_social_care_column: str,
 ) -> DataFrame:
@@ -1046,6 +1047,12 @@ def assign_work_person_facing_now(
             F.col(work_patient_facing_now_column),
         )
         .otherwise(F.col(column_name_to_assign)),
+    )
+    df = assign_named_buckets(
+        df,
+        age_column,
+        column_name_to_assign,
+        {0: "<=15y", 16: F.col(column_name_to_assign), 75: ">=75y"},
     )
     return df
 
