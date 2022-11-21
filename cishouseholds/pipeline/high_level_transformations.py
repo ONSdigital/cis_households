@@ -2176,8 +2176,6 @@ def union_dependent_derivations(df):
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
 
-    df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
-
     df = create_ever_variable_columns(df)
 
     df = assign_first_visit(

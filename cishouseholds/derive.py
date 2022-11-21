@@ -26,40 +26,6 @@ from cishouseholds.merge import null_safe_join
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def assign_work_person_facing(
-    df: DataFrame,
-    column_name_to_assign: str,
-    work_socialcare_column: str,
-    work_status_column: str,
-    age_at_visit_column: str,
-):
-    """
-    Assign a value to work_person_facing column to denote if the participant works with people
-    in a non medical setting.
-    """
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when(
-            F.col(work_socialcare_column).isin(
-                ["Yes, care/residential home, resident-facing", "Yes, other social care, resident-facing"]
-            ),
-            "Yes",
-        )
-        .when(
-            (
-                F.col(work_socialcare_column).isin(
-                    ["Yes, care/residential home, non-resident-facing", "Yes, other social care, non-resident-facing"]
-                )
-            )
-            | (F.col(work_status_column).isin([])),
-            "No",
-        )
-        .when((F.col(age_at_visit_column) >= 2) & (F.col(age_at_visit_column) <= 15), "<=15y")
-        .when(F.col(age_at_visit_column) >= 75, ">=75y"),
-    )
-    return df
-
-
 def assign_regex_from_map(
     df: DataFrame, column_name_to_assign: str, reference_columns: List[str], roles: Mapping, priority_map: Mapping
 ):
@@ -1044,6 +1010,7 @@ def assign_work_person_facing_now(
     column_name_to_assign: str,
     work_patient_facing_now_column: str,
     work_social_care_column: str,
+    age_at_visit_column: str,
 ) -> DataFrame:
     """
     Assign column for work patient facing depending on values of given input reference
@@ -1055,6 +1022,7 @@ def assign_work_person_facing_now(
     column_name_to_assign
     work_patient_facing_now_column
     work_social_care_column
+    age_at_visit_column
     """
     df = assign_column_from_mapped_list_key(
         df,
@@ -1080,6 +1048,12 @@ def assign_work_person_facing_now(
             F.col(work_patient_facing_now_column),
         )
         .otherwise(F.col(column_name_to_assign)),
+    )
+    df = assign_named_buckets(
+        df,
+        age_at_visit_column,
+        column_name_to_assign,
+        {0: "<=15y", 16: F.col(column_name_to_assign), 75: ">=75y"},
     )
     return df
 

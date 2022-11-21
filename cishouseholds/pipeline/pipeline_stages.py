@@ -19,6 +19,7 @@ from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_multigenerational
 from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_work_patient_facing_now
+from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import household_level_populations
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
@@ -841,10 +842,18 @@ def geography_and_imputation_dependent_processing(
     )
     df = assign_work_patient_facing_now(
         df,
-        "work_patient_facing_now",
+        column_name_to_assign="work_patient_facing_now",
         age_column="age_at_visit",
         work_healthcare_column="work_health_care_patient_facing",
     )
+    df = assign_work_person_facing_now(
+        df,
+        column_name_to_assign="work_person_facing_now",
+        work_patient_facing_now_column="work_patient_facing_now",
+        work_social_care_column="work_social_care",
+        age_at_visit_column="age_at_visit",
+    )
+
     # df = update_work_facing_now_column(
     #     df,
     #     "work_patient_facing_now",
