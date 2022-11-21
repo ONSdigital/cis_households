@@ -33,9 +33,14 @@ def validate_csv_fields(text_file: RDD, delimiter: str = ","):
         n_fields = len(next(reader))
         return n_fields
 
+    def check_field(delimiter, row):
+        if len(row) > 2:
+            return count_fields_in_row(delimiter, row) != number_of_columns
+        return True
+
     header = text_file.first()
     number_of_columns = count_fields_in_row(delimiter, header)
-    error_count = text_file.map(lambda row: count_fields_in_row(delimiter, row) != number_of_columns).reduce(add)
+    error_count = text_file.map(lambda row: check_field(delimiter, row)).reduce(add)
     return True if error_count == 0 else False
 
 

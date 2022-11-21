@@ -97,6 +97,7 @@ from cishouseholds.edit import correct_date_ranges_union_dependent
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
+from cishouseholds.edit import normalise_think_had_covid_columns
 from cishouseholds.edit import remove_incorrect_dates
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import replace_sample_barcode
@@ -1436,6 +1437,8 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     if all(col in df.columns for col in consent_cols):
         df = assign_consent_code(df, "consent_summary", reference_columns=consent_cols)
+
+    df = normalise_think_had_covid_columns(df, "think_had_covid_symptom")
 
     df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_onset_date", "visit_datetime")
     df = assign_grouped_variable_from_days_since(
