@@ -47,6 +47,7 @@ from cishouseholds.pipeline.high_level_transformations import derive_age_based_c
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forward_events_for_key_columns
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
+from cishouseholds.pipeline.high_level_transformations import get_differences
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
 from cishouseholds.pipeline.high_level_transformations import reclassify_work_variables
@@ -856,6 +857,46 @@ def geography_and_imputation_dependent_processing(
     return {"output_survey_table": output_survey_table}
 
 
+@register_pipeline_stage("compare_tables")
+def compare(
+    base_table_name: str,
+    table_name_to_compare: str,
+    counts_df_table_name: str,
+    diff_samples_table_name: str,
+    unique_id_column: str = "unique_participant_response_id",
+    num_samples: int = 10,
+    select_columns: List[str] = [],  # type: ignore
+):
+    """
+    Create an output that holds information about differences between 2 tables
+
+    Parameters
+    ----------
+    base_table_name
+    table_name_to_compare
+    counts_df_table_name
+    diff_samples_table_name
+    unique_id_column
+        column containing unique id common to base an compare dataframes
+    num_samples
+        number of examples of each differing row to provide in the output table
+    select_columns
+        optional subset of columns to evaluate
+    """
+    base_df = extract_from_table(base_table_name)
+    compare_df = extract_from_table(table_name_to_compare)
+    if len(select_columns) > 0:
+        if unique_id_column not in select_columns:
+            select_columns = [unique_id_column, *select_columns]
+            compare_df = compare_df.select(*select_columns)
+            base_df = base_df.select(*select_columns)
+    counts_df, difference_sample_df = get_differences(base_df, compare_df, unique_id_column, num_samples)
+    total = counts_df.select(F.sum(F.col("difference_count"))).collect()[0][0]
+    print(f"     {table_name_to_compare} contained {total} differences to {base_table_name}")  # functional
+    update_table(counts_df, counts_df_table_name, "overwrite")
+    update_table(difference_sample_df, diff_samples_table_name, "overwrite")
+
+
 @register_pipeline_stage("report")
 def report(
     unique_id_column: str,
@@ -1026,6 +1067,7 @@ def tables_to_csv(
     sep="|",
     extension=".txt",
     dry_run=False,
+    accept_missing=True,
 ):
     """
     Writes data from an existing HIVE table to csv output, including mapping of column names and values.
@@ -1045,6 +1087,8 @@ def tables_to_csv(
         a dictionary of column to value list maps that where the row cell must contain a value in given list to be output to CSV
     dry_run
         when set to True, will delete files after they are written (for testing). Default is False.
+    accept_missing
+        remove missing columns from map if not in dataframe
     """
     output_datetime = datetime.today()
     output_datetime_str = output_datetime.strftime("%Y%m%d_%H%M%S")
@@ -1057,16 +1101,23 @@ def tables_to_csv(
 
     for table in config_file["create_tables"]:
         df = extract_from_table(table["table_name"])
-        columns_to_select = [element for element in table["column_name_map"].keys()]
-        missing_columns = set(columns_to_select) - set(df.columns)
-        if missing_columns:
-            raise ValueError(f"Columns missing in {table['table_name']}: {missing_columns}")
+        if table["column_name_map"] is not None:
+            if accept_missing:
+                columns_to_select = [element for element in table["column_name_map"].keys() if element in df.columns]
+            else:
+                columns_to_select = [element for element in table["column_name_map"].keys()]
+                missing_columns = set(columns_to_select) - set(df.columns)
+                if missing_columns:
+                    raise ValueError(f"Columns missing in {table['table_name']}: {missing_columns}")
+
+            df = df.select(*columns_to_select)
+
         if len(filter.keys()) > 0:
             filter = {key: val if type(val) == list else [val] for key, val in filter.items()}
             df = df.filter(reduce(and_, [F.col(col).isin(val) for col, val in filter.items()]))
-        df = df.select(*columns_to_select)
-        if category_map_dictionary is not None:
-            df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
+
+        df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
+
         file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
         write_csv_rename(df, file_path, sep, extension)
         file_path = file_path.with_suffix(extension)

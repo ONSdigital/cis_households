@@ -1881,6 +1881,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "ethnicity": _(
             "choice",
             items=[
+                None,
                 "English| Welsh| Scottish| Northern Irish or British",
                 "Irish",
                 "Gypsy or Irish Traveller",
