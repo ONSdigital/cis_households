@@ -675,10 +675,10 @@
   infant_age_months_6: 1.0
   infant_age_months_7: null
   infant_age_months_8: 2.0
-  last_covid_contact_date: '2022-01-09 00:00:00.000000'
+  last_covid_contact_date: '2021-12-09 00:00:00.000000'
   last_covid_contact_type: Mama always said life was like a box of chocolates. You
     never know what you're gonna get.
-  last_suspected_covid_contact_date: '2022-01-06 00:00:00.000000'
+  last_suspected_covid_contact_date: '2021-12-06 00:00:00.000000'
   last_suspected_covid_contact_type: Here's looking at you, kid.
   no_email_address: 1.0
   ons_household_id: '167403959807'
@@ -1309,10 +1309,10 @@
   infant_age_months_6: 5.0
   infant_age_months_7: 2.0
   infant_age_months_8: 8.0
-  last_covid_contact_date: '2022-01-07 00:00:00.000000'
+  last_covid_contact_date: '2021-12-07 00:00:00.000000'
   last_covid_contact_type: Mama always said life was like a box of chocolates. You
     never know what you're gonna get.
-  last_suspected_covid_contact_date: '2022-01-06 00:00:00.000000'
+  last_suspected_covid_contact_date: '2021-12-06 00:00:00.000000'
   last_suspected_covid_contact_type: Get your stinking paws off me, you damned dirty
     ape.
   no_email_address: 0.0
