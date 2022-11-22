@@ -45,7 +45,6 @@ from cishouseholds.derive import assign_true_if_any
 from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import assign_visit_order
 from cishouseholds.derive import assign_work_health_care
-from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import assign_work_status_group
 from cishouseholds.derive import clean_postcode
@@ -2181,8 +2180,6 @@ def union_dependent_derivations(df):
     df = assign_ethnicity_white(
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
-
-    df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
 
     df = create_ever_variable_columns(df)
 
