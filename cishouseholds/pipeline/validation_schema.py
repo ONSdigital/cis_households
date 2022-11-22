@@ -1187,6 +1187,8 @@ validation_schemas = {
         "blood_sample_barcode": string_dict,
         "swab_sample_barcode_user_entered": string_dict,
         "blood_sample_barcode_user_entered": string_dict,
+        "swab_barcode_corrected": string_dict,  # entered by iqvia quality team
+        "blood_barcode_corrected": string_dict,  # entered by iqvia quality team
         "allocated_swab_barcode_not_used_reason": string_dict,  # Previously Swab_Barcode_Status_Error
         "allocated_blood_barcode_not_used_reason": string_dict,  # Previously Blood_Barcode_Status_Error
         "swab_sample_received_consolidation_point_datetime": string_dict,

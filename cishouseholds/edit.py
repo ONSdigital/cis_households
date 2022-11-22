@@ -1105,7 +1105,8 @@ def replace_sample_barcode(
 ):
     """
     Creates _sample_barcode_combined fields and uses agreed business logic to utilise either the user entered
-    barcode (_sample_barcode_user_entered) or the pre-assigned barcode (_sample_barcode)
+    barcode (_sample_barcode_user_entered), the pre-assigned barcode (_sample_barcode) or the quality team
+    corrected barcode (_barcode_corrected)
 
     Parameters
     ----------
@@ -1122,6 +1123,11 @@ def replace_sample_barcode(
         for test_type in ["swab", "blood"]:
             df = df.withColumn(
                 f"{test_type}_sample_barcode_combined",
+                F.when(
+                    (F.col("survey_response_dataset_major_version") == 3)
+                    & ~(F.col(f"{test_type}_barcode_corrected").isNull()),
+                    F.col(f"{test_type}_barcode_corrected"),
+                ),
                 F.when(
                     (
                         (F.col("survey_response_dataset_major_version") == 3)
