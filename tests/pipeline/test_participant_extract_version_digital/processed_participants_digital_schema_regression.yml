@@ -16,6 +16,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: current_window_cadence
+  nullable: true
+  type: string
+- metadata: {}
   name: participant_id
   nullable: true
   type: string
@@ -39,10 +43,6 @@ fields:
   name: date_of_birth
   nullable: true
   type: timestamp
-- metadata: {}
-  name: email_address
-  nullable: true
-  type: string
 - metadata: {}
   name: sex
   nullable: true
@@ -79,6 +79,10 @@ fields:
   name: existing_participant_digital_opt_in_datetime
   nullable: true
   type: timestamp
+- metadata: {}
+  name: existing_participant_opt_out_date
+  nullable: true
+  type: string
 - metadata: {}
   name: household_invited_to_digital
   nullable: true

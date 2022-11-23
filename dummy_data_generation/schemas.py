@@ -96,7 +96,7 @@ def get_swab_testkit_data_description(_):
     }
 
 
-def get_participant_extract_data_description(_, blood_barcodes, swab_barcodes):
+def get_participant_extract_digital_data_description(_, blood_barcodes, swab_barcodes):
     return lambda: {  # noqa: E731
         "ons_household_id": _("random.custom_code", mask="############", digit="#"),
         "participant_survey_status": _("choice", items=["Active", "Complete", "Withdrawn"]),
@@ -122,13 +122,13 @@ def get_participant_extract_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
+        "current_window_cadence": _("custom_random.random_integer", lower=14, upper=36, null_percent=0),
         "participant_id": _("random.custom_code", mask="DHR-############", digit="#"),  # Also DHRF-##########
         "title": _("choice", items=["Dr.", "Miss.", "Mr.", "Mrs.", "Ms.", "Prof.", None]),
         "first_name": _("person.first_name"),
         "middle_name": _("person.first_name"),
         "last_name": _("person.last_name"),
         "date_of_birth": _("datetime.formatted_datetime", start=1980, end=2021, fmt=digital_datetime_format),
-        "email_address": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
         "sex": _("choice", items=["Female", "Male"]),
         "ethnic_group": _(
             "choice",
@@ -182,6 +182,19 @@ def get_participant_extract_data_description(_, blood_barcodes, swab_barcodes):
             start=2020,
             end=2022,
             fmt=digital_datetime_format,
+        ),
+        "existing_participant_opt_out_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_date_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "household_invited_to_digital": _("choice", items=yes_no_none_choice),
         "household_digital_enrolment_invited_datetime": _(

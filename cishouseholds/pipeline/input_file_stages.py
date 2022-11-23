@@ -92,10 +92,10 @@ survey_responses_v0_parameters = {
 }
 
 participant_extract_digital_parameters = {
-    "stage_name": "participant_extract_ETL",
-    "dataset_name": "participant_extract",
+    "stage_name": "participant_extract_digital_ETL",
+    "dataset_name": "participant_extract_digital",
     "id_column": "participant_id",
-    "validation_schema": validation_schemas["participant_extract_validation_schema"],
+    "validation_schema": validation_schemas["participant_extract_digital_validation_schema"],
     "datetime_column_map": cis_digital_datetime_map,
     "transformation_functions": [
         transform_participant_extract_digital,
@@ -106,6 +106,7 @@ participant_extract_digital_parameters = {
 }
 
 for parameters in [
+    participant_extract_digital_parameters,
     cis_digital_parameters,
     survey_responses_v2_parameters,
     survey_responses_v1_parameters,
