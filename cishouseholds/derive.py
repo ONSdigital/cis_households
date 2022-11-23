@@ -1008,9 +1008,9 @@ def assign_work_patient_facing_now(
 def assign_work_person_facing_now(
     df: DataFrame,
     column_name_to_assign: str,
-    age_column: str,
     work_patient_facing_now_column: str,
     work_social_care_column: str,
+    age_at_visit_column: str,
 ) -> DataFrame:
     """
     Assign column for work patient facing depending on values of given input reference
@@ -1022,6 +1022,7 @@ def assign_work_person_facing_now(
     column_name_to_assign
     work_patient_facing_now_column
     work_social_care_column
+    age_at_visit_column
     """
     df = assign_column_from_mapped_list_key(
         df,
@@ -1050,7 +1051,7 @@ def assign_work_person_facing_now(
     )
     df = assign_named_buckets(
         df,
-        age_column,
+        age_at_visit_column,
         column_name_to_assign,
         {0: "<=15y", 16: F.col(column_name_to_assign), 75: ">=75y"},
     )
