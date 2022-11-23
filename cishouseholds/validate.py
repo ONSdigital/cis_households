@@ -1,8 +1,8 @@
 import csv
 import inspect
 import re
+from collections import Counter
 from io import StringIO
-from operator import add
 from typing import Dict
 from typing import List
 from typing import Union
@@ -33,10 +33,20 @@ def validate_csv_fields(text_file: RDD, delimiter: str = ","):
         n_fields = len(next(reader))
         return n_fields
 
+    def check_field(delimiter, row, number_of_columns):
+        if len(row) > 2 and count_fields_in_row(delimiter, row) != number_of_columns:
+            return True
+        return False
+
     header = text_file.first()
     number_of_columns = count_fields_in_row(delimiter, header)
-    error_count = text_file.map(lambda row: count_fields_in_row(delimiter, row) != number_of_columns).reduce(add)
-    return True if error_count == 0 else False
+    error_rows = text_file.filter(lambda row: check_field(delimiter, row, number_of_columns)).collect()
+    row_counts = text_file.map(lambda row: count_fields_in_row(delimiter, row)).collect()
+    print("Row counts: ", Counter(row_counts))  # functional
+    print(
+        f"There were {len(error_rows)} erroneous rows out of {text_file.count()} total rows: {error_rows}"
+    )  # functional
+    return True if len(error_rows) == 0 else False
 
 
 def normalise_schema(file_path: str, reference_validation_schema: dict, regex_schema: dict):

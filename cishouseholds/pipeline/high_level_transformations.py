@@ -1979,7 +1979,6 @@ def symptom_column_transformations(df):
     df = update_think_have_covid_symptom_any(
         df=df,
         column_name_to_update="think_have_covid_symptom_any",
-        count_reference_column="think_have_covid_symptom_count",
     )
 
     df = assign_true_if_any(
