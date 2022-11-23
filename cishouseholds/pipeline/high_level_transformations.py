@@ -1050,6 +1050,10 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
     )
     df = clean_barcode_simple(df, "swab_sample_barcode_user_entered")
     df = clean_barcode_simple(df, "blood_sample_barcode_user_entered")
+
+    df = clean_barcode_simple(df, "swab_barcode_corrected")
+    df = clean_barcode_simple(df, "blood_barcode_corrected")
+
     df = map_options_to_bool_columns(
         df,
         "currently_smokes_or_vapes_description",
