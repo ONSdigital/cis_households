@@ -610,7 +610,7 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str = 
             ["swab_sample_barcode_user_entered", "blood_sample_barcode_user_entered"],
             ["swab_sample_barcode_correct", "blood_sample_barcode_correct"],
         ):
-            if all(col in df.columns for col in [barcode_column, correct_col]):
+            if all(col in df.columns for col in [f"{barcode_column}_{id_column}_old_value", correct_col]):
                 df = df.withColumn(
                     correct_col,
                     F.when(
