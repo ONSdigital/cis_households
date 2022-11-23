@@ -16,8 +16,20 @@ from pyspark.sql import Window
 from cishouseholds.expressions import all_columns_null
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import any_column_null
+from cishouseholds.expressions import count_occurrence_in_row
 from cishouseholds.expressions import set_date_component
 from cishouseholds.expressions import sum_within_row
+
+
+def normalise_think_had_covid_columns(df: DataFrame, symptom_columns_prefix: str):
+    """
+    Update symptom columns to No if any of the symptom columns are not null
+    """
+    symptom_columns = [col for col in df.columns if symptom_columns_prefix in col]
+    update_sympt = any_column_not_null(symptom_columns)
+    for col in symptom_columns:
+        df = df.withColumn(col, F.when((F.col(col).isNull()) & (update_sympt), "No").otherwise(F.col(col)))
+    return df
 
 
 def correct_date_ranges_union_dependent(
@@ -431,18 +443,31 @@ def update_face_covering_outside_of_home(
     return df
 
 
-def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
+def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: str):
     """
-    Update value to no if symptoms are ongoing
+    Update value to no if count of original 12 symptoms is 0 otherwise set to Yes
 
     Parameters
     ----------
     df
     column_name_to_update
-    count_reference_column
     """
+    original_symptoms = [
+        "think_have_covid_symptom_fever",
+        "think_have_covid_symptom_muscle_ache",
+        "think_have_covid_symptom_fatigue",
+        "think_have_covid_symptom_sore_throat",
+        "think_have_covid_symptom_cough",
+        "think_have_covid_symptom_shortness_of_breath",
+        "think_have_covid_symptom_headache",
+        "think_have_covid_symptom_nausea_or_vomiting",
+        "think_have_covid_symptom_abdominal_pain",
+        "think_have_covid_symptom_diarrhoea",
+        "think_have_covid_symptom_loss_of_taste",
+        "think_have_covid_symptom_loss_of_smell",
+    ]
     df = df.withColumn(
-        column_name_to_update, F.when(F.col(count_reference_column) > 0, "Yes").otherwise(F.col(column_name_to_update))
+        column_name_to_update, F.when(count_occurrence_in_row(original_symptoms, "Yes") > 0, "Yes").otherwise("No")
     )
     return df
 
@@ -581,6 +606,30 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str = 
                 ).otherwise(F.col(column_to_edit)),
             )
 
+        for barcode_column, correct_col in zip(
+            ["swab_sample_barcode_user_entered", "blood_sample_barcode_user_entered"],
+            ["swab_sample_barcode_correct", "blood_sample_barcode_correct"],
+        ):
+            if all(col in df.columns for col in [barcode_column, correct_col]):
+                df = df.withColumn(
+                    correct_col,
+                    F.when(
+                        (F.col(f"{barcode_column}_{id_column}_old_value").isNull())
+                        & (F.col(f"{barcode_column}_{id_column}_new_value").isNotNull()),
+                        "No",
+                    )
+                    .when(
+                        (F.col(f"{barcode_column}_{id_column}_old_value").isNotNull())
+                        & (F.col(f"{barcode_column}_{id_column}_new_value").isNull()),
+                        "Yes",
+                    )
+                    .when(
+                        (F.col(f"{barcode_column}_{id_column}_old_value").isNotNull())
+                        & (F.col(f"{barcode_column}_{id_column}_new_value").isNotNull()),
+                        "No",
+                    )
+                    .otherwise(F.col(correct_col)),
+                )
         drop_list.extend(
             [
                 *[f"{col}_{id_column}_old_value" for col in columns_to_edit],

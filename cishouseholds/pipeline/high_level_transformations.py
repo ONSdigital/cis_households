@@ -97,6 +97,7 @@ from cishouseholds.edit import correct_date_ranges_union_dependent
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
+from cishouseholds.edit import normalise_think_had_covid_columns
 from cishouseholds.edit import remove_incorrect_dates
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import replace_sample_barcode
@@ -624,6 +625,7 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
         max_datetime_column_name="participant_completion_window_end_datetime",
         reference_datetime_column_name="swab_sample_received_consolidation_point_datetime",
         default_timestamp="12:00:00",
+        final_fallback_column="participant_completion_window_start_datetime",
     )
     df = update_column_in_time_window(
         df,
@@ -1437,6 +1439,8 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     if all(col in df.columns for col in consent_cols):
         df = assign_consent_code(df, "consent_summary", reference_columns=consent_cols)
 
+    df = normalise_think_had_covid_columns(df, "think_had_covid_symptom")
+
     df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_onset_date", "visit_datetime")
     df = assign_grouped_variable_from_days_since(
         df=df,
@@ -1978,7 +1982,6 @@ def symptom_column_transformations(df):
     df = update_think_have_covid_symptom_any(
         df=df,
         column_name_to_update="think_have_covid_symptom_any",
-        count_reference_column="think_have_covid_symptom_count",
     )
 
     df = assign_true_if_any(
