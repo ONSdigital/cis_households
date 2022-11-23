@@ -442,18 +442,18 @@ def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: st
     column_name_to_update
     """
     original_symptoms = [
-        "think_have_covid_symptom_muscle_ache_myalgia",
-        "think_have_covid_symptom_fatigue_weakness",
+        "think_have_covid_symptom_fever",
+        "think_have_covid_symptom_muscle_ache",
+        "think_have_covid_symptom_fatigue",
         "think_have_covid_symptom_sore_throat",
+        "think_have_covid_symptom_cough",
         "think_have_covid_symptom_shortness_of_breath",
-        "think_have_covid_symptom_nausea_vomiting",
+        "think_have_covid_symptom_headache",
+        "think_have_covid_symptom_nausea_or_vomiting",
         "think_have_covid_symptom_abdominal_pain",
         "think_have_covid_symptom_diarrhoea",
-        "think_have_covid_symptom_loss_of_smell",
         "think_have_covid_symptom_loss_of_taste",
-        "think_have_covid_symptom_headache",
-        "think_have_covid_symptom_cough",
-        "think_have_covid_symptom_fever",
+        "think_have_covid_symptom_loss_of_smell",
     ]
     df = df.withColumn(
         column_name_to_update, F.when(count_occurrence_in_row(original_symptoms, "Yes") > 0, "Yes").otherwise("No")
