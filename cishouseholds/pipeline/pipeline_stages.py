@@ -343,7 +343,7 @@ def process_soc_deltas(
     )
 
     mode = "overwrite" if include_processed else "append"
-    update_table(soc_lookup_df, soc_lookup_table, mode)
+    update_table_and_log_source_files(soc_lookup_df, soc_lookup_table, source_file_column, "soc_codes", mode)
     update_table(coding_errors_df, coding_errors_table, mode)
 
 
