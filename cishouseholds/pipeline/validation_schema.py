@@ -1397,6 +1397,7 @@ validation_schemas = {
         "participant_survey_status": string_dict,
         "withdrawn_reason": string_dict,
         "withdrawn_type": string_dict,
+        "current_window_cadence": string_dict,
         "participant_id": string_dict,
         "title": string_dict,
         "first_name": string_dict,
