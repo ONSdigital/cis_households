@@ -122,6 +122,7 @@ def get_participant_extract_digital_data_description(_, blood_barcodes, swab_bar
                 None,
             ],
         ),
+        "current_window_cadence": _("custom_random.random_integer", lower=14, upper=36, null_percent=0),
         "participant_id": _("random.custom_code", mask="DHR-############", digit="#"),  # Also DHRF-##########
         "title": _("choice", items=["Dr.", "Miss.", "Mr.", "Mrs.", "Ms.", "Prof.", None]),
         "first_name": _("person.first_name"),

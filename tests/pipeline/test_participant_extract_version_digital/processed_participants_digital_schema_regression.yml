@@ -16,6 +16,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: current_window_cadence
+  nullable: true
+  type: string
+- metadata: {}
   name: participant_id
   nullable: true
   type: string
