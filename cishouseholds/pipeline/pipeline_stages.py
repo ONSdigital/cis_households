@@ -423,9 +423,10 @@ def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[st
         print(
             f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
         )  # functional
-        df_to_process = df_to_process.repartition(
-            get_or_create_spark_session().sparkContext.getConf.get("spark.sql.shuffle.partitions") / 2
-        )
+        partitions = int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions"))
+
+        partitions = int(partitions / 4) if partitions is not None else 64
+        df_to_process = df_to_process.repartition(partitions)
         lookup_df = add_pattern_matching_flags(df_to_process)
         update_table(lookup_df, regex_lookup_table, "overwrite")
 
