@@ -595,6 +595,30 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str = 
                 ).otherwise(F.col(column_to_edit)),
             )
 
+        for barcode_column, correct_col in zip(
+            ["swab_sample_barcode_user_entered", "blood_sample_barcode_user_entered"],
+            ["swab_sample_barcode_correct", "blood_sample_barcode_correct"],
+        ):
+            if all(col in df.columns for col in [barcode_column, correct_col]):
+                df = df.withColumn(
+                    correct_col,
+                    F.when(
+                        (F.col(f"{barcode_column}_{id_column}_old_value").isNull())
+                        & (F.col(f"{barcode_column}_{id_column}_new_value").isNotNull()),
+                        "No",
+                    )
+                    .when(
+                        (F.col(f"{barcode_column}_{id_column}_old_value").isNotNull())
+                        & (F.col(f"{barcode_column}_{id_column}_new_value").isNull()),
+                        "Yes",
+                    )
+                    .when(
+                        (F.col(f"{barcode_column}_{id_column}_old_value").isNotNull())
+                        & (F.col(f"{barcode_column}_{id_column}_new_value").isNotNull()),
+                        "No",
+                    )
+                    .otherwise(F.col(correct_col)),
+                )
         drop_list.extend(
             [
                 *[f"{col}_{id_column}_old_value" for col in columns_to_edit],
