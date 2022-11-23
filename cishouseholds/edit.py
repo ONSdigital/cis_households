@@ -24,7 +24,7 @@ def normalise_think_had_covid_columns(df: DataFrame, symptom_columns_prefix: str
     """
     Update symptom columns to No if any of the symptom columns are not null
     """
-    symptom_columns = [col for col in df.columns if symptom_columns_prefix in symptom_columns_prefix]
+    symptom_columns = [col for col in df.columns if symptom_columns_prefix in col]
     update_sympt = any_column_not_null(symptom_columns)
     for col in symptom_columns:
         df = df.withColumn(col, F.when((F.col(col).isNull()) & (update_sympt), "No").otherwise(F.col(col)))
