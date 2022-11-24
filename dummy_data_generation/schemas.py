@@ -2189,6 +2189,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         ),
         "swab_sample_barcode_user_entered": _("random.custom_code", mask="ONS########", digit="#"),
         "blood_sample_barcode_user_entered": _("random.custom_code", mask="ONS########", digit="#"),
+        "swab_barcode_corrected": _("random.custom_code", mask="ONS########", digit="#"),
+        "blood_barcode_corrected": _("random.custom_code", mask="ONS########", digit="#"),
         "allocated_swab_barcode_not_used_reason": _(
             "text.sentence"
         ),  # Previously Swab_Barcode_Status_Error TODO Check not pick list
