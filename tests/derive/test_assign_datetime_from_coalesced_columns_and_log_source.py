@@ -15,6 +15,7 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
                 "2020-04-17 23:59:59.0",
                 "2020-04-19 00:00:00.0",
                 "2020-04-18 00:00:00.0",
+                "2020-04-18 00:00:00.0",
                 "date_1",
             ),  # no other times should be changed
             (
@@ -25,6 +26,7 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
                 "2020-07-20 15:59:59.0",
                 "2020-07-20 15:59:59.0",
                 "2020-07-20 15:59:59.0",
+                "2020-07-10 00:00:00.0",
                 "date_3",
             ),  # result should be priority 3 date as 1st is missing and 2nd is out of range
             (
@@ -35,6 +37,7 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
                 "2020-04-16 11:59:59.0",
                 "2020-04-18 12:00:00.0",
                 "2020-04-15 23:59:59.0",
+                "2020-04-14 00:00:00.0",
                 "ref_date",
             ),  # result should be ref_date - default_offset as primary dates out of range of reference date
             (
@@ -45,6 +48,7 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
                 "2020-04-17 11:59:59.0",
                 "2020-04-18 12:00:00.0",
                 "2020-04-14 23:59:59.0",
+                "2020-04-10 00:00:00.0",
                 "ref_date",
             ),  # primary dates out of range, ref_date minus offset also out of range but no validation on this
             (
@@ -52,6 +56,7 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
                 None,
                 "2020-04-15 00:00:00.0",
                 None,
+                "2020-04-15 00:00:00.0",
                 "2020-04-15 00:00:00.0",
                 "2020-04-15 00:00:00.0",
                 "2020-04-15 00:00:00.0",
@@ -65,8 +70,9 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
                 "2020-04-15 00:00:00.0",
                 "2020-04-16 00:00:00.0",
                 None,
-                None,
-            ),  # no valid dates produces null from all null
+                "2020-04-10 12:00:00.0",
+                "fall_back_date",
+            ),  # no valid dates so uses final fallback date
             (
                 "2020-04-16 11:59:59.0",
                 "2020-04-13 00:00:00.0",
@@ -75,6 +81,7 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
                 "2020-04-12 00:00:00.0",
                 "2020-04-16 00:00:00.0",
                 "2020-04-12 11:59:59.0",
+                "2020-04-11 12:00:00.0",
                 "date_3",
             ),  # should pick priority 3 date as date_1 above max and date_2 greater than ref_date
             (
@@ -85,10 +92,11 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
                 "2020-04-12 00:00:00.0",
                 "2020-04-16 00:00:00.0",
                 "2020-04-12 23:59:59.0",
+                "2020-04-10 12:00:00.0",
                 "date_2",
             ),  # as above but date_2 now within bounds so take as priority
         ],
-        schema="date_1 string, date_2 string, date_3 string, ref_date string, min_date string, max_date string, result_date string, source string",
+        schema="date_1 string, date_2 string, date_3 string, ref_date string, min_date string, max_date string, result_date string, fall_back_date string, source string",
     )
     expected_df2 = spark_session.createDataFrame(
         data=[
@@ -100,6 +108,7 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
                 "2020-04-17 23:59:59.0",
                 "2020-04-19 00:00:00.0",
                 "2020-04-18 12:00:00.0",
+                "2020-04-16 00:00:00.0",
                 "date_3",
             ),  # Pick date_3 and default to 12:00:00
             (
@@ -110,6 +119,7 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
                 "2020-07-18 00:00:00.0",
                 "2020-07-22 00:00:00.0",
                 "2020-07-20 12:00:00.0",
+                "2020-07-19 12:00:00.0",
                 "date_3",
             ),  # When defaulted to 12:00:00, date_3 no longer before ref_date but evaluated prior to setting default - THIS IS A FEATURE
             (
@@ -120,6 +130,7 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
                 "2020-07-22 12:59:59.0",
                 "2020-07-23 00:00:00.0",
                 "2020-07-19 12:00:01.0",
+                "2020-07-12 12:00:00.0",
                 "ref_date",
             ),  # No dates within bounds, choose ref_date - offset (even though also not satisfying min_date)
             (
@@ -130,6 +141,7 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
                 "2020-04-16 11:59:59.0",
                 "2020-04-18 11:59:59.0",
                 "2020-04-13 11:59:59.0",
+                "2020-04-12 11:59:59.0",
                 "date_2",
             ),  # Check new max_date and min_date with offsets have correct assignment
             (
@@ -140,10 +152,11 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
                 "2020-04-16 11:59:59.0",
                 "2020-04-18 11:59:59.0",
                 "2020-04-20 11:59:59.0",
+                "2020-04-15 11:59:59.0",
                 "date_2",
             ),  # Check new max_date and min_date with offsets have correct assignment
         ],
-        schema="date_1 string, date_2 string, date_3 string, ref_date string, min_date string, max_date string, result_date string, source string",
+        schema="date_1 string, date_2 string, date_3 string, ref_date string, min_date string, max_date string, result_date string, fall_back_date string, source string",
     )
     for col in expected_df.columns:
         if "date" in col:
@@ -163,6 +176,7 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
         reference_datetime_days_offset_value=-2,
         source_reference_column_name="source",
         default_timestamp="12:00:00",
+        final_fallback_column="fall_back_date",
     )
     output_df2 = assign_datetime_from_coalesced_columns_and_log_source(
         expected_df2.drop("result_date", "source"),
@@ -177,6 +191,7 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
         max_datetime_offset_value=2,
         reference_datetime_days_offset_value=-1,
         default_timestamp="12:00:00",
+        final_fallback_column="fall_back_date",
     )
     assert_df_equality(output_df, expected_df, ignore_nullable=True, ignore_row_order=True, ignore_column_order=True)
     assert_df_equality(output_df2, expected_df2, ignore_nullable=True, ignore_row_order=True, ignore_column_order=True)
