@@ -116,12 +116,15 @@ def assign_datetime_from_coalesced_columns_and_log_source(
     coalesce_columns = [*coalesce_columns, REF_DATE_OFFSET]
 
     column_names = primary_datetime_columns + secondary_date_columns + [reference_datetime_column_name]
+
+    if final_fallback_column is not None:
+        coalesce_columns.append(F.col(final_fallback_column))
+        column_names.append(final_fallback_column)
+
     source_columns = [
         F.when(column_object.isNotNull(), column_name)
         for column_object, column_name in zip(coalesce_columns, column_names)
     ]
-    if final_fallback_column is not None:
-        source_columns.append(F.when(F.col(final_fallback_column).isNotNull(), final_fallback_column))
 
     df = df.withColumn(source_reference_column_name, F.coalesce(*source_columns))
     df = df.withColumn(

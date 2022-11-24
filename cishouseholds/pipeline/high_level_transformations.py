@@ -1438,8 +1438,10 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i",
     )
     df = clean_postcode(df, "postcode")
+    df = normalise_think_had_covid_columns(df, "think_had_covid_symptom")
 
     consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
+
     if all(col in df.columns for col in consent_cols):
         df = assign_consent_code(df, "consent_summary", reference_columns=consent_cols)
 
