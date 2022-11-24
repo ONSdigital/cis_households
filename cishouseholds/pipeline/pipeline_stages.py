@@ -824,16 +824,16 @@ def geography_and_imputation_dependent_processing(
     )
     df = assign_work_patient_facing_now(
         df,
-        "work_patient_facing_now",
+        column_name_to_assign="work_patient_facing_now",
         age_column="age_at_visit",
         work_healthcare_column="work_health_care_patient_facing",
     )
     df = assign_work_person_facing_now(
         df,
-        "work_person_facing_now",
+        column_name_to_assign="work_person_facing_now",
         work_patient_facing_now_column="work_patient_facing_now",
         work_social_care_column="work_social_care",
-        age_column="age_at_visit",
+        age_at_visit_column="age_at_visit",
     )
 
     # df = update_work_facing_now_column(

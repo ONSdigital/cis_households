@@ -19,7 +19,7 @@ def test_assign_work_person_facing_now(spark_session):
     output_df = assign_work_person_facing_now(
         df=expected_df.drop("facing"),
         column_name_to_assign="facing",
-        age_column="age",
+        age_at_visit_column="age",
         work_patient_facing_now_column="work_patient",
         work_social_care_column="work_social",
     )
