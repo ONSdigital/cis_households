@@ -1439,8 +1439,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     if all(col in df.columns for col in consent_cols):
         df = assign_consent_code(df, "consent_summary", reference_columns=consent_cols)
 
-    df = normalise_think_had_covid_columns(df, "think_had_covid_symptom")
-
     df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_onset_date", "visit_datetime")
     df = assign_grouped_variable_from_days_since(
         df=df,
