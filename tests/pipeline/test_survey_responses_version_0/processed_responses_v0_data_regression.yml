@@ -107,15 +107,15 @@
   think_had_covid_symptom_abdominal_pain: 'Yes'
   think_had_covid_symptom_cough: 'Yes'
   think_had_covid_symptom_diarrhoea: 'Yes'
-  think_had_covid_symptom_fatigue: 'No'
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: 'No'
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_smell: 'No'
   think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache: 'No'
+  think_had_covid_symptom_muscle_ache: null
   think_had_covid_symptom_nausea_or_vomiting: 'Yes'
-  think_had_covid_symptom_shortness_of_breath: 'No'
-  think_had_covid_symptom_sore_throat: 'No'
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: Do you come here often?
   think_have_covid: null
   think_have_covid_symptom_abdominal_pain: null
@@ -264,16 +264,16 @@
   think_had_covid_onset_date: '2022-01-03 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'No'
   think_had_covid_symptom_cough: 'No'
-  think_had_covid_symptom_diarrhoea: 'No'
+  think_had_covid_symptom_diarrhoea: null
   think_had_covid_symptom_fatigue: 'No'
   think_had_covid_symptom_fever: 'No'
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_smell: 'Yes'
   think_had_covid_symptom_loss_of_taste: 'Yes'
-  think_had_covid_symptom_muscle_ache: 'No'
-  think_had_covid_symptom_nausea_or_vomiting: 'No'
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: null
   think_had_covid_symptom_shortness_of_breath: 'No'
-  think_had_covid_symptom_sore_throat: 'No'
+  think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: Type classes first appeared in the Haskell programming
     language.
   think_have_covid: 'No'
@@ -421,13 +421,13 @@
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_contacted_nhs: null
   think_had_covid_onset_date: '2021-12-08 00:00:00.000000'
-  think_had_covid_symptom_abdominal_pain: 'No'
+  think_had_covid_symptom_abdominal_pain: null
   think_had_covid_symptom_cough: 'No'
-  think_had_covid_symptom_diarrhoea: 'No'
+  think_had_covid_symptom_diarrhoea: null
   think_had_covid_symptom_fatigue: 'No'
-  think_had_covid_symptom_fever: 'No'
+  think_had_covid_symptom_fever: null
   think_had_covid_symptom_headache: 'No'
-  think_had_covid_symptom_loss_of_smell: 'No'
+  think_had_covid_symptom_loss_of_smell: null
   think_had_covid_symptom_loss_of_taste: 'No'
   think_had_covid_symptom_muscle_ache: 'Yes'
   think_had_covid_symptom_nausea_or_vomiting: 'No'
@@ -582,17 +582,17 @@
   think_had_covid_contacted_nhs: 'No'
   think_had_covid_onset_date: '2022-01-09 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'No'
-  think_had_covid_symptom_cough: 'No'
+  think_had_covid_symptom_cough: null
   think_had_covid_symptom_diarrhoea: 'Yes'
   think_had_covid_symptom_fatigue: 'Yes'
   think_had_covid_symptom_fever: 'No'
   think_had_covid_symptom_headache: 'Yes'
-  think_had_covid_symptom_loss_of_smell: 'No'
+  think_had_covid_symptom_loss_of_smell: null
   think_had_covid_symptom_loss_of_taste: 'Yes'
   think_had_covid_symptom_muscle_ache: 'Yes'
-  think_had_covid_symptom_nausea_or_vomiting: 'No'
-  think_had_covid_symptom_shortness_of_breath: 'No'
-  think_had_covid_symptom_sore_throat: 'No'
+  think_had_covid_symptom_nausea_or_vomiting: null
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
     arguments are D1, D2, ... Dn.
   think_have_covid: null
@@ -741,15 +741,15 @@
   think_had_covid_symptom_abdominal_pain: 'No'
   think_had_covid_symptom_cough: 'No'
   think_had_covid_symptom_diarrhoea: 'No'
-  think_had_covid_symptom_fatigue: 'No'
-  think_had_covid_symptom_fever: 'No'
+  think_had_covid_symptom_fatigue: null
+  think_had_covid_symptom_fever: null
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_smell: 'No'
   think_had_covid_symptom_loss_of_taste: 'Yes'
   think_had_covid_symptom_muscle_ache: 'Yes'
   think_had_covid_symptom_nausea_or_vomiting: 'Yes'
-  think_had_covid_symptom_shortness_of_breath: 'No'
-  think_had_covid_symptom_sore_throat: 'No'
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
     arguments are D1, D2, ... Dn.
   think_have_covid: 'No'
@@ -902,7 +902,7 @@
   think_had_covid_onset_date: '2022-01-02 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'No'
   think_had_covid_symptom_cough: 'Yes'
-  think_had_covid_symptom_diarrhoea: 'No'
+  think_had_covid_symptom_diarrhoea: null
   think_had_covid_symptom_fatigue: 'No'
   think_had_covid_symptom_fever: 'Yes'
   think_had_covid_symptom_headache: 'Yes'
@@ -1060,16 +1060,16 @@
   think_had_covid_contacted_nhs: 'Yes'
   think_had_covid_onset_date: '2022-01-01 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'Yes'
-  think_had_covid_symptom_cough: 'No'
+  think_had_covid_symptom_cough: null
   think_had_covid_symptom_diarrhoea: 'No'
-  think_had_covid_symptom_fatigue: 'No'
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: 'No'
-  think_had_covid_symptom_headache: 'No'
+  think_had_covid_symptom_headache: null
   think_had_covid_symptom_loss_of_smell: 'No'
-  think_had_covid_symptom_loss_of_taste: 'No'
+  think_had_covid_symptom_loss_of_taste: null
   think_had_covid_symptom_muscle_ache: 'No'
   think_had_covid_symptom_nausea_or_vomiting: 'Yes'
-  think_had_covid_symptom_shortness_of_breath: 'No'
+  think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_which_symptoms: Make me a sandwich.
   think_have_covid: 'Yes'
@@ -1219,10 +1219,10 @@
   think_had_covid_symptom_cough: 'Yes'
   think_had_covid_symptom_diarrhoea: 'No'
   think_had_covid_symptom_fatigue: 'Yes'
-  think_had_covid_symptom_fever: 'No'
+  think_had_covid_symptom_fever: null
   think_had_covid_symptom_headache: 'No'
-  think_had_covid_symptom_loss_of_smell: 'No'
-  think_had_covid_symptom_loss_of_taste: 'No'
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: null
   think_had_covid_symptom_muscle_ache: 'No'
   think_had_covid_symptom_nausea_or_vomiting: 'No'
   think_had_covid_symptom_shortness_of_breath: 'Yes'
@@ -1371,18 +1371,18 @@
   think_had_covid_admitted_to_hospital: 'Yes'
   think_had_covid_contacted_nhs: null
   think_had_covid_onset_date: '2021-12-03 00:00:00.000000'
-  think_had_covid_symptom_abdominal_pain: 'No'
+  think_had_covid_symptom_abdominal_pain: null
   think_had_covid_symptom_cough: 'Yes'
-  think_had_covid_symptom_diarrhoea: 'No'
-  think_had_covid_symptom_fatigue: 'No'
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_fatigue: null
   think_had_covid_symptom_fever: 'Yes'
   think_had_covid_symptom_headache: 'No'
   think_had_covid_symptom_loss_of_smell: 'No'
   think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache: 'No'
+  think_had_covid_symptom_muscle_ache: null
   think_had_covid_symptom_nausea_or_vomiting: 'No'
-  think_had_covid_symptom_shortness_of_breath: 'No'
-  think_had_covid_symptom_sore_throat: 'No'
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: null
   think_had_covid_which_symptoms: She spent her earliest years reading classic literature,
     and writing poetry.
   think_have_covid: null
@@ -1537,11 +1537,11 @@
   think_had_covid_symptom_fatigue: 'Yes'
   think_had_covid_symptom_fever: 'No'
   think_had_covid_symptom_headache: 'Yes'
-  think_had_covid_symptom_loss_of_smell: 'No'
-  think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache: 'No'
-  think_had_covid_symptom_nausea_or_vomiting: 'No'
-  think_had_covid_symptom_shortness_of_breath: 'No'
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: null
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: null
+  think_had_covid_symptom_shortness_of_breath: null
   think_had_covid_symptom_sore_throat: 'Yes'
   think_had_covid_which_symptoms: Haskell features a type system with type inference
     and lazy evaluation.
