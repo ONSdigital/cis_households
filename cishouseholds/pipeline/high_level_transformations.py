@@ -1052,6 +1052,10 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
     )
     df = clean_barcode_simple(df, "swab_sample_barcode_user_entered")
     df = clean_barcode_simple(df, "blood_sample_barcode_user_entered")
+
+    df = clean_barcode_simple(df, "swab_barcode_corrected")
+    df = clean_barcode_simple(df, "blood_barcode_corrected")
+
     df = map_options_to_bool_columns(
         df,
         "currently_smokes_or_vapes_description",
@@ -1438,8 +1442,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
     if all(col in df.columns for col in consent_cols):
         df = assign_consent_code(df, "consent_summary", reference_columns=consent_cols)
-
-    df = normalise_think_had_covid_columns(df, "think_had_covid_symptom")
 
     df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_onset_date", "visit_datetime")
     df = assign_grouped_variable_from_days_since(
