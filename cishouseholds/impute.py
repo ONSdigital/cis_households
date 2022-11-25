@@ -314,7 +314,8 @@ def fill_forward_event(
                 "RESOLVED_EVENT_DATE",
                 F.first(
                     F.when(
-                        F.abs(F.datediff(F.col("REF_EVENT_DATE"), F.col(event_date_column))) <= event_date_tolerance,
+                        (F.abs(F.datediff(F.col("REF_EVENT_DATE"), F.col(event_date_column))) <= event_date_tolerance)
+                        & (F.col("REF_EVENT_DATE") < F.col(visit_datetime_column)),
                         F.col("REF_EVENT_DATE"),
                     ),
                     True,
