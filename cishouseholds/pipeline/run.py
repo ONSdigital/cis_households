@@ -222,7 +222,14 @@ def run_pipeline_stages(
         print(stage_text)  # functional
         if check_conditions(stage_responses=stage_responses, stage_config=stage_config):
             stage_config.pop("when", None)
-            if (  # try to add input survey table from input stage
+            if (  # try to add input survey table directly
+                current_table is not None
+                and "input_survey_table" in stage_function_args
+                and "input_survey_table" not in stage_config
+            ):  # automatically add input table name
+                stage_config["input_survey_table"] = current_table
+
+            elif (  # try to add input survey table from input stage
                 "input_stage" in stage_config
                 and stage_config["input_stage"] in stage_configs
                 and "output_tables" in stage_configs[stage_config["input_stage"]]
@@ -232,13 +239,6 @@ def run_pipeline_stages(
                     "output_survey_table"
                 ]
                 del stage_config["input_stage"]
-
-            elif (  # try to add input survey table directly
-                current_table is not None
-                and "input_survey_table" in stage_function_args
-                and "input_survey_table" not in stage_config
-            ):  # automatically add input table name
-                stage_config["input_survey_table"] = current_table
 
             while not stage_success and attempt < retry_count + 1:
                 if attempt != 0:
