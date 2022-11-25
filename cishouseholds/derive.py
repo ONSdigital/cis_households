@@ -106,6 +106,7 @@ def assign_datetime_from_coalesced_columns_and_log_source(
     REF_DATE_OFFSET = F.col(reference_datetime_column_name) + F.expr(
         f"INTERVAL {reference_datetime_days_offset_value} DAYS"
     )
+
     coalesce_columns = [
         F.col(datetime_column) for datetime_column in [*primary_datetime_columns, *secondary_date_columns]
     ]

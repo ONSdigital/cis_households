@@ -69,7 +69,7 @@ def test_assign_datetime_from_coalesced_columns_and_log_source(spark_session):
                 None,
                 "2020-04-15 00:00:00.0",
                 "2020-04-16 00:00:00.0",
-                None,
+                "2020-04-10 12:00:00.0",
                 "2020-04-10 12:00:00.0",
                 "fall_back_date",
             ),  # no valid dates so uses final fallback date

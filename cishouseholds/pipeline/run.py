@@ -233,7 +233,7 @@ def run_pipeline_stages(
                 ]
                 del stage_config["input_stage"]
 
-            if (  # try to add input survey table directly
+            elif (  # try to add input survey table directly
                 current_table is not None
                 and "input_survey_table" in stage_function_args
                 and "input_survey_table" not in stage_config
