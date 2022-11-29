@@ -83,8 +83,8 @@ def extract_from_table(table_name: str, break_lineage: bool = False, alternate_p
     spark_session = get_or_create_spark_session()
     check_table_exists(table_name, raise_if_missing=True, alternate_prefix=alternate_prefix)
     if break_lineage:
-        return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}").checkpoint()
-    return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name)}")
+        return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix)}").checkpoint()
+    return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix)}")
 
 
 def update_table(df, table_name, write_mode, archive=False):

@@ -530,7 +530,7 @@ def join_lookup_table(
 
     unjoinable_df = df.filter(all_columns_null(join_on_columns))
     for col, val in unjoinable_values.items():
-        unjoinable_df.withColumn(col, F.lit(val))
+        unjoinable_df = unjoinable_df.withColumn(col, F.lit(val))
 
     df = df.filter(any_column_not_null(join_on_columns))
     df = left_join_keep_right(df, lookup_df, join_on_columns)
