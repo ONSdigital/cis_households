@@ -1405,9 +1405,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
 
     df = assign_raw_copies(df, [column for column in original_copy_list if column in df.columns], "original")
 
-    df = assign_unique_id_column(
-        df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
-    )
+    df = assign_unique_id_column(df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id"])
     df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
     date_cols_to_correct = [
         col
