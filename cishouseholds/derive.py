@@ -26,6 +26,26 @@ from cishouseholds.merge import null_safe_join
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def assign_work_main_job_changed(
+    df: DataFrame,
+    column_name_to_assign: str,
+    participant_id_column: str,
+    reference_columns: List[str],
+):
+    """
+    re-derive work main job changed to denote whether any of the work variables differ between rows.
+    """
+    window = Window.partitionBy(participant_id_column).orderBy(F.lit("A"))
+    x = lambda c: ~F.lag(c, 1).over(window).eqNullSafe(F.col(c))  # noqa: E731
+
+    df = df.withColumn("ROW", F.row_number().over(window))
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when((F.col("ROW") == 1) | (reduce(or_, [x(c) for c in reference_columns])), "Yes").otherwise("No"),
+    )
+    return df.drop("ROW")
+
+
 def assign_regex_from_map(
     df: DataFrame, column_name_to_assign: str, reference_columns: List[str], roles: Mapping, priority_map: Mapping
 ):
