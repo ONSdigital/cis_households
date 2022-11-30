@@ -670,7 +670,7 @@ def assign_first_visit(df: DataFrame, column_name_to_assign: str, id_column: str
     visit_date_column
     """
     window = Window.partitionBy(id_column).orderBy(visit_date_column)
-    return df.withColumn(column_name_to_assign, F.first(visit_date_column).over(window))
+    return df.withColumn(column_name_to_assign, F.first(visit_date_column, ignorenulls=True).over(window))
 
 
 def assign_last_visit(

@@ -121,6 +121,24 @@ def blind_csv_to_table(path: str, table_name: str, sep: str = "|"):
     df = update_table(df, table_name, "overwrite")
 
 
+@register_pipeline_stage("table_to_table")
+def table_to_table(table_name: str, break_lineage: bool = False, alternate_prefix: str = None):
+    """
+    Extracts a HIVE table, with an alternate prefix, and saves it out with the project prefix
+
+    Parameters
+    ----------
+    table_name : str
+        HIVE table name
+    break_lineage : bool
+        whether to create a checkpoint on loading the file
+    alternate_prefix : str
+        alternate prefix to use for input HIVE table
+    """
+    df = extract_from_table(table_name, break_lineage, alternate_prefix)
+    df = update_table(df, table_name, "overwrite")
+
+
 @register_pipeline_stage("csv_to_table")
 def csv_to_table(file_operations: list):
     """
@@ -512,7 +530,7 @@ def join_lookup_table(
 
     unjoinable_df = df.filter(all_columns_null(join_on_columns))
     for col, val in unjoinable_values.items():
-        unjoinable_df.withColumn(col, F.lit(val))
+        unjoinable_df = unjoinable_df.withColumn(col, F.lit(val))
 
     df = df.filter(any_column_not_null(join_on_columns))
     df = left_join_keep_right(df, lookup_df, join_on_columns)
