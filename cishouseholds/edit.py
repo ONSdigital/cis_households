@@ -34,6 +34,8 @@ def update_work_main_job_changed(
     if column_name_to_update not in df.columns:
         df = df.withColumn(column_name_to_update, F.lit(None))
 
+    reference_columns = [c for c in reference_columns if c in df.columns]
+
     window = Window.partitionBy(participant_id_column).orderBy(F.lit("A"))
     x = lambda c: (~F.lag(c, 1).over(window).eqNullSafe(F.col(c))) & (F.col(c).isNotNull())  # noqa: E731
 
