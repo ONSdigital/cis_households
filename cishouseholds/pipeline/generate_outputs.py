@@ -159,11 +159,11 @@ def configure_outputs(
     selection_columns
     group_by_columns
     name_map
-        dictionary containy key value pairs of old and new column names to modify
+        dictionary containing key value pairs of old and new column names to modify
     value_map
-        dicitonary with key value pair: {column: mapping expression dictionary} to map values in given columns
+        dictionary with key value pair: {column: mapping expression dictionary} to map values in given columns
     complete_map
-        boolean expression to return error if all values in column must be mapped to constitue a correct output
+        boolean expression to return error if all values in column must be mapped to constitute a correct output
     """
     col_args = []
     if type(group_by_columns) != list and group_by_columns is not None:
