@@ -4,7 +4,7 @@ from cishouseholds.edit import update_work_main_job_changed
 
 
 def test_update_work_main_job_changed(spark_session):
-    schema="""
+    schema = """
         id integer,
         a integer,
         b integer,
@@ -14,11 +14,12 @@ def test_update_work_main_job_changed(spark_session):
     input_df = spark_session.createDataFrame(
         # fmt: off
         data=[
-            (1, 1, 0, 0, "Yes"),
-            (1, 1, 2, 0, "No"),
-            (1, 1, 2, 0, None),
-            (1, None, None, None, "Yes"),
-            (1, None, None, None, None)
+            (1, None, None, None,  None),
+            (1, 1,    0,    0,    "Yes"),
+            (1, 1,    2,    0,     None),
+            (1, 1,    2,    0,     "No"),
+            (1, None, None, None,  "Yes"),
+            (1, None, None, None,  None)
         ],
         # fmt: on
         schema=schema
@@ -27,9 +28,12 @@ def test_update_work_main_job_changed(spark_session):
     expected_df = spark_session.createDataFrame(
         # fmt: off
         data=[
-            (1, 1, 0, 0, "Yes"),
-            (1, 1, 2, 0, "Yes"),
-            (1, 1, 2, 0, "No")
+            (1, None, None, None, "No"),
+            (1, 1,    0,    0,    "Yes"),
+            (1, 1,    2,    0,    "Yes"),
+            (1, 1,    2,    0,    "No"),
+            (1, None, None, None, "Yes"),
+            (1, None, None, None, "No")
         ],
         # fmt: on
         schema=schema
@@ -37,7 +41,7 @@ def test_update_work_main_job_changed(spark_session):
 
     output_df = update_work_main_job_changed(
         df=input_df,
-        column_name_to_assign="result",
+        column_name_to_update="changed",
         participant_id_column="id",
         reference_columns=["a", "b", "c"],
     )
