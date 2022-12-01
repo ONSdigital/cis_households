@@ -77,7 +77,7 @@ def test_replace_sample_barcode(spark_session):
                 "A",
                 None,
                 3,
-                "Yes",
+                "No",
                 None,
                 "F",
                 None,
@@ -87,7 +87,7 @@ def test_replace_sample_barcode(spark_session):
         ],
         schema="""
         id integer,
-        file_date,
+        file_date string,
         swab_sample_barcode string,
         blood_sample_barcode string,
         survey_response_dataset_major_version integer,
@@ -102,13 +102,14 @@ def test_replace_sample_barcode(spark_session):
 
     expected_df = spark_session.createDataFrame(
         data=[
-            (1, "2022-12-01 00:00:00" "A", "B", 3, "Yes", "Yes", None, None, "C", "D", "A", "B"),
-            (2, "2022-12-01 00:00:00" "A", "B", 3, "No", "No", None, None, "C", "D", "C", "D"),
-            (3, "2022-12-01 00:00:00" "A", "B", 3, "Yes", "Yes", None, None, None, None, "A", "B"),
-            (4, "2022-12-01 00:00:00" "A", "B", 2, "Yes", "Yes", "", "", "C", "D", "A", "B"),
+            (1, "2022-12-01 00:00:00", "A", "B", 3, "Yes", "Yes", None, None, "C", "D", "A", "B"),
+            (2, "2022-12-01 00:00:00", "A", "B", 3, "No", "No", None, None, "C", "D", "C", "D"),
+            (3, "2022-12-01 00:00:00", "A", "B", 3, "Yes", "Yes", None, None, None, None, "A", "B"),
+            (4, "2022-12-01 00:00:00", "A", "B", 2, "Yes", "Yes", "", "", "C", "D", "A", "B"),
             (
                 5,
-                "2022-12-01 00:00:00" "A",
+                "2022-12-01 00:00:00",
+                "A",
                 "",
                 3,
                 "No",
@@ -122,10 +123,11 @@ def test_replace_sample_barcode(spark_session):
             ),  # swab barcode not correct and iqvia corrected
             (
                 6,
-                "2022-12-01 00:00:00" "A",
+                "2022-10-01 00:00:00",
+                "A",
                 None,
                 3,
-                "Yes",
+                "No",
                 None,
                 "F",
                 None,
@@ -137,7 +139,7 @@ def test_replace_sample_barcode(spark_session):
         ],
         schema="""
         id integer,
-        file_date,
+        file_date string,
         swab_sample_barcode string,
         blood_sample_barcode string,
         survey_response_dataset_major_version integer,
