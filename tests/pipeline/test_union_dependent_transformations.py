@@ -24,7 +24,6 @@ def unioned_tables(
     )
 
 
-@pytest.mark.integration
 @pytest.mark.parametrize(
     "function", [fill_forwards_transformations, union_dependent_cleaning, union_dependent_derivations]
 )
