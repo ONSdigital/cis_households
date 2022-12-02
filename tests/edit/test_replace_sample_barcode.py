@@ -87,7 +87,7 @@ def test_replace_sample_barcode(spark_session):
         ],
         schema="""
         id integer,
-        file_date string,
+        participant_completion_window_start_datetime string,
         swab_sample_barcode string,
         blood_sample_barcode string,
         survey_response_dataset_major_version integer,
@@ -139,7 +139,7 @@ def test_replace_sample_barcode(spark_session):
         ],
         schema="""
         id integer,
-        file_date string,
+        participant_completion_window_start_datetime string,
         swab_sample_barcode string,
         blood_sample_barcode string,
         survey_response_dataset_major_version integer,
