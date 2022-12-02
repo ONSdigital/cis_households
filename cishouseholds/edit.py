@@ -1176,7 +1176,7 @@ def replace_sample_barcode(
                     (
                         (F.col("survey_response_dataset_major_version") == 3)
                         & ~(F.col(f"{test_type}_barcode_corrected").isNull())
-                        & (F.col("file_date") >= "2022-11-01 00:00:00")
+                        & (F.col("participant_completion_window_start_datetime") >= "2022-11-01 00:00:00")
                     ),
                     F.col(f"{test_type}_barcode_corrected"),
                 )
