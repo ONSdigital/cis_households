@@ -296,18 +296,21 @@ def fill_forward_event(
     )
     filter_window = Window.partitionBy(participant_id_column, event_date_column).orderBy(visit_datetime_column)
 
+    # create dataframe containing only valid non null event dates
     filtered_df = df.filter(
         (F.col(event_date_column).isNotNull()) & (F.col(event_date_column) <= F.col(visit_datetime_column))
     ).cache()
 
     event_dates_df = filtered_df.select(participant_id_column, event_date_column).distinct()
 
+    # match all event dates to all other event dates
     filtered_df = filtered_df.join(
         event_dates_df.withColumnRenamed(event_date_column, "REF_EVENT_DATE"),
         on=participant_id_column,
         how="left",
     )
 
+    # get first event sorted by `REF_EVENT_DATE` that falls within the time difference range
     filtered_df = (
         (
             filtered_df.withColumn(
@@ -326,13 +329,16 @@ def fill_forward_event(
     )
 
     filtered_df = filtered_df.withColumn(event_date_column, F.col("RESOLVED_EVENT_DATE")).drop("RESOLVED_EVENT_DATE")
+
+    # remove all except the first recollection of this event
     filtered_df = (
         filtered_df.withColumn("ROW_NUMBER", F.row_number().over(filter_window))
         .filter(F.col("ROW_NUMBER") == 1)
         .drop("ROW_NUMBER")
     )
-    # filter valid events prioritizing the first occupance of an event
+    # filter valid events prioritizing the first occurence of an event
 
+    # replace the event columns in the original dataframe with the most appropriate recollections from the filtered_df
     if filtered_df.count() > 0:
         df = (
             df.drop(*event_columns)
@@ -349,6 +355,7 @@ def fill_forward_event(
     df = df.drop("DROP_EVENT").distinct().withColumn("ROW_NUMBER", F.row_number().over(window))
     df = df.filter(F.col("ROW_NUMBER") == 1).drop("ROW_NUMBER")
     df = df.unionByName(null_visit_df)
+
     return df
 
 
