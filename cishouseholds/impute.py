@@ -290,7 +290,7 @@ def fill_forward_event(
     null_visit_df = df.filter(F.col(visit_datetime_column).isNull())
     df = df.filter(F.col(visit_datetime_column).isNotNull())
 
-    grouping_window = Window.partitionBy(participant_id_column, event_date_column).orderBy("REF_EVENT_DATE")
+    grouping_window = Window.partitionBy(participant_id_column, event_date_column).orderBy(visit_datetime_column)
     window = Window.partitionBy(participant_id_column, visit_datetime_column, visit_id_column).orderBy(
         F.desc(event_date_column)
     )
@@ -299,8 +299,9 @@ def fill_forward_event(
     # create dataframe containing only valid non null event dates
     filtered_df = df.filter(
         (F.col(event_date_column).isNotNull()) & (F.col(event_date_column) <= F.col(visit_datetime_column))
-    ).cache()
+    )
 
+    # get only distinct combinations
     event_dates_df = filtered_df.select(participant_id_column, event_date_column).distinct()
 
     # match all event dates to all other event dates
@@ -310,7 +311,7 @@ def fill_forward_event(
         how="left",
     )
 
-    # get first event sorted by `REF_EVENT_DATE` that falls within the time difference range
+    # get first event sorted by visit_datetime that falls within the time difference as this is likely to be most accurate
     filtered_df = (
         (
             filtered_df.withColumn(
@@ -336,7 +337,8 @@ def fill_forward_event(
         .filter(F.col("ROW_NUMBER") == 1)
         .drop("ROW_NUMBER")
     )
-    # filter valid events prioritizing the first occurrence of an event
+
+    # filter valid events prioritizing the first occupance of an event
 
     # replace the event columns in the original dataframe with the most appropriate recollections from the filtered_df
     if filtered_df.count() > 0:
@@ -348,6 +350,7 @@ def fill_forward_event(
     else:
         df = df.withColumn("DROP_EVENT", F.lit(False))
 
+    # add the additional detail columns to the original dataframe
     for col in event_columns:
         df = df.withColumn(col, F.when(F.col("DROP_EVENT"), None).otherwise(F.col(col)))
 
@@ -355,7 +358,6 @@ def fill_forward_event(
     df = df.drop("DROP_EVENT").distinct().withColumn("ROW_NUMBER", F.row_number().over(window))
     df = df.filter(F.col("ROW_NUMBER") == 1).drop("ROW_NUMBER")
     df = df.unionByName(null_visit_df)
-
     return df
 
 
