@@ -18,6 +18,7 @@ from cishouseholds.derive import assign_age_group_school_year
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_multigenerational
 from cishouseholds.derive import assign_outward_postcode
+from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import household_level_populations
@@ -1160,7 +1161,13 @@ def compare(
         optional subset of columns to evaluate
     """
     base_df = extract_from_table(base_table_name)
+    base_df = assign_unique_id_column(
+        base_df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id"]
+    )
     compare_df = extract_from_table(table_name_to_compare)
+    compare_df = assign_unique_id_column(
+        compare_df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id"]
+    )
     if len(select_columns) > 0:
         if unique_id_column not in select_columns:
             select_columns = [unique_id_column, *select_columns]
