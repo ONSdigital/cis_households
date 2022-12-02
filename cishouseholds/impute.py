@@ -336,7 +336,7 @@ def fill_forward_event(
         .filter(F.col("ROW_NUMBER") == 1)
         .drop("ROW_NUMBER")
     )
-    # filter valid events prioritizing the first occurence of an event
+    # filter valid events prioritizing the first occurrence of an event
 
     # replace the event columns in the original dataframe with the most appropriate recollections from the filtered_df
     if filtered_df.count() > 0:
