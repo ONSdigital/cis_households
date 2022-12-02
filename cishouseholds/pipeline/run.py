@@ -238,7 +238,7 @@ def run_pipeline_stages(
                 stage_config["input_survey_table"] = stage_configs[stage_config["input_stage"]]["output_tables"][
                     "output_survey_table"
                 ]
-                del stage_config["input_stage"]
+            del stage_config["input_stage"]
 
             while not stage_success and attempt < retry_count + 1:
                 if attempt != 0:
