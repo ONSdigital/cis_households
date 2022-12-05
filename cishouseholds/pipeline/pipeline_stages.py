@@ -50,6 +50,7 @@ from cishouseholds.pipeline.high_level_transformations import derive_age_based_c
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forward_events_for_key_columns
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
+from cishouseholds.pipeline.high_level_transformations import fix_timestamps
 from cishouseholds.pipeline.high_level_transformations import get_differences
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
@@ -80,6 +81,7 @@ from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
+from cishouseholds.predicition_checker_class import PredictionChecker
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import check_lookup_table_joined_columns_unique
 from cishouseholds.validate import normalise_schema
@@ -938,7 +940,8 @@ def validate_survey_responses(
         .withColumn("run_id", F.lit(get_run_id()))
         .drop(validation_failure_flag_column)
     )
-
+    valid_survey_responses = fix_timestamps(valid_survey_responses)
+    invalid_survey_responses_table = fix_timestamps(erroneous_survey_responses)
     update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
     update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
     update_table(valid_survey_responses, output_survey_table, write_mode="overwrite", archive=True)
@@ -1178,6 +1181,30 @@ def compare(
     print(f"     {table_name_to_compare} contained {total} differences to {base_table_name}")  # functional
     update_table(counts_df, counts_df_table_name, "overwrite")
     update_table(difference_sample_df, diff_samples_table_name, "overwrite")
+
+
+@register_pipeline_stage("compare_tables")
+def check_predictions(
+    base_table_name: str,
+    table_name_to_compare: str,
+    prediction_results_table: str,
+    unique_id_column: str = "unique_participant_response_id",
+):
+    """
+    Create an output that holds information about differences between 2 tables
+
+    Parameters
+    ----------
+    base_table_name
+    table_name_to_compare
+    unique_id_column
+        column containing unique id common to base an compare dataframes
+    """
+    base_df = extract_from_table(base_table_name)
+    compare_df = extract_from_table(table_name_to_compare)
+    pc = PredictionChecker(base_df, compare_df, unique_id_column)
+    df = pc.check_predictions()
+    update_table(df, prediction_results_table, "overwrite")
 
 
 @register_pipeline_stage("generate_sample")

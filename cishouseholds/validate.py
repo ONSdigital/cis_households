@@ -94,7 +94,14 @@ def normalise_schema(file_path: str, reference_validation_schema: dict, regex_sc
                 f"{file_path} is invalid as header({actual_header} contained unrecognisable columns"  # functional
             )
             return error_message, None
-        drop = [*[col for col in actual_header if col not in dont_drop_list], "DROP"]
+        drop = [
+            *[
+                "".join(filter(lambda x: x not in r"./\|", col.replace(" ", "_")))
+                for col in actual_header
+                if col not in dont_drop_list
+            ],
+            "DROP",
+        ]
     else:
         validation_schema = [[col, _type] for col, _type in reference_validation_schema.items()]
         drop = []

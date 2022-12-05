@@ -16,7 +16,7 @@ def test_fill_forward_event_1(spark_session):
     input_data = [
         # fmt:off
             (1,"2020-01-07",1,"A","2020-01-01","some different detail"),
-            (1,"2019-12-01",2,"B","2020-01-01","some detail"),
+            (1,"2019-12-01",2,"B","2020-01-01","some detail"), # this row is invalid as visit_date before event date
             (1,"2020-01-05",3,"C","2020-01-01","some detail"),
             (1,"2020-01-06",4,"D",None,        "some detail"),
             (1,"2020-01-08",5,"E","2020-01-07","some different detail"),
@@ -91,9 +91,9 @@ def test_fill_forward_event_2(spark_session):
 def test_fill_forward_event_3(spark_session):
     input_data = [
         # fmt:off
-            (1,"2020-06-01",1,"No", "2020-01-01","detail1"),
+            (1,"2020-06-01",1,"No", "2020-01-03","detail1"),
             (1,"2020-06-02",2,"Yes","2020-01-02","detail2"),
-            (1,"2020-06-03",3,"Yes","2020-01-03","detail3"),
+            (1,"2020-06-03",3,"Yes","2020-01-01","detail3"),
             (1,"2020-06-04",4,"Yes","2020-09-01","different detail"),
             (1,"2021-01-06",5,None,  None,       "some detail"),
             (1,"2021-01-08",6,None,  None,       "some detail"),
@@ -102,13 +102,13 @@ def test_fill_forward_event_3(spark_session):
     ]
     expected_data = [
         # fmt:off
-            (1,"2020-06-01",1,"Yes","2020-01-01","detail1"),
-            (1,"2020-06-02",2,"Yes","2020-01-01","detail1"),
-            (1,"2020-06-03",3,"Yes","2020-01-01","detail1"),
-            (1,"2020-06-04",4,"Yes","2020-01-01","detail1"),
-            (1,"2021-01-06",5,"Yes","2020-01-01","detail1"),
-            (1,"2021-01-08",6,"Yes","2020-01-01","detail1"),
-            (1,"2021-02-01",7,"Yes","2020-01-01","detail1")
+            (1,"2020-06-01",1,"Yes","2020-01-03","detail1"),
+            (1,"2020-06-02",2,"Yes","2020-01-03","detail1"),
+            (1,"2020-06-03",3,"Yes","2020-01-03","detail1"),
+            (1,"2020-06-04",4,"Yes","2020-01-03","detail1"),
+            (1,"2021-01-06",5,"Yes","2020-01-03","detail1"),
+            (1,"2021-01-08",6,"Yes","2020-01-03","detail1"),
+            (1,"2021-02-01",7,"Yes","2020-01-03","detail1")
         # fmt:on
     ]
     input_df = spark_session.createDataFrame(data=input_data, schema=schema)
@@ -131,7 +131,7 @@ def test_fill_forward_event_3(spark_session):
 def test_fill_forward_event_4(spark_session):
     input_data = [
         # fmt:off
-            (1,"2020-06-01",1,"No", "2020-01-01","detail1"),
+            (1,"2020-06-02",1,"No", "2020-01-01","detail1"),
             (1,"2020-06-01",2,"Yes","2020-01-02","detail2"),
             (1,None,        3,"Yes","2020-01-03","detail3"),
             (1,None,        4,"Yes","2020-09-01","different detail"),
@@ -142,13 +142,13 @@ def test_fill_forward_event_4(spark_session):
     ]
     expected_data = [
         # fmt:off
-            (1,"2020-06-01",1,"Yes","2020-01-01","detail1"),
-            (1,"2020-06-01",2,"Yes","2020-01-01","detail1"),
-            (1,None,        3,"Yes","2020-01-03","detail3"),
+            (1,"2020-06-02",1,"Yes","2020-01-02","detail1"),
+            (1,"2020-06-01",2,"Yes","2020-01-02","detail1"),
+            (1,None,        3,"Yes","2020-01-03","detail3"), # nothing happens to this row as no visit_datetime
             (1,None,        4,"Yes","2020-09-01","different detail"),
-            (1,"2021-01-06",5,"Yes","2020-01-01","detail1"),
-            (1,"2021-01-08",6,"Yes","2020-01-01","detail1"),
-            (1,"2021-02-01",7,"Yes","2020-01-01","detail1")
+            (1,"2021-01-06",5,"Yes","2020-01-02","detail1"),
+            (1,"2021-01-08",6,"Yes","2020-01-02","detail1"),
+            (1,"2021-02-01",7,"Yes","2020-01-02","detail1")
         # fmt:on
     ]
 
