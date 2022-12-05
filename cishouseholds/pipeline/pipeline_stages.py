@@ -164,11 +164,17 @@ def csv_to_table(file_operations: list):
             column_map,
             file["drop_not_found"],
         )
-
         if file.get("datetime_map") is not None and file["datetime_map"] not in csv_datetime_maps:
             raise ValueError(f"CSV datetime map doesn't exist: {file['datetime_map']}")
         if file.get("datetime_map") is not None:
             df = convert_columns_to_timestamps(df, csv_datetime_maps[file["datetime_map"]])
+        if file.get("infer_datetime_columns"):
+            inferred_datetime_map = {
+                "yyyy-MM-dd HH:mm:ss": [col for col in df.columns if "datetime" in col],
+                "yyyy-MM-dd": [col for col in df.columns if "date" in col and "datetime" not in col],
+            }
+            df = convert_columns_to_timestamps(df, inferred_datetime_map)
+
         update_table(df, file["table_name"], "overwrite")
         print("    created table:" + file["table_name"])  # functional
 
