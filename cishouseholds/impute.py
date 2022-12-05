@@ -294,6 +294,9 @@ def fill_forward_event(
     window = Window.partitionBy(participant_id_column, visit_datetime_column, visit_id_column).orderBy(
         F.desc(event_date_column)
     )
+    ordering_window = Window.partitionBy(participant_id_column, event_date_column).orderBy(
+        visit_datetime_column, "DATE_DIFF"
+    )
 
     # create dataframe containing only valid non null event dates
     filtered_df = df.filter(
@@ -309,8 +312,10 @@ def fill_forward_event(
         on=participant_id_column,
         how="left",
     )
-
-    # get first event sorted by `REF_EVENT_DATE` that falls within the time difference range
+    filtered_df = filtered_df.withColumn(
+        "DATE_DIFF", F.abs(F.datediff(F.col("REF_EVENT_DATE"), F.col(visit_datetime_column)))
+    )
+    # get first event sorted by `visit_datetime` that falls within the time difference range
     filtered_df = (
         (
             filtered_df.withColumn(
@@ -322,13 +327,14 @@ def fill_forward_event(
                         F.col("REF_EVENT_DATE"),
                     ),
                     True,
-                ).over(grouping_window),
-            ).drop("REF_EVENT_DATE")
+                ).over(ordering_window),
+            ).drop("REF_EVENT_DATE", "DATE_DIFF")
         )
         .filter(F.col("RESOLVED_EVENT_DATE").isNotNull())
         .distinct()
     )
 
+    # add column to mark deviation from visit date in order to retain closest event to visit date
     filtered_df = filtered_df.withColumn(event_date_column, F.col("RESOLVED_EVENT_DATE")).drop("RESOLVED_EVENT_DATE")
 
     # remove all except the first recollection of this event
@@ -357,7 +363,6 @@ def fill_forward_event(
     df = df.drop("DROP_EVENT").distinct().withColumn("ROW_NUMBER", F.row_number().over(window))
     df = df.filter(F.col("ROW_NUMBER") == 1).drop("ROW_NUMBER")
     df = df.unionByName(null_visit_df)
-
     return df
 
 

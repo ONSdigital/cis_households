@@ -142,13 +142,13 @@ def test_fill_forward_event_4(spark_session):
     ]
     expected_data = [
         # fmt:off
-            (1,"2020-06-02",1,"Yes","2020-01-02","detail1"),
-            (1,"2020-06-01",2,"Yes","2020-01-02","detail1"),
+            (1,"2020-06-02",1,"Yes","2020-01-02","detail2"),
+            (1,"2020-06-01",2,"Yes","2020-01-02","detail2"),
             (1,None,        3,"Yes","2020-01-03","detail3"), # nothing happens to this row as no visit_datetime
             (1,None,        4,"Yes","2020-09-01","different detail"),
-            (1,"2021-01-06",5,"Yes","2020-01-02","detail1"),
-            (1,"2021-01-08",6,"Yes","2020-01-02","detail1"),
-            (1,"2021-02-01",7,"Yes","2020-01-02","detail1")
+            (1,"2021-01-06",5,"Yes","2020-01-02","detail2"),
+            (1,"2021-01-08",6,"Yes","2020-01-02","detail2"),
+            (1,"2021-02-01",7,"Yes","2020-01-02","detail2")
         # fmt:on
     ]
 
