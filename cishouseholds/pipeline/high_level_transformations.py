@@ -3293,3 +3293,13 @@ def get_differences(base_df: DataFrame, compare_df: DataFrame, unique_id_column:
     )
     counts_df = counts_df.select("kvs.column_name", "kvs.difference_count", "kvs.difference_count_non_improved")
     return counts_df, diffs_df
+
+
+def fix_timestamps(df: DataFrame):
+    """
+    Fix any issues with dates saved in timestamp format drifting ahead by n hours.
+    """
+    date_cols = [c for c in df.columns if "date" in c and "datetime" not in c]
+    for col in date_cols:
+        df = df.withColumn(col, F.date_format(F.col(col), "yyyy-MM-dd"))
+    return df
