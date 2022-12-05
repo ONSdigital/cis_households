@@ -874,7 +874,6 @@ def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> Dat
         for column_name in columns_list:
             if column_name in df.columns:
                 df = df.withColumn(column_name, F.to_timestamp(F.col(column_name), format=format))
-
     return df
 
 
