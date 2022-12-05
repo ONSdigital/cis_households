@@ -360,6 +360,9 @@ def fill_forward_event(
     return df
 
 
+##
+
+
 def fill_forward_from_last_change_marked_subset(
     df: DataFrame,
     fill_forward_columns: List[str],
