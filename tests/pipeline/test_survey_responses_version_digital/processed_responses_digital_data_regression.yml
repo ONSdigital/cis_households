@@ -882,7 +882,7 @@
   work_in_additional_paid_employment_raw: Prefer not to say
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else meaning not at your home
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: null
   work_main_job_role: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
   work_main_job_role_raw: Erlang is known for its designs that are well suited for
     systems.
@@ -1779,7 +1779,7 @@
   work_in_additional_paid_employment_raw: Prefer not to say
   work_location: Both from home and somewhere else
   work_location_raw: Both from home and somewhere else
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: null
   work_main_job_role: PORTS ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
   work_main_job_role_raw: Ports are created with the built-in function open_port.
   work_main_job_title: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
@@ -2228,7 +2228,7 @@
   work_in_additional_paid_employment_raw: Prefer not to say
   work_location: null
   work_location_raw: null
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: null
   work_main_job_role: THE ARGUMENTS CAN BE PRIMITIVE DATA TYPES OR COMPOUND DATA TYPES
   work_main_job_role_raw: The arguments can be primitive data types or compound data
     types.
@@ -3594,7 +3594,7 @@
   work_in_additional_paid_employment_raw: 'No'
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else meaning not at your home
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: HASKELL FEATURES A TYPE SYSTEM WITH TYPE INFERENCE AND LAZY
     EVALUATION
   work_main_job_role_raw: Haskell features a type system with type inference and lazy
@@ -4054,7 +4054,7 @@
   work_in_additional_paid_employment_raw: 'Yes'
   work_location: null
   work_location_raw: null
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
   work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
     sentence.
@@ -4507,7 +4507,7 @@
   work_in_additional_paid_employment_raw: Prefer not to say
   work_location: Working from home
   work_location_raw: From home meaning in the same grounds or building as your home
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: null
   work_main_job_role: WHERE ARE MY PANTS
   work_main_job_role_raw: Where are my pants?
   work_main_job_title: ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL PROGRAMMING
