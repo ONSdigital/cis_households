@@ -271,7 +271,7 @@
   times_socialising_last_7_days: '0'
   title: Dr.
   transport_to_work_or_education: Bus, minibus, coach
-  unique_participant_response_id: DHVF-0156218256-DHR-455927236237-2022-01-07 10:41:50
+  unique_participant_response_id: DHVF-0156218256-DHR-455927236237
   visit_date_type: scheduled_date
   visit_datetime: '2022-01-07 10:41:50.000000'
   visit_id: DHVF-0156218256
@@ -579,7 +579,7 @@
   times_socialising_last_7_days: '3'
   title: Prof.
   transport_to_work_or_education: Car or van
-  unique_participant_response_id: DHVF-0988308904-DHR-077145284257-2022-01-08 00:10:59
+  unique_participant_response_id: DHVF-0988308904-DHR-077145284257
   visit_date_type: sample_taken_date
   visit_datetime: '2022-01-08 00:10:59.000000'
   visit_id: DHVF-0988308904
@@ -890,7 +890,7 @@
   times_socialising_last_7_days: null
   title: Miss.
   transport_to_work_or_education: Bicycle
-  unique_participant_response_id: DHVF-2240364141-DHR-603506140323-2022-01-04 02:59:45
+  unique_participant_response_id: DHVF-2240364141-DHR-603506140323
   visit_date_type: scheduled_date
   visit_datetime: '2022-01-04 02:59:45.000000'
   visit_id: DHVF-2240364141
@@ -1200,7 +1200,7 @@
   times_socialising_last_7_days: null
   title: Mr.
   transport_to_work_or_education: On foot
-  unique_participant_response_id: DHVF-4476904382-DHR-144229485098-2022-01-01 21:15:29
+  unique_participant_response_id: DHVF-4476904382-DHR-144229485098
   visit_date_type: actual_visit_date
   visit_datetime: '2022-01-01 21:15:29.000000'
   visit_id: DHVF-4476904382
@@ -1517,7 +1517,7 @@
   times_socialising_last_7_days: '1'
   title: null
   transport_to_work_or_education: Bicycle
-  unique_participant_response_id: DHVF-4869598675-DHR-858742267562-2022-01-02 03:34:03
+  unique_participant_response_id: DHVF-4869598675-DHR-858742267562
   visit_date_type: sample_taken_date
   visit_datetime: '2022-01-02 03:34:03.000000'
   visit_id: DHVF-4869598675
@@ -1833,7 +1833,7 @@
   times_socialising_last_7_days: '2'
   title: Miss.
   transport_to_work_or_education: null
-  unique_participant_response_id: DHVF-6394225258-DHR-329500167403-2022-01-06 18:14:23
+  unique_participant_response_id: DHVF-6394225258-DHR-329500167403
   visit_date_type: actual_visit_date
   visit_datetime: '2022-01-06 18:14:23.000000'
   visit_id: DHVF-6394225258
@@ -2152,7 +2152,7 @@
   times_socialising_last_7_days: '2'
   title: Mr.
   transport_to_work_or_education: Other method
-  unique_participant_response_id: DHVF-8828437201-DHR-389263959191-2022-01-04 06:40:18
+  unique_participant_response_id: DHVF-8828437201-DHR-389263959191
   visit_date_type: actual_visit_date
   visit_datetime: '2022-01-04 06:40:18.000000'
   visit_id: DHVF-8828437201
@@ -2460,7 +2460,7 @@
   times_socialising_last_7_days: '2'
   title: Prof.
   transport_to_work_or_education: Car or van
-  unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
+  unique_participant_response_id: DVH-0165258086-DHR-593586857022
   visit_date_type: scheduled_date
   visit_datetime: '2022-01-06 18:06:58.000000'
   visit_id: DVH-0165258086
@@ -2771,7 +2771,7 @@
   times_socialising_last_7_days: null
   title: Prof.
   transport_to_work_or_education: Car or van
-  unique_participant_response_id: DVH-6338733442-DHR-456442497105-2022-01-03 05:49:36
+  unique_participant_response_id: DVH-6338733442-DHR-456442497105
   visit_date_type: sample_taken_date
   visit_datetime: '2022-01-03 05:49:36.000000'
   visit_id: DVH-6338733442
@@ -3089,7 +3089,7 @@
   times_socialising_last_7_days: null
   title: Ms.
   transport_to_work_or_education: On foot
-  unique_participant_response_id: DVH-6911152672-DHR-627540089585-2022-01-08 03:57:44
+  unique_participant_response_id: DVH-6911152672-DHR-627540089585
   visit_date_type: scheduled_date
   visit_datetime: '2022-01-08 03:57:44.000000'
   visit_id: DVH-6911152672

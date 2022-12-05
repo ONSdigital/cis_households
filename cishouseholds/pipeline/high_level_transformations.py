@@ -1405,9 +1405,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
 
     df = assign_raw_copies(df, [column for column in original_copy_list if column in df.columns], "original")
 
-    df = assign_unique_id_column(
-        df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
-    )
+    df = assign_unique_id_column(df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id"])
     df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
     date_cols_to_correct = [
         col
@@ -2819,7 +2817,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         "work_patient_facing_clean",
         "work_social_care",
         "works_health_care",
-        "regex_derived_job_sector",
     )
 
 
@@ -3241,7 +3238,7 @@ def get_differences(base_df: DataFrame, compare_df: DataFrame, unique_id_column:
     cols_to_check = [col for col in base_df.columns if col in compare_df.columns and col != unique_id_column]
 
     for col in cols_to_check:
-        compare_df = compare_df.withColumnRenamed(col, f"{col}_ref")
+        base_df = base_df.withColumnRenamed(col, f"{col}_ref")
 
     df = base_df.join(compare_df, on=unique_id_column, how="left")
 
@@ -3269,20 +3266,30 @@ def get_differences(base_df: DataFrame, compare_df: DataFrame, unique_id_column:
     ).drop("ROW")
 
     counts_df = df.select(
-        [
+        *[
             F.sum(F.when(F.col(c).eqNullSafe(F.col(f"{c}_ref")), 0).otherwise(1)).alias(c).cast("integer")
             for c in cols_to_check
-        ]
+        ],
+        *[
+            F.sum(F.when((~F.col(c).eqNullSafe(F.col(f"{c}_ref"))) & (F.col(f"{c}_ref").isNotNull()), 1).otherwise(0))
+            .alias(f"{c}_non_improved")
+            .cast("integer")
+            for c in cols_to_check
+        ],
     )
     counts_df = counts_df.select(
         F.explode(
             F.array(
                 [
-                    F.struct(F.lit(col).alias("column_name"), F.col(col).alias("difference_count"))
-                    for col in counts_df.columns
+                    F.struct(
+                        F.lit(col).alias("column_name"),
+                        F.col(col).alias("difference_count"),
+                        F.col(f"{col}_non_improved").alias("difference_count_non_improved"),
+                    )
+                    for col in [c for c in counts_df.columns if not c.endswith("_non_improved")]
                 ]
             )
         ).alias("kvs")
     )
-    counts_df = counts_df.select("kvs.column_name", "kvs.difference_count")
+    counts_df = counts_df.select("kvs.column_name", "kvs.difference_count", "kvs.difference_count_non_improved")
     return counts_df, diffs_df
