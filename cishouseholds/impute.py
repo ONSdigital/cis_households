@@ -294,7 +294,6 @@ def fill_forward_event(
     window = Window.partitionBy(participant_id_column, visit_datetime_column, visit_id_column).orderBy(
         F.desc(event_date_column)
     )
-    filter_window = Window.partitionBy(participant_id_column, event_date_column).orderBy(visit_datetime_column)
 
     # create dataframe containing only valid non null event dates
     filtered_df = df.filter(
@@ -333,7 +332,7 @@ def fill_forward_event(
 
     # remove all except the first recollection of this event
     filtered_df = (
-        filtered_df.withColumn("ROW_NUMBER", F.row_number().over(filter_window))
+        filtered_df.withColumn("ROW_NUMBER", F.row_number().over(grouping_window))
         .filter(F.col("ROW_NUMBER") == 1)
         .drop("ROW_NUMBER")
     )
