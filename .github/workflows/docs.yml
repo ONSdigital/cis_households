@@ -12,9 +12,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v3
       with:
         python-version: 3.6.8
     - name: Install Python dependencies
@@ -27,7 +27,7 @@ jobs:
         (cd docs && make html)
         touch docs/build/html/.nojekyll
     - name: Deploy docs
-      uses: JamesIves/github-pages-deploy-action@v4.2.5
+      uses: JamesIves/github-pages-deploy-action@v3.2.5
       with:
         branch: gh-pages
         folder: docs/build/html
