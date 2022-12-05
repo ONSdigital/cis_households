@@ -294,20 +294,23 @@ def fill_forward_event(
     window = Window.partitionBy(participant_id_column, visit_datetime_column, visit_id_column).orderBy(
         F.desc(event_date_column)
     )
-    filter_window = Window.partitionBy(participant_id_column, event_date_column).orderBy(visit_datetime_column)
 
+    # create dataframe containing only valid non null event dates
     filtered_df = df.filter(
         (F.col(event_date_column).isNotNull()) & (F.col(event_date_column) <= F.col(visit_datetime_column))
-    ).cache()
+    )
 
+    # get only distinct combinations
     event_dates_df = filtered_df.select(participant_id_column, event_date_column).distinct()
 
+    # match all event dates to all other event dates
     filtered_df = filtered_df.join(
         event_dates_df.withColumnRenamed(event_date_column, "REF_EVENT_DATE"),
         on=participant_id_column,
         how="left",
     )
 
+    # get first event sorted by visit_datetime that falls within the time difference as this is likely to be most accurate
     filtered_df = (
         (
             filtered_df.withColumn(
@@ -327,13 +330,17 @@ def fill_forward_event(
     )
 
     filtered_df = filtered_df.withColumn(event_date_column, F.col("RESOLVED_EVENT_DATE")).drop("RESOLVED_EVENT_DATE")
+
+    # remove all except the first recollection of this event
     filtered_df = (
-        filtered_df.withColumn("ROW_NUMBER", F.row_number().over(filter_window))
+        filtered_df.withColumn("ROW_NUMBER", F.row_number().over(grouping_window))
         .filter(F.col("ROW_NUMBER") == 1)
         .drop("ROW_NUMBER")
     )
+
     # filter valid events prioritizing the first occupance of an event
 
+    # replace the event columns in the original dataframe with the most appropriate recollections from the filtered_df
     if filtered_df.count() > 0:
         df = (
             df.drop(*event_columns)
@@ -343,6 +350,7 @@ def fill_forward_event(
     else:
         df = df.withColumn("DROP_EVENT", F.lit(False))
 
+    # add the additional detail columns to the original dataframe
     for col in event_columns:
         df = df.withColumn(col, F.when(F.col("DROP_EVENT"), None).otherwise(F.col(col)))
 
@@ -351,6 +359,9 @@ def fill_forward_event(
     df = df.filter(F.col("ROW_NUMBER") == 1).drop("ROW_NUMBER")
     df = df.unionByName(null_visit_df)
     return df
+
+
+##
 
 
 def fill_forward_from_last_change_marked_subset(
