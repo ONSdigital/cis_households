@@ -2,6 +2,7 @@ import re
 from functools import reduce
 from itertools import chain
 from operator import add
+from operator import or_
 from typing import Any
 from typing import Dict
 from typing import List
@@ -19,6 +20,38 @@ from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import count_occurrence_in_row
 from cishouseholds.expressions import set_date_component
 from cishouseholds.expressions import sum_within_row
+
+
+def update_work_main_job_changed(
+    df: DataFrame,
+    column_name_to_update: str,
+    participant_id_column: str,
+    reference_columns: List[str],
+):
+    """
+    re-derive work main job changed to denote whether any of the work variables differ between rows.
+    """
+    if column_name_to_update not in df.columns:
+        df = df.withColumn(column_name_to_update, F.lit(None))
+
+    reference_columns = [c for c in reference_columns if c in df.columns]
+
+    window = Window.partitionBy(participant_id_column).orderBy(F.lit("A"))
+    x = lambda c: (~F.lag(c, 1).over(window).eqNullSafe(F.col(c))) & (F.col(c).isNotNull())  # noqa: E731
+
+    df = df.withColumn("ROW", F.row_number().over(window))
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            ~F.col(column_name_to_update).eqNullSafe("Yes"),
+            F.when(
+                ((F.col("ROW") == 1) & any_column_not_null(reference_columns))
+                | (reduce(or_, [x(c) for c in reference_columns])),
+                "Yes",
+            ).otherwise("No"),
+        ).otherwise("Yes"),
+    )
+    return df.drop("ROW")
 
 
 def normalise_think_had_covid_columns(df: DataFrame, symptom_columns_prefix: str):
@@ -841,7 +874,6 @@ def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> Dat
         for column_name in columns_list:
             if column_name in df.columns:
                 df = df.withColumn(column_name, F.to_timestamp(F.col(column_name), format=format))
-
     return df
 
 
