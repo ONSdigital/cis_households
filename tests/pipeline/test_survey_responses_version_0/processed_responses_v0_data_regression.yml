@@ -132,7 +132,7 @@
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: 'No'
-  unique_participant_response_id: DHVF-0322983639-DHR-422525832950-2022-01-09 11:40:06
+  unique_participant_response_id: DHVF-0322983639-DHR-422525832950
   visit_datetime: '2022-01-09 11:40:06.000000'
   visit_id: DHVF-0322983639
   which_symptoms_last_7_days: null
@@ -141,6 +141,7 @@
   work_health_care_patient_facing_original: Yes, other healthcare, non-patient-facing
   work_location: Its main implementation is the Glasgow Haskell Compiler.
   work_location_raw: Its main implementation is the Glasgow Haskell Compiler.
+  work_main_job_changed: 'Yes'
   work_main_job_role: THE SYNTAX D1D2DN DENOTES A TUPLE WHOSE ARGUMENTS ARE D1 D2  DN
   work_main_job_role_raw: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
     are D1, D2, ... Dn.
@@ -291,7 +292,7 @@
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
-  unique_participant_response_id: DHVF-0771419502-DHR-848695986758-2022-01-09 21:50:48
+  unique_participant_response_id: DHVF-0771419502-DHR-848695986758
   visit_datetime: '2022-01-09 21:50:48.000000'
   visit_id: DHVF-0771419502
   which_symptoms_last_7_days: null
@@ -300,6 +301,7 @@
   work_health_care_patient_facing_original: Yes, secondary care, patient-facing
   work_location: Where are my pants?
   work_location_raw: Where are my pants?
+  work_main_job_changed: 'Yes'
   work_main_job_role: HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
   work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
     sentence.
@@ -450,7 +452,7 @@
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_shortness_of_breath: 'No'
   think_have_covid_symptom_sore_throat: null
-  unique_participant_response_id: DHVF-3442149696-DHR-350245644249-2022-01-07 07:27:20
+  unique_participant_response_id: DHVF-3442149696-DHR-350245644249
   visit_datetime: '2022-01-07 07:27:20.000000'
   visit_id: DHVF-3442149696
   which_symptoms_last_7_days: null
@@ -459,6 +461,7 @@
   work_health_care_patient_facing_original: Yes, other healthcare, non-patient-facing
   work_location: Make me a sandwich.
   work_location_raw: Make me a sandwich.
+  work_main_job_changed: 'Yes'
   work_main_job_role: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE BUT IT HAS
     SINCE BEEN RESTORED
   work_main_job_role_raw: In 1989 the building was heavily damaged by fire, but it
@@ -610,7 +613,7 @@
   think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_shortness_of_breath: 'No'
   think_have_covid_symptom_sore_throat: 'Yes'
-  unique_participant_response_id: DHVF-3623704990-DHR-229883187696-2022-01-09 07:55:27
+  unique_participant_response_id: DHVF-3623704990-DHR-229883187696
   visit_datetime: '2022-01-09 07:55:27.000000'
   visit_id: DHVF-3623704990
   which_symptoms_last_7_days: 'No'
@@ -619,6 +622,7 @@
   work_health_care_patient_facing_original: Yes, secondary care, patient-facing
   work_location: I don't even care.
   work_location_raw: I don't even care.
+  work_main_job_changed: 'Yes'
   work_main_job_role: INITIALLY COMPOSING LIGHT HEARTED AND IRREVERENT WORKS HE ALSO
     WROTE SERIOUS SOMBRE AND RELIGIOUS PIECES BEGINNING IN THE 1930S
   work_main_job_role_raw: Initially composing light-hearted and irreverent works,
@@ -767,7 +771,7 @@
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: 'Yes'
-  unique_participant_response_id: DHVF-5198266175-DHR-750309883089-2022-01-02 21:44:54
+  unique_participant_response_id: DHVF-5198266175-DHR-750309883089
   visit_datetime: '2022-01-02 21:44:54.000000'
   visit_id: DHVF-5198266175
   which_symptoms_last_7_days: null
@@ -778,6 +782,7 @@
     station with the power to destroy entire planets.
   work_location_raw: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
+  work_main_job_changed: 'Yes'
   work_main_job_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
   work_main_job_title: THEY ARE WRITTEN AS STRINGS OF CONSECUTIVE ALPHANUMERIC CHARACTERS
@@ -929,7 +934,7 @@
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_shortness_of_breath: null
   think_have_covid_symptom_sore_throat: null
-  unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
+  unique_participant_response_id: DVH-0165258086-DHR-593586857022
   visit_datetime: '2022-01-06 18:06:58.000000'
   visit_id: DVH-0165258086
   which_symptoms_last_7_days: 'Yes'
@@ -938,6 +943,7 @@
   work_health_care_patient_facing_original: null
   work_location: Do you come here often?
   work_location_raw: Do you come here often?
+  work_main_job_changed: 'Yes'
   work_main_job_role: PORTS ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
   work_main_job_role_raw: Ports are created with the built-in function open_port.
   work_main_job_title: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
@@ -1087,7 +1093,7 @@
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'Yes'
-  unique_participant_response_id: DVH-2948509899-DHR-449957129557-2022-01-07 16:06:21
+  unique_participant_response_id: DVH-2948509899-DHR-449957129557
   visit_datetime: '2022-01-07 16:06:21.000000'
   visit_id: DVH-2948509899
   which_symptoms_last_7_days: 'Yes'
@@ -1096,6 +1102,7 @@
   work_health_care_patient_facing_original: Yes, other healthcare, patient-facing
   work_location: Atoms are used within a program to denote distinguished values.
   work_location_raw: Atoms are used within a program to denote distinguished values.
+  work_main_job_changed: 'Yes'
   work_main_job_role: ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL PROGRAMMING
     LANGUAGE
   work_main_job_role_raw: Erlang is a general-purpose, concurrent, functional programming
@@ -1244,7 +1251,7 @@
   think_have_covid_symptom_nausea_or_vomiting: null
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
-  unique_participant_response_id: DVH-6249804207-DHR-851138788221-2022-01-09 00:32:52
+  unique_participant_response_id: DVH-6249804207-DHR-851138788221
   visit_datetime: '2022-01-09 00:32:52.000000'
   visit_id: DVH-6249804207
   which_symptoms_last_7_days: null
@@ -1253,6 +1260,7 @@
   work_health_care_patient_facing_original: Yes, other healthcare, patient-facing
   work_location: Make me a sandwich.
   work_location_raw: Make me a sandwich.
+  work_main_job_changed: 'Yes'
   work_main_job_role: MAKE ME A SANDWICH
   work_main_job_role_raw: Make me a sandwich.
   work_main_job_title: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL
@@ -1400,7 +1408,7 @@
   think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: null
-  unique_participant_response_id: DVH-7239645123-DHR-621954781044-2022-01-02 09:26:10
+  unique_participant_response_id: DVH-7239645123-DHR-621954781044
   visit_datetime: '2022-01-02 09:26:10.000000'
   visit_id: DVH-7239645123
   which_symptoms_last_7_days: 'No'
@@ -1409,6 +1417,7 @@
   work_health_care_patient_facing_original: null
   work_location: Where are my pants?
   work_location_raw: Where are my pants?
+  work_main_job_changed: 'Yes'
   work_main_job_role: ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
   work_main_job_role_raw: Atoms are used within a program to denote distinguished
     values.
@@ -1560,7 +1569,7 @@
   think_have_covid_symptom_nausea_or_vomiting: 'No'
   think_have_covid_symptom_shortness_of_breath: 'Yes'
   think_have_covid_symptom_sore_throat: 'No'
-  unique_participant_response_id: DVH-9888271882-DHR-263959191921-2022-01-09 23:58:48
+  unique_participant_response_id: DVH-9888271882-DHR-263959191921
   visit_datetime: '2022-01-09 23:58:48.000000'
   visit_id: DVH-9888271882
   which_symptoms_last_7_days: null
@@ -1569,6 +1578,7 @@
   work_health_care_patient_facing_original: Yes, other healthcare, patient-facing
   work_location: Tuples are containers for a fixed number of Erlang data types.
   work_location_raw: Tuples are containers for a fixed number of Erlang data types.
+  work_main_job_changed: 'Yes'
   work_main_job_role: ITS MAIN IMPLEMENTATION IS THE GLASGOW HASKELL COMPILER
   work_main_job_role_raw: Its main implementation is the Glasgow Haskell Compiler.
   work_main_job_title: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL

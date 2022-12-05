@@ -10,6 +10,7 @@ def test_get_differences(spark_session):
             (1, "A", 1, True),
             (2, "B", 2, True),
             (3, "C", 3, True),
+            (4, "D", 4, None),
         ],
         schema="id integer, string string, int integer, bool boolean",
     )
@@ -18,28 +19,23 @@ def test_get_differences(spark_session):
             (1, "A", 1, True),
             (2, "X", 99, True),
             (3, "C", 69420, None),
+            (4, "D", 4, True),
         ],
         schema="id integer, string string, int integer, bool boolean",
     )
     counts_df = spark_session.createDataFrame(
         data=[
-            ("string", 1),
-            ("int", 2),
-            ("bool", 1),
+            ("string", 1, 1),
+            ("int", 2, 2),
+            ("bool", 2, 1),
         ],
-        schema="column_name string, difference_count integer",
+        schema="column_name string, difference_count integer, difference_count_non_improved integer",
     )
     diffs_df = spark_session.createDataFrame(
-        data=[
-            (2, "string"),
-            (2, "int"),
-            (3, "int"),
-            (3, "bool"),
-        ],
+        data=[(2, "string"), (2, "int"), (3, "int"), (3, "bool"), (4, "bool")],
         schema="id integer, column_name string",
     )
     output_df_counts, output_df_diffs = get_differences(input_df_base, input_df_compare, "id")
-
     assert_df_equality(
         counts_df, output_df_counts, ignore_nullable=True, ignore_column_order=True, ignore_row_order=True
     )

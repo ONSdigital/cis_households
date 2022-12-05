@@ -290,7 +290,7 @@ def fill_forward_event(
     null_visit_df = df.filter(F.col(visit_datetime_column).isNull())
     df = df.filter(F.col(visit_datetime_column).isNotNull())
 
-    grouping_window = Window.partitionBy(participant_id_column, event_date_column).orderBy("REF_EVENT_DATE")
+    grouping_window = Window.partitionBy(participant_id_column, event_date_column).orderBy(visit_datetime_column)
     window = Window.partitionBy(participant_id_column, visit_datetime_column, visit_id_column).orderBy(
         F.desc(event_date_column)
     )
@@ -314,7 +314,8 @@ def fill_forward_event(
                 "RESOLVED_EVENT_DATE",
                 F.first(
                     F.when(
-                        F.abs(F.datediff(F.col("REF_EVENT_DATE"), F.col(event_date_column))) <= event_date_tolerance,
+                        (F.abs(F.datediff(F.col("REF_EVENT_DATE"), F.col(event_date_column))) <= event_date_tolerance)
+                        & (F.col("REF_EVENT_DATE") < F.col(visit_datetime_column)),
                         F.col("REF_EVENT_DATE"),
                     ),
                     True,

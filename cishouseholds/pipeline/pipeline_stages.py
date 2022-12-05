@@ -18,6 +18,7 @@ from cishouseholds.derive import assign_age_group_school_year
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_multigenerational
 from cishouseholds.derive import assign_outward_postcode
+from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import household_level_populations
@@ -49,6 +50,7 @@ from cishouseholds.pipeline.high_level_transformations import derive_age_based_c
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forward_events_for_key_columns
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
+from cishouseholds.pipeline.high_level_transformations import fix_timestamps
 from cishouseholds.pipeline.high_level_transformations import get_differences
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
@@ -119,6 +121,24 @@ def blind_csv_to_table(path: str, table_name: str, sep: str = "|"):
         separator used in file provided in path, by default "|"
     """
     df = extract_input_data(path, None, sep)
+    df = update_table(df, table_name, "overwrite")
+
+
+@register_pipeline_stage("table_to_table")
+def table_to_table(table_name: str, break_lineage: bool = False, alternate_prefix: str = None):
+    """
+    Extracts a HIVE table, with an alternate prefix, and saves it out with the project prefix
+
+    Parameters
+    ----------
+    table_name : str
+        HIVE table name
+    break_lineage : bool
+        whether to create a checkpoint on loading the file
+    alternate_prefix : str
+        alternate prefix to use for input HIVE table
+    """
+    df = extract_from_table(table_name, break_lineage, alternate_prefix)
     df = update_table(df, table_name, "overwrite")
 
 
@@ -513,7 +533,7 @@ def join_lookup_table(
 
     unjoinable_df = df.filter(all_columns_null(join_on_columns))
     for col, val in unjoinable_values.items():
-        unjoinable_df.withColumn(col, F.lit(val))
+        unjoinable_df = unjoinable_df.withColumn(col, F.lit(val))
 
     df = df.filter(any_column_not_null(join_on_columns))
     df = left_join_keep_right(df, lookup_df, join_on_columns)
@@ -920,7 +940,8 @@ def validate_survey_responses(
         .withColumn("run_id", F.lit(get_run_id()))
         .drop(validation_failure_flag_column)
     )
-
+    valid_survey_responses = fix_timestamps(valid_survey_responses)
+    invalid_survey_responses_table = fix_timestamps(erroneous_survey_responses)
     update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
     update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
     update_table(valid_survey_responses, output_survey_table, write_mode="overwrite", archive=True)
@@ -1143,7 +1164,13 @@ def compare(
         optional subset of columns to evaluate
     """
     base_df = extract_from_table(base_table_name)
+    base_df = assign_unique_id_column(
+        base_df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id"]
+    )
     compare_df = extract_from_table(table_name_to_compare)
+    compare_df = assign_unique_id_column(
+        compare_df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id"]
+    )
     if len(select_columns) > 0:
         if unique_id_column not in select_columns:
             select_columns = [unique_id_column, *select_columns]

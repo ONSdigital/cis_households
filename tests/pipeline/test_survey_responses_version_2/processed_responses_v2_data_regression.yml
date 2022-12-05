@@ -271,7 +271,7 @@
   times_socialising_last_7_days: '0'
   title: Dr.
   transport_to_work_or_education: Bus, minibus, coach
-  unique_participant_response_id: DHVF-0156218256-DHR-455927236237-2022-01-07 10:41:50
+  unique_participant_response_id: DHVF-0156218256-DHR-455927236237
   visit_date_type: scheduled_date
   visit_datetime: '2022-01-07 10:41:50.000000'
   visit_id: DHVF-0156218256
@@ -287,7 +287,7 @@
   work_in_additional_paid_employment: null
   work_location: null
   work_location_raw: null
-  work_main_job_changed: null
+  work_main_job_changed: 'Yes'
   work_main_job_role: HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
   work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
     sentence.
@@ -579,7 +579,7 @@
   times_socialising_last_7_days: '3'
   title: Prof.
   transport_to_work_or_education: Car or van
-  unique_participant_response_id: DHVF-0988308904-DHR-077145284257-2022-01-08 00:10:59
+  unique_participant_response_id: DHVF-0988308904-DHR-077145284257
   visit_date_type: sample_taken_date
   visit_datetime: '2022-01-08 00:10:59.000000'
   visit_id: DHVF-0988308904
@@ -890,7 +890,7 @@
   times_socialising_last_7_days: null
   title: Miss.
   transport_to_work_or_education: Bicycle
-  unique_participant_response_id: DHVF-2240364141-DHR-603506140323-2022-01-04 02:59:45
+  unique_participant_response_id: DHVF-2240364141-DHR-603506140323
   visit_date_type: scheduled_date
   visit_datetime: '2022-01-04 02:59:45.000000'
   visit_id: DHVF-2240364141
@@ -1200,7 +1200,7 @@
   times_socialising_last_7_days: null
   title: Mr.
   transport_to_work_or_education: On foot
-  unique_participant_response_id: DHVF-4476904382-DHR-144229485098-2022-01-01 21:15:29
+  unique_participant_response_id: DHVF-4476904382-DHR-144229485098
   visit_date_type: actual_visit_date
   visit_datetime: '2022-01-01 21:15:29.000000'
   visit_id: DHVF-4476904382
@@ -1216,7 +1216,7 @@
   work_in_additional_paid_employment: 'No'
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not at your home)
-  work_main_job_changed: 'No'
+  work_main_job_changed: 'Yes'
   work_main_job_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
   work_main_job_title: THEY ARE WRITTEN AS STRINGS OF CONSECUTIVE ALPHANUMERIC CHARACTERS
@@ -1517,7 +1517,7 @@
   times_socialising_last_7_days: '1'
   title: null
   transport_to_work_or_education: Bicycle
-  unique_participant_response_id: DHVF-4869598675-DHR-858742267562-2022-01-02 03:34:03
+  unique_participant_response_id: DHVF-4869598675-DHR-858742267562
   visit_date_type: sample_taken_date
   visit_datetime: '2022-01-02 03:34:03.000000'
   visit_id: DHVF-4869598675
@@ -1533,7 +1533,7 @@
   work_in_additional_paid_employment: 'No'
   work_location: Both (from home and somewhere else)
   work_location_raw: Both (work from home and work somewhere else)
-  work_main_job_changed: null
+  work_main_job_changed: 'Yes'
   work_main_job_role: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL
     PROGRAMMING LANGUAGE WITH NON STRICT SEMANTICS AND STRONG STATIC TYPING
   work_main_job_role_raw: Haskell is a standardized, general-purpose purely functional
@@ -1833,7 +1833,7 @@
   times_socialising_last_7_days: '2'
   title: Miss.
   transport_to_work_or_education: null
-  unique_participant_response_id: DHVF-6394225258-DHR-329500167403-2022-01-06 18:14:23
+  unique_participant_response_id: DHVF-6394225258-DHR-329500167403
   visit_date_type: actual_visit_date
   visit_datetime: '2022-01-06 18:14:23.000000'
   visit_id: DHVF-6394225258
@@ -1849,7 +1849,7 @@
   work_in_additional_paid_employment: 'Yes'
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
-  work_main_job_changed: null
+  work_main_job_changed: 'Yes'
   work_main_job_role: ATOMS CAN CONTAIN ANY CHARACTER IF THEY ARE ENCLOSED WITHIN
     SINGLE QUOTES AND AN ESCAPE CONVENTION EXISTS WHICH ALLOWS ANY CHARACTER TO BE
     USED WITHIN AN ATOM
@@ -2152,7 +2152,7 @@
   times_socialising_last_7_days: '2'
   title: Mr.
   transport_to_work_or_education: Other method
-  unique_participant_response_id: DHVF-8828437201-DHR-389263959191-2022-01-04 06:40:18
+  unique_participant_response_id: DHVF-8828437201-DHR-389263959191
   visit_date_type: actual_visit_date
   visit_datetime: '2022-01-04 06:40:18.000000'
   visit_id: DHVF-8828437201
@@ -2168,7 +2168,7 @@
   work_in_additional_paid_employment: null
   work_location: Working from home
   work_location_raw: From home (in the same grounds or building as your home)
-  work_main_job_changed: 'No'
+  work_main_job_changed: 'Yes'
   work_main_job_role: ANY ELEMENT OF A TUPLE CAN BE ACCESSED IN CONSTANT TIME
   work_main_job_role_raw: Any element of a tuple can be accessed in constant time.
   work_main_job_title: WHERE ARE MY PANTS
@@ -2460,7 +2460,7 @@
   times_socialising_last_7_days: '2'
   title: Prof.
   transport_to_work_or_education: Car or van
-  unique_participant_response_id: DVH-0165258086-DHR-593586857022-2022-01-06 18:06:58
+  unique_participant_response_id: DVH-0165258086-DHR-593586857022
   visit_date_type: scheduled_date
   visit_datetime: '2022-01-06 18:06:58.000000'
   visit_id: DVH-0165258086
@@ -2476,7 +2476,7 @@
   work_in_additional_paid_employment: 'No'
   work_location: Both (from home and somewhere else)
   work_location_raw: Both (work from home and work somewhere else)
-  work_main_job_changed: 'No'
+  work_main_job_changed: 'Yes'
   work_main_job_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
   work_main_job_title: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL
@@ -2771,7 +2771,7 @@
   times_socialising_last_7_days: null
   title: Prof.
   transport_to_work_or_education: Car or van
-  unique_participant_response_id: DVH-6338733442-DHR-456442497105-2022-01-03 05:49:36
+  unique_participant_response_id: DVH-6338733442-DHR-456442497105
   visit_date_type: sample_taken_date
   visit_datetime: '2022-01-03 05:49:36.000000'
   visit_id: DVH-6338733442
@@ -3089,7 +3089,7 @@
   times_socialising_last_7_days: null
   title: Ms.
   transport_to_work_or_education: On foot
-  unique_participant_response_id: DVH-6911152672-DHR-627540089585-2022-01-08 03:57:44
+  unique_participant_response_id: DVH-6911152672-DHR-627540089585
   visit_date_type: scheduled_date
   visit_datetime: '2022-01-08 03:57:44.000000'
   visit_id: DVH-6911152672
@@ -3105,7 +3105,7 @@
   work_in_additional_paid_employment: null
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not at your home)
-  work_main_job_changed: null
+  work_main_job_changed: 'Yes'
   work_main_job_role: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE BUT IT HAS
     SINCE BEEN RESTORED
   work_main_job_role_raw: In 1989 the building was heavily damaged by fire, but it

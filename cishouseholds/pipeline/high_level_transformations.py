@@ -113,6 +113,7 @@ from cishouseholds.edit import update_think_have_covid_symptom_any
 from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.edit import update_value_if_multiple_and_ref_in_list
 from cishouseholds.edit import update_work_facing_now_column
+from cishouseholds.edit import update_work_main_job_changed
 from cishouseholds.expressions import any_column_equal_value
 from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import array_contains_any
@@ -422,22 +423,6 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
     }
     df = apply_value_map_multiple_columns(df, v1_column_editing_map)
 
-    df = df.withColumn("work_main_job_changed", F.lit(None).cast("string"))
-    fill_forward_columns = [
-        "work_main_job_title",
-        "work_main_job_role",
-        "work_sector",
-        "work_sector_other",
-        "work_health_care_area",
-        "work_nursing_or_residential_care_home",
-        "work_direct_contact_patients_or_clients",
-    ]
-    df = update_to_value_if_any_not_null(
-        df=df,
-        column_name_to_assign="work_main_job_changed",
-        value_to_assign="Yes",
-        column_list=fill_forward_columns,
-    )
     df = df.drop(
         "cis_covid_vaccine_date",
         "cis_covid_vaccine_number_of_doses",
@@ -1405,9 +1390,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
 
     df = assign_raw_copies(df, [column for column in original_copy_list if column in df.columns], "original")
 
-    df = assign_unique_id_column(
-        df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
-    )
+    df = assign_unique_id_column(df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id"])
     df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
     date_cols_to_correct = [
         col
@@ -1467,6 +1450,21 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = clean_job_description_string(df, "work_main_job_title")
     df = clean_job_description_string(df, "work_main_job_role")
     df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
+    work_columns = [
+        "work_main_job_title",
+        "work_main_job_role",
+        "work_sector",
+        "work_sector_other",
+        "work_health_care_area",
+        "work_nursing_or_residential_care_home",
+        "work_direct_contact_patients_or_clients",
+    ]
+    df = update_work_main_job_changed(
+        df,
+        column_name_to_update="work_main_job_changed",
+        participant_id_column="participant_id",
+        reference_columns=work_columns,
+    )
     return df
 
 
@@ -2819,7 +2817,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         "work_patient_facing_clean",
         "work_social_care",
         "works_health_care",
-        "regex_derived_job_sector",
     )
 
 
@@ -3241,7 +3238,7 @@ def get_differences(base_df: DataFrame, compare_df: DataFrame, unique_id_column:
     cols_to_check = [col for col in base_df.columns if col in compare_df.columns and col != unique_id_column]
 
     for col in cols_to_check:
-        compare_df = compare_df.withColumnRenamed(col, f"{col}_ref")
+        base_df = base_df.withColumnRenamed(col, f"{col}_ref")
 
     df = base_df.join(compare_df, on=unique_id_column, how="left")
 
@@ -3269,20 +3266,40 @@ def get_differences(base_df: DataFrame, compare_df: DataFrame, unique_id_column:
     ).drop("ROW")
 
     counts_df = df.select(
-        [
+        *[
             F.sum(F.when(F.col(c).eqNullSafe(F.col(f"{c}_ref")), 0).otherwise(1)).alias(c).cast("integer")
             for c in cols_to_check
-        ]
+        ],
+        *[
+            F.sum(F.when((~F.col(c).eqNullSafe(F.col(f"{c}_ref"))) & (F.col(f"{c}_ref").isNotNull()), 1).otherwise(0))
+            .alias(f"{c}_non_improved")
+            .cast("integer")
+            for c in cols_to_check
+        ],
     )
     counts_df = counts_df.select(
         F.explode(
             F.array(
                 [
-                    F.struct(F.lit(col).alias("column_name"), F.col(col).alias("difference_count"))
-                    for col in counts_df.columns
+                    F.struct(
+                        F.lit(col).alias("column_name"),
+                        F.col(col).alias("difference_count"),
+                        F.col(f"{col}_non_improved").alias("difference_count_non_improved"),
+                    )
+                    for col in [c for c in counts_df.columns if not c.endswith("_non_improved")]
                 ]
             )
         ).alias("kvs")
     )
-    counts_df = counts_df.select("kvs.column_name", "kvs.difference_count")
+    counts_df = counts_df.select("kvs.column_name", "kvs.difference_count", "kvs.difference_count_non_improved")
     return counts_df, diffs_df
+
+
+def fix_timestamps(df: DataFrame):
+    """
+    Fix any issues with dates saved in timestamp format drifting ahead by n hours.
+    """
+    date_cols = [c for c in df.columns if "date" in c and "datetime" not in c]
+    for col in date_cols:
+        df = df.withColumn(col, F.date_format(F.col(col), "yyyy-MM-dd"))
+    return df
