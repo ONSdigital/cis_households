@@ -15,11 +15,11 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
           token: ${{ secrets.BUMPVERSION_PAT }}
     - name: Set up Python 3.6.8
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
           python-version: 3.6.8
     - name: bump-UAT-version
