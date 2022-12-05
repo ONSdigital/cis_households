@@ -21,7 +21,7 @@ jobs:
     - name: Set up Python 3.6.8
       uses: actions/setup-python@v3
       with:
-          python-version: 3.6.8
+          python-version: "3.6.8"
     - name: bump-UAT-version
       run: |
         pip3 install bump2version
