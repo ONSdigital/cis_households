@@ -287,7 +287,7 @@
   work_in_additional_paid_employment: null
   work_location: null
   work_location_raw: null
-  work_main_job_changed: null
+  work_main_job_changed: 'Yes'
   work_main_job_role: HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
   work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
     sentence.
@@ -1216,7 +1216,7 @@
   work_in_additional_paid_employment: 'No'
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not at your home)
-  work_main_job_changed: 'No'
+  work_main_job_changed: 'Yes'
   work_main_job_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
   work_main_job_title: THEY ARE WRITTEN AS STRINGS OF CONSECUTIVE ALPHANUMERIC CHARACTERS
@@ -1533,7 +1533,7 @@
   work_in_additional_paid_employment: 'No'
   work_location: Both (from home and somewhere else)
   work_location_raw: Both (work from home and work somewhere else)
-  work_main_job_changed: null
+  work_main_job_changed: 'Yes'
   work_main_job_role: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL
     PROGRAMMING LANGUAGE WITH NON STRICT SEMANTICS AND STRONG STATIC TYPING
   work_main_job_role_raw: Haskell is a standardized, general-purpose purely functional
@@ -1849,7 +1849,7 @@
   work_in_additional_paid_employment: 'Yes'
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not your home)
-  work_main_job_changed: null
+  work_main_job_changed: 'Yes'
   work_main_job_role: ATOMS CAN CONTAIN ANY CHARACTER IF THEY ARE ENCLOSED WITHIN
     SINGLE QUOTES AND AN ESCAPE CONVENTION EXISTS WHICH ALLOWS ANY CHARACTER TO BE
     USED WITHIN AN ATOM
@@ -2168,7 +2168,7 @@
   work_in_additional_paid_employment: null
   work_location: Working from home
   work_location_raw: From home (in the same grounds or building as your home)
-  work_main_job_changed: 'No'
+  work_main_job_changed: 'Yes'
   work_main_job_role: ANY ELEMENT OF A TUPLE CAN BE ACCESSED IN CONSTANT TIME
   work_main_job_role_raw: Any element of a tuple can be accessed in constant time.
   work_main_job_title: WHERE ARE MY PANTS
@@ -2476,7 +2476,7 @@
   work_in_additional_paid_employment: 'No'
   work_location: Both (from home and somewhere else)
   work_location_raw: Both (work from home and work somewhere else)
-  work_main_job_changed: 'No'
+  work_main_job_changed: 'Yes'
   work_main_job_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
   work_main_job_title: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL
@@ -3105,7 +3105,7 @@
   work_in_additional_paid_employment: null
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not at your home)
-  work_main_job_changed: null
+  work_main_job_changed: 'Yes'
   work_main_job_role: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE BUT IT HAS
     SINCE BEEN RESTORED
   work_main_job_role_raw: In 1989 the building was heavily damaged by fire, but it
