@@ -434,6 +434,7 @@ validation_schemas = {
         "Date Tested": {"type": "string", "nullable": True},
         "Lab ID": string_dict,
         "testKit": string_dict,
+        "voidReason": string_dict,
         "CH1-Target": {"type": "string", "allowed": ["ORF1ab"]},
         "CH1-Result": {"type": "string", "allowed": swab_allowed_pcr_results},
         "CH1-Cq": {"type": "double", "nullable": True, "min": 0},
