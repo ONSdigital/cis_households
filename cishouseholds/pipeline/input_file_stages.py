@@ -16,6 +16,7 @@ from cishouseholds.pipeline.mapping import survey_response_cisd_cast_to_double
 from cishouseholds.pipeline.pipeline_stages import generate_input_processing_function
 from cishouseholds.pipeline.timestamp_map import blood_datetime_map
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
+from cishouseholds.pipeline.timestamp_map import historical_blood_datetime_map
 from cishouseholds.pipeline.timestamp_map import lab_results_glasgow_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v0_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v1_datetime_map
@@ -120,16 +121,28 @@ lab_results_glasgow_parameters = {
     "source_file_column": "lab_results_source_file",
 }
 
+historical_blood_parameters = {
+    "stage_name": "historical_blood_results",
+    "dataset_name": "historical_blood_results",
+    "id_column": "blood_sample_barcode",
+    "validation_schema": validation_schemas["historical_blood_validation_schema"],
+    "datetime_column_map": historical_blood_datetime_map,
+    "transformation_functions": [],
+    "sep": "|",
+    "cast_to_double_list": [],
+    "source_file_column": "historical_blood_results_source_file",
+}
+
 blood_parameters = {
     "stage_name": "blood_results",
     "dataset_name": "blood_results",
-    "id_column": "ons_id",
+    "id_column": "blood_sample_barcode",
     "validation_schema": validation_schemas["blood_validation_schema"],
     "datetime_column_map": blood_datetime_map,
     "transformation_functions": [],
     "sep": "|",
     "cast_to_double_list": [],
-    "source_file_column": "lab_results_source_file",
+    "source_file_column": "blood_results_source_file",
 }
 
 for parameters in [
