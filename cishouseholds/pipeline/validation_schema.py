@@ -428,7 +428,7 @@ validation_schemas = {
         "CH4-Result": {"type": "string", "allowed": swab_allowed_pcr_results},
         "CH4-Cq": {"type": "double", "nullable": True, "min": 0},
     },
-    "swab_validation_schema_testKit": {
+    "lab_results_glasgow_schema": {
         "Sample": {"type": "string", "regex": r"ONS\d{8}"},
         "Result": {"type": "string", "allowed": ["Negative", "Positive", "Void"]},
         "Date Tested": {"type": "string", "nullable": True},
