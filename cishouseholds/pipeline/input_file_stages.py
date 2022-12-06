@@ -14,12 +14,14 @@ from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import survey_response_cast_to_double
 from cishouseholds.pipeline.mapping import survey_response_cisd_cast_to_double
 from cishouseholds.pipeline.pipeline_stages import generate_input_processing_function
+from cishouseholds.pipeline.timestamp_map import blood_datetime_map
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pipeline.timestamp_map import lab_results_glasgow_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v0_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v1_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v2_datetime_map
 from cishouseholds.pipeline.validation_schema import validation_schemas
+
 
 cis_digital_parameters = {
     "stage_name": "survey_responses_version_digital_ETL",
@@ -112,6 +114,18 @@ lab_results_glasgow_parameters = {
     "id_column": "participant_completion_window_id",
     "validation_schema": validation_schemas["lab_results_glasgow_schema"],
     "datetime_column_map": lab_results_glasgow_datetime_map,
+    "transformation_functions": [],
+    "sep": "|",
+    "cast_to_double_list": [],
+    "source_file_column": "lab_results_source_file",
+}
+
+blood_parameters = {
+    "stage_name": "blood_results",
+    "dataset_name": "blood_results",
+    "id_column": "ons_id",
+    "validation_schema": validation_schemas["blood_validation_schema"],
+    "datetime_column_map": blood_datetime_map,
     "transformation_functions": [],
     "sep": "|",
     "cast_to_double_list": [],

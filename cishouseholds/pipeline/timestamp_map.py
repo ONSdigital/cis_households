@@ -1,6 +1,7 @@
 csv_datetime_maps = {"imputed_value_lookup": {"yyyy-MM-dd": ["date_of_birth"]}}
 
 lab_results_glasgow_datetime_map = {"yyyy-MM-dd HH:mm:ss 'UTC'": ["pcr_result_recorded_datetime"]}
+blood_datetime_map = {"yyyy/MM/dd": ["received_date"]}
 
 survey_responses_v2_datetime_map = {
     "dd/MM/yyyy": [
