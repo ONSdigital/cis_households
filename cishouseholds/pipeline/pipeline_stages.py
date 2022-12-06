@@ -81,7 +81,7 @@ from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
-from cishouseholds.predicition_checker_class import PredictionChecker
+from cishouseholds.prediction_checker_class import PredictionChecker
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import check_lookup_table_joined_columns_unique
 from cishouseholds.validate import normalise_schema
@@ -1183,7 +1183,7 @@ def compare(
     update_table(difference_sample_df, diff_samples_table_name, "overwrite")
 
 
-@register_pipeline_stage("compare_tables")
+@register_pipeline_stage("check_predictions")
 def check_predictions(
     base_table_name: str,
     table_name_to_compare: str,
