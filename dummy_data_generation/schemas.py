@@ -122,7 +122,6 @@ def get_participant_extract_digital_data_description(_, blood_barcodes, swab_bar
                 None,
             ],
         ),
-        "current_window_cadence": _("custom_random.random_integer", lower=14, upper=36, null_percent=0),
         "participant_id": _("random.custom_code", mask="DHR-############", digit="#"),  # Also DHRF-##########
         "title": _("choice", items=["Dr.", "Miss.", "Mr.", "Mrs.", "Ms.", "Prof.", None]),
         "first_name": _("person.first_name"),
@@ -166,6 +165,7 @@ def get_participant_extract_digital_data_description(_, blood_barcodes, swab_bar
             ],
         ),
         "ethnicity_other": _("text.sentence"),
+        "original_invite_cohort": _("text.sentence"),
         "consent_contact_extra_research_yn": _("choice", items=yes_no_none_choice),
         "consent_use_of_surplus_blood_samples_yn": _("choice", items=yes_no_none_choice),
         "consent_blood_samples_if_positive_yn": _("choice", items=yes_no_none_choice),
@@ -183,7 +183,7 @@ def get_participant_extract_digital_data_description(_, blood_barcodes, swab_bar
             end=2022,
             fmt=digital_datetime_format,
         ),
-        "existing_participant_opt_out_date": _(
+        "nhs_share_opt_out_date": _(
             "discrete_distribution",
             population=[
                 _(
