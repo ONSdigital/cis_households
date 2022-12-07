@@ -88,6 +88,7 @@ from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_barcode_simple
+from cishouseholds.edit import clean_invalid_covid_onset_dates
 from cishouseholds.edit import clean_job_description_string
 from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import conditionally_replace_columns
@@ -1407,8 +1408,13 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         ]
         if col in df.columns
     ]
+    date_cols_min_date_dict = {
+        "think_had_covid_onset_date": "2019-11-17",
+        "think_had_contacted_nhs": "2019-11-17",
+        "think_had_covid_admitted_to_hopsital": "2019-11-17",
+    }
     df = assign_raw_copies(df, date_cols_to_correct, "pdc")
-    df = correct_date_ranges(df, date_cols_to_correct, "visit_datetime", "2019-08-01")
+    df = correct_date_ranges(df, date_cols_to_correct, "visit_datetime", "2019-08-01", date_cols_min_date_dict)
     df = df.withColumn(
         "any_date_corrected",
         F.when(reduce(or_, [~F.col(col).eqNullSafe(F.col(f"{col}_pdc")) for col in date_cols_to_correct]), "Yes"),
@@ -1422,7 +1428,35 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
     df = clean_postcode(df, "postcode")
     df = normalise_think_had_covid_columns(df, "think_had_covid_symptom")
-
+    covid_cols_to_clean = [
+        "think_had_covid_contacted_nhs",
+        "think_had_covid_admitted_to_hospital",
+        "think_had_covid_symptom_fever",
+        "think_had_covid_symptom_muscle_ache",
+        "think_had_covid_symptom_fatigue",
+        "think_had_covid_symptom_sore_throat",
+        "think_had_covid_symptom_cough",
+        "think_had_covid_symptom_shortness_of_breath",
+        "think_had_covid_symptom_headache",
+        "think_had_covid_symptom_nausea_or_vomiting",
+        "think_had_covid_symptom_abdominal_pain",
+        "think_had_covid_symptom_diarrhoea",
+        "think_had_covid_symptom_loss_of_taste",
+        "think_had_covid_symptom_loss_of_smell",
+        "think_had_covid_symptom_more_trouble_sleeping",
+        "think_had_covid_symptom_chest_pain",
+        "think_had_covid_symptom_palpitations",
+        "think_had_covid_symptom_vertigo_or_dizziness",
+        "think_had_covid_symptom_anxiety",
+        "think_had_covid_symptom_low_mood",
+        "think_had_covid_symptom_memory_loss_or_confusion",
+        "think_had_covid_symptom_difficulty_concentrating",
+        "think_had_covid_symptom_runny_nose_or_sneezing",
+        "think_had_covid_symptom_noisy_breathing",
+        "think_had_covid_symptom_loss_of_appetite",
+        "think_had_covid_onset_date",
+    ]
+    df = clean_invalid_covid_onset_dates(df, "2019-11-17", covid_cols_to_clean)
     consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
 
     if all(col in df.columns for col in consent_cols):

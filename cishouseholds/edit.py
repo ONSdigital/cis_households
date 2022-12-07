@@ -66,7 +66,10 @@ def normalise_think_had_covid_columns(df: DataFrame, symptom_columns_prefix: str
 
 
 def correct_date_ranges_union_dependent(
-    df: DataFrame, columns_to_edit: List[str], participant_id_column: str, visit_date_column: str
+    df: DataFrame,
+    columns_to_edit: List[str],
+    participant_id_column: str,
+    visit_date_column: str,
 ):
     """
     Correct datetime columns given a range looking across all rows
@@ -115,7 +118,13 @@ def remove_incorrect_dates(df: DataFrame, columns_to_edit: List[str], visit_date
     return df
 
 
-def correct_date_ranges(df: DataFrame, columns_to_edit: List[str], visit_date_column: str, min_date: str):
+def correct_date_ranges(
+    df: DataFrame,
+    columns_to_edit: List[str],
+    visit_date_column: str,
+    min_date: str,
+    min_date_dict: dict = {},
+):
     """
     Correct datetime columns given a range
     """
@@ -141,10 +150,14 @@ def correct_date_ranges(df: DataFrame, columns_to_edit: List[str], visit_date_co
                     .otherwise(F.col(col)),
                 )
                 .when(
-                    (F.col(col) < min_date) & (F.col(col).isNotNull()),
+                    (F.col(col) < (min_date_dict.get(col, min_date))) & (F.col(col).isNotNull()),
                     F.when(
                         set_date_component(col, "year", F.year(visit_date_column)) <= F.col(visit_date_column),
                         set_date_component(col, "year", F.year(visit_date_column)),
+                    )
+                    .when(
+                        (F.year(col) < 2019) & (set_date_component(col, "year", 2019) <= F.col(visit_date_column)),
+                        set_date_component(col, "year", 2019),
                     )
                     .when(F.add_months(col, 1) <= F.col(visit_date_column), F.add_months(col, 1))
                     .when((F.year(col) > 2019), set_date_component(col, "year", F.year(visit_date_column) - 1))
@@ -1249,3 +1262,26 @@ def conditionally_replace_columns(
     for to_replace, replace_with in column_to_column_map.items():
         df = df.withColumn(to_replace, F.when(condition, F.col(replace_with)).otherwise(F.col(to_replace)))
     return df
+
+
+def clean_invalid_covid_onset_dates(df: DataFrame, valid_covid_date: str, cols_to_edit: List[str]):
+    """
+    Sets covid related values to null where think_had_covid_onset_date is before the input date string
+
+    Parameters
+    ----------
+    df : DataFrame
+    valid_covid_date : str
+        date before which think_had_covid cleaning will be applied
+    """
+    to_change_df = df.filter(
+        F.col("think_had_covid_onset_date").isNotNull() & F.col("think_had_covid_onset_date") < valid_covid_date
+    )
+    to_retain_df = df.filter(
+        F.col("think_had_covid_onset_date").isNull() | F.col("think_had_covid_onset_date") >= valid_covid_date
+    )
+    for col in cols_to_edit:
+        to_change_df = to_change_df.withColumn(col, F.lit(None))
+    to_retain_df = to_retain_df.withColumn("think_had_covid", F.lit("No"))
+    output_df = to_change_df.unionByName(to_retain_df)
+    return output_df
