@@ -65,6 +65,23 @@ def normalise_think_had_covid_columns(df: DataFrame, symptom_columns_prefix: str
     return df.drop("CHECK")
 
 
+def normalize_covid_contact_cols(df: DataFrame, contact_col: str, contact_date_col: str, contact_type_col: str):
+    """
+    Updates contact suspect and contact known columns to be in line with answers to
+    related cols
+    contact_types: list of covid contact types the function should apply to
+    """
+    # first correct contact_col
+    df = df.withColumn(
+        contact_col, F.when(F.col(contact_date_col).isNull(), "No").when(~F.col(contact_date_col).isNull(), "Yes")
+    )
+
+    # next correct contact_date_col
+    df = df.withColumn(contact_type_col, F.when((F.col(contact_date_col).isNull() | F.col(contact_col) == "No"), None))
+
+    return df
+
+
 def correct_date_ranges_union_dependent(
     df: DataFrame, columns_to_edit: List[str], participant_id_column: str, visit_date_column: str
 ):
