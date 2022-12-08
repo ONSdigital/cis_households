@@ -295,6 +295,8 @@ def fill_forward_event(
     completed_sections = []
     events_df = None
 
+    # ~~~~ Prepare the dataframes, any row with a null `visit_datetime` cannot be filled forward ~~~~ #
+
     filtered_df = df.filter(
         (F.col(visit_datetime_column).isNotNull())
         & (F.col(event_date_column).isNotNull())
@@ -302,6 +304,8 @@ def fill_forward_event(
     )
     null_df = df.filter(F.col(visit_datetime_column).isNull())
     df = df.filter(F.col(visit_datetime_column).isNotNull())
+
+    # ~~~~ Normalise the event dates by picking only the firs report of an event within a given threshold ~~~ #
 
     # create an expression for when a series of dates has been normalised
     # gets the date difference between the first row by visit datetime in the filtered dataset
@@ -322,6 +326,8 @@ def fill_forward_event(
         events_df = union_multiple_tables(completed_sections)
     elif len(completed_sections) == 1:
         events_df = completed_sections[0]
+
+    # ~~~~ Fill forwards the selected events by joining the lookup `events_df` with the original not null df ~~~~ #
 
     # use this columns to override the original dataframe
     if events_df is not None and events_df.count() > 0:
