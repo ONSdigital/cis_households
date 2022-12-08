@@ -3300,6 +3300,9 @@ def fix_timestamps(df: DataFrame):
     Fix any issues with dates saved in timestamp format drifting ahead by n hours.
     """
     date_cols = [c for c in df.columns if "date" in c and "datetime" not in c]
+    d_types_list = [list(d) for d in df.select(*date_cols).dtypes]
+    d_types = {d[0]: d[1] for d in d_types_list}
     for col in date_cols:
-        df = df.withColumn(col, F.date_format(F.col(col), "yyyy-MM-dd"))
+        if d_types[col] == "timestamp":
+            df = df.withColumn(col, F.date_format(F.col(col), "yyyy-MM-dd"))
     return df
