@@ -1387,6 +1387,7 @@ column_name_maps = {
         "CH4-Target": "ms2_pcr_target",
         "CH4-Result": "ms2_pcr_result_classification",
         "CH4-Cq": "ms2_pcr_cq_value",
+        "voidReason": "void_reason",
     },
     "swab_variable_name_map": {
         "Sample": "swab_sample_barcode",
