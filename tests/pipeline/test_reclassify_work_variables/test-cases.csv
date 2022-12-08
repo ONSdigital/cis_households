@@ -1,6 +1,6 @@
-row_id,rule_id,record_type,work_main_job_title,work_main_job_role,age_at_visit,school_year,work_location,work_status_v0,work_status_v1,work_status_v2
-0,1000,input,ADMIN - WORKS FROM HOME,ADMINSTRATOR,54,,,Employed,Employed and currently working,Employed and currently working
-0,1000,expected,ADMIN - WORKS FROM HOME,ADMINSTRATOR,54,,Working from home,Employed,Employed and currently working,Employed and currently working
+row_id,rule_id,record_type,survey_response_dataset_major_version,work_main_job_title,work_main_job_role,age_at_visit,school_year,work_location,work_status_v0,work_status_v1,work_status_v2
+0,1000,input,2,ADMIN - WORKS FROM HOME,ADMINSTRATOR,54,,,Employed,Employed and currently working,Employed and currently working
+0,1000,expected,2,ADMIN - WORKS FROM HOME,ADMINSTRATOR,54,,Working from home,Employed,Employed and currently working,Employed and currently working
 1,2000,input,ASSISTANT SCHOOL TEACHER,FURLOWED,70,,OFFICE,Employed,Employed and currently not working,Employed and currently not working
 1,2000,expected,ASSISTANT SCHOOL TEACHER,FURLOWED,70,,OFFICE,Furloughed (temporarily not working),Employed and currently not working,Employed and currently not working
 2,2001,input,ASSISTANT SCHOOL TEACHER,FURLOWED,70,,OFFICE,Furloughed (temporarily not working),Looking for paid work and able to start,Employed and currently not working

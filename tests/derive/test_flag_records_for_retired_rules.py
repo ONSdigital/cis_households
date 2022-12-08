@@ -1,6 +1,8 @@
 from chispa import assert_df_equality
 
-from cishouseholds.derive import flag_records_for_retired_rules
+from cishouseholds.derive import flag_records_for_retired_rules_v0
+from cishouseholds.derive import flag_records_for_retired_rules_v1
+from cishouseholds.derive import flag_records_for_retired_rules_v2
 
 
 def test_flag_records_for_retired_rules(spark_session):
@@ -24,7 +26,7 @@ def test_flag_records_for_retired_rules(spark_session):
         ),
     )
 
-    actual_df = expected_df.drop("actual_flag").withColumn("actual_flag", flag_records_for_retired_rules())
+    actual_df = expected_df.drop("actual_flag").withColumn("actual_flag", flag_records_for_retired_rules_v0())
 
     assert_df_equality(
         actual_df,
