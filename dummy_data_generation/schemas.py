@@ -74,9 +74,14 @@ def get_nims_data_description(_, participant_ids=[]):
     }
 
 
-def get_glasgow_lab_data_description(_):
+def get_glasgow_lab_data_description(_, swab_barcodes):
     return lambda: {  # noqa: E731
-        "Sample": _("random.custom_code", mask="SWT########", digit="#"),
+        "Sample": _(
+            "discrete_distribution",
+            population=swab_barcodes,
+            weights=[1 / len(swab_barcodes)] * len(swab_barcodes),
+            null_prop=0.2,
+        ),
         "Result": _("choice", items=["Negative", "Positive", "Void"]),
         "Date Tested": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S UTC", start=2018, end=2022),
         "Lab ID": _("choice", items=["GLS"]),
@@ -99,14 +104,14 @@ def get_glasgow_lab_data_description(_):
 
 def get_blood_validation_schema(_, blood_barcodes):
     return lambda: {  # noqa: E731
-        "Serum Source ID": _("random.custom_code", mask="BLT########", digit="#"),
-        "Blood Sample Type": _("choice", items=["Capillary"]),
-        "Plate Barcode": _(
+        "Serum Source ID": _(
             "discrete_distribution",
             population=blood_barcodes,
             weights=[1 / len(blood_barcodes)] * len(blood_barcodes),
             null_prop=0.2,
         ),
+        "Blood Sample Type": _("choice", items=["Capillary"]),
+        "Plate Barcode": _("random.custom_code", mask="BLT########", digit="#"),
         "Well ID": _("random.custom_code", mask="&##", digit="#", char="&"),
         "Detection": _("choice", items=["DETECTED", "Failed", "NOT detected"]),
         "Monoclonal quantitation (Colourimetric)": _("float_number", start=0.0, end=78000.0, precision=4),
