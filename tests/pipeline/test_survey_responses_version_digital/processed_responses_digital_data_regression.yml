@@ -103,8 +103,8 @@
   currently_smokes_or_vapes_description: Hookah or shisha pipes
   currently_smokes_or_vapes_raw: Prefer not to say
   date_of_birth: '1982-08-08 00:00:00.000000'
-  days_since_think_had_covid: 30.0
-  days_since_think_had_covid_group: 29-60
+  days_since_think_had_covid: 28.0
+  days_since_think_had_covid_group: 15-28
   digital_communication_preference: Email
   digital_entry_pack_sent_datetime: '2021-06-21 16:25:43.000000'
   digital_entry_pack_status: Ports are used to communicate with the external world.
@@ -411,7 +411,7 @@
   unique_participant_response_id: 0153-DHR-105295618485
   vaccinated_against_flu: 'No'
   visit_date_type: swab_sample_received_consolidation_point_datetime
-  visit_datetime: '2022-01-01 23:14:15.000000'
+  visit_datetime: '2021-12-30 23:14:15.000000'
   visit_id: '0153'
   voucher_type_preference: Paper
   which_symptoms_last_7_days: think_have_covid_symptom_shortness_of_breath;think_have_covid_symptom_loss_of_smell;think_have_covid_symptom_loss_of_appetite;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_low_mood;think_have_covid_symptom_memory_loss_or_confusion
@@ -1007,8 +1007,8 @@
   currently_smokes_or_vapes_description: Hookah or shisha pipes
   currently_smokes_or_vapes_raw: 'No'
   date_of_birth: '2005-03-22 00:00:00.000000'
-  days_since_think_had_covid: 0.0
-  days_since_think_had_covid_group: 0-14
+  days_since_think_had_covid: 29.0
+  days_since_think_had_covid_group: 29-60
   digital_communication_preference: Letter
   digital_entry_pack_sent_datetime: '2020-04-12 09:10:28.000000'
   digital_entry_pack_status: Haskell is a standardized, general-purpose purely functional
@@ -1075,7 +1075,7 @@
   last_covid_contact_type: Living in your own home
   last_covid_contact_type_raw: Someone I live with
   last_name: Romero
-  last_suspected_covid_contact_date: '2022-01-01 00:00:00.000000'
+  last_suspected_covid_contact_date: '2021-12-01 00:00:00.000000'
   last_suspected_covid_contact_type: Someone you do not live with
   last_suspected_covid_contact_type_raw: Someone you do not live with
   long_covid_symptoms: think_have_long_covid_symptom_nausea_or_vomiting;think_have_long_covid_symptom_diarrhoea;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_memory_loss_or_confusion;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_runny_nose_or_sneezing
@@ -1225,7 +1225,7 @@
   think_had_covid_any_symptoms: 'No'
   think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: null
-  think_had_covid_onset_date: '2022-01-02 00:00:00.000000'
+  think_had_covid_onset_date: '2021-12-02 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'No'
   think_had_covid_symptom_anxiety: 'No'
   think_had_covid_symptom_chest_pain: 'Yes'
@@ -1316,7 +1316,7 @@
   unique_participant_response_id: 3506-DHR-303789475622
   vaccinated_against_flu: 'No'
   visit_date_type: swab_sample_received_consolidation_point_datetime
-  visit_datetime: '2022-01-02 22:03:54.000000'
+  visit_datetime: '2021-12-31 22:03:54.000000'
   visit_id: '3506'
   voucher_type_preference: Paper
   which_symptoms_last_7_days: think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_sore_throat;think_have_covid_symptom_shortness_of_breath;think_have_covid_symptom_chest_pain;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_memory_loss_or_confusion
@@ -1458,7 +1458,7 @@
   currently_smokes_or_vapes_description: Cigarettes
   currently_smokes_or_vapes_raw: 'No'
   date_of_birth: '2020-02-01 00:00:00.000000'
-  days_since_think_had_covid: 26.0
+  days_since_think_had_covid: 24.0
   days_since_think_had_covid_group: 15-28
   digital_communication_preference: null
   digital_entry_pack_sent_datetime: '2020-09-20 00:35:12.000000'
@@ -1544,7 +1544,7 @@
   other_antibody_test_results_raw: null
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: '2021-12-05 00:00:00.000000'
-  other_covid_infection_test_last_negative_date: '2022-01-03 00:00:00.000000'
+  other_covid_infection_test_last_negative_date: '2021-12-03 00:00:00.000000'
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Any tests negative, but none positive
@@ -1700,7 +1700,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
-  think_have_covid_onset_date: '2022-01-03 00:00:00.000000'
+  think_have_covid_onset_date: '2021-12-03 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_any: 'Yes'
@@ -1765,7 +1765,7 @@
   unique_participant_response_id: 3586-DHR-016525808631
   vaccinated_against_flu: null
   visit_date_type: swab_sample_received_consolidation_point_datetime
-  visit_datetime: '2022-01-04 11:34:20.000000'
+  visit_datetime: '2022-01-02 11:34:20.000000'
   visit_id: '3586'
   voucher_type_preference: email_address
   which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_diarrhoea;think_have_covid_symptom_shortness_of_breath;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_memory_loss_or_confusion;think_have_covid_symptom_difficulty_concentrating
@@ -1902,8 +1902,8 @@
   currently_smokes_or_vapes_description: Vape or E-cigarettes
   currently_smokes_or_vapes_raw: 'Yes'
   date_of_birth: '2012-05-22 00:00:00.000000'
-  days_since_think_had_covid: 29.0
-  days_since_think_had_covid_group: 29-60
+  days_since_think_had_covid: 27.0
+  days_since_think_had_covid_group: 15-28
   digital_communication_preference: Email
   digital_entry_pack_sent_datetime: '2021-09-27 00:19:18.000000'
   digital_entry_pack_status: Make me a sandwich.
@@ -2214,7 +2214,7 @@
   unique_participant_response_id: 4033-DHR-400432098599
   vaccinated_against_flu: 'No'
   visit_date_type: swab_sample_received_consolidation_point_datetime
-  visit_datetime: '2022-01-06 19:51:18.000000'
+  visit_datetime: '2022-01-04 19:51:18.000000'
   visit_id: '4033'
   voucher_type_preference: Paper
   which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_fatigue;think_have_covid_symptom_cough;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_anxiety
@@ -2669,7 +2669,7 @@
   unique_participant_response_id: 4229-DHR-219547810444
   vaccinated_against_flu: null
   visit_date_type: swab_sample_received_consolidation_point_datetime
-  visit_datetime: '2022-01-04 06:10:56.000000'
+  visit_datetime: '2022-01-02 06:10:56.000000'
   visit_id: '4229'
   voucher_type_preference: null
   which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_headache;think_have_covid_symptom_muscle_ache;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_cough;think_have_covid_symptom_palpitations;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_low_mood
@@ -3354,7 +3354,7 @@
   other_antibody_test_results_raw: null
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: '2021-12-08 00:00:00.000000'
-  other_covid_infection_test_last_negative_date: '2022-01-01 00:00:00.000000'
+  other_covid_infection_test_last_negative_date: '2021-12-01 00:00:00.000000'
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
@@ -3578,7 +3578,7 @@
   unique_participant_response_id: 5198-DHR-167403959807
   vaccinated_against_flu: null
   visit_date_type: swab_sample_received_consolidation_point_datetime
-  visit_datetime: '2022-01-01 09:15:08.000000'
+  visit_datetime: '2021-12-30 09:15:08.000000'
   visit_id: '5198'
   voucher_type_preference: email_address
   which_symptoms_last_7_days: think_have_covid_symptom_muscle_ache;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_sore_throat;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_smell;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_palpitations;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_difficulty_concentrating
@@ -4272,7 +4272,7 @@
   other_antibody_test_results: Waiting for all results
   other_antibody_test_results_raw: Waiting for all results
   other_covid_infection_test: 'No'
-  other_covid_infection_test_first_positive_date: '2022-01-04 00:00:00.000000'
+  other_covid_infection_test_first_positive_date: '2021-12-04 00:00:00.000000'
   other_covid_infection_test_last_negative_date: '2021-12-06 00:00:00.000000'
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
@@ -4493,7 +4493,7 @@
   unique_participant_response_id: 9263-DHR-073988827188
   vaccinated_against_flu: null
   visit_date_type: swab_sample_received_consolidation_point_datetime
-  visit_datetime: '2022-01-04 21:24:59.000000'
+  visit_datetime: '2022-01-02 21:24:59.000000'
   visit_id: '9263'
   voucher_type_preference: null
   which_symptoms_last_7_days: think_have_covid_symptom_fatigue;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_palpitations;think_have_covid_symptom_anxiety;think_have_covid_symptom_memory_loss_or_confusion
