@@ -111,7 +111,7 @@ def get_blood_validation_schema(_, blood_barcodes):
             null_prop=0.2,
         ),
         "Blood Sample Type": _("choice", items=["Capillary"]),
-        "Plate Barcode": _("random.custom_code", mask="BLT########", digit="#"),
+        "Plate Barcode": _("random.custom_code", mask="ONS_######&&", digit="#", char="&"),
         "Well ID": _("random.custom_code", mask="&##", digit="#", char="&"),
         "Detection": _("choice", items=["DETECTED", "Failed", "NOT detected"]),
         "Monoclonal quantitation (Colourimetric)": _("float_number", start=0.0, end=78000.0, precision=4),
