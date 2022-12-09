@@ -125,7 +125,7 @@ lab_results_glasgow_parameters = {
 historical_blood_parameters = {
     "stage_name": "historical_blood_results",
     "dataset_name": "historical_blood_results",
-    "id_column": "blood_sample_barcode",
+    "id_column": "antibody_test_well_id",
     "validation_schema": validation_schemas["historical_blood_validation_schema"],
     "datetime_column_map": historical_blood_datetime_map,
     "transformation_functions": [],
@@ -137,7 +137,7 @@ historical_blood_parameters = {
 blood_parameters = {
     "stage_name": "blood_results",
     "dataset_name": "blood_results",
-    "id_column": "blood_sample_barcode",
+    "id_column": "antibody_test_well_id",
     "validation_schema": validation_schemas["blood_validation_schema"],
     "datetime_column_map": blood_datetime_map,
     "column_name_map": column_name_maps["blood_variable_name_map"],
