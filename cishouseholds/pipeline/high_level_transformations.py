@@ -1466,14 +1466,14 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         reference_columns=work_columns,
     )
 
-    contact_date = ["last_suspected_covid_contact_date", "last_known_covid_contact_date"]
+    contact_date = ["last_suspected_covid_contact_date", "last_covid_contact_date"]
 
     covid_contact = ["contact_suspected_positive_covid_last_28_days", "contact_known_positive_covid_last_28_days"]
 
     contact_type = ["last_suspected_covid_contact_type", "last_covid_contact_type"]
 
-    # correct covid contact based on date
     for l in range(len(contact_date)):
+        # correct covid contact based on date
         df = update_to_value_if_any_not_null(
             df=df,
             column_name_to_assign=covid_contact[l - 1],
@@ -1484,7 +1484,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         # correct covid type based on date
         df = update_to_value_if_any_not_null(
             df=df,
-            column_name_to_assign=contact_date[l - 1],
+            column_name_to_assign=contact_type[l - 1],
             true_false_values=[F.col(contact_type[l - 1]), None],
             column_list=[
                 contact_date[l - 1],
