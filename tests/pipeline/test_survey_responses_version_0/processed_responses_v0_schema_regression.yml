@@ -377,7 +377,7 @@ fields:
   type: string
 - metadata: {}
   name: contact_known_positive_covid_last_28_days
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: last_covid_contact_date
@@ -389,7 +389,7 @@ fields:
   type: string
 - metadata: {}
   name: contact_suspected_positive_covid_last_28_days
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: last_suspected_covid_contact_date

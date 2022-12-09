@@ -14,7 +14,7 @@
   consent_contact_extra_research: '0'
   consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '0'
-  contact_known_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '1988-12-04 00:00:00.000000'
@@ -171,8 +171,8 @@
   consent_contact_extra_research: '1'
   consent_summary: 5.0
   consent_use_of_surplus_blood_samples: '0'
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: 'No'
+  contact_known_positive_covid_last_28_days: 'Yes'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: Derbyshire
   date_of_birth: '1985-09-10 00:00:00.000000'
   days_since_think_had_covid: 6
@@ -332,8 +332,8 @@
   consent_contact_extra_research: '1'
   consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '1'
-  contact_known_positive_covid_last_28_days: 'No'
-  contact_suspected_positive_covid_last_28_days: 'No'
+  contact_known_positive_covid_last_28_days: 'Yes'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '1982-12-15 00:00:00.000000'
   days_since_think_had_covid: 30
@@ -495,8 +495,8 @@
   consent_contact_extra_research: '1'
   consent_summary: 1.0
   consent_use_of_surplus_blood_samples: '0'
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'Yes'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '1997-01-25 00:00:00.000000'
   days_since_think_had_covid: 0
@@ -653,8 +653,8 @@
   consent_contact_extra_research: '0'
   consent_summary: 1.0
   consent_use_of_surplus_blood_samples: '0'
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: 'No'
+  contact_known_positive_covid_last_28_days: 'Yes'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '1985-10-14 00:00:00.000000'
   days_since_think_had_covid: 26
@@ -815,7 +815,7 @@
   consent_summary: 5.0
   consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspected_positive_covid_last_28_days: null
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '2020-02-01 00:00:00.000000'
   days_since_think_had_covid: 4
@@ -974,7 +974,7 @@
   consent_summary: 0.0
   consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspected_positive_covid_last_28_days: null
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '2021-12-18 00:00:00.000000'
   days_since_think_had_covid: 6
@@ -1132,7 +1132,7 @@
   consent_contact_extra_research: '0'
   consent_summary: 0.0
   consent_use_of_surplus_blood_samples: '1'
-  contact_known_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: Worcestershire
   date_of_birth: '1997-03-07 00:00:00.000000'
@@ -1292,7 +1292,7 @@
   consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '0'
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspected_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: North Yorkshire
   date_of_birth: '1994-09-20 00:00:00.000000'
   days_since_think_had_covid: 30
@@ -1448,7 +1448,7 @@
   consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '1'
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspected_positive_covid_last_28_days: null
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   date_of_birth: '1986-06-28 00:00:00.000000'
   days_since_think_had_covid: 1
