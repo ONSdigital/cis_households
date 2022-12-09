@@ -156,7 +156,7 @@ def correct_date_ranges(
                         set_date_component(col, "year", F.year(visit_date_column)),
                     )
                     .when(
-                        (F.year(col) < 2019) & (set_date_component(col, "year", 2019) <= F.col(visit_date_column)),
+                        (F.month(col) >= 8) & (set_date_component(col, "year", 2019) <= F.col(visit_date_column)),
                         set_date_component(col, "year", 2019),
                     )
                     .when(F.add_months(col, 1) <= F.col(visit_date_column), F.add_months(col, 1))
@@ -1275,13 +1275,13 @@ def clean_invalid_covid_onset_dates(df: DataFrame, valid_covid_date: str, cols_t
         date before which think_had_covid cleaning will be applied
     """
     to_change_df = df.filter(
-        F.col("think_had_covid_onset_date").isNotNull() & F.col("think_had_covid_onset_date") < valid_covid_date
+        ((F.col("think_had_covid_onset_date").isNotNull()) & (F.col("think_had_covid_onset_date") < valid_covid_date))
     )
     to_retain_df = df.filter(
-        F.col("think_had_covid_onset_date").isNull() | F.col("think_had_covid_onset_date") >= valid_covid_date
+        ((F.col("think_had_covid_onset_date").isNull()) | (F.col("think_had_covid_onset_date") >= valid_covid_date))
     )
     for col in cols_to_edit:
         to_change_df = to_change_df.withColumn(col, F.lit(None))
-    to_retain_df = to_retain_df.withColumn("think_had_covid", F.lit("No"))
+    to_change_df = to_change_df.withColumn("think_had_covid", F.lit("No"))
     output_df = to_change_df.unionByName(to_retain_df)
     return output_df
