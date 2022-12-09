@@ -74,9 +74,14 @@ def get_nims_data_description(_, participant_ids=[]):
     }
 
 
-def get_swab_testkit_data_description(_):
+def get_glasgow_lab_data_description(_, swab_barcodes):
     return lambda: {  # noqa: E731
-        "Sample": _("random.custom_code", mask="ONS########", digit="#"),
+        "Sample": _(
+            "discrete_distribution",
+            population=swab_barcodes,
+            weights=[1 / len(swab_barcodes)] * len(swab_barcodes),
+            null_prop=0.2,
+        ),
         "Result": _("choice", items=["Negative", "Positive", "Void"]),
         "Date Tested": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S UTC", start=2018, end=2022),
         "Lab ID": _("choice", items=["GLS"]),
@@ -93,6 +98,30 @@ def get_swab_testkit_data_description(_):
         "CH4-Target": _("choice", items=["S gene", None]),
         "CH4-Result": _("choice", items=["Positive", "Rejected"]),
         "CH4-Cq": _("float_number", start=15.0, end=30.0, precision=12),
+        "voidReason": _("choice", items=[None, "reason 1", "reason 2", "reason 3", "reason 4"]),
+    }
+
+
+def get_blood_validation_schema(_, blood_barcodes):
+    return lambda: {  # noqa: E731
+        "Serum Source ID": _(
+            "discrete_distribution",
+            population=blood_barcodes,
+            weights=[1 / len(blood_barcodes)] * len(blood_barcodes),
+            null_prop=0.2,
+        ),
+        "Blood Sample Type": _("choice", items=["Capillary"]),
+        "Plate Barcode": _("random.custom_code", mask="ONS_######&&", digit="#", char="&"),
+        "Well ID": _("random.custom_code", mask="&##", digit="#", char="&"),
+        "Detection": _("choice", items=["DETECTED", "Failed", "NOT detected"]),
+        "Monoclonal quantitation (Colourimetric)": _("float_number", start=0.0, end=78000.0, precision=4),
+        "Monoclonal bounded quantitation (Colourimetric)": _("text.sentence"),
+        "Monoclonal undiluted quantitation (Colourimetric)": _(
+            "custom_random.random_integer", lower=0, upper=360000, null_percent=0
+        ),
+        "Date Samples Arrayed Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2019, end=2024),
+        "Date Samples Received Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2019, end=2024),
+        "Voyager Date Created": _("choice", items=[None]),
     }
 
 

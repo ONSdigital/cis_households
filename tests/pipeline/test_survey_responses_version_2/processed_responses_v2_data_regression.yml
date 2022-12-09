@@ -11,8 +11,8 @@
   been_outside_uk_last_country: NAMIBIA
   been_outside_uk_last_return_date: '2020-09-10 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  blood_sample_barcode: ONS00000000
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode: BLT69481643
+  blood_sample_barcode_raw: BLT69481643
   blood_taken: 'Yes'
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
@@ -178,8 +178,8 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 2
   survey_response_type: First Visit
-  swab_sample_barcode: ONS00000000
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode: SWT97212108
+  swab_sample_barcode_raw: SWT97212108
   swab_taken: 'Yes'
   think_had_covid: null
   think_had_covid_admitted_to_hospital: null
@@ -486,8 +486,8 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 2
   survey_response_type: First Visit
-  swab_sample_barcode: ONS00000000
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode: SWT79358109
+  swab_sample_barcode_raw: SWT79358109
   swab_taken: 'Yes'
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'Yes'
@@ -630,8 +630,8 @@
   been_outside_uk_last_country: OMAN
   been_outside_uk_last_return_date: null
   been_outside_uk_since_april_2020: null
-  blood_sample_barcode: ONS00000000
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode: BLT89048147
+  blood_sample_barcode_raw: BLT89048147
   blood_taken: 'Yes'
   care_home_last_28_days: null
   cis_covid_vaccine_date: '2022-01-07 00:00:00.000000'
@@ -797,8 +797,8 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 2
   survey_response_type: First Visit
-  swab_sample_barcode: ONS00000000
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode: SWT58568144
+  swab_sample_barcode_raw: SWT58568144
   swab_taken: 'Yes'
   think_had_covid: null
   think_had_covid_admitted_to_hospital: null
@@ -938,8 +938,8 @@
   been_outside_uk_last_country: VENEZUELA
   been_outside_uk_last_return_date: '2020-06-28 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
-  blood_sample_barcode: ONS00000000
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode: BLT70965759
+  blood_sample_barcode_raw: BLT70965759
   blood_taken: 'Yes'
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
@@ -1107,8 +1107,8 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 2
   survey_response_type: Follow-up Visit
-  swab_sample_barcode: ONS00000000
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode: SWT29425711
+  swab_sample_barcode_raw: SWT29425711
   swab_taken: 'Yes'
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: null
@@ -1256,8 +1256,8 @@
   been_outside_uk_last_country: PAKISTAN
   been_outside_uk_last_return_date: '2020-04-27 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  blood_sample_barcode: ONS00000000
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode: BLT49605737
+  blood_sample_barcode_raw: BLT49605737
   blood_taken: 'Yes'
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
@@ -1571,8 +1571,8 @@
   been_outside_uk_last_country: JAMAICA
   been_outside_uk_last_return_date: '2020-09-20 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  blood_sample_barcode: ONS00000000
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode: BLT54337808
+  blood_sample_barcode_raw: BLT54337808
   blood_taken: 'Yes'
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
@@ -1740,8 +1740,8 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 2
   survey_response_type: First Visit
-  swab_sample_barcode: ONS00000000
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode: SWT29425711
+  swab_sample_barcode_raw: SWT29425711
   swab_taken: 'Yes'
   think_had_covid: 'No'
   think_had_covid_admitted_to_hospital: 'No'
@@ -1889,8 +1889,8 @@
   been_outside_uk_last_country: NAMIBIA
   been_outside_uk_last_return_date: null
   been_outside_uk_since_april_2020: 'No'
-  blood_sample_barcode: ONS00000000
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode: BLT58568144
+  blood_sample_barcode_raw: BLT58568144
   blood_taken: 'Yes'
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
@@ -2059,8 +2059,8 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 2
   survey_response_type: First Visit
-  swab_sample_barcode: ONS00000000
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode: SWT89048147
+  swab_sample_barcode_raw: SWT89048147
   swab_taken: 'Yes'
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'Yes'
@@ -2201,8 +2201,8 @@
   been_outside_uk_last_country: null
   been_outside_uk_last_return_date: '2020-12-04 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  blood_sample_barcode: ONS00000000
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode: BLT99128328
+  blood_sample_barcode_raw: BLT99128328
   blood_taken: 'Yes'
   care_home_last_28_days: 'No'
   cis_covid_vaccine_date: '2022-01-02 00:00:00.000000'
@@ -2511,8 +2511,8 @@
   been_outside_uk_last_country: UGANDA
   been_outside_uk_last_return_date: null
   been_outside_uk_since_april_2020: 'Yes'
-  blood_sample_barcode: ONS00000000
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode: BLT70965759
+  blood_sample_barcode_raw: BLT70965759
   blood_taken: 'Yes'
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
@@ -2678,8 +2678,8 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 2
   survey_response_type: First Visit
-  swab_sample_barcode: ONS00000000
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode: SWT74412661
+  swab_sample_barcode_raw: SWT74412661
   swab_taken: 'Yes'
   think_had_covid: 'Yes'
   think_had_covid_admitted_to_hospital: 'Yes'
@@ -2827,8 +2827,8 @@
   been_outside_uk_last_country: HONDURAS
   been_outside_uk_last_return_date: null
   been_outside_uk_since_april_2020: 'No'
-  blood_sample_barcode: ONS00000000
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode: BLT49605737
+  blood_sample_barcode_raw: BLT49605737
   blood_taken: 'Yes'
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
@@ -2996,8 +2996,8 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 2
   survey_response_type: Follow-up Visit
-  swab_sample_barcode: ONS00000000
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode: SWT20922815
+  swab_sample_barcode_raw: SWT20922815
   swab_taken: 'Yes'
   think_had_covid: null
   think_had_covid_admitted_to_hospital: 'Yes'

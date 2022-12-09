@@ -1,9 +1,9 @@
 - any_date_corrected: null
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
-  blood_sample_barcode: ONS07212108
-  blood_sample_barcode_edited_flag: 1.0
-  blood_sample_barcode_raw: BLT97212108
+  blood_sample_barcode: ONS71019011
+  blood_sample_barcode_edited_flag: null
+  blood_sample_barcode_raw: ONS71019011
   blood_taken: 'Yes'
   bloods_taken: 0.0
   city: null
@@ -95,9 +95,9 @@
   suffix: B
   survey_response_dataset_major_version: 0
   survey_response_type: First Visit
-  swab_sample_barcode: ONS09481643
+  swab_sample_barcode: ONS00527620
   swab_sample_barcode_edited_flag: 1.0
-  swab_sample_barcode_raw: SWT69481643
+  swab_sample_barcode_raw: ONS10527620
   swab_taken: 'Yes'
   swabs_taken: 0.0
   think_had_covid: 'No'
@@ -158,9 +158,9 @@
 - any_date_corrected: null
   any_household_members_over_2_years_and_not_present: 'No'
   bad_email: null
-  blood_sample_barcode: ONS74412661
-  blood_sample_barcode_edited_flag: 1.0
-  blood_sample_barcode_raw: BLT74412661
+  blood_sample_barcode: ONS73187191
+  blood_sample_barcode_edited_flag: null
+  blood_sample_barcode_raw: ONS73187191
   blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
@@ -414,9 +414,9 @@
   suffix: U
   survey_response_dataset_major_version: 0
   survey_response_type: Follow-up Visit
-  swab_sample_barcode: ONS79358109
+  swab_sample_barcode: ONS04024242
   swab_sample_barcode_edited_flag: 1.0
-  swab_sample_barcode_raw: SWT79358109
+  swab_sample_barcode_raw: ONS64024242
   swab_taken: 'Yes'
   swabs_taken: 0.0
   think_had_covid: 'Yes'
@@ -482,9 +482,9 @@
 - any_date_corrected: null
   any_household_members_over_2_years_and_not_present: null
   bad_email: false
-  blood_sample_barcode: ONS09721832
+  blood_sample_barcode: ONS03000597
   blood_sample_barcode_edited_flag: 1.0
-  blood_sample_barcode_raw: BLT19721832
+  blood_sample_barcode_raw: ONS53000597
   blood_taken: 'Yes'
   bloods_taken: 1.0
   city: Saltash
@@ -640,9 +640,9 @@
 - any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
-  blood_sample_barcode: ONS09128328
+  blood_sample_barcode: ONS04024242
   blood_sample_barcode_edited_flag: 1.0
-  blood_sample_barcode_raw: BLT99128328
+  blood_sample_barcode_raw: ONS64024242
   blood_taken: 'Yes'
   bloods_taken: 0.0
   city: Luton
@@ -801,9 +801,9 @@
 - any_date_corrected: null
   any_household_members_over_2_years_and_not_present: null
   bad_email: false
-  blood_sample_barcode: ONS09128328
+  blood_sample_barcode: ONS04024242
   blood_sample_barcode_edited_flag: 1.0
-  blood_sample_barcode_raw: BLT99128328
+  blood_sample_barcode_raw: ONS64024242
   blood_taken: 'Yes'
   bloods_taken: 0.0
   city: null
@@ -960,9 +960,9 @@
 - any_date_corrected: null
   any_household_members_over_2_years_and_not_present: null
   bad_email: false
-  blood_sample_barcode: ONS04337808
+  blood_sample_barcode: ONS03000597
   blood_sample_barcode_edited_flag: 1.0
-  blood_sample_barcode_raw: BLT54337808
+  blood_sample_barcode_raw: ONS53000597
   blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
@@ -1056,9 +1056,9 @@
   suffix: B
   survey_response_dataset_major_version: 0
   survey_response_type: First Visit
-  swab_sample_barcode: ONS29425711
-  swab_sample_barcode_edited_flag: 1.0
-  swab_sample_barcode_raw: SWT29425711
+  swab_sample_barcode: ONS73187191
+  swab_sample_barcode_edited_flag: null
+  swab_sample_barcode_raw: ONS73187191
   swab_taken: 'Yes'
   swabs_taken: 1.0
   think_had_covid: 'No'
@@ -1213,9 +1213,9 @@
   suffix: U
   survey_response_dataset_major_version: 0
   survey_response_type: First Visit
-  swab_sample_barcode: ONS09327728
+  swab_sample_barcode: ONS04024242
   swab_sample_barcode_edited_flag: 1.0
-  swab_sample_barcode_raw: SWT59327728
+  swab_sample_barcode_raw: ONS64024242
   swab_taken: 'Yes'
   swabs_taken: 0.0
   think_had_covid: 'Yes'
@@ -1278,9 +1278,9 @@
 - any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: null
   bad_email: false
-  blood_sample_barcode: ONS74412661
-  blood_sample_barcode_edited_flag: 1.0
-  blood_sample_barcode_raw: BLT74412661
+  blood_sample_barcode: ONS73187191
+  blood_sample_barcode_edited_flag: null
+  blood_sample_barcode_raw: ONS73187191
   blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
@@ -1370,9 +1370,9 @@
   suffix: M
   survey_response_dataset_major_version: 0
   survey_response_type: First Visit
-  swab_sample_barcode: ONS01637835
+  swab_sample_barcode: ONS09048147
   swab_sample_barcode_edited_flag: 1.0
-  swab_sample_barcode_raw: SWT31637835
+  swab_sample_barcode_raw: ONS89048147
   swab_taken: 'Yes'
   swabs_taken: 0.0
   think_had_covid: 'No'
@@ -1531,9 +1531,9 @@
   suffix: L
   survey_response_dataset_major_version: 0
   survey_response_type: Follow-up Visit
-  swab_sample_barcode: ONS07267249
+  swab_sample_barcode: ONS00527620
   swab_sample_barcode_edited_flag: 1.0
-  swab_sample_barcode_raw: SWT67267249
+  swab_sample_barcode_raw: ONS10527620
   swab_taken: 'Yes'
   swabs_taken: 0.0
   think_had_covid: null
