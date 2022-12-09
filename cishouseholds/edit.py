@@ -65,23 +65,6 @@ def normalise_think_had_covid_columns(df: DataFrame, symptom_columns_prefix: str
     return df.drop("CHECK")
 
 
-def normalize_covid_contact_cols(df: DataFrame, contact_col: str, contact_date_col: str, contact_type_col: str):
-    """
-    Updates contact suspect and contact known columns to be in line with answers to
-    related cols
-    contact_types: list of covid contact types the function should apply to
-    """
-    # first correct contact_col
-    df = df.withColumn(
-        contact_col, F.when(F.col(contact_date_col).isNull(), "No").when(~F.col(contact_date_col).isNull(), "Yes")
-    )
-
-    # next correct contact_date_col
-    df = df.withColumn(contact_type_col, F.when((F.col(contact_date_col).isNull() | F.col(contact_col) == "No"), None))
-
-    return df
-
-
 def correct_date_ranges_union_dependent(
     df: DataFrame, columns_to_edit: List[str], participant_id_column: str, visit_date_column: str
 ):
@@ -252,7 +235,9 @@ def update_column_in_time_window(
     return df
 
 
-def update_to_value_if_any_not_null(df: DataFrame, column_name_to_assign: str, value_to_assign: str, column_list: list):
+def update_to_value_if_any_not_null(
+    df: DataFrame, column_name_to_assign: str, true_false_values: list, column_list: list
+):
     """Edit existing column to `value_to_assign` when a value is present in any of the listed columns.
 
     Parameters
@@ -261,14 +246,14 @@ def update_to_value_if_any_not_null(df: DataFrame, column_name_to_assign: str, v
         The input DataFrame to process
     column_name_to_assign
         The name of the existing column
-    value_to_assign
-        The value to assign
+    true_false_values
+        True and false values to be assigned
     column_list
         A list of columns to check if any of them do not have null values
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.when(any_column_not_null(column_list), value_to_assign).otherwise(F.col(column_name_to_assign)),
+        F.when(any_column_not_null(column_list), true_false_values[0]).otherwise(true_false_values[1]),
     )
     return df
 

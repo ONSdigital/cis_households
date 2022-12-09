@@ -1465,6 +1465,32 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         participant_id_column="participant_id",
         reference_columns=work_columns,
     )
+
+    contact_date = ["last_suspected_covid_contact_date", "last_known_covid_contact_date"]
+
+    covid_contact = ["contact_suspected_positive_covid_last_28_days", "contact_known_positive_covid_last_28_days"]
+
+    contact_type = ["last_suspected_covid_contact_type", "last_covid_contact_type"]
+
+    # correct covid contact based on date
+    for l in range(len(contact_date)):
+        df = update_to_value_if_any_not_null(
+            df=df,
+            column_name_to_assign=covid_contact[l - 1],
+            true_false_values=["Yes", "No"],
+            column_list=[contact_date[l - 1]],
+        )
+
+        # correct covid type based on date
+        df = update_to_value_if_any_not_null(
+            df=df,
+            column_name_to_assign=contact_date[l - 1],
+            true_false_values=[F.col(contact_type[l - 1]), None],
+            column_list=[
+                contact_date[l - 1],
+            ],
+        )
+
     return df
 
 
@@ -2604,7 +2630,7 @@ def fill_forwards_travel_column(df):
     df = update_to_value_if_any_not_null(
         df=df,
         column_name_to_assign="been_outside_uk",
-        value_to_assign="Yes",
+        true_false_values=["Yes", "No"],
         column_list=["been_outside_uk_last_country", "been_outside_uk_last_return_date"],
     )
     df = fill_forward_from_last_change(
