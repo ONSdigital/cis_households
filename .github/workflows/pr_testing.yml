@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Integration testing
+name: Regression testing
 
 # Controls when the action will run.
 on:
@@ -71,4 +71,4 @@ jobs:
 
       - name: Run pytest
         run: |
-          pytest -v -m integration
+          pytest -v -m regression
