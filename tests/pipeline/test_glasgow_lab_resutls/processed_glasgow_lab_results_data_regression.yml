@@ -13,7 +13,7 @@
   s_gene_pcr_cq_value: 18.250879551074
   s_gene_pcr_result_classification: Inconclusive
   s_gene_pcr_target: S gene
-  swab_sample_barcode: SWT60227680
+  swab_sample_barcode: SWT29425711
   testKit: rtPCR
   void_reason: null
 - ms2_pcr_cq_value: 16.304082489441
@@ -31,7 +31,7 @@
   s_gene_pcr_cq_value: 36.765387031145
   s_gene_pcr_result_classification: Positive
   s_gene_pcr_target: null
-  swab_sample_barcode: SWT40250165
+  swab_sample_barcode: SWT70710571
   testKit: rtPCR
   void_reason: reason 3
 - ms2_pcr_cq_value: 22.58032932155
@@ -49,7 +49,7 @@
   s_gene_pcr_cq_value: 16.559139244108
   s_gene_pcr_result_classification: Inconclusive
   s_gene_pcr_target: null
-  swab_sample_barcode: SWT25808631
+  swab_sample_barcode: null
   testKit: rtPCR
   void_reason: reason 4
 - ms2_pcr_cq_value: 23.174122209048
@@ -67,7 +67,7 @@
   s_gene_pcr_cq_value: 29.496533133386
   s_gene_pcr_result_classification: Negative
   s_gene_pcr_target: null
-  swab_sample_barcode: SWT93008687
+  swab_sample_barcode: SWT97212108
   testKit: null
   void_reason: reason 1
 - ms2_pcr_cq_value: 15.097481395171
@@ -85,7 +85,7 @@
   s_gene_pcr_cq_value: 34.282913700335
   s_gene_pcr_result_classification: Negative
   s_gene_pcr_target: null
-  swab_sample_barcode: SWT59358685
+  swab_sample_barcode: SWT69481643
   testKit: rtPCR
   void_reason: reason 1
 - ms2_pcr_cq_value: 17.332192497177
@@ -103,7 +103,7 @@
   s_gene_pcr_cq_value: 20.20751549554
   s_gene_pcr_result_classification: Positive
   s_gene_pcr_target: null
-  swab_sample_barcode: SWT70220212
+  swab_sample_barcode: SWT71019011
   testKit: rtPCR
   void_reason: null
 - ms2_pcr_cq_value: 16.450745652502
@@ -121,7 +121,7 @@
   s_gene_pcr_cq_value: 12.782375301404
   s_gene_pcr_result_classification: Negative
   s_gene_pcr_target: null
-  swab_sample_barcode: SWT63322966
+  swab_sample_barcode: SWT18998134
   testKit: null
   void_reason: reason 3
 - ms2_pcr_cq_value: 25.945976800407
@@ -139,7 +139,7 @@
   s_gene_pcr_cq_value: 34.213848198231
   s_gene_pcr_result_classification: Negative
   s_gene_pcr_target: null
-  swab_sample_barcode: SWT17139656
+  swab_sample_barcode: null
   testKit: rtPCR
   void_reason: null
 - ms2_pcr_cq_value: 23.280609469098
@@ -157,7 +157,7 @@
   s_gene_pcr_cq_value: 21.356031316251
   s_gene_pcr_result_classification: Rejected
   s_gene_pcr_target: null
-  swab_sample_barcode: SWT87203229
+  swab_sample_barcode: SWT74412661
   testKit: rtPCR
   void_reason: null
 - ms2_pcr_cq_value: 23.660282178851
@@ -175,6 +175,6 @@
   s_gene_pcr_cq_value: 35.851207009323
   s_gene_pcr_result_classification: Inconclusive
   s_gene_pcr_target: null
-  swab_sample_barcode: SWT83639422
+  swab_sample_barcode: SWT31637835
   testKit: null
   void_reason: reason 4

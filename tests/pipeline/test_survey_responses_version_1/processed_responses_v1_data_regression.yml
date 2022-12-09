@@ -5,9 +5,9 @@
   been_outside_uk_last_country: 'NO'
   been_outside_uk_last_return_date: '2022-01-02 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
-  blood_sample_barcode: ONS77079278
-  blood_sample_barcode_edited_flag: null
-  blood_sample_barcode_raw: ONS77079278
+  blood_sample_barcode: ONS07212108
+  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode_raw: BLT97212108
   blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
@@ -126,9 +126,9 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   survey_response_type: First Visit
-  swab_sample_barcode: ONS01637835
+  swab_sample_barcode: ONS09481643
   swab_sample_barcode_edited_flag: 1.0
-  swab_sample_barcode_raw: ONS31637835
+  swab_sample_barcode_raw: SWT69481643
   swab_taken: 'Yes'
   swabs_taken: 0.0
   think_had_covid: 'No'
@@ -337,9 +337,9 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   survey_response_type: First Visit
-  swab_sample_barcode: ONS20922815
-  swab_sample_barcode_edited_flag: null
-  swab_sample_barcode_raw: ONS20922815
+  swab_sample_barcode: ONS79358109
+  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode_raw: SWT79358109
   swab_taken: 'Yes'
   swabs_taken: 0.0
   think_had_covid: null
@@ -429,9 +429,9 @@
   been_outside_uk_last_country: 'YES'
   been_outside_uk_last_return_date: '2022-01-02 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
-  blood_sample_barcode: ONS74412661
-  blood_sample_barcode_edited_flag: null
-  blood_sample_barcode_raw: ONS74412661
+  blood_sample_barcode: ONS09721832
+  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode_raw: BLT19721832
   blood_taken: 'Yes'
   bloods_taken: 1.0
   city: Saltash
@@ -764,9 +764,9 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   survey_response_type: Follow-up Visit
-  swab_sample_barcode: ONS20922815
-  swab_sample_barcode_edited_flag: null
-  swab_sample_barcode_raw: ONS20922815
+  swab_sample_barcode: ONS09327728
+  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode_raw: SWT59327728
   swab_taken: 'Yes'
   swabs_taken: 1.0
   think_had_covid: 'Yes'
@@ -857,9 +857,9 @@
   been_outside_uk_last_country: 'NO'
   been_outside_uk_last_return_date: '2022-01-05 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  blood_sample_barcode: ONS20922815
-  blood_sample_barcode_edited_flag: null
-  blood_sample_barcode_raw: ONS20922815
+  blood_sample_barcode: ONS09128328
+  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode_raw: BLT99128328
   blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
@@ -1067,9 +1067,9 @@
   been_outside_uk_last_country: 'YES'
   been_outside_uk_last_return_date: '2022-01-05 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
-  blood_sample_barcode: ONS20922815
-  blood_sample_barcode_edited_flag: null
-  blood_sample_barcode_raw: ONS20922815
+  blood_sample_barcode: ONS09128328
+  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode_raw: BLT99128328
   blood_taken: 'Yes'
   bloods_taken: 0.0
   city: null
@@ -1284,9 +1284,9 @@
   been_outside_uk_last_country: null
   been_outside_uk_last_return_date: '2022-01-06 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
-  blood_sample_barcode: ONS74412661
-  blood_sample_barcode_edited_flag: null
-  blood_sample_barcode_raw: ONS74412661
+  blood_sample_barcode: ONS04337808
+  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode_raw: BLT54337808
   blood_taken: 'Yes'
   bloods_taken: 0.0
   city: null
@@ -1407,8 +1407,8 @@
   survey_response_dataset_major_version: 1
   survey_response_type: First Visit
   swab_sample_barcode: ONS29425711
-  swab_sample_barcode_edited_flag: null
-  swab_sample_barcode_raw: ONS29425711
+  swab_sample_barcode_edited_flag: 1.0
+  swab_sample_barcode_raw: SWT29425711
   swab_taken: 'Yes'
   swabs_taken: 0.0
   think_had_covid: 'No'
@@ -1498,9 +1498,9 @@
   been_outside_uk_last_country: null
   been_outside_uk_last_return_date: '2022-01-07 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  blood_sample_barcode: ONS29425711
-  blood_sample_barcode_edited_flag: null
-  blood_sample_barcode_raw: ONS29425711
+  blood_sample_barcode: ONS74412661
+  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode_raw: BLT74412661
   blood_taken: 'Yes'
   bloods_taken: 0.0
   city: null
@@ -1623,9 +1623,9 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   survey_response_type: Follow-up Visit
-  swab_sample_barcode: ONS03040381
+  swab_sample_barcode: ONS01637835
   swab_sample_barcode_edited_flag: 1.0
-  swab_sample_barcode_raw: ONS63040381
+  swab_sample_barcode_raw: SWT31637835
   swab_taken: 'Yes'
   swabs_taken: 1.0
   think_had_covid: 'No'
@@ -1713,9 +1713,9 @@
   been_outside_uk_last_country: null
   been_outside_uk_last_return_date: '2022-01-09 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  blood_sample_barcode: ONS29425711
-  blood_sample_barcode_edited_flag: null
-  blood_sample_barcode_raw: ONS29425711
+  blood_sample_barcode: ONS74412661
+  blood_sample_barcode_edited_flag: 1.0
+  blood_sample_barcode_raw: BLT74412661
   blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
@@ -2047,9 +2047,9 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   survey_response_type: Follow-up Visit
-  swab_sample_barcode: ONS01637835
+  swab_sample_barcode: ONS07267249
   swab_sample_barcode_edited_flag: 1.0
-  swab_sample_barcode_raw: ONS31637835
+  swab_sample_barcode_raw: SWT67267249
   swab_taken: 'Yes'
   swabs_taken: 0.0
   think_had_covid: null
