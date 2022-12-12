@@ -338,7 +338,7 @@ def fill_forward_event(
     else:
         df = df.withColumn("DROP_EVENT", F.lit(False))
 
-    # add the additional detail columns to the original dataframe
+    # add the additional detail columns to the original dataframe.
     for col in event_columns:
         df = df.withColumn(col, F.when(F.col("DROP_EVENT"), None).otherwise(F.col(col)))
 
