@@ -302,7 +302,7 @@ def fill_forward_event(
         & (F.col(event_date_column) <= F.col(visit_datetime_column))
     )
     null_df = df.filter(F.col(visit_datetime_column).isNull())
-    df = df.filter(F.col(visit_datetime_column).isNotNull())
+    processed_df = df.filter(F.col(visit_datetime_column).isNotNull())
 
     # ~~ Normalise dates ~~ #
 
@@ -330,17 +330,20 @@ def fill_forward_event(
 
     # use this columns to override the original dataframe
     if events_df is not None and events_df.count() > 0:
-        df = (
+        processed_df = (
             df.drop(*event_columns)
             .join(events_df.select(participant_id_column, *event_columns), on=participant_id_column, how="left")
             .withColumn("DROP_EVENT", (F.col(event_date_column) > F.col(visit_datetime_column)))
         )
     else:
-        df = df.withColumn("DROP_EVENT", F.lit(False))
+        processed_df = processed_df.withColumn(
+            event_indicator_column, F.when(F.col(event_date_column).isNull(), "No").otherwise("Yes")
+        )
+        return processed_df
 
     # add the additional detail columns to the original dataframe.
     for col in event_columns:
-        df = df.withColumn(col, F.when(F.col("DROP_EVENT"), None).otherwise(F.col(col)))
+        processed_df = processed_df.withColumn(col, F.when(F.col("DROP_EVENT"), None).otherwise(F.col(col)))
 
     # pick the best row to retain based upon proximity to visit date
     df = df.withColumn(event_indicator_column, F.when(F.col(event_date_column).isNull(), "No").otherwise("Yes"))
