@@ -65,7 +65,7 @@ def assign_datetime_from_coalesced_columns_and_log_source(
     default_timestamp: str,
     min_datetime_offset_value: int = -2,
     max_datetime_offset_value: int = 0,
-    reference_datetime_days_offset_value: int = -2,
+    reference_datetime_days_offset_value: int = -4,
     final_fallback_column: str = None,
 ):
 
