@@ -52,8 +52,8 @@
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'Yes'
   consent_use_of_surplus_blood_samples_yn: 'Yes'
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: 'Yes'
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: Northamptonshire
   currently_smokes_or_vapes: Cigar
   currently_smokes_or_vapes_description: null
@@ -96,10 +96,10 @@
   infant_age_months_7: 7.0
   infant_age_months_8: 3.0
   last_covid_contact_date: null
-  last_covid_contact_type: Living in your own home
+  last_covid_contact_type: null
   last_name: Gross
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: Living in your own home
+  last_suspected_covid_contact_type: null
   middle_name: Clarence
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Two attempts made
@@ -361,8 +361,8 @@
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'Yes'
   consent_use_of_surplus_blood_samples_yn: 'No'
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   currently_smokes_or_vapes: Cigar
   currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
@@ -405,10 +405,10 @@
   infant_age_months_7: null
   infant_age_months_8: 0.0
   last_covid_contact_date: null
-  last_covid_contact_type: Living in your own home
+  last_covid_contact_type: null
   last_name: Hunt
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: Outside your home
+  last_suspected_covid_contact_type: null
   middle_name: Gale
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: No stock
@@ -671,8 +671,8 @@
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'Yes'
   consent_use_of_surplus_blood_samples_yn: 'Yes'
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: Derbyshire
   currently_smokes_or_vapes: Vape/e-cigarettes
   currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
@@ -980,7 +980,7 @@
   consent_use_of_surplus_blood_samples: 'Yes'
   consent_use_of_surplus_blood_samples_yn: 'No'
   contact_known_positive_covid_last_28_days: 'No'
-  contact_suspected_positive_covid_last_28_days: null
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: North Yorkshire
   currently_smokes_or_vapes: Cigarettes
   currently_smokes_or_vapes_description: Yes, pipe
@@ -1024,7 +1024,7 @@
   infant_age_months_7: null
   infant_age_months_8: 7.0
   last_covid_contact_date: null
-  last_covid_contact_type: Living in your own home
+  last_covid_contact_type: null
   last_name: Cervantes
   last_suspected_covid_contact_date: '2021-12-03 00:00:00.000000'
   last_suspected_covid_contact_type: null
@@ -1297,8 +1297,8 @@
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'No'
   consent_use_of_surplus_blood_samples_yn: 'No'
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: 'No'
+  contact_known_positive_covid_last_28_days: 'Yes'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   currently_smokes_or_vapes: Vape/e-cigarettes
   currently_smokes_or_vapes_description: Yes, vape/e-cigarettes
@@ -1612,8 +1612,8 @@
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'No'
   consent_use_of_surplus_blood_samples_yn: 'No'
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: 'Yes'
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   currently_smokes_or_vapes: Cigarettes
   currently_smokes_or_vapes_description: Yes, pipe
@@ -1656,10 +1656,10 @@
   infant_age_months_7: 3.0
   infant_age_months_8: 4.0
   last_covid_contact_date: null
-  last_covid_contact_type: Outside your home
+  last_covid_contact_type: null
   last_name: Brady
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: Living in your own home
+  last_suspected_covid_contact_type: null
   middle_name: Argentina
   no_email_address: 0.0
   no_fingerprick_blood_taken_reason: Two attempts made
@@ -1931,7 +1931,7 @@
   consent_use_of_surplus_blood_samples: 'No'
   consent_use_of_surplus_blood_samples_yn: 'No'
   contact_known_positive_covid_last_28_days: 'No'
-  contact_suspected_positive_covid_last_28_days: null
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   currently_smokes_or_vapes: Cigar
   currently_smokes_or_vapes_description: null
@@ -1974,7 +1974,7 @@
   infant_age_months_7: 6.0
   infant_age_months_8: 5.0
   last_covid_contact_date: null
-  last_covid_contact_type: Outside your home
+  last_covid_contact_type: null
   last_name: Romero
   last_suspected_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_suspected_covid_contact_type: null
@@ -2242,7 +2242,7 @@
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'No'
   consent_use_of_surplus_blood_samples_yn: null
-  contact_known_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   currently_smokes_or_vapes: null
@@ -2285,7 +2285,7 @@
   infant_age_months_7: 5.0
   infant_age_months_8: 1.0
   last_covid_contact_date: null
-  last_covid_contact_type: Outside your home
+  last_covid_contact_type: null
   last_name: Day
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: null
@@ -2552,8 +2552,8 @@
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'No'
   consent_use_of_surplus_blood_samples_yn: 'Yes'
-  contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspected_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: Buckinghamshire
   currently_smokes_or_vapes: Cigar
   currently_smokes_or_vapes_description: Yes, cigar
@@ -2595,7 +2595,7 @@
   infant_age_months_7: 6.0
   infant_age_months_8: 2.0
   last_covid_contact_date: null
-  last_covid_contact_type: Living in your own home
+  last_covid_contact_type: null
   last_name: Mosley
   last_suspected_covid_contact_date: '2021-12-05 00:00:00.000000'
   last_suspected_covid_contact_type: null
@@ -2868,8 +2868,8 @@
   consent_summary: null
   consent_use_of_surplus_blood_samples: 'No'
   consent_use_of_surplus_blood_samples_yn: null
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: 'No'
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: Humberside
   currently_smokes_or_vapes: Pipe
   currently_smokes_or_vapes_description: Yes, cigar
