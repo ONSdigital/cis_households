@@ -1264,24 +1264,30 @@ def conditionally_replace_columns(
     return df
 
 
-def clean_invalid_covid_onset_dates(df: DataFrame, valid_covid_date: str, cols_to_edit: List[str]):
+def conditionally_set_column_values(df: DataFrame, condition: Any, cols_to_set_to_value: Any):
     """
-    Sets covid related values to null where think_had_covid_onset_date is before the input date string
+    Creates a temporary column based on the input condition, then reads in the cols_to_set_to_value dict
+    building a column list for each col_prefix in the dict.
+
+    For each col in in the column list where the temporary condition_col is true, replace the value for that column
+    based on the cols_to_set_to_value dictionary entry.
+
+    Return the df while dropping the temporary column.
 
     Parameters
     ----------
     df : DataFrame
-    valid_covid_date : str
-        date before which think_had_covid cleaning will be applied
+    condition : Any
+        conditional expression used to build the temporary column in the format of
+        ((F.col("column_name").isNotNull()) & (F.col("column_name") >= 10))
+    cols_to_set_to_value : Dict[str, Any]
+        Due to the list comprehension this can accept either a specific column name or a prefix
+        eg think_had_covid_date or think_had_covid_
     """
-    to_change_df = df.filter(
-        ((F.col("think_had_covid_onset_date").isNotNull()) & (F.col("think_had_covid_onset_date") < valid_covid_date))
-    )
-    to_retain_df = df.filter(
-        ((F.col("think_had_covid_onset_date").isNull()) | (F.col("think_had_covid_onset_date") >= valid_covid_date))
-    )
-    for col in cols_to_edit:
-        to_change_df = to_change_df.withColumn(col, F.lit(None))
-    to_change_df = to_change_df.withColumn("think_had_covid", F.lit("No"))
-    output_df = to_change_df.unionByName(to_retain_df)
-    return output_df
+    df = df.withColumn("condition_col", condition)
+    for col_prefix in cols_to_set_to_value:
+        value = cols_to_set_to_value.get(col_prefix)
+        columns = [col for col in df.columns if col_prefix in col]
+        for col in columns:
+            df = df.withColumn(col, F.when(F.col("condition_col"), value).otherwise(F.col(col)))
+    return df.drop("condition_col")

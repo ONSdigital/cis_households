@@ -88,10 +88,10 @@ from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import assign_from_map
 from cishouseholds.edit import clean_barcode
 from cishouseholds.edit import clean_barcode_simple
-from cishouseholds.edit import clean_invalid_covid_onset_dates
 from cishouseholds.edit import clean_job_description_string
 from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import conditionally_replace_columns
+from cishouseholds.edit import conditionally_set_column_values
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import correct_date_ranges
 from cishouseholds.edit import correct_date_ranges_union_dependent
@@ -1428,35 +1428,53 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
     df = clean_postcode(df, "postcode")
     df = normalise_think_had_covid_columns(df, "think_had_covid_symptom")
-    covid_cols_to_clean = [
-        "think_had_covid_contacted_nhs",
-        "think_had_covid_admitted_to_hospital",
-        "think_had_covid_symptom_fever",
-        "think_had_covid_symptom_muscle_ache",
-        "think_had_covid_symptom_fatigue",
-        "think_had_covid_symptom_sore_throat",
-        "think_had_covid_symptom_cough",
-        "think_had_covid_symptom_shortness_of_breath",
-        "think_had_covid_symptom_headache",
-        "think_had_covid_symptom_nausea_or_vomiting",
-        "think_had_covid_symptom_abdominal_pain",
-        "think_had_covid_symptom_diarrhoea",
-        "think_had_covid_symptom_loss_of_taste",
-        "think_had_covid_symptom_loss_of_smell",
-        "think_had_covid_symptom_more_trouble_sleeping",
-        "think_had_covid_symptom_chest_pain",
-        "think_had_covid_symptom_palpitations",
-        "think_had_covid_symptom_vertigo_or_dizziness",
-        "think_had_covid_symptom_anxiety",
-        "think_had_covid_symptom_low_mood",
-        "think_had_covid_symptom_memory_loss_or_confusion",
-        "think_had_covid_symptom_difficulty_concentrating",
-        "think_had_covid_symptom_runny_nose_or_sneezing",
-        "think_had_covid_symptom_noisy_breathing",
-        "think_had_covid_symptom_loss_of_appetite",
-        "think_had_covid_onset_date",
-    ]
-    df = clean_invalid_covid_onset_dates(df, "2019-11-17", covid_cols_to_clean)
+    stata_a3_logic_invalid_covid_date = "2019-11-17"
+    stata_a3_logic_conditions = {
+        "think_had_covid_onset_date": (
+            (F.col("think_had_covid_onset_date").isNotNull())
+            & (F.col("think_had_covid_onset_date") < stata_a3_logic_invalid_covid_date)
+        ),
+        "last_suspected_covid_contact_date": (
+            (F.col("last_suspected_covid_contact_date").isNotNull())
+            & (F.col("last_suspected_covid_contact_date") < stata_a3_logic_invalid_covid_date)
+        ),
+        "last_covid_contact_date": (
+            (F.col("last_covid_contact_date").isNotNull())
+            & (F.col("last_covid_contact_date") < stata_a3_logic_invalid_covid_date)
+        ),
+        "voyager_0_specific": (
+            (F.col("survey_response_major_dataset_version") == 0)
+            & (F.col("think_had_covid_onset_date").isNotNull())
+            & (F.col("think_had_covid_onset_date") < stata_a3_logic_invalid_covid_date)
+        ),
+    }
+    stata_a3_logic_col_value_maps = {
+        "think_had_covid_onset_date": {
+            "think_had_covid_": None,
+            "think_had_covid": "No",
+        },
+        "last_suspected_covid_contact_date": {
+            "last_suspected_covid_": None,
+            "think_had_covid_onset_date": None,
+            "contact_suspected_positive_covid_last_28_days": "No",
+        },
+        "last_covid_contact_date": {
+            "last_covid_": None,
+            "think_had_covid_onset_date": None,
+            "contact_known_positive_covid_last_28_days": "No",
+        },
+        "voyager_0_specific": {
+            "other_covid_infection_test": None,
+            "other_covid_infection_test_results": None,
+        },
+    }
+    for condition in list(stata_a3_logic_conditions.keys()):
+        df = conditionally_set_column_values(
+            df=df,
+            condition=stata_a3_logic_conditions.get(condition),
+            cols_to_set_to_value=stata_a3_logic_col_value_maps.get(condition),
+        )
+
     consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
 
     if all(col in df.columns for col in consent_cols):
