@@ -1,7 +1,9 @@
+from pathlib import Path
 from typing import Callable
 from typing import List
 from typing import Union
 
+import pandas as pd
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
@@ -10,6 +12,7 @@ from cishouseholds.edit import cast_columns_from_string
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_from_lookup_df
+from cishouseholds.hdfs_utils import read_file_to_string
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.load import update_table
@@ -150,11 +153,19 @@ def extract_input_data(file_paths: Union[List[str], str], validation_schema: Uni
     """
     spark_session = get_or_create_spark_session()
     spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
-    return spark_session.read.csv(
-        file_paths,
-        header=True,
-        schema=spark_schema,
-        ignoreLeadingWhiteSpace=True,
-        ignoreTrailingWhiteSpace=True,
-        sep=sep,
-    )
+    file_paths = [file_paths] if type(file_paths) == str else file_paths
+    if all(Path(path).suffix in [".txt", ".csv"] for path in file_paths):
+        return spark_session.read.csv(
+            file_paths,
+            header=True,
+            schema=spark_schema,
+            ignoreLeadingWhiteSpace=True,
+            ignoreTrailingWhiteSpace=True,
+            sep=sep,
+        )
+    elif all(Path(path).suffix in [".xlsx"] for path in file_paths):
+        spark = get_or_create_spark_session()
+        df = pd.read_csv(read_file_to_string(file_paths[0]))
+        for file in file_paths[1:]:
+            pd.concat(df, pd.read_csv(read_file_to_string(file)))
+        return spark.createDataFrame(df)
