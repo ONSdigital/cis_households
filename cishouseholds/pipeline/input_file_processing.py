@@ -111,6 +111,7 @@ def extract_validate_transform_input_data(
         extraction_config = get_secondary_config(storage_config["record_extraction_config_file"])
 
     df = extract_input_data(resource_path, validation_schema, sep)
+    df.show()
     if column_name_map is not None:
         df = rename_column_names(df, column_name_map)
 
