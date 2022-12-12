@@ -154,5 +154,7 @@ for parameters in [
     survey_responses_v1_parameters,
     survey_responses_v0_parameters,
     lab_results_glasgow_parameters,
+    blood_parameters,
+    lab_results_glasgow_parameters,
 ]:
     generate_input_processing_function(**parameters)  # type:ignore
