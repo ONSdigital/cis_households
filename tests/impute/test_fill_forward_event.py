@@ -167,3 +167,45 @@ def test_fill_forward_event_4(spark_session):
     )
 
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
+
+
+def test_fill_forward_event_5(spark_session):
+    input_data = [
+        # fmt:off
+            (1,"2020-10-02",1,"A","2020-03-01","some different detail"),
+            (1,"2020-11-05",2,"B",None,         None),
+            (1,"2020-05-15",3,"C","2020-03-06","some detail"),
+            (1,"2020-05-22",4,"D","2020-03-09", None),
+            (1,"2021-10-02",5,"E","2021-03-01","some different detail 2"),
+            (1,"2021-11-05",6,"F",None,         None),
+            (1,"2021-05-15",7,"G","2021-03-06","some detail 2"),
+            (1,"2021-05-22",8,"H","2021-03-09", None),
+        # fmt:on
+    ]
+    expected_data = [
+        # fmt:off
+            (1,"2020-10-02",1,"Yes","2020-03-06","some detail"),
+            (1,"2020-11-05",2,"Yes","2020-03-06","some detail"),
+            (1,"2020-05-15",3,"Yes","2020-03-06","some detail"),
+            (1,"2020-05-22",4,"Yes","2020-03-06","some detail"),
+            (1,"2021-10-02",5,"Yes","2021-03-06","some detail 2"),
+            (1,"2021-11-05",6,"Yes","2021-03-06","some detail 2"),
+            (1,"2021-05-15",7,"Yes","2021-03-06","some detail 2"),
+            (1,"2021-05-22",8,"Yes","2021-03-06","some detail 2"),
+        # fmt:on
+    ]
+
+    input_df = spark_session.createDataFrame(data=input_data, schema=schema)
+    expected_df = spark_session.createDataFrame(data=expected_data, schema=schema)
+
+    output_df = fill_forward_event(
+        df=input_df,
+        event_indicator_column="event_indicator",
+        event_date_column="event_date",
+        event_date_tolerance=7,
+        detail_columns=["detail"],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_date",
+        visit_id_column="visit_id",
+    )
+    assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)

@@ -16,10 +16,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: current_window_cadence
-  nullable: true
-  type: string
-- metadata: {}
   name: participant_id
   nullable: true
   type: string
@@ -60,6 +56,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: original_invite_cohort
+  nullable: true
+  type: string
+- metadata: {}
   name: consent_contact_extra_research_yn
   nullable: true
   type: string
@@ -80,7 +80,7 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: existing_participant_opt_out_date
+  name: nhs_share_opt_out_date
   nullable: true
   type: string
 - metadata: {}
