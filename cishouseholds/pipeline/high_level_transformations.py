@@ -314,20 +314,20 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
     df = assign_taken_column(df=df, column_name_to_assign="blood_taken", reference_column="blood_sample_barcode")
 
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 0)
-    stata_a3_logic_invalid_covid_date = "2019-11-17"
-    stata_a3_logic_v0_condition = (
+    invalid_covid_date = "2019-11-17"
+    v0_condition = (
         (F.col("survey_response_dataset_major_version") == 0)
         & (F.col("think_had_covid_onset_date").isNotNull())
-        & (F.col("think_had_covid_onset_date") < stata_a3_logic_invalid_covid_date)
+        & (F.col("think_had_covid_onset_date") < invalid_covid_date)
     )
-    stata_a3_logic_v0_value_map = {
+    v0_value_map = {
         "other_covid_infection_test": None,
         "other_covid_infection_test_results": None,
     }
     df = conditionally_set_column_values(
         df=df,
-        condition=stata_a3_logic_v0_condition,
-        cols_to_set_to_value=stata_a3_logic_v0_value_map,
+        condition=v0_condition,
+        cols_to_set_to_value=v0_value_map,
     )
     df = df.withColumn("sex", F.coalesce(F.col("sex"), F.col("gender"))).drop("gender")
 
@@ -1443,43 +1443,50 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
     df = clean_postcode(df, "postcode")
     df = normalise_think_had_covid_columns(df, "think_had_covid_symptom")
-    # stata_a3_logic_invalid_covid_date = "2019-11-17"
-    # stata_a3_logic_conditions = {
-    #     "think_had_covid_onset_date": (
-    #         (F.col("think_had_covid_onset_date").isNotNull())
-    #         & (F.col("think_had_covid_onset_date") < stata_a3_logic_invalid_covid_date)
-    #     ),
-    #     "last_suspected_covid_contact_date": (
-    #         (F.col("last_suspected_covid_contact_date").isNotNull())
-    #         & (F.col("last_suspected_covid_contact_date") < stata_a3_logic_invalid_covid_date)
-    #     ),
-    #     "last_covid_contact_date": (
-    #         (F.col("last_covid_contact_date").isNotNull())
-    #         & (F.col("last_covid_contact_date") < stata_a3_logic_invalid_covid_date)
-    #     ),
-    # }
-    # stata_a3_logic_col_value_maps = {
-    #     "think_had_covid_onset_date": {
-    #         "think_had_covid_": None,
-    #         "think_had_covid": "No",
-    #     },
-    #     "last_suspected_covid_contact_date": {
-    #         "last_suspected_covid_": None,
-    #         "think_had_covid_onset_date": None,
-    #         "contact_suspected_positive_covid_last_28_days": "No",
-    #     },
-    #     "last_covid_contact_date": {
-    #         "last_covid_": None,
-    #         "think_had_covid_onset_date": None,
-    #         "contact_known_positive_covid_last_28_days": "No",
-    #     },
-    # }
-    # for condition in list(stata_a3_logic_conditions.keys()):
-    #     df = conditionally_set_column_values(
-    #         df=df,
-    #         condition=stata_a3_logic_conditions.get(condition),
-    #         cols_to_set_to_value=stata_a3_logic_col_value_maps.get(condition),
-    #     )
+    invalid_covid_date = "2019-11-17"
+    conditions = {
+        "think_had_covid_onset_date": (
+            (F.col("think_had_covid_onset_date").isNotNull())
+            & (F.col("think_had_covid_onset_date") < invalid_covid_date)
+        ),
+        "last_suspected_covid_contact_date": (
+            (F.col("last_suspected_covid_contact_date").isNotNull())
+            & (F.col("last_suspected_covid_contact_date") < invalid_covid_date)
+        ),
+        "last_covid_contact_date": (
+            (F.col("last_covid_contact_date").isNotNull()) & (F.col("last_covid_contact_date") < invalid_covid_date)
+        ),
+    }
+    col_value_maps = {
+        "think_had_covid_onset_date": {
+            "think_had_covid_onset_date": None,
+            "think_had_covid_contacted_nhs": None,
+            "think_had_covid_admitted_to_hospital": None,
+            "think_had_covid_symptom_": None,
+        },
+        "last_suspected_covid_contact_date": {
+            "last_suspected_covid_": None,
+            "think_had_covid_onset_date": None,
+            "contact_suspected_positive_covid_last_28_days": "No",
+        },
+        "last_covid_contact_date": {
+            "last_covid_": None,
+            "think_had_covid_onset_date": None,
+            "contact_known_positive_covid_last_28_days": "No",
+        },
+    }
+    for condition in list(conditions.keys()):
+        df = conditionally_set_column_values(
+            df=df,
+            condition=conditions.get(condition),
+            cols_to_set_to_value=col_value_maps.get(condition),
+        )
+
+    # This is outside of the above function as it erroneously captured every think_had_covid col including raw
+    df = df.withColumn(
+        "think_had_covid",
+        F.when(conditions.get("think_had_covid_onset_date"), "No").otherwise(F.col("think_had_covid")),
+    )
 
     consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
 

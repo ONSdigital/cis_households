@@ -155,10 +155,10 @@ def correct_date_ranges(
                         set_date_component(col, "year", F.year(visit_date_column)) <= F.col(visit_date_column),
                         set_date_component(col, "year", F.year(visit_date_column)),
                     )
-                    # .when(
-                    #    (F.month(col) >= 8) & (set_date_component(col, "year", 2019) <= F.col(visit_date_column)),
-                    #    set_date_component(col, "year", 2019),
-                    # )
+                    .when(
+                        (F.month(col) >= 8) & (set_date_component(col, "year", 2019) <= F.col(visit_date_column)),
+                        set_date_component(col, "year", 2019),
+                    )
                     .when(F.add_months(col, 1) <= F.col(visit_date_column), F.add_months(col, 1))
                     .when((F.year(col) > 2019), set_date_component(col, "year", F.year(visit_date_column) - 1))
                     .otherwise(F.col(col)),
