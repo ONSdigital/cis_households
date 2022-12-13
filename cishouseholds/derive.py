@@ -1953,6 +1953,18 @@ def flag_records_for_work_location_null() -> F.Column:
             "Not working (unemployed, retired, long-term sick etc.)",
             "Student",
         )
+        | ~(
+            F.col("work_status_v1").isin(
+                "Employed and currently working",
+                "Self-employed and currently working",
+            )
+        )
+        | ~(
+            F.col("work_status_v2").isin(
+                "Employed and currently working",
+                "Self-employed and currently working",
+            )
+        )
     )
 
 
@@ -2272,7 +2284,7 @@ def flag_records_for_childcare_v0_rules() -> F.Column:
                 "Not working (unemployed, retired, long-term sick etc.)",
             )
         )
-        & F.col("survey_response_dataset_major_version").isin(0)
+        & (F.col("survey_response_dataset_major_version").isin(0))
     )
 
 
