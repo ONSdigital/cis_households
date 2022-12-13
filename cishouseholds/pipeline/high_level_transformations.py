@@ -2695,8 +2695,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "work_nursing_or_residential_care_home",
         F.when(
-            array_contains_any("regex_derived_job_sector", ["residential_care"])
-            & ~array_contains_any("regex_derived_job_sector", ["informal_care"]),
+            array_contains_any("regex_derived_job_sector", ["residential_care"]),
             "Yes",
         ).otherwise("No"),
     )
