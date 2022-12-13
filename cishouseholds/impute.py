@@ -300,7 +300,7 @@ def fill_forward_event(
         (F.col(visit_datetime_column).isNotNull())
         & (F.col(event_date_column).isNotNull())
         & (F.col(event_date_column) <= F.col(visit_datetime_column))
-    )
+    ).distinct()
     null_df = df.filter(F.col(visit_datetime_column).isNull())
     df = df.filter(F.col(visit_datetime_column).isNotNull())
 
@@ -314,6 +314,8 @@ def fill_forward_event(
     )
 
     # loops until there are no rows left to normalise getting the first row where that satisfies the `apply_logic` condition
+    filtered_df.cache()
+
     while filtered_df.count() > 0:
         filtered_df = filtered_df.withColumn("LOGIC_APPLIED", apply_logic)
         temp_df = filtered_df.withColumn("ROW", F.row_number().over(ordering_window))
