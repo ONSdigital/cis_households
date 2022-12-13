@@ -15,6 +15,8 @@ from cishouseholds.derive import assign_random_day_in_month
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.merge import union_multiple_tables
+from cishouseholds.pipeline.load import extract_from_table
+from cishouseholds.pipeline.load import update_table
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.udfs import generate_sample_proportional_to_size_udf
 
@@ -268,6 +270,7 @@ def fill_forward_event(
     participant_id_column: str,
     visit_datetime_column: str,
     visit_id_column: str,
+    use_hdfs: bool = True,
 ):
     """
     Fill forwards all columns associated with an event.
@@ -314,25 +317,38 @@ def fill_forward_event(
     )
 
     # loops until there are no rows left to normalise getting the first row where that satisfies the `apply_logic` condition
-    filtered_df = filtered_df.select(
-        participant_id_column, visit_datetime_column, visit_id_column, *event_columns
-    ).cache()
-
+    filtered_df = filtered_df.select(participant_id_column, visit_datetime_column, visit_id_column, *event_columns)
+    filtered_df.cache()
+    i = 0
     while filtered_df.count() > 0:
         filtered_df = filtered_df.withColumn("LOGIC_APPLIED", apply_logic)
         temp_df = filtered_df.withColumn("ROW", F.row_number().over(ordering_window))
-        completed_sections.append(temp_df.filter(F.col("LOGIC_APPLIED") & (F.col("ROW") == 1)).drop("ROW"))
+        if not use_hdfs:
+            completed_sections.append(temp_df.filter(F.col("LOGIC_APPLIED") & (F.col("ROW") == 1)).drop("ROW"))
+        else:
+            mode = "append" if i > 1 else "overwrite"
+            update_table(
+                temp_df.filter(F.col("LOGIC_APPLIED") & (F.col("ROW") == 1)).drop("ROW"),
+                f"{event_indicator_column}_temp_lookup",
+                mode,
+            )
+
         filtered_df = filtered_df.filter(~F.col("LOGIC_APPLIED"))
+        i += 1
 
     # combine the sections of normalised dates together and rejoin the null data
-    if len(completed_sections) >= 2:
-        events_df = union_multiple_tables(completed_sections).cache()
-    elif len(completed_sections) == 1:
-        events_df = completed_sections[0].cache()
+    if not use_hdfs:
+        if len(completed_sections) >= 2:
+            events_df = union_multiple_tables(completed_sections)
+        elif len(completed_sections) == 1:
+            events_df = completed_sections[0]
+    else:
+        events_df = extract_from_table(f"{event_indicator_column}_temp_lookup", True)
 
     # ~~ Construct resultant dataframe by fill forwards ~~#
 
     # use this columns to override the original dataframe
+
     if events_df is not None and events_df.count() > 0:
         df = (
             df.drop(*event_columns)
@@ -355,7 +371,7 @@ def fill_forward_event(
     df = df.drop("DROP_EVENT").distinct().withColumn("ROW", F.row_number().over(window)).drop("VISIT_DIFF")
     df = df.filter(F.col("ROW") == 1).drop("ROW")
     df = df.unionByName(null_df)
-    return df
+    return events_df
 
 
 def fill_forward_from_last_change_marked_subset(
