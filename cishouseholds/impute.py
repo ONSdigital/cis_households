@@ -317,8 +317,9 @@ def fill_forward_event(
     )
 
     # loops until there are no rows left to normalise getting the first row where that satisfies the `apply_logic` condition
-    filtered_df = filtered_df.select(participant_id_column, visit_datetime_column, visit_id_column, *event_columns)
-    filtered_df.cache()
+    filtered_df = filtered_df.select(
+        participant_id_column, visit_datetime_column, visit_id_column, *event_columns
+    ).cache()
     i = 0
     while filtered_df.count() > 0:
         filtered_df = filtered_df.withColumn("LOGIC_APPLIED", apply_logic)
