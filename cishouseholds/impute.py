@@ -314,7 +314,9 @@ def fill_forward_event(
     )
 
     # loops until there are no rows left to normalise getting the first row where that satisfies the `apply_logic` condition
-    filtered_df.cache()
+    filtered_df = filtered_df.select(
+        participant_id_column, visit_datetime_column, visit_id_column, *event_columns
+    ).cache()
 
     while filtered_df.count() > 0:
         filtered_df = filtered_df.withColumn("LOGIC_APPLIED", apply_logic)
@@ -324,9 +326,9 @@ def fill_forward_event(
 
     # combine the sections of normalised dates together and rejoin the null data
     if len(completed_sections) >= 2:
-        events_df = union_multiple_tables(completed_sections)
+        events_df = union_multiple_tables(completed_sections).cache()
     elif len(completed_sections) == 1:
-        events_df = completed_sections[0]
+        events_df = completed_sections[0].cache()
 
     # ~~ Construct resultant dataframe by fill forwards ~~#
 
