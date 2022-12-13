@@ -371,7 +371,7 @@ def fill_forward_event(
     df = df.drop("DROP_EVENT").distinct().withColumn("ROW", F.row_number().over(window)).drop("VISIT_DIFF")
     df = df.filter(F.col("ROW") == 1).drop("ROW")
     df = df.unionByName(null_df)
-    return events_df
+    return df
 
 
 def fill_forward_from_last_change_marked_subset(
