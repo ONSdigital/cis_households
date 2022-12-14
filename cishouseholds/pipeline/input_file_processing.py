@@ -13,6 +13,7 @@ from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.hdfs_utils import read_file_to_string
+from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.load import update_table
@@ -111,7 +112,6 @@ def extract_validate_transform_input_data(
         extraction_config = get_secondary_config(storage_config["record_extraction_config_file"])
 
     df = extract_input_data(resource_path, validation_schema, sep)
-    df.show()
     if column_name_map is not None:
         df = rename_column_names(df, column_name_map)
 
@@ -166,7 +166,10 @@ def extract_input_data(file_paths: Union[List[str], str], validation_schema: Uni
         )
     elif all(Path(path).suffix in [".xlsx"] for path in file_paths):
         spark = get_or_create_spark_session()
-        df = pd.read_csv(read_file_to_string(file_paths[0]))
-        for file in file_paths[1:]:
-            pd.concat(df, pd.read_csv(read_file_to_string(file)))
-        return spark.createDataFrame(df)
+        dfs = [
+            spark.createDataFrame(
+                data=pd.read_excel(read_file_to_string(file, True), engine="openpyxl"), schema=spark_schema
+            )
+            for file in file_paths
+        ]
+        return union_multiple_tables(dfs)

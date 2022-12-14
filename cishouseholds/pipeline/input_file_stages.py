@@ -143,7 +143,7 @@ blood_parameters = {
     "column_name_map": column_name_maps["blood_variable_name_map"],
     "transformation_functions": [],
     "sep": "|",
-    "cast_to_double_list": [],
+    "cast_to_double_list": ["Monoclonal undiluted quantitation (Colourimetric)"],
     "source_file_column": "blood_results_source_file",
 }
 
