@@ -293,19 +293,18 @@ def fill_forward_event(
     window = Window.partitionBy(participant_id_column, visit_datetime_column, visit_id_column).orderBy("VISIT_DIFF")
 
     completed_sections = []
-    events_df = None  # The dataframe containing the valid lookup events
+    events_df = None
 
-    # ~~~~ Prepare the dataframes, any row with a null `visit_datetime` cannot be filled forward ~~~~ #
-
+    # ~~ Pre process dataframe to remove unworkable rows ~~ #
     filtered_df = df.filter(
         (F.col(visit_datetime_column).isNotNull())
         & (F.col(event_date_column).isNotNull())
         & (F.col(event_date_column) <= F.col(visit_datetime_column))
     )
     null_df = df.filter(F.col(visit_datetime_column).isNull())
-    processed_df = df.filter(F.col(visit_datetime_column).isNotNull())
+    df = df.filter(F.col(visit_datetime_column).isNotNull())
 
-    # ~~~~ Normalise the event dates by picking only the firs report of an event within a given threshold ~~~ #
+    # ~~ Normalise dates ~~ #
 
     # create an expression for when a series of dates has been normalised
     # gets the date difference between the first row by visit datetime in the filtered dataset
@@ -327,38 +326,31 @@ def fill_forward_event(
     elif len(completed_sections) == 1:
         events_df = completed_sections[0]
 
-    # ~~~~ Fill forwards the selected events by joining the lookup `events_df` with the original not null df ~~~~ #
+    # ~~ Construct resultant dataframe by fill forwards ~~#
 
     # use this columns to override the original dataframe
     if events_df is not None and events_df.count() > 0:
-        processed_df = (
-            processed_df.drop(*event_columns)
+        df = (
+            df.drop(*event_columns)
             .join(events_df.select(participant_id_column, *event_columns), on=participant_id_column, how="left")
             .withColumn("DROP_EVENT", (F.col(event_date_column) > F.col(visit_datetime_column)))
         )
     else:
-        processed_df = processed_df.withColumn(
-            event_indicator_column, F.when(F.col(event_date_column).isNull(), "No").otherwise("Yes")
-        )
-        return processed_df
+        df = df.withColumn("DROP_EVENT", F.lit(False))
 
     # add the additional detail columns to the original dataframe
     for col in event_columns:
-        processed_df = processed_df.withColumn(col, F.when(F.col("DROP_EVENT"), None).otherwise(F.col(col)))
+        df = df.withColumn(col, F.when(F.col("DROP_EVENT"), None).otherwise(F.col(col)))
 
     # pick the best row to retain based upon proximity to visit date
-    processed_df = processed_df.withColumn(
-        event_indicator_column, F.when(F.col(event_date_column).isNull(), "No").otherwise("Yes")
-    )
-    processed_df = processed_df.withColumn(
+    df = df.withColumn(event_indicator_column, F.when(F.col(event_date_column).isNull(), "No").otherwise("Yes"))
+    df = df.withColumn(
         "VISIT_DIFF",
         F.coalesce(F.abs(F.datediff(F.col(event_date_column), F.col(visit_datetime_column))), F.lit(float("inf"))),
     )
-    processed_df = (
-        processed_df.drop("DROP_EVENT").distinct().withColumn("ROW", F.row_number().over(window)).drop("VISIT_DIFF")
-    )
-    processed_df = processed_df.filter(F.col("ROW") == 1).drop("ROW")
-    processed_df = processed_df.unionByName(null_df)
+    df = df.drop("DROP_EVENT").distinct().withColumn("ROW", F.row_number().over(window)).drop("VISIT_DIFF")
+    df = df.filter(F.col("ROW") == 1).drop("ROW")
+    df = df.unionByName(null_df)
     return df
 
 

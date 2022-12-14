@@ -24,6 +24,7 @@ def test_correct_date_ranges(spark_session):
             ("2021-07-22", "2021-10-11", 6, "L"),  # can be shifted back by a year to 2020
             ("2020-10-11", "2012-07-22", 7, "M"),  # past date given visit date year
             ("2020-10-11", "2019-07-02", 8, "N"),  # date shifted forward by a month is correct
+            ("2020-10-29", "2017-12-25", 9, "O"),  # significant deviation from known covid cases
         ],
         schema=schema,
     )
@@ -43,7 +44,8 @@ def test_correct_date_ranges(spark_session):
             ("2022-03-01", "2021-03-03", 5,"K"),  # second permissable replacement for C
             ("2021-07-22", "2020-10-11", 6,"L"),  # shifted back a year as >=2020
             ("2020-10-11", "2020-07-22", 7,"M"),  # past date given visit date year
-            ("2020-10-11", "2020-07-02", 8,"N")   # date shifted forward by a month is correct
+            ("2020-10-11", "2020-07-02", 8,"N"),  # date shifted forward by a month is correct
+            ("2020-10-29", "2019-12-25", 9,"O"),  # significant deviation from known covid cases
         ],
         # fmt: on
         schema=schema,
