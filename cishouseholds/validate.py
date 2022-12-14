@@ -157,7 +157,7 @@ def validate_files(file_paths: Union[str, List[str]], validation_schema: dict, s
 
     valid_files = []
     for file_path in file_paths:
-        if Path(file_path).suffix in [".xlsx"]:
+        if Path(file_path).suffix in [".xlsx"]:  # TODO: add validation of xl files using pandas reading to get the
             valid_files.append(file_path)
             continue
         error = ""
