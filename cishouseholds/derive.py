@@ -1970,7 +1970,26 @@ def flag_records_for_work_location_null() -> F.Column:
 
 def flag_records_for_work_location_student() -> F.Column:
     """Flag records for application of "Work location" rules for students. Rule_id: 7000"""
-    return F.col("work_status_v0").isin("Student") | (F.col("age_at_visit") < F.lit(16))
+    return (
+        F.col("work_status_v0").isin("Student")
+        | (
+            ~(
+                F.col("work_status_v2").isin(
+                    "Employed and currently working",
+                    "Self-employed and currently working",
+                )
+            )
+        )
+        | (
+            ~(
+                F.col("work_status_v1").isin(
+                    "Employed and currently working",
+                    "Self-employed and currently working",
+                )
+            )
+        )
+        | (F.col("age_at_visit") < F.lit(16))
+    )
 
 
 def flag_records_for_work_from_home_rules() -> F.Column:
@@ -2140,10 +2159,30 @@ def flag_records_for_not_working_rules_v2_b() -> F.Column:
     ).isin(2)
 
 
+def flag_records_for_school_v0_rules() -> F.Column:
+    """Flag records for application of "School rules -v2" rules. Rule_id: 6000, 6002, 6005"""
+    return (
+        ((F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18)))
+        & ~(F.col("school_year").isNull())
+        & F.col("survey_response_dataset_major_version").isin(0)
+    )
+
+
+def flag_records_for_school_v1_rules() -> F.Column:
+    """Flag records for application of "School rules -v2" rules. Rule_id: 6000, 6002, 6005"""
+    return (
+        ((F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18)))
+        & ~(F.col("school_year").isNull())
+        & F.col("survey_response_dataset_major_version").isin(1)
+    )
+
+
 def flag_records_for_school_v2_rules() -> F.Column:
     """Flag records for application of "School rules -v2" rules. Rule_id: 6000, 6002, 6005"""
-    return ((F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18))) & ~(
-        F.col("school_year").isNull()
+    return (
+        ((F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18)))
+        & ~(F.col("school_year").isNull())
+        & F.col("survey_response_dataset_major_version").isin(2)
     )
 
 
