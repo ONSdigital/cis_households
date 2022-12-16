@@ -9,6 +9,7 @@ import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.pipeline.config import get_config
+from cishouseholds.pipeline.logging import survey_table_lengths
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -87,10 +88,11 @@ def extract_from_table(table_name: str, break_lineage: bool = False, alternate_p
     return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix)}")
 
 
-def update_table(df, table_name, write_mode, archive=False):
+def update_table(df: DataFrame, table_name, write_mode, archive=False):
     df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
+    survey_table_lengths.log_length(table_name, df.count())
     if archive:
-        now = datetime.strftime(datetime.now(), format="%Y%m%d_%H%M%S")
+        now = datetime.strftime(datetime.now(), "%Y%m%d_%H%M%S")
         df.write.mode(write_mode).saveAsTable(f"{get_full_table_name(table_name)}_{now}")
 
 
