@@ -95,6 +95,7 @@ from cishouseholds.edit import clean_barcode_simple
 from cishouseholds.edit import clean_job_description_string
 from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import conditionally_replace_columns
+from cishouseholds.edit import conditionally_set_column_values
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import correct_date_ranges
 from cishouseholds.edit import correct_date_ranges_union_dependent
@@ -317,6 +318,21 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
     df = assign_taken_column(df=df, column_name_to_assign="blood_taken", reference_column="blood_sample_barcode")
 
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 0)
+    invalid_covid_date = "2019-11-17"
+    v0_condition = (
+        (F.col("survey_response_dataset_major_version") == 0)
+        & (F.col("think_had_covid_onset_date").isNotNull())
+        & (F.col("think_had_covid_onset_date") < invalid_covid_date)
+    )
+    v0_value_map = {
+        "other_covid_infection_test": None,
+        "other_covid_infection_test_results": None,
+    }
+    df = conditionally_set_column_values(
+        df=df,
+        condition=v0_condition,
+        cols_to_set_to_value=v0_value_map,
+    )
     df = df.withColumn("sex", F.coalesce(F.col("sex"), F.col("gender"))).drop("gender")
 
     df = map_column_values_to_null(
@@ -1411,8 +1427,13 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         ]
         if col in df.columns
     ]
+    date_cols_min_date_dict = {
+        "think_had_covid_onset_date": "2019-11-17",
+        "think_had_contacted_nhs": "2019-11-17",
+        "think_had_covid_admitted_to_hopsital": "2019-11-17",
+    }
     df = assign_raw_copies(df, date_cols_to_correct, "pdc")
-    df = correct_date_ranges(df, date_cols_to_correct, "visit_datetime", "2019-08-01")
+    df = correct_date_ranges(df, date_cols_to_correct, "visit_datetime", "2019-08-01", date_cols_min_date_dict)
     df = df.withColumn(
         "any_date_corrected",
         F.when(reduce(or_, [~F.col(col).eqNullSafe(F.col(f"{col}_pdc")) for col in date_cols_to_correct]), "Yes"),
@@ -1426,6 +1447,50 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
     df = clean_postcode(df, "postcode")
     df = normalise_think_had_covid_columns(df, "think_had_covid_symptom")
+    invalid_covid_date = "2019-11-17"
+    conditions = {
+        "think_had_covid_onset_date": (
+            (F.col("think_had_covid_onset_date").isNotNull())
+            & (F.col("think_had_covid_onset_date") < invalid_covid_date)
+        ),
+        "last_suspected_covid_contact_date": (
+            (F.col("last_suspected_covid_contact_date").isNotNull())
+            & (F.col("last_suspected_covid_contact_date") < invalid_covid_date)
+        ),
+        "last_covid_contact_date": (
+            (F.col("last_covid_contact_date").isNotNull()) & (F.col("last_covid_contact_date") < invalid_covid_date)
+        ),
+    }
+    col_value_maps = {
+        "think_had_covid_onset_date": {
+            "think_had_covid_onset_date": None,
+            "think_had_covid_contacted_nhs": None,
+            "think_had_covid_admitted_to_hospital": None,
+            "think_had_covid_symptom_": None,
+        },
+        "last_suspected_covid_contact_date": {
+            "last_suspected_covid_": None,
+            "think_had_covid_onset_date": None,
+            "contact_suspected_positive_covid_last_28_days": "No",
+        },
+        "last_covid_contact_date": {
+            "last_covid_": None,
+            "think_had_covid_onset_date": None,
+            "contact_known_positive_covid_last_28_days": "No",
+        },
+    }
+    for condition in list(conditions.keys()):
+        df = conditionally_set_column_values(
+            df=df,
+            condition=conditions.get(condition),
+            cols_to_set_to_value=col_value_maps.get(condition),
+        )
+
+    # This is outside of the above function as it erroneously captured every think_had_covid col including raw
+    df = df.withColumn(
+        "think_had_covid",
+        F.when(conditions.get("think_had_covid_onset_date"), "No").otherwise(F.col("think_had_covid")),
+    )
 
     consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
 
@@ -1469,6 +1534,32 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         participant_id_column="participant_id",
         reference_columns=work_columns,
     )
+
+    contact_date = ["last_suspected_covid_contact_date", "last_covid_contact_date"]
+
+    covid_contact = ["contact_suspected_positive_covid_last_28_days", "contact_known_positive_covid_last_28_days"]
+
+    contact_type = ["last_suspected_covid_contact_type", "last_covid_contact_type"]
+
+    for l in range(len(contact_date)):
+        # correct covid contact based on date
+        df = update_to_value_if_any_not_null(
+            df=df,
+            column_name_to_assign=covid_contact[l - 1],
+            true_false_values=["Yes", "No"],
+            column_list=[contact_date[l - 1]],
+        )
+
+        # correct covid type based on date
+        df = update_to_value_if_any_not_null(
+            df=df,
+            column_name_to_assign=contact_type[l - 1],
+            true_false_values=[F.col(contact_type[l - 1]), None],
+            column_list=[
+                contact_date[l - 1],
+            ],
+        )
+
     return df
 
 
@@ -2608,7 +2699,7 @@ def fill_forwards_travel_column(df):
     df = update_to_value_if_any_not_null(
         df=df,
         column_name_to_assign="been_outside_uk",
-        value_to_assign="Yes",
+        true_false_values=["Yes", "No"],
         column_list=["been_outside_uk_last_country", "been_outside_uk_last_return_date"],
     )
     df = fill_forward_from_last_change(
@@ -3308,6 +3399,9 @@ def fix_timestamps(df: DataFrame):
     Fix any issues with dates saved in timestamp format drifting ahead by n hours.
     """
     date_cols = [c for c in df.columns if "date" in c and "datetime" not in c]
+    d_types_list = [list(d) for d in df.select(*date_cols).dtypes]
+    d_types = {d[0]: d[1] for d in d_types_list}
     for col in date_cols:
-        df = df.withColumn(col, F.date_format(F.col(col), "yyyy-MM-dd"))
+        if d_types[col] == "timestamp":
+            df = df.withColumn(col, F.date_format(F.col(col), "yyyy-MM-dd"))
     return df

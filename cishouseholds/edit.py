@@ -66,7 +66,10 @@ def normalise_think_had_covid_columns(df: DataFrame, symptom_columns_prefix: str
 
 
 def correct_date_ranges_union_dependent(
-    df: DataFrame, columns_to_edit: List[str], participant_id_column: str, visit_date_column: str
+    df: DataFrame,
+    columns_to_edit: List[str],
+    participant_id_column: str,
+    visit_date_column: str,
 ):
     """
     Correct datetime columns given a range looking across all rows
@@ -115,7 +118,13 @@ def remove_incorrect_dates(df: DataFrame, columns_to_edit: List[str], visit_date
     return df
 
 
-def correct_date_ranges(df: DataFrame, columns_to_edit: List[str], visit_date_column: str, min_date: str):
+def correct_date_ranges(
+    df: DataFrame,
+    columns_to_edit: List[str],
+    visit_date_column: str,
+    min_date: str,
+    min_date_dict: dict = {},
+):
     """
     Correct datetime columns given a range
     """
@@ -141,10 +150,14 @@ def correct_date_ranges(df: DataFrame, columns_to_edit: List[str], visit_date_co
                     .otherwise(F.col(col)),
                 )
                 .when(
-                    (F.col(col) < min_date) & (F.col(col).isNotNull()),
+                    (F.col(col) < (min_date_dict.get(col, min_date))) & (F.col(col).isNotNull()),
                     F.when(
                         set_date_component(col, "year", F.year(visit_date_column)) <= F.col(visit_date_column),
                         set_date_component(col, "year", F.year(visit_date_column)),
+                    )
+                    .when(
+                        (F.month(col) >= 8) & (set_date_component(col, "year", 2019) <= F.col(visit_date_column)),
+                        set_date_component(col, "year", 2019),
                     )
                     .when(F.add_months(col, 1) <= F.col(visit_date_column), F.add_months(col, 1))
                     .when((F.year(col) > 2019), set_date_component(col, "year", F.year(visit_date_column) - 1))
@@ -235,7 +248,9 @@ def update_column_in_time_window(
     return df
 
 
-def update_to_value_if_any_not_null(df: DataFrame, column_name_to_assign: str, value_to_assign: str, column_list: list):
+def update_to_value_if_any_not_null(
+    df: DataFrame, column_name_to_assign: str, true_false_values: list, column_list: list
+):
     """Edit existing column to `value_to_assign` when a value is present in any of the listed columns.
 
     Parameters
@@ -244,14 +259,14 @@ def update_to_value_if_any_not_null(df: DataFrame, column_name_to_assign: str, v
         The input DataFrame to process
     column_name_to_assign
         The name of the existing column
-    value_to_assign
-        The value to assign
+    true_false_values
+        True and false values to be assigned
     column_list
         A list of columns to check if any of them do not have null values
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.when(any_column_not_null(column_list), value_to_assign).otherwise(F.col(column_name_to_assign)),
+        F.when(any_column_not_null(column_list), true_false_values[0]).otherwise(true_false_values[1]),
     )
     return df
 
@@ -1249,3 +1264,32 @@ def conditionally_replace_columns(
     for to_replace, replace_with in column_to_column_map.items():
         df = df.withColumn(to_replace, F.when(condition, F.col(replace_with)).otherwise(F.col(to_replace)))
     return df
+
+
+def conditionally_set_column_values(df: DataFrame, condition: Any, cols_to_set_to_value: Any):
+    """
+    Creates a temporary column based on the input condition, then reads in the cols_to_set_to_value dict
+    building a column list for each col_prefix in the dict.
+
+    For each col in in the column list where the temporary condition_col is true, replace the value for that column
+    based on the cols_to_set_to_value dictionary entry.
+
+    Return the df while dropping the temporary column.
+
+    Parameters
+    ----------
+    df : DataFrame
+    condition : Any
+        conditional expression used to build the temporary column in the format of
+        ((F.col("column_name").isNotNull()) & (F.col("column_name") >= 10))
+    cols_to_set_to_value : Dict[str, Any]
+        Due to the list comprehension this can accept either a specific column name or a prefix
+        eg think_had_covid_date or think_had_covid_
+    """
+    df = df.withColumn("condition_col", condition).cache()
+    for col_prefix in cols_to_set_to_value:
+        value = cols_to_set_to_value.get(col_prefix)
+        columns = [col for col in df.columns if col_prefix in col]
+        for col in columns:
+            df = df.withColumn(col, F.when(F.col("condition_col"), value).otherwise(F.col(col)))
+    return df.drop("condition_col")

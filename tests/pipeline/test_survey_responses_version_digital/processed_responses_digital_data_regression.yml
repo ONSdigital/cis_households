@@ -43,9 +43,9 @@
   blood_return_date: '2022-01-05 00:00:00.000000'
   blood_return_future_date: '2022-01-09 00:00:00.000000'
   blood_returned: null
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: BLT79358109
   blood_sample_barcode_correct: 'No'
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode_raw: BLT79358109
   blood_sample_barcode_user_entered: ONS48936679
   blood_sample_received_consolidation_point_datetime: '2022-01-07 05:50:00.000000'
   blood_sample_received_lab_datetime: '2022-01-09 12:09:42.000000'
@@ -95,7 +95,7 @@
   consent_contact_extra_research_yn: null
   consent_nhs_data_share_yn: 'No'
   consent_use_of_surplus_blood_samples_yn: 'No'
-  contact_known_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   current_window_cadence: '15'
@@ -103,8 +103,8 @@
   currently_smokes_or_vapes_description: Hookah or shisha pipes
   currently_smokes_or_vapes_raw: Prefer not to say
   date_of_birth: '1982-08-08 00:00:00.000000'
-  days_since_think_had_covid: 30.0
-  days_since_think_had_covid_group: 29-60
+  days_since_think_had_covid: 28.0
+  days_since_think_had_covid_group: 15-28
   digital_communication_preference: Email
   digital_entry_pack_sent_datetime: '2021-06-21 16:25:43.000000'
   digital_entry_pack_status: Ports are used to communicate with the external world.
@@ -411,7 +411,7 @@
   unique_participant_response_id: 0153-DHR-105295618485
   vaccinated_against_flu: 'No'
   visit_date_type: swab_sample_received_consolidation_point_datetime
-  visit_datetime: '2022-01-01 23:14:15.000000'
+  visit_datetime: '2021-12-30 23:14:15.000000'
   visit_id: '0153'
   voucher_type_preference: Paper
   which_symptoms_last_7_days: think_have_covid_symptom_shortness_of_breath;think_have_covid_symptom_loss_of_smell;think_have_covid_symptom_loss_of_appetite;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_low_mood;think_have_covid_symptom_memory_loss_or_confusion
@@ -549,8 +549,8 @@
   consent_contact_extra_research_yn: 'Yes'
   consent_nhs_data_share_yn: 'Yes'
   consent_use_of_surplus_blood_samples_yn: null
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: Buckinghamshire
   current_window_cadence: '11'
   currently_smokes_or_vapes: null
@@ -761,9 +761,9 @@
   swab_return_date: '2022-01-06 00:00:00.000000'
   swab_return_future_date: null
   swab_returned: 'Yes'
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: SWT52060032
   swab_sample_barcode_correct: 'Yes'
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode_raw: SWT52060032
   swab_sample_barcode_user_entered: ONS82463081
   swab_sample_received_consolidation_point_datetime: '2022-01-06 15:57:36.000000'
   swab_sample_received_lab_datetime: '2022-01-02 08:13:36.000000'
@@ -951,9 +951,9 @@
   blood_return_date: '2022-01-08 00:00:00.000000'
   blood_return_future_date: '2022-01-01 00:00:00.000000'
   blood_returned: 'No'
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: BLT86528989
   blood_sample_barcode_correct: null
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode_raw: BLT86528989
   blood_sample_barcode_user_entered: ONS78200593
   blood_sample_received_consolidation_point_datetime: '2022-01-07 14:29:59.000000'
   blood_sample_received_lab_datetime: '2022-01-03 10:20:16.000000'
@@ -1000,15 +1000,15 @@
   consent_nhs_data_share_yn: 'Yes'
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspected_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   current_window_cadence: '22'
   currently_smokes_or_vapes: 'No'
   currently_smokes_or_vapes_description: Hookah or shisha pipes
   currently_smokes_or_vapes_raw: 'No'
   date_of_birth: '2005-03-22 00:00:00.000000'
-  days_since_think_had_covid: 0.0
-  days_since_think_had_covid_group: 0-14
+  days_since_think_had_covid: 29.0
+  days_since_think_had_covid_group: 29-60
   digital_communication_preference: Letter
   digital_entry_pack_sent_datetime: '2020-04-12 09:10:28.000000'
   digital_entry_pack_status: Haskell is a standardized, general-purpose purely functional
@@ -1075,7 +1075,7 @@
   last_covid_contact_type: Living in your own home
   last_covid_contact_type_raw: Someone I live with
   last_name: Romero
-  last_suspected_covid_contact_date: '2022-01-01 00:00:00.000000'
+  last_suspected_covid_contact_date: '2021-12-01 00:00:00.000000'
   last_suspected_covid_contact_type: Someone you do not live with
   last_suspected_covid_contact_type_raw: Someone you do not live with
   long_covid_symptoms: think_have_long_covid_symptom_nausea_or_vomiting;think_have_long_covid_symptom_diarrhoea;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_memory_loss_or_confusion;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_runny_nose_or_sneezing
@@ -1211,9 +1211,9 @@
   swab_return_date: '2022-01-07 00:00:00.000000'
   swab_return_future_date: '2022-01-03 00:00:00.000000'
   swab_returned: 'No'
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: SWT49605737
   swab_sample_barcode_correct: null
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode_raw: SWT49605737
   swab_sample_barcode_user_entered: ONS14032373
   swab_sample_received_consolidation_point_datetime: '2022-01-04 22:03:54.000000'
   swab_sample_received_lab_datetime: '2022-01-09 16:32:32.000000'
@@ -1225,7 +1225,7 @@
   think_had_covid_any_symptoms: 'No'
   think_had_covid_any_symptoms_raw: 'No'
   think_had_covid_contacted_nhs: null
-  think_had_covid_onset_date: '2022-01-02 00:00:00.000000'
+  think_had_covid_onset_date: '2021-12-02 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'No'
   think_had_covid_symptom_anxiety: 'No'
   think_had_covid_symptom_chest_pain: 'Yes'
@@ -1316,7 +1316,7 @@
   unique_participant_response_id: 3506-DHR-303789475622
   vaccinated_against_flu: 'No'
   visit_date_type: swab_sample_received_consolidation_point_datetime
-  visit_datetime: '2022-01-02 22:03:54.000000'
+  visit_datetime: '2021-12-31 22:03:54.000000'
   visit_id: '3506'
   voucher_type_preference: Paper
   which_symptoms_last_7_days: think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_sore_throat;think_have_covid_symptom_shortness_of_breath;think_have_covid_symptom_chest_pain;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_memory_loss_or_confusion
@@ -1397,9 +1397,9 @@
   blood_return_date: '2022-01-03 00:00:00.000000'
   blood_return_future_date: '2022-01-01 00:00:00.000000'
   blood_returned: 'No'
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: BLT20922815
   blood_sample_barcode_correct: null
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode_raw: BLT20922815
   blood_sample_barcode_user_entered: ONS12633229
   blood_sample_received_consolidation_point_datetime: '2022-01-02 12:57:57.000000'
   blood_sample_received_lab_datetime: '2022-01-02 11:17:41.000000'
@@ -1458,7 +1458,7 @@
   currently_smokes_or_vapes_description: Cigarettes
   currently_smokes_or_vapes_raw: 'No'
   date_of_birth: '2020-02-01 00:00:00.000000'
-  days_since_think_had_covid: 26.0
+  days_since_think_had_covid: 24.0
   days_since_think_had_covid_group: 15-28
   digital_communication_preference: null
   digital_entry_pack_sent_datetime: '2020-09-20 00:35:12.000000'
@@ -1544,7 +1544,7 @@
   other_antibody_test_results_raw: null
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: '2021-12-05 00:00:00.000000'
-  other_covid_infection_test_last_negative_date: '2022-01-03 00:00:00.000000'
+  other_covid_infection_test_last_negative_date: '2021-12-03 00:00:00.000000'
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Any tests negative, but none positive
@@ -1660,9 +1660,9 @@
   swab_return_date: '2022-01-07 00:00:00.000000'
   swab_return_future_date: '2022-01-08 00:00:00.000000'
   swab_returned: 'No'
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: SWT19721832
   swab_sample_barcode_correct: 'Yes'
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode_raw: SWT19721832
   swab_sample_barcode_user_entered: ONS85702202
   swab_sample_received_consolidation_point_datetime: '2022-01-06 11:34:20.000000'
   swab_sample_received_lab_datetime: '2022-01-07 13:29:28.000000'
@@ -1700,7 +1700,7 @@
   think_had_covid_symptom_vertigo_or_dizziness: 'Yes'
   think_had_covid_which_symptoms: ''
   think_have_covid: 'No'
-  think_have_covid_onset_date: '2022-01-03 00:00:00.000000'
+  think_have_covid_onset_date: '2021-12-03 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: 'No'
   think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_any: 'Yes'
@@ -1765,7 +1765,7 @@
   unique_participant_response_id: 3586-DHR-016525808631
   vaccinated_against_flu: null
   visit_date_type: swab_sample_received_consolidation_point_datetime
-  visit_datetime: '2022-01-04 11:34:20.000000'
+  visit_datetime: '2022-01-02 11:34:20.000000'
   visit_id: '3586'
   voucher_type_preference: email_address
   which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_diarrhoea;think_have_covid_symptom_shortness_of_breath;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_memory_loss_or_confusion;think_have_covid_symptom_difficulty_concentrating
@@ -1845,9 +1845,9 @@
   blood_return_date: '2022-01-04 00:00:00.000000'
   blood_return_future_date: '2022-01-07 00:00:00.000000'
   blood_returned: 'Yes'
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: BLT73187191
   blood_sample_barcode_correct: null
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode_raw: BLT73187191
   blood_sample_barcode_user_entered: ONS43394596
   blood_sample_received_consolidation_point_datetime: '2022-01-08 20:49:30.000000'
   blood_sample_received_lab_datetime: '2022-01-05 17:36:19.000000'
@@ -1894,7 +1894,7 @@
   consent_contact_extra_research_yn: 'Yes'
   consent_nhs_data_share_yn: null
   consent_use_of_surplus_blood_samples_yn: 'No'
-  contact_known_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   current_window_cadence: '20'
@@ -1902,8 +1902,8 @@
   currently_smokes_or_vapes_description: Vape or E-cigarettes
   currently_smokes_or_vapes_raw: 'Yes'
   date_of_birth: '2012-05-22 00:00:00.000000'
-  days_since_think_had_covid: 29.0
-  days_since_think_had_covid_group: 29-60
+  days_since_think_had_covid: 27.0
+  days_since_think_had_covid_group: 15-28
   digital_communication_preference: Email
   digital_entry_pack_sent_datetime: '2021-09-27 00:19:18.000000'
   digital_entry_pack_status: Make me a sandwich.
@@ -1976,8 +1976,8 @@
   last_covid_contact_type_raw: null
   last_name: Waters
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: Outside your home
-  last_suspected_covid_contact_type_raw: Someone I do not live with
+  last_suspected_covid_contact_type: null
+  last_suspected_covid_contact_type_raw: null
   long_covid_symptoms: think_have_long_covid_symptom_nausea_or_vomiting;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_diarrhoea;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_low_mood;think_have_long_covid_symptom_memory_loss_or_confusion;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_runny_nose_or_sneezing
   middle_name: Isaac
   ons_household_id: '801375216695'
@@ -2109,9 +2109,9 @@
   swab_return_date: '2022-01-02 00:00:00.000000'
   swab_return_future_date: '2022-01-05 00:00:00.000000'
   swab_returned: 'No'
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: SWT29554495
   swab_sample_barcode_correct: 'Yes'
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode_raw: SWT29554495
   swab_sample_barcode_user_entered: ONS68362985
   swab_sample_received_consolidation_point_datetime: '2022-01-08 19:51:18.000000'
   swab_sample_received_lab_datetime: null
@@ -2214,7 +2214,7 @@
   unique_participant_response_id: 4033-DHR-400432098599
   vaccinated_against_flu: 'No'
   visit_date_type: swab_sample_received_consolidation_point_datetime
-  visit_datetime: '2022-01-06 19:51:18.000000'
+  visit_datetime: '2022-01-04 19:51:18.000000'
   visit_id: '4033'
   voucher_type_preference: Paper
   which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_fatigue;think_have_covid_symptom_cough;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_anxiety
@@ -2300,9 +2300,9 @@
   blood_return_date: '2022-01-09 00:00:00.000000'
   blood_return_future_date: '2022-01-03 00:00:00.000000'
   blood_returned: 'No'
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: BLT93585574
   blood_sample_barcode_correct: 'No'
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode_raw: BLT93585574
   blood_sample_barcode_user_entered: ONS81424039
   blood_sample_received_consolidation_point_datetime: '2022-01-05 12:36:56.000000'
   blood_sample_received_lab_datetime: '2022-01-02 10:00:19.000000'
@@ -2350,8 +2350,8 @@
   consent_contact_extra_research_yn: 'No'
   consent_nhs_data_share_yn: null
   consent_use_of_surplus_blood_samples_yn: null
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'Yes'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   current_window_cadence: '9'
   currently_smokes_or_vapes: 'No'
@@ -2564,9 +2564,9 @@
   swab_return_date: '2022-01-07 00:00:00.000000'
   swab_return_future_date: '2022-01-03 00:00:00.000000'
   swab_returned: 'Yes'
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: SWT10527620
   swab_sample_barcode_correct: 'No'
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode_raw: SWT10527620
   swab_sample_barcode_user_entered: ONS48509899
   swab_sample_received_consolidation_point_datetime: '2022-01-06 06:10:56.000000'
   swab_sample_received_lab_datetime: '2022-01-08 16:11:14.000000'
@@ -2669,7 +2669,7 @@
   unique_participant_response_id: 4229-DHR-219547810444
   vaccinated_against_flu: null
   visit_date_type: swab_sample_received_consolidation_point_datetime
-  visit_datetime: '2022-01-04 06:10:56.000000'
+  visit_datetime: '2022-01-02 06:10:56.000000'
   visit_id: '4229'
   voucher_type_preference: null
   which_symptoms_last_7_days: think_have_covid_symptom_fever;think_have_covid_symptom_headache;think_have_covid_symptom_muscle_ache;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_cough;think_have_covid_symptom_palpitations;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_low_mood
@@ -2754,9 +2754,9 @@
   blood_return_date: '2022-01-04 00:00:00.000000'
   blood_return_future_date: '2022-01-02 00:00:00.000000'
   blood_returned: 'No'
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: BLT67267249
   blood_sample_barcode_correct: null
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode_raw: BLT67267249
   blood_sample_barcode_user_entered: ONS28486959
   blood_sample_received_consolidation_point_datetime: '2022-01-04 18:30:30.000000'
   blood_sample_received_lab_datetime: '2022-01-05 21:57:52.000000'
@@ -2806,7 +2806,7 @@
   consent_contact_extra_research_yn: null
   consent_nhs_data_share_yn: 'Yes'
   consent_use_of_surplus_blood_samples_yn: 'No'
-  contact_known_positive_covid_last_28_days: 'No'
+  contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: Humberside
   current_window_cadence: '22'
@@ -3018,9 +3018,9 @@
   swab_return_date: '2022-01-01 00:00:00.000000'
   swab_return_future_date: '2022-01-04 00:00:00.000000'
   swab_returned: 'Yes'
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: SWT65364846
   swab_sample_barcode_correct: 'Yes'
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode_raw: SWT65364846
   swab_sample_barcode_user_entered: ONS77141950
   swab_sample_received_consolidation_point_datetime: '2022-01-09 13:56:27.000000'
   swab_sample_received_lab_datetime: null
@@ -3256,8 +3256,8 @@
   consent_contact_extra_research_yn: 'No'
   consent_nhs_data_share_yn: null
   consent_use_of_surplus_blood_samples_yn: 'Yes'
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: 'Yes'
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   current_window_cadence: '2'
   currently_smokes_or_vapes: 'No'
@@ -3332,12 +3332,12 @@
   infant_age_months_8: 68.0
   language_preference: English
   last_covid_contact_date: null
-  last_covid_contact_type: Living in your own home
-  last_covid_contact_type_raw: Someone I live with
+  last_covid_contact_type: null
+  last_covid_contact_type_raw: null
   last_name: Brady
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: Someone you do not live with
-  last_suspected_covid_contact_type_raw: Someone you do not live with
+  last_suspected_covid_contact_type: null
+  last_suspected_covid_contact_type_raw: null
   long_covid_symptoms: think_have_long_covid_symptom_headache;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_memory_loss_or_confusion;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_noisy_breathing
   middle_name: Argentina
   ons_household_id: '225258329500'
@@ -3354,7 +3354,7 @@
   other_antibody_test_results_raw: null
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: '2021-12-08 00:00:00.000000'
-  other_covid_infection_test_last_negative_date: '2022-01-01 00:00:00.000000'
+  other_covid_infection_test_last_negative_date: '2021-12-01 00:00:00.000000'
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
@@ -3473,9 +3473,9 @@
   swab_return_date: '2022-01-09 00:00:00.000000'
   swab_return_future_date: '2022-01-06 00:00:00.000000'
   swab_returned: 'No'
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: SWT29425711
   swab_sample_barcode_correct: null
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode_raw: SWT29425711
   swab_sample_barcode_user_entered: ONS26617575
   swab_sample_received_consolidation_point_datetime: '2022-01-03 09:15:08.000000'
   swab_sample_received_lab_datetime: null
@@ -3578,7 +3578,7 @@
   unique_participant_response_id: 5198-DHR-167403959807
   vaccinated_against_flu: null
   visit_date_type: swab_sample_received_consolidation_point_datetime
-  visit_datetime: '2022-01-01 09:15:08.000000'
+  visit_datetime: '2021-12-30 09:15:08.000000'
   visit_id: '5198'
   voucher_type_preference: email_address
   which_symptoms_last_7_days: think_have_covid_symptom_muscle_ache;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_sore_throat;think_have_covid_symptom_cough;think_have_covid_symptom_loss_of_smell;think_have_covid_symptom_more_trouble_sleeping;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_chest_pain;think_have_covid_symptom_palpitations;think_have_covid_symptom_vertigo_or_dizziness;think_have_covid_symptom_difficulty_concentrating
@@ -3668,9 +3668,9 @@
   blood_return_date: '2022-01-09 00:00:00.000000'
   blood_return_future_date: '2022-01-08 00:00:00.000000'
   blood_returned: 'Yes'
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: BLT49605737
   blood_sample_barcode_correct: 'Yes'
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode_raw: BLT49605737
   blood_sample_barcode_user_entered: ONS72624980
   blood_sample_received_consolidation_point_datetime: '2022-01-02 21:22:35.000000'
   blood_sample_received_lab_datetime: '2022-01-01 22:12:12.000000'
@@ -3719,7 +3719,7 @@
   consent_nhs_data_share_yn: 'No'
   consent_use_of_surplus_blood_samples_yn: null
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspected_positive_covid_last_28_days: null
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: North Yorkshire
   current_window_cadence: '20'
   currently_smokes_or_vapes: 'Yes'
@@ -3935,9 +3935,9 @@
   swab_return_date: '2022-01-02 00:00:00.000000'
   swab_return_future_date: '2022-01-09 00:00:00.000000'
   swab_returned: 'No'
-  swab_sample_barcode: ONS00000000
+  swab_sample_barcode: SWT70710571
   swab_sample_barcode_correct: 'No'
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode_raw: SWT70710571
   swab_sample_barcode_user_entered: ONS69111526
   swab_sample_received_consolidation_point_datetime: '2022-01-09 02:10:03.000000'
   swab_sample_received_lab_datetime: '2022-01-03 05:53:54.000000'
@@ -4125,9 +4125,9 @@
   blood_return_date: '2022-01-04 00:00:00.000000'
   blood_return_future_date: '2022-01-08 00:00:00.000000'
   blood_returned: null
-  blood_sample_barcode: ONS00000000
+  blood_sample_barcode: BLT10527620
   blood_sample_barcode_correct: 'Yes'
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode_raw: BLT10527620
   blood_sample_barcode_user_entered: ONS14736535
   blood_sample_received_consolidation_point_datetime: '2022-01-05 04:26:14.000000'
   blood_sample_received_lab_datetime: '2022-01-02 22:09:34.000000'
@@ -4178,7 +4178,7 @@
   consent_nhs_data_share_yn: 'No'
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspected_positive_covid_last_28_days: null
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: Northamptonshire
   current_window_cadence: '19'
   currently_smokes_or_vapes: 'No'
@@ -4255,8 +4255,8 @@
   last_covid_contact_type_raw: Someone I live with
   last_name: Gross
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: Someone you do not live with
-  last_suspected_covid_contact_type_raw: Someone you do not live with
+  last_suspected_covid_contact_type: null
+  last_suspected_covid_contact_type_raw: null
   long_covid_symptoms: think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_fatigue;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_cough;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_noisy_breathing
   middle_name: Clarence
   ons_household_id: '217846198988'
@@ -4272,7 +4272,7 @@
   other_antibody_test_results: Waiting for all results
   other_antibody_test_results_raw: Waiting for all results
   other_covid_infection_test: 'No'
-  other_covid_infection_test_first_positive_date: '2022-01-04 00:00:00.000000'
+  other_covid_infection_test_first_positive_date: '2021-12-04 00:00:00.000000'
   other_covid_infection_test_last_negative_date: '2021-12-06 00:00:00.000000'
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
@@ -4493,7 +4493,7 @@
   unique_participant_response_id: 9263-DHR-073988827188
   vaccinated_against_flu: null
   visit_date_type: swab_sample_received_consolidation_point_datetime
-  visit_datetime: '2022-01-04 21:24:59.000000'
+  visit_datetime: '2022-01-02 21:24:59.000000'
   visit_id: '9263'
   voucher_type_preference: null
   which_symptoms_last_7_days: think_have_covid_symptom_fatigue;think_have_covid_symptom_nausea_or_vomiting;think_have_covid_symptom_abdominal_pain;think_have_covid_symptom_runny_nose_or_sneezing;think_have_covid_symptom_noisy_breathing;think_have_covid_symptom_palpitations;think_have_covid_symptom_anxiety;think_have_covid_symptom_memory_loss_or_confusion

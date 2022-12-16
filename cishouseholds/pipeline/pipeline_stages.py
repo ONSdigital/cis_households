@@ -50,7 +50,6 @@ from cishouseholds.pipeline.high_level_transformations import derive_age_based_c
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forward_events_for_key_columns
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
-from cishouseholds.pipeline.high_level_transformations import fix_timestamps
 from cishouseholds.pipeline.high_level_transformations import get_differences
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
@@ -92,6 +91,8 @@ from dummy_data_generation.generate_data import generate_nims_table
 from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
+
+# from cishouseholds.pipeline.high_level_transformations import fix_timestamps
 
 pipeline_stages = {}
 
@@ -573,9 +574,9 @@ def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[st
         print(
             f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
         )  # functional
-        df_to_process = df_to_process.repartition(
-            get_or_create_spark_session().sparkContext.getConf.get("spark.sql.shuffle.partitions") / 2
-        )
+        partitions = int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions"))
+        partitions = int(partitions / 2)
+        df_to_process = df_to_process.repartition(partitions)
         lookup_df = add_pattern_matching_flags(df_to_process)
         update_table(lookup_df, regex_lookup_table, "overwrite")
 
@@ -940,8 +941,8 @@ def validate_survey_responses(
         .withColumn("run_id", F.lit(get_run_id()))
         .drop(validation_failure_flag_column)
     )
-    valid_survey_responses = fix_timestamps(valid_survey_responses)
-    invalid_survey_responses_table = fix_timestamps(erroneous_survey_responses)
+    # valid_survey_responses = fix_timestamps(valid_survey_responses)
+    # invalid_survey_responses_table = fix_timestamps(erroneous_survey_responses)
     update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
     update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
     update_table(valid_survey_responses, output_survey_table, write_mode="overwrite", archive=True)

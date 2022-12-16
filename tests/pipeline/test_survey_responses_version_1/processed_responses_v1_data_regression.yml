@@ -5,9 +5,9 @@
   been_outside_uk_last_country: 'NO'
   been_outside_uk_last_return_date: '2022-01-02 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
-  blood_sample_barcode: null
+  blood_sample_barcode: ONS07212108
   blood_sample_barcode_edited_flag: 1.0
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode_raw: BLT97212108
   blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
@@ -18,7 +18,7 @@
   consent_contact_extra_research: '0'
   consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '1'
-  contact_known_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: County Armagh
   currently_smokes_or_vapes_description: Any element of a tuple can be accessed in
@@ -55,11 +55,10 @@
   infant_age_months_7: 3.0
   infant_age_months_8: null
   last_covid_contact_date: null
-  last_covid_contact_type: Elementary, my dear Watson.
+  last_covid_contact_type: null
   last_name: Dickerson
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: A census taker once tried to test me. I ate his
-    liver with some fava beans and a nice Chianti.
+  last_suspected_covid_contact_type: null
   no_email_address: 0.0
   ons_household_id: 021263322966
   other_antibody_test: 'No'
@@ -126,9 +125,9 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   survey_response_type: First Visit
-  swab_sample_barcode: null
+  swab_sample_barcode: ONS09481643
   swab_sample_barcode_edited_flag: 1.0
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode_raw: SWT69481643
   swab_taken: 'Yes'
   swabs_taken: 0.0
   think_had_covid: 'No'
@@ -266,11 +265,10 @@
   infant_age_months_7: 5.0
   infant_age_months_8: 8.0
   last_covid_contact_date: null
-  last_covid_contact_type: They call me *Mister* Tibbs!
+  last_covid_contact_type: null
   last_name: David
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: Those who refuse to learn from history are condemned
-    to repeat it.
+  last_suspected_covid_contact_type: null
   no_email_address: 1.0
   ons_household_id: '919192147365'
   other_antibody_test: 'No'
@@ -337,9 +335,9 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   survey_response_type: First Visit
-  swab_sample_barcode: null
+  swab_sample_barcode: ONS79358109
   swab_sample_barcode_edited_flag: 1.0
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode_raw: SWT79358109
   swab_taken: 'Yes'
   swabs_taken: 0.0
   think_had_covid: null
@@ -429,9 +427,9 @@
   been_outside_uk_last_country: 'YES'
   been_outside_uk_last_return_date: '2022-01-02 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
-  blood_sample_barcode: null
+  blood_sample_barcode: ONS09721832
   blood_sample_barcode_edited_flag: 1.0
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode_raw: BLT19721832
   blood_taken: 'Yes'
   bloods_taken: 1.0
   city: Saltash
@@ -442,7 +440,7 @@
   consent_contact_extra_research: '1'
   consent_summary: 5.0
   consent_use_of_surplus_blood_samples: '1'
-  contact_known_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: Humberside
   currently_smokes_or_vapes_description: Atoms can contain any character if they are
@@ -481,12 +479,10 @@
   infant_age_months_7: 2.0
   infant_age_months_8: 0.0
   last_covid_contact_date: null
-  last_covid_contact_type: One morning I shot an elephant in my pajamas. How he got
-    in my pajamas, I don't know.
+  last_covid_contact_type: null
   last_name: Nunez
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
-    You never know what you're gonna get.
+  last_suspected_covid_contact_type: null
   no_email_address: 0.0
   ons_household_id: '955705581901'
   other_antibody_test: 'No'
@@ -656,8 +652,8 @@
   consent_contact_extra_research: '0'
   consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '0'
-  contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspected_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: Worcestershire
   currently_smokes_or_vapes_description: In 1989 the building was heavily damaged
     by fire, but it has since been restored.
@@ -695,10 +691,10 @@
   infant_age_months_7: 0.0
   infant_age_months_8: 1.0
   last_covid_contact_date: null
-  last_covid_contact_type: Let them eat cake.
+  last_covid_contact_type: null
   last_name: Hyde
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: Here's looking at you, kid.
+  last_suspected_covid_contact_type: null
   no_email_address: 0.0
   ons_household_id: '876960826911'
   other_antibody_test: 'No'
@@ -764,9 +760,9 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   survey_response_type: Follow-up Visit
-  swab_sample_barcode: null
+  swab_sample_barcode: ONS09327728
   swab_sample_barcode_edited_flag: 1.0
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode_raw: SWT59327728
   swab_taken: 'Yes'
   swabs_taken: 1.0
   think_had_covid: 'Yes'
@@ -857,9 +853,9 @@
   been_outside_uk_last_country: 'NO'
   been_outside_uk_last_return_date: '2022-01-05 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  blood_sample_barcode: null
+  blood_sample_barcode: ONS09128328
   blood_sample_barcode_edited_flag: 1.0
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode_raw: BLT99128328
   blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
@@ -870,8 +866,8 @@
   consent_contact_extra_research: '0'
   consent_summary: 5.0
   consent_use_of_surplus_blood_samples: '0'
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: 'Yes'
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   currently_smokes_or_vapes_description: He looked inquisitively at his keyboard and
     wrote another sentence.
@@ -907,11 +903,10 @@
   infant_age_months_7: null
   infant_age_months_8: 3.0
   last_covid_contact_date: null
-  last_covid_contact_type: Houston, we have a problem.
+  last_covid_contact_type: null
   last_name: Robbins
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
-    You never know what you're gonna get.
+  last_suspected_covid_contact_type: null
   no_email_address: 0.0
   ons_household_id: 001674039598
   other_antibody_test: 'Yes'
@@ -1067,9 +1062,9 @@
   been_outside_uk_last_country: 'YES'
   been_outside_uk_last_return_date: '2022-01-05 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
-  blood_sample_barcode: null
+  blood_sample_barcode: ONS09128328
   blood_sample_barcode_edited_flag: 1.0
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode_raw: BLT99128328
   blood_taken: 'Yes'
   bloods_taken: 0.0
   city: null
@@ -1080,7 +1075,7 @@
   consent_contact_extra_research: '1'
   consent_summary: 5.0
   consent_use_of_surplus_blood_samples: '1'
-  contact_known_positive_covid_last_28_days: 'Yes'
+  contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   currently_smokes_or_vapes_description: Haskell is a standardized, general-purpose
@@ -1118,11 +1113,10 @@
   infant_age_months_7: 5.0
   infant_age_months_8: 1.0
   last_covid_contact_date: null
-  last_covid_contact_type: '"You''ve got to ask yourself one question: ""Do I feel
-    lucky?"" Well, do ya? Punk!"'
+  last_covid_contact_type: null
   last_name: Cardenas
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: You're gonna need a bigger boat.
+  last_suspected_covid_contact_type: null
   no_email_address: 1.0
   ons_household_id: '602276804025'
   other_antibody_test: 'Yes'
@@ -1284,9 +1278,9 @@
   been_outside_uk_last_country: null
   been_outside_uk_last_return_date: '2022-01-06 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
-  blood_sample_barcode: null
+  blood_sample_barcode: ONS04337808
   blood_sample_barcode_edited_flag: 1.0
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode_raw: BLT54337808
   blood_taken: 'Yes'
   bloods_taken: 0.0
   city: null
@@ -1297,8 +1291,8 @@
   consent_contact_extra_research: '0'
   consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '0'
-  contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspected_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: Northamptonshire
   currently_smokes_or_vapes_description: Make me a sandwich.
   date_of_birth: '2021-12-18 00:00:00.000000'
@@ -1333,10 +1327,10 @@
   infant_age_months_7: null
   infant_age_months_8: 2.0
   last_covid_contact_date: null
-  last_covid_contact_type: You're gonna need a bigger boat.
+  last_covid_contact_type: null
   last_name: Lynch
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: Let them eat cake.
+  last_suspected_covid_contact_type: null
   no_email_address: 1.0
   ons_household_id: 044476904382
   other_antibody_test: 'Yes'
@@ -1406,9 +1400,9 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   survey_response_type: First Visit
-  swab_sample_barcode: null
+  swab_sample_barcode: ONS29425711
   swab_sample_barcode_edited_flag: 1.0
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode_raw: SWT29425711
   swab_taken: 'Yes'
   swabs_taken: 0.0
   think_had_covid: 'No'
@@ -1498,9 +1492,9 @@
   been_outside_uk_last_country: null
   been_outside_uk_last_return_date: '2022-01-07 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  blood_sample_barcode: null
+  blood_sample_barcode: ONS74412661
   blood_sample_barcode_edited_flag: 1.0
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode_raw: BLT74412661
   blood_taken: 'Yes'
   bloods_taken: 0.0
   city: null
@@ -1549,11 +1543,10 @@
   infant_age_months_7: 7.0
   infant_age_months_8: 3.0
   last_covid_contact_date: null
-  last_covid_contact_type: They call me *Mister* Tibbs!
+  last_covid_contact_type: null
   last_name: Brock
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: Ask not what your country can do for you; ask
-    what you can do for your country.
+  last_suspected_covid_contact_type: null
   no_email_address: 0.0
   ons_household_id: '890407714528'
   other_antibody_test: null
@@ -1623,9 +1616,9 @@
   study_cohort: Swab Only
   survey_response_dataset_major_version: 1
   survey_response_type: Follow-up Visit
-  swab_sample_barcode: null
+  swab_sample_barcode: ONS01637835
   swab_sample_barcode_edited_flag: 1.0
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode_raw: SWT31637835
   swab_taken: 'Yes'
   swabs_taken: 1.0
   think_had_covid: 'No'
@@ -1713,9 +1706,9 @@
   been_outside_uk_last_country: null
   been_outside_uk_last_return_date: '2022-01-09 00:00:00.000000'
   been_outside_uk_since_april_2020: null
-  blood_sample_barcode: null
+  blood_sample_barcode: ONS74412661
   blood_sample_barcode_edited_flag: 1.0
-  blood_sample_barcode_raw: ONS00000000
+  blood_sample_barcode_raw: BLT74412661
   blood_taken: 'Yes'
   bloods_taken: 1.0
   city: null
@@ -1726,8 +1719,8 @@
   consent_contact_extra_research: '0'
   consent_summary: 16.0
   consent_use_of_surplus_blood_samples: '0'
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: 'Yes'
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   currently_smokes_or_vapes_description: The syntax {D1,D2,...,Dn} denotes a tuple
     whose arguments are D1, D2, ... Dn.
@@ -1762,11 +1755,10 @@
   infant_age_months_7: 1.0
   infant_age_months_8: 6.0
   last_covid_contact_date: null
-  last_covid_contact_type: Let them eat cake.
+  last_covid_contact_type: null
   last_name: Bernard
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: One morning I shot an elephant in my pajamas.
-    How he got in my pajamas, I don't know.
+  last_suspected_covid_contact_type: null
   no_email_address: 1.0
   ons_household_id: '456442497105'
   other_antibody_test: null
@@ -1935,8 +1927,8 @@
   consent_contact_extra_research: '0'
   consent_summary: 0.0
   consent_use_of_surplus_blood_samples: '0'
-  contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspected_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: Buckinghamshire
   currently_smokes_or_vapes_description: Erlang is known for its designs that are
     well suited for systems.
@@ -1973,11 +1965,10 @@
   infant_age_months_7: 1.0
   infant_age_months_8: 7.0
   last_covid_contact_date: null
-  last_covid_contact_type: The only thing we have to fear is fear itself.
+  last_covid_contact_type: null
   last_name: Meyers
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
-    You never know what you're gonna get.
+  last_suspected_covid_contact_type: null
   no_email_address: 0.0
   ons_household_id: '788221784619'
   other_antibody_test: 'Yes'
@@ -2047,9 +2038,9 @@
   study_cohort: Blood and Swab
   survey_response_dataset_major_version: 1
   survey_response_type: Follow-up Visit
-  swab_sample_barcode: null
+  swab_sample_barcode: ONS07267249
   swab_sample_barcode_edited_flag: 1.0
-  swab_sample_barcode_raw: ONS00000000
+  swab_sample_barcode_raw: SWT67267249
   swab_taken: 'Yes'
   swabs_taken: 0.0
   think_had_covid: null
