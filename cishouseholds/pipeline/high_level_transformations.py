@@ -1557,17 +1557,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
                 contact_date[l - 1],
             ],
         )
-    df = assign_regex_from_map_additional_rules(
-        df=df,
-        column_name_to_assign="cis_covid_vaccine_type",
-        reference_columns=["cis_covid_vaccine_type_other"],
-        map=vaccine_regex_map,
-        priority_map=vaccine_regex_priority_map,
-        disambiguation_conditions={"Pfizer/BioNTechDD": (F.col("cis_covid_date") < "2021-01-31")},
-        value_map={"Pfizer/BioNTechDD": "Pfizer/BioNTech"},
-        first_match_only=True,
-        overwrite_values=False,
-    )
     return df
 
 
@@ -1590,6 +1579,24 @@ def derive_additional_v1_2_columns(df: DataFrame) -> DataFrame:
         "work_health_care_patient_facing",
         direct_contact_column="work_direct_contact_patients_or_clients",
         health_care_column="work_health_care_area",
+    )
+    return df
+
+
+def derive_additional_v2_digital_columns(df: DataFrame) -> DataFrame:
+    """
+    Transformations specific to the v2 and digital survey responses.
+    """
+    df = assign_regex_from_map_additional_rules(
+        df=df,
+        column_name_to_assign="cis_covid_vaccine_type",
+        reference_columns=["cis_covid_vaccine_type_other"],
+        map=vaccine_regex_map,
+        priority_map=vaccine_regex_priority_map,
+        disambiguation_conditions={"Pfizer/BioNTechDD": (F.col("cis_covid_vaccine_date") < "2021-01-31")},
+        value_map={"Pfizer/BioNTechDD": "Pfizer/BioNTech"},
+        first_match_only=True,
+        overwrite_values=False,
     )
     return df
 
