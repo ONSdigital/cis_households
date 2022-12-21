@@ -70,6 +70,7 @@ def correct_date_ranges_union_dependent(
     columns_to_edit: List[str],
     participant_id_column: str,
     visit_date_column: str,
+    visit_id_column: str,
 ):
     """
     Correct datetime columns given a range looking across all rows
@@ -90,7 +91,7 @@ def correct_date_ranges_union_dependent(
         ).filter((F.col(f"{col}_ref") < F.col(visit_date_column)) | (F.col(f"{col}_ref").isNull()))
 
         joined_df = joined_df.withColumn("DIFF", F.datediff(F.col(visit_date_column), F.col(f"{col}_ref")))
-        window = Window.partitionBy(participant_id_column, visit_date_column, col).orderBy("DIFF")
+        window = Window.partitionBy(participant_id_column, visit_id_column, col).orderBy("DIFF")
         joined_df = joined_df.withColumn("ROW", F.row_number().over(window))
         joined_df = joined_df.filter(F.col("ROW") == 1)
 
