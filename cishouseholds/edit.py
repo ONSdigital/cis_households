@@ -2,6 +2,7 @@ import re
 from functools import reduce
 from itertools import chain
 from operator import add
+from operator import or_
 from typing import Any
 from typing import Dict
 from typing import List
@@ -11,46 +12,130 @@ from typing import Union
 
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
+from pyspark.sql import Window
 
 from cishouseholds.expressions import all_columns_null
 from cishouseholds.expressions import any_column_not_null
+from cishouseholds.expressions import any_column_null
+from cishouseholds.expressions import count_occurrence_in_row
 from cishouseholds.expressions import set_date_component
 from cishouseholds.expressions import sum_within_row
 
 
-def correct_date_ranges(
-    df: DataFrame, columns_to_edit: List[str], participant_id_column: str, visit_date_column: str, min_date: str
+def update_work_main_job_changed(
+    df: DataFrame,
+    column_name_to_update: str,
+    participant_id_column: str,
+    reference_columns: List[str],
 ):
     """
-    Correct datetime columns given a range
+    re-derive work main job changed to denote whether any of the work variables differ between rows.
+    """
+    if column_name_to_update not in df.columns:
+        df = df.withColumn(column_name_to_update, F.lit(None))
+
+    reference_columns = [c for c in reference_columns if c in df.columns]
+
+    window = Window.partitionBy(participant_id_column).orderBy(F.lit("A"))
+    x = lambda c: (~F.lag(c, 1).over(window).eqNullSafe(F.col(c))) & (F.col(c).isNotNull())  # noqa: E731
+
+    df = df.withColumn("ROW", F.row_number().over(window))
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            ~F.col(column_name_to_update).eqNullSafe("Yes"),
+            F.when(
+                ((F.col("ROW") == 1) & any_column_not_null(reference_columns))
+                | (reduce(or_, [x(c) for c in reference_columns])),
+                "Yes",
+            ).otherwise("No"),
+        ).otherwise("Yes"),
+    )
+    return df.drop("ROW")
+
+
+def normalise_think_had_covid_columns(df: DataFrame, symptom_columns_prefix: str):
+    """
+    Update symptom columns to No if any of the symptom columns are not null
+    """
+    symptom_columns = [col for col in df.columns if symptom_columns_prefix in col]
+    df = df.withColumn("CHECK", any_column_not_null(symptom_columns))
+    for col in symptom_columns:
+        df = df.withColumn(col, F.when((F.col(col).isNull()) & F.col("CHECK"), "No").otherwise(F.col(col)))
+    return df.drop("CHECK")
+
+
+def correct_date_ranges_union_dependent(
+    df: DataFrame,
+    columns_to_edit: List[str],
+    participant_id_column: str,
+    visit_date_column: str,
+    visit_id_column: str,
+):
+    """
+    Correct datetime columns given a range looking across all rows
     """
     for col in columns_to_edit:
+        df = df.withColumn("MONTH", F.month(df[col])).withColumn("DAY", F.dayofmonth(df[col]))
         date_ref = (
             df.withColumn(col, F.when(F.col(col) <= F.col(visit_date_column), F.col(col)))
-            .select(participant_id_column, col)
-            .filter(F.col(col).isNotNull())
-            .withColumnRenamed(col, f"{col}_ref")
-            .withColumnRenamed(participant_id_column, "IDREF")
+            .select(participant_id_column, col, "MONTH", "DAY")
+            .filter((~any_column_null([col, "MONTH", "DAY"])))
             .distinct()
         )
+
         joined_df = df.join(
-            date_ref,
-            (F.month(df[col]) == F.month(date_ref[f"{col}_ref"]))
-            & (F.dayofmonth(df[col]) == F.dayofmonth(date_ref[f"{col}_ref"]))
-            & (df[participant_id_column] == date_ref["IDREF"]),
+            date_ref.withColumnRenamed(col, f"{col}_ref"),
+            [participant_id_column, "MONTH", "DAY"],
             how="left",
-        ).drop("IDREF")
+        ).filter((F.col(f"{col}_ref") < F.col(visit_date_column)) | (F.col(f"{col}_ref").isNull()))
+
+        joined_df = joined_df.withColumn("DIFF", F.datediff(F.col(visit_date_column), F.col(f"{col}_ref")))
+        window = Window.partitionBy(participant_id_column, visit_id_column, col).orderBy("DIFF")
+        joined_df = joined_df.withColumn("ROW", F.row_number().over(window))
+        joined_df = joined_df.filter(F.col("ROW") == 1)
 
         joined_df = joined_df.withColumn(
             col,
             F.to_timestamp(
                 F.when(
+                    (F.col(col) > F.col(visit_date_column))
+                    & (F.col(col).isNotNull())
+                    & ((F.col(f"{col}_ref") <= F.col(visit_date_column)))
+                    & (F.col(f"{col}_ref").isNotNull()),
+                    F.col(f"{col}_ref"),
+                ).otherwise(F.col(col))
+            ),
+        ).drop(f"{col}_ref")
+    return joined_df.drop("MONTH", "DAY", "DIFF", "ROW")
+
+
+def remove_incorrect_dates(df: DataFrame, columns_to_edit: List[str], visit_date_column: str, min_date: str):
+    """
+    removes out of range dates
+    """
+    for col in columns_to_edit:
+        df = df.withColumn(col, F.when((F.col(col) < F.col(visit_date_column)) & (F.col(col) > min_date), F.col(col)))
+    return df
+
+
+def correct_date_ranges(
+    df: DataFrame,
+    columns_to_edit: List[str],
+    visit_date_column: str,
+    min_date: str,
+    min_date_dict: dict = {},
+):
+    """
+    Correct datetime columns given a range
+    """
+    for col in columns_to_edit:
+        df = df.withColumn(
+            col,
+            F.to_timestamp(
+                F.when(
                     (F.col(col) > F.col(visit_date_column)) & (F.col(col).isNotNull()),
                     F.when(F.add_months(col, -1) <= F.col(visit_date_column), F.add_months(col, -1))
-                    .when(
-                        (F.col(f"{col}_ref") <= F.col(visit_date_column)) & (F.col(f"{col}_ref").isNotNull()),
-                        F.col(f"{col}_ref"),
-                    )
                     .when(
                         (F.year(col) - 1 >= 2020) & (F.add_months(col, -12) <= F.col(visit_date_column)),
                         F.add_months(col, -12),
@@ -62,21 +147,27 @@ def correct_date_ranges(
                     .when(
                         (F.month(col) >= 8) & (set_date_component(col, "year", 2019) <= F.col(visit_date_column)),
                         set_date_component(col, "year", 2019),
-                    ),
+                    )
+                    .otherwise(F.col(col)),
                 )
                 .when(
-                    (F.col(col) < min_date) & (F.col(col).isNotNull()),
+                    (F.col(col) < (min_date_dict.get(col, min_date))) & (F.col(col).isNotNull()),
                     F.when(
                         set_date_component(col, "year", F.year(visit_date_column)) <= F.col(visit_date_column),
                         set_date_component(col, "year", F.year(visit_date_column)),
                     )
-                    .when(F.add_months(col, -1) <= F.col(visit_date_column), F.add_months(col, -1))
-                    .when((F.year(col) > 2019), set_date_component(col, "year", F.year(visit_date_column) - 1)),
+                    .when(
+                        (F.month(col) >= 8) & (set_date_component(col, "year", 2019) <= F.col(visit_date_column)),
+                        set_date_component(col, "year", 2019),
+                    )
+                    .when(F.add_months(col, 1) <= F.col(visit_date_column), F.add_months(col, 1))
+                    .when((F.year(col) > 2019), set_date_component(col, "year", F.year(visit_date_column) - 1))
+                    .otherwise(F.col(col)),
                 )
                 .otherwise(F.col(col))
             ),
-        ).drop(f"{col}_ref")
-    return joined_df
+        )
+    return df
 
 
 def clean_job_description_string(df: DataFrame, column_name_to_assign: str):
@@ -158,7 +249,9 @@ def update_column_in_time_window(
     return df
 
 
-def update_to_value_if_any_not_null(df: DataFrame, column_name_to_assign: str, value_to_assign: str, column_list: list):
+def update_to_value_if_any_not_null(
+    df: DataFrame, column_name_to_assign: str, true_false_values: list, column_list: list
+):
     """Edit existing column to `value_to_assign` when a value is present in any of the listed columns.
 
     Parameters
@@ -167,14 +260,14 @@ def update_to_value_if_any_not_null(df: DataFrame, column_name_to_assign: str, v
         The input DataFrame to process
     column_name_to_assign
         The name of the existing column
-    value_to_assign
-        The value to assign
+    true_false_values
+        True and false values to be assigned
     column_list
         A list of columns to check if any of them do not have null values
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.when(any_column_not_null(column_list), value_to_assign).otherwise(F.col(column_name_to_assign)),
+        F.when(any_column_not_null(column_list), true_false_values[0]).otherwise(true_false_values[1]),
     )
     return df
 
@@ -399,18 +492,31 @@ def update_face_covering_outside_of_home(
     return df
 
 
-def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: str, count_reference_column: str):
+def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: str):
     """
-    Update value to no if symptoms are ongoing
+    Update value to no if count of original 12 symptoms is 0 otherwise set to Yes
 
     Parameters
     ----------
     df
     column_name_to_update
-    count_reference_column
     """
+    original_symptoms = [
+        "think_have_covid_symptom_fever",
+        "think_have_covid_symptom_muscle_ache",
+        "think_have_covid_symptom_fatigue",
+        "think_have_covid_symptom_sore_throat",
+        "think_have_covid_symptom_cough",
+        "think_have_covid_symptom_shortness_of_breath",
+        "think_have_covid_symptom_headache",
+        "think_have_covid_symptom_nausea_or_vomiting",
+        "think_have_covid_symptom_abdominal_pain",
+        "think_have_covid_symptom_diarrhoea",
+        "think_have_covid_symptom_loss_of_taste",
+        "think_have_covid_symptom_loss_of_smell",
+    ]
     df = df.withColumn(
-        column_name_to_update, F.when(F.col(count_reference_column) > 0, "Yes").otherwise(F.col(column_name_to_update))
+        column_name_to_update, F.when(count_occurrence_in_row(original_symptoms, "Yes") > 0, "Yes").otherwise("No")
     )
     return df
 
@@ -549,6 +655,30 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str = 
                 ).otherwise(F.col(column_to_edit)),
             )
 
+        for barcode_column, correct_col in zip(
+            ["swab_sample_barcode_user_entered", "blood_sample_barcode_user_entered"],
+            ["swab_sample_barcode_correct", "blood_sample_barcode_correct"],
+        ):
+            if all(col in df.columns for col in [f"{barcode_column}_{id_column}_old_value", correct_col]):
+                df = df.withColumn(
+                    correct_col,
+                    F.when(
+                        (F.col(f"{barcode_column}_{id_column}_old_value").isNull())
+                        & (F.col(f"{barcode_column}_{id_column}_new_value").isNotNull()),
+                        "No",
+                    )
+                    .when(
+                        (F.col(f"{barcode_column}_{id_column}_old_value").isNotNull())
+                        & (F.col(f"{barcode_column}_{id_column}_new_value").isNull()),
+                        "Yes",
+                    )
+                    .when(
+                        (F.col(f"{barcode_column}_{id_column}_old_value").isNotNull())
+                        & (F.col(f"{barcode_column}_{id_column}_new_value").isNotNull()),
+                        "No",
+                    )
+                    .otherwise(F.col(correct_col)),
+                )
         drop_list.extend(
             [
                 *[f"{col}_{id_column}_old_value" for col in columns_to_edit],
@@ -760,7 +890,6 @@ def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> Dat
         for column_name in columns_list:
             if column_name in df.columns:
                 df = df.withColumn(column_name, F.to_timestamp(F.col(column_name), format=format))
-
     return df
 
 
@@ -1073,7 +1202,8 @@ def replace_sample_barcode(
 ):
     """
     Creates _sample_barcode_combined fields and uses agreed business logic to utilise either the user entered
-    barcode (_sample_barcode_user_entered) or the pre-assigned barcode (_sample_barcode)
+    barcode (_sample_barcode_user_entered), the pre-assigned barcode (_sample_barcode) or the quality team
+    corrected barcode (_barcode_corrected)
 
     Parameters
     ----------
@@ -1093,11 +1223,20 @@ def replace_sample_barcode(
                 F.when(
                     (
                         (F.col("survey_response_dataset_major_version") == 3)
+                        & ~(F.col(f"{test_type}_barcode_corrected").isNull())
+                        & (F.col("participant_completion_window_start_datetime") >= "2022-11-01 00:00:00")
+                    ),
+                    F.col(f"{test_type}_barcode_corrected"),
+                )
+                .when(
+                    (
+                        (F.col("survey_response_dataset_major_version") == 3)
                         & (F.col(f"{test_type}_sample_barcode_correct") == "No")
                         & ~(F.col(f"{test_type}_sample_barcode_user_entered").isNull())
                     ),
                     F.col(f"{test_type}_sample_barcode_user_entered"),
-                ).otherwise(F.col(f"{test_type}_sample_barcode")),
+                )
+                .otherwise(F.col(f"{test_type}_sample_barcode")),
             )
     return df
 
@@ -1126,3 +1265,32 @@ def conditionally_replace_columns(
     for to_replace, replace_with in column_to_column_map.items():
         df = df.withColumn(to_replace, F.when(condition, F.col(replace_with)).otherwise(F.col(to_replace)))
     return df
+
+
+def conditionally_set_column_values(df: DataFrame, condition: Any, cols_to_set_to_value: Any):
+    """
+    Creates a temporary column based on the input condition, then reads in the cols_to_set_to_value dict
+    building a column list for each col_prefix in the dict.
+
+    For each col in in the column list where the temporary condition_col is true, replace the value for that column
+    based on the cols_to_set_to_value dictionary entry.
+
+    Return the df while dropping the temporary column.
+
+    Parameters
+    ----------
+    df : DataFrame
+    condition : Any
+        conditional expression used to build the temporary column in the format of
+        ((F.col("column_name").isNotNull()) & (F.col("column_name") >= 10))
+    cols_to_set_to_value : Dict[str, Any]
+        Due to the list comprehension this can accept either a specific column name or a prefix
+        eg think_had_covid_date or think_had_covid_
+    """
+    df = df.withColumn("condition_col", condition).cache()
+    for col_prefix in cols_to_set_to_value:
+        value = cols_to_set_to_value.get(col_prefix)
+        columns = [col for col in df.columns if col_prefix in col]
+        for col in columns:
+            df = df.withColumn(col, F.when(F.col("condition_col"), value).otherwise(F.col(col)))
+    return df.drop("condition_col")

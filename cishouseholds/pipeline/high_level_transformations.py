@@ -2,6 +2,7 @@
 from datetime import datetime
 from functools import reduce
 from operator import and_
+from operator import or_
 from typing import List
 
 import pyspark.sql.functions as F
@@ -44,7 +45,6 @@ from cishouseholds.derive import assign_true_if_any
 from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import assign_visit_order
 from cishouseholds.derive import assign_work_health_care
-from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_social_column
 from cishouseholds.derive import assign_work_status_group
 from cishouseholds.derive import clean_postcode
@@ -91,11 +91,15 @@ from cishouseholds.edit import clean_barcode_simple
 from cishouseholds.edit import clean_job_description_string
 from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import conditionally_replace_columns
+from cishouseholds.edit import conditionally_set_column_values
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import correct_date_ranges
+from cishouseholds.edit import correct_date_ranges_union_dependent
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
 from cishouseholds.edit import map_column_values_to_null
+from cishouseholds.edit import normalise_think_had_covid_columns
+from cishouseholds.edit import remove_incorrect_dates
 from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import replace_sample_barcode
 from cishouseholds.edit import survey_edit_auto_complete
@@ -110,6 +114,7 @@ from cishouseholds.edit import update_think_have_covid_symptom_any
 from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.edit import update_value_if_multiple_and_ref_in_list
 from cishouseholds.edit import update_work_facing_now_column
+from cishouseholds.edit import update_work_main_job_changed
 from cishouseholds.expressions import any_column_equal_value
 from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import array_contains_any
@@ -132,6 +137,7 @@ from cishouseholds.impute import impute_outside_uk_columns
 from cishouseholds.impute import impute_visit_datetime
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.merge import null_safe_join
+from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.healthcare_regex import healthcare_classification
@@ -308,6 +314,21 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
     df = assign_taken_column(df=df, column_name_to_assign="blood_taken", reference_column="blood_sample_barcode")
 
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 0)
+    invalid_covid_date = "2019-11-17"
+    v0_condition = (
+        (F.col("survey_response_dataset_major_version") == 0)
+        & (F.col("think_had_covid_onset_date").isNotNull())
+        & (F.col("think_had_covid_onset_date") < invalid_covid_date)
+    )
+    v0_value_map = {
+        "other_covid_infection_test": None,
+        "other_covid_infection_test_results": None,
+    }
+    df = conditionally_set_column_values(
+        df=df,
+        condition=v0_condition,
+        cols_to_set_to_value=v0_value_map,
+    )
     df = df.withColumn("sex", F.coalesce(F.col("sex"), F.col("gender"))).drop("gender")
 
     df = map_column_values_to_null(
@@ -418,22 +439,6 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
     }
     df = apply_value_map_multiple_columns(df, v1_column_editing_map)
 
-    df = df.withColumn("work_main_job_changed", F.lit(None).cast("string"))
-    fill_forward_columns = [
-        "work_main_job_title",
-        "work_main_job_role",
-        "work_sector",
-        "work_sector_other",
-        "work_health_care_area",
-        "work_nursing_or_residential_care_home",
-        "work_direct_contact_patients_or_clients",
-    ]
-    df = update_to_value_if_any_not_null(
-        df=df,
-        column_name_to_assign="work_main_job_changed",
-        value_to_assign="Yes",
-        column_list=fill_forward_columns,
-    )
     df = df.drop(
         "cis_covid_vaccine_date",
         "cis_covid_vaccine_number_of_doses",
@@ -621,6 +626,7 @@ def pre_generic_digital_transformations(df: DataFrame) -> DataFrame:
         max_datetime_column_name="participant_completion_window_end_datetime",
         reference_datetime_column_name="swab_sample_received_consolidation_point_datetime",
         default_timestamp="12:00:00",
+        final_fallback_column="participant_completion_window_start_datetime",
     )
     df = update_column_in_time_window(
         df,
@@ -1047,6 +1053,10 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
     )
     df = clean_barcode_simple(df, "swab_sample_barcode_user_entered")
     df = clean_barcode_simple(df, "blood_sample_barcode_user_entered")
+
+    df = clean_barcode_simple(df, "swab_barcode_corrected")
+    df = clean_barcode_simple(df, "blood_barcode_corrected")
+
     df = map_options_to_bool_columns(
         df,
         "currently_smokes_or_vapes_description",
@@ -1166,8 +1176,15 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "Another vaccine please specify": "Other / specify",
         "I don't know the type": "Don't know type",
         "Or Another vaccine please specify": "Other / specify",  # changed from "Other /specify"
-        "I do not know the type": "Don't know Type",
-        "Or do you not know which one you had?": "Don't know Type",
+        "I do not know the type": "Don't know type",
+        "Or do you not know which one you had?": "Don't know type",
+        "I don&#39;t know the type": "Don't know type",
+        "I don&amp;#39;t know the type": "Don't know type",
+        "I dont know the type": "Don't know type",
+        "Janssen / Johnson&amp;Johnson": "Janssen/Johnson&Johnson",
+        "Janssen / Johnson&amp;amp;Johnson": "Janssen/Johnson&Johnson",
+        "Oxford also known as AstraZeneca": "Oxford/AstraZeneca",
+        "Pfizer also known as BioNTech": "Pfizer/BioNTech",
     }
     column_editing_map = {
         "participant_survey_status": {"Complete": "Completed"},
@@ -1191,7 +1208,10 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Other employment sector please specify": "Other occupation sector",
         },
         "work_health_care_area": {
+            "Secondary care for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services?": "Other",
             "Primary care - for example in a GP or dentist": "Primary",
+            "Yes, in primary care, e.g. GP, dentist": "Primary",
             "Secondary care - for example in a hospital": "Secondary",
             "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
         },
@@ -1309,6 +1329,10 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Submitted": "Completed",
         },
     )
+    df = df.withColumn(
+        "ethnicity",
+        F.when(F.col("ethnicity").isNull(), "Any other ethnic group").otherwise(F.col("ethnicity")),
+    )
     df = derive_had_symptom_last_7days_from_digital(
         df,
         "think_have_covid_symptom_any",
@@ -1382,9 +1406,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
 
     df = assign_raw_copies(df, [column for column in original_copy_list if column in df.columns], "original")
 
-    df = assign_unique_id_column(
-        df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id", "visit_datetime"]
-    )
+    df = assign_unique_id_column(df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id"])
     df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
     date_cols_to_correct = [
         col
@@ -1393,15 +1415,26 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
             "last_suspected_covid_contact_date",
             "think_had_covid_onset_date",
             "think_have_covid_onset_date",
-            "been_outside_uk",
+            "been_outside_uk_latest_date",
             "other_covid_infection_test_first_positive_date",
             "other_covid_infection_test_last_negative_date",
-            "other_antibody_test_first_positive",
+            "other_antibody_test_first_positive_date",
             "other_antibody_test_last_negative_date",
         ]
         if col in df.columns
     ]
-    df = correct_date_ranges(df, date_cols_to_correct, "participant_id", "visit_datetime", "2019-01-01")
+    date_cols_min_date_dict = {
+        "think_had_covid_onset_date": "2019-11-17",
+        "think_had_contacted_nhs": "2019-11-17",
+        "think_had_covid_admitted_to_hopsital": "2019-11-17",
+    }
+    df = assign_raw_copies(df, date_cols_to_correct, "pdc")
+    df = correct_date_ranges(df, date_cols_to_correct, "visit_datetime", "2019-08-01", date_cols_min_date_dict)
+    df = df.withColumn(
+        "any_date_corrected",
+        F.when(reduce(or_, [~F.col(col).eqNullSafe(F.col(f"{col}_pdc")) for col in date_cols_to_correct]), "Yes"),
+    )
+    df = df.drop(*[f"{col}_pdc" for col in date_cols_to_correct])
     df = assign_column_regex_match(
         df,
         "bad_email",
@@ -1409,8 +1442,54 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i",
     )
     df = clean_postcode(df, "postcode")
+    df = normalise_think_had_covid_columns(df, "think_had_covid_symptom")
+    invalid_covid_date = "2019-11-17"
+    conditions = {
+        "think_had_covid_onset_date": (
+            (F.col("think_had_covid_onset_date").isNotNull())
+            & (F.col("think_had_covid_onset_date") < invalid_covid_date)
+        ),
+        "last_suspected_covid_contact_date": (
+            (F.col("last_suspected_covid_contact_date").isNotNull())
+            & (F.col("last_suspected_covid_contact_date") < invalid_covid_date)
+        ),
+        "last_covid_contact_date": (
+            (F.col("last_covid_contact_date").isNotNull()) & (F.col("last_covid_contact_date") < invalid_covid_date)
+        ),
+    }
+    col_value_maps = {
+        "think_had_covid_onset_date": {
+            "think_had_covid_onset_date": None,
+            "think_had_covid_contacted_nhs": None,
+            "think_had_covid_admitted_to_hospital": None,
+            "think_had_covid_symptom_": None,
+        },
+        "last_suspected_covid_contact_date": {
+            "last_suspected_covid_": None,
+            "think_had_covid_onset_date": None,
+            "contact_suspected_positive_covid_last_28_days": "No",
+        },
+        "last_covid_contact_date": {
+            "last_covid_": None,
+            "think_had_covid_onset_date": None,
+            "contact_known_positive_covid_last_28_days": "No",
+        },
+    }
+    for condition in list(conditions.keys()):
+        df = conditionally_set_column_values(
+            df=df,
+            condition=conditions.get(condition),
+            cols_to_set_to_value=col_value_maps.get(condition),
+        )
+
+    # This is outside of the above function as it erroneously captured every think_had_covid col including raw
+    df = df.withColumn(
+        "think_had_covid",
+        F.when(conditions.get("think_had_covid_onset_date"), "No").otherwise(F.col("think_had_covid")),
+    )
 
     consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
+
     if all(col in df.columns for col in consent_cols):
         df = assign_consent_code(df, "consent_summary", reference_columns=consent_cols)
 
@@ -1436,6 +1515,47 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = clean_job_description_string(df, "work_main_job_title")
     df = clean_job_description_string(df, "work_main_job_role")
     df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
+    work_columns = [
+        "work_main_job_title",
+        "work_main_job_role",
+        "work_sector",
+        "work_sector_other",
+        "work_health_care_area",
+        "work_nursing_or_residential_care_home",
+        "work_direct_contact_patients_or_clients",
+    ]
+    df = update_work_main_job_changed(
+        df,
+        column_name_to_update="work_main_job_changed",
+        participant_id_column="participant_id",
+        reference_columns=work_columns,
+    )
+
+    contact_date = ["last_suspected_covid_contact_date", "last_covid_contact_date"]
+
+    covid_contact = ["contact_suspected_positive_covid_last_28_days", "contact_known_positive_covid_last_28_days"]
+
+    contact_type = ["last_suspected_covid_contact_type", "last_covid_contact_type"]
+
+    for l in range(len(contact_date)):
+        # correct covid contact based on date
+        df = update_to_value_if_any_not_null(
+            df=df,
+            column_name_to_assign=covid_contact[l - 1],
+            true_false_values=["Yes", "No"],
+            column_list=[contact_date[l - 1]],
+        )
+
+        # correct covid type based on date
+        df = update_to_value_if_any_not_null(
+            df=df,
+            column_name_to_assign=contact_type[l - 1],
+            true_false_values=[F.col(contact_type[l - 1]), None],
+            column_list=[
+                contact_date[l - 1],
+            ],
+        )
+
     return df
 
 
@@ -1604,7 +1724,7 @@ def create_ever_variable_columns(df: DataFrame) -> DataFrame:
         column_name_to_assign="ever_care_home_worker",
         groupby_column="participant_id",
         reference_columns=["work_social_care", "work_nursing_or_residential_care_home"],
-        count_if=["Yes, care/residential home, resident-facing"],
+        count_if=["Yes", "Yes, care/residential home, resident-facing"],
         true_false_values=["Yes", "No"],
     )
     df = assign_column_given_proportion(
@@ -1739,6 +1859,8 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
             "Secondary care (e.g. hospital)": "Secondary",
             "Other Healthcare (e.g. mental health)": "Other",
             "Other healthcare (e.g. mental health)": "Other",
+            "Participant Would Not/Could Not Answer": None,
+            "Primary care for example in a GP or dentist": "Primary",
         },
         "face_covering_outside_of_home": {
             "My face is already covered for other reasons (e.g. religious or cultural reasons)": "My face is already covered",
@@ -1953,7 +2075,6 @@ def symptom_column_transformations(df):
     df = update_think_have_covid_symptom_any(
         df=df,
         column_name_to_update="think_have_covid_symptom_any",
-        count_reference_column="think_have_covid_symptom_count",
     )
 
     df = assign_true_if_any(
@@ -2046,7 +2167,32 @@ def union_dependent_cleaning(df):
             "Swab / blood process to distressing": "Swab/blood process too distressing",
             "Do NOT Reinstate": "Do not reinstate",
         },
+        "work_health_care_area": {
+            "Secondary care for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services?": "Other",
+            "Primary care - for example in a GP or dentist": "Primary",
+            "Yes, in primary care, e.g. GP, dentist": "Primary",
+            "Secondary care - for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
+        },
     }
+    date_cols_to_correct = [
+        col
+        for col in [
+            "last_covid_contact_date",
+            "last_suspected_covid_contact_date",
+            "think_had_covid_onset_date",
+            "think_have_covid_onset_date",
+            "been_outside_uk_latest_date",
+            "other_covid_infection_test_first_positive_date",
+            "other_covid_infection_test_last_negative_date",
+            "other_antibody_test_first_positive_date",
+            "other_antibody_test_last_negative_date",
+        ]
+        if col in df.columns
+    ]
+    df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime")
+    df = remove_incorrect_dates(df, date_cols_to_correct, "visit_datetime", "2019-08-01")
 
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
@@ -2125,23 +2271,12 @@ def union_dependent_derivations(df):
 
     df = replace_sample_barcode(df=df)
 
-    df = conditionally_replace_columns(
-        df,
-        {
-            "swab_sample_barcode": "swab_sample_barcode_combined",
-            "blood_sample_barcode": "blood_sample_barcode_combined",
-        },
-        (F.col("survey_response_dataset_major_version") == 3),
-    )
-
     df = assign_column_from_mapped_list_key(
         df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnicity_map
     )
     df = assign_ethnicity_white(
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
     )
-
-    df = assign_work_person_facing_now(df, "work_person_facing_now", "work_person_facing_now", "work_social_care")
 
     df = create_ever_variable_columns(df)
 
@@ -2175,24 +2310,7 @@ def union_dependent_derivations(df):
         df,
         reference_column="days_since_enrolment",
         column_name_to_assign="visit_number",
-        map={
-            0: 0,
-            4: 1,
-            11: 2,
-            18: 3,
-            25: 4,
-            43: 5,
-            71: 6,
-            99: 7,
-            127: 8,
-            155: 9,
-            183: 10,
-            211: 11,
-            239: 12,
-            267: 13,
-            295: 14,
-            323: 15,
-        },
+        map={**{1: 7, 2: 14, 3: 21, 4: 28}, **{((i + 3) * 28): i for i in range(2, 200)}},
     )
     df = assign_any_symptoms_around_visit(
         df=df,
@@ -2560,7 +2678,7 @@ def fill_forwards_travel_column(df):
     df = update_to_value_if_any_not_null(
         df=df,
         column_name_to_assign="been_outside_uk",
-        value_to_assign="Yes",
+        true_false_values=["Yes", "No"],
         column_list=["been_outside_uk_last_country", "been_outside_uk_last_return_date"],
     )
     df = fill_forward_from_last_change(
@@ -2781,7 +2899,6 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         "work_patient_facing_clean",
         "work_social_care",
         "works_health_care",
-        "regex_derived_job_sector",
     )
 
 
@@ -3196,3 +3313,78 @@ def reclassify_work_variables(
         )
 
     return _df5
+
+
+def get_differences(base_df: DataFrame, compare_df: DataFrame, unique_id_column: str, diff_sample_size: int = 10):
+    window = Window.partitionBy("column_name").orderBy("column_name")
+    cols_to_check = [col for col in base_df.columns if col in compare_df.columns and col != unique_id_column]
+
+    for col in cols_to_check:
+        base_df = base_df.withColumnRenamed(col, f"{col}_ref")
+
+    df = base_df.join(compare_df, on=unique_id_column, how="left")
+
+    diffs_df = df.select(
+        [
+            F.when(F.col(col).eqNullSafe(F.col(f"{col}_ref")), None).otherwise(F.col(unique_id_column)).alias(col)
+            for col in cols_to_check
+        ]
+    )
+    diffs_df = diffs_df.select(
+        F.explode(
+            F.array(
+                [
+                    F.struct(F.lit(col).alias("column_name"), F.col(col).alias(unique_id_column))
+                    for col in diffs_df.columns
+                ]
+            )
+        ).alias("kvs")
+    )
+    diffs_df = (
+        diffs_df.select("kvs.column_name", f"kvs.{unique_id_column}")
+        .filter(F.col(unique_id_column).isNotNull())
+        .withColumn("ROW", F.row_number().over(window))
+        .filter(F.col("ROW") < diff_sample_size)
+    ).drop("ROW")
+
+    counts_df = df.select(
+        *[
+            F.sum(F.when(F.col(c).eqNullSafe(F.col(f"{c}_ref")), 0).otherwise(1)).alias(c).cast("integer")
+            for c in cols_to_check
+        ],
+        *[
+            F.sum(F.when((~F.col(c).eqNullSafe(F.col(f"{c}_ref"))) & (F.col(f"{c}_ref").isNotNull()), 1).otherwise(0))
+            .alias(f"{c}_non_improved")
+            .cast("integer")
+            for c in cols_to_check
+        ],
+    )
+    counts_df = counts_df.select(
+        F.explode(
+            F.array(
+                [
+                    F.struct(
+                        F.lit(col).alias("column_name"),
+                        F.col(col).alias("difference_count"),
+                        F.col(f"{col}_non_improved").alias("difference_count_non_improved"),
+                    )
+                    for col in [c for c in counts_df.columns if not c.endswith("_non_improved")]
+                ]
+            )
+        ).alias("kvs")
+    )
+    counts_df = counts_df.select("kvs.column_name", "kvs.difference_count", "kvs.difference_count_non_improved")
+    return counts_df, diffs_df
+
+
+def fix_timestamps(df: DataFrame):
+    """
+    Fix any issues with dates saved in timestamp format drifting ahead by n hours.
+    """
+    date_cols = [c for c in df.columns if "date" in c and "datetime" not in c]
+    d_types_list = [list(d) for d in df.select(*date_cols).dtypes]
+    d_types = {d[0]: d[1] for d in d_types_list}
+    for col in date_cols:
+        if d_types[col] == "timestamp":
+            df = df.withColumn(col, F.date_format(F.col(col), "yyyy-MM-dd"))
+    return df

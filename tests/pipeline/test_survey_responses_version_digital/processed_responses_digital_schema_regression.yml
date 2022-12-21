@@ -448,6 +448,14 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: swab_barcode_corrected
+  nullable: true
+  type: string
+- metadata: {}
+  name: blood_barcode_corrected
+  nullable: true
+  type: string
+- metadata: {}
   name: allocated_swab_barcode_not_used_reason
   nullable: true
   type: string
@@ -1121,7 +1129,7 @@ fields:
   type: string
 - metadata: {}
   name: contact_known_positive_covid_last_28_days
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: last_covid_contact_date
@@ -1133,7 +1141,7 @@ fields:
   type: string
 - metadata: {}
   name: contact_suspected_positive_covid_last_28_days
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: last_suspected_covid_contact_date
@@ -1213,7 +1221,7 @@ fields:
   type: string
 - metadata: {}
   name: work_main_job_changed
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: cis_covid_vaccine_type
@@ -1350,6 +1358,10 @@ fields:
 - metadata: {}
   name: unique_participant_response_id
   nullable: false
+  type: string
+- metadata: {}
+  name: any_date_corrected
+  nullable: true
   type: string
 - metadata: {}
   name: bad_email

@@ -40,10 +40,6 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: email_address
-  nullable: true
-  type: string
-- metadata: {}
   name: sex
   nullable: true
   type: string
@@ -57,6 +53,10 @@ fields:
   type: string
 - metadata: {}
   name: ethnicity_other
+  nullable: true
+  type: string
+- metadata: {}
+  name: original_invite_cohort
   nullable: true
   type: string
 - metadata: {}
@@ -79,6 +79,10 @@ fields:
   name: existing_participant_digital_opt_in_datetime
   nullable: true
   type: timestamp
+- metadata: {}
+  name: nhs_share_opt_out_date
+  nullable: true
+  type: string
 - metadata: {}
   name: household_invited_to_digital
   nullable: true

@@ -74,9 +74,14 @@ def get_nims_data_description(_, participant_ids=[]):
     }
 
 
-def get_swab_testkit_data_description(_):
+def get_glasgow_lab_data_description(_, swab_barcodes):
     return lambda: {  # noqa: E731
-        "Sample": _("random.custom_code", mask="ONS########", digit="#"),
+        "Sample": _(
+            "discrete_distribution",
+            population=swab_barcodes,
+            weights=[1 / len(swab_barcodes)] * len(swab_barcodes),
+            null_prop=0.2,
+        ),
         "Result": _("choice", items=["Negative", "Positive", "Void"]),
         "Date Tested": _("datetime.formatted_datetime", fmt="%Y-%m-%d %H:%M:%S UTC", start=2018, end=2022),
         "Lab ID": _("choice", items=["GLS"]),
@@ -93,10 +98,35 @@ def get_swab_testkit_data_description(_):
         "CH4-Target": _("choice", items=["S gene", None]),
         "CH4-Result": _("choice", items=["Positive", "Rejected"]),
         "CH4-Cq": _("float_number", start=15.0, end=30.0, precision=12),
+        "voidReason": _("choice", items=[None, "reason 1", "reason 2", "reason 3", "reason 4"]),
     }
 
 
-def get_participant_extract_data_description(_, blood_barcodes, swab_barcodes):
+def get_blood_validation_schema(_, blood_barcodes):
+    return lambda: {  # noqa: E731
+        "Serum Source ID": _(
+            "discrete_distribution",
+            population=blood_barcodes,
+            weights=[1 / len(blood_barcodes)] * len(blood_barcodes),
+            null_prop=0.2,
+        ),
+        "Blood Sample Type": _("choice", items=["Capillary"]),
+        "Plate Barcode": _("random.custom_code", mask="ONS_######&&", digit="#", char="&"),
+        "Well ID": _("random.custom_code", mask="&##", digit="#", char="&"),
+        "Detection": _("choice", items=["DETECTED", "Failed", "NOT detected"]),
+        "Monoclonal quantitation (Colourimetric)": _("float_number", start=0.0, end=78000.0, precision=4),
+        "Monoclonal bounded quantitation (Colourimetric)": _("text.sentence"),
+        "Monoclonal undiluted quantitation (Colourimetric)": _(
+            "custom_random.random_integer", lower=0, upper=360000, null_percent=0
+        ),
+        "Date ELISA Result record created": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2019, end=2024),
+        "Date Samples Arrayed Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2019, end=2024),
+        "Date Samples Received Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2019, end=2024),
+        "Voyager Date Created": _("choice", items=[None]),
+    }
+
+
+def get_participant_extract_digital_data_description(_, blood_barcodes, swab_barcodes):
     return lambda: {  # noqa: E731
         "ons_household_id": _("random.custom_code", mask="############", digit="#"),
         "participant_survey_status": _("choice", items=["Active", "Complete", "Withdrawn"]),
@@ -128,7 +158,6 @@ def get_participant_extract_data_description(_, blood_barcodes, swab_barcodes):
         "middle_name": _("person.first_name"),
         "last_name": _("person.last_name"),
         "date_of_birth": _("datetime.formatted_datetime", start=1980, end=2021, fmt=digital_datetime_format),
-        "email_address": _("choice", items=[_("person.email", domains=["gsnail.ac.uk"]), None]),
         "sex": _("choice", items=["Female", "Male"]),
         "ethnic_group": _(
             "choice",
@@ -166,6 +195,7 @@ def get_participant_extract_data_description(_, blood_barcodes, swab_barcodes):
             ],
         ),
         "ethnicity_other": _("text.sentence"),
+        "original_invite_cohort": _("text.sentence"),
         "consent_contact_extra_research_yn": _("choice", items=yes_no_none_choice),
         "consent_use_of_surplus_blood_samples_yn": _("choice", items=yes_no_none_choice),
         "consent_blood_samples_if_positive_yn": _("choice", items=yes_no_none_choice),
@@ -182,6 +212,19 @@ def get_participant_extract_data_description(_, blood_barcodes, swab_barcodes):
             start=2020,
             end=2022,
             fmt=digital_datetime_format,
+        ),
+        "nhs_share_opt_out_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_date_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
         ),
         "household_invited_to_digital": _("choice", items=yes_no_none_choice),
         "household_digital_enrolment_invited_datetime": _(
@@ -1881,6 +1924,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "ethnicity": _(
             "choice",
             items=[
+                None,
                 "English| Welsh| Scottish| Northern Irish or British",
                 "Irish",
                 "Gypsy or Irish Traveller",
@@ -2175,6 +2219,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         ),
         "swab_sample_barcode_user_entered": _("random.custom_code", mask="ONS########", digit="#"),
         "blood_sample_barcode_user_entered": _("random.custom_code", mask="ONS########", digit="#"),
+        "swab_barcode_corrected": _("random.custom_code", mask="ONS########", digit="#"),
+        "blood_barcode_corrected": _("random.custom_code", mask="ONS########", digit="#"),
         "allocated_swab_barcode_not_used_reason": _(
             "text.sentence"
         ),  # Previously Swab_Barcode_Status_Error TODO Check not pick list

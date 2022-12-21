@@ -9,7 +9,7 @@ jobs:
   build_and_deploy_docs:
     concurrency: ci-${{ github.ref }}
     name: Build and deploy docs to Pages
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
     - uses: actions/checkout@v2

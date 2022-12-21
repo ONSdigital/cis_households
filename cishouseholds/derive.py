@@ -65,7 +65,8 @@ def assign_datetime_from_coalesced_columns_and_log_source(
     default_timestamp: str,
     min_datetime_offset_value: int = -2,
     max_datetime_offset_value: int = 0,
-    reference_datetime_days_offset_value: int = -2,
+    reference_datetime_days_offset_value: int = -4,
+    final_fallback_column: str = None,
 ):
 
     """
@@ -97,12 +98,15 @@ def assign_datetime_from_coalesced_columns_and_log_source(
         The number of days to positively offset the maximum datetime
     reference_datetime_days_offset_value
         The number of days to positively offset the reference datetime for use as source of final timestamp column
+    final_fallback_column
+        a final fallback column to use if all others are null
     """
     MIN_DATE_BOUND = F.col(min_datetime_column_name) + F.expr(f"INTERVAL {min_datetime_offset_value} DAYS")
     MAX_DATE_BOUND = F.col(max_datetime_column_name) + F.expr(f"INTERVAL {max_datetime_offset_value} DAYS")
     REF_DATE_OFFSET = F.col(reference_datetime_column_name) + F.expr(
         f"INTERVAL {reference_datetime_days_offset_value} DAYS"
     )
+
     coalesce_columns = [
         F.col(datetime_column) for datetime_column in [*primary_datetime_columns, *secondary_date_columns]
     ]
@@ -113,10 +117,16 @@ def assign_datetime_from_coalesced_columns_and_log_source(
     coalesce_columns = [*coalesce_columns, REF_DATE_OFFSET]
 
     column_names = primary_datetime_columns + secondary_date_columns + [reference_datetime_column_name]
+
+    if final_fallback_column is not None:
+        coalesce_columns.append(F.col(final_fallback_column))
+        column_names.append(final_fallback_column)
+
     source_columns = [
         F.when(column_object.isNotNull(), column_name)
         for column_object, column_name in zip(coalesce_columns, column_names)
     ]
+
     df = df.withColumn(source_reference_column_name, F.coalesce(*source_columns))
     df = df.withColumn(
         column_name_to_assign,
@@ -640,7 +650,7 @@ def assign_first_visit(df: DataFrame, column_name_to_assign: str, id_column: str
     visit_date_column
     """
     window = Window.partitionBy(id_column).orderBy(visit_date_column)
-    return df.withColumn(column_name_to_assign, F.first(visit_date_column).over(window))
+    return df.withColumn(column_name_to_assign, F.first(visit_date_column, ignorenulls=True).over(window))
 
 
 def assign_last_visit(
@@ -1004,6 +1014,7 @@ def assign_work_person_facing_now(
     column_name_to_assign: str,
     work_patient_facing_now_column: str,
     work_social_care_column: str,
+    age_at_visit_column: str,
 ) -> DataFrame:
     """
     Assign column for work patient facing depending on values of given input reference
@@ -1015,6 +1026,7 @@ def assign_work_person_facing_now(
     column_name_to_assign
     work_patient_facing_now_column
     work_social_care_column
+    age_at_visit_column
     """
     df = assign_column_from_mapped_list_key(
         df,
@@ -1040,6 +1052,12 @@ def assign_work_person_facing_now(
             F.col(work_patient_facing_now_column),
         )
         .otherwise(F.col(column_name_to_assign)),
+    )
+    df = assign_named_buckets(
+        df,
+        age_at_visit_column,
+        column_name_to_assign,
+        {0: "<=15y", 16: F.col(column_name_to_assign), 75: ">=75y"},
     )
     return df
 
