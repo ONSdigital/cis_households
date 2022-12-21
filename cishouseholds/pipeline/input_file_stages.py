@@ -2,7 +2,6 @@ from cishouseholds.pipeline.high_level_transformations import assign_has_been_co
 from cishouseholds.pipeline.high_level_transformations import clean_survey_responses_version_1
 from cishouseholds.pipeline.high_level_transformations import clean_survey_responses_version_2
 from cishouseholds.pipeline.high_level_transformations import derive_additional_v1_2_columns
-from cishouseholds.pipeline.high_level_transformations import derive_additional_v2_digital_columns
 from cishouseholds.pipeline.high_level_transformations import pre_generic_digital_transformations
 from cishouseholds.pipeline.high_level_transformations import transform_participant_extract_digital
 from cishouseholds.pipeline.high_level_transformations import transform_survey_responses_generic
@@ -37,7 +36,6 @@ cis_digital_parameters = {
         transform_survey_responses_generic,
         transform_survey_responses_version_digital_delta,
         assign_has_been_columns,
-        derive_additional_v2_digital_columns,
     ],
     "sep": "|",
     "cast_to_double_list": survey_response_cisd_cast_to_double,
@@ -57,7 +55,6 @@ survey_responses_v2_parameters = {
         derive_additional_v1_2_columns,
         transform_survey_responses_version_2_delta,
         assign_has_been_columns,
-        derive_additional_v2_digital_columns,
     ],
     "sep": "|",
     "cast_to_double_list": survey_response_cast_to_double,

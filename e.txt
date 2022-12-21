@@ -1,3 +1,0 @@
-WARNING: PIPELINE_CONFIG_LOCATION environment variable should be set to the config file path or passed to `run_from_config`. An empty dictionary will be used by default for this run.
-WARNING: MASTER_CONFIG_LOCATION environment variable should be set to the config file path or passed to `run_from_config`. An empty dictionary will be used by default for this run.
-C:\Users\lamots\AppData\Local\Temp\spark-class-launcher-output-6799.txt
