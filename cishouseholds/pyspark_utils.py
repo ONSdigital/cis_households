@@ -87,6 +87,7 @@ def get_or_create_spark_session() -> SparkSession:
     spark_session_options = session_options[session_size]
     spark_session = (
         SparkSession.builder.config("spark.executor.memory", spark_session_options["spark.executor.memory"])
+        # .config("spark.jars.packages", "com.crealytics:spark-excel_2.11:0.12.2")
         .config("spark.executor.cores", spark_session_options["spark.executor.cores"])
         .config("spark.dynamicAllocation.enabled", "true")
         .config("spark.dynamicAllocation.maxExecutors", spark_session_options["spark.dynamicAllocation.maxExecutors"])
