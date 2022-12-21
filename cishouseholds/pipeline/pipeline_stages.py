@@ -814,7 +814,6 @@ def geography_and_imputation_dependent_processing(
             schema="""
             lower_super_output_area_code_11 string,
             cis_rural_urban_classification string,
-            rural_urban_classification_11 string
         """,
         )
         .drop("rural_urban_classification_11")
