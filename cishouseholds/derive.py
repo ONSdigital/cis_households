@@ -37,6 +37,7 @@ def assign_regex_from_map_additional_rules(
     value_map: Optional[dict] = None,
     first_match_only: Optional[bool] = False,
     overwrite_values: Optional[bool] = False,
+    default_value: Optional[Any] = "Don't know",
 ):
     """
     Apply additional logic around the `assign_regex_from_map` function to allow for increased specificity/.
@@ -73,15 +74,21 @@ def assign_regex_from_map_additional_rules(
                         condition & (F.col("disambiguated_col").isNull()) & F.array_contains(temp_col, val), val
                     ).otherwise(F.col("disambiguated_col")),
                 )
-        df = df.withColumn(temp_col, F.coalesce(F.col("disambiguated_col"), F.col(temp_col).getItem(0)))
-
+        df = df.withColumn(
+            temp_col,
+            F.coalesce(
+                F.col("disambiguated_col"),
+                F.when(F.size(temp_col) == 1, F.col(temp_col).getItem(0)).otherwise(default_value),
+            ),
+        )
     if overwrite_values:
         df = df.withColumn(column_name_to_assign, F.col(temp_col))
     else:
         df = df.withColumn(column_name_to_assign, F.coalesce(F.col(column_name_to_assign), F.col(temp_col)))
     if value_map is not None:
         df = update_column_values_from_map(df, column_name_to_assign, value_map)
-    return df.drop(temp_col, "disambiguated_col")
+    df = df.drop(temp_col, "disambiguated_col")
+    return df
 
 
 def assign_regex_from_map(

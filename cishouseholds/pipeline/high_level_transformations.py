@@ -1577,6 +1577,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
             value_map={"Pfizer/BioNTechDD": "Pfizer/BioNTech"},
             first_match_only=True,
             overwrite_values=False,
+            default_value="Don't know type",
         )
     return df
 
