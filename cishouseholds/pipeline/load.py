@@ -89,6 +89,7 @@ def extract_from_table(table_name: str, break_lineage: bool = False, alternate_p
 
 
 def update_table(df: DataFrame, table_name, write_mode, archive=False):
+    df.cache()
     SurveyTableLengths.log_length(table_name, df.count())
     df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
     if archive:
