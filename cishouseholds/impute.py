@@ -316,10 +316,12 @@ def fill_forward_event(
         <= event_date_tolerance
     )
 
-    # loops until there are no rows left to normalise getting the first row where that satisfies the `apply_logic` condition
+    # optimise the filtered_df schema and cache to improve spark plan creation / runtime
     filtered_df = filtered_df.select(
         participant_id_column, visit_datetime_column, visit_id_column, *event_columns
     ).cache()
+
+    # loops until there are no rows left to normalise getting the first row where that satisfies the `apply_logic` condition
     i = 0
     while filtered_df.count() > 0:
         filtered_df = filtered_df.withColumn("LOGIC_APPLIED", apply_logic)
@@ -333,7 +335,6 @@ def fill_forward_event(
                 f"{event_indicator_column}_temp_lookup",
                 mode,
             )
-
         filtered_df = filtered_df.filter(~F.col("LOGIC_APPLIED"))
         i += 1
 
