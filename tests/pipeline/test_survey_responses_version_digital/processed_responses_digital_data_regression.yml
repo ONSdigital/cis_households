@@ -95,7 +95,7 @@
   consent_contact_extra_research_yn: null
   consent_nhs_data_share_yn: 'No'
   consent_use_of_surplus_blood_samples_yn: 'No'
-  contact_known_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   current_window_cadence: '15'
@@ -549,8 +549,8 @@
   consent_contact_extra_research_yn: 'Yes'
   consent_nhs_data_share_yn: 'Yes'
   consent_use_of_surplus_blood_samples_yn: null
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: Buckinghamshire
   current_window_cadence: '11'
   currently_smokes_or_vapes: null
@@ -1000,7 +1000,7 @@
   consent_nhs_data_share_yn: 'Yes'
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspected_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   current_window_cadence: '22'
   currently_smokes_or_vapes: 'No'
@@ -1894,7 +1894,7 @@
   consent_contact_extra_research_yn: 'Yes'
   consent_nhs_data_share_yn: null
   consent_use_of_surplus_blood_samples_yn: 'No'
-  contact_known_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'No'
   contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   current_window_cadence: '20'
@@ -1976,8 +1976,8 @@
   last_covid_contact_type_raw: null
   last_name: Waters
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: Outside your home
-  last_suspected_covid_contact_type_raw: Someone I do not live with
+  last_suspected_covid_contact_type: null
+  last_suspected_covid_contact_type_raw: null
   long_covid_symptoms: think_have_long_covid_symptom_nausea_or_vomiting;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_diarrhoea;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_low_mood;think_have_long_covid_symptom_memory_loss_or_confusion;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_runny_nose_or_sneezing
   middle_name: Isaac
   ons_household_id: '801375216695'
@@ -2350,8 +2350,8 @@
   consent_contact_extra_research_yn: 'No'
   consent_nhs_data_share_yn: null
   consent_use_of_surplus_blood_samples_yn: null
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: null
+  contact_known_positive_covid_last_28_days: 'Yes'
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: null
   current_window_cadence: '9'
   currently_smokes_or_vapes: 'No'
@@ -2806,7 +2806,7 @@
   consent_contact_extra_research_yn: null
   consent_nhs_data_share_yn: 'Yes'
   consent_use_of_surplus_blood_samples_yn: 'No'
-  contact_known_positive_covid_last_28_days: 'No'
+  contact_known_positive_covid_last_28_days: 'Yes'
   contact_suspected_positive_covid_last_28_days: 'Yes'
   county: Humberside
   current_window_cadence: '22'
@@ -3256,8 +3256,8 @@
   consent_contact_extra_research_yn: 'No'
   consent_nhs_data_share_yn: null
   consent_use_of_surplus_blood_samples_yn: 'Yes'
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: 'Yes'
+  contact_known_positive_covid_last_28_days: 'No'
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: null
   current_window_cadence: '2'
   currently_smokes_or_vapes: 'No'
@@ -3332,12 +3332,12 @@
   infant_age_months_8: 68.0
   language_preference: English
   last_covid_contact_date: null
-  last_covid_contact_type: Living in your own home
-  last_covid_contact_type_raw: Someone I live with
+  last_covid_contact_type: null
+  last_covid_contact_type_raw: null
   last_name: Brady
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: Someone you do not live with
-  last_suspected_covid_contact_type_raw: Someone you do not live with
+  last_suspected_covid_contact_type: null
+  last_suspected_covid_contact_type_raw: null
   long_covid_symptoms: think_have_long_covid_symptom_headache;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_memory_loss_or_confusion;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_noisy_breathing
   middle_name: Argentina
   ons_household_id: '225258329500'
@@ -3719,7 +3719,7 @@
   consent_nhs_data_share_yn: 'No'
   consent_use_of_surplus_blood_samples_yn: null
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspected_positive_covid_last_28_days: null
+  contact_suspected_positive_covid_last_28_days: 'Yes'
   county: North Yorkshire
   current_window_cadence: '20'
   currently_smokes_or_vapes: 'Yes'
@@ -4178,7 +4178,7 @@
   consent_nhs_data_share_yn: 'No'
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   contact_known_positive_covid_last_28_days: 'Yes'
-  contact_suspected_positive_covid_last_28_days: null
+  contact_suspected_positive_covid_last_28_days: 'No'
   county: Northamptonshire
   current_window_cadence: '19'
   currently_smokes_or_vapes: 'No'
@@ -4255,8 +4255,8 @@
   last_covid_contact_type_raw: Someone I live with
   last_name: Gross
   last_suspected_covid_contact_date: null
-  last_suspected_covid_contact_type: Someone you do not live with
-  last_suspected_covid_contact_type_raw: Someone you do not live with
+  last_suspected_covid_contact_type: null
+  last_suspected_covid_contact_type_raw: null
   long_covid_symptoms: think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_fatigue;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_cough;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_noisy_breathing
   middle_name: Clarence
   ons_household_id: '217846198988'

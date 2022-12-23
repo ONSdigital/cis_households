@@ -616,6 +616,7 @@ category_maps = {
             "survey_completed_datetime": 6,
             "survey_last_modified_datetime": 7,
             "swab_sample_received_consolidation_point_datetime": 8,
+            "participant_completion_window_start_datetime": 9,
         },
         "country_name_12": {"England": 0, "Wales": 1, "Northern Ireland": 2, "Scotland": 3},
         "local_authority_unity_authority_code": {

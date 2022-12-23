@@ -36,7 +36,6 @@ from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.impute import fill_forward_only_to_nulls
 from cishouseholds.impute import post_imputation_wrapper
 from cishouseholds.merge import left_join_keep_right
-from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
@@ -50,7 +49,6 @@ from cishouseholds.pipeline.high_level_transformations import derive_age_based_c
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import fill_forward_events_for_key_columns
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
-from cishouseholds.pipeline.high_level_transformations import fix_timestamps
 from cishouseholds.pipeline.high_level_transformations import get_differences
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
@@ -92,6 +90,8 @@ from dummy_data_generation.generate_data import generate_nims_table
 from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
+
+# from cishouseholds.pipeline.high_level_transformations import fix_timestamps
 
 pipeline_stages = {}
 
@@ -500,7 +500,8 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
     """
     df_list = [extract_from_table(table) for table in tables_to_process]
 
-    union_dataframes_to_hive(output_survey_table, df_list)
+    df = union_multiple_tables(df_list)
+    update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
 
@@ -940,8 +941,8 @@ def validate_survey_responses(
         .withColumn("run_id", F.lit(get_run_id()))
         .drop(validation_failure_flag_column)
     )
-    valid_survey_responses = fix_timestamps(valid_survey_responses)
-    invalid_survey_responses_table = fix_timestamps(erroneous_survey_responses)
+    # valid_survey_responses = fix_timestamps(valid_survey_responses)
+    # invalid_survey_responses_table = fix_timestamps(erroneous_survey_responses)
     update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
     update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
     update_table(valid_survey_responses, output_survey_table, write_mode="overwrite", archive=True)
