@@ -2191,7 +2191,7 @@ def union_dependent_cleaning(df):
         ]
         if col in df.columns
     ]
-    df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime")
+    df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime", "visit_id")
     df = remove_incorrect_dates(df, date_cols_to_correct, "visit_datetime", "2019-08-01")
 
     df = apply_value_map_multiple_columns(df, col_val_map)
@@ -2310,24 +2310,7 @@ def union_dependent_derivations(df):
         df,
         reference_column="days_since_enrolment",
         column_name_to_assign="visit_number",
-        map={
-            0: 0,
-            4: 1,
-            11: 2,
-            18: 3,
-            25: 4,
-            43: 5,
-            71: 6,
-            99: 7,
-            127: 8,
-            155: 9,
-            183: 10,
-            211: 11,
-            239: 12,
-            267: 13,
-            295: 14,
-            323: 15,
-        },
+        map={**{1: 7, 2: 14, 3: 21, 4: 28}, **{((i + 3) * 28): i for i in range(2, 200)}},
     )
     df = assign_any_symptoms_around_visit(
         df=df,
