@@ -36,7 +36,6 @@ from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.impute import fill_forward_only_to_nulls
 from cishouseholds.impute import post_imputation_wrapper
 from cishouseholds.merge import left_join_keep_right
-from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
@@ -501,7 +500,8 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
     """
     df_list = [extract_from_table(table) for table in tables_to_process]
 
-    union_dataframes_to_hive(output_survey_table, df_list)
+    df = union_multiple_tables(df_list)
+    update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
 
