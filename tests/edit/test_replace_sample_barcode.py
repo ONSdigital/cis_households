@@ -83,7 +83,7 @@ def test_replace_sample_barcode(spark_session):
                 None,
                 "B",
                 None,
-            ),  # iqvia corrected bu date before hard date of nov 1st
+            ),  # iqvia corrected
         ],
         schema="""
         id integer,
@@ -133,9 +133,9 @@ def test_replace_sample_barcode(spark_session):
                 None,
                 "B",
                 None,
-                "B",
+                "F",
                 None,
-            ),  # takes user entered as date prior to November 1st
+            ),
         ],
         schema="""
         id integer,
