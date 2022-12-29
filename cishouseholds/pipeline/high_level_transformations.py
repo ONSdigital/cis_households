@@ -69,7 +69,11 @@ from cishouseholds.derive import flag_records_for_not_working_rules_v1_a
 from cishouseholds.derive import flag_records_for_not_working_rules_v1_b
 from cishouseholds.derive import flag_records_for_not_working_rules_v2_a
 from cishouseholds.derive import flag_records_for_not_working_rules_v2_b
-from cishouseholds.derive import flag_records_for_retired_rules
+from cishouseholds.derive import flag_records_for_retired_rules_v0
+from cishouseholds.derive import flag_records_for_retired_rules_v1
+from cishouseholds.derive import flag_records_for_retired_rules_v2
+from cishouseholds.derive import flag_records_for_school_v0_rules
+from cishouseholds.derive import flag_records_for_school_v1_rules
 from cishouseholds.derive import flag_records_for_school_v2_rules
 from cishouseholds.derive import flag_records_for_self_employed_rules_v0
 from cishouseholds.derive import flag_records_for_self_employed_rules_v1_a
@@ -2767,6 +2771,37 @@ def nims_transformations(df: DataFrame) -> DataFrame:
     return df
 
 
+def blood_past_positive_transformations(df: DataFrame) -> DataFrame:
+    """Run required post-join transformations for blood_past_positive"""
+    df = df.withColumn("blood_past_positive_flag", F.when(F.col("blood_past_positive").isNull(), 0).otherwise(1))
+    return df
+
+
+def design_weights_lookup_transformations(df: DataFrame) -> DataFrame:
+    """Selects only required fields from the design_weight_lookup"""
+    design_weight_columns = ["scaled_design_weight_swab_non_adjusted", "scaled_design_weight_antibodies_non_adjusted"]
+    df = df.select(*design_weight_columns, "ons_household_id")
+    return df
+
+
+def replace_design_weights_transformations(df: DataFrame) -> DataFrame:
+    """Run required post-join transformations for replace_design_weights"""
+    df = df.withColumn(
+        "local_authority_unity_authority_code",
+        F.when(F.col("local_authority_unity_authority_code") == "E06000062", "E07000154")
+        .when(F.col("local_authority_unity_authority_code") == "E06000061", "E07000156")
+        .otherwise(F.col("local_authority_unity_authority_code")),
+    )
+    df = df.withColumn(
+        "region_code",
+        F.when(F.col("region_code") == "W92000004", "W99999999")
+        .when(F.col("region_code") == "S92000003", "S99999999")
+        .when(F.col("region_code") == "N92000002", "N99999999")
+        .otherwise(F.col("region_code")),
+    )
+    return df
+
+
 def derive_overall_vaccination(df: DataFrame) -> DataFrame:
     """Derive overall vaccination status from NIMS and CIS data."""
     return df
@@ -2923,7 +2958,9 @@ def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
     df = df.withColumn("self_employed_rules_v2_b", flag_records_for_self_employed_rules_v2_b())
 
     # Retired rules
-    df = df.withColumn("retired_rules_generic", flag_records_for_retired_rules())
+    df = df.withColumn("retired_rules_v0", flag_records_for_retired_rules_v0())
+    df = df.withColumn("retired_rules_v1", flag_records_for_retired_rules_v1())
+    df = df.withColumn("retired_rules_v2", flag_records_for_retired_rules_v2())
 
     # Not-working rules
     df = df.withColumn("not_working_rules_v0", flag_records_for_not_working_rules_v0())
@@ -3022,7 +3059,9 @@ def reclassify_work_variables(
     )
 
     # Rule_id: 4000, 4001, 4002
-    update_work_status_retired = retired_regex_hit | flag_records_for_retired_rules()
+    update_work_status_retired_v0 = retired_regex_hit | flag_records_for_retired_rules_v0()
+    update_work_status_retired_v1 = retired_regex_hit | flag_records_for_retired_rules_v1()
+    update_work_status_retired_v2 = retired_regex_hit | flag_records_for_retired_rules_v2()
 
     # Not-working
     not_working_regex_hit = (
@@ -3076,7 +3115,7 @@ def reclassify_work_variables(
 
     # Rule_id: 6000
     update_work_status_student_v0 = (
-        (school_regex_hit & flag_records_for_school_v2_rules())
+        (school_regex_hit & flag_records_for_school_v0_rules())
         | (university_regex_hit & flag_records_for_uni_v0_rules())
         | (college_regex_hit & flag_records_for_college_v0_rules())
         | (age_over_four & age_under_16)
@@ -3089,7 +3128,7 @@ def reclassify_work_variables(
 
     # Rule_id: 6002
     update_work_status_student_v1_a = (
-        (school_regex_hit & flag_records_for_school_v2_rules())
+        (school_regex_hit & flag_records_for_school_v1_rules())
         | (university_regex_hit & flag_records_for_uni_v1_rules())
         | (college_regex_hit & flag_records_for_college_v1_rules())
         | (age_over_four & age_under_16)
@@ -3192,13 +3231,13 @@ def reclassify_work_variables(
         .withColumn(
             "work_status_v2",
             F.when(
-                update_work_status_student_v2_b, F.lit("Attending college or FE (including if temporarily absent)")
+                update_work_status_student_v2_c, F.lit("Attending university (including if temporarily absent)")
             ).otherwise(F.col("work_status_v2")),
         )
         .withColumn(
             "work_status_v2",
             F.when(
-                update_work_status_student_v2_c, F.lit("Attending university (including if temporarily absent)")
+                update_work_status_student_v2_b, F.lit("Attending college or FE (including if temporarily absent)")
             ).otherwise(F.col("work_status_v2")),
         )
         .withColumn(
@@ -3210,16 +3249,16 @@ def reclassify_work_variables(
         .withColumn(
             "work_status_v0",
             F.when(
-                update_work_status_retired, F.lit("Not working (unemployed, retired, long-term sick etc.)")
+                update_work_status_retired_v0, F.lit("Not working (unemployed, retired, long-term sick etc.)")
             ).otherwise(F.col("work_status_v0")),
         )
         .withColumn(
             "work_status_v1",
-            F.when(update_work_status_retired, F.lit("Retired")).otherwise(F.col("work_status_v1")),
+            F.when(update_work_status_retired_v1, F.lit("Retired")).otherwise(F.col("work_status_v1")),
         )
         .withColumn(
             "work_status_v2",
-            F.when(update_work_status_retired, F.lit("Retired")).otherwise(F.col("work_status_v2")),
+            F.when(update_work_status_retired_v2, F.lit("Retired")).otherwise(F.col("work_status_v2")),
         )
     )
 
