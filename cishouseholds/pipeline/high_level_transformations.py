@@ -2195,7 +2195,7 @@ def union_dependent_cleaning(df):
         ]
         if col in df.columns
     ]
-    df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime")
+    df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime", "visit_id")
     df = remove_incorrect_dates(df, date_cols_to_correct, "visit_datetime", "2019-08-01")
 
     df = apply_value_map_multiple_columns(df, col_val_map)
@@ -2314,24 +2314,7 @@ def union_dependent_derivations(df):
         df,
         reference_column="days_since_enrolment",
         column_name_to_assign="visit_number",
-        map={
-            0: 0,
-            4: 1,
-            11: 2,
-            18: 3,
-            25: 4,
-            43: 5,
-            71: 6,
-            99: 7,
-            127: 8,
-            155: 9,
-            183: 10,
-            211: 11,
-            239: 12,
-            267: 13,
-            295: 14,
-            323: 15,
-        },
+        map={**{1: 7, 2: 14, 3: 21, 4: 28}, **{((i + 3) * 28): i for i in range(2, 200)}},
     )
     df = assign_any_symptoms_around_visit(
         df=df,
@@ -2785,6 +2768,37 @@ def nims_transformations(df: DataFrame) -> DataFrame:
     df = assign_column_to_date_string(df, "nims_vaccine_dose_2_date", reference_column="nims_vaccine_dose_2_datetime")
 
     # TODO: Derive nims_linkage_status, nims_vaccine_classification, nims_vaccine_dose_1_time, nims_vaccine_dose_2_time
+    return df
+
+
+def blood_past_positive_transformations(df: DataFrame) -> DataFrame:
+    """Run required post-join transformations for blood_past_positive"""
+    df = df.withColumn("blood_past_positive_flag", F.when(F.col("blood_past_positive").isNull(), 0).otherwise(1))
+    return df
+
+
+def design_weights_lookup_transformations(df: DataFrame) -> DataFrame:
+    """Selects only required fields from the design_weight_lookup"""
+    design_weight_columns = ["scaled_design_weight_swab_non_adjusted", "scaled_design_weight_antibodies_non_adjusted"]
+    df = df.select(*design_weight_columns, "ons_household_id")
+    return df
+
+
+def replace_design_weights_transformations(df: DataFrame) -> DataFrame:
+    """Run required post-join transformations for replace_design_weights"""
+    df = df.withColumn(
+        "local_authority_unity_authority_code",
+        F.when(F.col("local_authority_unity_authority_code") == "E06000062", "E07000154")
+        .when(F.col("local_authority_unity_authority_code") == "E06000061", "E07000156")
+        .otherwise(F.col("local_authority_unity_authority_code")),
+    )
+    df = df.withColumn(
+        "region_code",
+        F.when(F.col("region_code") == "W92000004", "W99999999")
+        .when(F.col("region_code") == "S92000003", "S99999999")
+        .when(F.col("region_code") == "N92000002", "N99999999")
+        .otherwise(F.col("region_code")),
+    )
     return df
 
 

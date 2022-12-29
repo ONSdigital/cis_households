@@ -30,7 +30,11 @@ fields:
 - metadata: {}
   name: antibody_test_undiluted_result_value
   nullable: true
-  type: float
+  type: string
+- metadata: {}
+  name: antibody_test_result_recorded_date
+  nullable: true
+  type: timestamp
 - metadata: {}
   name: blood_sample_arrayed_date
   nullable: true

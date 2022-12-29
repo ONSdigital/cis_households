@@ -119,6 +119,7 @@ def get_blood_validation_schema(_, blood_barcodes):
         "Monoclonal undiluted quantitation (Colourimetric)": _(
             "custom_random.random_integer", lower=0, upper=360000, null_percent=0
         ),
+        "Date ELISA Result record created": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2019, end=2024),
         "Date Samples Arrayed Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2019, end=2024),
         "Date Samples Received Oxford": _("datetime.formatted_datetime", fmt="%Y-%m-%d", start=2019, end=2024),
         "Voyager Date Created": _("choice", items=[None]),
