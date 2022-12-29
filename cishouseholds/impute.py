@@ -329,7 +329,7 @@ def fill_forward_event(
         if not use_hdfs:
             completed_sections.append(temp_df.filter(F.col("LOGIC_APPLIED") & (F.col("ROW") == 1)).drop("ROW"))
         else:
-            mode = "append" if i > 1 else "overwrite"
+            mode = "overwrite" if i == 0 else "append"
             update_table(
                 temp_df.filter(F.col("LOGIC_APPLIED") & (F.col("ROW") == 1)).drop("ROW"),
                 f"{event_indicator_column}_temp_lookup",
