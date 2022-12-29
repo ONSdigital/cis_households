@@ -5,7 +5,7 @@ import subprocess
 from pyspark.sql import SparkSession
 
 
-def _perform(command, shell: bool = False, str_output: bool = False, ignore_error: bool = False):
+def _perform(command, shell: bool = False, str_output: bool = False, ignore_error: bool = False, full_out=False):
     """
     Run shell command in subprocess returning exit code or full string output.
     _perform() will build the command that will be put into HDFS.
@@ -25,6 +25,8 @@ def _perform(command, shell: bool = False, str_output: bool = False, ignore_erro
     if str_output:
         if stderr and not ignore_error:
             raise Exception(stderr.decode("UTF-8").strip("\n"))
+        if full_out:
+            return stdout
         return stdout.decode("UTF-8").strip("\n")
 
     return process.returncode == 0
@@ -201,12 +203,12 @@ def write_string_to_file(content: bytes, path: str):
     return _write_string_to_file.communicate(content)
 
 
-def read_file_to_string(path: str):
+def read_file_to_string(path: str, full_out: bool = False):
     """
     Reads file into a string
     """
     command = ["hadoop", "fs", "-cat", path]
-    return _perform(command, str_output=True)
+    return _perform(command, str_output=True, full_out=full_out)
 
 
 def hdfs_stat_size(path: str):
