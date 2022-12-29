@@ -62,9 +62,9 @@ def assign_datetime_from_coalesced_columns_and_log_source(
     reference_datetime_column_name: str,
     source_reference_column_name: str,
     default_timestamp: str,
-    min_datetime_offset_value: int = -4,
+    min_datetime_offset_value: int = -2,
     max_datetime_offset_value: int = 0,
-    reference_datetime_days_offset_value: int = -2,
+    reference_datetime_days_offset_value: int = -4,
     final_fallback_column: str = None,
 ):
 
@@ -1976,7 +1976,12 @@ def flag_records_for_work_location_student() -> F.Column:
             ~(
                 F.col("work_status_v2").isin(
                     "Employed and currently working",
+                    "Employed and currently not working",
                     "Self-employed and currently working",
+                    "Self-employed and currently not working",
+                    "Looking for paid work and able to start",
+                    "Not working and not looking for work",
+                    "Retired",
                 )
             )
         )
@@ -1984,7 +1989,12 @@ def flag_records_for_work_location_student() -> F.Column:
             ~(
                 F.col("work_status_v1").isin(
                     "Employed and currently working",
+                    "Employed and currently not working",
                     "Self-employed and currently working",
+                    "Self-employed and currently not working",
+                    "Looking for paid work and able to start",
+                    "Not working and not looking for work",
+                    "Retired",
                 )
             )
         )
