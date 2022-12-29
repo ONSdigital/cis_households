@@ -2767,6 +2767,37 @@ def nims_transformations(df: DataFrame) -> DataFrame:
     return df
 
 
+def blood_past_positive_transformations(df: DataFrame) -> DataFrame:
+    """Run required post-join transformations for blood_past_positive"""
+    df = df.withColumn("blood_past_positive_flag", F.when(F.col("blood_past_positive").isNull(), 0).otherwise(1))
+    return df
+
+
+def design_weights_lookup_transformations(df: DataFrame) -> DataFrame:
+    """Selects only required fields from the design_weight_lookup"""
+    design_weight_columns = ["scaled_design_weight_swab_non_adjusted", "scaled_design_weight_antibodies_non_adjusted"]
+    df = df.select(*design_weight_columns, "ons_household_id")
+    return df
+
+
+def replace_design_weights_transformations(df: DataFrame) -> DataFrame:
+    """Run required post-join transformations for replace_design_weights"""
+    df = df.withColumn(
+        "local_authority_unity_authority_code",
+        F.when(F.col("local_authority_unity_authority_code") == "E06000062", "E07000154")
+        .when(F.col("local_authority_unity_authority_code") == "E06000061", "E07000156")
+        .otherwise(F.col("local_authority_unity_authority_code")),
+    )
+    df = df.withColumn(
+        "region_code",
+        F.when(F.col("region_code") == "W92000004", "W99999999")
+        .when(F.col("region_code") == "S92000003", "S99999999")
+        .when(F.col("region_code") == "N92000002", "N99999999")
+        .otherwise(F.col("region_code")),
+    )
+    return df
+
+
 def derive_overall_vaccination(df: DataFrame) -> DataFrame:
     """Derive overall vaccination status from NIMS and CIS data."""
     return df
