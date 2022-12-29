@@ -90,23 +90,22 @@ def test_flag_records_for_work_location_student(spark_session):
     """Test flag_records_for_work_location_student function correctly flags the records"""
 
     test_cases = [
-        (16, "Employed", "Employed and currently working", "Employed and currently working", False, 0),
-        (15, "Student", "5y and older in full-time education", "4-5y and older at school/home-school", True, 0),
+        (16, "Employed", "Employed and currently working", "Employed and currently working", False),
+        (15, "Student", None, "4-5y and older at school/home-school", True),
         (
             19,
             "Furloughed (temporarily not working)",
             "Employed and currently not working",
             "Employed and currently not working",
             False,
-            0,
         ),
-        (24, "Employed", "Employed and currently working", "Employed and currently working", False, 0),
-        (65, "Retired", "Retired", "Retired", False, 0),
+        (24, "Employed", "Employed and currently working", "Employed and currently working", False),
+        (65, "Retired", "Retired", "Retired", False),
     ]
 
     expected_df = spark_session.createDataFrame(
         test_cases,
-        schema="age_at_visit int, work_status_v0 string, work_status_v1 string, work_status_v2 string, actual_flag boolean, survey_response_major_dataset_version int",
+        schema="age_at_visit int, work_status_v0 string, work_status_v1 string, work_status_v2 string, actual_flag boolean",
     )
 
     actual_df = expected_df.drop("actual_flag").withColumn("actual_flag", flag_records_for_work_location_student())
