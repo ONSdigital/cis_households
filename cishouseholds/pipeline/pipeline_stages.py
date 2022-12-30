@@ -560,7 +560,6 @@ def join_lookup_table(
     df = left_join_keep_right(df, lookup_df, join_on_columns)
     df = union_multiple_tables([df, unjoinable_df])
 
-    df = extract_from_table(input_survey_table)
     for transformation in post_join_transformations:
         df = transformations_dict[transformation](df)
 
