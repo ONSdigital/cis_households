@@ -89,7 +89,7 @@ def extract_from_table(table_name: str, break_lineage: bool = False, alternate_p
 
 
 def update_table(df: DataFrame, table_name, write_mode, archive=False):
-    if "survey_resposes" in table_name:
+    if table_name in list(SurveyTableLengths.table_lengths.keys()):
         df.cache()
         SurveyTableLengths.log_length(table_name, df.count())
     df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
