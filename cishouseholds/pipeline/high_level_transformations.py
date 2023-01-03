@@ -1561,14 +1561,18 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     vaccine_cols = []
     df.cache()
     if "cis_covid_vaccine_date" in df.columns and "cis_covid_vaccine_type_other" in df.columns:
-        vaccine_cols.append(("cis_covid_vaccine_date", "cis_covid_vaccine_type_other"))
+        vaccine_cols.append(("cis_covid_vaccine_type", "cis_covid_vaccine_date", "cis_covid_vaccine_type_other"))
 
     for i in range(1, 7):
         vaccine_date_col = f"cis_covid_vaccine_date_{i}"
         vaccine_type_col = f"cis_covid_vaccine_type_other_{i}"
+        if vaccine_date_col in df.columns and vaccine_type_col in df.columns:
+            vaccine_cols.append((f"cis_covid_vaccine_type_{i}", vaccine_date_col, vaccine_type_col))
+
+    for column_name_to_assign, vaccine_date_col, vaccine_type_col in vaccine_cols:
         df = assign_regex_from_map_additional_rules(
             df=df,
-            column_name_to_assign=f"cis_covid_vaccine_type_{i}",
+            column_name_to_assign=column_name_to_assign,
             reference_columns=[vaccine_type_col],
             map=vaccine_regex_map,
             priority_map=vaccine_regex_priority_map,
