@@ -1870,8 +1870,8 @@
   cis_covid_vaccine_type_1_raw: Sinopharm
   cis_covid_vaccine_type_2: Moderna
   cis_covid_vaccine_type_2_raw: Moderna
-  cis_covid_vaccine_type_3: null
-  cis_covid_vaccine_type_3_raw: null
+  cis_covid_vaccine_type_3: Don't know type
+  cis_covid_vaccine_type_3_raw: Don't know type
   cis_covid_vaccine_type_4: Don't know type
   cis_covid_vaccine_type_4_raw: Don't know type
   cis_covid_vaccine_type_5: Janssen/Johnson&Johnson
@@ -2775,10 +2775,10 @@
   cis_covid_vaccine_number_of_doses_raw: null
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: Don't know type
-  cis_covid_vaccine_type_1: null
-  cis_covid_vaccine_type_1_raw: null
-  cis_covid_vaccine_type_2: null
-  cis_covid_vaccine_type_2_raw: null
+  cis_covid_vaccine_type_1: Don't know type
+  cis_covid_vaccine_type_1_raw: Don't know type
+  cis_covid_vaccine_type_2: Don't know type
+  cis_covid_vaccine_type_2_raw: Don't know type
   cis_covid_vaccine_type_3: Valneva
   cis_covid_vaccine_type_3_raw: Valneva
   cis_covid_vaccine_type_4: Don't know type
@@ -3226,8 +3226,8 @@
   cis_covid_vaccine_number_of_doses_raw: 4 doses
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: Sputnik
-  cis_covid_vaccine_type_1: null
-  cis_covid_vaccine_type_1_raw: null
+  cis_covid_vaccine_type_1: Don't know type
+  cis_covid_vaccine_type_1_raw: Don't know type
   cis_covid_vaccine_type_2: Novavax
   cis_covid_vaccine_type_2_raw: Novavax
   cis_covid_vaccine_type_3: Sputnik
@@ -4146,18 +4146,18 @@
   cis_covid_vaccine_number_of_doses_raw: null
   cis_covid_vaccine_received: null
   cis_covid_vaccine_type: From a research study/trial
-  cis_covid_vaccine_type_1: null
-  cis_covid_vaccine_type_1_raw: null
+  cis_covid_vaccine_type_1: Don't know type
+  cis_covid_vaccine_type_1_raw: Don't know type
   cis_covid_vaccine_type_2: Janssen/Johnson&Johnson
   cis_covid_vaccine_type_2_raw: Janssen / Johnson&Johnson
   cis_covid_vaccine_type_3: Pfizer/BioNTech
   cis_covid_vaccine_type_3_raw: Pfizer / BioNTech
   cis_covid_vaccine_type_4: From a research study/trial
   cis_covid_vaccine_type_4_raw: From a research study/trial
-  cis_covid_vaccine_type_5: null
-  cis_covid_vaccine_type_5_raw: null
-  cis_covid_vaccine_type_6: null
-  cis_covid_vaccine_type_6_raw: null
+  cis_covid_vaccine_type_5: Don't know type
+  cis_covid_vaccine_type_5_raw: Don't know type
+  cis_covid_vaccine_type_6: Don't know type
+  cis_covid_vaccine_type_6_raw: Don't know type
   cis_covid_vaccine_type_other: Houston, we have a problem.
   cis_covid_vaccine_type_other_1: Those who refuse to learn from history are condemned
     to repeat it.

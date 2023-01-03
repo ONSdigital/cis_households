@@ -333,7 +333,7 @@
   cis_covid_vaccine_number_of_doses_raw: 3 or more
   cis_covid_vaccine_offered: 'No'
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vaccine_type: null
+  cis_covid_vaccine_type: Don't know type
   cis_covid_vaccine_type_1: Oxford/AstraZeneca
   cis_covid_vaccine_type_2: Pfizer/BioNTech
   cis_covid_vaccine_type_3: Moderna
