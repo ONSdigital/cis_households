@@ -19,9 +19,9 @@ def load_test_cases():
     # if you want to test on individual records in the test-cases.csv file, then you can apply a filter on row_id below
     # in both expected & input data eg: query("record_type=='expected' and row_id==3")
     row_id = 1
-    expected_data = test_data.query(f"record_type=='expected' and row_id==24").drop(columns=["record_type"])
+    expected_data = test_data.query(f"record_type=='expected' and row_id==12").drop(columns=["record_type"])
 
-    input_data = test_data.query(f"record_type=='input' and row_id==24").drop(
+    input_data = test_data.query(f"record_type=='input' and row_id==12").drop(
         columns=["record_type"] + [col for col in test_data.columns if "_hit_" in col]
     )
 
