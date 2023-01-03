@@ -36,7 +36,6 @@ from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.impute import fill_forward_only_to_nulls
 from cishouseholds.impute import post_imputation_wrapper
 from cishouseholds.merge import left_join_keep_right
-from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
@@ -45,15 +44,18 @@ from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.high_level_transformations import add_pattern_matching_flags
+from cishouseholds.pipeline.high_level_transformations import blood_past_positive_transformations
 from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.high_level_transformations import derive_age_based_columns
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
+from cishouseholds.pipeline.high_level_transformations import design_weights_lookup_transformations
 from cishouseholds.pipeline.high_level_transformations import fill_forward_events_for_key_columns
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import get_differences
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
 from cishouseholds.pipeline.high_level_transformations import reclassify_work_variables
+from cishouseholds.pipeline.high_level_transformations import replace_design_weights_transformations
 from cishouseholds.pipeline.high_level_transformations import transform_cis_soc_data
 from cishouseholds.pipeline.high_level_transformations import transform_from_lookups
 from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
@@ -501,7 +503,8 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
     """
     df_list = [extract_from_table(table) for table in tables_to_process]
 
-    union_dataframes_to_hive(output_survey_table, df_list)
+    df = union_multiple_tables(df_list)
+    update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
 
@@ -512,6 +515,9 @@ def join_lookup_table(
     lookup_table_name: str,
     unjoinable_values: Dict[str, Union[str, int]] = {},
     join_on_columns: List[str] = ["work_main_job_title", "work_main_job_role"],
+    lookup_transformations: List[str] = [],
+    pre_join_transformations: List[str] = [],
+    post_join_transformations: List[str] = [],
 ):
     """
     Filters input_survey_table into an unjoinable_df, where all join_on_columns are null, and and applies any
@@ -528,9 +534,23 @@ def join_lookup_table(
         dictionary containing {column_name: value_to_assign} pairs to be added to unjoinable_data
     join_on_column: list
         list of columns to join on, defaults to ["work_main_job_title", "work_main_job_role"]
+    transformations: list
+        list of transformation functions to be run on the dataframe once the lookup has been joined
     """
+    transformations_dict = {
+        "nims": nims_transformations,
+        "blood_past_positive": blood_past_positive_transformations,
+        "design_weights_lookup": design_weights_lookup_transformations,
+        "replace_design_weights": replace_design_weights_transformations,
+    }
+
     lookup_df = extract_from_table(lookup_table_name)
+    for transformation in lookup_transformations:
+        lookup_df = transformations_dict[transformation](lookup_df)
+
     df = extract_from_table(input_survey_table)
+    for transformation in pre_join_transformations:
+        df = transformations_dict[transformation](df)
 
     unjoinable_df = df.filter(all_columns_null(join_on_columns))
     for col, val in unjoinable_values.items():
@@ -538,8 +558,12 @@ def join_lookup_table(
 
     df = df.filter(any_column_not_null(join_on_columns))
     df = left_join_keep_right(df, lookup_df, join_on_columns)
-
     df = union_multiple_tables([df, unjoinable_df])
+
+    df = extract_from_table(input_survey_table)
+    for transformation in post_join_transformations:
+        df = transformations_dict[transformation](df)
+
     update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
