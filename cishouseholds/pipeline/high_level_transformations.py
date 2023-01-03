@@ -2314,7 +2314,7 @@ def union_dependent_derivations(df):
         df,
         reference_column="days_since_enrolment",
         column_name_to_assign="visit_number",
-        map={**{1: 7, 2: 14, 3: 21, 4: 28}, **{((i + 3) * 28): i for i in range(2, 200)}},
+        map={**{0: 1, 14: 2, 21: 3, 28: 4}, **{i * 28: (i + 3) for i in range(2, 200)}},
     )
     df = assign_any_symptoms_around_visit(
         df=df,
