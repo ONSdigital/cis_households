@@ -21,6 +21,7 @@ from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.expressions import any_column_matches_regex
 from cishouseholds.expressions import any_column_not_null
+from cishouseholds.expressions import any_column_null
 from cishouseholds.merge import null_safe_join
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
@@ -1953,43 +1954,12 @@ def flag_records_for_work_location_null() -> F.Column:
             "Not working (unemployed, retired, long-term sick etc.)",
             "Student",
         )
-        | ~(
-            F.col("work_status_v1").isin(
-                "Employed and currently working",
-                "Self-employed and currently working",
-            )
-        )
-        | ~(
-            F.col("work_status_v2").isin(
-                "Employed and currently working",
-                "Self-employed and currently working",
-            )
-        )
     )
 
 
 def flag_records_for_work_location_student() -> F.Column:
     """Flag records for application of "Work location" rules for students. Rule_id: 7000"""
-    return (
-        F.col("work_status_v0").isin("Student")
-        | (
-            ~(
-                F.col("work_status_v2").isin(
-                    "Employed and currently working",
-                    "Self-employed and currently working",
-                )
-            )
-        )
-        | (
-            ~(
-                F.col("work_status_v1").isin(
-                    "Employed and currently working",
-                    "Self-employed and currently working",
-                )
-            )
-        )
-        | (F.col("age_at_visit") < F.lit(16))
-    )
+    return F.col("work_status_v0").isin("Student") | (F.col("age_at_visit") < F.lit(16))
 
 
 def flag_records_for_work_from_home_rules() -> F.Column:
@@ -2008,181 +1978,105 @@ def flag_records_for_work_from_home_rules() -> F.Column:
 
 def flag_records_for_furlough_rules_v0() -> F.Column:
     """Flag records for application of "Furlough Rules V0" rules. Rule_id: 2000"""
-    return (
-        F.col("work_status_v0").isin(
-            "Employed",
-            "Self-employed",
-            "Not working (unemployed, retired, long-term sick etc.)",
-        )
-        & F.col("survey_response_dataset_major_version").isin(0)
+    return F.col("work_status_v0").isin(
+        "Employed",
+        "Self-employed",
+        "Not working (unemployed, retired, long-term sick etc.)",
     )
 
 
 def flag_records_for_furlough_rules_v1_a() -> F.Column:
     """Flag records for application of "Furlough Rules V1-a" rules. Rule_id: 2001"""
-    return (
-        F.col("work_status_v1").isin(
-            "Employed and currently working",
-            "Looking for paid work and able to start",
-            "Not working and not looking for work",
-        )
-        & F.col("survey_response_dataset_major_version").isin(1)
+    return F.col("work_status_v1").isin(
+        "Employed and currently working",
+        "Looking for paid work and able to start",
+        "Not working and not looking for work",
     )
 
 
 def flag_records_for_furlough_rules_v1_b() -> F.Column:
     """Flag records for application of "Furlough Rules V1-b" rules. Rule_id: 2002"""
-    return F.col("work_status_v1").isin("Self-employed and currently working") & F.col(
-        "survey_response_dataset_major_version"
-    ).isin(1)
+    return F.col("work_status_v1").isin("Self-employed and currently working")
 
 
 def flag_records_for_furlough_rules_v2_a() -> F.Column:
     """Flag records for application of "Furlough Rules V2-a" rules. Rule_id: 2003"""
-    return (
-        F.col("work_status_v2").isin(
-            "Employed and currently working",
-            "Looking for paid work and able to start",
-            "Not working and not looking for work",
-        )
-        & F.col("survey_response_dataset_major_version").isin(2)
+    return F.col("work_status_v2").isin(
+        "Employed and currently working",
+        "Looking for paid work and able to start",
+        "Not working and not looking for work",
     )
 
 
 def flag_records_for_furlough_rules_v2_b() -> F.Column:
     """Flag records for application of "Furlough Rules V2-b" rules. Rule_id: 2004"""
-    return F.col("work_status_v2").isin("Self-employed and currently working") & F.col(
-        "survey_response_dataset_major_version"
-    ).isin(2)
+    return F.col("work_status_v2").isin("Self-employed and currently working")
 
 
 def flag_records_for_self_employed_rules_v0() -> F.Column:
     """Flag records for application of "Self-employed Rules V0" rules. Rule_id: 3000"""
-    return (F.col("work_status_v0").isNull() | F.col("work_status_v0").isin("Employed")) & F.col(
-        "survey_response_dataset_major_version"
-    ).isin(0)
+    return F.col("work_status_v0").isNull() | F.col("work_status_v0").isin("Employed")
 
 
 def flag_records_for_self_employed_rules_v1_a() -> F.Column:
     """Flag records for application of "Self-employed Rules V1-a" rules. Rule_id: 3001"""
-    return F.col("work_status_v1").isin("Employed and currently working") & F.col(
-        "survey_response_dataset_major_version"
-    ).isin(1)
+    return F.col("work_status_v1").isin("Employed and currently working")
 
 
 def flag_records_for_self_employed_rules_v1_b() -> F.Column:
     """Flag records for application of "Self-employed Rules V1-b" rules. Rule_id: 3002"""
-    return F.col("work_status_v1").isin("Employed and currently not working") & F.col(
-        "survey_response_dataset_major_version"
-    ).isin(1)
+    return F.col("work_status_v1").isin("Employed and currently not working")
 
 
 def flag_records_for_self_employed_rules_v2_a() -> F.Column:
     """Flag records for application of "Self-employed Rules V2-a" rules. Rule_id: 3003"""
-    return F.col("work_status_v2").isin("Employed and currently working") & F.col(
-        "survey_response_dataset_major_version"
-    ).isin(2)
+    return F.col("work_status_v2").isin("Employed and currently working")
 
 
 def flag_records_for_self_employed_rules_v2_b() -> F.Column:
     """Flag records for application of "Self-employed Rules V2-b" rules. Rule_id: 3004"""
-    return F.col("work_status_v2").isin("Employed and currently not working") & F.col(
-        "survey_response_dataset_major_version"
-    ).isin(2)
+    return F.col("work_status_v2").isin("Employed and currently not working")
 
 
-def flag_records_for_retired_rules_v0() -> F.Column:  # SPLIT OUT INTO SEPARATE RULES FOR V0, V1, V2
+def flag_records_for_retired_rules() -> F.Column:
     """Flag records for application of "Retired" rules. Rule_id: 4000, 4001, 4002"""
     return (
-        F.col("work_status_v0").isNull()
+        any_column_null(["work_status_v0", "work_status_v1", "work_Status_v2"])
         & F.col("work_main_job_title").isNull()
         & F.col("work_main_job_role").isNull()
         & (F.col("age_at_visit") > F.lit(75))
-        & F.col("survey_response_dataset_major_version").isin(0)
-    )
-
-
-def flag_records_for_retired_rules_v1() -> F.Column:  # SPLIT OUT INTO SEPARATE RULES FOR V0, V1, V2
-    """Flag records for application of "Retired" rules. Rule_id: 4000, 4001, 4002"""
-    return (
-        F.col("work_status_v1").isNull()
-        & F.col("work_main_job_title").isNull()
-        & F.col("work_main_job_role").isNull()
-        & (F.col("age_at_visit") > F.lit(75))
-        & F.col("survey_response_dataset_major_version").isin(1)
-    )
-
-
-def flag_records_for_retired_rules_v2() -> F.Column:
-    """Flag records for application of "Retired" rules. Rule_id: 4000, 4001, 4002"""
-    return (
-        F.col("work_status_v2").isNull()
-        & F.col("work_main_job_title").isNull()
-        & F.col("work_main_job_role").isNull()
-        & (F.col("age_at_visit") > F.lit(75))
-        & F.col("survey_response_dataset_major_version").isin(2)
     )
 
 
 def flag_records_for_not_working_rules_v0() -> F.Column:
     """Flag records for application of "Not working Rules V0" rules. Rule_id: 5000"""
-    return F.col("work_status_v0").isin("Employed", "Self-employed") & F.col(
-        "survey_response_dataset_major_version"
-    ).isin(0)
+    return F.col("work_status_v0").isin("Employed", "Self-employed")
 
 
 def flag_records_for_not_working_rules_v1_a() -> F.Column:
     """Flag records for application of "Not working Rules V1-a" rules. Rule_id: 5001"""
-    return F.col("work_status_v1").isin("Employed and currently working") & F.col(
-        "survey_response_dataset_major_version"
-    ).isin(1)
+    return F.col("work_status_v1").isin("Employed and currently working")
 
 
 def flag_records_for_not_working_rules_v1_b() -> F.Column:
     """Flag records for application of "Not working Rules V1-b" rules. Rule_id: 5002"""
-    return F.col("work_status_v1").isin("Self-employed and currently working") & F.col(
-        "survey_response_dataset_major_version"
-    ).isin(1)
+    return F.col("work_status_v1").isin("Self-employed and currently working")
 
 
 def flag_records_for_not_working_rules_v2_a() -> F.Column:
     """Flag records for application of "Not working Rules V2-a" rules. Rule_id: 5003"""
-    return F.col("work_status_v2").isin("Employed and currently working") & F.col(
-        "survey_response_dataset_major_version"
-    ).isin(2)
+    return F.col("work_status_v2").isin("Employed and currently working")
 
 
 def flag_records_for_not_working_rules_v2_b() -> F.Column:
     """Flag records for application of "Not working Rules V2-b" rules. Rule_id: 5004"""
-    return F.col("work_status_v2").isin("Self-employed and currently working") & F.col(
-        "survey_response_dataset_major_version"
-    ).isin(2)
-
-
-def flag_records_for_school_v0_rules() -> F.Column:
-    """Flag records for application of "School rules -v2" rules. Rule_id: 6000, 6002, 6005"""
-    return (
-        ((F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18)))
-        & ~(F.col("school_year").isNull())
-        & F.col("survey_response_dataset_major_version").isin(0)
-    )
-
-
-def flag_records_for_school_v1_rules() -> F.Column:
-    """Flag records for application of "School rules -v2" rules. Rule_id: 6000, 6002, 6005"""
-    return (
-        ((F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18)))
-        & ~(F.col("school_year").isNull())
-        & F.col("survey_response_dataset_major_version").isin(1)
-    )
+    return F.col("work_status_v2").isin("Self-employed and currently working")
 
 
 def flag_records_for_school_v2_rules() -> F.Column:
     """Flag records for application of "School rules -v2" rules. Rule_id: 6000, 6002, 6005"""
-    return (
-        ((F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18)))
-        & ~(F.col("school_year").isNull())
-        & F.col("survey_response_dataset_major_version").isin(2)
+    return ((F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18))) & ~(
+        F.col("school_year").isNull()
     )
 
 
@@ -2197,12 +2091,7 @@ def flag_records_for_uni_v0_rules() -> F.Column:
                 "Not working (unemployed, retired, long-term sick etc.)",
             )
         )
-        & F.col("survey_response_dataset_major_version").isin(0)
-    ) | (
-        (F.col("age_at_visit") >= F.lit(17))
-        & (F.col("age_at_visit") < F.lit(22))
-        & F.col("survey_response_dataset_major_version").isin(0)
-    )
+    ) | ((F.col("age_at_visit") >= F.lit(17)) & (F.col("age_at_visit") < F.lit(22)))
 
 
 def flag_records_for_uni_v1_rules() -> F.Column:
@@ -2219,12 +2108,7 @@ def flag_records_for_uni_v1_rules() -> F.Column:
                 "Retired",
             )
         )
-        & F.col("survey_response_dataset_major_version").isin(1)
-    ) | (
-        (F.col("age_at_visit") >= F.lit(19))
-        & (F.col("age_at_visit") < F.lit(22))
-        & F.col("survey_response_dataset_major_version").isin(1)
-    )
+    ) | ((F.col("age_at_visit") >= F.lit(19)) & (F.col("age_at_visit") < F.lit(22)))
 
 
 def flag_records_for_uni_v2_rules() -> F.Column:
@@ -2241,12 +2125,7 @@ def flag_records_for_uni_v2_rules() -> F.Column:
                 "Retired",
             )
         )
-        & F.col("survey_response_dataset_major_version").isin(2)
-    ) | (
-        (F.col("age_at_visit") >= F.lit(19))
-        & (F.col("age_at_visit") < F.lit(22))
-        & F.col("survey_response_dataset_major_version").isin(2)
-    )
+    ) | ((F.col("age_at_visit") >= F.lit(19)) & (F.col("age_at_visit") < F.lit(22)))
 
 
 def flag_records_for_college_v0_rules() -> F.Column:
@@ -2260,12 +2139,7 @@ def flag_records_for_college_v0_rules() -> F.Column:
                 "Not working (unemployed, retired, long-term sick etc.)",
             )
         )
-        & F.col("survey_response_dataset_major_version").isin(0)
-    ) | (
-        (F.col("age_at_visit") >= F.lit(17))
-        & (F.col("age_at_visit") < F.lit(19))
-        & F.col("survey_response_dataset_major_version").isin(0)
-    )
+    ) | ((F.col("age_at_visit") >= F.lit(17)) & (F.col("age_at_visit") < F.lit(19)))
 
 
 def flag_records_for_college_v1_rules() -> F.Column:
@@ -2282,12 +2156,7 @@ def flag_records_for_college_v1_rules() -> F.Column:
                 "Retired",
             )
         )
-        & F.col("survey_response_dataset_major_version").isin(1)
-    ) | (
-        (F.col("age_at_visit") >= F.lit(17))
-        & (F.col("age_at_visit") < F.lit(19))
-        & F.col("survey_response_dataset_major_version").isin(1)
-    )
+    ) | ((F.col("age_at_visit") >= F.lit(17)) & (F.col("age_at_visit") < F.lit(19)))
 
 
 def flag_records_for_college_v2_rules() -> F.Column:
@@ -2304,12 +2173,7 @@ def flag_records_for_college_v2_rules() -> F.Column:
                 "Retired",
             )
         )
-        & F.col("survey_response_dataset_major_version").isin(2)
-    ) | (
-        (F.col("age_at_visit") >= F.lit(17))
-        & (F.col("age_at_visit") < F.lit(19))
-        & F.col("survey_response_dataset_major_version").isin(2)
-    )
+    ) | ((F.col("age_at_visit") >= F.lit(17)) & (F.col("age_at_visit") < F.lit(19)))
 
 
 def flag_records_for_childcare_v0_rules() -> F.Column:
@@ -2323,7 +2187,6 @@ def flag_records_for_childcare_v0_rules() -> F.Column:
                 "Not working (unemployed, retired, long-term sick etc.)",
             )
         )
-        & (F.col("survey_response_dataset_major_version").isin(0))
     )
 
 
@@ -2337,7 +2200,6 @@ def flag_records_for_childcare_v1_rules() -> F.Column:
                 "Child under 5y not attending child care", "Child under 5y attending child care"
             )
         )
-        & F.col("survey_response_dataset_major_version").isin(1)
     )
 
 
@@ -2352,7 +2214,6 @@ def flag_records_for_childcare_v2_b_rules() -> F.Column:
                 "Child under 4-5y attending child care",
             )
         )
-        & F.col("survey_response_dataset_major_version").isin(2)
     )
 
 
