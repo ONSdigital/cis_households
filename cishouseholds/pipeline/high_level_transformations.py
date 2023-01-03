@@ -2327,7 +2327,7 @@ def union_dependent_derivations(df):
         df=df,
         column_name_to_assign="days_since_enrolment",
         start_reference_column="household_first_visit_datetime",
-        end_reference_column="last_attended_visit_datetime",
+        end_reference_column="visit_datetime",
     )
     df = assign_date_difference(
         df=df,
