@@ -1972,31 +1972,17 @@ def flag_records_for_work_location_student() -> F.Column:
     """Flag records for application of "Work location" rules for students. Rule_id: 7000"""
     return (
         F.col("work_status_v0").isin("Student")
-        | (
-            ~(
-                F.col("work_status_v2").isin(
-                    "Employed and currently working",
-                    "Employed and currently not working",
-                    "Self-employed and currently working",
-                    "Self-employed and currently not working",
-                    "Looking for paid work and able to start",
-                    "Not working and not looking for work",
-                    "Retired",
-                )
-            )
+        | F.col("work_status_v2").isin(
+            "Child under 4-5y not attending child care",
+            "Child under 4-5y attending child care",
+            "4-5y and older at school/home-school",
+            "Attending college or FE (including if temporarily absent)",
+            "Attending university (including if temporarily absent)",
         )
-        | (
-            ~(
-                F.col("work_status_v1").isin(
-                    "Employed and currently working",
-                    "Employed and currently not working",
-                    "Self-employed and currently working",
-                    "Self-employed and currently not working",
-                    "Looking for paid work and able to start",
-                    "Not working and not looking for work",
-                    "Retired",
-                )
-            )
+        | F.col("work_status_v1").isin(
+            "Child under 5y not attending child care",
+            "Child under 5y attending child care",
+            "5y and older in full-time education",
         )
         | (F.col("age_at_visit") < F.lit(16))
     )
