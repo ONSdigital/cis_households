@@ -835,7 +835,7 @@ def geography_and_imputation_dependent_processing(
         header=True,
         schema="""
             lower_super_output_area_code_11 string,
-            cis_rural_urban_classification string,
+            cis_rural_urban_classification string
         """,
     )  # Prefer version from sample
     df = df.join(
