@@ -2356,20 +2356,20 @@ def union_dependent_derivations(df):
         "patient_facing_over_20_percent", F.when(patient_facing_percentage >= 0.2, "Yes").otherwise("No")
     )
 
-    df = fill_forward_from_last_change(
-        df=df,
-        fill_forward_columns=[
-            "cis_covid_vaccine_date",
-            "cis_covid_vaccine_number_of_doses",
-            "cis_covid_vaccine_type",
-            "cis_covid_vaccine_type_other",
-            "cis_covid_vaccine_received",
-        ],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
-        record_changed_column="cis_covid_vaccine_received",
-        record_changed_value="Yes",
-    )
+    # df = fill_forward_from_last_change(
+    #     df=df,
+    #     fill_forward_columns=[
+    #         "cis_covid_vaccine_date",
+    #         "cis_covid_vaccine_number_of_doses",
+    #         "cis_covid_vaccine_type",
+    #         "cis_covid_vaccine_type_other",
+    #         "cis_covid_vaccine_received",
+    #     ],
+    #     participant_id_column="participant_id",
+    #     visit_datetime_column="visit_datetime",
+    #     record_changed_column="cis_covid_vaccine_received",
+    #     record_changed_value="Yes",
+    # )
     df = create_formatted_datetime_string_columns(df)
     return df
 
