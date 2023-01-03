@@ -46,6 +46,7 @@ def test_fill_forward_event_1(spark_session):
         participant_id_column="participant_id",
         visit_datetime_column="visit_date",
         visit_id_column="visit_id",
+        use_hdfs=False,
     )
 
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
@@ -83,6 +84,7 @@ def test_fill_forward_event_2(spark_session):
         participant_id_column="participant_id",
         visit_datetime_column="visit_date",
         visit_id_column="visit_id",
+        use_hdfs=False,
     )
 
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
@@ -123,6 +125,7 @@ def test_fill_forward_event_3(spark_session):
         participant_id_column="participant_id",
         visit_datetime_column="visit_date",
         visit_id_column="visit_id",
+        use_hdfs=False,
     )
 
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
@@ -164,6 +167,7 @@ def test_fill_forward_event_4(spark_session):
         participant_id_column="participant_id",
         visit_datetime_column="visit_date",
         visit_id_column="visit_id",
+        use_hdfs=False,
     )
 
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
@@ -207,5 +211,6 @@ def test_fill_forward_event_5(spark_session):
         participant_id_column="participant_id",
         visit_datetime_column="visit_date",
         visit_id_column="visit_id",
+        use_hdfs=False,
     )
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
