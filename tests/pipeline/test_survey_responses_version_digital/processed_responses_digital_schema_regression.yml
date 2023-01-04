@@ -1221,7 +1221,7 @@ fields:
   type: string
 - metadata: {}
   name: work_main_job_changed
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: cis_covid_vaccine_type
