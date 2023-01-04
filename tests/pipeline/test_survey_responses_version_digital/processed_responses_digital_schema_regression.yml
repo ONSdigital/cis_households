@@ -1272,6 +1272,18 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: think_respiratory_infection
+  nullable: true
+  type: string
+- metadata: {}
+  name: time_off_respiratory_infection
+  nullable: true
+  type: integer
+- metadata: {}
+  name: time_off_health_reasons
+  nullable: true
+  type: integer
+- metadata: {}
   name: survey_response_source_file
   nullable: false
   type: string

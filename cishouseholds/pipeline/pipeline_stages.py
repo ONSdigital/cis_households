@@ -830,18 +830,13 @@ def geography_and_imputation_dependent_processing(
         name of table to write processed data to
     """
     df = extract_from_table(input_survey_table)
-    rural_urban_lookup_df = (
-        get_or_create_spark_session()
-        .read.csv(
-            rural_urban_lookup_path,
-            header=True,
-            schema="""
+    rural_urban_lookup_df = get_or_create_spark_session().read.csv(
+        rural_urban_lookup_path,
+        header=True,
+        schema="""
             lower_super_output_area_code_11 string,
-            cis_rural_urban_classification string,
-            rural_urban_classification_11 string
+            cis_rural_urban_classification string
         """,
-        )
-        .drop("rural_urban_classification_11")
     )  # Prefer version from sample
     df = df.join(
         F.broadcast(rural_urban_lookup_df),
