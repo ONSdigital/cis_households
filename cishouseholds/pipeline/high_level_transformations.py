@@ -5,8 +5,7 @@ from operator import and_
 from operator import or_
 from typing import List
 
-import pyspark.sql.functions as F
-from pandas import pandas as pd
+import pandas as pd
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import SparkSession
@@ -170,6 +169,14 @@ from cishouseholds.validate_class import SparkValidate
 
 # from cishouseholds.pipeline.regex_patterns import healthcare_bin_pattern
 
+def clean_covid_test_swab(df:DataFrame):
+    """
+    """
+#     replace other_covid_infection_test=1 if ==(0|NULL) & other_covid_infection_test_result=1 & (sympt_covid_count>0 | think_had_covid_onset_date!= NULL)
+# replace other_covid_infection_test_result=NULL if ==1 & think_had_covid_onset_date=NULL & sympt_covid_count==0 & think_had_covid_contacted_nhs==0 & think_had_covid_admitted_to_hopsital==0 & other_covid_infection_test==(0|NULL) & think_had_covid==(0|NULL)
+# replace other_covid_infection_test_result=NULL if ==1 & think_had_covid_onset_date=NULL & sympt_covid_count==0 & think_had_covid_contacted_nhs==0 & think_had_covid_admitted_to_hopsital==0 & other_covid_infection_test==0
+    df = df.withColumn("other_covid_infection_test",F.when((F.col("other_covid_infection_test_result")==1) & (F.col("other_covid_infection_test"))))
+    
 
 def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
     """
@@ -2368,6 +2375,7 @@ def union_dependent_derivations(df):
     )
     df = create_formatted_datetime_string_columns(df)
     return df
+
 
 
 def fill_forward_events_for_key_columns(df):
