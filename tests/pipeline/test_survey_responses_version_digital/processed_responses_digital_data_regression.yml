@@ -1868,7 +1868,6 @@
   cis_covid_vaccine_date_3: null
   cis_covid_vaccine_date_4: '2022-01-04 00:00:00.000000'
   cis_covid_vaccine_date_5: null
-<<<<<<< HEAD
   cis_covid_vaccine_date_6: '2022-01-07 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_number_of_doses_raw: null
@@ -1886,25 +1885,6 @@
   cis_covid_vaccine_type_5_raw: Janssen / Johnson&Johnson
   cis_covid_vaccine_type_6: Janssen/Johnson&Johnson
   cis_covid_vaccine_type_6_raw: Janssen / Johnson&Johnson
-=======
-  cis_covid_vaccine_date_6: '2022-01-06 00:00:00.000000'
-  cis_covid_vaccine_number_of_doses: '2'
-  cis_covid_vaccine_number_of_doses_raw: 2 doses
-  cis_covid_vaccine_received: 'No'
-  cis_covid_vaccine_type: Novavax
-  cis_covid_vaccine_type_1: Pfizer/BioNTech
-  cis_covid_vaccine_type_1_raw: Pfizer / BioNTech
-  cis_covid_vaccine_type_2: Other / specify
-  cis_covid_vaccine_type_2_raw: Another vaccine please specify
-  cis_covid_vaccine_type_3: Janssen/Johnson&Johnson
-  cis_covid_vaccine_type_3_raw: Janssen / Johnson&Johnson
-  cis_covid_vaccine_type_4: Other / specify
-  cis_covid_vaccine_type_4_raw: Another vaccine please specify
-  cis_covid_vaccine_type_5: Novavax
-  cis_covid_vaccine_type_5_raw: Novavax
-  cis_covid_vaccine_type_6: Novavax
-  cis_covid_vaccine_type_6_raw: Novavax
->>>>>>> origin/main
   cis_covid_vaccine_type_other: Frankly, my dear, I don't give a damn.
   cis_covid_vaccine_type_other_1: Houston, we have a problem.
   cis_covid_vaccine_type_other_2: Let them eat cake.
@@ -2801,7 +2781,6 @@
   cis_covid_vaccine_date_4: null
   cis_covid_vaccine_date_5: null
   cis_covid_vaccine_date_6: null
-<<<<<<< HEAD
   cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_number_of_doses_raw: null
   cis_covid_vaccine_received: 'No'
@@ -2818,24 +2797,6 @@
   cis_covid_vaccine_type_5_raw: Novavax
   cis_covid_vaccine_type_6: Other / specify
   cis_covid_vaccine_type_6_raw: Or Another vaccine please specify
-=======
-  cis_covid_vaccine_number_of_doses: 3 or more
-  cis_covid_vaccine_number_of_doses_raw: 4 doses
-  cis_covid_vaccine_received: 'Yes'
-  cis_covid_vaccine_type: Pfizer/BioNTech
-  cis_covid_vaccine_type_1: Novavax
-  cis_covid_vaccine_type_1_raw: Novavax
-  cis_covid_vaccine_type_2: Other / specify
-  cis_covid_vaccine_type_2_raw: Or Another vaccine please specify
-  cis_covid_vaccine_type_3: Sputnik
-  cis_covid_vaccine_type_3_raw: Sputnik
-  cis_covid_vaccine_type_4: Novavax
-  cis_covid_vaccine_type_4_raw: Novavax
-  cis_covid_vaccine_type_5: Oxford/AstraZeneca
-  cis_covid_vaccine_type_5_raw: Oxford / AstraZeneca
-  cis_covid_vaccine_type_6: Sinopharm
-  cis_covid_vaccine_type_6_raw: Sinopharm
->>>>>>> origin/main
   cis_covid_vaccine_type_other: They call me *Mister* Tibbs!
   cis_covid_vaccine_type_other_1: You're gonna need a bigger boat.
   cis_covid_vaccine_type_other_2: Ask not what your country can do for you; ask what
