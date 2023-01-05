@@ -477,7 +477,7 @@ fields:
   type: string
 - metadata: {}
   name: work_main_job_changed
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: work_location

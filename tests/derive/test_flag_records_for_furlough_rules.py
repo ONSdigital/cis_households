@@ -12,17 +12,16 @@ def test_flag_records_for_furlough_rules_v0(spark_session):
 
     # the following is from cishouseholds.mapping.category_maps['iqvia_raw_category_map']['work_status_v0']
     test_cases = [
-        (1, None, 1, False),
-        (0, "Self-employed", 2, True),
-        (0, "Furloughed (temporarily not working)", 3, False),
-        (0, "Not working (unemployed, retired, long-term sick etc.)", 4, True),
-        (0, "Student", 5, False),
-        (2, None, None, False),
+        ("Employed", 1, True),
+        ("Self-employed", 2, True),
+        ("Furloughed (temporarily not working)", 3, False),
+        ("Not working (unemployed, retired, long-term sick etc.)", 4, True),
+        ("Student", 5, False),
+        (None, None, None),
     ]
 
     expected_df = spark_session.createDataFrame(
-        test_cases,
-        schema="survey_response_dataset_major_version int, work_status_v0 string, my_value int, actual_flag boolean",
+        test_cases, schema="work_status_v0 string, my_value int, actual_flag boolean"
     )
 
     actual_df = expected_df.drop("actual_flag").withColumn("actual_flag", flag_records_for_furlough_rules_v0())
@@ -41,22 +40,21 @@ def test_flag_records_for_furlough_rules_v1_a(spark_session):
 
     # the following is from cishouseholds.mapping.category_maps['iqvia_raw_category_map']['work_status_v1']
     test_cases = [
-        (2, "Employed and currently working", 1, False),
-        (1, "Employed and currently not working", 2, False),
-        (1, "Self-employed and currently working", 3, False),
-        (1, "Self-employed and currently not working", 4, False),
-        (1, "Looking for paid work and able to start", 5, True),
-        (0, "Not working and not looking for work", 6, False),
-        (1, "Retired", 7, False),
-        (1, "Child under 5y not attending child care", 8, False),
-        (1, "Child under 5y attending child care", 9, False),
-        (1, "5y and older in full-time education", 10, False),
-        (0, None, None, False),
+        ("Employed and currently working", 1, True),
+        ("Employed and currently not working", 2, False),
+        ("Self-employed and currently working", 3, False),
+        ("Self-employed and currently not working", 4, False),
+        ("Looking for paid work and able to start", 5, True),
+        ("Not working and not looking for work", 6, True),
+        ("Retired", 7, False),
+        ("Child under 5y not attending child care", 8, False),
+        ("Child under 5y attending child care", 9, False),
+        ("5y and older in full-time education", 10, False),
+        (None, None, None),
     ]
 
     expected_df = spark_session.createDataFrame(
-        test_cases,
-        schema="survey_response_dataset_major_version int, work_status_v1 string, my_value int, actual_flag boolean",
+        test_cases, schema="work_status_v1 string, my_value int, actual_flag boolean"
     )
 
     actual_df = expected_df.drop("actual_flag").withColumn("actual_flag", flag_records_for_furlough_rules_v1_a())
@@ -75,22 +73,21 @@ def test_flag_records_for_furlough_rules_v1_b(spark_session):
 
     # the following is from cishouseholds.mapping.category_maps['iqvia_raw_category_map']['work_status_v1']
     test_cases = [
-        (1, "Employed and currently working", 1, False),
-        (0, "Employed and currently not working", 2, False),
-        (0, "Self-employed and currently working", 3, False),
-        (1, "Self-employed and currently not working", 4, False),
-        (1, "Looking for paid work and able to start", 5, False),
-        (1, "Not working and not looking for work", 6, False),
-        (1, "Employed and currently not working", 7, False),
-        (1, "Child under 5y not attending child care", 8, False),
-        (1, "Child under 5y attending child care", 9, False),
-        (2, "Employed and currently not working", 10, False),
-        (1, None, None, None),
+        ("Employed and currently working", 1, False),
+        ("Employed and currently not working", 2, False),
+        ("Self-employed and currently working", 3, True),
+        ("Self-employed and currently not working", 4, False),
+        ("Looking for paid work and able to start", 5, False),
+        ("Not working and not looking for work", 6, False),
+        ("Retired", 7, False),
+        ("Child under 5y not attending child care", 8, False),
+        ("Child under 5y attending child care", 9, False),
+        ("5y and older in full-time education", 10, False),
+        (None, None, None),
     ]
 
     expected_df = spark_session.createDataFrame(
-        test_cases,
-        schema="survey_response_dataset_major_version int, work_status_v1 string, my_value int, actual_flag boolean",
+        test_cases, schema="work_status_v1 string, my_value int, actual_flag boolean"
     )
 
     actual_df = expected_df.drop("actual_flag").withColumn("actual_flag", flag_records_for_furlough_rules_v1_b())
@@ -109,25 +106,23 @@ def test_flag_records_for_furlough_rules_v2_a(spark_session):
 
     # the following is from cishouseholds.mapping.category_maps['iqvia_raw_category_map']['work_status_v2']
     test_cases = [
-        (1, "Employed and currently working", 1, False),
-        (2, "Employed and currently not working", 2, False),
-        (2, "Self-employed and currently working", 3, False),
-        (2, "Self-employed and currently not working", 4, False),
-        (2, "Looking for paid work and able to start", 5, True),
-        (0, "Not working and not looking for work", 6, False),
-        (2, "Not working and not looking for work", 6, True),
-        (2, "Retired", 7, False),
-        (2, "Child under 4-5y not attending child care", 8, False),
-        (2, "Child under 4-5y attending child care", 9, False),
-        (2, "4-5y and older at school/home-school", 10, False),
-        (2, "Attending college or FE (including if temporarily absent)", 11, False),
-        (2, "Attending university (including if temporarily absent)", 12, False),
-        (1, None, None, False),
+        ("Employed and currently working", 1, True),
+        ("Employed and currently not working", 2, False),
+        ("Self-employed and currently working", 3, False),
+        ("Self-employed and currently not working", 4, False),
+        ("Looking for paid work and able to start", 5, True),
+        ("Not working and not looking for work", 6, True),
+        ("Retired", 7, False),
+        ("Child under 4-5y not attending child care", 8, False),
+        ("Child under 4-5y attending child care", 9, False),
+        ("4-5y and older at school/home-school", 10, False),
+        ("Attending college or FE (including if temporarily absent)", 11, False),
+        ("Attending university (including if temporarily absent)", 12, False),
+        (None, None, None),
     ]
 
     expected_df = spark_session.createDataFrame(
-        test_cases,
-        schema="survey_response_dataset_major_version int, work_status_v2 string, my_value int, actual_flag boolean",
+        test_cases, schema="work_status_v2 string, my_value int, actual_flag boolean"
     )
 
     actual_df = expected_df.drop("actual_flag").withColumn("actual_flag", flag_records_for_furlough_rules_v2_a())
@@ -146,24 +141,23 @@ def test_flag_records_for_furlough_rules_v2_b(spark_session):
 
     # the following is from cishouseholds.mapping.category_maps['iqvia_raw_category_map']['work_status_v2']
     test_cases = [
-        (1, "Employed and currently working", 1, False),
-        (2, "Self-employed and currently working", 2, True),
-        (0, "Self-employed and currently working", 3, False),
-        (2, "Self-employed and currently not working", 4, False),
-        (2, "Looking for paid work and able to start", 5, False),
-        (2, "Not working and not looking for work", 6, False),
-        (1, "Retired", 7, False),
-        (2, "Child under 4-5y not attending child care", 8, False),
-        (2, "Child under 4-5y attending child care", 9, False),
-        (2, "4-5y and older at school/home-school", 10, False),
-        (2, "Attending college or FE (including if temporarily absent)", 11, False),
-        (2, "Attending university (including if temporarily absent)", 12, False),
-        (2, None, None, None),
+        ("Employed and currently working", 1, False),
+        ("Employed and currently not working", 2, False),
+        ("Self-employed and currently working", 3, True),
+        ("Self-employed and currently not working", 4, False),
+        ("Looking for paid work and able to start", 5, False),
+        ("Not working and not looking for work", 6, False),
+        ("Retired", 7, False),
+        ("Child under 4-5y not attending child care", 8, False),
+        ("Child under 4-5y attending child care", 9, False),
+        ("4-5y and older at school/home-school", 10, False),
+        ("Attending college or FE (including if temporarily absent)", 11, False),
+        ("Attending university (including if temporarily absent)", 12, False),
+        (None, None, None),
     ]
 
     expected_df = spark_session.createDataFrame(
-        test_cases,
-        schema="survey_response_dataset_major_version int, work_status_v2 string, my_value int, actual_flag boolean",
+        test_cases, schema="work_status_v2 string, my_value int, actual_flag boolean"
     )
 
     actual_df = expected_df.drop("actual_flag").withColumn("actual_flag", flag_records_for_furlough_rules_v2_b())

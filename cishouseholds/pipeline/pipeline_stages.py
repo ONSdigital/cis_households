@@ -361,14 +361,15 @@ def process_soc_deltas(
             add_error_file_log_entry(file_path, error_message)  # type: ignore
             print(error_message)  # functional
 
-    soc_lookup_df = union_multiple_tables(dfs)
-    coding_errors_df, soc_lookup_df = transform_cis_soc_data(
-        soc_lookup_df, inconsistencies_resolution_df, join_on_columns
-    )
+    if len(dfs) > 0:
+        soc_lookup_df = union_multiple_tables(dfs)
+        coding_errors_df, soc_lookup_df = transform_cis_soc_data(
+            soc_lookup_df, inconsistencies_resolution_df, join_on_columns
+        )
 
-    mode = "overwrite" if include_processed else "append"
-    update_table_and_log_source_files(soc_lookup_df, soc_lookup_table, source_file_column, "soc_codes", mode)
-    update_table(coding_errors_df, coding_errors_table, mode)
+        mode = "overwrite" if include_processed else "append"
+        update_table_and_log_source_files(soc_lookup_df, soc_lookup_table, source_file_column, "soc_codes", mode)
+        update_table(coding_errors_df, coding_errors_table, mode)
 
 
 def generate_input_processing_function(
@@ -560,7 +561,6 @@ def join_lookup_table(
     df = left_join_keep_right(df, lookup_df, join_on_columns)
     df = union_multiple_tables([df, unjoinable_df])
 
-    df = extract_from_table(input_survey_table)
     for transformation in post_join_transformations:
         df = transformations_dict[transformation](df)
 
@@ -835,7 +835,7 @@ def geography_and_imputation_dependent_processing(
         header=True,
         schema="""
             lower_super_output_area_code_11 string,
-            cis_rural_urban_classification string,
+            cis_rural_urban_classification string
         """,
     )  # Prefer version from sample
     df = df.join(
