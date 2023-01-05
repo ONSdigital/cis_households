@@ -55,6 +55,10 @@ pf_date_dependent_regex_match = "|".join(
 )
 
 
+pf_date_dependent_regex_match_with_exclusions = match_with_exclusions(
+    pf_date_dependent_regex_match, r"M[AO0]DERN(A|ER) ?BIOTE(CH|K)"
+)
+
 mod_regex_match = "|".join(
     [
         r"M[AO]DER?N(A|ER)",
