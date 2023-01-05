@@ -36,6 +36,7 @@ _yes_no_categories = {"No": 0, "Yes": 1}
 
 category_maps = {
     "iqvia_raw_category_map": {
+        "think_respiratory_infection": _yes_no_categories,
         "agreed_to_additional_consent_visit": _yes_no_categories,
         "consent_blood_samples_if_positive_yn": _yes_no_categories,
         "consent_contact_extra_research_yn": _yes_no_categories,
