@@ -118,12 +118,12 @@
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: '2020-07-11 08:55:04.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-04 03:09:34.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 23:59:40.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-04 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: The sequential subset of
     Erlang supports eager evaluation, single assignment, and dynamic typing.
   existing_participant_digital_opt_in_reminder_2_due_datetime: null
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-08 17:16:13.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-08 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_status: '"Messages can be sent to
     and received from ports, but these messages must obey the so-called ""port protocol."""'
   existing_participant_digital_opt_in_status: Participant Opted Out
@@ -575,12 +575,12 @@
   ever_smoked_regularly: 'No'
   ever_smoked_regularly_raw: 'No'
   existing_participant_digital_opt_in_datetime: '2020-02-29 22:57:09.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 09:34:37.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-04 14:33:10.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-04 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: They are written as strings
     of consecutive alphanumeric characters, the first character being lowercase.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 16:00:06.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-06 15:57:36.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-06 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_status: The syntax {D1,D2,...,Dn}
     denotes a tuple whose arguments are D1, D2, ... Dn.
   existing_participant_digital_opt_in_status: Participant Opted In
@@ -1024,12 +1024,12 @@
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: '2022-04-17 08:08:59.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 11:00:02.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-07 08:46:43.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-07 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: Its main implementation is
     the Glasgow Haskell Compiler.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-04 22:03:54.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-07 14:29:59.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-04 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-07 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_status: Tuples are containers for
     a fixed number of Erlang data types.
   existing_participant_digital_opt_in_status: Participant Opted Out
@@ -1476,11 +1476,11 @@
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   existing_participant_digital_opt_in_datetime: '2020-10-14 01:01:05.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 17:14:06.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 02:16:58.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: Make me a sandwich.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 21:48:58.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-03 12:02:32.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-03 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_status: '"Messages can be sent to
     and received from ports, but these messages must obey the so-called ""port protocol."""'
   existing_participant_digital_opt_in_status: Participant Opted In
@@ -1925,13 +1925,13 @@
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: '2021-11-24 05:39:36.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 19:51:18.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-08 20:49:30.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-08 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: Atoms can contain any character
     if they are enclosed within single quotes and an escape convention exists which
     allows any character to be used within an atom.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-04 23:06:22.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-05 17:36:19.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-04 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-05 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_status: Initially composing light-hearted
     and irreverent works, he also wrote serious, sombre and religious pieces beginning
     in the 1930s.
@@ -2382,12 +2382,12 @@
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   existing_participant_digital_opt_in_datetime: '2020-02-05 20:10:50.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-02 09:26:10.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 16:05:20.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-02 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: Its main implementation is
     the Glasgow Haskell Compiler.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-09 17:14:28.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-06 05:06:10.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-09 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-06 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_status: The syntax {D1,D2,...,Dn}
     denotes a tuple whose arguments are D1, D2, ... Dn.
   existing_participant_digital_opt_in_status: Participant Opted Out
@@ -2840,10 +2840,10 @@
   ever_smoked_regularly: 'No'
   ever_smoked_regularly_raw: 'No'
   existing_participant_digital_opt_in_datetime: '2022-12-16 04:12:18.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 01:16:24.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_sent_datetime: null
   existing_participant_digital_opt_in_reminder_1_status: Where are my pants?
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-07 18:45:02.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-07 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_sent_datetime: null
   existing_participant_digital_opt_in_reminder_2_status: Atoms can contain any character
     if they are enclosed within single quotes and an escape convention exists which
@@ -3294,10 +3294,10 @@
   ever_smoked_regularly_raw: 'No'
   existing_participant_digital_opt_in_datetime: '2021-08-21 11:10:23.000000'
   existing_participant_digital_opt_in_reminder_1_due_datetime: null
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-09 12:32:27.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-09 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: Its main implementation is
     the Glasgow Haskell Compiler.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 18:30:04.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_sent_datetime: null
   existing_participant_digital_opt_in_reminder_2_status: Type classes first appeared
     in the Haskell programming language.
@@ -3755,12 +3755,12 @@
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: '2020-02-24 15:52:04.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-02 03:31:41.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 18:35:01.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-02 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: Erlang is known for its designs
     that are well suited for systems.
   existing_participant_digital_opt_in_reminder_2_due_datetime: null
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-08 03:57:44.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-08 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_status: She spent her earliest years
     reading classic literature, and writing poetry.
   existing_participant_digital_opt_in_status: Participant Opted Out
@@ -4214,12 +4214,12 @@
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   existing_participant_digital_opt_in_datetime: '2021-04-04 03:42:27.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-05 22:21:15.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-01 00:05:15.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-05 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-01 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: Erlang is known for its designs
     that are well suited for systems.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-03 13:58:24.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-04 20:51:21.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-03 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-04 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_status: Erlang is a general-purpose,
     concurrent, functional programming language.
   existing_participant_digital_opt_in_status: null
