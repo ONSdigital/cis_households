@@ -36,6 +36,12 @@ consolidation_points = [
     "kpa_unscanned",
     "exception_undefined",
 ]
+household_been_somewhere = [
+    "No I haven't, but someone else in my house has",
+    "Yes, I have",
+    "No, one one in my household has",
+    None,
+]
 
 start_date_list = datetime(2022, 1, 1)
 end_date_list = datetime(2022, 1, 10)
@@ -500,9 +506,19 @@ def get_voyager_0_data_description(_, blood_barcodes, swab_barcodes):
                 "No",
             ],
         ),
-        "Do you work in social care?": _("choice", items=yes_no_none_choice),
+        "Do you work in social care?": _(
+            "choice",
+            items=[
+                None,
+                "Yes, other social care, resident-facing",
+                "Yes, care/residential home, non-resident-facing",
+                "Yes other social care, non-resident-facing",
+                "Yes, care/residential home, resident-facing",
+                "No",
+            ],
+        ),
         "Do you have any of these symptoms Today?": _("choice", items=yes_no_none_choice),
-        "Symptoms today": _("choice", items=yes_no_none_choice),
+        "Symptoms today": _("text.sentence"),
         "Symptoms today- Fever": _("choice", items=yes_no_none_choice),
         "Symptoms today- Muscle ache (myalgia)": _("choice", items=yes_no_none_choice),
         "Symptoms today- Fatigue (weakness)": _("choice", items=yes_no_none_choice),
@@ -534,8 +550,8 @@ def get_voyager_0_data_description(_, blood_barcodes, swab_barcodes):
             format="%d/%m/%Y",
         ),
         "If Suspect; Type of contact": _("text.quote"),
-        "Household been Hospital last 2 wks": _("choice", items=yes_no_none_choice),
-        "Household been in Care home last 2 wks": _("choice", items=yes_no_none_choice),
+        "Household been Hospital last 2 wks": _("choice", items=household_been_somewhere),
+        "Household been in Care home last 2 wks": _("choice", items=household_been_somewhere),
         "Do you think you have had Covid 19?": _("choice", items=yes_no_none_choice),
         "Which symptoms did you have?": _("text.sentence"),
         "Previous Symptoms-Fever": _("choice", items=yes_no_none_choice),
@@ -558,7 +574,14 @@ def get_voyager_0_data_description(_, blood_barcodes, swab_barcodes):
         ),
         "Did you contact NHS?": _("choice", items=yes_no_none_choice),
         "If Yes; Were you tested": _("choice", items=yes_no_none_choice),
-        "If Yes;Test Result": _("choice", items=yes_no_none_choice),
+        "If Yes;Test Result": _(
+            "choice",
+            items=[
+                "Positive",
+                "Negative",
+                None,
+            ],
+        ),
         "Were you admitted to hospital?": _("choice", items=yes_no_none_choice),
     }
 
