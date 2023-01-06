@@ -228,6 +228,8 @@ def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
     )
 
     df = apply_value_map_multiple_columns(df, col_val_map)
+    df = create_formatted_datetime_string_columns(df)
+
     return df
 
 
