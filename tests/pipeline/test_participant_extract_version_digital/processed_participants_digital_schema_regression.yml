@@ -80,6 +80,10 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
+  name: nhs_data_share
+  nullable: true
+  type: string
+- metadata: {}
   name: nhs_share_opt_out_date
   nullable: true
   type: string
@@ -141,6 +145,42 @@ fields:
   type: string
 - metadata: {}
   name: ethnicity_group
+  nullable: true
+  type: string
+- metadata: {}
+  name: date_of_birth_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: existing_participant_digital_opt_in_reminder_1_due_datetime_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: existing_participant_digital_opt_in_reminder_1_sent_datetime_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: existing_participant_digital_opt_in_reminder_2_due_datetime_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: existing_participant_digital_opt_in_reminder_2_sent_datetime_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: household_digital_enrolment_invited_datetime_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: participant_digital_enrolment_datetime_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: existing_participant_digital_opt_in_datetime_string
+  nullable: true
+  type: string
+- metadata: {}
+  name: digital_entry_pack_sent_datetime_string
   nullable: true
   type: string
 type: struct
