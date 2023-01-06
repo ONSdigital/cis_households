@@ -100,6 +100,7 @@ participant_extract_digital_parameters = {
     "dataset_name": "participant_extract_digital",
     "id_column": "participant_id",
     "validation_schema": validation_schemas["participant_extract_digital_validation_schema"],
+    "column_name_map": column_name_maps["participant_extract_digital_name_map"],
     "datetime_column_map": cis_digital_datetime_map,
     "transformation_functions": [
         transform_participant_extract_digital,

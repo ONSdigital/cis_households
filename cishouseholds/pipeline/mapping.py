@@ -1169,9 +1169,6 @@ category_maps = {
             "English": 1,
             "Welsh": 2,
         },
-        # "digital_entry_pack_status": {},  # TODO Need categories to map
-        # "existing_participant_digital_opt_in_reminder_1_status": {},  # TODO Need categories to map
-        # "existing_participant_digital_opt_in_reminder_2_status": {},  # TODO Need categories to map
         "household_completion_window_status": {
             "New": 1,
             "Open": 2,
@@ -1355,6 +1352,11 @@ category_maps = {
             "permanent-failure": 2,
             "Sent": 3,
             "delivered": 4,
+        },
+        "nhs_data_share": {
+            "Opt-Out": 0,
+            "Opt-In Sent": 1,
+            None: 2,
         },
     }
 }
@@ -2158,10 +2160,9 @@ column_name_maps = {
         "pwta18": "person_level_weight_aps_18",
         "age": "age",
     },
-    "participant_extract_digital_map": {
+    "participant_extract_digital_name_map": {
         "withdrawn_reason": "participant_withdrawal_reason",
         "withdrawn_type": "participant_withdrawal_type",
-        "existing_participant_digital_opt_in_reminder_2_status": "",  # picklist
     },
 }
 
