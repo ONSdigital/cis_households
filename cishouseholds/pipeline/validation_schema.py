@@ -1420,6 +1420,7 @@ validation_schemas = {
         "consent_blood_samples_if_positive_yn": string_dict,
         "existing_participant_digital_opt_in_status": string_dict,
         "existing_participant_digital_opt_in_datetime": string_dict,
+        "nhs_data_share": string_dict,
         "nhs_share_opt_out_date": string_dict,
         "household_invited_to_digital": string_dict,
         "household_digital_enrolment_invited_datetime": string_dict,
