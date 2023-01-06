@@ -38,6 +38,7 @@ from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_regex_from_map
+from cishouseholds.derive import assign_regex_from_map_additional_rules
 from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_taken_column
@@ -140,23 +141,8 @@ from cishouseholds.merge import null_safe_join
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.generate_outputs import generate_sample
-from cishouseholds.pipeline.healthcare_regex import healthcare_classification
-from cishouseholds.pipeline.healthcare_regex import patient_facing_classification
-from cishouseholds.pipeline.healthcare_regex import patient_facing_pattern
-from cishouseholds.pipeline.healthcare_regex import priority_map
-from cishouseholds.pipeline.healthcare_regex import roles_map
-from cishouseholds.pipeline.healthcare_regex import social_care_classification
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.mapping import column_name_maps
-from cishouseholds.pipeline.regex_patterns import at_school_pattern
-from cishouseholds.pipeline.regex_patterns import at_university_pattern
-from cishouseholds.pipeline.regex_patterns import childcare_pattern
-from cishouseholds.pipeline.regex_patterns import furloughed_pattern
-from cishouseholds.pipeline.regex_patterns import in_college_or_further_education_pattern
-from cishouseholds.pipeline.regex_patterns import not_working_pattern
-from cishouseholds.pipeline.regex_patterns import retired_regex_pattern
-from cishouseholds.pipeline.regex_patterns import self_employed_regex
-from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pipeline.translate import backup_and_replace_translation_lookup_df
 from cishouseholds.pipeline.translate import export_responses_to_be_translated_to_translation_directory
@@ -166,6 +152,23 @@ from cishouseholds.pipeline.translate import translate_welsh_fixed_text_response
 from cishouseholds.pipeline.translate import translate_welsh_free_text_responses_digital
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.regex.healthcare_regex import healthcare_classification
+from cishouseholds.regex.healthcare_regex import patient_facing_classification
+from cishouseholds.regex.healthcare_regex import patient_facing_pattern
+from cishouseholds.regex.healthcare_regex import priority_map
+from cishouseholds.regex.healthcare_regex import roles_map
+from cishouseholds.regex.healthcare_regex import social_care_classification
+from cishouseholds.regex.regex_patterns import at_school_pattern
+from cishouseholds.regex.regex_patterns import at_university_pattern
+from cishouseholds.regex.regex_patterns import childcare_pattern
+from cishouseholds.regex.regex_patterns import furloughed_pattern
+from cishouseholds.regex.regex_patterns import in_college_or_further_education_pattern
+from cishouseholds.regex.regex_patterns import not_working_pattern
+from cishouseholds.regex.regex_patterns import retired_regex_pattern
+from cishouseholds.regex.regex_patterns import self_employed_regex
+from cishouseholds.regex.regex_patterns import work_from_home_pattern
+from cishouseholds.regex.vaccine_regex import vaccine_regex_map
+from cishouseholds.regex.vaccine_regex import vaccine_regex_priority_map
 from cishouseholds.validate_class import SparkValidate
 
 # from cishouseholds.pipeline.regex_patterns import healthcare_bin_pattern
@@ -1387,7 +1390,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "multiple errors sample retained",
         ",",
     )
-
     return df
 
 
@@ -1558,6 +1560,30 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
             ],
         )
 
+    vaccine_cols = []
+    df.cache()
+    if "cis_covid_vaccine_date" in df.columns and "cis_covid_vaccine_type_other" in df.columns:
+        vaccine_cols.append(("cis_covid_vaccine_type", "cis_covid_vaccine_date", "cis_covid_vaccine_type_other"))
+
+    for i in range(1, 7):
+        vaccine_date_col = f"cis_covid_vaccine_date_{i}"
+        vaccine_type_col = f"cis_covid_vaccine_type_other_{i}"
+        if vaccine_date_col in df.columns and vaccine_type_col in df.columns:
+            vaccine_cols.append((f"cis_covid_vaccine_type_{i}", vaccine_date_col, vaccine_type_col))
+
+    for column_name_to_assign, vaccine_date_col, vaccine_type_col in vaccine_cols:
+        df = assign_regex_from_map_additional_rules(
+            df=df,
+            column_name_to_assign=column_name_to_assign,
+            reference_columns=[vaccine_type_col],
+            map=vaccine_regex_map,
+            priority_map=vaccine_regex_priority_map,
+            disambiguation_conditions={"Pfizer/BioNTechDD": (F.col(vaccine_date_col) < "2021-01-31")},
+            value_map={"Pfizer/BioNTechDD": "Pfizer/BioNTech"},
+            first_match_only=True,
+            overwrite_values=False,
+            default_value="Don't know type",
+        )
     return df
 
 
@@ -2821,7 +2847,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         df=df,
         column_name_to_assign="regex_derived_job_sector",
         reference_columns=["work_main_job_title", "work_main_job_role"],
-        roles=roles_map,
+        map=roles_map,
         priority_map=priority_map,
     )
     # create healthcare area flag
