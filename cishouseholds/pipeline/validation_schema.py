@@ -1395,6 +1395,9 @@ validation_schemas = {
         "other_antibody_test_negative_date": string_dict,
         "form_language": string_dict,
         "vaccinated_against_flu": string_dict,
+        "think_respiratory_infection": string_dict,
+        "time_off_respiratory_infection": integer_dict,
+        "time_off_health_reasons": integer_dict,
     },
     "participant_extract_digital_validation_schema": {
         "ons_household_id": string_dict,

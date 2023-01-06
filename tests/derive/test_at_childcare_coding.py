@@ -3,7 +3,7 @@ import yaml
 from chispa import assert_df_equality
 
 from cishouseholds.derive import assign_regex_match_result
-from cishouseholds.pipeline.regex_patterns import childcare_pattern
+from cishouseholds.regex.regex_patterns import childcare_pattern
 
 # A list of positive test cases which need to be interpreted as Attending School &
 # negative test cases which shouldn't.
