@@ -37,7 +37,6 @@
   participant_digital_enrolment_datetime: '2020-10-14 01:01:05.000000'
   participant_digital_enrolment_datetime_string: 14oct2020 01:01:05
   participant_enrolled_digital: null
-  participant_extract_source_file: file:///C:/Users/maynam/AppData/Local/Temp/pytest-of-maynam/pytest-189/data0/temp.csv
   participant_id: DHR-016525808631
   participant_invited_to_digital: 'Yes'
   participant_survey_status: Withdrawn
@@ -88,7 +87,6 @@
   participant_digital_enrolment_datetime: '2020-04-08 02:21:01.000000'
   participant_digital_enrolment_datetime_string: 08apr2020 02:21:01
   participant_enrolled_digital: 'No'
-  participant_extract_source_file: file:///C:/Users/maynam/AppData/Local/Temp/pytest-of-maynam/pytest-189/data0/temp.csv
   participant_id: DHR-190156218256
   participant_invited_to_digital: null
   participant_survey_status: Withdrawn
@@ -138,7 +136,6 @@
   participant_digital_enrolment_datetime: '2020-10-21 05:34:46.000000'
   participant_digital_enrolment_datetime_string: 21oct2020 05:34:46
   participant_enrolled_digital: null
-  participant_extract_source_file: file:///C:/Users/maynam/AppData/Local/Temp/pytest-of-maynam/pytest-189/data0/temp.csv
   participant_id: DHR-329500167403
   participant_invited_to_digital: 'Yes'
   participant_survey_status: Active
@@ -187,7 +184,6 @@
   participant_digital_enrolment_datetime: '2022-09-25 08:49:41.000000'
   participant_digital_enrolment_datetime_string: 25sep2022 08:49:41
   participant_enrolled_digital: null
-  participant_extract_source_file: file:///C:/Users/maynam/AppData/Local/Temp/pytest-of-maynam/pytest-189/data0/temp.csv
   participant_id: DHR-352206298026
   participant_invited_to_digital: null
   participant_survey_status: Complete
@@ -238,7 +234,6 @@
   participant_digital_enrolment_datetime: '2022-03-05 21:30:35.000000'
   participant_digital_enrolment_datetime_string: 05mar2022 21:30:35
   participant_enrolled_digital: 'No'
-  participant_extract_source_file: file:///C:/Users/maynam/AppData/Local/Temp/pytest-of-maynam/pytest-189/data0/temp.csv
   participant_id: DHR-424039274499
   participant_invited_to_digital: null
   participant_survey_status: Complete
@@ -288,7 +283,6 @@
   participant_digital_enrolment_datetime: '2021-02-07 18:56:45.000000'
   participant_digital_enrolment_datetime_string: 07feb2021 18:56:45
   participant_enrolled_digital: null
-  participant_extract_source_file: file:///C:/Users/maynam/AppData/Local/Temp/pytest-of-maynam/pytest-189/data0/temp.csv
   participant_id: DHR-498251982661
   participant_invited_to_digital: 'No'
   participant_survey_status: Complete
@@ -339,7 +333,6 @@
   participant_digital_enrolment_datetime: '2020-06-25 05:34:49.000000'
   participant_digital_enrolment_datetime_string: 25jun2020 05:34:49
   participant_enrolled_digital: null
-  participant_extract_source_file: file:///C:/Users/maynam/AppData/Local/Temp/pytest-of-maynam/pytest-189/data0/temp.csv
   participant_id: DHR-769043821442
   participant_invited_to_digital: null
   participant_survey_status: Complete
@@ -388,7 +381,6 @@
   participant_digital_enrolment_datetime: '2021-03-07 10:06:05.000000'
   participant_digital_enrolment_datetime_string: 07mar2021 10:06:05
   participant_enrolled_digital: null
-  participant_extract_source_file: file:///C:/Users/maynam/AppData/Local/Temp/pytest-of-maynam/pytest-189/data0/temp.csv
   participant_id: DHR-868570220212
   participant_invited_to_digital: null
   participant_survey_status: Complete
@@ -438,7 +430,6 @@
   participant_digital_enrolment_datetime: '2021-06-08 04:32:31.000000'
   participant_digital_enrolment_datetime_string: 08jun2021 04:32:31
   participant_enrolled_digital: 'No'
-  participant_extract_source_file: file:///C:/Users/maynam/AppData/Local/Temp/pytest-of-maynam/pytest-189/data0/temp.csv
   participant_id: DHR-890407714528
   participant_invited_to_digital: 'Yes'
   participant_survey_status: Complete
@@ -488,7 +479,6 @@
   participant_digital_enrolment_datetime: '2021-10-07 22:04:02.000000'
   participant_digital_enrolment_datetime_string: 07oct2021 22:04:02
   participant_enrolled_digital: 'Yes'
-  participant_extract_source_file: file:///C:/Users/maynam/AppData/Local/Temp/pytest-of-maynam/pytest-189/data0/temp.csv
   participant_id: DHR-965687203229
   participant_invited_to_digital: 'No'
   participant_survey_status: Complete

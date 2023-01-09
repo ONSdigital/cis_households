@@ -1354,9 +1354,12 @@ category_maps = {
             "delivered": 4,
         },
         "nhs_data_share": {
-            "Opt-Out": 0,
-            "Opt-In Sent": 1,
-            None: 2,
+            "Opt-Out": 1,
+            "Opt-In Sent": 2,
+        },
+        "participant_original_invite_cohort": {
+            "Swab Only": 1,
+            "Blood and Swab": 2,
         },
     }
 }
@@ -2175,7 +2178,7 @@ column_name_maps = {
         "ethnic_group": "ethnic_group",
         "ethnicity": "ethnicity",
         "ethnicity_other": "ethnicity_other",
-        "original_invite_cohort": "participant_testing_group",
+        "original_invite_cohort": "participant_original_invite_cohort",
         "consent_contact_extra_research_yn": "consent_contact_extra_research_yn",
         "consent_use_of_surplus_blood_samples_yn": "consent_use_of_surplus_blood_samples_yn",
         "consent_blood_samples_if_positive_yn": "consent_blood_samples_if_positive_yn",
