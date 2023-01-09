@@ -56,7 +56,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: participant_testing_group
+  name: participant_original_invite_cohort
   nullable: true
   type: string
 - metadata: {}

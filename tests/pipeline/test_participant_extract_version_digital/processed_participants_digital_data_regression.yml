@@ -39,8 +39,9 @@
   participant_enrolled_digital: null
   participant_id: DHR-016525808631
   participant_invited_to_digital: 'Yes'
+  participant_original_invite_cohort: Its main implementation is the Glasgow Haskell
+    Compiler.
   participant_survey_status: Withdrawn
-  participant_testing_group: Its main implementation is the Glasgow Haskell Compiler.
   participant_withdrawal_reason: No longer wants to take part
   participant_withdrawal_type: Withdrawn
   sex: Male
@@ -89,9 +90,9 @@
   participant_enrolled_digital: 'No'
   participant_id: DHR-190156218256
   participant_invited_to_digital: null
+  participant_original_invite_cohort: The sequential subset of Erlang supports eager
+    evaluation, single assignment, and dynamic typing.
   participant_survey_status: Withdrawn
-  participant_testing_group: The sequential subset of Erlang supports eager evaluation,
-    single assignment, and dynamic typing.
   participant_withdrawal_reason: No longer wants to take part
   participant_withdrawal_type: null
   sex: Male
@@ -138,9 +139,9 @@
   participant_enrolled_digital: null
   participant_id: DHR-329500167403
   participant_invited_to_digital: 'Yes'
+  participant_original_invite_cohort: Haskell features a type system with type inference
+    and lazy evaluation.
   participant_survey_status: Active
-  participant_testing_group: Haskell features a type system with type inference and
-    lazy evaluation.
   participant_withdrawal_reason: Too many visits
   participant_withdrawal_type: Withdrawn
   sex: Male
@@ -186,9 +187,9 @@
   participant_enrolled_digital: null
   participant_id: DHR-352206298026
   participant_invited_to_digital: null
+  participant_original_invite_cohort: Erlang is known for its designs that are well
+    suited for systems.
   participant_survey_status: Complete
-  participant_testing_group: Erlang is known for its designs that are well suited
-    for systems.
   participant_withdrawal_reason: Swab/blood process distressing
   participant_withdrawal_type: Withdrawn - no future linkage
   sex: Male
@@ -236,9 +237,9 @@
   participant_enrolled_digital: 'No'
   participant_id: DHR-424039274499
   participant_invited_to_digital: null
+  participant_original_invite_cohort: He looked inquisitively at his keyboard and
+    wrote another sentence.
   participant_survey_status: Complete
-  participant_testing_group: He looked inquisitively at his keyboard and wrote another
-    sentence.
   participant_withdrawal_reason: Too many visits
   participant_withdrawal_type: Withdrawn - no future linkage or use of samples
   sex: Female
@@ -285,8 +286,9 @@
   participant_enrolled_digital: null
   participant_id: DHR-498251982661
   participant_invited_to_digital: 'No'
+  participant_original_invite_cohort: Ports are created with the built-in function
+    open_port.
   participant_survey_status: Complete
-  participant_testing_group: Ports are created with the built-in function open_port.
   participant_withdrawal_reason: Participant does not want to self swab
   participant_withdrawal_type: Withdrawn - no future linkage
   sex: Female
@@ -335,9 +337,9 @@
   participant_enrolled_digital: null
   participant_id: DHR-769043821442
   participant_invited_to_digital: null
+  participant_original_invite_cohort: The Galactic Empire is nearing completion of
+    the Death Star, a space station with the power to destroy entire planets.
   participant_survey_status: Complete
-  participant_testing_group: The Galactic Empire is nearing completion of the Death
-    Star, a space station with the power to destroy entire planets.
   participant_withdrawal_reason: Bad experience with tester/survey
   participant_withdrawal_type: null
   sex: Male
@@ -383,9 +385,9 @@
   participant_enrolled_digital: null
   participant_id: DHR-868570220212
   participant_invited_to_digital: null
+  participant_original_invite_cohort: Erlang is known for its designs that are well
+    suited for systems.
   participant_survey_status: Complete
-  participant_testing_group: Erlang is known for its designs that are well suited
-    for systems.
   participant_withdrawal_reason: Moving location
   participant_withdrawal_type: Withdrawn
   sex: Female
@@ -432,9 +434,9 @@
   participant_enrolled_digital: 'No'
   participant_id: DHR-890407714528
   participant_invited_to_digital: 'Yes'
+  participant_original_invite_cohort: He looked inquisitively at his keyboard and
+    wrote another sentence.
   participant_survey_status: Complete
-  participant_testing_group: He looked inquisitively at his keyboard and wrote another
-    sentence.
   participant_withdrawal_reason: No longer convenient
   participant_withdrawal_type: Withdrawn - no future linkage or use of samples
   sex: Female
@@ -481,8 +483,8 @@
   participant_enrolled_digital: 'Yes'
   participant_id: DHR-965687203229
   participant_invited_to_digital: 'No'
+  participant_original_invite_cohort: Make me a sandwich.
   participant_survey_status: Complete
-  participant_testing_group: Make me a sandwich.
   participant_withdrawal_reason: Bad experience with tester/survey
   participant_withdrawal_type: null
   sex: Male
