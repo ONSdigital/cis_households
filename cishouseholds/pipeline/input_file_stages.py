@@ -107,7 +107,7 @@ participant_extract_digital_parameters = {
     ],
     "sep": "|",
     "cast_to_double_list": survey_response_cisd_cast_to_double,
-    "source_file_column": "survey_response_source_file",
+    "source_file_column": "participant_extract_source_file",
 }
 
 lab_results_glasgow_parameters = {
