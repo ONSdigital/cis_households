@@ -418,6 +418,7 @@ def get_participant_extract_digital_data_description(_, blood_barcodes, swab_bar
             end=2022,
             fmt=digital_datetime_format,
         ),
+        "nhs_data_share": _("choice", items=yes_no_none_choice),
         "nhs_share_opt_out_date": _(
             "discrete_distribution",
             population=[

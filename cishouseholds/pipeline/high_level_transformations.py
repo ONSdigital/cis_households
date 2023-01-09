@@ -318,7 +318,7 @@ def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
     transform and process participant extract data received from cis digital
     """
     col_val_map = {
-        "withdrawn_reason": {
+        "participant_withdrawal_reason": {
             "Moving Location": "Moving location",
             "Bad experience with tester / survey": "Bad experience with interviewer/survey",
             "Swab / blood process too distressing": "Swab/blood process too distressing",
@@ -367,6 +367,8 @@ def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
     )
 
     df = apply_value_map_multiple_columns(df, col_val_map)
+    df = create_formatted_datetime_string_columns(df)
+
     return df
 
 

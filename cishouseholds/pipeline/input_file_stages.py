@@ -100,13 +100,14 @@ participant_extract_digital_parameters = {
     "dataset_name": "participant_extract_digital",
     "id_column": "participant_id",
     "validation_schema": validation_schemas["participant_extract_digital_validation_schema"],
+    "column_name_map": column_name_maps["participant_extract_digital_name_map"],
     "datetime_column_map": cis_digital_datetime_map,
     "transformation_functions": [
         transform_participant_extract_digital,
     ],
     "sep": "|",
     "cast_to_double_list": survey_response_cisd_cast_to_double,
-    "source_file_column": "survey_response_source_file",
+    "source_file_column": "participant_extract_source_file",
 }
 
 lab_results_glasgow_parameters = {
