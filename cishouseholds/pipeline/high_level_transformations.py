@@ -173,6 +173,12 @@ from cishouseholds.validate_class import SparkValidate
 
 # from cishouseholds.pipeline.regex_patterns import healthcare_bin_pattern
 
+date_cols_min_date_dict = {
+    "think_had_covid_onset_date": "2019-11-17",
+    "think_had_contacted_nhs": "2019-11-17",
+    "think_had_covid_admitted_to_hopsital": "2019-11-17",
+    "been_outside_uk_last_return_date": "2021-04-01",
+}
 
 def clean_covid_test_swab(df: DataFrame):
     """
@@ -1595,7 +1601,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
             "last_suspected_covid_contact_date",
             "think_had_covid_onset_date",
             "think_have_covid_onset_date",
-            "been_outside_uk_latest_date",
+            "been_outside_uk_last_return_date",
             "other_covid_infection_test_first_positive_date",
             "other_covid_infection_test_last_negative_date",
             "other_antibody_test_first_positive_date",
@@ -1603,11 +1609,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         ]
         if col in df.columns
     ]
-    date_cols_min_date_dict = {
-        "think_had_covid_onset_date": "2019-11-17",
-        "think_had_contacted_nhs": "2019-11-17",
-        "think_had_covid_admitted_to_hopsital": "2019-11-17",
-    }
+
     df = assign_raw_copies(df, date_cols_to_correct, "pdc")
     df = correct_date_ranges(df, date_cols_to_correct, "visit_datetime", "2019-08-01", date_cols_min_date_dict)
     df = df.withColumn(
@@ -2414,7 +2416,7 @@ def union_dependent_cleaning(df):
             "last_suspected_covid_contact_date",
             "think_had_covid_onset_date",
             "think_have_covid_onset_date",
-            "been_outside_uk_latest_date",
+            "been_outside_uk_last_return_date",
             "other_covid_infection_test_first_positive_date",
             "other_covid_infection_test_last_negative_date",
             "other_antibody_test_first_positive_date",
@@ -2423,7 +2425,7 @@ def union_dependent_cleaning(df):
         if col in df.columns
     ]
     df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime", "visit_id")
-    df = remove_incorrect_dates(df, date_cols_to_correct, "visit_datetime", "2019-08-01")
+    df = remove_incorrect_dates(df, date_cols_to_correct, "visit_datetime", "2019-08-01",date_cols_min_date_dict)
 
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
