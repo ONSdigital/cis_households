@@ -104,20 +104,20 @@ def swab_barcodes():
 
 
 @pytest.fixture(scope="session")
-def glasgow_lab_results_output(pandas_df_to_temporary_csv, swab_barcodes):
+def swab_results_output(pandas_df_to_temporary_csv, swab_barcodes):
     """
     Generate glasgow lab results_output.
     """
     schema = Schema(schema=get_glasgow_lab_data_description(create_mimesis_field(), swab_barcodes))
     pandas_df = pd.DataFrame(schema.create(iterations=10))
-    csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
+    csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep=",")
     processing_function = generate_input_processing_function(**swab_results_parameters, include_hadoop_read_write=False)
     processed_df = processing_function(resource_path=csv_file_path)
     return processed_df
 
 
 @pytest.fixture(scope="session")
-def blood_responses_output(pandas_df_to_temporary_csv, blood_barcodes):
+def blood_results_output(pandas_df_to_temporary_csv, blood_barcodes):
     """
     Generate glasgow lab results_output.
     """

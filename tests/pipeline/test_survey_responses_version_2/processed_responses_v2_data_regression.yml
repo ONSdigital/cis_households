@@ -9,7 +9,7 @@
   bad_email: false
   been_outside_uk: null
   been_outside_uk_last_country: MALAWI
-  been_outside_uk_last_return_date: '2020-09-10 00:00:00.000000'
+  been_outside_uk_last_return_date: '2019-09-10 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   blood_sample_barcode: BLT69481643
   blood_sample_barcode_raw: BLT69481643
@@ -318,7 +318,7 @@
   bad_email: false
   been_outside_uk: null
   been_outside_uk_last_country: GUYANA
-  been_outside_uk_last_return_date: '2021-01-25 00:00:00.000000'
+  been_outside_uk_last_return_date: '2021-02-25 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   blood_sample_barcode: null
   blood_sample_barcode_raw: null
@@ -936,7 +936,7 @@
   bad_email: null
   been_outside_uk: null
   been_outside_uk_last_country: SUDAN
-  been_outside_uk_last_return_date: '2020-06-28 00:00:00.000000'
+  been_outside_uk_last_return_date: '2020-07-28 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   blood_sample_barcode: BLT70965759
   blood_sample_barcode_raw: BLT70965759
@@ -1254,7 +1254,7 @@
   bad_email: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: MOLDOVA
-  been_outside_uk_last_return_date: '2020-04-27 00:00:00.000000'
+  been_outside_uk_last_return_date: '2020-05-27 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   blood_sample_barcode: BLT49605737
   blood_sample_barcode_raw: BLT49605737
@@ -1875,13 +1875,13 @@
   accepted_fingerprick_invite: null
   additional_consent_requirement: 'Yes'
   agreed_to_additional_consent_visit: null
-  any_date_corrected: null
+  any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: 'No'
   approached_for_blood_samples: 'Yes'
   bad_email: null
   been_outside_uk: null
   been_outside_uk_last_country: YEMEN
-  been_outside_uk_last_return_date: '2020-12-04 00:00:00.000000'
+  been_outside_uk_last_return_date: '2019-12-04 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   blood_sample_barcode: BLT99128328
   blood_sample_barcode_raw: BLT99128328
@@ -2823,7 +2823,7 @@
   bad_email: false
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: GUATEMALA
-  been_outside_uk_last_return_date: '2020-09-20 00:00:00.000000'
+  been_outside_uk_last_return_date: '2019-09-20 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   blood_sample_barcode: BLT54337808
   blood_sample_barcode_raw: BLT54337808

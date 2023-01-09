@@ -10,7 +10,7 @@
   bad_email: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: Benin
-  been_outside_uk_last_return_date: '2022-01-09 00:00:00.000000'
+  been_outside_uk_last_return_date: '2021-12-09 00:00:00.000000'
   blood_barcode_corrected: ONS52277469
   blood_consolidation_point_error: kpa_unboxed
   blood_consolidation_point_error_datetime: null
@@ -464,7 +464,7 @@
   bad_email: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Seychelles
-  been_outside_uk_last_return_date: '2022-01-05 00:00:00.000000'
+  been_outside_uk_last_return_date: '2021-12-05 00:00:00.000000'
   blood_barcode_corrected: ONS02635454
   blood_consolidation_point_error: sample_bagged_zip
   blood_consolidation_point_error_datetime: '2022-01-04T23:37:39Z'

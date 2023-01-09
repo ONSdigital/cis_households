@@ -120,7 +120,7 @@ swab_results_parameters = {
     "transformation_functions": [],
     "sep": ",",
     "cast_to_double_list": [],
-    "source_file_column": "lab_results_source_file",
+    "source_file_column": "swab_results_source_file",
 }
 
 blood_results_parameters = {
@@ -131,7 +131,7 @@ blood_results_parameters = {
     "datetime_column_map": blood_datetime_map,
     "column_name_map": column_name_maps["blood_variable_name_map"],
     "transformation_functions": [],
-    "sep": ",",
+    "sep": "|",
     "cast_to_double_list": ["Monoclonal undiluted quantitation (Colourimetric)"],
     "source_file_column": "blood_results_source_file",
     "write_mode": "append",

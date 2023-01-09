@@ -428,7 +428,7 @@
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
   been_outside_uk_last_country: BENIN
-  been_outside_uk_last_return_date: '2022-01-05 00:00:00.000000'
+  been_outside_uk_last_return_date: '2021-12-05 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   blood_sample_barcode: ONS09721832
   blood_sample_barcode_edited_flag: 1.0
@@ -645,7 +645,7 @@
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
   been_outside_uk_last_country: THAILAND
-  been_outside_uk_last_return_date: '2022-01-08 00:00:00.000000'
+  been_outside_uk_last_return_date: '2021-12-08 00:00:00.000000'
   been_outside_uk_since_april_2020: 'No'
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: null
@@ -857,7 +857,7 @@
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: false
   been_outside_uk_last_country: GUINEA-BISSAU
-  been_outside_uk_last_return_date: '2022-01-08 00:00:00.000000'
+  been_outside_uk_last_return_date: '2021-12-08 00:00:00.000000'
   been_outside_uk_since_april_2020: 'Yes'
   blood_sample_barcode: null
   blood_sample_barcode_edited_flag: null
@@ -1711,7 +1711,7 @@
   any_household_members_over_2_years_and_not_present: null
   bad_email: null
   been_outside_uk_last_country: ISRAEL
-  been_outside_uk_last_return_date: '2022-01-08 00:00:00.000000'
+  been_outside_uk_last_return_date: '2021-12-08 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   blood_sample_barcode: ONS74412661
   blood_sample_barcode_edited_flag: 1.0
@@ -1927,7 +1927,7 @@
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: false
   been_outside_uk_last_country: PHILIPPINES
-  been_outside_uk_last_return_date: '2022-01-04 00:00:00.000000'
+  been_outside_uk_last_return_date: '2021-12-04 00:00:00.000000'
   been_outside_uk_since_april_2020: null
   blood_sample_barcode: ONS74412661
   blood_sample_barcode_edited_flag: 1.0
