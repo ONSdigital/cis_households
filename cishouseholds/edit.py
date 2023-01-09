@@ -110,12 +110,14 @@ def correct_date_ranges_union_dependent(
     return joined_df.drop("MONTH", "DAY", "DIFF", "ROW")
 
 
-def remove_incorrect_dates(df: DataFrame, columns_to_edit: List[str], visit_date_column: str, min_date: str, min_date_dict:Dict[str,str]):
+def remove_incorrect_dates(
+    df: DataFrame, columns_to_edit: List[str], visit_date_column: str, min_date: str, min_date_dict: Dict[str, str]
+):
     """
     removes out of range dates
     """
     for col in columns_to_edit:
-        min_date = min_date_dict.get(col,min_date)
+        min_date = min_date_dict.get(col, min_date)
         df = df.withColumn(col, F.when((F.col(col) < F.col(visit_date_column)) & (F.col(col) > min_date), F.col(col)))
     return df
 

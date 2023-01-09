@@ -180,6 +180,7 @@ date_cols_min_date_dict = {
     "been_outside_uk_last_return_date": "2021-04-01",
 }
 
+
 def clean_covid_test_swab(df: DataFrame):
     """
     Clean all variables related to the swab covid test.
@@ -2425,7 +2426,7 @@ def union_dependent_cleaning(df):
         if col in df.columns
     ]
     df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime", "visit_id")
-    df = remove_incorrect_dates(df, date_cols_to_correct, "visit_datetime", "2019-08-01",date_cols_min_date_dict)
+    df = remove_incorrect_dates(df, date_cols_to_correct, "visit_datetime", "2019-08-01", date_cols_min_date_dict)
 
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
