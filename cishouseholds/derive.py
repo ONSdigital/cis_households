@@ -60,21 +60,23 @@ def assign_regex_from_map_additional_rules(
     overwrite_values
         whether to overwrite all pre-existing values in `column_name_to_assign`
     """
+    condition = F.col(column_name_to_assign).isNull() & any_column_not_null(reference_columns)
+    process_df = df.filter(condition)
+    stable_df = df.filter(~condition)
 
     temp_col = f"{column_name_to_assign}_temp"
-
-    df = assign_regex_from_map(df, temp_col, reference_columns, map, priority_map)
+    process_df = assign_regex_from_map(process_df, temp_col, reference_columns, map, priority_map)
     if first_match_only:
-        df = df.withColumn("disambiguated_col", F.lit(None))
+        process_df = process_df.withColumn("disambiguated_col", F.lit(None))
         if disambiguation_conditions is not None:
             for val, condition in disambiguation_conditions.items():
-                df = df.withColumn(
+                process_df = process_df.withColumn(
                     "disambiguated_col",
                     F.when(
                         condition & (F.col("disambiguated_col").isNull()) & F.array_contains(temp_col, val), val
                     ).otherwise(F.col("disambiguated_col")),
                 )
-        df = df.withColumn(
+        process_df = process_df.withColumn(
             temp_col,
             F.coalesce(
                 F.col("disambiguated_col"),
@@ -82,13 +84,15 @@ def assign_regex_from_map_additional_rules(
             ),
         )
     if overwrite_values:
-        df = df.withColumn(column_name_to_assign, F.col(temp_col))
+        process_df = process_df.withColumn(column_name_to_assign, F.col(temp_col))
     else:
-        df = df.withColumn(column_name_to_assign, F.coalesce(F.col(column_name_to_assign), F.col(temp_col)))
+        process_df = process_df.withColumn(
+            column_name_to_assign, F.coalesce(F.col(column_name_to_assign), F.col(temp_col))
+        )
     if value_map is not None:
-        df = update_column_values_from_map(df, column_name_to_assign, value_map)
-    df = df.drop(temp_col, "disambiguated_col")
-    return df
+        process_df = update_column_values_from_map(process_df, column_name_to_assign, value_map)
+    process_df = process_df.drop(temp_col, "disambiguated_col")
+    return process_df.unionByName(stable_df)
 
 
 def assign_regex_from_map(
