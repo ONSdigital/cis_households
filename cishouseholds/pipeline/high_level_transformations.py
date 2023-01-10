@@ -3032,11 +3032,6 @@ def replace_design_weights_transformations(df: DataFrame) -> DataFrame:
     return df
 
 
-def derive_overall_vaccination(df: DataFrame) -> DataFrame:
-    """Derive overall vaccination status from NIMS and CIS data."""
-    return df
-
-
 def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
     """Add result of various regex pattern matchings"""
     # df = df.drop(
