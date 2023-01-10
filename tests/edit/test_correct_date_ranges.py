@@ -61,10 +61,14 @@ def test_correct_date_ranges(spark_session):
         for col in ["visit_date", "date1"]:
             dfs[i] = dfs[i].withColumn(col, F.to_timestamp(col))
 
-    output_df = correct_date_ranges(dfs[0], ["date1"], "visit_date", "2019-08-01")
+    min_date_dict = {
+        "visit_date": "2019-08-01",
+    }
+
+    output_df = correct_date_ranges(dfs[0], ["date1"], "visit_date", "2019-08-01", min_date_dict)
 
     output_df = correct_date_ranges_union_dependent(output_df, ["date1"], "id", "visit_date", "key")
 
-    output_df = remove_incorrect_dates(output_df, ["date1"], "visit_date", "2019-08-01")
+    output_df = remove_incorrect_dates(output_df, ["date1"], "visit_date", "2019-08-01", min_date_dict)
 
     assert_df_equality(output_df, dfs[1], ignore_column_order=True, ignore_row_order=True, ignore_nullable=True)
