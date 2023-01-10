@@ -48,6 +48,11 @@ def any_column_equal_value(column_list: List[str], val):
     return reduce(or_, [F.col(column).eqNullSafe(val) for column in column_list])
 
 
+def first_sorted_val_row_wise(column_list: List[str]):
+    "Expression to return the first sorted value row-wise"
+    return F.array_sort(F.array(column_list)).getItem(0)
+
+
 def all_equal(column_list: List[str], equal_to: Any):
     "Expression that evaluates true if all columns are equal to the specified value."
     return reduce(and_, [F.col(column).eqNullSafe(F.lit(equal_to)) for column in column_list])
