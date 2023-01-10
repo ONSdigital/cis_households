@@ -35,28 +35,30 @@ def array_contains_any(array_column: str, values: List):
 
 def all_columns_null(column_list: List[str]):
     "Expression that evaluates true if all columns are null."
-    return reduce(and_, [F.col(column).isNull() for column in column_list])
+    return reduce(and_, [F.col(column).isNull() for column in column_list], F.lit(False))
 
 
 def any_column_null(column_list: List[str]):
     "Expression that evaluates true if any column is null."
-    return reduce(or_, [F.col(column).isNull() for column in column_list])
+    return reduce(or_, [F.col(column).isNull() for column in column_list], F.lit(False))
 
 
 def any_column_equal_value(column_list: List[str], val):
     "Expression that evaluates true if any column matches val"
-    return reduce(or_, [F.col(column).eqNullSafe(val) for column in column_list])
+    return reduce(or_, [F.col(column).eqNullSafe(val) for column in column_list], F.lit(False))
 
 
 def all_equal(column_list: List[str], equal_to: Any):
     "Expression that evaluates true if all columns are equal to the specified value."
-    return reduce(and_, [F.col(column).eqNullSafe(F.lit(equal_to)) for column in column_list])
+    return reduce(and_, [F.col(column).eqNullSafe(F.lit(equal_to)) for column in column_list], F.lit(False))
 
 
 def all_equal_or_Null(column_list: List[str], equal_to: Any):
     "Expression that evaluates true if all columns are equal to the specified value OR Null."
     return reduce(
-        and_, [(F.col(column).isNull() | F.col(column).eqNullSafe(F.lit(equal_to))) for column in column_list]
+        and_,
+        [(F.col(column).isNull() | F.col(column).eqNullSafe(F.lit(equal_to))) for column in column_list],
+        F.lit(False),
     )
 
 

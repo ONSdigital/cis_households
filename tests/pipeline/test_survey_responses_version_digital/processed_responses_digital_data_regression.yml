@@ -882,7 +882,7 @@
   work_in_additional_paid_employment_raw: Prefer not to say
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else meaning not at your home
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
   work_main_job_role_raw: Erlang is known for its designs that are well suited for
     systems.
@@ -4054,7 +4054,7 @@
   work_in_additional_paid_employment_raw: 'Yes'
   work_location: null
   work_location_raw: null
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
   work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
     sentence.
@@ -4507,7 +4507,7 @@
   work_in_additional_paid_employment_raw: Prefer not to say
   work_location: Working from home
   work_location_raw: From home meaning in the same grounds or building as your home
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: WHERE ARE MY PANTS
   work_main_job_role_raw: Where are my pants?
   work_main_job_title: ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL PROGRAMMING

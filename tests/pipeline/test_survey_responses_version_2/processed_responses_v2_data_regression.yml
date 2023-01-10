@@ -287,7 +287,7 @@
   work_in_additional_paid_employment: null
   work_location: null
   work_location_raw: null
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
   work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
     sentence.
@@ -2168,7 +2168,7 @@
   work_in_additional_paid_employment: null
   work_location: Working from home
   work_location_raw: From home (in the same grounds or building as your home)
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: ANY ELEMENT OF A TUPLE CAN BE ACCESSED IN CONSTANT TIME
   work_main_job_role_raw: Any element of a tuple can be accessed in constant time.
   work_main_job_title: WHERE ARE MY PANTS
@@ -3105,7 +3105,7 @@
   work_in_additional_paid_employment: null
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else (not at your home)
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE BUT IT HAS
     SINCE BEEN RESTORED
   work_main_job_role_raw: In 1989 the building was heavily damaged by fire, but it

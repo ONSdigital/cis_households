@@ -141,7 +141,7 @@
   work_health_care_patient_facing_original: Yes, other healthcare, non-patient-facing
   work_location: Its main implementation is the Glasgow Haskell Compiler.
   work_location_raw: Its main implementation is the Glasgow Haskell Compiler.
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: THE SYNTAX D1D2DN DENOTES A TUPLE WHOSE ARGUMENTS ARE D1 D2  DN
   work_main_job_role_raw: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
     are D1, D2, ... Dn.
@@ -301,7 +301,7 @@
   work_health_care_patient_facing_original: Yes, secondary care, patient-facing
   work_location: Where are my pants?
   work_location_raw: Where are my pants?
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
   work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
     sentence.
@@ -461,7 +461,7 @@
   work_health_care_patient_facing_original: Yes, other healthcare, non-patient-facing
   work_location: Make me a sandwich.
   work_location_raw: Make me a sandwich.
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE BUT IT HAS
     SINCE BEEN RESTORED
   work_main_job_role_raw: In 1989 the building was heavily damaged by fire, but it
@@ -622,7 +622,7 @@
   work_health_care_patient_facing_original: Yes, secondary care, patient-facing
   work_location: I don't even care.
   work_location_raw: I don't even care.
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: INITIALLY COMPOSING LIGHT HEARTED AND IRREVERENT WORKS HE ALSO
     WROTE SERIOUS SOMBRE AND RELIGIOUS PIECES BEGINNING IN THE 1930S
   work_main_job_role_raw: Initially composing light-hearted and irreverent works,
@@ -782,7 +782,7 @@
     station with the power to destroy entire planets.
   work_location_raw: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
   work_main_job_title: THEY ARE WRITTEN AS STRINGS OF CONSECUTIVE ALPHANUMERIC CHARACTERS
@@ -943,7 +943,7 @@
   work_health_care_patient_facing_original: null
   work_location: Do you come here often?
   work_location_raw: Do you come here often?
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: PORTS ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
   work_main_job_role_raw: Ports are created with the built-in function open_port.
   work_main_job_title: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
@@ -1102,7 +1102,7 @@
   work_health_care_patient_facing_original: Yes, other healthcare, patient-facing
   work_location: Atoms are used within a program to denote distinguished values.
   work_location_raw: Atoms are used within a program to denote distinguished values.
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL PROGRAMMING
     LANGUAGE
   work_main_job_role_raw: Erlang is a general-purpose, concurrent, functional programming
@@ -1260,7 +1260,7 @@
   work_health_care_patient_facing_original: Yes, other healthcare, patient-facing
   work_location: Make me a sandwich.
   work_location_raw: Make me a sandwich.
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: MAKE ME A SANDWICH
   work_main_job_role_raw: Make me a sandwich.
   work_main_job_title: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL
@@ -1417,7 +1417,7 @@
   work_health_care_patient_facing_original: null
   work_location: Where are my pants?
   work_location_raw: Where are my pants?
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
   work_main_job_role_raw: Atoms are used within a program to denote distinguished
     values.
@@ -1578,7 +1578,7 @@
   work_health_care_patient_facing_original: Yes, other healthcare, patient-facing
   work_location: Tuples are containers for a fixed number of Erlang data types.
   work_location_raw: Tuples are containers for a fixed number of Erlang data types.
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: ITS MAIN IMPLEMENTATION IS THE GLASGOW HASKELL COMPILER
   work_main_job_role_raw: Its main implementation is the Glasgow Haskell Compiler.
   work_main_job_title: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL

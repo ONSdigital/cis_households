@@ -615,7 +615,7 @@
     Well, do ya? Punk!"'
   work_location_raw: '"You''ve got to ask yourself one question: ""Do I feel lucky?""
     Well, do ya? Punk!"'
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: PORTS ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
   work_main_job_role_raw: Ports are created with the built-in function open_port.
   work_main_job_title: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE BUT IT HAS
@@ -1464,7 +1464,7 @@
   work_health_care_patient_facing: 'No'
   work_location: Houston, we have a problem.
   work_location_raw: Houston, we have a problem.
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: THE GALACTIC EMPIRE IS NEARING COMPLETION OF THE DEATH STAR
     A SPACE STATION WITH THE POWER TO DESTROY ENTIRE PLANETS
   work_main_job_role_raw: The Galactic Empire is nearing completion of the Death Star,
@@ -1893,7 +1893,7 @@
   work_health_care_patient_facing: null
   work_location: You're gonna need a bigger boat.
   work_location_raw: You're gonna need a bigger boat.
-  work_main_job_changed: 'Yes'
+  work_main_job_changed: 'No'
   work_main_job_role: PORTS ARE USED TO COMMUNICATE WITH THE EXTERNAL WORLD
   work_main_job_role_raw: Ports are used to communicate with the external world.
   work_main_job_title: PORTS ARE USED TO COMMUNICATE WITH THE EXTERNAL WORLD
