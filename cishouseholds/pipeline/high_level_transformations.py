@@ -2402,6 +2402,13 @@ def derive_contact_any_covid_covid_variables(df: DataFrame):
         contact_suspect_covid_date_column="last_suspected_covid_contact_date",
     )
 
+    df = assign_date_difference(
+        df,
+        "contact_known_or_suspected_covid_days_since",
+        "contact_known_or_suspected_covid_latest_date",
+        "visit_datetime",
+    )
+
     return df
 
 
@@ -2464,25 +2471,6 @@ def union_dependent_cleaning(df):
 
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
-
-    df = derive_contact_any_covid_covid_variables(df)
-    # TODO: Add in once dependencies are derived
-    # df = impute_latest_date_flag(
-    #     df=df,
-    #     participant_id_column="participant_id",
-    #     visit_date_column="visit_date",
-    #     visit_id_column="visit_id",
-    #     contact_any_covid_column="contact_known_or_suspected_covid",
-    #     contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
-    # )
-
-    # TODO: Add in once dependencies are derived
-    df = assign_date_difference(
-        df,
-        "contact_known_or_suspected_covid_days_since",
-        "contact_known_or_suspected_covid_latest_date",
-        "visit_datetime",
-    )
 
     df = update_face_covering_outside_of_home(
         df=df,
@@ -2694,6 +2682,7 @@ def fill_forward_events_for_key_columns(df):
         visit_datetime_column="visit_datetime",
         visit_id_column="visit_id",
     )
+    df = derive_contact_any_covid_covid_variables(df)
     return df
 
 
