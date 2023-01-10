@@ -53,6 +53,11 @@ def first_sorted_val_row_wise(column_list: List[str]):
     return F.array_sort(F.array(column_list)).getItem(0)
 
 
+def last_sorted_val_row_wise(column_list: List[str]):
+    "Expression to return the first sorted value row-wise"
+    return F.array_sort(F.array(column_list)).getItem(len(column_list) - 1)
+
+
 def all_equal(column_list: List[str], equal_to: Any):
     "Expression that evaluates true if all columns are equal to the specified value."
     return reduce(and_, [F.col(column).eqNullSafe(F.lit(equal_to)) for column in column_list])
