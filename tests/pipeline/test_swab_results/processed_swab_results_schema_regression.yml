@@ -72,7 +72,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: lab_results_source_file
+  name: swab_results_source_file
   nullable: false
   type: string
 type: struct
