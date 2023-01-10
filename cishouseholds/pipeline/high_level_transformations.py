@@ -119,6 +119,7 @@ from cishouseholds.expressions import any_column_equal_value
 from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import array_contains_any
 from cishouseholds.expressions import first_sorted_val_row_wise
+from cishouseholds.expressions import last_sorted_val_row_wise
 from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
@@ -2388,17 +2389,17 @@ def derive_contact_any_covid_covid_variables(df: DataFrame):
 
     df = df.withColumn(
         "contact_known_or_suspected_covid_latest_date",
-        first_sorted_val_row_wise(["contact_known_covid_date", "contact_suspect_covid_date"]),
+        last_sorted_val_row_wise(["last_covid_contact_date", "last_suspected_covid_contact_date"]),
     )
 
     df = contact_known_or_suspected_covid_type(
         df=df,
-        contact_known_covid_type_column="contact_known_covid_type",
-        contact_any_covid_type_column="contact_any_covid_type",
-        contact_suspect_covid_type_column="contact_suspect_covid_type",
-        contact_any_covid_date_column="contact_any_covid_date",
-        contact_known_covid_date_column="contact_known_covid_date",
-        contact_suspect_covid_date_column="contact_suspect_covid_date",
+        contact_known_covid_type_column="last_covid_contact_type",
+        contact_suspect_covid_type_column="last_suspected_covid_contact_type",
+        contact_any_covid_type_column="contact_known_or_suspected_covid",
+        contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
+        contact_known_covid_date_column="last_covid_contact_date",
+        contact_suspect_covid_date_column="last_suspected_covid_contact_date",
     )
 
     return df
