@@ -37,7 +37,7 @@ def assign_regex_from_map_additional_rules(
     value_map: Optional[dict] = None,
     first_match_only: Optional[bool] = False,
     overwrite_values: Optional[bool] = False,
-    default_value: Optional[Any] = "Don't know",
+    default_value: Optional[Any] = "Don't know type",
 ):
     """
     Apply additional logic around the `assign_regex_from_map` function to allow for increased specificity/.
