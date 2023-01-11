@@ -34,6 +34,7 @@
   nhs_data_share: null
   nhs_share_opt_out_date: '2022-01-06'
   ons_household_id: '602276804025'
+  ordered_household_id: 5
   participant_digital_enrolment_datetime: '2020-10-14 01:01:05.000000'
   participant_digital_enrolment_datetime_string: 14oct2020 01:01:05
   participant_enrolled_digital: null
@@ -85,6 +86,7 @@
   nhs_data_share: 'Yes'
   nhs_share_opt_out_date: '2022-01-06'
   ons_household_id: '571295570558'
+  ordered_household_id: 4
   participant_digital_enrolment_datetime: '2020-04-08 02:21:01.000000'
   participant_digital_enrolment_datetime_string: 08apr2020 02:21:01
   participant_enrolled_digital: 'No'
@@ -134,6 +136,7 @@
   nhs_data_share: 'Yes'
   nhs_share_opt_out_date: '2022-01-08'
   ons_household_id: '836394225258'
+  ordered_household_id: 8
   participant_digital_enrolment_datetime: '2020-10-21 05:34:46.000000'
   participant_digital_enrolment_datetime_string: 21oct2020 05:34:46
   participant_enrolled_digital: null
@@ -182,6 +185,7 @@
   nhs_data_share: 'Yes'
   nhs_share_opt_out_date: '2022-01-08'
   ons_household_id: '425723964512'
+  ordered_household_id: 3
   participant_digital_enrolment_datetime: '2022-09-25 08:49:41.000000'
   participant_digital_enrolment_datetime_string: 25sep2022 08:49:41
   participant_enrolled_digital: null
@@ -232,6 +236,7 @@
   nhs_data_share: null
   nhs_share_opt_out_date: '2022-01-06'
   ons_household_id: '294850989981'
+  ordered_household_id: 2
   participant_digital_enrolment_datetime: '2022-03-05 21:30:35.000000'
   participant_digital_enrolment_datetime_string: 05mar2022 21:30:35
   participant_enrolled_digital: 'No'
@@ -281,6 +286,7 @@
   nhs_data_share: 'No'
   nhs_share_opt_out_date: '2022-01-09'
   ons_household_id: '959807652614'
+  ordered_household_id: 10
   participant_digital_enrolment_datetime: '2021-02-07 18:56:45.000000'
   participant_digital_enrolment_datetime_string: 07feb2021 18:56:45
   participant_enrolled_digital: null
@@ -332,6 +338,7 @@
   nhs_data_share: null
   nhs_share_opt_out_date: '2022-01-03'
   ons_household_id: '219547810444'
+  ordered_household_id: 1
   participant_digital_enrolment_datetime: '2020-06-25 05:34:49.000000'
   participant_digital_enrolment_datetime_string: 25jun2020 05:34:49
   participant_enrolled_digital: null
@@ -380,6 +387,7 @@
   nhs_data_share: null
   nhs_share_opt_out_date: '2022-01-09'
   ons_household_id: '930086875935'
+  ordered_household_id: 9
   participant_digital_enrolment_datetime: '2021-03-07 10:06:05.000000'
   participant_digital_enrolment_datetime_string: 07mar2021 10:06:05
   participant_enrolled_digital: null
@@ -429,6 +437,7 @@
   nhs_data_share: null
   nhs_share_opt_out_date: '2022-01-08'
   ons_household_id: '757503098830'
+  ordered_household_id: 7
   participant_digital_enrolment_datetime: '2021-06-08 04:32:31.000000'
   participant_digital_enrolment_datetime_string: 08jun2021 04:32:31
   participant_enrolled_digital: 'No'
@@ -478,6 +487,7 @@
   nhs_data_share: 'Yes'
   nhs_share_opt_out_date: '2022-01-01'
   ons_household_id: '633229661713'
+  ordered_household_id: 6
   participant_digital_enrolment_datetime: '2021-10-07 22:04:02.000000'
   participant_digital_enrolment_datetime_string: 07oct2021 22:04:02
   participant_enrolled_digital: 'Yes'
