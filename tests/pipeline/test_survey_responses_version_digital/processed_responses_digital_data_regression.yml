@@ -106,7 +106,7 @@
   days_since_think_had_covid: 26.0
   days_since_think_had_covid_group: 15-28
   digital_communication_preference: Email
-  digital_entry_pack_sent_datetime: '2021-06-21 16:25:43.000000'
+  digital_entry_pack_sent_datetime: '2021-06-21 00:00:00.000000'
   digital_entry_pack_status: Ports are used to communicate with the external world.
   digital_survey_collection_mode: Telephone
   digital_survey_mode_preference: Telephone
@@ -561,7 +561,7 @@
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   digital_communication_preference: Letter
-  digital_entry_pack_sent_datetime: '2020-06-19 17:09:27.000000'
+  digital_entry_pack_sent_datetime: '2020-06-19 00:00:00.000000'
   digital_entry_pack_status: He looked inquisitively at his keyboard and wrote another
     sentence.
   digital_survey_collection_mode: null
@@ -1011,7 +1011,7 @@
   days_since_think_had_covid: 25.0
   days_since_think_had_covid_group: 15-28
   digital_communication_preference: null
-  digital_entry_pack_sent_datetime: '2020-04-12 09:10:28.000000'
+  digital_entry_pack_sent_datetime: '2020-04-12 00:00:00.000000'
   digital_entry_pack_status: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
   digital_survey_collection_mode: Telephone
@@ -1464,7 +1464,7 @@
   days_since_think_had_covid: 26.0
   days_since_think_had_covid_group: 15-28
   digital_communication_preference: null
-  digital_entry_pack_sent_datetime: '2020-09-20 00:35:12.000000'
+  digital_entry_pack_sent_datetime: '2020-09-20 00:00:00.000000'
   digital_entry_pack_status: I don't even care.
   digital_survey_collection_mode: Telephone
   digital_survey_mode_preference: null
@@ -1912,7 +1912,7 @@
   days_since_think_had_covid: 29.0
   days_since_think_had_covid_group: 29-60
   digital_communication_preference: null
-  digital_entry_pack_sent_datetime: '2021-09-27 00:19:18.000000'
+  digital_entry_pack_sent_datetime: '2021-09-27 00:00:00.000000'
   digital_entry_pack_status: Make me a sandwich.
   digital_survey_collection_mode: Telephone
   digital_survey_mode_preference: null
@@ -2369,7 +2369,7 @@
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   digital_communication_preference: null
-  digital_entry_pack_sent_datetime: '2021-10-03 12:24:38.000000'
+  digital_entry_pack_sent_datetime: '2021-10-03 00:00:00.000000'
   digital_entry_pack_status: The Galactic Empire is nearing completion of the Death
     Star, a space station with the power to destroy entire planets.
   digital_survey_collection_mode: Online
@@ -2827,7 +2827,7 @@
   days_since_think_had_covid: null
   days_since_think_had_covid_group: null
   digital_communication_preference: null
-  digital_entry_pack_sent_datetime: '2020-10-24 17:03:47.000000'
+  digital_entry_pack_sent_datetime: '2020-10-24 00:00:00.000000'
   digital_entry_pack_status: In 1989 the building was heavily damaged by fire, but
     it has since been restored.
   digital_survey_collection_mode: null
@@ -3278,7 +3278,7 @@
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   digital_communication_preference: Email
-  digital_entry_pack_sent_datetime: '2020-11-09 22:59:43.000000'
+  digital_entry_pack_sent_datetime: '2020-11-09 00:00:00.000000'
   digital_entry_pack_status: Atoms can contain any character if they are enclosed
     within single quotes and an escape convention exists which allows any character
     to be used within an atom.
@@ -3741,7 +3741,7 @@
   days_since_think_had_covid: 25.0
   days_since_think_had_covid_group: 15-28
   digital_communication_preference: Email
-  digital_entry_pack_sent_datetime: '2022-03-05 21:30:35.000000'
+  digital_entry_pack_sent_datetime: '2022-03-05 00:00:00.000000'
   digital_entry_pack_status: Haskell features a type system with type inference and
     lazy evaluation.
   digital_survey_collection_mode: Online
@@ -4200,7 +4200,7 @@
   days_since_think_had_covid: null
   days_since_think_had_covid_group: Date not given
   digital_communication_preference: null
-  digital_entry_pack_sent_datetime: '2021-07-15 23:03:43.000000'
+  digital_entry_pack_sent_datetime: '2021-07-15 00:00:00.000000'
   digital_entry_pack_status: Tuples are containers for a fixed number of Erlang data
     types.
   digital_survey_collection_mode: Online
