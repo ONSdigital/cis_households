@@ -14,6 +14,9 @@ from pyspark.sql.window import Window
 from cishouseholds.derive import assign_random_day_in_month
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import any_column_not_null
+from cishouseholds.merge import union_multiple_tables
+from cishouseholds.pipeline.load import extract_from_table
+from cishouseholds.pipeline.load import update_table
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.udfs import generate_sample_proportional_to_size_udf
 
@@ -267,6 +270,7 @@ def fill_forward_event(
     participant_id_column: str,
     visit_datetime_column: str,
     visit_id_column: str,
+    use_hdfs: bool = True,
 ):
     """
     Fill forwards all columns associated with an event.
@@ -287,68 +291,88 @@ def fill_forward_event(
     visit_id_column
     """
     event_columns = [event_date_column, event_indicator_column, *detail_columns]
-    null_visit_df = df.filter(F.col(visit_datetime_column).isNull())
+
+    ordering_window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
+    window = Window.partitionBy(participant_id_column, visit_datetime_column, visit_id_column).orderBy("VISIT_DIFF")
+
+    completed_sections = []
+    events_df = None
+
+    # ~~ Pre process dataframe to remove unworkable rows ~~ #
+    filtered_df = df.filter(
+        (F.col(visit_datetime_column).isNotNull())
+        & (F.col(event_date_column).isNotNull())
+        & (F.col(event_date_column) <= F.col(visit_datetime_column))
+    ).distinct()
+    null_df = df.filter(F.col(visit_datetime_column).isNull())
     df = df.filter(F.col(visit_datetime_column).isNotNull())
 
-    grouping_window = Window.partitionBy(participant_id_column, event_date_column).orderBy("REF_EVENT_DATE")
-    window = Window.partitionBy(participant_id_column, visit_datetime_column, visit_id_column).orderBy(
-        F.desc(event_date_column)
-    )
-    filter_window = Window.partitionBy(participant_id_column, event_date_column).orderBy(visit_datetime_column)
+    # ~~ Normalise dates ~~ #
 
-    filtered_df = df.filter(
-        (F.col(event_date_column).isNotNull()) & (F.col(event_date_column) <= F.col(visit_datetime_column))
+    # create an expression for when a series of dates has been normalised
+    # gets the date difference between the first row by visit datetime in the filtered dataset
+    apply_logic = (
+        F.abs(F.datediff(F.first(F.col(event_date_column)).over(ordering_window), F.col(event_date_column)))
+        <= event_date_tolerance
+    )
+
+    # optimise the filtered_df schema and cache to improve spark plan creation / runtime
+    filtered_df = filtered_df.select(
+        participant_id_column, visit_datetime_column, visit_id_column, *event_columns
     ).cache()
 
-    event_dates_df = filtered_df.select(participant_id_column, event_date_column).distinct()
+    # loops until there are no rows left to normalise getting the first row where that satisfies the `apply_logic` condition
+    i = 0
+    while filtered_df.count() > 0:
+        filtered_df = filtered_df.withColumn("LOGIC_APPLIED", apply_logic)
+        temp_df = filtered_df.withColumn("ROW", F.row_number().over(ordering_window))
+        if not use_hdfs:
+            completed_sections.append(temp_df.filter(F.col("LOGIC_APPLIED") & (F.col("ROW") == 1)).drop("ROW"))
+        else:
+            mode = "overwrite" if i == 0 else "append"
+            update_table(
+                temp_df.filter(F.col("LOGIC_APPLIED") & (F.col("ROW") == 1)).drop("ROW"),
+                f"{event_indicator_column}_temp_lookup",
+                mode,
+            )
+        filtered_df = filtered_df.filter(~F.col("LOGIC_APPLIED"))
+        i += 1
 
-    filtered_df = filtered_df.join(
-        event_dates_df.withColumnRenamed(event_date_column, "REF_EVENT_DATE"),
-        on=participant_id_column,
-        how="left",
-    )
+    # combine the sections of normalised dates together and rejoin the null data
+    if not use_hdfs:
+        if len(completed_sections) >= 2:
+            events_df = union_multiple_tables(completed_sections)
+        elif len(completed_sections) == 1:
+            events_df = completed_sections[0]
+    else:
+        events_df = extract_from_table(f"{event_indicator_column}_temp_lookup", True)
 
-    filtered_df = (
-        (
-            filtered_df.withColumn(
-                "RESOLVED_EVENT_DATE",
-                F.first(
-                    F.when(
-                        F.abs(F.datediff(F.col("REF_EVENT_DATE"), F.col(event_date_column))) <= event_date_tolerance,
-                        F.col("REF_EVENT_DATE"),
-                    ),
-                    True,
-                ).over(grouping_window),
-            ).drop("REF_EVENT_DATE")
-        )
-        .filter(F.col("RESOLVED_EVENT_DATE").isNotNull())
-        .distinct()
-    )
+    # ~~ Construct resultant dataframe by fill forwards ~~#
 
-    filtered_df = filtered_df.withColumn(event_date_column, F.col("RESOLVED_EVENT_DATE")).drop("RESOLVED_EVENT_DATE")
-    filtered_df = (
-        filtered_df.withColumn("ROW_NUMBER", F.row_number().over(filter_window))
-        .filter(F.col("ROW_NUMBER") == 1)
-        .drop("ROW_NUMBER")
-    )
-    # filter valid events prioritizing the first occupance of an event
+    # use this columns to override the original dataframe
 
-    if filtered_df.count() > 0:
+    if events_df is not None and events_df.count() > 0:
         df = (
             df.drop(*event_columns)
-            .join(filtered_df.select(participant_id_column, *event_columns), on=participant_id_column, how="left")
-            .withColumn("DROP_EVENT", F.col(event_date_column) > F.col(visit_datetime_column))
+            .join(events_df.select(participant_id_column, *event_columns), on=participant_id_column, how="left")
+            .withColumn("DROP_EVENT", (F.col(event_date_column) > F.col(visit_datetime_column)))
         )
     else:
         df = df.withColumn("DROP_EVENT", F.lit(False))
 
+    # add the additional detail columns to the original dataframe
     for col in event_columns:
         df = df.withColumn(col, F.when(F.col("DROP_EVENT"), None).otherwise(F.col(col)))
 
+    # pick the best row to retain based upon proximity to visit date
     df = df.withColumn(event_indicator_column, F.when(F.col(event_date_column).isNull(), "No").otherwise("Yes"))
-    df = df.drop("DROP_EVENT").distinct().withColumn("ROW_NUMBER", F.row_number().over(window))
-    df = df.filter(F.col("ROW_NUMBER") == 1).drop("ROW_NUMBER")
-    df = df.unionByName(null_visit_df)
+    df = df.withColumn(
+        "VISIT_DIFF",
+        F.coalesce(F.abs(F.datediff(F.col(event_date_column), F.col(visit_datetime_column))), F.lit(float("inf"))),
+    )
+    df = df.drop("DROP_EVENT").distinct().withColumn("ROW", F.row_number().over(window)).drop("VISIT_DIFF")
+    df = df.filter(F.col("ROW") == 1).drop("ROW")
+    df = df.unionByName(null_df)
     return df
 
 

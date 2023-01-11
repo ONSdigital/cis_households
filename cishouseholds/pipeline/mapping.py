@@ -36,6 +36,7 @@ _yes_no_categories = {"No": 0, "Yes": 1}
 
 category_maps = {
     "iqvia_raw_category_map": {
+        "think_respiratory_infection": _yes_no_categories,
         "agreed_to_additional_consent_visit": _yes_no_categories,
         "consent_blood_samples_if_positive_yn": _yes_no_categories,
         "consent_contact_extra_research_yn": _yes_no_categories,
@@ -616,6 +617,7 @@ category_maps = {
             "survey_completed_datetime": 6,
             "survey_last_modified_datetime": 7,
             "swab_sample_received_consolidation_point_datetime": 8,
+            "participant_completion_window_start_datetime": 9,
         },
         "country_name_12": {"England": 0, "Wales": 1, "Northern Ireland": 2, "Scotland": 3},
         "local_authority_unity_authority_code": {
@@ -1167,9 +1169,6 @@ category_maps = {
             "English": 1,
             "Welsh": 2,
         },
-        # "digital_entry_pack_status": {},  # TODO Need categories to map
-        # "existing_participant_digital_opt_in_reminder_1_status": {},  # TODO Need categories to map
-        # "existing_participant_digital_opt_in_reminder_2_status": {},  # TODO Need categories to map
         "household_completion_window_status": {
             "New": 1,
             "Open": 2,
@@ -1354,6 +1353,14 @@ category_maps = {
             "Sent": 3,
             "delivered": 4,
         },
+        "nhs_data_share": {
+            "Opt-Out": 1,
+            "Opt-In Sent": 2,
+        },
+        "participant_original_invite_cohort": {
+            "Swab Only": 1,
+            "Blood and Swab": 2,
+        },
     }
 }
 
@@ -1368,6 +1375,26 @@ column_name_maps = {
     "blood_past_positive_name_map": {
         "ons_household_id": "ons_household_id",
         "blood_past_positive": "blood_past_positive",
+    },
+    "lab_results_glasgow_variable_name_map": {
+        "Sample": "swab_sample_barcode",
+        "Result": "pcr_result_classification",
+        "Date Tested": "pcr_result_recorded_datetime",
+        "Lab ID": "pcr_lab_id",
+        "testKit": "testKit",
+        "CH1-Target": "orf1ab_gene_pcr_target",
+        "CH1-Result": "orf1ab_gene_pcr_result_classification",
+        "CH1-Cq": "orf1ab_gene_pcr_cq_value",
+        "CH2-Target": "n_gene_pcr_target",
+        "CH2-Result": "n_gene_pcr_result_classification",
+        "CH2-Cq": "n_gene_pcr_cq_value",
+        "CH3-Target": "s_gene_pcr_target",
+        "CH3-Result": "s_gene_pcr_result_classification",
+        "CH3-Cq": "s_gene_pcr_cq_value",
+        "CH4-Target": "ms2_pcr_target",
+        "CH4-Result": "ms2_pcr_result_classification",
+        "CH4-Cq": "ms2_pcr_cq_value",
+        "voidReason": "void_reason",
     },
     "swab_variable_name_map": {
         "Sample": "swab_sample_barcode",
@@ -1387,6 +1414,33 @@ column_name_maps = {
         "CH4-Target": "ms2_pcr_target",
         "CH4-Result": "ms2_pcr_result_classification",
         "CH4-Cq": "ms2_pcr_cq_value",
+        "VoidReason": "void_reason",
+    },
+    "historical_blood_variable_name_map": {
+        "ons_id": "blood_sample_barcode",
+        "lims_id": "lims_id",
+        "plate_tdi": "plate_tdi",
+        "well_tdi": "well_tdi",
+        "tdi_assay_net_signal": "tdi_assay_net_signal",
+        "run_date_tdi": "run_date_tdi",
+        "plate_screaton": "plate_screaton",
+        "well_screaton": "well_screaton",
+        "screaton_net_od": "screaton_net_od",
+        "run_date_screaton": "run_date_screaton",
+        "interpretation_tdi": "interpretation_tdi",
+        "interpretation_screaton": "interpretation_screaton",
+        "abbott_index": "abbott_index",
+        "interpretation_abbott": "interpretation_abbott",
+        "run_date_abbott": "run_date_abbott",
+        "time_to_centrifuge_minute": "time_to_centrifuge_minute",
+        "received_dt": "received_date",
+    },
+    "unassayed_bloods_variable_name_map": {
+        "Date Received": "blood_sample_received_date",
+        "Sample ID": "blood_sample_barcode",
+        "Rejection Code": "rejection_code",
+        "Reason for rejection": "rejection_reason",
+        "Sample Type V/C": "blood_sample_type",
     },
     "blood_variable_name_map": {
         "Serum Source ID": "blood_sample_barcode",
@@ -1401,31 +1455,6 @@ column_name_maps = {
         "Date Samples Arrayed Oxford": "blood_sample_arrayed_date",
         "Date Samples Received Oxford": "blood_sample_received_date",
         "Voyager Date Created": "blood_sample_collected_datetime",
-    },
-    "unassayed_bloods_variable_name_map": {
-        "Date Received": "blood_sample_received_date",
-        "Sample ID": "blood_sample_barcode",
-        "Rejection Code": "rejection_code",
-        "Reason for rejection": "rejection_reason",
-        "Sample Type V/C": "blood_sample_type",
-    },
-    "historical_blood_variable_name_map": {
-        "blood_barcode_OX": "blood_sample_barcode",
-        "received_ox_date": "blood_sample_received_date",
-        "result_tdi": "antibody_test_result_classification",
-        "result_siemens": "siemens_antibody_test_result_classification",
-        "result_tdi_date": "antibody_test_result_recorded_date",
-        "assay_tdi": "antibody_test_tdi_result_value",
-        "assay_category": "antibody_assay_category",
-        "assay_siemens": "siemens_antibody_test_result_value",
-        "plate_tdi": "antibody_test_plate_id",
-        "well_tdi": "antibody_test_well_id",
-        "lims_id": "lims_id",
-        "blood_sample_type": "blood_sample_type",
-        "voyager_blood_dt_time": "blood_sample_collected_datetime",
-        "arrayed_ox_date": "blood_sample_arrayed_date",
-        "assay_mabs": "antibody_test_result_value",
-        "platestorage": "plate_storage_method",
     },
     "sample_eng_wl_sc_variable_name_map": {
         "UAC": "unique_access_code",
@@ -2134,13 +2163,44 @@ column_name_maps = {
         "pwta18": "person_level_weight_aps_18",
         "age": "age",
     },
-    "participant_extract_digital_map": {
+    "participant_extract_digital_name_map": {
+        "ons_household_id": "ons_household_id",
+        "participant_survey_status": "participant_survey_status",
         "withdrawn_reason": "participant_withdrawal_reason",
         "withdrawn_type": "participant_withdrawal_type",
-        "existing_participant_digital_opt_in_reminder_2_status": "",  # picklist
+        "participant_id": "participant_id",
+        "title": "title",
+        "first_name": "first_name",
+        "middle_name": "middle_name",
+        "last_name": "last_name",
+        "date_of_birth": "date_of_birth",
+        "sex": "sex",
+        "ethnic_group": "ethnic_group",
+        "ethnicity": "ethnicity",
+        "ethnicity_other": "ethnicity_other",
+        "original_invite_cohort": "participant_original_invite_cohort",
+        "consent_contact_extra_research_yn": "consent_contact_extra_research_yn",
+        "consent_use_of_surplus_blood_samples_yn": "consent_use_of_surplus_blood_samples_yn",
+        "consent_blood_samples_if_positive_yn": "consent_blood_samples_if_positive_yn",
+        "existing_participant_digital_opt_in_status": "existing_participant_digital_opt_in_status",
+        "existing_participant_digital_opt_in_datetime": "existing_participant_digital_opt_in_datetime",
+        "nhs_data_share": "nhs_data_share",
+        "nhs_share_opt_out_date": "nhs_share_opt_out_date",
+        "household_invited_to_digital": "household_invited_to_digital",
+        "household_digital_enrolment_invited_datetime": "household_digital_enrolment_invited_datetime",
+        "participant_invited_to_digital": "participant_invited_to_digital",
+        "participant_enrolled_digital": "participant_enrolled_digital",
+        "participant_digital_enrolment_datetime": "participant_digital_enrolment_datetime",
+        "digital_entry_pack_sent_datetime": "digital_entry_pack_sent_datetime",
+        "digital_entry_pack_status": "digital_entry_pack_status",
+        "existing_participant_digital_opt_in_reminder_1_due_datetime": "existing_participant_digital_opt_in_reminder_1_due_datetime",
+        "existing_participant_digital_opt_in_reminder_1_sent_datetime": "existing_participant_digital_opt_in_reminder_1_sent_datetime",
+        "existing_participant_digital_opt_in_reminder_1_status": "existing_participant_digital_opt_in_reminder_1_status",
+        "existing_participant_digital_opt_in_reminder_2_due_datetime": "existing_participant_digital_opt_in_reminder_2_due_datetime",
+        "existing_participant_digital_opt_in_reminder_2_sent_datetime": "existing_participant_digital_opt_in_reminder_2_sent_datetime",
+        "existing_participant_digital_opt_in_reminder_2_status": "existing_participant_digital_opt_in_reminder_2_status",
     },
 }
-
 
 survey_response_cast_to_double = [
     "infant_age_months_1",

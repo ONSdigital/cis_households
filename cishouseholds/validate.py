@@ -3,6 +3,7 @@ import inspect
 import re
 from collections import Counter
 from io import StringIO
+from pathlib import Path
 from typing import Dict
 from typing import List
 from typing import Union
@@ -94,7 +95,14 @@ def normalise_schema(file_path: str, reference_validation_schema: dict, regex_sc
                 f"{file_path} is invalid as header({actual_header} contained unrecognisable columns"  # functional
             )
             return error_message, None
-        drop = [*[col for col in actual_header if col not in dont_drop_list], "DROP"]
+        drop = [
+            *[
+                "".join(filter(lambda x: x not in r"./\|", col.replace(" ", "_")))
+                for col in actual_header
+                if col not in dont_drop_list
+            ],
+            "DROP",
+        ]
     else:
         validation_schema = [[col, _type] for col, _type in reference_validation_schema.items()]
         drop = []
@@ -124,7 +132,7 @@ def validate_csv_header(text_file: RDD, expected_header: List[str], delimiter: s
     return expected_header == actual_header
 
 
-def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: str = ","):
+def validate_files(file_paths: Union[str, List[str]], validation_schema: dict, sep: str = ","):
     """
     Validate the header and field count of one or more CSV files on HDFS.
 
@@ -149,6 +157,9 @@ def validate_files(file_paths: Union[str, list], validation_schema: dict, sep: s
 
     valid_files = []
     for file_path in file_paths:
+        if Path(file_path).suffix in [".xlsx"]:  # TODO: add validation of xl files using pandas reading to get the
+            valid_files.append(file_path)
+            continue
         error = ""
         text_file = spark_session.sparkContext.textFile(file_path)
         valid_csv_header = validate_csv_header(text_file, expected_header_row, delimiter=sep)

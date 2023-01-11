@@ -36,7 +36,6 @@ from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.impute import fill_forward_only_to_nulls
 from cishouseholds.impute import post_imputation_wrapper
 from cishouseholds.merge import left_join_keep_right
-from cishouseholds.merge import union_dataframes_to_hive
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
@@ -45,15 +44,18 @@ from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.high_level_transformations import add_pattern_matching_flags
+from cishouseholds.pipeline.high_level_transformations import blood_past_positive_transformations
 from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.high_level_transformations import derive_age_based_columns
 from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
+from cishouseholds.pipeline.high_level_transformations import design_weights_lookup_transformations
 from cishouseholds.pipeline.high_level_transformations import fill_forward_events_for_key_columns
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.high_level_transformations import get_differences
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
 from cishouseholds.pipeline.high_level_transformations import reclassify_work_variables
+from cishouseholds.pipeline.high_level_transformations import replace_design_weights_transformations
 from cishouseholds.pipeline.high_level_transformations import transform_cis_soc_data
 from cishouseholds.pipeline.high_level_transformations import transform_from_lookups
 from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
@@ -80,6 +82,7 @@ from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
+from cishouseholds.prediction_checker_class import PredictionChecker
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import check_lookup_table_joined_columns_unique
 from cishouseholds.validate import normalise_schema
@@ -90,6 +93,8 @@ from dummy_data_generation.generate_data import generate_nims_table
 from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
+
+# from cishouseholds.pipeline.high_level_transformations import fix_timestamps
 
 pipeline_stages = {}
 
@@ -356,14 +361,15 @@ def process_soc_deltas(
             add_error_file_log_entry(file_path, error_message)  # type: ignore
             print(error_message)  # functional
 
-    soc_lookup_df = union_multiple_tables(dfs)
-    coding_errors_df, soc_lookup_df = transform_cis_soc_data(
-        soc_lookup_df, inconsistencies_resolution_df, join_on_columns
-    )
+    if len(dfs) > 0:
+        soc_lookup_df = union_multiple_tables(dfs)
+        coding_errors_df, soc_lookup_df = transform_cis_soc_data(
+            soc_lookup_df, inconsistencies_resolution_df, join_on_columns
+        )
 
-    mode = "overwrite" if include_processed else "append"
-    update_table_and_log_source_files(soc_lookup_df, soc_lookup_table, source_file_column, "soc_codes", mode)
-    update_table(coding_errors_df, coding_errors_table, mode)
+        mode = "overwrite" if include_processed else "append"
+        update_table_and_log_source_files(soc_lookup_df, soc_lookup_table, source_file_column, "soc_codes", mode)
+        update_table(coding_errors_df, coding_errors_table, mode)
 
 
 def generate_input_processing_function(
@@ -498,7 +504,8 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
     """
     df_list = [extract_from_table(table) for table in tables_to_process]
 
-    union_dataframes_to_hive(output_survey_table, df_list)
+    df = union_multiple_tables(df_list)
+    update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
 
@@ -509,6 +516,9 @@ def join_lookup_table(
     lookup_table_name: str,
     unjoinable_values: Dict[str, Union[str, int]] = {},
     join_on_columns: List[str] = ["work_main_job_title", "work_main_job_role"],
+    lookup_transformations: List[str] = [],
+    pre_join_transformations: List[str] = [],
+    post_join_transformations: List[str] = [],
 ):
     """
     Filters input_survey_table into an unjoinable_df, where all join_on_columns are null, and and applies any
@@ -525,9 +535,23 @@ def join_lookup_table(
         dictionary containing {column_name: value_to_assign} pairs to be added to unjoinable_data
     join_on_column: list
         list of columns to join on, defaults to ["work_main_job_title", "work_main_job_role"]
+    transformations: list
+        list of transformation functions to be run on the dataframe once the lookup has been joined
     """
+    transformations_dict = {
+        "nims": nims_transformations,
+        "blood_past_positive": blood_past_positive_transformations,
+        "design_weights_lookup": design_weights_lookup_transformations,
+        "replace_design_weights": replace_design_weights_transformations,
+    }
+
     lookup_df = extract_from_table(lookup_table_name)
+    for transformation in lookup_transformations:
+        lookup_df = transformations_dict[transformation](lookup_df)
+
     df = extract_from_table(input_survey_table)
+    for transformation in pre_join_transformations:
+        df = transformations_dict[transformation](df)
 
     unjoinable_df = df.filter(all_columns_null(join_on_columns))
     for col, val in unjoinable_values.items():
@@ -535,8 +559,11 @@ def join_lookup_table(
 
     df = df.filter(any_column_not_null(join_on_columns))
     df = left_join_keep_right(df, lookup_df, join_on_columns)
-
     df = union_multiple_tables([df, unjoinable_df])
+
+    for transformation in post_join_transformations:
+        df = transformations_dict[transformation](df)
+
     update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
@@ -571,9 +598,9 @@ def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[st
         print(
             f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
         )  # functional
-        df_to_process = df_to_process.repartition(
-            get_or_create_spark_session().sparkContext.getConf.get("spark.sql.shuffle.partitions") / 2
-        )
+        partitions = int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions"))
+        partitions = int(partitions / 2)
+        df_to_process = df_to_process.repartition(partitions)
         lookup_df = add_pattern_matching_flags(df_to_process)
         update_table(lookup_df, regex_lookup_table, "overwrite")
 
@@ -803,18 +830,13 @@ def geography_and_imputation_dependent_processing(
         name of table to write processed data to
     """
     df = extract_from_table(input_survey_table)
-    rural_urban_lookup_df = (
-        get_or_create_spark_session()
-        .read.csv(
-            rural_urban_lookup_path,
-            header=True,
-            schema="""
+    rural_urban_lookup_df = get_or_create_spark_session().read.csv(
+        rural_urban_lookup_path,
+        header=True,
+        schema="""
             lower_super_output_area_code_11 string,
-            cis_rural_urban_classification string,
-            rural_urban_classification_11 string
+            cis_rural_urban_classification string
         """,
-        )
-        .drop("rural_urban_classification_11")
     )  # Prefer version from sample
     df = df.join(
         F.broadcast(rural_urban_lookup_df),
@@ -938,7 +960,8 @@ def validate_survey_responses(
         .withColumn("run_id", F.lit(get_run_id()))
         .drop(validation_failure_flag_column)
     )
-
+    # valid_survey_responses = fix_timestamps(valid_survey_responses)
+    # invalid_survey_responses_table = fix_timestamps(erroneous_survey_responses)
     update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
     update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
     update_table(valid_survey_responses, output_survey_table, write_mode="overwrite", archive=True)
@@ -1178,6 +1201,30 @@ def compare(
     print(f"     {table_name_to_compare} contained {total} differences to {base_table_name}")  # functional
     update_table(counts_df, counts_df_table_name, "overwrite")
     update_table(difference_sample_df, diff_samples_table_name, "overwrite")
+
+
+@register_pipeline_stage("check_predictions")
+def check_predictions(
+    base_table_name: str,
+    table_name_to_compare: str,
+    prediction_results_table: str,
+    unique_id_column: str = "unique_participant_response_id",
+):
+    """
+    Create an output that holds information about differences between 2 tables
+
+    Parameters
+    ----------
+    base_table_name
+    table_name_to_compare
+    unique_id_column
+        column containing unique id common to base an compare dataframes
+    """
+    base_df = extract_from_table(base_table_name)
+    compare_df = extract_from_table(table_name_to_compare)
+    pc = PredictionChecker(base_df, compare_df, unique_id_column)
+    df = pc.check_predictions()
+    update_table(df, prediction_results_table, "overwrite")
 
 
 @register_pipeline_stage("generate_sample")

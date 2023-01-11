@@ -1,0 +1,127 @@
+- antibody_test_bounded_result_value: Its main implementation is the Glasgow Haskell
+    Compiler.
+  antibody_test_plate_id: ONS_501652PV
+  antibody_test_result_classification: DETECTED
+  antibody_test_result_recorded_date: '2020-09-20 00:00:00.000000'
+  antibody_test_result_value: 1950.8389
+  antibody_test_undiluted_result_value: '80356'
+  antibody_test_well_id: A86
+  blood_sample_arrayed_date: '2024-12-18 00:00:00.000000'
+  blood_sample_barcode: BLT70710571
+  blood_sample_collected_datetime: null
+  blood_sample_received_date: '2021-01-25 00:00:00.000000'
+  blood_sample_type: Capillary
+- antibody_test_bounded_result_value: Make me a sandwich.
+  antibody_test_plate_id: ONS_935868PS
+  antibody_test_result_classification: DETECTED
+  antibody_test_result_recorded_date: '2019-09-10 00:00:00.000000'
+  antibody_test_result_value: 17410.4376
+  antibody_test_undiluted_result_value: '31298'
+  antibody_test_well_id: B22
+  blood_sample_arrayed_date: '2021-10-07 00:00:00.000000'
+  blood_sample_barcode: BLT97212108
+  blood_sample_collected_datetime: null
+  blood_sample_received_date: '2020-05-03 00:00:00.000000'
+  blood_sample_type: Capillary
+- antibody_test_bounded_result_value: Erlang is a general-purpose, concurrent, functional
+    programming language.
+  antibody_test_plate_id: ONS_422525XK
+  antibody_test_result_classification: DETECTED
+  antibody_test_result_recorded_date: '2023-05-24 00:00:00.000000'
+  antibody_test_result_value: 6781.2289
+  antibody_test_undiluted_result_value: '196179'
+  antibody_test_well_id: F95
+  blood_sample_arrayed_date: '2022-06-08 00:00:00.000000'
+  blood_sample_barcode: null
+  blood_sample_collected_datetime: null
+  blood_sample_received_date: '2019-02-05 00:00:00.000000'
+  blood_sample_type: Capillary
+- antibody_test_bounded_result_value: Atoms are used within a program to denote distinguished
+    values.
+  antibody_test_plate_id: ONS_021263JF
+  antibody_test_result_classification: DETECTED
+  antibody_test_result_recorded_date: '2021-08-21 00:00:00.000000'
+  antibody_test_result_value: 57444.7547
+  antibody_test_undiluted_result_value: '10727'
+  antibody_test_well_id: G96
+  blood_sample_arrayed_date: '2020-11-09 00:00:00.000000'
+  blood_sample_barcode: BLT69481643
+  blood_sample_collected_datetime: null
+  blood_sample_received_date: '2019-10-21 00:00:00.000000'
+  blood_sample_type: Capillary
+- antibody_test_bounded_result_value: Where are my pants?
+  antibody_test_plate_id: ONS_602276XC
+  antibody_test_result_classification: DETECTED
+  antibody_test_result_recorded_date: '2024-02-01 00:00:00.000000'
+  antibody_test_result_value: 49875.2903
+  antibody_test_undiluted_result_value: '9003'
+  antibody_test_well_id: K02
+  blood_sample_arrayed_date: '2020-12-04 00:00:00.000000'
+  blood_sample_barcode: BLT29425711
+  blood_sample_collected_datetime: null
+  blood_sample_received_date: '2019-10-14 00:00:00.000000'
+  blood_sample_type: Capillary
+- antibody_test_bounded_result_value: Its main implementation is the Glasgow Haskell
+    Compiler.
+  antibody_test_plate_id: ONS_807652QC
+  antibody_test_result_classification: DETECTED
+  antibody_test_result_recorded_date: '2019-05-14 00:00:00.000000'
+  antibody_test_result_value: 2324.1831
+  antibody_test_undiluted_result_value: '2339'
+  antibody_test_well_id: L49
+  blood_sample_arrayed_date: '2024-05-17 00:00:00.000000'
+  blood_sample_barcode: BLT31637835
+  blood_sample_collected_datetime: null
+  blood_sample_received_date: '2024-05-27 00:00:00.000000'
+  blood_sample_type: Capillary
+- antibody_test_bounded_result_value: Erlang is known for its designs that are well
+    suited for systems.
+  antibody_test_plate_id: ONS_203229WI
+  antibody_test_result_classification: DETECTED
+  antibody_test_result_recorded_date: '2021-02-07 00:00:00.000000'
+  antibody_test_result_value: 69590.0063
+  antibody_test_undiluted_result_value: '71581'
+  antibody_test_well_id: R39
+  blood_sample_arrayed_date: '2020-11-16 00:00:00.000000'
+  blood_sample_barcode: BLT18998134
+  blood_sample_collected_datetime: null
+  blood_sample_received_date: '2022-03-09 00:00:00.000000'
+  blood_sample_type: Capillary
+- antibody_test_bounded_result_value: Erlang is known for its designs that are well
+    suited for systems.
+  antibody_test_plate_id: ONS_617139QO
+  antibody_test_result_classification: NOT detected
+  antibody_test_result_recorded_date: '2020-08-13 00:00:00.000000'
+  antibody_test_result_value: 52782.56
+  antibody_test_undiluted_result_value: '181928'
+  antibody_test_well_id: R87
+  blood_sample_arrayed_date: '2023-04-22 00:00:00.000000'
+  blood_sample_barcode: BLT71019011
+  blood_sample_collected_datetime: null
+  blood_sample_received_date: '2019-04-27 00:00:00.000000'
+  blood_sample_type: Capillary
+- antibody_test_bounded_result_value: Haskell is a standardized, general-purpose purely
+    functional programming language, with non-strict semantics and strong static typing.
+  antibody_test_plate_id: ONS_319300WP
+  antibody_test_result_classification: NOT detected
+  antibody_test_result_recorded_date: '2021-03-07 00:00:00.000000'
+  antibody_test_result_value: 21452.2868
+  antibody_test_undiluted_result_value: '243612'
+  antibody_test_well_id: U75
+  blood_sample_arrayed_date: '2019-06-28 00:00:00.000000'
+  blood_sample_barcode: null
+  blood_sample_collected_datetime: null
+  blood_sample_received_date: '2019-12-15 00:00:00.000000'
+  blood_sample_type: Capillary
+- antibody_test_bounded_result_value: Make me a sandwich.
+  antibody_test_plate_id: ONS_001674BJ
+  antibody_test_result_classification: Failed
+  antibody_test_result_recorded_date: '2022-10-03 00:00:00.000000'
+  antibody_test_result_value: 32909.9019
+  antibody_test_undiluted_result_value: '212136'
+  antibody_test_well_id: Z59
+  blood_sample_arrayed_date: '2023-05-18 00:00:00.000000'
+  blood_sample_barcode: BLT74412661
+  blood_sample_collected_datetime: null
+  blood_sample_received_date: '2024-09-25 00:00:00.000000'
+  blood_sample_type: Capillary

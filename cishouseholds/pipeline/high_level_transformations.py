@@ -5,8 +5,7 @@ from operator import and_
 from operator import or_
 from typing import List
 
-import pyspark.sql.functions as F
-from pandas import pandas as pd
+import pandas as pd
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import SparkSession
@@ -38,6 +37,7 @@ from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_regex_from_map
+from cishouseholds.derive import assign_regex_from_map_additional_rules
 from cishouseholds.derive import assign_regex_match_result
 from cishouseholds.derive import assign_school_year_september_start
 from cishouseholds.derive import assign_taken_column
@@ -91,6 +91,7 @@ from cishouseholds.edit import clean_barcode_simple
 from cishouseholds.edit import clean_job_description_string
 from cishouseholds.edit import clean_within_range
 from cishouseholds.edit import conditionally_replace_columns
+from cishouseholds.edit import conditionally_set_column_values
 from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import correct_date_ranges
 from cishouseholds.edit import correct_date_ranges_union_dependent
@@ -139,23 +140,8 @@ from cishouseholds.merge import null_safe_join
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.generate_outputs import generate_sample
-from cishouseholds.pipeline.healthcare_regex import healthcare_classification
-from cishouseholds.pipeline.healthcare_regex import patient_facing_classification
-from cishouseholds.pipeline.healthcare_regex import patient_facing_pattern
-from cishouseholds.pipeline.healthcare_regex import priority_map
-from cishouseholds.pipeline.healthcare_regex import roles_map
-from cishouseholds.pipeline.healthcare_regex import social_care_classification
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.mapping import column_name_maps
-from cishouseholds.pipeline.regex_patterns import at_school_pattern
-from cishouseholds.pipeline.regex_patterns import at_university_pattern
-from cishouseholds.pipeline.regex_patterns import childcare_pattern
-from cishouseholds.pipeline.regex_patterns import furloughed_pattern
-from cishouseholds.pipeline.regex_patterns import in_college_or_further_education_pattern
-from cishouseholds.pipeline.regex_patterns import not_working_pattern
-from cishouseholds.pipeline.regex_patterns import retired_regex_pattern
-from cishouseholds.pipeline.regex_patterns import self_employed_regex
-from cishouseholds.pipeline.regex_patterns import work_from_home_pattern
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pipeline.translate import backup_and_replace_translation_lookup_df
 from cishouseholds.pipeline.translate import export_responses_to_be_translated_to_translation_directory
@@ -165,9 +151,173 @@ from cishouseholds.pipeline.translate import translate_welsh_fixed_text_response
 from cishouseholds.pipeline.translate import translate_welsh_free_text_responses_digital
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.regex.healthcare_regex import healthcare_classification
+from cishouseholds.regex.healthcare_regex import patient_facing_classification
+from cishouseholds.regex.healthcare_regex import patient_facing_pattern
+from cishouseholds.regex.healthcare_regex import priority_map
+from cishouseholds.regex.healthcare_regex import roles_map
+from cishouseholds.regex.healthcare_regex import social_care_classification
+from cishouseholds.regex.regex_patterns import at_school_pattern
+from cishouseholds.regex.regex_patterns import at_university_pattern
+from cishouseholds.regex.regex_patterns import childcare_pattern
+from cishouseholds.regex.regex_patterns import furloughed_pattern
+from cishouseholds.regex.regex_patterns import in_college_or_further_education_pattern
+from cishouseholds.regex.regex_patterns import not_working_pattern
+from cishouseholds.regex.regex_patterns import retired_regex_pattern
+from cishouseholds.regex.regex_patterns import self_employed_regex
+from cishouseholds.regex.regex_patterns import work_from_home_pattern
+from cishouseholds.regex.vaccine_regex import vaccine_regex_map
+from cishouseholds.regex.vaccine_regex import vaccine_regex_priority_map
 from cishouseholds.validate_class import SparkValidate
 
+
 # from cishouseholds.pipeline.regex_patterns import healthcare_bin_pattern
+
+date_cols_min_date_dict = {
+    "think_had_covid_onset_date": "2019-11-17",
+    "think_had_contacted_nhs": "2019-11-17",
+    "think_had_covid_admitted_to_hopsital": "2019-11-17",
+    "been_outside_uk_last_return_date": "2021-04-01",
+}
+
+
+def clean_covid_test_swab(df: DataFrame):
+    """
+    Clean all variables related to the swab covid test.
+    """
+    df = df.withColumn(
+        "other_covid_infection_test_result",
+        F.when(
+            (
+                (F.col("other_covid_infection_test_result") == "Negative")
+                & (F.col("think_had_covid_onset_date").isNull())
+                & (F.col("think_had_covid_symptom_count") == 0)
+            ),
+            None,
+        ).otherwise(F.col("other_covid_infection_test_result")),
+    )
+
+    # if the participant sais they have not had another covid test but there is a result for the test
+    # and covid symptoms present or a date where symptoms occured exists or the user has been involved with a hospital
+    # due to covid then set to 'Yes'
+    df = df.withColumn(
+        "other_covid_infection_test",
+        F.when(
+            (~F.col("other_covid_infection_test").eqNullSafe("Yes"))
+            & (F.col("other_covid_infection_test_result").isNotNull())
+            & (
+                ((F.col("think_had_covid_symptom_count") > 0) | (F.col("think_had_covid_onset_date").isNotNull()))
+                | (
+                    (F.col("think_had_covid_admitted_to_hopsital") == "Yes")
+                    & (F.col("think_had_covid_contacted_nhs") == "Yes")
+                )
+            ),
+            "Yes",
+        ).otherwise(F.col("other_covid_infection_test")),
+    )
+    df.cache()
+
+    # Reset no (0) to missing where ‘No’ overall and random ‘No’s given for other covid variables.
+    flag = (
+        (F.col("think_had_covid_symptom_count") == 0)
+        & (~F.col("other_covid_infection_test_result").eqNullSafe("Positive"))
+        & reduce(
+            and_,
+            (
+                (~F.col(c).eqNullSafe("Yes"))
+                for c in [
+                    "think_had_covid",
+                    "think_had_covid_contacted_nhs",
+                    "think_had_covid_admitted_to_hopsital",
+                    "other_covid_infection_test",
+                ]
+            ),
+        )
+    )
+    for col in ["think_had_covid_contacted_nhs", "think_had_covid_admitted_to_hopsital"]:
+        df = df.withColumn(col, F.when(flag, None).otherwise(F.col(col)))
+
+    for col in ["other_covid_infection_test", "other_covid_infection_test_result"]:
+        df = df.withColumn(
+            col,
+            F.when((flag) & (F.col("survey_response_dataset_major_version") == 0), None).otherwise(F.col(col)),
+        )
+
+    # Clean where date and/or symptoms are present, but ‘feeder question’ is no to thinking had covid.
+
+    df = df.withColumn(
+        "think_had_covid",
+        F.when(
+            (F.col("think_had_covid_onset_date").isNotNull()) | (F.col("think_had_covid_symptom_count") > 0), "Yes"
+        ).otherwise(F.col("think_had_covid")),
+    )
+
+    df.cache()
+
+    # Clean where admitted is 1 but no to ‘feeder question’ for v0 dataset.
+
+    for col in ["think_had_covid", "think_had_covid_admitted_to_hopsital"]:
+        df = df.withColumn(
+            col,
+            F.when(
+                (F.col("think_had_covid_admitted_to_hopsital") == "Yes")
+                & (~F.col("think_had_covid_contacted_nhs").eqNullSafe("Yes"))
+                & (~F.col("other_covid_infection_test").eqNullSafe("Yes"))
+                & (F.col("think_had_covid_symptom_count") == 0)
+                & (~F.col("other_covid_infection_test_result").eqNullSafe("Positive")),
+                "No",
+            ).otherwise(F.col(col)),
+        )
+
+    for col in ["think_had_covid_admitted_to_hopsital", "think_had_covid_contacted_nhs"]:
+        df = df.withColumn(
+            col,
+            F.when(
+                (F.col("think_had_covid") == "No")
+                & (F.col("think_had_covid_admitted_to_hopsital") == "Yes")
+                & (F.col("think_had_covid_contacted_nhs") == "Yes")
+                & (~F.col("other_covid_infection_test").eqNullSafe("Yes"))
+                & (F.col("other_covid_infection_test_result").isNull())
+                & (F.col("think_had_covid_onset_date").isNull())
+                & (F.col("think_had_covid_symptom_count") == 0)
+                & (F.col("survey_response_dataset_major_version") == 0),
+                "No",
+            ).otherwise(F.col(col)),
+        )
+
+    for col in ["think_had_covid_admitted_to_hopsital", "other_covid_infection_test", "think_had_covid"]:
+        df = df.withColumn(
+            col,
+            F.when(
+                F.col("think_had_covid").isNull()
+                & (F.col("think_had_covid_admitted_to_hopsital") == "Yes")
+                & (~F.col("think_had_covid_contacted_nhs").eqNullSafe("Yes"))
+                & (F.col("other_covid_infection_test") == "Yes")
+                & (F.col("other_covid_infection_test_result").isNull())
+                & (F.col("think_had_covid_onset_date").isNull())
+                & (F.col("think_had_covid_symptom_count") == 0)
+                & (F.col("survey_response_dataset_major_version") == 0),
+                "No",
+            ).otherwise(F.col(col)),
+        )
+
+    # Clean where admitted is 1 but no to ‘feeder question’.
+
+    df = df.withColumn(
+        "think_had_covid",
+        F.when(
+            (F.col("think_had_covid") != "Yes")
+            & (F.col("think_had_covid_admitted_to_hopsital") == "Yes")
+            & (F.col("think_had_covid_symptom_count") == 0)
+            & (
+                (F.col("think_had_covid_contacted_nhs") != "Yes")
+                | (F.col("other_covid_infection_test_result").isNotNull())
+            )
+            & (F.col("other_covid_infection_test") == "Yes"),
+            "Yes",
+        ).otherwise(F.col("think_had_covid")),
+    )
+    return df
 
 
 def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
@@ -175,7 +325,7 @@ def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
     transform and process participant extract data received from cis digital
     """
     col_val_map = {
-        "withdrawn_reason": {
+        "participant_withdrawal_reason": {
             "Moving Location": "Moving location",
             "Bad experience with tester / survey": "Bad experience with interviewer/survey",
             "Swab / blood process too distressing": "Swab/blood process too distressing",
@@ -224,6 +374,9 @@ def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
     )
 
     df = apply_value_map_multiple_columns(df, col_val_map)
+    df = create_formatted_datetime_string_columns(df)
+    df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
+
     return df
 
 
@@ -313,6 +466,21 @@ def transform_survey_responses_version_0_delta(df: DataFrame) -> DataFrame:
     df = assign_taken_column(df=df, column_name_to_assign="blood_taken", reference_column="blood_sample_barcode")
 
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 0)
+    invalid_covid_date = "2019-11-17"
+    v0_condition = (
+        (F.col("survey_response_dataset_major_version") == 0)
+        & (F.col("think_had_covid_onset_date").isNotNull())
+        & (F.col("think_had_covid_onset_date") < invalid_covid_date)
+    )
+    v0_value_map = {
+        "other_covid_infection_test": None,
+        "other_covid_infection_test_results": None,
+    }
+    df = conditionally_set_column_values(
+        df=df,
+        condition=v0_condition,
+        cols_to_set_to_value=v0_value_map,
+    )
     df = df.withColumn("sex", F.coalesce(F.col("sex"), F.col("gender"))).drop("gender")
 
     df = map_column_values_to_null(
@@ -423,6 +591,23 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
     }
     df = apply_value_map_multiple_columns(df, v1_column_editing_map)
 
+    df = df.withColumn("work_main_job_changed", F.lit(None).cast("string"))
+    fill_forward_columns = [
+        "work_main_job_title",
+        "work_main_job_role",
+        "work_sector",
+        "work_sector_other",
+        "work_health_care_area",
+        "work_nursing_or_residential_care_home",
+        "work_direct_contact_patients_or_clients",
+    ]
+    df = update_to_value_if_any_not_null(
+        df=df,
+        column_name_to_assign="work_main_job_changed",
+        true_false_values=["Yes", "No"],
+        column_list=fill_forward_columns,
+    )
+
     df = df.drop(
         "cis_covid_vaccine_date",
         "cis_covid_vaccine_number_of_doses",
@@ -452,8 +637,10 @@ def transform_survey_responses_version_1_delta(df: DataFrame) -> DataFrame:
             "Employed and currently not working": "Furloughed (temporarily not working)",  # noqa: E501
             "Self-employed and currently not working": "Furloughed (temporarily not working)",  # noqa: E501
             "Retired": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
-            "Looking for paid work and able to start": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
-            "Not working and not looking for work": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Looking for paid work and able to start": "Not working (unemployed, retired, long-term sick etc.)",
+            # noqa: E501
+            "Not working and not looking for work": "Not working (unemployed, retired, long-term sick etc.)",
+            # noqa: E501
             "Child under 5y not attending child care": "Student",  # noqa: E501
             "Child under 5y attending child care": "Student",  # noqa: E501
             "5y and older in full-time education": "Student",  # noqa: E501
@@ -543,7 +730,6 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
         )
 
         if new_translations_df.count() > 0:
-
             translation_lookup_df = extract_lookup_csv(
                 translation_lookup_path, validation_schemas["csv_lookup_schema_extended"]
             )
@@ -564,7 +750,6 @@ def translate_welsh_survey_responses_version_digital(df: DataFrame) -> DataFrame
         to_be_translated_df = get_welsh_responses_to_be_translated(df)
 
         if to_be_translated_df.count() > 0:
-
             export_responses_to_be_translated_to_translation_directory(
                 to_be_translated_df=to_be_translated_df, translation_directory=translation_directory
             )
@@ -689,9 +874,11 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 [
                     "Yes",
                     [
-                        "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+                        "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",
+                        # noqa: E501
                         # TODO: Remove once encoding fixed in raw data
-                        "I haven&#39;t had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+                        "I haven&#39;t had any symptoms but I live with someone who has or has had symptoms or a positive test",
+                        # noqa: E501
                     ],
                 ],
             ],
@@ -732,8 +919,10 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 [
                     "Employed",
                     [
-                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
-                        "Or currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks?",  # noqa: E501
+                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",
+                        # noqa: E501
+                        "Or currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks?",
+                        # noqa: E501
                     ],
                     None,
                     None,
@@ -753,8 +942,10 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 [
                     "Self-employed",
                     [
-                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
-                        "Or currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks?",  # noqa: E501
+                        "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",
+                        # noqa: E501
+                        "Or currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks?",
+                        # noqa: E501
                     ],
                     None,
                     None,
@@ -774,7 +965,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 [
                     "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
-                    "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
+                    "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",
+                    # noqa: E501
                     None,
                 ],
             ],
@@ -852,7 +1044,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 "Employed and currently not working",
                 [
                     "Employed",
-                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",
+                    # noqa: E501
                     None,
                     None,
                 ],
@@ -954,7 +1147,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
                     "Employed",
-                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",
+                    # noqa: E501
                     None,
                     None,
                 ],
@@ -974,7 +1168,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
                     "Self-employed",
-                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501,
+                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",
+                    # noqa: E501,
                     None,
                     None,
                 ],
@@ -993,7 +1188,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
                 [
                     "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
-                    "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
+                    "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",
+                    # noqa: E501
                     None,
                 ],
             ],
@@ -1057,8 +1253,10 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         df,
         "blood_not_taken_missing_parts",
         {
-            "Small sample test tube. This is the tube that is used to collect the blood.": "blood_not_taken_missing_parts_small_sample_tube",  # noqa: E501
-            "Large sample carrier tube with barcode on. This is the tube that you put the small sample test tube in to after collecting blood.": "blood_not_taken_missing_parts_large_sample_carrier",  # noqa: E501
+            "Small sample test tube. This is the tube that is used to collect the blood.": "blood_not_taken_missing_parts_small_sample_tube",
+            # noqa: E501
+            "Large sample carrier tube with barcode on. This is the tube that you put the small sample test tube in to after collecting blood.": "blood_not_taken_missing_parts_large_sample_carrier",
+            # noqa: E501
             "Re-sealable biohazard bag with absorbent pad": "blood_not_taken_missing_parts_biohazard_bag",
             "Copy of your blood barcode": "blood_not_taken_missing_parts_blood_barcode",
             "Lancets": "blood_not_taken_missing_parts_lancets",
@@ -1215,9 +1413,12 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Underground or Metro or Light Rail or Tram": "Underground, metro, light rail, tram",
         },
         "ability_to_socially_distance_at_work_or_education": {
-            "Difficult to maintain 2 metres apart. But you can usually be at least 1 metre away from other people": "Difficult to maintain 2m, but can be 1m",  # noqa: E501
-            "Easy to maintain 2 metres apart. It is not a problem to stay this far away from other people": "Easy to maintain 2m",  # noqa: E501
-            "Relatively easy to maintain 2 metres apart. Most of the time you can be 2 meters away from other people": "Relatively easy to maintain 2m",  # noqa: E501
+            "Difficult to maintain 2 metres apart. But you can usually be at least 1 metre away from other people": "Difficult to maintain 2m, but can be 1m",
+            # noqa: E501
+            "Easy to maintain 2 metres apart. It is not a problem to stay this far away from other people": "Easy to maintain 2m",
+            # noqa: E501
+            "Relatively easy to maintain 2 metres apart. Most of the time you can be 2 meters away from other people": "Relatively easy to maintain 2m",
+            # noqa: E501
             "Very difficult to be more than 1 metre away. Your work means you are in close contact with others on a regular basis": "Very difficult to be more than 1m away",
         },
         "last_covid_contact_type": {
@@ -1243,14 +1444,17 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Yes sometimes": "Yes, sometimes",
             "Yes always": "Yes, always",
             "I am not going to my place of work or education": "Not going to place of work or education",
-            "I cover my face for other reasons - for example for religious or cultural reasons": "My face is already covered",  # noqa: E501
+            "I cover my face for other reasons - for example for religious or cultural reasons": "My face is already covered",
+            # noqa: E501
         },
         "face_covering_other_enclosed_places": {
             "Prefer not to say": None,
             "Yes sometimes": "Yes, sometimes",
             "Yes always": "Yes, always",
-            "I am not going to other enclosed public spaces or using public transport": "Not going to other enclosed public spaces or using public transport",  # noqa: E501
-            "I cover my face for other reasons - for example for religious or cultural reasons": "My face is already covered",  # noqa: E501
+            "I am not going to other enclosed public spaces or using public transport": "Not going to other enclosed public spaces or using public transport",
+            # noqa: E501
+            "I cover my face for other reasons - for example for religious or cultural reasons": "My face is already covered",
+            # noqa: E501
         },
         "other_covid_infection_test_results": {
             "All tests failed": "All Tests failed",
@@ -1259,7 +1463,8 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         },
         "other_antibody_test_results": {
             "All tests failed": "All Tests failed",
-            "One or more tests were negative for antibodies and none were positive": "Any tests negative, but none positive",  # noqa: E501
+            "One or more tests were negative for antibodies and none were positive": "Any tests negative, but none positive",
+            # noqa: E501
             "One or more tests were positive for antibodies": "One or more positive test(s)",
         },
         "cis_covid_vaccine_type": vaccine_type_map,
@@ -1354,7 +1559,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "multiple errors sample retained",
         ",",
     )
-
     return df
 
 
@@ -1399,7 +1603,7 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
             "last_suspected_covid_contact_date",
             "think_had_covid_onset_date",
             "think_have_covid_onset_date",
-            "been_outside_uk_latest_date",
+            "been_outside_uk_last_return_date",
             "other_covid_infection_test_first_positive_date",
             "other_covid_infection_test_last_negative_date",
             "other_antibody_test_first_positive_date",
@@ -1407,8 +1611,9 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         ]
         if col in df.columns
     ]
+
     df = assign_raw_copies(df, date_cols_to_correct, "pdc")
-    df = correct_date_ranges(df, date_cols_to_correct, "visit_datetime", "2019-08-01")
+    df = correct_date_ranges(df, date_cols_to_correct, "visit_datetime", "2019-08-01", date_cols_min_date_dict)
     df = df.withColumn(
         "any_date_corrected",
         F.when(reduce(or_, [~F.col(col).eqNullSafe(F.col(f"{col}_pdc")) for col in date_cols_to_correct]), "Yes"),
@@ -1422,6 +1627,50 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     )
     df = clean_postcode(df, "postcode")
     df = normalise_think_had_covid_columns(df, "think_had_covid_symptom")
+    invalid_covid_date = "2019-11-17"
+    conditions = {
+        "think_had_covid_onset_date": (
+            (F.col("think_had_covid_onset_date").isNotNull())
+            & (F.col("think_had_covid_onset_date") < invalid_covid_date)
+        ),
+        "last_suspected_covid_contact_date": (
+            (F.col("last_suspected_covid_contact_date").isNotNull())
+            & (F.col("last_suspected_covid_contact_date") < invalid_covid_date)
+        ),
+        "last_covid_contact_date": (
+            (F.col("last_covid_contact_date").isNotNull()) & (F.col("last_covid_contact_date") < invalid_covid_date)
+        ),
+    }
+    col_value_maps = {
+        "think_had_covid_onset_date": {
+            "think_had_covid_onset_date": None,
+            "think_had_covid_contacted_nhs": None,
+            "think_had_covid_admitted_to_hospital": None,
+            "think_had_covid_symptom_": None,
+        },
+        "last_suspected_covid_contact_date": {
+            "last_suspected_covid_": None,
+            "think_had_covid_onset_date": None,
+            "contact_suspected_positive_covid_last_28_days": "No",
+        },
+        "last_covid_contact_date": {
+            "last_covid_": None,
+            "think_had_covid_onset_date": None,
+            "contact_known_positive_covid_last_28_days": "No",
+        },
+    }
+    for condition in list(conditions.keys()):
+        df = conditionally_set_column_values(
+            df=df,
+            condition=conditions.get(condition),
+            cols_to_set_to_value=col_value_maps.get(condition),
+        )
+
+    # This is outside of the above function as it erroneously captured every think_had_covid col including raw
+    df = df.withColumn(
+        "think_had_covid",
+        F.when(conditions.get("think_had_covid_onset_date"), "No").otherwise(F.col("think_had_covid")),
+    )
 
     consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
 
@@ -1473,6 +1722,56 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         ],
         value="Yes",
     )
+
+    contact_date = ["last_suspected_covid_contact_date", "last_covid_contact_date"]
+
+    covid_contact = ["contact_suspected_positive_covid_last_28_days", "contact_known_positive_covid_last_28_days"]
+
+    contact_type = ["last_suspected_covid_contact_type", "last_covid_contact_type"]
+
+    for l in range(len(contact_date)):
+        # correct covid contact based on date
+        df = update_to_value_if_any_not_null(
+            df=df,
+            column_name_to_assign=covid_contact[l - 1],
+            true_false_values=["Yes", "No"],
+            column_list=[contact_date[l - 1]],
+        )
+
+        # correct covid type based on date
+        df = update_to_value_if_any_not_null(
+            df=df,
+            column_name_to_assign=contact_type[l - 1],
+            true_false_values=[F.col(contact_type[l - 1]), None],
+            column_list=[
+                contact_date[l - 1],
+            ],
+        )
+
+    vaccine_cols = []
+    df.cache()
+    if "cis_covid_vaccine_date" in df.columns and "cis_covid_vaccine_type_other" in df.columns:
+        vaccine_cols.append(("cis_covid_vaccine_type", "cis_covid_vaccine_date", "cis_covid_vaccine_type_other"))
+
+    for i in range(1, 7):
+        vaccine_date_col = f"cis_covid_vaccine_date_{i}"
+        vaccine_type_col = f"cis_covid_vaccine_type_other_{i}"
+        if vaccine_date_col in df.columns and vaccine_type_col in df.columns:
+            vaccine_cols.append((f"cis_covid_vaccine_type_{i}", vaccine_date_col, vaccine_type_col))
+
+    for column_name_to_assign, vaccine_date_col, vaccine_type_col in vaccine_cols:
+        df = assign_regex_from_map_additional_rules(
+            df=df,
+            column_name_to_assign=column_name_to_assign,
+            reference_columns=[vaccine_type_col],
+            map=vaccine_regex_map,
+            priority_map=vaccine_regex_priority_map,
+            disambiguation_conditions={"Pfizer/BioNTechDD": (F.col(vaccine_date_col) < "2021-01-31")},
+            value_map={"Pfizer/BioNTechDD": "Pfizer/BioNTech"},
+            first_match_only=True,
+            overwrite_values=False,
+            default_value="Don't know type",
+        )
     return df
 
 
@@ -1552,68 +1851,104 @@ def derive_age_based_columns(df: DataFrame, column_name_to_assign: str) -> DataF
 
 
 def derive_work_status_columns(df: DataFrame) -> DataFrame:
-
     work_status_dict = {
         "work_status_v0": {
             "5y and older in full-time education": "Student",
-            "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "Student",  # noqa: E501
-            "Employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Furloughed (temporarily not working)",  # noqa: E501
-            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Furloughed (temporarily not working)",  # noqa: E501
-            "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed",  # noqa: E501
-            "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed",  # noqa: E501
+            "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "Student",
+            # noqa: E501
+            "Employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Furloughed (temporarily not working)",
+            # noqa: E501
+            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Furloughed (temporarily not working)",
+            # noqa: E501
+            "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed",
+            # noqa: E501
+            "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed",
+            # noqa: E501
             "4-5y and older at school/home-school (including if temporarily absent)": "Student",  # noqa: E501
-            "Not in paid work and not looking for paid work (include doing voluntary work here)": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Not in paid work and not looking for paid work (include doing voluntary work here)": "Not working (unemployed, retired, long-term sick etc.)",
+            # noqa: E501
             "Not working and not looking for work (including voluntary work)": "Not working (unemployed, retired, long-term sick etc.)",
-            "Retired (include doing voluntary work here)": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
-            "Looking for paid work and able to start": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Retired (include doing voluntary work here)": "Not working (unemployed, retired, long-term sick etc.)",
+            # noqa: E501
+            "Looking for paid work and able to start": "Not working (unemployed, retired, long-term sick etc.)",
+            # noqa: E501
             "Child under 4-5y not attending nursery or pre-school or childminder": "Student",  # noqa: E501
-            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Furloughed (temporarily not working)",  # noqa: E501
+            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Furloughed (temporarily not working)",
+            # noqa: E501
             "Child under 5y attending nursery or pre-school or childminder": "Student",  # noqa: E501
             "Child under 4-5y attending nursery or pre-school or childminder": "Student",  # noqa: E501
             "Retired": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
             "Attending university (including if temporarily absent)": "Student",  # noqa: E501
-            "Not working and not looking for work": "Not working (unemployed, retired, long-term sick etc.)",  # noqa: E501
+            "Not working and not looking for work": "Not working (unemployed, retired, long-term sick etc.)",
+            # noqa: E501
             "Child under 5y not attending nursery or pre-school or childminder": "Student",  # noqa: E501
         },
         "work_status_v1": {
             "Child under 5y attending child care": "Child under 5y attending child care",  # noqa: E501
-            "Child under 5y attending nursery or pre-school or childminder": "Child under 5y attending child care",  # noqa: E501
-            "Child under 4-5y attending nursery or pre-school or childminder": "Child under 5y attending child care",  # noqa: E501
-            "Child under 5y not attending nursery or pre-school or childminder": "Child under 5y not attending child care",  # noqa: E501
+            "Child under 5y attending nursery or pre-school or childminder": "Child under 5y attending child care",
+            # noqa: E501
+            "Child under 4-5y attending nursery or pre-school or childminder": "Child under 5y attending child care",
+            # noqa: E501
+            "Child under 5y not attending nursery or pre-school or childminder": "Child under 5y not attending child care",
+            # noqa: E501
             "Child under 5y not attending child care": "Child under 5y not attending child care",  # noqa: E501
-            "Child under 4-5y not attending nursery or pre-school or childminder": "Child under 5y not attending child care",  # noqa: E501
-            "Employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Employed and currently not working",  # noqa: E501
-            "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed and currently working",  # noqa: E501
-            "Not working and not looking for work (including voluntary work)": "Not working and not looking for work",  # noqa: E501
+            "Child under 4-5y not attending nursery or pre-school or childminder": "Child under 5y not attending child care",
+            # noqa: E501
+            "Employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Employed and currently not working",
+            # noqa: E501
+            "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed and currently working",
+            # noqa: E501
+            "Not working and not looking for work (including voluntary work)": "Not working and not looking for work",
+            # noqa: E501
             "Not in paid work and not looking for paid work (include doing voluntary work here)": "Not working and not looking for work",
             "Not working and not looking for work": "Not working and not looking for work",  # noqa: E501
-            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
-            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
-            "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",  # noqa: E501
+            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",
+            # noqa: E501
+            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",
+            # noqa: E501
+            "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",
+            # noqa: E501
             "Retired (include doing voluntary work here)": "Retired",  # noqa: E501
             "Looking for paid work and able to start": "Looking for paid work and able to start",  # noqa: E501
-            "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
-            "Attending university (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
-            "4-5y and older at school/home-school (including if temporarily absent)": "5y and older in full-time education",  # noqa: E501
+            "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "5y and older in full-time education",
+            # noqa: E501
+            "Attending university (including if temporarily absent)": "5y and older in full-time education",
+            # noqa: E501
+            "4-5y and older at school/home-school (including if temporarily absent)": "5y and older in full-time education",
+            # noqa: E501
         },
         "work_status_v2": {
             "Retired (include doing voluntary work here)": "Retired",  # noqa: E501
-            "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "Attending college or FE (including if temporarily absent)",  # noqa: E501
-            "Attending university (including if temporarily absent)": "Attending university (including if temporarily absent)",  # noqa: E501
+            "Attending college or other further education provider (including apprenticeships) (including if temporarily absent)": "Attending college or FE (including if temporarily absent)",
+            # noqa: E501
+            "Attending university (including if temporarily absent)": "Attending university (including if temporarily absent)",
+            # noqa: E501
             "Child under 5y attending child care": "Child under 4-5y attending child care",  # noqa: E501
-            "Child under 5y attending nursery or pre-school or childminder": "Child under 4-5y attending child care",  # noqa: E501
-            "Child under 4-5y attending nursery or pre-school or childminder": "Child under 4-5y attending child care",  # noqa: E501
-            "Child under 5y not attending nursery or pre-school or childminder": "Child under 4-5y not attending child care",  # noqa: E501
+            "Child under 5y attending nursery or pre-school or childminder": "Child under 4-5y attending child care",
+            # noqa: E501
+            "Child under 4-5y attending nursery or pre-school or childminder": "Child under 4-5y attending child care",
+            # noqa: E501
+            "Child under 5y not attending nursery or pre-school or childminder": "Child under 4-5y not attending child care",
+            # noqa: E501
             "Child under 5y not attending child care": "Child under 4-5y not attending child care",  # noqa: E501
-            "Child under 4-5y not attending nursery or pre-school or childminder": "Child under 4-5y not attending child care",  # noqa: E501
-            "4-5y and older at school/home-school (including if temporarily absent)": "4-5y and older at school/home-school",  # noqa: E501
-            "Employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Employed and currently not working",  # noqa: E501
-            "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed and currently working",  # noqa: E501
-            "Not in paid work and not looking for paid work (include doing voluntary work here)": "Not working and not looking for work",  # noqa: E501
-            "Not working and not looking for work (including voluntary work)": "Not working and not looking for work",  # noqa: E501
-            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
-            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",  # noqa: E501
-            "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",  # noqa: E501
+            "Child under 4-5y not attending nursery or pre-school or childminder": "Child under 4-5y not attending child care",
+            # noqa: E501
+            "4-5y and older at school/home-school (including if temporarily absent)": "4-5y and older at school/home-school",
+            # noqa: E501
+            "Employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Employed and currently not working",
+            # noqa: E501
+            "Employed and currently working (including if on leave or sick leave for less than 4 weeks)": "Employed and currently working",
+            # noqa: E501
+            "Not in paid work and not looking for paid work (include doing voluntary work here)": "Not working and not looking for work",
+            # noqa: E501
+            "Not working and not looking for work (including voluntary work)": "Not working and not looking for work",
+            # noqa: E501
+            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",
+            # noqa: E501
+            "Self-employed and currently not working (e.g. on leave due to the COVID-19 pandemic (furloughed) or sick leave for 4 weeks or longer or maternity/paternity leave)": "Self-employed and currently not working",
+            # noqa: E501
+            "Self-employed and currently working (include if on leave or sick leave for less than 4 weeks)": "Self-employed and currently working",
+            # noqa: E501
             "5y and older in full-time education": "4-5y and older at school/home-school",  # noqa: E501
         },
     }
@@ -1709,12 +2044,18 @@ def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
         "self_isolating_reason_detailed",
         "self_isolating_reason",
         {
-            "Yes for other reasons (e.g. going into hospital or quarantining)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
-            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding",  # noqa: E501
-            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
-            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",  # noqa: E501
+            "Yes for other reasons (e.g. going into hospital or quarantining)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",
+            # noqa: E501
+            "Yes for other reasons related to reducing your risk of getting COVID-19 (e.g. going into hospital or shielding)": "Due to reducing my risk of getting COVID-19 such as going into hospital or shielding",
+            # noqa: E501
+            "Yes for other reasons related to you having had an increased risk of getting COVID-19 (e.g. having been in contact with a known case or quarantining after travel abroad)": "Due to increased risk of getting COVID-19 such as having been in contact with a known case or quarantining after travel abroad",
+            # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven’t had them yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",
+            # noqa: E501
+            "Yes because you live with someone who has/has had symptoms or a positive test but you haven’t had symptoms yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",
+            # noqa: E501
+            "Yes because you live with someone who has/has had symptoms but you haven't had them yourself": "I haven't had any symptoms but I live with someone who has or has had symptoms or a positive test",
+            # noqa: E501
             "Yes because you have/have had symptoms of COVID-19": "I have or have had symptoms of COVID-19 or a positive test",
             "Yes because you have/have had symptoms of COVID-19 or a positive test": "I have or have had symptoms of COVID-19 or a positive test",
         },
@@ -2100,7 +2441,7 @@ def union_dependent_cleaning(df):
             "last_suspected_covid_contact_date",
             "think_had_covid_onset_date",
             "think_have_covid_onset_date",
-            "been_outside_uk_latest_date",
+            "been_outside_uk_last_return_date",
             "other_covid_infection_test_first_positive_date",
             "other_covid_infection_test_last_negative_date",
             "other_antibody_test_first_positive_date",
@@ -2108,8 +2449,8 @@ def union_dependent_cleaning(df):
         ]
         if col in df.columns
     ]
-    df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime")
-    df = remove_incorrect_dates(df, date_cols_to_correct, "visit_datetime", "2019-08-01")
+    df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime", "visit_id")
+    df = remove_incorrect_dates(df, date_cols_to_correct, "visit_datetime", "2019-08-01", date_cols_min_date_dict)
 
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
@@ -2214,7 +2555,7 @@ def union_dependent_derivations(df):
         df=df,
         column_name_to_assign="days_since_enrolment",
         start_reference_column="household_first_visit_datetime",
-        end_reference_column="last_attended_visit_datetime",
+        end_reference_column="visit_datetime",
     )
     df = assign_date_difference(
         df=df,
@@ -2227,24 +2568,7 @@ def union_dependent_derivations(df):
         df,
         reference_column="days_since_enrolment",
         column_name_to_assign="visit_number",
-        map={
-            0: 0,
-            4: 1,
-            11: 2,
-            18: 3,
-            25: 4,
-            43: 5,
-            71: 6,
-            99: 7,
-            127: 8,
-            155: 9,
-            183: 10,
-            211: 11,
-            239: 12,
-            267: 13,
-            295: 14,
-            323: 15,
-        },
+        map={**{0: 1, 14: 2, 21: 3, 28: 4}, **{i * 28: (i + 3) for i in range(2, 200)}},
     )
     df = assign_any_symptoms_around_visit(
         df=df,
@@ -2286,20 +2610,20 @@ def union_dependent_derivations(df):
         "patient_facing_over_20_percent", F.when(patient_facing_percentage >= 0.2, "Yes").otherwise("No")
     )
 
-    df = fill_forward_from_last_change(
-        df=df,
-        fill_forward_columns=[
-            "cis_covid_vaccine_date",
-            "cis_covid_vaccine_number_of_doses",
-            "cis_covid_vaccine_type",
-            "cis_covid_vaccine_type_other",
-            "cis_covid_vaccine_received",
-        ],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
-        record_changed_column="cis_covid_vaccine_received",
-        record_changed_value="Yes",
-    )
+    # df = fill_forward_from_last_change(
+    #     df=df,
+    #     fill_forward_columns=[
+    #         "cis_covid_vaccine_date",
+    #         "cis_covid_vaccine_number_of_doses",
+    #         "cis_covid_vaccine_type",
+    #         "cis_covid_vaccine_type_other",
+    #         "cis_covid_vaccine_received",
+    #     ],
+    #     participant_id_column="participant_id",
+    #     visit_datetime_column="visit_datetime",
+    #     record_changed_column="cis_covid_vaccine_received",
+    #     record_changed_value="Yes",
+    # )
     df = create_formatted_datetime_string_columns(df)
     return df
 
@@ -2316,6 +2640,7 @@ def fill_forward_events_for_key_columns(df):
         detail_columns=[
             "other_covid_infection_test",
             "other_covid_infection_test_results",
+            "think_had_covid_any",
             "think_had_covid_admitted_to_hospital",
             "think_had_covid_contacted_nhs",
             "think_had_covid_symptom_fever",
@@ -2540,7 +2865,6 @@ def transform_from_lookups(
 
 
 def fill_forwards_transformations(df):
-
     df = fill_forward_from_last_change_marked_subset(
         df=df,
         fill_forward_columns=[
@@ -2612,7 +2936,7 @@ def fill_forwards_travel_column(df):
     df = update_to_value_if_any_not_null(
         df=df,
         column_name_to_assign="been_outside_uk",
-        value_to_assign="Yes",
+        true_false_values=["Yes", "No"],
         column_list=["been_outside_uk_last_country", "been_outside_uk_last_return_date"],
     )
     df = fill_forward_from_last_change(
@@ -2701,6 +3025,37 @@ def nims_transformations(df: DataFrame) -> DataFrame:
     return df
 
 
+def blood_past_positive_transformations(df: DataFrame) -> DataFrame:
+    """Run required post-join transformations for blood_past_positive"""
+    df = df.withColumn("blood_past_positive_flag", F.when(F.col("blood_past_positive").isNull(), 0).otherwise(1))
+    return df
+
+
+def design_weights_lookup_transformations(df: DataFrame) -> DataFrame:
+    """Selects only required fields from the design_weight_lookup"""
+    design_weight_columns = ["scaled_design_weight_swab_non_adjusted", "scaled_design_weight_antibodies_non_adjusted"]
+    df = df.select(*design_weight_columns, "ons_household_id")
+    return df
+
+
+def replace_design_weights_transformations(df: DataFrame) -> DataFrame:
+    """Run required post-join transformations for replace_design_weights"""
+    df = df.withColumn(
+        "local_authority_unity_authority_code",
+        F.when(F.col("local_authority_unity_authority_code") == "E06000062", "E07000154")
+        .when(F.col("local_authority_unity_authority_code") == "E06000061", "E07000156")
+        .otherwise(F.col("local_authority_unity_authority_code")),
+    )
+    df = df.withColumn(
+        "region_code",
+        F.when(F.col("region_code") == "W92000004", "W99999999")
+        .when(F.col("region_code") == "S92000003", "S99999999")
+        .when(F.col("region_code") == "N92000002", "N99999999")
+        .otherwise(F.col("region_code")),
+    )
+    return df
+
+
 def derive_overall_vaccination(df: DataFrame) -> DataFrame:
     """Derive overall vaccination status from NIMS and CIS data."""
     return df
@@ -2722,7 +3077,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         df=df,
         column_name_to_assign="regex_derived_job_sector",
         reference_columns=["work_main_job_title", "work_main_job_role"],
-        roles=roles_map,
+        map=roles_map,
         priority_map=priority_map,
     )
     # create healthcare area flag
@@ -3301,3 +3656,16 @@ def get_differences(base_df: DataFrame, compare_df: DataFrame, unique_id_column:
     )
     counts_df = counts_df.select("kvs.column_name", "kvs.difference_count", "kvs.difference_count_non_improved")
     return counts_df, diffs_df
+
+
+def fix_timestamps(df: DataFrame):
+    """
+    Fix any issues with dates saved in timestamp format drifting ahead by n hours.
+    """
+    date_cols = [c for c in df.columns if "date" in c and "datetime" not in c]
+    d_types_list = [list(d) for d in df.select(*date_cols).dtypes]
+    d_types = {d[0]: d[1] for d in d_types_list}
+    for col in date_cols:
+        if d_types[col] == "timestamp":
+            df = df.withColumn(col, F.date_format(F.col(col), "yyyy-MM-dd"))
+    return df
