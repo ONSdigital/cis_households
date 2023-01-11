@@ -56,7 +56,7 @@ def update_work_main_job_changed(
                 )
                 & (
                     ((F.col("ROW") == 1) & any_column_equal_value(reference_value_columns, value))
-                    | (reduce(or_, [y(c) for c in reference_value_columns], F.lit(False)))
+                    | (reduce(or_, [y(c) for c in reference_value_columns], F.lit(True)))
                 ),
                 "Yes",
             ).otherwise("No"),
