@@ -60,7 +60,7 @@ def assign_regex_from_map_additional_rules(
     overwrite_values
         whether to overwrite all pre-existing values in `column_name_to_assign`
     """
-    condition = F.col(column_name_to_assign).isNull() & any_column_not_null(reference_columns)
+    condition = (F.col(column_name_to_assign) == "Other / specify") & (any_column_not_null(reference_columns))
     process_df = df.filter(condition)
     stable_df = df.filter(~condition)
 
@@ -92,7 +92,7 @@ def assign_regex_from_map_additional_rules(
     if value_map is not None:
         process_df = update_column_values_from_map(process_df, column_name_to_assign, value_map)
     process_df = process_df.drop(temp_col, "disambiguated_col")
-    return process_df.unionByName(stable_df)
+    return process_df.union(stable_df)
 
 
 def assign_regex_from_map(
