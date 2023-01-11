@@ -118,6 +118,8 @@ from cishouseholds.edit import update_work_main_job_changed
 from cishouseholds.expressions import any_column_equal_value
 from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import array_contains_any
+from cishouseholds.expressions import first_sorted_val_row_wise
+from cishouseholds.expressions import last_sorted_val_row_wise
 from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
@@ -2373,6 +2375,45 @@ def symptom_column_transformations(df):
     return df
 
 
+def derive_contact_any_covid_covid_variables(df: DataFrame):
+    """
+    Derive variables related to combination of know and suspected covid data columns.
+    """
+    df = df.withColumn(
+        "contact_known_or_suspected_covid",
+        F.when(
+            any_column_equal_value(
+                ["contact_suspected_positive_covid_last_28_days", "contact_known_positive_covid_last_28_days"], "Yes"
+            ),
+            "Yes",
+        ).otherwise("No"),
+    )
+
+    df = df.withColumn(
+        "contact_known_or_suspected_covid_latest_date",
+        last_sorted_val_row_wise(["last_covid_contact_date", "last_suspected_covid_contact_date"]),
+    )
+
+    df = contact_known_or_suspected_covid_type(
+        df=df,
+        contact_known_covid_type_column="last_covid_contact_type",
+        contact_suspect_covid_type_column="last_suspected_covid_contact_type",
+        contact_any_covid_type_column="contact_known_or_suspected_covid",
+        contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
+        contact_known_covid_date_column="last_covid_contact_date",
+        contact_suspect_covid_date_column="last_suspected_covid_contact_date",
+    )
+
+    df = assign_date_difference(
+        df,
+        "contact_known_or_suspected_covid_days_since",
+        "contact_known_or_suspected_covid_latest_date",
+        "visit_datetime",
+    )
+
+    return df
+
+
 def union_dependent_cleaning(df):
     col_val_map = {
         "ethnicity": {
@@ -2432,33 +2473,6 @@ def union_dependent_cleaning(df):
 
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
-    # TODO: Add in once dependencies are derived
-    # df = impute_latest_date_flag(
-    #     df=df,
-    #     participant_id_column="participant_id",
-    #     visit_date_column="visit_date",
-    #     visit_id_column="visit_id",
-    #     contact_any_covid_column="contact_known_or_suspected_covid",
-    #     contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
-    # )
-
-    # TODO: Add in once dependencies are derived
-    # df = assign_date_difference(
-    #     df,
-    #     "contact_known_or_suspected_covid_days_since",
-    #     "contact_known_or_suspected_covid_latest_date",
-    #     "visit_datetime",
-    # )
-
-    # TODO: add the following function once contact_known_or_suspected_covid_latest_date() is created
-    # df = contact_known_or_suspected_covid_type(
-    #     df=df,
-    #     contact_known_covid_type_column='contact_known_covid_type',
-    #     contact_any_covid_type_column='contact_any_covid_type',
-    #     contact_any_covid_date_column='contact_any_covid_date',
-    #     contact_known_covid_date_column='contact_known_covid_date',
-    #     contact_suspect_covid_date_column='contact_suspect_covid_date',
-    # )
 
     df = update_face_covering_outside_of_home(
         df=df,
@@ -2670,6 +2684,7 @@ def fill_forward_events_for_key_columns(df):
         visit_datetime_column="visit_datetime",
         visit_id_column="visit_id",
     )
+    df = derive_contact_any_covid_covid_variables(df)
     return df
 
 
