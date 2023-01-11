@@ -183,4 +183,8 @@ fields:
   name: digital_entry_pack_sent_datetime_string
   nullable: true
   type: string
+- metadata: {}
+  name: ordered_household_id
+  nullable: true
+  type: integer
 type: struct
