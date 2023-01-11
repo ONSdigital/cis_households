@@ -375,6 +375,7 @@ def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
 
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = create_formatted_datetime_string_columns(df)
+    df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
 
     return df
 
@@ -844,6 +845,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
     df = assign_raw_copies(df, dont_know_columns)
     dont_know_mapping_dict = {
         "Prefer not to say": None,
+        "Don't know": None,
         "Don't Know": None,
         "I don't know the type": "Don't know type",
         "Dont know": None,
