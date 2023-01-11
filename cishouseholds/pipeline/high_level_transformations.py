@@ -2410,7 +2410,7 @@ def fill_forward_events_for_key_columns(df):
         detail_columns=[
             "other_covid_infection_test",
             "other_covid_infection_test_results",
-            "think_had_covid_any",
+            "think_had_covid_any_symptoms",
             "think_had_covid_admitted_to_hospital",
             "think_had_covid_contacted_nhs",
             "think_had_covid_symptom_fever",
