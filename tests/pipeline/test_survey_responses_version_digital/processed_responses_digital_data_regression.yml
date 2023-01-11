@@ -10,7 +10,7 @@
   bad_email: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: Benin
-  been_outside_uk_last_return_date: '2022-01-09 00:00:00.000000'
+  been_outside_uk_last_return_date: '2021-12-09 00:00:00.000000'
   blood_barcode_corrected: ONS52277469
   blood_consolidation_point_error: kpa_unboxed
   blood_consolidation_point_error_datetime: null
@@ -195,9 +195,9 @@
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: All Tests failed
   other_covid_infection_test_results_raw: All tests failed
-  other_household_member_care_home_last_28_days: Don't know
+  other_household_member_care_home_last_28_days: null
   other_household_member_care_home_last_28_days_raw: Don't know
-  other_household_member_hospital_last_28_days: Don't know
+  other_household_member_hospital_last_28_days: null
   other_household_member_hospital_last_28_days_raw: Don't know
   participant_completion_window_end_datetime: '2022-05-02 03:38:27.000000'
   participant_completion_window_id: '0153'
@@ -275,7 +275,7 @@
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: null
-  social_distance_contact_18_to_69_years_raw: Don't know
+  social_distance_contact_18_to_69_years_raw: null
   social_distance_contact_over_70_years: 1-5
   social_distance_contact_over_70_years_raw: 1 to 5
   social_distance_contact_under_18_years: 6-10
@@ -464,7 +464,7 @@
   bad_email: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Seychelles
-  been_outside_uk_last_return_date: '2022-01-05 00:00:00.000000'
+  been_outside_uk_last_return_date: '2021-12-05 00:00:00.000000'
   blood_barcode_corrected: ONS02635454
   blood_consolidation_point_error: sample_bagged_zip
   blood_consolidation_point_error_datetime: '2022-01-04T23:37:39Z'
@@ -687,7 +687,7 @@
   person_not_present_age_7: null
   person_not_present_age_8: null
   physical_contact_18_to_69_years: null
-  physical_contact_18_to_69_years_raw: Don't know
+  physical_contact_18_to_69_years_raw: null
   physical_contact_over_70_years: 1-5
   physical_contact_over_70_years_raw: 1 to 5
   physical_contact_under_18_years: 21 or more
@@ -1102,9 +1102,9 @@
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
   other_covid_infection_test_results_raw: One or more tests were positive
-  other_household_member_care_home_last_28_days: Don't know
+  other_household_member_care_home_last_28_days: null
   other_household_member_care_home_last_28_days_raw: Don't know
-  other_household_member_hospital_last_28_days: Don't know
+  other_household_member_hospital_last_28_days: null
   other_household_member_hospital_last_28_days_raw: Don't know
   participant_completion_window_end_datetime: '2020-11-27 17:19:59.000000'
   participant_completion_window_id: '3506'
@@ -1499,7 +1499,7 @@
   form_start_datetime: '2022-01-04 09:57:44.000000'
   hh_id: '602276804025'
   hospital_last_28_days: 'Yes'
-  hours_a_day_with_someone_else_at_home: Don't know
+  hours_a_day_with_someone_else_at_home: null
   hours_a_day_with_someone_else_at_home_raw: Don't know
   household_been_care_home_last_28_days: No, no one in my household has
   household_been_hospital_last_28_days: Yes, I have
@@ -1555,7 +1555,7 @@
     were positive
   other_household_member_care_home_last_28_days: 'No'
   other_household_member_care_home_last_28_days_raw: 'No'
-  other_household_member_hospital_last_28_days: Don't know
+  other_household_member_hospital_last_28_days: null
   other_household_member_hospital_last_28_days_raw: Don't know
   participant_completion_window_end_datetime: '2021-01-25 05:44:27.000000'
   participant_completion_window_id: '3586'
@@ -1593,7 +1593,7 @@
   physical_contact_over_70_years: '0'
   physical_contact_over_70_years_raw: '0'
   physical_contact_under_18_years: null
-  physical_contact_under_18_years_raw: Don't know
+  physical_contact_under_18_years_raw: null
   postcode: null
   questionnaire_started_no_incentive: null
   reason_for_not_consenting_1: Where are my pants?
@@ -1633,7 +1633,7 @@
   social_distance_contact_over_70_years: '0'
   social_distance_contact_over_70_years_raw: '0'
   social_distance_contact_under_18_years: null
-  social_distance_contact_under_18_years_raw: Don't know
+  social_distance_contact_under_18_years_raw: null
   street: null
   study_cohort: Fingerprick and Swab
   survey_completed_datetime: '2022-01-06 19:58:32.000000'
@@ -2041,7 +2041,7 @@
   physical_contact_18_to_69_years: '0'
   physical_contact_18_to_69_years_raw: '0'
   physical_contact_over_70_years: null
-  physical_contact_over_70_years_raw: Don't know
+  physical_contact_over_70_years_raw: null
   physical_contact_under_18_years: 21 or more
   physical_contact_under_18_years_raw: 21 or more
   postcode: NC0C6UK
@@ -2078,7 +2078,7 @@
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: null
-  social_distance_contact_18_to_69_years_raw: Don't know
+  social_distance_contact_18_to_69_years_raw: null
   social_distance_contact_over_70_years: 11-20
   social_distance_contact_over_70_years_raw: 11 to 20
   social_distance_contact_under_18_years: 1-5
@@ -2405,7 +2405,7 @@
   form_start_datetime: '2022-01-07 01:50:45.000000'
   hh_id: '352206298026'
   hospital_last_28_days: 'Yes'
-  hours_a_day_with_someone_else_at_home: Don't know
+  hours_a_day_with_someone_else_at_home: null
   hours_a_day_with_someone_else_at_home_raw: Don't know
   household_been_care_home_last_28_days: Yes, I have
   household_been_hospital_last_28_days: Yes, I have
@@ -2665,7 +2665,7 @@
   time_off_health_reasons: null
   time_off_respiratory_infection: null
   times_hour_or_longer_another_home_last_7_days: null
-  times_hour_or_longer_another_home_last_7_days_raw: Don't know
+  times_hour_or_longer_another_home_last_7_days_raw: null
   times_hour_or_longer_another_person_your_home_last_7_days: '7'
   times_hour_or_longer_another_person_your_home_last_7_days_raw: 7 times or more
   times_outside_shopping_or_socialising_last_7_days: 7.0
@@ -3128,7 +3128,7 @@
   times_shopping_last_7_days: '2'
   times_shopping_last_7_days_raw: '2'
   times_socialising_last_7_days: null
-  times_socialising_last_7_days_raw: Don't know
+  times_socialising_last_7_days_raw: null
   title: Dr.
   transport_to_work_or_education: Other method
   unique_participant_response_id: 4260-DHR-497105638762
@@ -3317,7 +3317,7 @@
   form_start_datetime: '2022-01-07 13:39:54.000000'
   hh_id: '225258329500'
   hospital_last_28_days: 'Yes'
-  hours_a_day_with_someone_else_at_home: Don't know
+  hours_a_day_with_someone_else_at_home: null
   hours_a_day_with_someone_else_at_home_raw: Don't know
   household_been_care_home_last_28_days: No, no one in my household has
   household_been_hospital_last_28_days: Yes, I have
@@ -3370,7 +3370,7 @@
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
-  other_household_member_care_home_last_28_days: Don't know
+  other_household_member_care_home_last_28_days: null
   other_household_member_care_home_last_28_days_raw: Don't know
   other_household_member_hospital_last_28_days: 'No'
   other_household_member_hospital_last_28_days_raw: 'No'
@@ -3831,9 +3831,9 @@
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
   other_covid_infection_test_results_raw: One or more tests were positive
-  other_household_member_care_home_last_28_days: Don't know
+  other_household_member_care_home_last_28_days: null
   other_household_member_care_home_last_28_days_raw: Don't know
-  other_household_member_hospital_last_28_days: Don't know
+  other_household_member_hospital_last_28_days: null
   other_household_member_hospital_last_28_days_raw: Don't know
   participant_completion_window_end_datetime: '2022-12-23 06:45:19.000000'
   participant_completion_window_id: '6082'
@@ -3910,7 +3910,7 @@
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: null
-  social_distance_contact_18_to_69_years_raw: Don't know
+  social_distance_contact_18_to_69_years_raw: null
   social_distance_contact_over_70_years: null
   social_distance_contact_over_70_years_raw: null
   social_distance_contact_under_18_years: null
