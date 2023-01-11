@@ -10,7 +10,7 @@
   bad_email: false
   been_outside_uk: 'No'
   been_outside_uk_last_country: Benin
-  been_outside_uk_last_return_date: '2022-01-09 00:00:00.000000'
+  been_outside_uk_last_return_date: '2021-12-09 00:00:00.000000'
   blood_barcode_corrected: ONS52277469
   blood_consolidation_point_error: kpa_unboxed
   blood_consolidation_point_error_datetime: null
@@ -118,12 +118,12 @@
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: '2020-07-11 08:55:04.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-04 03:09:34.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 23:59:40.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-04 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: The sequential subset of
     Erlang supports eager evaluation, single assignment, and dynamic typing.
   existing_participant_digital_opt_in_reminder_2_due_datetime: null
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-08 17:16:13.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-08 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_status: '"Messages can be sent to
     and received from ports, but these messages must obey the so-called ""port protocol."""'
   existing_participant_digital_opt_in_status: Participant Opted Out
@@ -195,9 +195,9 @@
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: All Tests failed
   other_covid_infection_test_results_raw: All tests failed
-  other_household_member_care_home_last_28_days: Don't know
+  other_household_member_care_home_last_28_days: null
   other_household_member_care_home_last_28_days_raw: Don't know
-  other_household_member_hospital_last_28_days: Don't know
+  other_household_member_hospital_last_28_days: null
   other_household_member_hospital_last_28_days_raw: Don't know
   participant_completion_window_end_datetime: '2022-05-02 03:38:27.000000'
   participant_completion_window_id: '0153'
@@ -275,7 +275,7 @@
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: null
-  social_distance_contact_18_to_69_years_raw: Don't know
+  social_distance_contact_18_to_69_years_raw: null
   social_distance_contact_over_70_years: 1-5
   social_distance_contact_over_70_years_raw: 1 to 5
   social_distance_contact_under_18_years: 6-10
@@ -464,7 +464,7 @@
   bad_email: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Seychelles
-  been_outside_uk_last_return_date: '2022-01-05 00:00:00.000000'
+  been_outside_uk_last_return_date: '2021-12-05 00:00:00.000000'
   blood_barcode_corrected: ONS02635454
   blood_consolidation_point_error: sample_bagged_zip
   blood_consolidation_point_error_datetime: '2022-01-04T23:37:39Z'
@@ -575,12 +575,12 @@
   ever_smoked_regularly: 'No'
   ever_smoked_regularly_raw: 'No'
   existing_participant_digital_opt_in_datetime: '2020-02-29 22:57:09.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 09:34:37.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-04 14:33:10.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-04 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: They are written as strings
     of consecutive alphanumeric characters, the first character being lowercase.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 16:00:06.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-06 15:57:36.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-06 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_status: The syntax {D1,D2,...,Dn}
     denotes a tuple whose arguments are D1, D2, ... Dn.
   existing_participant_digital_opt_in_status: Participant Opted In
@@ -687,7 +687,7 @@
   person_not_present_age_7: null
   person_not_present_age_8: null
   physical_contact_18_to_69_years: null
-  physical_contact_18_to_69_years_raw: Don't know
+  physical_contact_18_to_69_years_raw: null
   physical_contact_over_70_years: 1-5
   physical_contact_over_70_years_raw: 1 to 5
   physical_contact_under_18_years: 21 or more
@@ -1024,12 +1024,12 @@
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: '2022-04-17 08:08:59.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 11:00:02.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-07 08:46:43.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-07 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: Its main implementation is
     the Glasgow Haskell Compiler.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-04 22:03:54.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-07 14:29:59.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-04 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-07 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_status: Tuples are containers for
     a fixed number of Erlang data types.
   existing_participant_digital_opt_in_status: Participant Opted Out
@@ -1102,9 +1102,9 @@
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
   other_covid_infection_test_results_raw: One or more tests were positive
-  other_household_member_care_home_last_28_days: Don't know
+  other_household_member_care_home_last_28_days: null
   other_household_member_care_home_last_28_days_raw: Don't know
-  other_household_member_hospital_last_28_days: Don't know
+  other_household_member_hospital_last_28_days: null
   other_household_member_hospital_last_28_days_raw: Don't know
   participant_completion_window_end_datetime: '2020-11-27 17:19:59.000000'
   participant_completion_window_id: '3506'
@@ -1476,11 +1476,11 @@
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   existing_participant_digital_opt_in_datetime: '2020-10-14 01:01:05.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 17:14:06.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 02:16:58.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: Make me a sandwich.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 21:48:58.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-03 12:02:32.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-03 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_status: '"Messages can be sent to
     and received from ports, but these messages must obey the so-called ""port protocol."""'
   existing_participant_digital_opt_in_status: Participant Opted In
@@ -1499,7 +1499,7 @@
   form_start_datetime: '2022-01-04 09:57:44.000000'
   hh_id: '602276804025'
   hospital_last_28_days: 'Yes'
-  hours_a_day_with_someone_else_at_home: Don't know
+  hours_a_day_with_someone_else_at_home: null
   hours_a_day_with_someone_else_at_home_raw: Don't know
   household_been_care_home_last_28_days: No, no one in my household has
   household_been_hospital_last_28_days: Yes, I have
@@ -1555,7 +1555,7 @@
     were positive
   other_household_member_care_home_last_28_days: 'No'
   other_household_member_care_home_last_28_days_raw: 'No'
-  other_household_member_hospital_last_28_days: Don't know
+  other_household_member_hospital_last_28_days: null
   other_household_member_hospital_last_28_days_raw: Don't know
   participant_completion_window_end_datetime: '2021-01-25 05:44:27.000000'
   participant_completion_window_id: '3586'
@@ -1593,7 +1593,7 @@
   physical_contact_over_70_years: '0'
   physical_contact_over_70_years_raw: '0'
   physical_contact_under_18_years: null
-  physical_contact_under_18_years_raw: Don't know
+  physical_contact_under_18_years_raw: null
   postcode: null
   questionnaire_started_no_incentive: null
   reason_for_not_consenting_1: Where are my pants?
@@ -1633,7 +1633,7 @@
   social_distance_contact_over_70_years: '0'
   social_distance_contact_over_70_years_raw: '0'
   social_distance_contact_under_18_years: null
-  social_distance_contact_under_18_years_raw: Don't know
+  social_distance_contact_under_18_years_raw: null
   street: null
   study_cohort: Fingerprick and Swab
   survey_completed_datetime: '2022-01-06 19:58:32.000000'
@@ -1925,13 +1925,13 @@
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: '2021-11-24 05:39:36.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 19:51:18.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-08 20:49:30.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-08 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: Atoms can contain any character
     if they are enclosed within single quotes and an escape convention exists which
     allows any character to be used within an atom.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-04 23:06:22.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-05 17:36:19.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-04 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-05 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_status: Initially composing light-hearted
     and irreverent works, he also wrote serious, sombre and religious pieces beginning
     in the 1930s.
@@ -2041,7 +2041,7 @@
   physical_contact_18_to_69_years: '0'
   physical_contact_18_to_69_years_raw: '0'
   physical_contact_over_70_years: null
-  physical_contact_over_70_years_raw: Don't know
+  physical_contact_over_70_years_raw: null
   physical_contact_under_18_years: 21 or more
   physical_contact_under_18_years_raw: 21 or more
   postcode: NC0C6UK
@@ -2078,7 +2078,7 @@
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: null
-  social_distance_contact_18_to_69_years_raw: Don't know
+  social_distance_contact_18_to_69_years_raw: null
   social_distance_contact_over_70_years: 11-20
   social_distance_contact_over_70_years_raw: 11 to 20
   social_distance_contact_under_18_years: 1-5
@@ -2382,12 +2382,12 @@
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   existing_participant_digital_opt_in_datetime: '2020-02-05 20:10:50.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-02 09:26:10.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 16:05:20.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-02 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: Its main implementation is
     the Glasgow Haskell Compiler.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-09 17:14:28.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-06 05:06:10.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-09 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-06 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_status: The syntax {D1,D2,...,Dn}
     denotes a tuple whose arguments are D1, D2, ... Dn.
   existing_participant_digital_opt_in_status: Participant Opted Out
@@ -2405,7 +2405,7 @@
   form_start_datetime: '2022-01-07 01:50:45.000000'
   hh_id: '352206298026'
   hospital_last_28_days: 'Yes'
-  hours_a_day_with_someone_else_at_home: Don't know
+  hours_a_day_with_someone_else_at_home: null
   hours_a_day_with_someone_else_at_home_raw: Don't know
   household_been_care_home_last_28_days: Yes, I have
   household_been_hospital_last_28_days: Yes, I have
@@ -2665,7 +2665,7 @@
   time_off_health_reasons: null
   time_off_respiratory_infection: null
   times_hour_or_longer_another_home_last_7_days: null
-  times_hour_or_longer_another_home_last_7_days_raw: Don't know
+  times_hour_or_longer_another_home_last_7_days_raw: null
   times_hour_or_longer_another_person_your_home_last_7_days: '7'
   times_hour_or_longer_another_person_your_home_last_7_days_raw: 7 times or more
   times_outside_shopping_or_socialising_last_7_days: 7.0
@@ -2840,10 +2840,10 @@
   ever_smoked_regularly: 'No'
   ever_smoked_regularly_raw: 'No'
   existing_participant_digital_opt_in_datetime: '2022-12-16 04:12:18.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 01:16:24.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_sent_datetime: null
   existing_participant_digital_opt_in_reminder_1_status: Where are my pants?
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-07 18:45:02.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-07 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_sent_datetime: null
   existing_participant_digital_opt_in_reminder_2_status: Atoms can contain any character
     if they are enclosed within single quotes and an escape convention exists which
@@ -3128,7 +3128,7 @@
   times_shopping_last_7_days: '2'
   times_shopping_last_7_days_raw: '2'
   times_socialising_last_7_days: null
-  times_socialising_last_7_days_raw: Don't know
+  times_socialising_last_7_days_raw: null
   title: Dr.
   transport_to_work_or_education: Other method
   unique_participant_response_id: 4260-DHR-497105638762
@@ -3294,10 +3294,10 @@
   ever_smoked_regularly_raw: 'No'
   existing_participant_digital_opt_in_datetime: '2021-08-21 11:10:23.000000'
   existing_participant_digital_opt_in_reminder_1_due_datetime: null
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-09 12:32:27.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-09 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: Its main implementation is
     the Glasgow Haskell Compiler.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 18:30:04.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_sent_datetime: null
   existing_participant_digital_opt_in_reminder_2_status: Type classes first appeared
     in the Haskell programming language.
@@ -3317,7 +3317,7 @@
   form_start_datetime: '2022-01-07 13:39:54.000000'
   hh_id: '225258329500'
   hospital_last_28_days: 'Yes'
-  hours_a_day_with_someone_else_at_home: Don't know
+  hours_a_day_with_someone_else_at_home: null
   hours_a_day_with_someone_else_at_home_raw: Don't know
   household_been_care_home_last_28_days: No, no one in my household has
   household_been_hospital_last_28_days: Yes, I have
@@ -3370,7 +3370,7 @@
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
-  other_household_member_care_home_last_28_days: Don't know
+  other_household_member_care_home_last_28_days: null
   other_household_member_care_home_last_28_days_raw: Don't know
   other_household_member_hospital_last_28_days: 'No'
   other_household_member_hospital_last_28_days_raw: 'No'
@@ -3755,12 +3755,12 @@
   ever_smoked_regularly: 'Yes'
   ever_smoked_regularly_raw: 'Yes'
   existing_participant_digital_opt_in_datetime: '2020-02-24 15:52:04.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-02 03:31:41.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 18:35:01.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-02 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: Erlang is known for its designs
     that are well suited for systems.
   existing_participant_digital_opt_in_reminder_2_due_datetime: null
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-08 03:57:44.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-08 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_status: She spent her earliest years
     reading classic literature, and writing poetry.
   existing_participant_digital_opt_in_status: Participant Opted Out
@@ -3831,9 +3831,9 @@
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
   other_covid_infection_test_results_raw: One or more tests were positive
-  other_household_member_care_home_last_28_days: Don't know
+  other_household_member_care_home_last_28_days: null
   other_household_member_care_home_last_28_days_raw: Don't know
-  other_household_member_hospital_last_28_days: Don't know
+  other_household_member_hospital_last_28_days: null
   other_household_member_hospital_last_28_days_raw: Don't know
   participant_completion_window_end_datetime: '2022-12-23 06:45:19.000000'
   participant_completion_window_id: '6082'
@@ -3910,7 +3910,7 @@
   smokes_pipe: null
   smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: null
-  social_distance_contact_18_to_69_years_raw: Don't know
+  social_distance_contact_18_to_69_years_raw: null
   social_distance_contact_over_70_years: null
   social_distance_contact_over_70_years_raw: null
   social_distance_contact_under_18_years: null
@@ -4214,12 +4214,12 @@
   ever_smoked_regularly: null
   ever_smoked_regularly_raw: Prefer not to say
   existing_participant_digital_opt_in_datetime: '2021-04-04 03:42:27.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-05 22:21:15.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-01 00:05:15.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-05 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-01 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_1_status: Erlang is known for its designs
     that are well suited for systems.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-03 13:58:24.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-04 20:51:21.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-03 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-04 00:00:00.000000'
   existing_participant_digital_opt_in_reminder_2_status: Erlang is a general-purpose,
     concurrent, functional programming language.
   existing_participant_digital_opt_in_status: null

@@ -79,10 +79,6 @@ cis_digital_datetime_map = {
         "participant_digital_enrolment_datetime",
         "existing_participant_digital_opt_in_datetime",
         "digital_entry_pack_sent_datetime",
-        "existing_participant_digital_opt_in_reminder_1_due_datetime",
-        "existing_participant_digital_opt_in_reminder_1_sent_datetime",
-        "existing_participant_digital_opt_in_reminder_2_due_datetime",
-        "existing_participant_digital_opt_in_reminder_2_sent_datetime",
         "participant_completion_window_start_datetime",
         "participant_completion_window_end_datetime",
         "opted_out_of_next_window_datetime",
@@ -130,5 +126,9 @@ cis_digital_datetime_map = {
         "other_antibody_test_last_negative_date",
         "other_antibody_test_negative_date",  # tempvar
         "sample_collection_courier_datetime",
+        "existing_participant_digital_opt_in_reminder_1_due_datetime",
+        "existing_participant_digital_opt_in_reminder_1_sent_datetime",
+        "existing_participant_digital_opt_in_reminder_2_due_datetime",
+        "existing_participant_digital_opt_in_reminder_2_sent_datetime",
     ],
 }
