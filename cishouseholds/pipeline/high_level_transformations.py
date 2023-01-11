@@ -845,6 +845,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
     df = assign_raw_copies(df, dont_know_columns)
     dont_know_mapping_dict = {
         "Prefer not to say": None,
+        "Don't know": None,
         "Don't Know": None,
         "I don't know the type": "Don't know type",
         "Dont know": None,
