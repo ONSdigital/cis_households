@@ -1559,31 +1559,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
                 contact_date[l - 1],
             ],
         )
-
-    vaccine_cols = []
-    df.cache()
-    if "cis_covid_vaccine_date" in df.columns and "cis_covid_vaccine_type_other" in df.columns:
-        vaccine_cols.append(("cis_covid_vaccine_type", "cis_covid_vaccine_date", "cis_covid_vaccine_type_other"))
-
-    for i in range(1, 7):
-        vaccine_date_col = f"cis_covid_vaccine_date_{i}"
-        vaccine_type_col = f"cis_covid_vaccine_type_other_{i}"
-        if vaccine_date_col in df.columns and vaccine_type_col in df.columns:
-            vaccine_cols.append((f"cis_covid_vaccine_type_{i}", vaccine_date_col, vaccine_type_col))
-
-    for column_name_to_assign, vaccine_date_col, vaccine_type_col in vaccine_cols:
-        df = assign_regex_from_map_additional_rules(
-            df=df,
-            column_name_to_assign=column_name_to_assign,
-            reference_columns=[vaccine_type_col],
-            map=vaccine_regex_map,
-            priority_map=vaccine_regex_priority_map,
-            disambiguation_conditions={"Pfizer/BioNTechDD": (F.col(vaccine_date_col) < "2021-01-31")},
-            value_map={"Pfizer/BioNTechDD": "Pfizer/BioNTech"},
-            first_match_only=True,
-            overwrite_values=False,
-            default_value="Don't know type",
-        )
     return df
 
 
@@ -2830,15 +2805,22 @@ def derive_overall_vaccination(df: DataFrame) -> DataFrame:
     """Derive overall vaccination status from NIMS and CIS data."""
     return df
 
+def process_vaccine_regex(df: DataFrame, vaccine_number:int) -> DataFrame:
+    """Add result of vaccine regex pattern matchings"""
 
-def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
-    """Add result of various regex pattern matchings"""
-    # df = df.drop(
-    #     "work_health_care_patient_facing_original",
-    #     "work_social_care_original",
-    #     "work_care_nursing_home_original",
-    #     "work_direct_contact_patients_or_clients_original",
-    # )
+    df = df.select(f"cis_covid_vaccine_type_other_{vaccine_number}")
+
+    df = assign_regex_from_map(
+        df=df,
+        column_name_to_assign="cis_covid_vaccine_type",
+        reference_columns=[f"cis_covid_vaccine_type_other_{vaccine_number}"],
+        map=vaccine_regex_map,
+        priority_map=vaccine_regex_priority_map,
+    )
+    return df.withColumnRenamed(f"cis_covid_vaccine_type_other_{vaccine_number}","cis_covid_vaccine_type_other_raw")
+
+def process_healthcare_regex(df: DataFrame) -> DataFrame:
+    """Add result of various healthcare regex pattern matchings"""
 
     df = df.withColumn("work_main_job_title", F.upper(F.col("work_main_job_title")))
     df = df.withColumn("work_main_job_role", F.upper(F.col("work_main_job_role")))
