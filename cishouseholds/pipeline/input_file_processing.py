@@ -144,7 +144,7 @@ def extract_input_data(
     file_paths: Union[List[str], str],
     validation_schema: Union[dict, None],
     sep: str,
-    source_file_column: str,
+    source_file_column: str = "",
 ) -> DataFrame:
     """
     Converts a validation schema in cerberus format into a pyspsark readable schema and uses it to read
