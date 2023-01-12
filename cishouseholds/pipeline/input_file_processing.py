@@ -111,7 +111,7 @@ def extract_validate_transform_input_data(
         record_editing_config_path = storage_config["record_editing_config_file"]
         extraction_config = get_secondary_config(storage_config["record_extraction_config_file"])
 
-    df = extract_input_data(resource_path, validation_schema, sep)
+    df = extract_input_data(resource_path, validation_schema, sep, source_file_column)
     if column_name_map is not None:
         df = rename_column_names(df, column_name_map)
 
@@ -140,7 +140,12 @@ def extract_validate_transform_input_data(
     return df
 
 
-def extract_input_data(file_paths: Union[List[str], str], validation_schema: Union[dict, None], sep: str) -> DataFrame:
+def extract_input_data(
+    file_paths: Union[List[str], str],
+    validation_schema: Union[dict, None],
+    sep: str,
+    source_file_column: str,
+) -> DataFrame:
     """
     Converts a validation schema in cerberus format into a pyspsark readable schema and uses it to read
     a csv filepath into a dataframe.
@@ -169,7 +174,7 @@ def extract_input_data(file_paths: Union[List[str], str], validation_schema: Uni
         dfs = [
             spark.createDataFrame(
                 data=pd.read_excel(read_file_to_string(file, True), engine="openpyxl"), schema=spark_schema
-            )
+            ).withColumn(source_file_column, (F.regexp_replace(F.lit(file), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", "")))
             for file in file_paths
         ]
         return union_multiple_tables(dfs)
