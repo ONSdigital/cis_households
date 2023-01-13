@@ -1749,6 +1749,7 @@ def assign_work_status_group(df: DataFrame, colum_name_to_assign: str, reference
 def contact_known_or_suspected_covid_type(
     df: DataFrame,
     contact_known_covid_type_column: str,
+    contact_suspect_covid_type_column: str,
     contact_any_covid_type_column: str,
     contact_any_covid_date_column: str,
     contact_known_covid_date_column: str,
@@ -1772,7 +1773,7 @@ def contact_known_or_suspected_covid_type(
         )
         .when(
             F.col(contact_any_covid_date_column) == F.col(contact_suspect_covid_date_column),
-            F.col(contact_known_covid_type_column),
+            F.col(contact_suspect_covid_type_column),
         )
         .otherwise(None),
     )

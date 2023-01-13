@@ -87,6 +87,9 @@ ipython_config.py
 .vscode/
 .idea/
 
+# PyCharmg
+.idea/
+
 # pyenv
 .python-version
 

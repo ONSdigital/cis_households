@@ -1169,9 +1169,6 @@ category_maps = {
             "English": 1,
             "Welsh": 2,
         },
-        # "digital_entry_pack_status": {},  # TODO Need categories to map
-        # "existing_participant_digital_opt_in_reminder_1_status": {},  # TODO Need categories to map
-        # "existing_participant_digital_opt_in_reminder_2_status": {},  # TODO Need categories to map
         "household_completion_window_status": {
             "New": 1,
             "Open": 2,
@@ -1355,6 +1352,14 @@ category_maps = {
             "permanent-failure": 2,
             "Sent": 3,
             "delivered": 4,
+        },
+        "nhs_data_share": {
+            "Opt-Out": 1,
+            "Opt-In Sent": 2,
+        },
+        "participant_original_invite_cohort": {
+            "Swab Only": 1,
+            "Blood and Swab": 2,
         },
     }
 }
@@ -2158,13 +2163,44 @@ column_name_maps = {
         "pwta18": "person_level_weight_aps_18",
         "age": "age",
     },
-    "participant_extract_digital_map": {
+    "participant_extract_digital_name_map": {
+        "ons_household_id": "ons_household_id",
+        "participant_survey_status": "participant_survey_status",
         "withdrawn_reason": "participant_withdrawal_reason",
         "withdrawn_type": "participant_withdrawal_type",
-        "existing_participant_digital_opt_in_reminder_2_status": "",  # picklist
+        "participant_id": "participant_id",
+        "title": "title",
+        "first_name": "first_name",
+        "middle_name": "middle_name",
+        "last_name": "last_name",
+        "date_of_birth": "date_of_birth",
+        "sex": "sex",
+        "ethnic_group": "ethnic_group",
+        "ethnicity": "ethnicity",
+        "ethnicity_other": "ethnicity_other",
+        "original_invite_cohort": "participant_original_invite_cohort",
+        "consent_contact_extra_research_yn": "consent_contact_extra_research_yn",
+        "consent_use_of_surplus_blood_samples_yn": "consent_use_of_surplus_blood_samples_yn",
+        "consent_blood_samples_if_positive_yn": "consent_blood_samples_if_positive_yn",
+        "existing_participant_digital_opt_in_status": "existing_participant_digital_opt_in_status",
+        "existing_participant_digital_opt_in_datetime": "existing_participant_digital_opt_in_datetime",
+        "nhs_data_share": "nhs_data_share",
+        "nhs_share_opt_out_date": "nhs_share_opt_out_date",
+        "household_invited_to_digital": "household_invited_to_digital",
+        "household_digital_enrolment_invited_datetime": "household_digital_enrolment_invited_datetime",
+        "participant_invited_to_digital": "participant_invited_to_digital",
+        "participant_enrolled_digital": "participant_enrolled_digital",
+        "participant_digital_enrolment_datetime": "participant_digital_enrolment_datetime",
+        "digital_entry_pack_sent_datetime": "digital_entry_pack_sent_datetime",
+        "digital_entry_pack_status": "digital_entry_pack_status",
+        "existing_participant_digital_opt_in_reminder_1_due_datetime": "existing_participant_digital_opt_in_reminder_1_due_datetime",
+        "existing_participant_digital_opt_in_reminder_1_sent_datetime": "existing_participant_digital_opt_in_reminder_1_sent_datetime",
+        "existing_participant_digital_opt_in_reminder_1_status": "existing_participant_digital_opt_in_reminder_1_status",
+        "existing_participant_digital_opt_in_reminder_2_due_datetime": "existing_participant_digital_opt_in_reminder_2_due_datetime",
+        "existing_participant_digital_opt_in_reminder_2_sent_datetime": "existing_participant_digital_opt_in_reminder_2_sent_datetime",
+        "existing_participant_digital_opt_in_reminder_2_status": "existing_participant_digital_opt_in_reminder_2_status",
     },
 }
-
 
 survey_response_cast_to_double = [
     "infant_age_months_1",

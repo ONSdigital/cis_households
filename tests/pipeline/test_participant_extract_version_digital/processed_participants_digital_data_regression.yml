@@ -2,7 +2,9 @@
   consent_contact_extra_research_yn: 'Yes'
   consent_use_of_surplus_blood_samples_yn: null
   date_of_birth: '2020-02-01 00:00:00.000000'
-  digital_entry_pack_sent_datetime: '2020-09-20 00:35:12.000000'
+  date_of_birth_string: 01feb2020
+  digital_entry_pack_sent_datetime: '2020-09-20 00:00:00.000000'
+  digital_entry_pack_sent_datetime_string: 20sep2020
   digital_entry_pack_status: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
   ethnic_group: Black or African or Caribbean or Black British
@@ -10,350 +12,451 @@
   ethnicity_group: null
   ethnicity_other: Where are my pants?
   existing_participant_digital_opt_in_datetime: '2020-12-04 21:47:57.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-03 11:24:22.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 00:12:48.000000'
+  existing_participant_digital_opt_in_datetime_string: 04dec2020 21:47:57
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-03 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 03jan2022
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 03jan2022
   existing_participant_digital_opt_in_reminder_1_status: Make me a sandwich.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-07 15:04:40.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-07 02:10:01.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-07 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 07jan2022
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-07 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: 07jan2022
   existing_participant_digital_opt_in_reminder_2_status: Atoms are used within a program
     to denote distinguished values.
   existing_participant_digital_opt_in_status: null
   first_name: Annika
   household_digital_enrolment_invited_datetime: null
+  household_digital_enrolment_invited_datetime_string: null
   household_invited_to_digital: null
   last_name: Day
   middle_name: Hank
+  nhs_data_share: null
   nhs_share_opt_out_date: '2022-01-06'
   ons_household_id: '602276804025'
-  original_invite_cohort: Its main implementation is the Glasgow Haskell Compiler.
+  ordered_household_id: 5
   participant_digital_enrolment_datetime: '2020-10-14 01:01:05.000000'
-  participant_enrolled_digital: 'Yes'
+  participant_digital_enrolment_datetime_string: 14oct2020 01:01:05
+  participant_enrolled_digital: null
   participant_id: DHR-016525808631
-  participant_invited_to_digital: null
+  participant_invited_to_digital: 'Yes'
+  participant_original_invite_cohort: Its main implementation is the Glasgow Haskell
+    Compiler.
   participant_survey_status: Withdrawn
+  participant_withdrawal_reason: No longer wants to take part
+  participant_withdrawal_type: Withdrawn
   sex: Male
   title: Prof.
-  withdrawn_reason: No longer wants to take part
-  withdrawn_type: Withdrawn
 - consent_blood_samples_if_positive_yn: null
-  consent_contact_extra_research_yn: 'Yes'
+  consent_contact_extra_research_yn: null
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   date_of_birth: '2014-12-23 00:00:00.000000'
-  digital_entry_pack_sent_datetime: '2022-04-19 07:00:04.000000'
+  date_of_birth_string: 23dec2014
+  digital_entry_pack_sent_datetime: '2022-04-19 00:00:00.000000'
+  digital_entry_pack_sent_datetime_string: 19apr2022
   digital_entry_pack_status: In 1989 the building was heavily damaged by fire, but
     it has since been restored.
-  ethnic_group: Asian or Asian British
-  ethnicity: White-Irish
+  ethnic_group: White
+  ethnicity: Asian or Asian British-Indian
   ethnicity_group: null
   ethnicity_other: Erlang is a general-purpose, concurrent, functional programming
     language.
   existing_participant_digital_opt_in_datetime: '2022-11-12 14:57:33.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-02 12:57:57.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-07 13:29:28.000000'
+  existing_participant_digital_opt_in_datetime_string: 12nov2022 14:57:33
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-02 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 02jan2022
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-07 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 07jan2022
   existing_participant_digital_opt_in_reminder_1_status: Atoms can contain any character
     if they are enclosed within single quotes and an escape convention exists which
     allows any character to be used within an atom.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-02 11:17:41.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-02 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 02jan2022
   existing_participant_digital_opt_in_reminder_2_sent_datetime: null
+  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: null
   existing_participant_digital_opt_in_reminder_2_status: Its main implementation is
     the Glasgow Haskell Compiler.
-  existing_participant_digital_opt_in_status: Participant Opted In
+  existing_participant_digital_opt_in_status: null
   first_name: Wilburn
   household_digital_enrolment_invited_datetime: '2022-01-06 11:34:20.000000'
+  household_digital_enrolment_invited_datetime_string: 06jan2022 11:34:20
   household_invited_to_digital: null
   last_name: Barton
   middle_name: Caron
+  nhs_data_share: 'Yes'
   nhs_share_opt_out_date: '2022-01-06'
   ons_household_id: '571295570558'
-  original_invite_cohort: The sequential subset of Erlang supports eager evaluation,
-    single assignment, and dynamic typing.
+  ordered_household_id: 4
   participant_digital_enrolment_datetime: '2020-04-08 02:21:01.000000'
-  participant_enrolled_digital: null
+  participant_digital_enrolment_datetime_string: 08apr2020 02:21:01
+  participant_enrolled_digital: 'No'
   participant_id: DHR-190156218256
-  participant_invited_to_digital: 'No'
-  participant_survey_status: Complete
+  participant_invited_to_digital: null
+  participant_original_invite_cohort: The sequential subset of Erlang supports eager
+    evaluation, single assignment, and dynamic typing.
+  participant_survey_status: Withdrawn
+  participant_withdrawal_reason: No longer wants to take part
+  participant_withdrawal_type: null
   sex: Male
-  title: Ms.
-  withdrawn_reason: Bad experience with tester/survey
-  withdrawn_type: Withdrawn - no future linkage
-- consent_blood_samples_if_positive_yn: null
-  consent_contact_extra_research_yn: 'No'
-  consent_use_of_surplus_blood_samples_yn: 'Yes'
+  title: Mrs.
+- consent_blood_samples_if_positive_yn: 'No'
+  consent_contact_extra_research_yn: 'Yes'
+  consent_use_of_surplus_blood_samples_yn: null
   date_of_birth: '1997-08-21 00:00:00.000000'
-  digital_entry_pack_sent_datetime: '2020-08-13 08:59:40.000000'
+  date_of_birth_string: 21aug1997
+  digital_entry_pack_sent_datetime: '2020-08-13 00:00:00.000000'
+  digital_entry_pack_sent_datetime_string: 13aug2020
   digital_entry_pack_status: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
-  ethnic_group: Mixed/Multiple Ethnic Groups
-  ethnicity: Other ethnic group-Arab
-  ethnicity_group: null
-  ethnicity_other: The arguments can be primitive data types or compound data types.
-  existing_participant_digital_opt_in_datetime: '2020-11-09 22:59:43.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 06:03:25.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-07 06:47:53.000000'
-  existing_participant_digital_opt_in_reminder_1_status: Type classes first appeared
-    in the Haskell programming language.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-04 01:29:38.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-02 09:35:00.000000'
-  existing_participant_digital_opt_in_reminder_2_status: The sequential subset of
-    Erlang supports eager evaluation, single assignment, and dynamic typing.
-  existing_participant_digital_opt_in_status: Participant Opted Out
-  first_name: Honey
-  household_digital_enrolment_invited_datetime: '2022-01-01 01:24:13.000000'
-  household_invited_to_digital: null
-  last_name: Hunt
-  middle_name: Gale
-  nhs_share_opt_out_date: '2022-01-08'
-  ons_household_id: '836394225258'
-  original_invite_cohort: Haskell features a type system with type inference and lazy
-    evaluation.
-  participant_digital_enrolment_datetime: '2020-10-21 05:34:46.000000'
-  participant_enrolled_digital: 'No'
-  participant_id: DHR-329500167403
-  participant_invited_to_digital: 'Yes'
-  participant_survey_status: Active
-  sex: Male
-  title: Dr.
-  withdrawn_reason: No longer wants to take part
-  withdrawn_type: null
-- consent_blood_samples_if_positive_yn: null
-  consent_contact_extra_research_yn: null
-  consent_use_of_surplus_blood_samples_yn: null
-  date_of_birth: '2007-10-03 00:00:00.000000'
-  digital_entry_pack_sent_datetime: '2020-05-14 05:29:00.000000'
-  digital_entry_pack_status: Any element of a tuple can be accessed in constant time.
-  ethnic_group: Other Ethnic Group
+  ethnic_group: White
   ethnicity: Asian or Asian British-Indian
   ethnicity_group: null
   ethnicity_other: The arguments can be primitive data types or compound data types.
+  existing_participant_digital_opt_in_datetime: '2020-11-09 22:59:43.000000'
+  existing_participant_digital_opt_in_datetime_string: 09nov2020 22:59:43
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 08jan2022
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-07 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 07jan2022
+  existing_participant_digital_opt_in_reminder_1_status: Type classes first appeared
+    in the Haskell programming language.
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-04 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 04jan2022
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-02 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: 02jan2022
+  existing_participant_digital_opt_in_reminder_2_status: The sequential subset of
+    Erlang supports eager evaluation, single assignment, and dynamic typing.
+  existing_participant_digital_opt_in_status: null
+  first_name: Honey
+  household_digital_enrolment_invited_datetime: '2022-01-01 01:24:13.000000'
+  household_digital_enrolment_invited_datetime_string: 01jan2022 01:24:13
+  household_invited_to_digital: 'No'
+  last_name: Hunt
+  middle_name: Gale
+  nhs_data_share: 'Yes'
+  nhs_share_opt_out_date: '2022-01-08'
+  ons_household_id: '836394225258'
+  ordered_household_id: 8
+  participant_digital_enrolment_datetime: '2020-10-21 05:34:46.000000'
+  participant_digital_enrolment_datetime_string: 21oct2020 05:34:46
+  participant_enrolled_digital: null
+  participant_id: DHR-329500167403
+  participant_invited_to_digital: 'Yes'
+  participant_original_invite_cohort: Haskell features a type system with type inference
+    and lazy evaluation.
+  participant_survey_status: Active
+  participant_withdrawal_reason: Too many visits
+  participant_withdrawal_type: Withdrawn
+  sex: Male
+  title: Mr.
+- consent_blood_samples_if_positive_yn: 'No'
+  consent_contact_extra_research_yn: 'Yes'
+  consent_use_of_surplus_blood_samples_yn: 'No'
+  date_of_birth: '2007-10-03 00:00:00.000000'
+  date_of_birth_string: 03oct2007
+  digital_entry_pack_sent_datetime: '2020-05-14 00:00:00.000000'
+  digital_entry_pack_sent_datetime_string: 14may2020
+  digital_entry_pack_status: Any element of a tuple can be accessed in constant time.
+  ethnic_group: Asian or Asian British
+  ethnicity: Any other Mixed background
+  ethnicity_group: null
+  ethnicity_other: The arguments can be primitive data types or compound data types.
   existing_participant_digital_opt_in_datetime: '2022-05-18 00:43:46.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 18:07:43.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-06 04:42:29.000000'
+  existing_participant_digital_opt_in_datetime_string: 18may2022 00:43:46
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 08jan2022
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-06 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 06jan2022
   existing_participant_digital_opt_in_reminder_1_status: Do you have any idea why
     this is not working?
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-07 08:11:15.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-01 09:53:53.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-07 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 07jan2022
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-01 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: 01jan2022
   existing_participant_digital_opt_in_reminder_2_status: Atoms are used within a program
     to denote distinguished values.
-  existing_participant_digital_opt_in_status: Participant Opted In
+  existing_participant_digital_opt_in_status: Participant Opted Out
   first_name: Myung
   household_digital_enrolment_invited_datetime: null
-  household_invited_to_digital: null
+  household_digital_enrolment_invited_datetime_string: null
+  household_invited_to_digital: 'Yes'
   last_name: Stanley
   middle_name: Melaine
+  nhs_data_share: 'Yes'
   nhs_share_opt_out_date: '2022-01-08'
   ons_household_id: '425723964512'
-  original_invite_cohort: Erlang is known for its designs that are well suited for
-    systems.
+  ordered_household_id: 3
   participant_digital_enrolment_datetime: '2022-09-25 08:49:41.000000'
-  participant_enrolled_digital: 'Yes'
+  participant_digital_enrolment_datetime_string: 25sep2022 08:49:41
+  participant_enrolled_digital: null
   participant_id: DHR-352206298026
-  participant_invited_to_digital: 'No'
-  participant_survey_status: Withdrawn
+  participant_invited_to_digital: null
+  participant_original_invite_cohort: Erlang is known for its designs that are well
+    suited for systems.
+  participant_survey_status: Complete
+  participant_withdrawal_reason: Swab/blood process distressing
+  participant_withdrawal_type: Withdrawn - no future linkage
   sex: Male
-  title: Miss.
-  withdrawn_reason: No longer convenient
-  withdrawn_type: Withdrawn - no future linkage
-- consent_blood_samples_if_positive_yn: null
-  consent_contact_extra_research_yn: null
-  consent_use_of_surplus_blood_samples_yn: 'No'
+  title: Prof.
+- consent_blood_samples_if_positive_yn: 'Yes'
+  consent_contact_extra_research_yn: 'Yes'
+  consent_use_of_surplus_blood_samples_yn: 'Yes'
   date_of_birth: '2003-05-08 00:00:00.000000'
-  digital_entry_pack_sent_datetime: '2021-09-28 19:27:13.000000'
+  date_of_birth_string: 08may2003
+  digital_entry_pack_sent_datetime: '2021-09-28 00:00:00.000000'
+  digital_entry_pack_sent_datetime_string: 28sep2021
   digital_entry_pack_status: The arguments can be primitive data types or compound
     data types.
-  ethnic_group: Black or African or Caribbean or Black British
-  ethnicity: Caribbean or Black British
+  ethnic_group: White
+  ethnicity: Any other Black
   ethnicity_group: null
   ethnicity_other: It is also a garbage-collected runtime system.
   existing_participant_digital_opt_in_datetime: '2020-02-24 15:52:04.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-04 07:57:32.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-02 21:15:12.000000'
+  existing_participant_digital_opt_in_datetime_string: 24feb2020 15:52:04
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-04 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 04jan2022
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-02 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 02jan2022
   existing_participant_digital_opt_in_reminder_1_status: Atoms can contain any character
     if they are enclosed within single quotes and an escape convention exists which
     allows any character to be used within an atom.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-03 09:40:01.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-09 10:19:02.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-03 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 03jan2022
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-09 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: 09jan2022
   existing_participant_digital_opt_in_reminder_2_status: Atoms are used within a program
     to denote distinguished values.
-  existing_participant_digital_opt_in_status: null
+  existing_participant_digital_opt_in_status: Participant Opted In
   first_name: My
   household_digital_enrolment_invited_datetime: '2022-01-04 06:48:13.000000'
-  household_invited_to_digital: 'No'
+  household_digital_enrolment_invited_datetime_string: 04jan2022 06:48:13
+  household_invited_to_digital: 'Yes'
   last_name: Ford
   middle_name: Yuri
+  nhs_data_share: null
   nhs_share_opt_out_date: '2022-01-06'
   ons_household_id: '294850989981'
-  original_invite_cohort: He looked inquisitively at his keyboard and wrote another
-    sentence.
+  ordered_household_id: 2
   participant_digital_enrolment_datetime: '2022-03-05 21:30:35.000000'
+  participant_digital_enrolment_datetime_string: 05mar2022 21:30:35
   participant_enrolled_digital: 'No'
   participant_id: DHR-424039274499
   participant_invited_to_digital: null
-  participant_survey_status: Withdrawn
+  participant_original_invite_cohort: He looked inquisitively at his keyboard and
+    wrote another sentence.
+  participant_survey_status: Complete
+  participant_withdrawal_reason: Too many visits
+  participant_withdrawal_type: Withdrawn - no future linkage or use of samples
   sex: Female
-  title: Mr.
-  withdrawn_reason: null
-  withdrawn_type: Withdrawn - no future linkage
-- consent_blood_samples_if_positive_yn: 'No'
-  consent_contact_extra_research_yn: null
+  title: Miss.
+- consent_blood_samples_if_positive_yn: 'Yes'
+  consent_contact_extra_research_yn: 'No'
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   date_of_birth: '2015-04-22 00:00:00.000000'
-  digital_entry_pack_sent_datetime: '2020-11-16 12:56:58.000000'
+  date_of_birth_string: 22apr2015
+  digital_entry_pack_sent_datetime: '2020-11-16 00:00:00.000000'
+  digital_entry_pack_sent_datetime_string: 16nov2020
   digital_entry_pack_status: Do you come here often?
   ethnic_group: Asian or Asian British
-  ethnicity: White-Irish
+  ethnicity: Any other Mixed background
   ethnicity_group: null
   ethnicity_other: Erlang is known for its designs that are well suited for systems.
   existing_participant_digital_opt_in_datetime: '2020-04-27 01:51:20.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 20:01:59.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-01 20:53:26.000000'
+  existing_participant_digital_opt_in_datetime_string: 27apr2020 01:51:20
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 01jan2022
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-01 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 01jan2022
   existing_participant_digital_opt_in_reminder_1_status: Haskell is a standardized,
     general-purpose purely functional programming language, with non-strict semantics
     and strong static typing.
   existing_participant_digital_opt_in_reminder_2_due_datetime: null
+  existing_participant_digital_opt_in_reminder_2_due_datetime_string: null
   existing_participant_digital_opt_in_reminder_2_sent_datetime: null
+  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: null
   existing_participant_digital_opt_in_reminder_2_status: '"Messages can be sent to
     and received from ports, but these messages must obey the so-called ""port protocol."""'
   existing_participant_digital_opt_in_status: Participant Opted In
   first_name: Alan
   household_digital_enrolment_invited_datetime: '2022-01-04 00:42:15.000000'
-  household_invited_to_digital: 'Yes'
+  household_digital_enrolment_invited_datetime_string: 04jan2022 00:42:15
+  household_invited_to_digital: 'No'
   last_name: Gomez
   middle_name: Remedios
+  nhs_data_share: 'No'
   nhs_share_opt_out_date: '2022-01-09'
   ons_household_id: '959807652614'
-  original_invite_cohort: Ports are created with the built-in function open_port.
+  ordered_household_id: 10
   participant_digital_enrolment_datetime: '2021-02-07 18:56:45.000000'
-  participant_enrolled_digital: 'No'
+  participant_digital_enrolment_datetime_string: 07feb2021 18:56:45
+  participant_enrolled_digital: null
   participant_id: DHR-498251982661
-  participant_invited_to_digital: 'Yes'
-  participant_survey_status: Active
+  participant_invited_to_digital: 'No'
+  participant_original_invite_cohort: Ports are created with the built-in function
+    open_port.
+  participant_survey_status: Complete
+  participant_withdrawal_reason: Participant does not want to self swab
+  participant_withdrawal_type: Withdrawn - no future linkage
   sex: Female
-  title: Ms.
-  withdrawn_reason: Swab/blood process distressing
-  withdrawn_type: Withdrawn - no future linkage or use of samples
-- consent_blood_samples_if_positive_yn: 'No'
-  consent_contact_extra_research_yn: null
-  consent_use_of_surplus_blood_samples_yn: null
+  title: Prof.
+- consent_blood_samples_if_positive_yn: null
+  consent_contact_extra_research_yn: 'Yes'
+  consent_use_of_surplus_blood_samples_yn: 'Yes'
   date_of_birth: '1996-09-25 00:00:00.000000'
-  digital_entry_pack_sent_datetime: '2022-01-20 10:31:01.000000'
+  date_of_birth_string: 25sep1996
+  digital_entry_pack_sent_datetime: '2022-01-20 00:00:00.000000'
+  digital_entry_pack_sent_datetime_string: 20jan2022
   digital_entry_pack_status: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
-  ethnic_group: Asian or Asian British
-  ethnicity: Mixed-White & Asian
+  ethnic_group: Black or African or Caribbean or Black British
+  ethnicity: Asian or Asian British-Indian
   ethnicity_group: null
   ethnicity_other: Initially composing light-hearted and irreverent works, he also
     wrote serious, sombre and religious pieces beginning in the 1930s.
   existing_participant_digital_opt_in_datetime: '2022-05-27 20:32:38.000000'
+  existing_participant_digital_opt_in_datetime_string: 27may2022 20:32:38
   existing_participant_digital_opt_in_reminder_1_due_datetime: null
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 02:16:58.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime_string: null
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 03jan2022
   existing_participant_digital_opt_in_reminder_1_status: In 1989 the building was
     heavily damaged by fire, but it has since been restored.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 21:48:58.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 01jan2022
   existing_participant_digital_opt_in_reminder_2_sent_datetime: null
+  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: null
   existing_participant_digital_opt_in_reminder_2_status: Initially composing light-hearted
     and irreverent works, he also wrote serious, sombre and religious pieces beginning
     in the 1930s.
-  existing_participant_digital_opt_in_status: Participant Opted In
+  existing_participant_digital_opt_in_status: null
   first_name: Humberto
   household_digital_enrolment_invited_datetime: null
-  household_invited_to_digital: null
+  household_digital_enrolment_invited_datetime_string: null
+  household_invited_to_digital: 'No'
   last_name: Lynch
   middle_name: Shaun
+  nhs_data_share: null
   nhs_share_opt_out_date: '2022-01-03'
   ons_household_id: '219547810444'
-  original_invite_cohort: The Galactic Empire is nearing completion of the Death Star,
-    a space station with the power to destroy entire planets.
+  ordered_household_id: 1
   participant_digital_enrolment_datetime: '2020-06-25 05:34:49.000000'
-  participant_enrolled_digital: 'No'
+  participant_digital_enrolment_datetime_string: 25jun2020 05:34:49
+  participant_enrolled_digital: null
   participant_id: DHR-769043821442
-  participant_invited_to_digital: 'No'
-  participant_survey_status: Active
+  participant_invited_to_digital: null
+  participant_original_invite_cohort: The Galactic Empire is nearing completion of
+    the Death Star, a space station with the power to destroy entire planets.
+  participant_survey_status: Complete
+  participant_withdrawal_reason: Bad experience with tester/survey
+  participant_withdrawal_type: null
   sex: Male
   title: Mrs.
-  withdrawn_reason: Moving location
-  withdrawn_type: Withdrawn - no future linkage or use of samples
-- consent_blood_samples_if_positive_yn: 'Yes'
+- consent_blood_samples_if_positive_yn: null
   consent_contact_extra_research_yn: null
-  consent_use_of_surplus_blood_samples_yn: null
+  consent_use_of_surplus_blood_samples_yn: 'Yes'
   date_of_birth: '2021-12-18 00:00:00.000000'
-  digital_entry_pack_sent_datetime: '2020-06-28 11:38:16.000000'
+  date_of_birth_string: 18dec2021
+  digital_entry_pack_sent_datetime: '2020-06-28 00:00:00.000000'
+  digital_entry_pack_sent_datetime_string: 28jun2020
   digital_entry_pack_status: Erlang is a general-purpose, concurrent, functional programming
     language.
   ethnic_group: Black or African or Caribbean or Black British
-  ethnicity: Any other Mixed background
+  ethnicity: Black,Caribbean,African-African
   ethnicity_group: null
   ethnicity_other: Erlang is known for its designs that are well suited for systems.
   existing_participant_digital_opt_in_datetime: '2021-01-25 05:44:27.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-04 19:08:06.000000'
+  existing_participant_digital_opt_in_datetime_string: 25jan2021 05:44:27
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-04 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 04jan2022
   existing_participant_digital_opt_in_reminder_1_sent_datetime: null
+  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: null
   existing_participant_digital_opt_in_reminder_1_status: Make me a sandwich.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-02 23:13:32.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-05 13:09:24.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-02 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 02jan2022
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-05 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: 05jan2022
   existing_participant_digital_opt_in_reminder_2_status: Its main implementation is
     the Glasgow Haskell Compiler.
-  existing_participant_digital_opt_in_status: null
+  existing_participant_digital_opt_in_status: Participant Opted In
   first_name: Crystle
   household_digital_enrolment_invited_datetime: '2022-01-01 18:46:43.000000'
-  household_invited_to_digital: 'Yes'
+  household_digital_enrolment_invited_datetime_string: 01jan2022 18:46:43
+  household_invited_to_digital: null
   last_name: Ball
   middle_name: Reiko
+  nhs_data_share: null
   nhs_share_opt_out_date: '2022-01-09'
   ons_household_id: '930086875935'
-  original_invite_cohort: Erlang is known for its designs that are well suited for
-    systems.
+  ordered_household_id: 9
   participant_digital_enrolment_datetime: '2021-03-07 10:06:05.000000'
+  participant_digital_enrolment_datetime_string: 07mar2021 10:06:05
   participant_enrolled_digital: null
   participant_id: DHR-868570220212
   participant_invited_to_digital: null
-  participant_survey_status: Withdrawn
+  participant_original_invite_cohort: Erlang is known for its designs that are well
+    suited for systems.
+  participant_survey_status: Complete
+  participant_withdrawal_reason: Moving location
+  participant_withdrawal_type: Withdrawn
   sex: Female
   title: Dr.
-  withdrawn_reason: Too many visits
-  withdrawn_type: Withdrawn
-- consent_blood_samples_if_positive_yn: null
+- consent_blood_samples_if_positive_yn: 'Yes'
   consent_contact_extra_research_yn: null
-  consent_use_of_surplus_blood_samples_yn: 'No'
+  consent_use_of_surplus_blood_samples_yn: null
   date_of_birth: '2009-03-09 00:00:00.000000'
-  digital_entry_pack_sent_datetime: '2020-02-05 20:10:50.000000'
+  date_of_birth_string: 09mar2009
+  digital_entry_pack_sent_datetime: '2020-02-05 00:00:00.000000'
+  digital_entry_pack_sent_datetime_string: 05feb2020
   digital_entry_pack_status: Where are my pants?
   ethnic_group: Mixed/Multiple Ethnic Groups
-  ethnicity: Mixed-White & Asian
+  ethnicity: White-Gypsy or Irish Traveller
   ethnicity_group: null
   ethnicity_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
   existing_participant_digital_opt_in_datetime: '2022-05-24 18:27:57.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-05 19:49:30.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-09 18:11:34.000000'
+  existing_participant_digital_opt_in_datetime_string: 24may2022 18:27:57
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-05 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 05jan2022
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-09 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 09jan2022
   existing_participant_digital_opt_in_reminder_1_status: He looked inquisitively at
     his keyboard and wrote another sentence.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-04 09:45:48.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-05 23:14:26.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-04 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 04jan2022
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-05 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: 05jan2022
   existing_participant_digital_opt_in_reminder_2_status: '"Messages can be sent to
     and received from ports, but these messages must obey the so-called ""port protocol."""'
   existing_participant_digital_opt_in_status: null
   first_name: Donnell
   household_digital_enrolment_invited_datetime: '2022-01-07 13:37:19.000000'
-  household_invited_to_digital: null
+  household_digital_enrolment_invited_datetime_string: 07jan2022 13:37:19
+  household_invited_to_digital: 'Yes'
   last_name: Brock
   middle_name: Maple
+  nhs_data_share: null
   nhs_share_opt_out_date: '2022-01-08'
   ons_household_id: '757503098830'
-  original_invite_cohort: He looked inquisitively at his keyboard and wrote another
-    sentence.
+  ordered_household_id: 7
   participant_digital_enrolment_datetime: '2021-06-08 04:32:31.000000'
-  participant_enrolled_digital: null
+  participant_digital_enrolment_datetime_string: 08jun2021 04:32:31
+  participant_enrolled_digital: 'No'
   participant_id: DHR-890407714528
   participant_invited_to_digital: 'Yes'
+  participant_original_invite_cohort: He looked inquisitively at his keyboard and
+    wrote another sentence.
   participant_survey_status: Complete
-  sex: Male
-  title: Miss.
-  withdrawn_reason: null
-  withdrawn_type: Withdrawn - no future linkage or use of samples
+  participant_withdrawal_reason: No longer convenient
+  participant_withdrawal_type: Withdrawn - no future linkage or use of samples
+  sex: Female
+  title: Mr.
 - consent_blood_samples_if_positive_yn: 'No'
   consent_contact_extra_research_yn: null
   consent_use_of_surplus_blood_samples_yn: 'No'
   date_of_birth: '1982-12-15 00:00:00.000000'
-  digital_entry_pack_sent_datetime: '2020-05-03 07:55:06.000000'
+  date_of_birth_string: 15dec1982
+  digital_entry_pack_sent_datetime: '2020-05-03 00:00:00.000000'
+  digital_entry_pack_sent_datetime_string: 03may2020
   digital_entry_pack_status: '"Messages can be sent to and received from ports, but
     these messages must obey the so-called ""port protocol."""'
   ethnic_group: Asian or Asian British
@@ -361,29 +464,38 @@
   ethnicity_group: null
   ethnicity_other: I don't even care.
   existing_participant_digital_opt_in_datetime: '2020-09-10 20:39:56.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-06 20:22:30.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-05 21:42:26.000000'
+  existing_participant_digital_opt_in_datetime_string: 10sep2020 20:39:56
+  existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-06 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 06jan2022
+  existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-05 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 05jan2022
   existing_participant_digital_opt_in_reminder_1_status: Type classes first appeared
     in the Haskell programming language.
-  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-02 23:36:54.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-06 07:16:52.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-02 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 02jan2022
+  existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-06 00:00:00.000000'
+  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: 06jan2022
   existing_participant_digital_opt_in_reminder_2_status: Do you have any idea why
     this is not working?
   existing_participant_digital_opt_in_status: Participant Opted Out
   first_name: Clora
   household_digital_enrolment_invited_datetime: '2022-01-02 18:56:56.000000'
+  household_digital_enrolment_invited_datetime_string: 02jan2022 18:56:56
   household_invited_to_digital: 'Yes'
   last_name: Lane
   middle_name: Joette
+  nhs_data_share: 'Yes'
   nhs_share_opt_out_date: '2022-01-01'
   ons_household_id: '633229661713'
-  original_invite_cohort: Make me a sandwich.
+  ordered_household_id: 6
   participant_digital_enrolment_datetime: '2021-10-07 22:04:02.000000'
-  participant_enrolled_digital: 'No'
+  participant_digital_enrolment_datetime_string: 07oct2021 22:04:02
+  participant_enrolled_digital: 'Yes'
   participant_id: DHR-965687203229
-  participant_invited_to_digital: 'Yes'
-  participant_survey_status: Withdrawn
+  participant_invited_to_digital: 'No'
+  participant_original_invite_cohort: Make me a sandwich.
+  participant_survey_status: Complete
+  participant_withdrawal_reason: Bad experience with tester/survey
+  participant_withdrawal_type: null
   sex: Male
-  title: Mrs.
-  withdrawn_reason: Too many visits
-  withdrawn_type: Withdrawn - no future linkage
+  title: Ms.
