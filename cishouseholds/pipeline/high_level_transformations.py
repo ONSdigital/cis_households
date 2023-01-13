@@ -2481,6 +2481,8 @@ def union_dependent_cleaning(df):
         covered_work_column="face_covering_work_or_education",
     )
 
+    df = clean_covid_test_swab(df)
+
     return df
 
 
