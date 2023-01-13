@@ -333,7 +333,7 @@
   cis_covid_vaccine_number_of_doses_raw: 3 or more
   cis_covid_vaccine_offered: 'No'
   cis_covid_vaccine_received: 'Yes'
-  cis_covid_vaccine_type: Don't know type
+  cis_covid_vaccine_type: null
   cis_covid_vaccine_type_1: Oxford/AstraZeneca
   cis_covid_vaccine_type_2: Pfizer/BioNTech
   cis_covid_vaccine_type_3: Moderna
@@ -646,7 +646,7 @@
   cis_covid_vaccine_type: Sinovac
   cis_covid_vaccine_type_1: Don't know type
   cis_covid_vaccine_type_2: Janssen/Johnson&Johnson
-  cis_covid_vaccine_type_3: Don't know type
+  cis_covid_vaccine_type_3: null
   cis_covid_vaccine_type_4: Don't know type
   cis_covid_vaccine_type_other: OtherVaxx
   cis_covid_vaccine_type_other_1: null
@@ -954,7 +954,7 @@
   cis_covid_vaccine_type: Valneva
   cis_covid_vaccine_type_1: Pfizer/BioNTech
   cis_covid_vaccine_type_2: Janssen/Johnson&Johnson
-  cis_covid_vaccine_type_3: Don't know type
+  cis_covid_vaccine_type_3: null
   cis_covid_vaccine_type_4: Oxford/AstraZeneca
   cis_covid_vaccine_type_other: null
   cis_covid_vaccine_type_other_1: null
@@ -1270,7 +1270,7 @@
   cis_covid_vaccine_offered: null
   cis_covid_vaccine_received: null
   cis_covid_vaccine_type: Moderna
-  cis_covid_vaccine_type_1: Don't know type
+  cis_covid_vaccine_type_1: null
   cis_covid_vaccine_type_2: Moderna
   cis_covid_vaccine_type_3: Don't know type
   cis_covid_vaccine_type_4: Moderna
@@ -1587,7 +1587,7 @@
   cis_covid_vaccine_type: Sinopharm
   cis_covid_vaccine_type_1: Pfizer/BioNTech
   cis_covid_vaccine_type_2: Pfizer/BioNTech
-  cis_covid_vaccine_type_3: Don't know type
+  cis_covid_vaccine_type_3: null
   cis_covid_vaccine_type_4: Oxford/AstraZeneca
   cis_covid_vaccine_type_other: OtherVaxx
   cis_covid_vaccine_type_other_1: null
@@ -2208,7 +2208,7 @@
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: From a research study/trial
   cis_covid_vaccine_type_1: Pfizer/BioNTech
-  cis_covid_vaccine_type_2: Don't know type
+  cis_covid_vaccine_type_2: null
   cis_covid_vaccine_type_3: Don't know type
   cis_covid_vaccine_type_4: Oxford/AstraZeneca
   cis_covid_vaccine_type_other: null
@@ -2525,8 +2525,8 @@
   cis_covid_vaccine_type: Novavax
   cis_covid_vaccine_type_1: Oxford/AstraZeneca
   cis_covid_vaccine_type_2: Pfizer/BioNTech
-  cis_covid_vaccine_type_3: Don't know type
-  cis_covid_vaccine_type_4: Don't know type
+  cis_covid_vaccine_type_3: null
+  cis_covid_vaccine_type_4: null
   cis_covid_vaccine_type_other: OtherVaxx
   cis_covid_vaccine_type_other_1: null
   cis_covid_vaccine_type_other_2: null
