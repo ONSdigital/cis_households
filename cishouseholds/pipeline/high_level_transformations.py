@@ -2805,19 +2805,23 @@ def derive_overall_vaccination(df: DataFrame) -> DataFrame:
     """Derive overall vaccination status from NIMS and CIS data."""
     return df
 
-def process_vaccine_regex(df: DataFrame, vaccine_number:int) -> DataFrame:
+
+def process_vaccine_regex(df: DataFrame, vaccine_type_col: str) -> DataFrame:
     """Add result of vaccine regex pattern matchings"""
 
-    df = df.select(f"cis_covid_vaccine_type_other_{vaccine_number}")
+    df = df.select(vaccine_type_col)
 
     df = assign_regex_from_map(
         df=df,
-        column_name_to_assign="cis_covid_vaccine_type",
-        reference_columns=[f"cis_covid_vaccine_type_other_{vaccine_number}"],
+        column_name_to_assign="cis_covid_vaccine_type_corrected",
+        reference_columns=[vaccine_type_col],
         map=vaccine_regex_map,
         priority_map=vaccine_regex_priority_map,
     )
-    return df.withColumnRenamed(f"cis_covid_vaccine_type_other_{vaccine_number}","cis_covid_vaccine_type_other_raw")
+    df = df.withColumnRenamed(vaccine_type_col, "cis_covid_vaccine_type_other_raw")
+    # df = df.filter(F.col("cis_covid_vaccine_type_corrected").isNotNull())
+    return df
+
 
 def process_healthcare_regex(df: DataFrame) -> DataFrame:
     """Add result of various healthcare regex pattern matchings"""

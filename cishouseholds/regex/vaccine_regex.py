@@ -228,8 +228,8 @@ vaccine_regex_map = {
     "From a research study/trial": trial_regex_match,
     "Moderna": mod_regex_match,
     "Oxford/AstraZeneca": az_regex_match,
-    # "Pfizer/BioNTech": pf_regex_match_with_exclusions,
-    # "Pfizer/BioNTechDD": pf_date_dependent_regex_match,
+    "Pfizer/BioNTech": pf_regex_match_with_exclusions,
+    "Pfizer/BioNTechDD": pf_date_dependent_regex_match,
     "Janssen/Johnson&Johnson": jj_regex_match,
     "Novavax": novavax_regex_match,
     "Sinovac": "(SINOVAC|SIROFAX)",
@@ -246,8 +246,8 @@ vaccine_regex_map = {
 }
 
 vaccine_regex_priority_map = {
-    # "Pfizer/BioNTechDD": 6,
-    # "Pfizer/BioNTech": 6,
+    "Pfizer/BioNTechDD": 6,
+    "Pfizer/BioNTech": 6,
     "From a research study/trial": 2,
     "Moderna": 5,
     "Oxford/AstraZeneca": 5,
