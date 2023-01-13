@@ -178,7 +178,7 @@ from cishouseholds.validate_class import SparkValidate
 date_cols_min_date_dict = {
     "think_had_covid_onset_date": "2019-11-17",
     "think_had_contacted_nhs": "2019-11-17",
-    "think_had_covid_admitted_to_hopsital": "2019-11-17",
+    "think_had_covid_admitted_to_hospital": "2019-11-17",
     "been_outside_uk_last_return_date": "2021-04-01",
 }
 
@@ -210,7 +210,7 @@ def clean_covid_test_swab(df: DataFrame):
             & (
                 ((F.col("think_had_covid_symptom_count") > 0) | (F.col("think_had_covid_onset_date").isNotNull()))
                 | (
-                    (F.col("think_had_covid_admitted_to_hopsital") == "Yes")
+                    (F.col("think_had_covid_admitted_to_hospital") == "Yes")
                     & (F.col("think_had_covid_contacted_nhs") == "Yes")
                 )
             ),
@@ -230,13 +230,13 @@ def clean_covid_test_swab(df: DataFrame):
                 for c in [
                     "think_had_covid",
                     "think_had_covid_contacted_nhs",
-                    "think_had_covid_admitted_to_hopsital",
+                    "think_had_covid_admitted_to_hospital",
                     "other_covid_infection_test",
                 ]
             ),
         )
     )
-    for col in ["think_had_covid_contacted_nhs", "think_had_covid_admitted_to_hopsital"]:
+    for col in ["think_had_covid_contacted_nhs", "think_had_covid_admitted_to_hospital"]:
         df = df.withColumn(col, F.when(flag, None).otherwise(F.col(col)))
 
     for col in ["other_covid_infection_test", "other_covid_infection_test_results"]:
@@ -258,11 +258,11 @@ def clean_covid_test_swab(df: DataFrame):
 
     # Clean where admitted is 1 but no to ‘feeder question’ for v0 dataset.
 
-    for col in ["think_had_covid", "think_had_covid_admitted_to_hopsital"]:
+    for col in ["think_had_covid", "think_had_covid_admitted_to_hospital"]:
         df = df.withColumn(
             col,
             F.when(
-                (F.col("think_had_covid_admitted_to_hopsital") == "Yes")
+                (F.col("think_had_covid_admitted_to_hospital") == "Yes")
                 & (~F.col("think_had_covid_contacted_nhs").eqNullSafe("Yes"))
                 & (~F.col("other_covid_infection_test").eqNullSafe("Yes"))
                 & (F.col("think_had_covid_symptom_count") == 0)
@@ -271,12 +271,12 @@ def clean_covid_test_swab(df: DataFrame):
             ).otherwise(F.col(col)),
         )
 
-    for col in ["think_had_covid_admitted_to_hopsital", "think_had_covid_contacted_nhs"]:
+    for col in ["think_had_covid_admitted_to_hospital", "think_had_covid_contacted_nhs"]:
         df = df.withColumn(
             col,
             F.when(
                 (F.col("think_had_covid") == "No")
-                & (F.col("think_had_covid_admitted_to_hopsital") == "Yes")
+                & (F.col("think_had_covid_admitted_to_hospital") == "Yes")
                 & (F.col("think_had_covid_contacted_nhs") == "Yes")
                 & (~F.col("other_covid_infection_test").eqNullSafe("Yes"))
                 & (F.col("other_covid_infection_test_results").isNull())
@@ -287,12 +287,12 @@ def clean_covid_test_swab(df: DataFrame):
             ).otherwise(F.col(col)),
         )
 
-    for col in ["think_had_covid_admitted_to_hopsital", "other_covid_infection_test", "think_had_covid"]:
+    for col in ["think_had_covid_admitted_to_hospital", "other_covid_infection_test", "think_had_covid"]:
         df = df.withColumn(
             col,
             F.when(
                 F.col("think_had_covid").isNull()
-                & (F.col("think_had_covid_admitted_to_hopsital") == "Yes")
+                & (F.col("think_had_covid_admitted_to_hospital") == "Yes")
                 & (~F.col("think_had_covid_contacted_nhs").eqNullSafe("Yes"))
                 & (F.col("other_covid_infection_test") == "Yes")
                 & (F.col("other_covid_infection_test_results").isNull())
@@ -309,7 +309,7 @@ def clean_covid_test_swab(df: DataFrame):
         "think_had_covid",
         F.when(
             (F.col("think_had_covid") != "Yes")
-            & (F.col("think_had_covid_admitted_to_hopsital") == "Yes")
+            & (F.col("think_had_covid_admitted_to_hospital") == "Yes")
             & (F.col("think_had_covid_symptom_count") == 0)
             & (
                 (F.col("think_had_covid_contacted_nhs") != "Yes")
@@ -2481,8 +2481,6 @@ def union_dependent_cleaning(df):
         covered_work_column="face_covering_work_or_education",
     )
 
-    df = clean_covid_test_swab(df)
-
     return df
 
 
@@ -2619,6 +2617,8 @@ def union_dependent_derivations(df):
     #     record_changed_value="Yes",
     # )
     df = create_formatted_datetime_string_columns(df)
+
+    df = clean_covid_test_swab(df)
     return df
 
 
