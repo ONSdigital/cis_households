@@ -1746,9 +1746,10 @@ def assign_work_status_group(df: DataFrame, colum_name_to_assign: str, reference
     return df
 
 
-def assign_last_non_null_value_from_col_list(df: DataFrame, colum_name_to_assign: str, column_list: str):
+def assign_last_non_null_value_from_col_list(df: DataFrame, column_name_to_assign: str, column_list: List[str]):
     """
-    Assigns a new column from the result of column_list, with the final non null value in ascending order
+    Assigns a single new value to a column by evaluating values in the column_list, assigning the last non null
+    value in ascending order, having removed any nulls.
     Parameters
     ----------
     df
@@ -1757,7 +1758,7 @@ def assign_last_non_null_value_from_col_list(df: DataFrame, colum_name_to_assign
     columns should be of same type
     """
     df = df.withColumn("temp_array", F.array_sort(F.array(column_list)))
-    df = df.withColumn(colum_name_to_assign, F.element_at(F.expr("filter(temp_array, x -> x is not null)"), -1))
+    df = df.withColumn(column_name_to_assign, F.element_at(F.expr("filter(temp_array, x -> x is not null)"), -1))
     df = df.drop("temp_array")
     return df
 
