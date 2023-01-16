@@ -1746,6 +1746,22 @@ def assign_work_status_group(df: DataFrame, colum_name_to_assign: str, reference
     return df
 
 
+def assign_last_non_null_value_from_col_list(df: DataFrame, colum_name_to_assign: str, column_list: str):
+    """
+    Assigns a new column from the result of column_list, with the final non null value in ascending order
+    Parameters
+    ----------
+    df
+    column_name_to_assign: column name of the derived column
+    column_list: the columns you want to order and select the last value when ordered ascending
+    columns should be of same type
+    """
+    df = df.withColumn("temp_array", F.array_sort(F.array(column_list)))
+    df = df.withColumn(colum_name_to_assign, F.element_at(F.expr("filter(temp_array, x -> x is not null)"), -1))
+    df = df.drop("temp_array")
+    return df
+
+
 def contact_known_or_suspected_covid_type(
     df: DataFrame,
     contact_known_covid_type_column: str,
