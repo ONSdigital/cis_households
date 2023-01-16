@@ -97,6 +97,7 @@ from cishouseholds.edit import correct_date_ranges
 from cishouseholds.edit import correct_date_ranges_union_dependent
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
+from cishouseholds.edit import fuzzy_update
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import normalise_think_had_covid_columns
 from cishouseholds.edit import remove_incorrect_dates
@@ -2432,6 +2433,18 @@ def union_dependent_cleaning(df):
 
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
+    df = fuzzy_update(
+        df,
+        id_column="participant_id",
+        cols_to_check=[
+            "other_covid_infection_test",
+            "other_covid_infection_test_result",
+            "think_had_covid_admitted_to_hospital",
+            "think_had_covid_contacted_nhs",
+        ],
+        update_column="think_had_covid_onset_date",
+        min_matches=3,
+    )
     # TODO: Add in once dependencies are derived
     # df = impute_latest_date_flag(
     #     df=df,
