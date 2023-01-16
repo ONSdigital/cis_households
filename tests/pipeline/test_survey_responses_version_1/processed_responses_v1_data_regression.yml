@@ -609,23 +609,6 @@
   work_health_care_area_original: Yes, in other healthcare settings, e.g. mental health
   work_health_care_area_raw: Yes, in other healthcare settings, e.g. mental health
   work_health_care_patient_facing: null
-<<<<<<< HEAD
-  work_location: '"You''ve got to ask yourself one question: ""Do I feel lucky?""
-    Well, do ya? Punk!"'
-  work_location_raw: '"You''ve got to ask yourself one question: ""Do I feel lucky?""
-    Well, do ya? Punk!"'
-  work_main_job_changed: 'No'
-  work_main_job_role: PORTS ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
-  work_main_job_role_raw: Ports are created with the built-in function open_port.
-  work_main_job_title: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE BUT IT HAS
-    SINCE BEEN RESTORED
-  work_main_job_title_and_role: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE BUT
-    IT HAS SINCE BEEN RESTORED PORTS ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
-  work_main_job_title_raw: In 1989 the building was heavily damaged by fire, but it
-    has since been restored.
-  work_not_from_home_days_per_week: Here's looking at you, kid.
-  work_not_from_home_days_per_week_raw: Here's looking at you, kid.
-=======
   work_location: One morning I shot an elephant in my pajamas. How he got in my pajamas,
     I don't know.
   work_location_raw: One morning I shot an elephant in my pajamas. How he got in my
@@ -646,7 +629,6 @@
     You never know what you're gonna get.
   work_not_from_home_days_per_week_raw: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
->>>>>>> origin/main
   work_nursing_or_residential_care_home: null
   work_nursing_or_residential_care_home_original: null
   work_sector: Ports are used to communicate with the external world.
@@ -1690,20 +1672,6 @@
   unique_participant_response_id: DVH-1442294850-DHR-392744995712
   visit_datetime: '2022-01-03 09:37:48.000000'
   visit_id: DVH-1442294850
-<<<<<<< HEAD
-  which_symptoms_last_7_days: They are written as strings of consecutive alphanumeric
-    characters, the first character being lowercase.
-  work_direct_contact_patients_or_clients: null
-  work_direct_contact_patients_or_clients_original: null
-  work_health_care_area: 'No'
-  work_health_care_area_original: 'No'
-  work_health_care_area_raw: 'No'
-  work_health_care_patient_facing: 'No'
-  work_location: Houston, we have a problem.
-  work_location_raw: Houston, we have a problem.
-  work_main_job_changed: 'No'
-  work_main_job_role: THE GALACTIC EMPIRE IS NEARING COMPLETION OF THE DEATH STAR
-=======
   which_symptoms_last_7_days: The arguments can be primitive data types or compound
     data types.
   work_direct_contact_patients_or_clients: 'No'
@@ -1720,7 +1688,6 @@
   work_main_job_role_raw: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
   work_main_job_title: THE GALACTIC EMPIRE IS NEARING COMPLETION OF THE DEATH STAR
->>>>>>> origin/main
     A SPACE STATION WITH THE POWER TO DESTROY ENTIRE PLANETS
   work_main_job_title_and_role: THE GALACTIC EMPIRE IS NEARING COMPLETION OF THE DEATH
     STAR A SPACE STATION WITH THE POWER TO DESTROY ENTIRE PLANETS HASKELL IS A STANDARDIZED
@@ -2143,21 +2110,6 @@
   work_health_care_area_original: Yes, in primary care, e.g. GP,dentist
   work_health_care_area_raw: Yes, in primary care, e.g. GP,dentist
   work_health_care_patient_facing: null
-<<<<<<< HEAD
-  work_location: You're gonna need a bigger boat.
-  work_location_raw: You're gonna need a bigger boat.
-  work_main_job_changed: 'No'
-  work_main_job_role: PORTS ARE USED TO COMMUNICATE WITH THE EXTERNAL WORLD
-  work_main_job_role_raw: Ports are used to communicate with the external world.
-  work_main_job_title: PORTS ARE USED TO COMMUNICATE WITH THE EXTERNAL WORLD
-  work_main_job_title_and_role: PORTS ARE USED TO COMMUNICATE WITH THE EXTERNAL WORLD
-    PORTS ARE USED TO COMMUNICATE WITH THE EXTERNAL WORLD
-  work_main_job_title_raw: Ports are used to communicate with the external world.
-  work_not_from_home_days_per_week: Mr. Gorbachev, open this gate! Mr. Gorbachev,
-    tear down this wall!
-  work_not_from_home_days_per_week_raw: Mr. Gorbachev, open this gate! Mr. Gorbachev,
-    tear down this wall!
-=======
   work_location: Those who refuse to learn from history are condemned to repeat it.
   work_location_raw: Those who refuse to learn from history are condemned to repeat
     it.
@@ -2172,7 +2124,6 @@
     are D1, D2, ... Dn.
   work_not_from_home_days_per_week: The only thing we have to fear is fear itself.
   work_not_from_home_days_per_week_raw: The only thing we have to fear is fear itself.
->>>>>>> origin/main
   work_nursing_or_residential_care_home: null
   work_nursing_or_residential_care_home_original: null
   work_sector: Initially composing light-hearted and irreverent works, he also wrote

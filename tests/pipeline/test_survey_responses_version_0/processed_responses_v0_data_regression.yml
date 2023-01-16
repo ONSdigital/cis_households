@@ -139,510 +139,11 @@
   work_health_care_area: Other
   work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
   work_health_care_patient_facing_original: Yes, other healthcare, non-patient-facing
-<<<<<<< HEAD
-  work_location: Its main implementation is the Glasgow Haskell Compiler.
-  work_location_raw: Its main implementation is the Glasgow Haskell Compiler.
-  work_main_job_changed: 'No'
-  work_main_job_role: THE SYNTAX D1D2DN DENOTES A TUPLE WHOSE ARGUMENTS ARE D1 D2  DN
-  work_main_job_role_raw: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
-    are D1, D2, ... Dn.
-  work_main_job_title: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
-  work_main_job_title_and_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING
-    LANGUAGE THE SYNTAX D1D2DN DENOTES A TUPLE WHOSE ARGUMENTS ARE D1 D2  DN
-  work_main_job_title_raw: Type classes first appeared in the Haskell programming
-    language.
-  work_not_from_home_days_per_week: '4'
-  work_not_from_home_days_per_week_raw: '4'
-  work_social_care: 'No'
-  work_social_care_original: 'No'
-  work_status_v0: Its main implementation is the Glasgow Haskell Compiler.
-- any_date_corrected: null
-  any_household_members_over_2_years_and_not_present: 'No'
-  bad_email: null
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
-  blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'Yes'
-  bloods_taken: 1.0
-  city: null
-  consent_16_visits: '0'
-  consent_1_visit: '1'
-  consent_5_visits: '1'
-  consent_blood_test: '0'
-  consent_contact_extra_research: '1'
-  consent_summary: 5.0
-  consent_use_of_surplus_blood_samples: '0'
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: 'No'
-  county: Derbyshire
-  date_of_birth: '1985-09-10 00:00:00.000000'
-  days_since_think_had_covid: 6
-  days_since_think_had_covid_group: 0-14
-  email_address: null
-  ethnicity: Mixed-White & Black African
-  file_date: '2022-10-03 00:00:00.000000'
-  full_name: Caron Barton
-  hh_id: '105638762102'
-  household_been_care_home_last_28_days: 'Yes'
-  household_been_hospital_last_28_days: null
-  household_members_over_2_years_and_not_present_count: null
-  household_members_under_2_years: null
-  household_participants_not_consented_reason: Let them eat cake.
-  household_participants_not_consenting_count: null
-  household_participants_not_present_reason: Ask not what your country can do for
-    you; ask what you can do for your country.
-  infant_age_months_1: 0.0
-  infant_age_months_2: 1.0
-  infant_age_months_3: 5.0
-  infant_age_months_4: 1.0
-  infant_age_months_5: null
-  infant_age_months_6: null
-  infant_age_months_7: 5.0
-  infant_age_months_8: 2.0
-  last_covid_contact_date: '2022-01-03 00:00:00.000000'
-  last_covid_contact_type: Frankly, my dear, I don't give a damn.
-  last_suspected_covid_contact_date: '2022-01-07 00:00:00.000000'
-  last_suspected_covid_contact_type: Mama always said life was like a box of chocolates.
-    You never know what you're gonna get.
-  no_email_address: 1.0
-  ons_household_id: '105638762102'
-  other_covid_infection_test: null
-  other_covid_infection_test_results: 'No'
-  participant_id: DHR-848695986758
-  participant_visit_status: Re-scheduled
-  participant_withdrawal_reason: No longer wants to take part
-  participant_withdrawal_reason_raw: No longer wants to take part
-  person_1_reason_for_not_consenting: Let them eat cake.
-  person_2_reason_for_not_consenting: Here's looking at you, kid.
-  person_3_reason_for_not_consenting: Mama always said life was like a box of chocolates.
-    You never know what you're gonna get.
-  person_4_reason_for_not_consenting: Mama always said life was like a box of chocolates.
-    You never know what you're gonna get.
-  person_5_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_6_reason_for_not_consenting: Get your stinking paws off me, you damned dirty
-    ape.
-  person_7_reason_for_not_consenting: '"You''ve got to ask yourself one question:
-    ""Do I feel lucky?"" Well, do ya? Punk!"'
-  person_8_reason_for_not_consenting: Mama always said life was like a box of chocolates.
-    You never know what you're gonna get.
-  person_9_reason_for_not_consenting: Mama always said life was like a box of chocolates.
-    You never know what you're gonna get.
-  person_not_consenting_age_1: 28.0
-  person_not_consenting_age_2: 52.0
-  person_not_consenting_age_3: 11.0
-  person_not_consenting_age_4: 64.0
-  person_not_consenting_age_5: 46.0
-  person_not_consenting_age_6: 7.0
-  person_not_consenting_age_7: null
-  person_not_consenting_age_8: 29.0
-  person_not_consenting_age_9: 8.0
-  person_not_present_age_1: 64.0
-  person_not_present_age_2: 63.0
-  person_not_present_age_3: 72.0
-  person_not_present_age_4: 60.0
-  person_not_present_age_5: 39.0
-  person_not_present_age_6: 59.0
-  person_not_present_age_7: 76.0
-  person_not_present_age_8: null
-  postcode: NC0C6UK
-  received_shielding_letter: null
-  samples_taken_datetime: '2022-01-03 10:12:51.000000'
-  self_isolating: 'Yes'
-  sex: Female
-  sex_raw: null
-  street: null
-  study_cohort: Elementary, my dear Watson.
-  suffix: O
-  survey_response_dataset_major_version: 0
-  survey_response_type: First Visit
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
-  swab_sample_barcode_raw: null
-  swab_taken: 'No'
-  swabs_taken: 1.0
-  think_had_covid: null
-  think_had_covid_admitted_to_hospital: null
-  think_had_covid_contacted_nhs: 'No'
-  think_had_covid_onset_date: '2022-01-03 00:00:00.000000'
-  think_had_covid_symptom_abdominal_pain: 'No'
-  think_had_covid_symptom_cough: 'No'
-  think_had_covid_symptom_diarrhoea: 'No'
-  think_had_covid_symptom_fatigue: 'No'
-  think_had_covid_symptom_fever: 'No'
-  think_had_covid_symptom_headache: 'No'
-  think_had_covid_symptom_loss_of_smell: 'Yes'
-  think_had_covid_symptom_loss_of_taste: 'Yes'
-  think_had_covid_symptom_muscle_ache: 'No'
-  think_had_covid_symptom_nausea_or_vomiting: 'No'
-  think_had_covid_symptom_shortness_of_breath: 'No'
-  think_had_covid_symptom_sore_throat: 'No'
-  think_had_covid_which_symptoms: Type classes first appeared in the Haskell programming
-    language.
-  think_have_covid: 'No'
-  think_have_covid_symptom_abdominal_pain: null
-  think_have_covid_symptom_any: 'Yes'
-  think_have_covid_symptom_any_raw: 'Yes'
-  think_have_covid_symptom_cough: null
-  think_have_covid_symptom_diarrhoea: 'Yes'
-  think_have_covid_symptom_fatigue: null
-  think_have_covid_symptom_fever: 'No'
-  think_have_covid_symptom_headache: null
-  think_have_covid_symptom_loss_of_smell: 'No'
-  think_have_covid_symptom_loss_of_taste: 'No'
-  think_have_covid_symptom_muscle_ache: 'Yes'
-  think_have_covid_symptom_nausea_or_vomiting: null
-  think_have_covid_symptom_shortness_of_breath: null
-  think_have_covid_symptom_sore_throat: null
-  unique_participant_response_id: DHVF-0771419502-DHR-848695986758
-  visit_datetime: '2022-01-09 21:50:48.000000'
-  visit_id: DHVF-0771419502
-  which_symptoms_last_7_days: null
-  work_health_care_area: Secondary
-  work_health_care_patient_facing: Yes, secondary care, patient-facing
-  work_health_care_patient_facing_original: Yes, secondary care, patient-facing
-  work_location: Where are my pants?
-  work_location_raw: Where are my pants?
-  work_main_job_changed: 'No'
-  work_main_job_role: HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
-  work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
-    sentence.
-  work_main_job_title: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
-  work_main_job_title_and_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING
-    LANGUAGE HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
-  work_main_job_title_raw: Type classes first appeared in the Haskell programming
-    language.
-  work_not_from_home_days_per_week: '6'
-  work_not_from_home_days_per_week_raw: '6'
-  work_social_care: 'No'
-  work_social_care_original: 'No'
-  work_status_v0: Haskell is a standardized, general-purpose purely functional programming
-    language, with non-strict semantics and strong static typing.
-- any_date_corrected: 'Yes'
-  any_household_members_over_2_years_and_not_present: 'No'
-  bad_email: false
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: null
-  blood_sample_barcode_raw: null
-  blood_taken: 'No'
-  bloods_taken: 0.0
-  city: null
-  consent_16_visits: '1'
-  consent_1_visit: '0'
-  consent_5_visits: '0'
-  consent_blood_test: '1'
-  consent_contact_extra_research: '1'
-  consent_summary: 16.0
-  consent_use_of_surplus_blood_samples: '1'
-  contact_known_positive_covid_last_28_days: 'No'
-  contact_suspected_positive_covid_last_28_days: 'No'
-  county: null
-  date_of_birth: '1982-12-15 00:00:00.000000'
-  days_since_think_had_covid: 30
-  days_since_think_had_covid_group: 29-60
-  email_address: ladybird1985@gsnail.ac.uk
-  ethnicity: Asian or Asian British-Bangladeshi
-  file_date: '2022-10-03 00:00:00.000000'
-  full_name: Carlos Martin
-  hh_id: '736535270957'
-  household_been_care_home_last_28_days: 'Yes'
-  household_been_hospital_last_28_days: 'Yes'
-  household_members_over_2_years_and_not_present_count: null
-  household_members_under_2_years: null
-  household_participants_not_consented_reason: I'm gonna make him an offer he can't
-    refuse.
-  household_participants_not_consenting_count: null
-  household_participants_not_present_reason: I'm gonna make him an offer he can't
-    refuse.
-  infant_age_months_1: 0.0
-  infant_age_months_2: 4.0
-  infant_age_months_3: 6.0
-  infant_age_months_4: 4.0
-  infant_age_months_5: 0.0
-  infant_age_months_6: 6.0
-  infant_age_months_7: 5.0
-  infant_age_months_8: 4.0
-  last_covid_contact_date: '2022-01-05 00:00:00.000000'
-  last_covid_contact_type: A census taker once tried to test me. I ate his liver with
-    some fava beans and a nice Chianti.
-  last_suspected_covid_contact_date: '2022-01-04 00:00:00.000000'
-  last_suspected_covid_contact_type: One morning I shot an elephant in my pajamas.
-    How he got in my pajamas, I don't know.
-  no_email_address: 0.0
-  ons_household_id: '736535270957'
-  other_covid_infection_test: 'No'
-  other_covid_infection_test_results: 'Yes'
-  participant_id: DHR-350245644249
-  participant_visit_status: null
-  participant_withdrawal_reason: Participant does not want to self swab
-  participant_withdrawal_reason_raw: Participant does not want to self swab
-  person_1_reason_for_not_consenting: The only thing we have to fear is fear itself.
-  person_2_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_3_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_4_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_5_reason_for_not_consenting: The only thing we have to fear is fear itself.
-  person_6_reason_for_not_consenting: You're gonna need a bigger boat.
-  person_7_reason_for_not_consenting: Houston, we have a problem.
-  person_8_reason_for_not_consenting: Ask not what your country can do for you; ask
-    what you can do for your country.
-  person_9_reason_for_not_consenting: Those who refuse to learn from history are condemned
-    to repeat it.
-  person_not_consenting_age_1: 26.0
-  person_not_consenting_age_2: 17.0
-  person_not_consenting_age_3: 16.0
-  person_not_consenting_age_4: null
-  person_not_consenting_age_5: 25.0
-  person_not_consenting_age_6: 50.0
-  person_not_consenting_age_7: 11.0
-  person_not_consenting_age_8: 45.0
-  person_not_consenting_age_9: 52.0
-  person_not_present_age_1: 68.0
-  person_not_present_age_2: 64.0
-  person_not_present_age_3: 23.0
-  person_not_present_age_4: 17.0
-  person_not_present_age_5: 49.0
-  person_not_present_age_6: 17.0
-  person_not_present_age_7: 44.0
-  person_not_present_age_8: 89.0
-  postcode: DD7O7LP
-  received_shielding_letter: 'Yes'
-  samples_taken_datetime: '2022-01-08 09:34:37.000000'
-  self_isolating: 'Yes'
-  sex: Female
-  sex_raw: Female
-  street: null
-  study_cohort: Mama always said life was like a box of chocolates. You never know
-    what you're gonna get.
-  suffix: U
-  survey_response_dataset_major_version: 0
-  survey_response_type: Follow-up Visit
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: 1.0
-  swab_sample_barcode_raw: ONS00000000
-  swab_taken: 'Yes'
-  swabs_taken: 0.0
-  think_had_covid: 'Yes'
-  think_had_covid_admitted_to_hospital: 'Yes'
-  think_had_covid_contacted_nhs: null
-  think_had_covid_onset_date: '2021-12-08 00:00:00.000000'
-  think_had_covid_symptom_abdominal_pain: 'No'
-  think_had_covid_symptom_cough: 'No'
-  think_had_covid_symptom_diarrhoea: 'No'
-  think_had_covid_symptom_fatigue: 'No'
-  think_had_covid_symptom_fever: 'No'
-  think_had_covid_symptom_headache: 'No'
-  think_had_covid_symptom_loss_of_smell: 'No'
-  think_had_covid_symptom_loss_of_taste: 'No'
-  think_had_covid_symptom_muscle_ache: 'Yes'
-  think_had_covid_symptom_nausea_or_vomiting: 'No'
-  think_had_covid_symptom_shortness_of_breath: 'Yes'
-  think_had_covid_symptom_sore_throat: 'No'
-  think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
-    arguments are D1, D2, ... Dn.
-  think_have_covid: 'No'
-  think_have_covid_symptom_abdominal_pain: 'Yes'
-  think_have_covid_symptom_any: 'Yes'
-  think_have_covid_symptom_any_raw: 'Yes'
-  think_have_covid_symptom_cough: 'Yes'
-  think_have_covid_symptom_diarrhoea: 'No'
-  think_have_covid_symptom_fatigue: null
-  think_have_covid_symptom_fever: 'No'
-  think_have_covid_symptom_headache: 'Yes'
-  think_have_covid_symptom_loss_of_smell: 'No'
-  think_have_covid_symptom_loss_of_taste: 'Yes'
-  think_have_covid_symptom_muscle_ache: 'No'
-  think_have_covid_symptom_nausea_or_vomiting: null
-  think_have_covid_symptom_shortness_of_breath: 'No'
-  think_have_covid_symptom_sore_throat: null
-  unique_participant_response_id: DHVF-3442149696-DHR-350245644249
-  visit_datetime: '2022-01-07 07:27:20.000000'
-  visit_id: DHVF-3442149696
-  which_symptoms_last_7_days: null
-  work_health_care_area: Other
-  work_health_care_patient_facing: Yes, other healthcare, non-patient-facing
-  work_health_care_patient_facing_original: Yes, other healthcare, non-patient-facing
-  work_location: Make me a sandwich.
-  work_location_raw: Make me a sandwich.
-  work_main_job_changed: 'No'
-  work_main_job_role: IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE BUT IT HAS
-    SINCE BEEN RESTORED
-  work_main_job_role_raw: In 1989 the building was heavily damaged by fire, but it
-    has since been restored.
-  work_main_job_title: MESSAGES CAN BE SENT TO AND RECEIVED FROM PORTS BUT THESE MESSAGES
-    MUST OBEY THE SO CALLED PORT PROTOCOL
-  work_main_job_title_and_role: MESSAGES CAN BE SENT TO AND RECEIVED FROM PORTS BUT
-    THESE MESSAGES MUST OBEY THE SO CALLED PORT PROTOCOL IN 1989 THE BUILDING WAS
-    HEAVILY DAMAGED BY FIRE BUT IT HAS SINCE BEEN RESTORED
-  work_main_job_title_raw: '"Messages can be sent to and received from ports, but
-    these messages must obey the so-called ""port protocol."""'
-  work_not_from_home_days_per_week: '4'
-  work_not_from_home_days_per_week_raw: '4'
-  work_social_care: 'Yes'
-  work_social_care_original: 'Yes'
-  work_status_v0: The sequential subset of Erlang supports eager evaluation, single
-    assignment, and dynamic typing.
-- any_date_corrected: null
-  any_household_members_over_2_years_and_not_present: null
-  bad_email: false
-  blood_sample_barcode: null
-  blood_sample_barcode_edited_flag: 1.0
-  blood_sample_barcode_raw: ONS00000000
-  blood_taken: 'Yes'
-  bloods_taken: 1.0
-  city: Saltash
-  consent_16_visits: '0'
-  consent_1_visit: '1'
-  consent_5_visits: '0'
-  consent_blood_test: '0'
-  consent_contact_extra_research: '1'
-  consent_summary: 1.0
-  consent_use_of_surplus_blood_samples: '0'
-  contact_known_positive_covid_last_28_days: null
-  contact_suspected_positive_covid_last_28_days: null
-  county: null
-  date_of_birth: '1997-01-25 00:00:00.000000'
-  days_since_think_had_covid: 0
-  days_since_think_had_covid_group: 0-14
-  email_address: depict1972@gsnail.ac.uk
-  ethnicity: Any other Mixed background
-  file_date: '2022-10-03 00:00:00.000000'
-  full_name: Jae Cervantes
-  hh_id: '558190156218'
-  household_been_care_home_last_28_days: 'Yes'
-  household_been_hospital_last_28_days: 'No'
-  household_members_over_2_years_and_not_present_count: null
-  household_members_under_2_years: 'No'
-  household_participants_not_consented_reason: Those who refuse to learn from history
-    are condemned to repeat it.
-  household_participants_not_consenting_count: null
-  household_participants_not_present_reason: Mr. Gorbachev, open this gate! Mr. Gorbachev,
-    tear down this wall!
-  infant_age_months_1: 0.0
-  infant_age_months_2: 0.0
-  infant_age_months_3: 2.0
-  infant_age_months_4: 7.0
-  infant_age_months_5: 2.0
-  infant_age_months_6: 3.0
-  infant_age_months_7: 2.0
-  infant_age_months_8: 3.0
-  last_covid_contact_date: '2022-01-09 00:00:00.000000'
-  last_covid_contact_type: Those who refuse to learn from history are condemned to
-    repeat it.
-  last_suspected_covid_contact_date: '2022-01-06 00:00:00.000000'
-  last_suspected_covid_contact_type: I'm gonna make him an offer he can't refuse.
-  no_email_address: 1.0
-  ons_household_id: '558190156218'
-  other_covid_infection_test: null
-  other_covid_infection_test_results: null
-  participant_id: DHR-229883187696
-  participant_visit_status: Patient did not attend
-  participant_withdrawal_reason: Moving location
-  participant_withdrawal_reason_raw: Moving location
-  person_1_reason_for_not_consenting: Elementary, my dear Watson.
-  person_2_reason_for_not_consenting: Mama always said life was like a box of chocolates.
-    You never know what you're gonna get.
-  person_3_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_4_reason_for_not_consenting: Ask not what your country can do for you; ask
-    what you can do for your country.
-  person_5_reason_for_not_consenting: The only thing we have to fear is fear itself.
-  person_6_reason_for_not_consenting: I'm gonna make him an offer he can't refuse.
-  person_7_reason_for_not_consenting: Frankly, my dear, I don't give a damn.
-  person_8_reason_for_not_consenting: Here's looking at you, kid.
-  person_9_reason_for_not_consenting: They call me *Mister* Tibbs!
-  person_not_consenting_age_1: 73.0
-  person_not_consenting_age_2: 7.0
-  person_not_consenting_age_3: 58.0
-  person_not_consenting_age_4: 75.0
-  person_not_consenting_age_5: 61.0
-  person_not_consenting_age_6: 18.0
-  person_not_consenting_age_7: null
-  person_not_consenting_age_8: 43.0
-  person_not_consenting_age_9: 6.0
-  person_not_present_age_1: 62.0
-  person_not_present_age_2: 56.0
-  person_not_present_age_3: 50.0
-  person_not_present_age_4: null
-  person_not_present_age_5: 39.0
-  person_not_present_age_6: 60.0
-  person_not_present_age_7: 40.0
-  person_not_present_age_8: 43.0
-  postcode: null
-  received_shielding_letter: null
-  samples_taken_datetime: '2022-01-06 21:42:30.000000'
-  self_isolating: null
-  sex: Female
-  sex_raw: Female
-  street: Benwee
-  study_cohort: Houston, we have a problem.
-  suffix: A
-  survey_response_dataset_major_version: 0
-  survey_response_type: First Visit
-  swab_sample_barcode: null
-  swab_sample_barcode_edited_flag: null
-  swab_sample_barcode_raw: null
-  swab_taken: 'No'
-  swabs_taken: 0.0
-  think_had_covid: 'Yes'
-  think_had_covid_admitted_to_hospital: 'Yes'
-  think_had_covid_contacted_nhs: 'No'
-  think_had_covid_onset_date: '2022-01-09 00:00:00.000000'
-  think_had_covid_symptom_abdominal_pain: 'No'
-  think_had_covid_symptom_cough: 'No'
-  think_had_covid_symptom_diarrhoea: 'Yes'
-  think_had_covid_symptom_fatigue: 'Yes'
-  think_had_covid_symptom_fever: 'No'
-  think_had_covid_symptom_headache: 'Yes'
-  think_had_covid_symptom_loss_of_smell: 'No'
-  think_had_covid_symptom_loss_of_taste: 'Yes'
-  think_had_covid_symptom_muscle_ache: 'Yes'
-  think_had_covid_symptom_nausea_or_vomiting: 'No'
-  think_had_covid_symptom_shortness_of_breath: 'No'
-  think_had_covid_symptom_sore_throat: 'No'
-  think_had_covid_which_symptoms: The syntax {D1,D2,...,Dn} denotes a tuple whose
-    arguments are D1, D2, ... Dn.
-  think_have_covid: null
-  think_have_covid_symptom_abdominal_pain: 'No'
-  think_have_covid_symptom_any: 'No'
-  think_have_covid_symptom_any_raw: 'No'
-  think_have_covid_symptom_cough: 'Yes'
-  think_have_covid_symptom_diarrhoea: 'No'
-  think_have_covid_symptom_fatigue: 'No'
-  think_have_covid_symptom_fever: 'No'
-  think_have_covid_symptom_headache: 'Yes'
-  think_have_covid_symptom_loss_of_smell: 'No'
-  think_have_covid_symptom_loss_of_taste: 'No'
-  think_have_covid_symptom_muscle_ache: 'Yes'
-  think_have_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_symptom_shortness_of_breath: 'No'
-  think_have_covid_symptom_sore_throat: 'Yes'
-  unique_participant_response_id: DHVF-3623704990-DHR-229883187696
-  visit_datetime: '2022-01-09 07:55:27.000000'
-  visit_id: DHVF-3623704990
-  which_symptoms_last_7_days: 'No'
-  work_health_care_area: Secondary
-  work_health_care_patient_facing: Yes, secondary care, patient-facing
-  work_health_care_patient_facing_original: Yes, secondary care, patient-facing
-  work_location: I don't even care.
-  work_location_raw: I don't even care.
-  work_main_job_changed: 'No'
-  work_main_job_role: INITIALLY COMPOSING LIGHT HEARTED AND IRREVERENT WORKS HE ALSO
-    WROTE SERIOUS SOMBRE AND RELIGIOUS PIECES BEGINNING IN THE 1930S
-  work_main_job_role_raw: Initially composing light-hearted and irreverent works,
-    he also wrote serious, sombre and religious pieces beginning in the 1930s.
-  work_main_job_title: IT IS ALSO A GARBAGE COLLECTED RUNTIME SYSTEM
-  work_main_job_title_and_role: IT IS ALSO A GARBAGE COLLECTED RUNTIME SYSTEM INITIALLY
-    COMPOSING LIGHT HEARTED AND IRREVERENT WORKS HE ALSO WROTE SERIOUS SOMBRE AND
-    RELIGIOUS PIECES BEGINNING IN THE 1930S
-  work_main_job_title_raw: It is also a garbage-collected runtime system.
-  work_not_from_home_days_per_week: '5'
-  work_not_from_home_days_per_week_raw: '5'
-  work_social_care: 'Yes'
-  work_social_care_original: 'Yes'
-  work_status_v0: Where are my pants?
-=======
   work_location: The Galactic Empire is nearing completion of the Death Star, a space
     station with the power to destroy entire planets.
   work_location_raw: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
+  work_main_job_changed: 'No'
   work_main_job_role: TUPLES ARE CONTAINERS FOR A FIXED NUMBER OF ERLANG DATA TYPES
   work_main_job_role_raw: Tuples are containers for a fixed number of Erlang data
     types.
@@ -656,7 +157,6 @@
   work_social_care_original: Yes, care/residential home, non-resident-facing
   work_status_v0: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are D1,
     D2, ... Dn.
->>>>>>> origin/main
 - any_date_corrected: 'Yes'
   any_household_members_over_2_years_and_not_present: 'Yes'
   bad_email: null
@@ -801,29 +301,17 @@
   work_health_care_patient_facing_original: Yes, other healthcare, patient-facing
   work_location: Its main implementation is the Glasgow Haskell Compiler.
   work_location_raw: Its main implementation is the Glasgow Haskell Compiler.
+  work_main_job_changed: 'No'
   work_main_job_role: THE GALACTIC EMPIRE IS NEARING COMPLETION OF THE DEATH STAR
     A SPACE STATION WITH THE POWER TO DESTROY ENTIRE PLANETS
   work_main_job_role_raw: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
-<<<<<<< HEAD
-  work_main_job_changed: 'No'
-  work_main_job_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
-  work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
-  work_main_job_title: THEY ARE WRITTEN AS STRINGS OF CONSECUTIVE ALPHANUMERIC CHARACTERS
-    THE FIRST CHARACTER BEING LOWERCASE
-  work_main_job_title_and_role: THEY ARE WRITTEN AS STRINGS OF CONSECUTIVE ALPHANUMERIC
-    CHARACTERS THE FIRST CHARACTER BEING LOWERCASE TYPE CLASSES FIRST APPEARED IN
-    THE HASKELL PROGRAMMING LANGUAGE
-  work_main_job_title_raw: They are written as strings of consecutive alphanumeric
-    characters, the first character being lowercase.
-=======
   work_main_job_title: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
   work_main_job_title_and_role: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED
     FOR SYSTEMS THE GALACTIC EMPIRE IS NEARING COMPLETION OF THE DEATH STAR A SPACE
     STATION WITH THE POWER TO DESTROY ENTIRE PLANETS
   work_main_job_title_raw: Erlang is known for its designs that are well suited for
     systems.
->>>>>>> origin/main
   work_not_from_home_days_per_week: '7'
   work_not_from_home_days_per_week_raw: '7'
   work_social_care: Yes, other social care, resident-facing
@@ -1134,6 +622,7 @@
     D2, ... Dn.
   work_location_raw: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are
     D1, D2, ... Dn.
+  work_main_job_changed: 'No'
   work_main_job_role: THE SYNTAX D1D2DN DENOTES A TUPLE WHOSE ARGUMENTS ARE D1 D2  DN
   work_main_job_role_raw: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
     are D1, D2, ... Dn.
@@ -1285,16 +774,6 @@
   unique_participant_response_id: DVH-2948509899-DHR-449957129557
   visit_datetime: '2022-01-07 16:06:21.000000'
   visit_id: DVH-2948509899
-<<<<<<< HEAD
-  which_symptoms_last_7_days: 'Yes'
-  work_health_care_area: Other
-  work_health_care_patient_facing: Yes, other healthcare, patient-facing
-  work_health_care_patient_facing_original: Yes, other healthcare, patient-facing
-  work_location: Atoms are used within a program to denote distinguished values.
-  work_location_raw: Atoms are used within a program to denote distinguished values.
-  work_main_job_changed: 'No'
-  work_main_job_role: ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL PROGRAMMING
-=======
   which_symptoms_last_7_days: '"Messages can be sent to and received from ports, but
     these messages must obey the so-called ""port protocol."""'
   work_health_care_area: Secondary
@@ -1302,11 +781,11 @@
   work_health_care_patient_facing_original: Yes, secondary care, patient-facing
   work_location: Make me a sandwich.
   work_location_raw: Make me a sandwich.
+  work_main_job_changed: 'No'
   work_main_job_role: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
   work_main_job_role_raw: Erlang is known for its designs that are well suited for
     systems.
   work_main_job_title: ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL PROGRAMMING
->>>>>>> origin/main
     LANGUAGE
   work_main_job_title_and_role: ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL
     PROGRAMMING LANGUAGE ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR
@@ -1465,6 +944,7 @@
   work_health_care_patient_facing_original: null
   work_location: Ports are created with the built-in function open_port.
   work_location_raw: Ports are created with the built-in function open_port.
+  work_main_job_changed: 'No'
   work_main_job_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
   work_main_job_title: ATOMS CAN CONTAIN ANY CHARACTER IF THEY ARE ENCLOSED WITHIN
@@ -1629,29 +1109,15 @@
   work_health_care_area: Other
   work_health_care_patient_facing: Yes, other healthcare, patient-facing
   work_health_care_patient_facing_original: Yes, other healthcare, patient-facing
-<<<<<<< HEAD
-  work_location: Make me a sandwich.
-  work_location_raw: Make me a sandwich.
-  work_main_job_changed: 'No'
-  work_main_job_role: MAKE ME A SANDWICH
-  work_main_job_role_raw: Make me a sandwich.
-  work_main_job_title: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL
-    PROGRAMMING LANGUAGE WITH NON STRICT SEMANTICS AND STRONG STATIC TYPING
-  work_main_job_title_and_role: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL
-    PROGRAMMING LANGUAGE WITH NON STRICT SEMANTICS AND STRONG STATIC TYPING MAKE ME
-    A SANDWICH
-  work_main_job_title_raw: Haskell is a standardized, general-purpose purely functional
-    programming language, with non-strict semantics and strong static typing.
-=======
   work_location: Its main implementation is the Glasgow Haskell Compiler.
   work_location_raw: Its main implementation is the Glasgow Haskell Compiler.
+  work_main_job_changed: 'No'
   work_main_job_role: PORTS ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
   work_main_job_role_raw: Ports are created with the built-in function open_port.
   work_main_job_title: IT IS ALSO A GARBAGE COLLECTED RUNTIME SYSTEM
   work_main_job_title_and_role: IT IS ALSO A GARBAGE COLLECTED RUNTIME SYSTEM PORTS
     ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
   work_main_job_title_raw: It is also a garbage-collected runtime system.
->>>>>>> origin/main
   work_not_from_home_days_per_week: '2'
   work_not_from_home_days_per_week_raw: '2'
   work_social_care: Yes, care/residential home, non-resident-facing
@@ -1798,23 +1264,11 @@
   work_health_care_area: null
   work_health_care_patient_facing: null
   work_health_care_patient_facing_original: null
-<<<<<<< HEAD
-  work_location: Where are my pants?
-  work_location_raw: Where are my pants?
-  work_main_job_changed: 'No'
-  work_main_job_role: ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
-  work_main_job_role_raw: Atoms are used within a program to denote distinguished
-    values.
-  work_main_job_title: THE SYNTAX D1D2DN DENOTES A TUPLE WHOSE ARGUMENTS ARE D1 D2  DN
-  work_main_job_title_and_role: THE SYNTAX D1D2DN DENOTES A TUPLE WHOSE ARGUMENTS
-    ARE D1 D2  DN ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
-  work_main_job_title_raw: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
-    are D1, D2, ... Dn.
-=======
   work_location: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
   work_location_raw: '"Messages can be sent to and received from ports, but these
     messages must obey the so-called ""port protocol."""'
+  work_main_job_changed: 'No'
   work_main_job_role: HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
   work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
     sentence.
@@ -1822,7 +1276,6 @@
   work_main_job_title_and_role: WHERE ARE MY PANTS HE LOOKED INQUISITIVELY AT HIS
     KEYBOARD AND WROTE ANOTHER SENTENCE
   work_main_job_title_raw: Where are my pants?
->>>>>>> origin/main
   work_not_from_home_days_per_week: '0'
   work_not_from_home_days_per_week_raw: '0'
   work_social_care: null
@@ -1972,6 +1425,7 @@
   work_health_care_patient_facing_original: Yes, other healthcare, patient-facing
   work_location: Any element of a tuple can be accessed in constant time.
   work_location_raw: Any element of a tuple can be accessed in constant time.
+  work_main_job_changed: 'No'
   work_main_job_role: TUPLES ARE CONTAINERS FOR A FIXED NUMBER OF ERLANG DATA TYPES
   work_main_job_role_raw: Tuples are containers for a fixed number of Erlang data
     types.
@@ -2127,22 +1581,9 @@
   work_health_care_area: Other
   work_health_care_patient_facing: Yes, other healthcare, patient-facing
   work_health_care_patient_facing_original: Yes, other healthcare, patient-facing
-<<<<<<< HEAD
-  work_location: Tuples are containers for a fixed number of Erlang data types.
-  work_location_raw: Tuples are containers for a fixed number of Erlang data types.
-  work_main_job_changed: 'No'
-  work_main_job_role: ITS MAIN IMPLEMENTATION IS THE GLASGOW HASKELL COMPILER
-  work_main_job_role_raw: Its main implementation is the Glasgow Haskell Compiler.
-  work_main_job_title: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL
-    PROGRAMMING LANGUAGE WITH NON STRICT SEMANTICS AND STRONG STATIC TYPING
-  work_main_job_title_and_role: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL
-    PROGRAMMING LANGUAGE WITH NON STRICT SEMANTICS AND STRONG STATIC TYPING ITS MAIN
-    IMPLEMENTATION IS THE GLASGOW HASKELL COMPILER
-  work_main_job_title_raw: Haskell is a standardized, general-purpose purely functional
-    programming language, with non-strict semantics and strong static typing.
-=======
   work_location: Do you have any idea why this is not working?
   work_location_raw: Do you have any idea why this is not working?
+  work_main_job_changed: 'No'
   work_main_job_role: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
   work_main_job_role_raw: Erlang is known for its designs that are well suited for
     systems.
@@ -2152,7 +1593,6 @@
     AND LAZY EVALUATION ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
   work_main_job_title_raw: Haskell features a type system with type inference and
     lazy evaluation.
->>>>>>> origin/main
   work_not_from_home_days_per_week: '1'
   work_not_from_home_days_per_week_raw: '1'
   work_social_care: Yes, other social care, resident-facing

@@ -405,7 +405,7 @@
   times_hour_or_longer_another_home_last_7_days_raw: null
   times_hour_or_longer_another_person_your_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days_raw: null
-  times_outside_shopping_or_socialising_last_7_days: 7.0
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: '3'
   times_shopping_last_7_days_raw: '3'
   times_socialising_last_7_days: '6'
@@ -429,7 +429,7 @@
   work_in_additional_paid_employment_raw: 'No'
   work_location: Both from home and somewhere else
   work_location_raw: Both from home and somewhere else
-  work_main_job_changed: null
+  work_main_job_changed: 'No'
   work_main_job_role: INITIALLY COMPOSING LIGHT HEARTED AND IRREVERENT WORKS HE ALSO
     WROTE SERIOUS SOMBRE AND RELIGIOUS PIECES BEGINNING IN THE 1930S
   work_main_job_role_raw: Initially composing light-hearted and irreverent works,
@@ -859,7 +859,7 @@
   times_hour_or_longer_another_home_last_7_days_raw: null
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
   times_hour_or_longer_another_person_your_home_last_7_days_raw: '1'
-  times_outside_shopping_or_socialising_last_7_days: 2.0
+  times_outside_shopping_or_socialising_last_7_days: 2
   times_shopping_last_7_days: null
   times_shopping_last_7_days_raw: null
   times_socialising_last_7_days: '2'
@@ -883,7 +883,7 @@
   work_in_additional_paid_employment_raw: 'Yes'
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else meaning not at your home
-  work_main_job_changed: 'No'
+  work_main_job_changed: 'Yes'
   work_main_job_role: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
   work_main_job_role_raw: Erlang is known for its designs that are well suited for
     systems.
@@ -1311,7 +1311,7 @@
   times_hour_or_longer_another_home_last_7_days_raw: null
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
   times_hour_or_longer_another_person_your_home_last_7_days_raw: '4'
-  times_outside_shopping_or_socialising_last_7_days: null
+  times_outside_shopping_or_socialising_last_7_days: 0
   times_shopping_last_7_days: null
   times_shopping_last_7_days_raw: null
   times_socialising_last_7_days: null
@@ -1761,7 +1761,7 @@
   times_hour_or_longer_another_home_last_7_days_raw: '2'
   times_hour_or_longer_another_person_your_home_last_7_days: '6'
   times_hour_or_longer_another_person_your_home_last_7_days_raw: '6'
-  times_outside_shopping_or_socialising_last_7_days: 7.0
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: '5'
   times_shopping_last_7_days_raw: '5'
   times_socialising_last_7_days: '4'
@@ -2210,7 +2210,7 @@
   times_hour_or_longer_another_home_last_7_days_raw: null
   times_hour_or_longer_another_person_your_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days_raw: null
-  times_outside_shopping_or_socialising_last_7_days: 2.0
+  times_outside_shopping_or_socialising_last_7_days: 2
   times_shopping_last_7_days: '2'
   times_shopping_last_7_days_raw: '2'
   times_socialising_last_7_days: null
@@ -2234,11 +2234,7 @@
   work_in_additional_paid_employment_raw: Prefer not to say
   work_location: null
   work_location_raw: null
-<<<<<<< HEAD
-  work_main_job_changed: 'Yes'
-=======
   work_main_job_changed: 'No'
->>>>>>> origin/main
   work_main_job_role: THE ARGUMENTS CAN BE PRIMITIVE DATA TYPES OR COMPOUND DATA TYPES
   work_main_job_role_raw: The arguments can be primitive data types or compound data
     types.
@@ -2672,7 +2668,7 @@
   times_hour_or_longer_another_home_last_7_days_raw: Don't know
   times_hour_or_longer_another_person_your_home_last_7_days: '7'
   times_hour_or_longer_another_person_your_home_last_7_days_raw: 7 times or more
-  times_outside_shopping_or_socialising_last_7_days: 7.0
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: '4'
   times_shopping_last_7_days_raw: '4'
   times_socialising_last_7_days: '3'
@@ -3128,7 +3124,7 @@
   times_hour_or_longer_another_home_last_7_days_raw: '2'
   times_hour_or_longer_another_person_your_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days_raw: null
-  times_outside_shopping_or_socialising_last_7_days: 2.0
+  times_outside_shopping_or_socialising_last_7_days: 2
   times_shopping_last_7_days: '2'
   times_shopping_last_7_days_raw: '2'
   times_socialising_last_7_days: null
@@ -3586,7 +3582,7 @@
   times_hour_or_longer_another_home_last_7_days_raw: '5'
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
   times_hour_or_longer_another_person_your_home_last_7_days_raw: '2'
-  times_outside_shopping_or_socialising_last_7_days: 2.0
+  times_outside_shopping_or_socialising_last_7_days: 2
   times_shopping_last_7_days: '2'
   times_shopping_last_7_days_raw: '2'
   times_socialising_last_7_days: '0'
@@ -4047,7 +4043,7 @@
   times_hour_or_longer_another_home_last_7_days_raw: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '7'
   times_hour_or_longer_another_person_your_home_last_7_days_raw: 7 times or more
-  times_outside_shopping_or_socialising_last_7_days: 3.0
+  times_outside_shopping_or_socialising_last_7_days: 3
   times_shopping_last_7_days: '3'
   times_shopping_last_7_days_raw: '3'
   times_socialising_last_7_days: '0'
@@ -4071,7 +4067,7 @@
   work_in_additional_paid_employment_raw: Prefer not to say
   work_location: Working somewhere else (not your home)
   work_location_raw: Somewhere else meaning not at your home
-  work_main_job_changed: null
+  work_main_job_changed: 'Yes'
   work_main_job_role: HE LOOKED INQUISITIVELY AT HIS KEYBOARD AND WROTE ANOTHER SENTENCE
   work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
     sentence.
@@ -4502,7 +4498,7 @@
   times_hour_or_longer_another_home_last_7_days_raw: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
   times_hour_or_longer_another_person_your_home_last_7_days_raw: '2'
-  times_outside_shopping_or_socialising_last_7_days: 4.0
+  times_outside_shopping_or_socialising_last_7_days: 4
   times_shopping_last_7_days: '1'
   times_shopping_last_7_days_raw: '1'
   times_socialising_last_7_days: '3'

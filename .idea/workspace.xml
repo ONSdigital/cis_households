@@ -2,20 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a883ae9b-7377-40bc-ad47-d00f1cbffbf0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/cis_households.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cishouseholds/edit.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/edit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cishouseholds/expressions.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/expressions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/high_level_transformations.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/high_level_transformations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/pipeline/test_survey_responses_version_0/processed_responses_v0_data_regression.yml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/pipeline/test_survey_responses_version_0/processed_responses_v0_data_regression.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/pipeline/test_survey_responses_version_1/processed_responses_v1_data_regression.yml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/pipeline/test_survey_responses_version_1/processed_responses_v1_data_regression.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/pipeline/test_survey_responses_version_2/processed_responses_v2_data_regression.yml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/pipeline/test_survey_responses_version_2/processed_responses_v2_data_regression.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/pipeline/test_survey_responses_version_digital/processed_responses_digital_data_regression.yml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/pipeline/test_survey_responses_version_digital/processed_responses_digital_data_regression.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +19,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="CISDP-2853" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
