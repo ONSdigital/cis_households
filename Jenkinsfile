@@ -38,7 +38,7 @@ pipeline {
         stage("Checkout") {
             // We have to specify an appropriate slave for each stage
             // Choose from download, build, test, deploy
-            agent { label "download.jenkins.slave" }
+            agent { label "JEN-DLA-10" }
             steps {
                 sh "echo 'Checking out code from source control.'"
                 retry(3) {
@@ -50,7 +50,7 @@ pipeline {
 
         }
         stage("Build") {
-            agent { label "build.${agentPython3Version}" }
+            agent { label "JEN-BDA-10.${agentPython3Version}" }
             steps {
                 unstash name: 'Checkout'
                 sh "echo 'Building package.'"
@@ -63,7 +63,7 @@ pipeline {
         }
         stage("Deploy") {
             when { tag "v*" }
-            agent { label "test.${agentPython3Version}" } // Deploy agent didn't seem to be able to push
+            agent { label "JEN-TA-10.${agentPython3Version}" } // Deploy agent didn't seem to be able to push
             steps {
                 unstash name: "Build"
                 sh "echo 'Deploying package to Artifactory'"
