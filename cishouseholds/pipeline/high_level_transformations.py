@@ -32,6 +32,7 @@ from cishouseholds.derive import assign_grouped_variable_from_days_since
 from cishouseholds.derive import assign_household_participant_count
 from cishouseholds.derive import assign_household_under_2_count
 from cishouseholds.derive import assign_isin_list
+from cishouseholds.derive import assign_last_non_null_value_from_col_list
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
@@ -2389,9 +2390,10 @@ def derive_contact_any_covid_covid_variables(df: DataFrame):
         ).otherwise("No"),
     )
 
-    df = df.withColumn(
-        "contact_known_or_suspected_covid_latest_date",
-        last_sorted_val_row_wise(["last_covid_contact_date", "last_suspected_covid_contact_date"]),
+    df = assign_last_non_null_value_from_col_list(
+        df=df,
+        column_name_to_assign="contact_known_or_suspected_covid_latest_date",
+        column_list=["last_covid_contact_date", "last_suspected_covid_contact_date"],
     )
 
     df = contact_known_or_suspected_covid_type(
