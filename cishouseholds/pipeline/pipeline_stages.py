@@ -636,15 +636,11 @@ def update_vaccine_types(input_survey_table: str, output_survey_table: str, vacc
             vaccine_type_col = f"{vaccine_type_col}_{vaccine_number}"
             vaccine_date_col = f"{vaccine_date_col}_{vaccine_number}"
 
-        # match the raw column to the vaccine vaccine number
+        # match the raw column to the vaccine number
         renamed_lookup = lookup_df.withColumnRenamed("cis_covid_vaccine_type_other_raw", vaccine_type_other_col)
         # join on 'vaccine_type_other_col' such that the cleaned data can be applied
         df = df.join(renamed_lookup, on=vaccine_type_other_col, how="left")
-        # set vaccine type col to none when default value
-        df = df.withColumn(
-            vaccine_type_col,
-            F.when(F.col(vaccine_type_col) == "Other / specify", None).otherwise(F.col(vaccine_type_col)),
-        )
+
         # remove date dependent vaccine type if after date
         df = df.withColumn(
             "cis_covid_vaccine_type_corrected",
@@ -655,10 +651,16 @@ def update_vaccine_types(input_survey_table: str, output_survey_table: str, vacc
         )
         # get first valid type
         df = df.withColumn("cis_covid_vaccine_type_corrected", F.col("cis_covid_vaccine_type_corrected").getItem(0))
+
         # update vaccine type column
+        # set vaccine type col to none when default value
         df = df.withColumn(
-            vaccine_type_col, F.coalesce(F.col(vaccine_type_col), F.col("cis_covid_vaccine_type_corrected"))
+            vaccine_type_col,
+            F.when(F.col(vaccine_type_col) == "Other / specify", F.col("cis_covid_vaccine_type_corrected")).otherwise(
+                F.col(vaccine_type_col)
+            ),
         ).drop("cis_covid_vaccine_type_corrected")
+
         df = df.withColumn(
             vaccine_type_col,
             F.when(F.col(vaccine_type_col) == "Pfizer/BioNTechDD", "Pfizer/BioNTech").otherwise(
