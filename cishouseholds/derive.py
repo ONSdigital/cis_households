@@ -964,10 +964,11 @@ def assign_filename_column(df: DataFrame, column_name_to_assign: str) -> DataFra
     df
     column_name_to_assign
     """
-    return df.withColumn(
-        column_name_to_assign,
-        F.regexp_replace(F.input_file_name(), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", ""),
-    )
+    if column_name_to_assign not in df.columns:
+        return df.withColumn(
+            column_name_to_assign, F.regexp_replace(F.input_file_name(), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", "")
+        )
+    return df
 
 
 def assign_column_from_mapped_list_key(
@@ -1743,6 +1744,23 @@ def assign_work_status_group(df: DataFrame, colum_name_to_assign: str, reference
         .when(F.col(reference_column).isNull(), "Unknown")
         .otherwise(F.col(reference_column)),
     )
+    return df
+
+
+def assign_last_non_null_value_from_col_list(df: DataFrame, column_name_to_assign: str, column_list: List[str]):
+    """
+    Assigns a single new value to a column by evaluating values in the column_list, assigning the last non null
+    value in ascending order, having removed any nulls.
+    Parameters
+    ----------
+    df
+    column_name_to_assign: column name of the derived column
+    column_list: the columns you want to order and select the last value when ordered ascending
+    columns should be of same type
+    """
+    df = df.withColumn("temp_array", F.array_sort(F.array(column_list)))
+    df = df.withColumn(column_name_to_assign, F.element_at(F.expr("filter(temp_array, x -> x is not null)"), -1))
+    df = df.drop("temp_array")
     return df
 
 
