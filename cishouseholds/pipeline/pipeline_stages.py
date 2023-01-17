@@ -643,7 +643,7 @@ def update_vaccine_types(input_survey_table: str, output_survey_table: str, vacc
         # set vaccine type col to none when default value
         df = df.withColumn(
             vaccine_type_col,
-            F.when(F.col(vaccine_type_col) == "Other/specify", None).otherwise(F.col(vaccine_type_col)),
+            F.when(F.col(vaccine_type_col) == "Other / specify", None).otherwise(F.col(vaccine_type_col)),
         )
         # remove date dependent vaccine type if after date
         df = df.withColumn(
