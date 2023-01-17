@@ -964,10 +964,11 @@ def assign_filename_column(df: DataFrame, column_name_to_assign: str) -> DataFra
     df
     column_name_to_assign
     """
-    return df.withColumn(
-        column_name_to_assign,
-        F.regexp_replace(F.input_file_name(), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", ""),
-    )
+    if column_name_to_assign not in df.columns:
+        return df.withColumn(
+            column_name_to_assign, F.regexp_replace(F.input_file_name(), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", "")
+        )
+    return df
 
 
 def assign_column_from_mapped_list_key(
