@@ -183,8 +183,4 @@ fields:
   name: existing_participant_digital_opt_in_datetime_string
   nullable: true
   type: string
-- metadata: {}
-  name: ordered_household_id
-  nullable: true
-  type: integer
 type: struct
