@@ -377,7 +377,6 @@ def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
 
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = create_formatted_datetime_string_columns(df)
-    df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
 
     return df
 
@@ -3051,6 +3050,13 @@ def replace_design_weights_transformations(df: DataFrame) -> DataFrame:
 
 def derive_overall_vaccination(df: DataFrame) -> DataFrame:
     """Derive overall vaccination status from NIMS and CIS data."""
+    return df
+
+
+def ordered_household_id_tranformations(df: DataFrame) -> DataFrame:
+    """Read in a survey responses table and join it onto the participants extract to ensure matching ordered household ids"""
+    join_on_columns = ["ons_household_id", "ordered_household_id"]
+    df = df.select(join_on_columns).distinct()
     return df
 
 
