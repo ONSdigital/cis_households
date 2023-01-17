@@ -168,6 +168,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: digital_entry_pack_sent_datetime_string
+  nullable: true
+  type: string
+- metadata: {}
   name: household_digital_enrolment_invited_datetime_string
   nullable: true
   type: string
@@ -180,7 +184,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: digital_entry_pack_sent_datetime_string
+  name: ordered_household_id
   nullable: true
   type: string
 - metadata: {}

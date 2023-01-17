@@ -78,7 +78,6 @@ cis_digital_datetime_map = {
         "household_digital_enrolment_datetime",
         "participant_digital_enrolment_datetime",
         "existing_participant_digital_opt_in_datetime",
-        "digital_entry_pack_sent_datetime",
         "participant_completion_window_start_datetime",
         "participant_completion_window_end_datetime",
         "opted_out_of_next_window_datetime",
@@ -130,5 +129,6 @@ cis_digital_datetime_map = {
         "existing_participant_digital_opt_in_reminder_1_sent_datetime",
         "existing_participant_digital_opt_in_reminder_2_due_datetime",
         "existing_participant_digital_opt_in_reminder_2_sent_datetime",
+        "digital_entry_pack_sent_datetime",
     ],
 }
