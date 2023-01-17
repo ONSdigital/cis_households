@@ -33,6 +33,7 @@ def fuzzy_update(
     """
     Update a column value if more than 'min_matches' values match in a series of column values 'cols_to_check'.
     """
+
     window = Window.partitionBy(id_column).orderBy(id_column)
     specific_window = Window.partitionBy(id_column, "ROW_NUM_LEFT").orderBy(F.desc("TEMP"))
     if right_df is None:
