@@ -1,3 +1,5 @@
+from cishouseholds.regex import match_with_exclusions
+
 pf_regex_match = "|".join(
     [
         r"P[FHJ]I[SZ][AE]R",
@@ -40,6 +42,8 @@ pf_regex_match = "|".join(
     ]
 )
 
+pf_regex_match_with_exclusions = match_with_exclusions(pf_regex_match, r"M[AO0]DERN(A|ER) ?BIOTE(CH|K)")
+
 # before 31stJan2021 only
 pf_date_dependent_regex_match = "|".join(
     [
@@ -50,6 +54,10 @@ pf_date_dependent_regex_match = "|".join(
     ]
 )
 
+
+pf_date_dependent_regex_match_with_exclusions = match_with_exclusions(
+    pf_date_dependent_regex_match, r"M[AO0]DERN(A|ER) ?BIOTE(CH|K)"
+)
 
 mod_regex_match = "|".join(
     [
@@ -220,7 +228,7 @@ vaccine_regex_map = {
     "From a research study/trial": trial_regex_match,
     "Moderna": mod_regex_match,
     "Oxford/AstraZeneca": az_regex_match,
-    "Pfizer/BioNTech": pf_regex_match,
+    "Pfizer/BioNTech": pf_regex_match_with_exclusions,
     "Pfizer/BioNTechDD": pf_date_dependent_regex_match,
     "Janssen/Johnson&Johnson": jj_regex_match,
     "Novavax": novavax_regex_match,

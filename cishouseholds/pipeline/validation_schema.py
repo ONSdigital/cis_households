@@ -1395,6 +1395,9 @@ validation_schemas = {
         "other_antibody_test_negative_date": string_dict,
         "form_language": string_dict,
         "vaccinated_against_flu": string_dict,
+        "think_respiratory_infection": string_dict,
+        "time_off_respiratory_infection": integer_dict,
+        "time_off_health_reasons": integer_dict,
     },
     "participant_extract_digital_validation_schema": {
         "ons_household_id": string_dict,
@@ -1417,6 +1420,7 @@ validation_schemas = {
         "consent_blood_samples_if_positive_yn": string_dict,
         "existing_participant_digital_opt_in_status": string_dict,
         "existing_participant_digital_opt_in_datetime": string_dict,
+        "nhs_data_share": string_dict,
         "nhs_share_opt_out_date": string_dict,
         "household_invited_to_digital": string_dict,
         "household_digital_enrolment_invited_datetime": string_dict,

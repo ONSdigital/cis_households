@@ -18,9 +18,9 @@ class TableNotFoundError(Exception):
 
 
 def delete_tables(
-    prefix: bool = False,
+    prefix: str = None,
     table_names: Union[str, List[str]] = None,
-    pattern: str = None,
+    ignore_table_prefix: bool = False,
     protected_tables: List[str] = [],
     drop_protected_tables: bool = False,
 ):
@@ -60,19 +60,23 @@ def delete_tables(
         table_names = [f"{table_prefix}{table_name}" for table_name in table_names]
         drop_tables(table_names)
 
-    if pattern is not None:
+    # if pattern is not None:
+    #     tables = (
+    #         spark_session.sql(
+    #             f"SHOW TABLES FROM `{storage_config['database']}` WHERE Tables_in_{storage_config['database']} LIKE '{table_prefix}*' AND Tables_in_{storage_config['database']} LIKE '{pattern}'"
+    #         )
+    #         .select("tableName")
+    #         .toPandas()["tableName"]
+    #         .tolist()
+    #     )
+    #     drop_tables(tables)
+    if prefix is not None:
+        if ignore_table_prefix:
+            pattern = f"*{prefix}"
+        else:
+            pattern = f"{table_prefix}_{prefix}"
         tables = (
-            spark_session.sql(
-                f"SHOW TABLES FROM {storage_config['database']} WHERE Tables_in_{storage_config['database']} LIKE '{table_prefix}*' AND Tables_in_{storage_config['database']} LIKE '{pattern}'"
-            )
-            .select("tableName")
-            .toPandas()["tableName"]
-            .tolist()
-        )
-        drop_tables(tables)
-    if prefix:
-        tables = (
-            spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{table_prefix}*'")
+            spark_session.sql(f"SHOW TABLES IN {storage_config['database']} LIKE '{pattern}*'")
             .select("tableName")
             .toPandas()["tableName"]
             .tolist()
@@ -89,7 +93,7 @@ def extract_from_table(table_name: str, break_lineage: bool = False, alternate_p
 
 
 def update_table(df: DataFrame, table_name, write_mode, archive=False):
-    if "survey_resposes" in table_name:
+    if table_name in list(SurveyTableLengths.table_lengths.keys()):
         df.cache()
         SurveyTableLengths.log_length(table_name, df.count())
     df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
