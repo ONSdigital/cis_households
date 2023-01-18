@@ -46,7 +46,6 @@ from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.high_level_transformations import blood_past_positive_transformations
 from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.high_level_transformations import derive_age_based_columns
-from cishouseholds.pipeline.high_level_transformations import derive_overall_vaccination
 from cishouseholds.pipeline.high_level_transformations import design_weights_lookup_transformations
 from cishouseholds.pipeline.high_level_transformations import fill_forward_events_for_key_columns
 from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
@@ -715,23 +714,6 @@ def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[st
         update_table(lookup_df, regex_lookup_table, "overwrite")
 
 
-@register_pipeline_stage("join_blood_positive_lookup")
-def join_blood_positive_lookup(lookup_table_name: str, input_survey_table: str, output_survey_table: str):
-    """
-    Stage to join blood positive lookup table
-    """
-    blood_positive_lookup_df = extract_from_table(lookup_table_name)
-    df = extract_from_table(input_survey_table)
-    df = df.join(
-        blood_positive_lookup_df,
-        on="ons_household_id",
-        how="left",
-    )
-    df = df.withColumn("blood_past_positive_flag", F.when(F.col("blood_past_positive").isNull(), 0).otherwise(1))
-    update_table(df, output_survey_table, "overwrite")
-    return {"output_survey_table": output_survey_table}
-
-
 @register_pipeline_stage("lookup_based_editing")
 def lookup_based_editing(
     input_survey_table: str,
@@ -808,81 +790,6 @@ def execute_fill_forwards_events(input_survey_table: str, output_survey_table: s
     df = extract_from_table(input_survey_table)
     df = fill_forward_events_for_key_columns(df)
     update_table(df, output_survey_table, write_mode="overwrite")
-    return {"output_survey_table": output_survey_table}
-
-
-@register_pipeline_stage("join_geographic_data")
-def join_geographic_data(
-    geographic_table: str,
-    input_survey_table: str,
-    output_survey_table: str,
-    id_column: str,
-):
-    """
-    Join weights file onto survey data by household id.
-
-    Parameters
-    ----------
-    geographic_table
-        input table name for household data with geographic data
-    survey_responses_table
-        input table for individual participant responses
-    geographic_responses_table
-        output table name for joined survey responses and household geographic data
-    id_column
-        column containing id to join the 2 input tables
-    """
-    design_weights_df = extract_from_table(geographic_table)
-    survey_responses_df = extract_from_table(input_survey_table)
-    geographic_survey_df = survey_responses_df.drop("postcode", "region_code").join(
-        design_weights_df, on=id_column, how="left"
-    )
-    update_table(geographic_survey_df, output_survey_table, write_mode="overwrite")
-    return {"output_survey_table": output_survey_table}
-
-
-@register_pipeline_stage("replace_design_weights")
-def replace_design_weights(
-    design_weight_lookup_table: str,
-    input_survey_table: str,
-    output_survey_table: str,
-    design_weight_columns: List[str],
-):
-    """
-    Temporary stage to replace design weights by lookup.
-    Also makes temporary edits to fix raw data issues in geographies.
-
-    Parameters
-    ----------
-    design_weight_lookup_table
-    input_survey_table
-    output_survey_table
-    design_weight_columns: list
-        list of columns to be replaced with values from design_weight_lookup_table
-
-    """
-    design_weight_lookup = extract_from_table(design_weight_lookup_table)
-    df = extract_from_table(input_survey_table)
-    df = df.drop(*design_weight_columns)
-    df = df.join(
-        design_weight_lookup.select(*design_weight_columns, "ons_household_id"), on="ons_household_id", how="left"
-    )
-
-    df = df.withColumn(
-        "local_authority_unity_authority_code",
-        F.when(F.col("local_authority_unity_authority_code") == "E06000062", "E07000154")
-        .when(F.col("local_authority_unity_authority_code") == "E06000061", "E07000156")
-        .otherwise(F.col("local_authority_unity_authority_code")),
-    )
-    df = df.withColumn(
-        "region_code",
-        F.when(F.col("region_code") == "W92000004", "W99999999")
-        .when(F.col("region_code") == "S92000003", "S99999999")
-        .when(F.col("region_code") == "N92000002", "N99999999")
-        .otherwise(F.col("region_code")),
-    )
-
-    update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
 
@@ -1353,30 +1260,6 @@ def sample_df(
     if filter_condition is not None:
         df = df.filter(eval(filter_condition))
     generate_sample(df, sample_type, cols, cols_to_evaluate, rows_per_file, num_files, output_folder_name)
-
-
-@register_pipeline_stage("join_vaccination_data")
-def join_vaccination_data(participant_records_table, nims_table, vaccination_data_table):
-    """
-    Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.
-
-    Parameters
-    ----------
-    participant_records_table
-        input table containing participant level records to join
-    nims_table
-        nims table containing records to be joined to participant table
-    vaccination_data_table
-        output table name for the joined nims and participant table
-    """
-    participant_df = extract_from_table(participant_records_table)
-    nims_df = extract_from_table(nims_table)
-    nims_df = nims_transformations(nims_df)
-
-    participant_df = participant_df.join(nims_df, on="participant_id", how="left")
-    participant_df = derive_overall_vaccination(participant_df)
-
-    update_table(participant_df, vaccination_data_table, write_mode="overwrite")
 
 
 @register_pipeline_stage("calculate_household_level_populations")
