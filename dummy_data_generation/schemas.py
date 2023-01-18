@@ -1898,7 +1898,7 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "Vaccination_Other": _("choice", items=["OtherVaxx", None]),
+        "Vaccination_Other": _("text.quote"),
         "Number_Of_Doses": _("choice", items=["1", "2", "3 or more", None]),
         "Date_Of_Vaccination": _(
             "discrete_distribution",
@@ -1916,7 +1916,7 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "Vaccination_Other_1": _("choice", items=[None]),
+        "Vaccination_Other_1": _("text.quote"),
         "Date_Of_Vaccination_1": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
@@ -1933,7 +1933,7 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "Vaccination_Other_2": _("choice", items=[None]),
+        "Vaccination_Other_2": _("text.quote"),
         "Date_Of_Vaccination_2": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
@@ -1950,7 +1950,7 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "Vaccination_Other_3": _("choice", items=[None]),
+        "Vaccination_Other_3": _("text.quote"),
         "Date_Of_Vaccination_3": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],
@@ -1967,7 +1967,7 @@ def get_voyager_2_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "Vaccination_Other_4": _("choice", items=[None]),
+        "Vaccination_Other_4": _("text.quote"),
         "Date_Of_Vaccination_4": _(
             "discrete_distribution",
             population=[_("custom_random.random_date", start=start_date_list, end=end_date_list), None],

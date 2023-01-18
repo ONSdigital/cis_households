@@ -1593,6 +1593,20 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "work_patient_facing_now",
     ]
 
+    upper_cols = [
+        "cis_covid_vaccine_type_other",
+        "cis_covid_vaccine_type_other_1",
+        "cis_covid_vaccine_type_other_2",
+        "cis_covid_vaccine_type_other_3",
+        "cis_covid_vaccine_type_other_4",
+        "cis_covid_vaccine_type_other_5",
+        "cis_covid_vaccine_type_other_6",
+    ]
+
+    for col in upper_cols:
+        if col in df.columns:
+            df = df.withColumn(col, F.upper(F.col(col)))
+
     df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
 
     df = assign_raw_copies(df, [column for column in original_copy_list if column in df.columns], "original")
