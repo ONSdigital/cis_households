@@ -38,6 +38,13 @@ def all_columns_null(column_list: List[str]):
     return reduce(and_, [F.col(column).isNull() for column in column_list])
 
 
+def all_columns_values_in_list(column_list: List[str], values):
+    """Expression that evalates true if all columns equal a certain value."""
+    if not isinstance(values, list):
+        values = [values]
+    return reduce(and_, [F.col(column).isin(values) for column in column_list])
+
+
 def any_column_null(column_list: List[str]):
     "Expression that evaluates true if any column is null."
     return reduce(or_, [F.col(column).isNull() for column in column_list])
