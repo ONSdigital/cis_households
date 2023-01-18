@@ -1455,6 +1455,7 @@ column_name_maps = {
         "Date Samples Arrayed Oxford": "blood_sample_arrayed_date",
         "Date Samples Received Oxford": "blood_sample_received_date",
         "Voyager Date Created": "blood_sample_collected_datetime",
+        "blood_results_source_file": "blood_results_source_file",
     },
     "sample_eng_wl_sc_variable_name_map": {
         "UAC": "unique_access_code",

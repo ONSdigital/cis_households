@@ -32,6 +32,7 @@ from cishouseholds.derive import assign_grouped_variable_from_days_since
 from cishouseholds.derive import assign_household_participant_count
 from cishouseholds.derive import assign_household_under_2_count
 from cishouseholds.derive import assign_isin_list
+from cishouseholds.derive import assign_last_non_null_value_from_col_list
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_outward_postcode
@@ -119,6 +120,8 @@ from cishouseholds.edit import update_work_main_job_changed
 from cishouseholds.expressions import any_column_equal_value
 from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import array_contains_any
+from cishouseholds.expressions import first_sorted_val_row_wise
+from cishouseholds.expressions import last_sorted_val_row_wise
 from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_backwards_work_status_v2
@@ -177,7 +180,7 @@ from cishouseholds.validate_class import SparkValidate
 date_cols_min_date_dict = {
     "think_had_covid_onset_date": "2019-11-17",
     "think_had_contacted_nhs": "2019-11-17",
-    "think_had_covid_admitted_to_hopsital": "2019-11-17",
+    "think_had_covid_admitted_to_hospital": "2019-11-17",
     "been_outside_uk_last_return_date": "2021-04-01",
 }
 
@@ -187,15 +190,15 @@ def clean_covid_test_swab(df: DataFrame):
     Clean all variables related to the swab covid test.
     """
     df = df.withColumn(
-        "other_covid_infection_test_result",
+        "other_covid_infection_test_results",
         F.when(
             (
-                (F.col("other_covid_infection_test_result") == "Negative")
+                (F.col("other_covid_infection_test_results") == "Negative")
                 & (F.col("think_had_covid_onset_date").isNull())
                 & (F.col("think_had_covid_symptom_count") == 0)
             ),
             None,
-        ).otherwise(F.col("other_covid_infection_test_result")),
+        ).otherwise(F.col("other_covid_infection_test_results")),
     )
 
     # if the participant sais they have not had another covid test but there is a result for the test
@@ -205,11 +208,11 @@ def clean_covid_test_swab(df: DataFrame):
         "other_covid_infection_test",
         F.when(
             (~F.col("other_covid_infection_test").eqNullSafe("Yes"))
-            & (F.col("other_covid_infection_test_result").isNotNull())
+            & (F.col("other_covid_infection_test_results").isNotNull())
             & (
                 ((F.col("think_had_covid_symptom_count") > 0) | (F.col("think_had_covid_onset_date").isNotNull()))
                 | (
-                    (F.col("think_had_covid_admitted_to_hopsital") == "Yes")
+                    (F.col("think_had_covid_admitted_to_hospital") == "Yes")
                     & (F.col("think_had_covid_contacted_nhs") == "Yes")
                 )
             ),
@@ -221,7 +224,7 @@ def clean_covid_test_swab(df: DataFrame):
     # Reset no (0) to missing where ‘No’ overall and random ‘No’s given for other covid variables.
     flag = (
         (F.col("think_had_covid_symptom_count") == 0)
-        & (~F.col("other_covid_infection_test_result").eqNullSafe("Positive"))
+        & (~F.col("other_covid_infection_test_results").eqNullSafe("Positive"))
         & reduce(
             and_,
             (
@@ -229,16 +232,16 @@ def clean_covid_test_swab(df: DataFrame):
                 for c in [
                     "think_had_covid",
                     "think_had_covid_contacted_nhs",
-                    "think_had_covid_admitted_to_hopsital",
+                    "think_had_covid_admitted_to_hospital",
                     "other_covid_infection_test",
                 ]
             ),
         )
     )
-    for col in ["think_had_covid_contacted_nhs", "think_had_covid_admitted_to_hopsital"]:
+    for col in ["think_had_covid_contacted_nhs", "think_had_covid_admitted_to_hospital"]:
         df = df.withColumn(col, F.when(flag, None).otherwise(F.col(col)))
 
-    for col in ["other_covid_infection_test", "other_covid_infection_test_result"]:
+    for col in ["other_covid_infection_test", "other_covid_infection_test_results"]:
         df = df.withColumn(
             col,
             F.when((flag) & (F.col("survey_response_dataset_major_version") == 0), None).otherwise(F.col(col)),
@@ -257,28 +260,28 @@ def clean_covid_test_swab(df: DataFrame):
 
     # Clean where admitted is 1 but no to ‘feeder question’ for v0 dataset.
 
-    for col in ["think_had_covid", "think_had_covid_admitted_to_hopsital"]:
+    for col in ["think_had_covid", "think_had_covid_admitted_to_hospital"]:
         df = df.withColumn(
             col,
             F.when(
-                (F.col("think_had_covid_admitted_to_hopsital") == "Yes")
+                (F.col("think_had_covid_admitted_to_hospital") == "Yes")
                 & (~F.col("think_had_covid_contacted_nhs").eqNullSafe("Yes"))
                 & (~F.col("other_covid_infection_test").eqNullSafe("Yes"))
                 & (F.col("think_had_covid_symptom_count") == 0)
-                & (~F.col("other_covid_infection_test_result").eqNullSafe("Positive")),
+                & (~F.col("other_covid_infection_test_results").eqNullSafe("Positive")),
                 "No",
             ).otherwise(F.col(col)),
         )
 
-    for col in ["think_had_covid_admitted_to_hopsital", "think_had_covid_contacted_nhs"]:
+    for col in ["think_had_covid_admitted_to_hospital", "think_had_covid_contacted_nhs"]:
         df = df.withColumn(
             col,
             F.when(
                 (F.col("think_had_covid") == "No")
-                & (F.col("think_had_covid_admitted_to_hopsital") == "Yes")
+                & (F.col("think_had_covid_admitted_to_hospital") == "Yes")
                 & (F.col("think_had_covid_contacted_nhs") == "Yes")
                 & (~F.col("other_covid_infection_test").eqNullSafe("Yes"))
-                & (F.col("other_covid_infection_test_result").isNull())
+                & (F.col("other_covid_infection_test_results").isNull())
                 & (F.col("think_had_covid_onset_date").isNull())
                 & (F.col("think_had_covid_symptom_count") == 0)
                 & (F.col("survey_response_dataset_major_version") == 0),
@@ -286,15 +289,15 @@ def clean_covid_test_swab(df: DataFrame):
             ).otherwise(F.col(col)),
         )
 
-    for col in ["think_had_covid_admitted_to_hopsital", "other_covid_infection_test", "think_had_covid"]:
+    for col in ["think_had_covid_admitted_to_hospital", "other_covid_infection_test", "think_had_covid"]:
         df = df.withColumn(
             col,
             F.when(
                 F.col("think_had_covid").isNull()
-                & (F.col("think_had_covid_admitted_to_hopsital") == "Yes")
+                & (F.col("think_had_covid_admitted_to_hospital") == "Yes")
                 & (~F.col("think_had_covid_contacted_nhs").eqNullSafe("Yes"))
                 & (F.col("other_covid_infection_test") == "Yes")
-                & (F.col("other_covid_infection_test_result").isNull())
+                & (F.col("other_covid_infection_test_results").isNull())
                 & (F.col("think_had_covid_onset_date").isNull())
                 & (F.col("think_had_covid_symptom_count") == 0)
                 & (F.col("survey_response_dataset_major_version") == 0),
@@ -308,11 +311,11 @@ def clean_covid_test_swab(df: DataFrame):
         "think_had_covid",
         F.when(
             (F.col("think_had_covid") != "Yes")
-            & (F.col("think_had_covid_admitted_to_hopsital") == "Yes")
+            & (F.col("think_had_covid_admitted_to_hospital") == "Yes")
             & (F.col("think_had_covid_symptom_count") == 0)
             & (
                 (F.col("think_had_covid_contacted_nhs") != "Yes")
-                | (F.col("other_covid_infection_test_result").isNotNull())
+                | (F.col("other_covid_infection_test_results").isNotNull())
             )
             & (F.col("other_covid_infection_test") == "Yes"),
             "Yes",
@@ -376,7 +379,6 @@ def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
 
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = create_formatted_datetime_string_columns(df)
-    df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
 
     return df
 
@@ -2374,6 +2376,46 @@ def symptom_column_transformations(df):
     return df
 
 
+def derive_contact_any_covid_covid_variables(df: DataFrame):
+    """
+    Derive variables related to combination of know and suspected covid data columns.
+    """
+    df = df.withColumn(
+        "contact_known_or_suspected_covid",
+        F.when(
+            any_column_equal_value(
+                ["contact_suspected_positive_covid_last_28_days", "contact_known_positive_covid_last_28_days"], "Yes"
+            ),
+            "Yes",
+        ).otherwise("No"),
+    )
+
+    df = assign_last_non_null_value_from_col_list(
+        df=df,
+        column_name_to_assign="contact_known_or_suspected_covid_latest_date",
+        column_list=["last_covid_contact_date", "last_suspected_covid_contact_date"],
+    )
+
+    df = contact_known_or_suspected_covid_type(
+        df=df,
+        contact_known_covid_type_column="last_covid_contact_type",
+        contact_suspect_covid_type_column="last_suspected_covid_contact_type",
+        contact_any_covid_type_column="contact_known_or_suspected_covid",
+        contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
+        contact_known_covid_date_column="last_covid_contact_date",
+        contact_suspect_covid_date_column="last_suspected_covid_contact_date",
+    )
+
+    df = assign_date_difference(
+        df,
+        "contact_known_or_suspected_covid_days_since",
+        "contact_known_or_suspected_covid_latest_date",
+        "visit_datetime",
+    )
+
+    return df
+
+
 def union_dependent_cleaning(df):
     col_val_map = {
         "ethnicity": {
@@ -2433,6 +2475,7 @@ def union_dependent_cleaning(df):
 
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
+
     df = fuzzy_update(
         df,
         id_column="participant_id",
@@ -2616,6 +2659,8 @@ def union_dependent_derivations(df):
     #     record_changed_value="Yes",
     # )
     df = create_formatted_datetime_string_columns(df)
+
+    df = clean_covid_test_swab(df)
     return df
 
 
@@ -2631,7 +2676,7 @@ def fill_forward_events_for_key_columns(df):
         detail_columns=[
             "other_covid_infection_test",
             "other_covid_infection_test_results",
-            "think_had_covid_any",
+            "think_had_covid_any_symptoms",
             "think_had_covid_admitted_to_hospital",
             "think_had_covid_contacted_nhs",
             "think_had_covid_symptom_fever",
@@ -2683,6 +2728,7 @@ def fill_forward_events_for_key_columns(df):
         visit_datetime_column="visit_datetime",
         visit_id_column="visit_id",
     )
+    df = derive_contact_any_covid_covid_variables(df)
     return df
 
 
@@ -3049,6 +3095,13 @@ def replace_design_weights_transformations(df: DataFrame) -> DataFrame:
 
 def derive_overall_vaccination(df: DataFrame) -> DataFrame:
     """Derive overall vaccination status from NIMS and CIS data."""
+    return df
+
+
+def ordered_household_id_tranformations(df: DataFrame) -> DataFrame:
+    """Read in a survey responses table and join it onto the participants extract to ensure matching ordered household ids"""
+    join_on_columns = ["ons_household_id", "ordered_household_id"]
+    df = df.select(join_on_columns).distinct()
     return df
 
 
