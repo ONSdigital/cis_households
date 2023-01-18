@@ -80,12 +80,23 @@
     to repeat it.
   cis_covid_vaccine_type_other_1: A census taker once tried to test me. I ate his
     liver with some fava beans and a nice Chianti.
+  cis_covid_vaccine_type_other_1_raw: A census taker once tried to test me. I ate
+    his liver with some fava beans and a nice Chianti.
   cis_covid_vaccine_type_other_2: Here's looking at you, kid.
+  cis_covid_vaccine_type_other_2_raw: Here's looking at you, kid.
   cis_covid_vaccine_type_other_3: Here's looking at you, kid.
+  cis_covid_vaccine_type_other_3_raw: Here's looking at you, kid.
   cis_covid_vaccine_type_other_4: Those who refuse to learn from history are condemned
     to repeat it.
+  cis_covid_vaccine_type_other_4_raw: Those who refuse to learn from history are condemned
+    to repeat it.
   cis_covid_vaccine_type_other_5: Elementary, my dear Watson.
+  cis_covid_vaccine_type_other_5_raw: Elementary, my dear Watson.
   cis_covid_vaccine_type_other_6: Those who refuse to learn from history are condemned
+    to repeat it.
+  cis_covid_vaccine_type_other_6_raw: Those who refuse to learn from history are condemned
+    to repeat it.
+  cis_covid_vaccine_type_other_raw: Those who refuse to learn from history are condemned
     to repeat it.
   cis_covid_vaccine_type_raw: Or Another vaccine please specify
   cis_flu_vaccine_received: 'Yes'
@@ -533,15 +544,27 @@
   cis_covid_vaccine_type_other: Frankly, my dear, I don't give a damn.
   cis_covid_vaccine_type_other_1: Get your stinking paws off me, you damned dirty
     ape.
+  cis_covid_vaccine_type_other_1_raw: Get your stinking paws off me, you damned dirty
+    ape.
   cis_covid_vaccine_type_other_2: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
+  cis_covid_vaccine_type_other_2_raw: '"You''ve got to ask yourself one question:
+    ""Do I feel lucky?"" Well, do ya? Punk!"'
   cis_covid_vaccine_type_other_3: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
+  cis_covid_vaccine_type_other_3_raw: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
   cis_covid_vaccine_type_other_4: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
+  cis_covid_vaccine_type_other_4_raw: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
   cis_covid_vaccine_type_other_5: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
+  cis_covid_vaccine_type_other_5_raw: '"You''ve got to ask yourself one question:
+    ""Do I feel lucky?"" Well, do ya? Punk!"'
   cis_covid_vaccine_type_other_6: I'm gonna make him an offer he can't refuse.
+  cis_covid_vaccine_type_other_6_raw: I'm gonna make him an offer he can't refuse.
+  cis_covid_vaccine_type_other_raw: Frankly, my dear, I don't give a damn.
   cis_covid_vaccine_type_raw: I do not know the type
   cis_flu_vaccine_received: null
   city: null
@@ -987,11 +1010,18 @@
   cis_covid_vaccine_type_6_raw: Or do you not know which one you had?
   cis_covid_vaccine_type_other: Houston, we have a problem.
   cis_covid_vaccine_type_other_1: The only thing we have to fear is fear itself.
+  cis_covid_vaccine_type_other_1_raw: The only thing we have to fear is fear itself.
   cis_covid_vaccine_type_other_2: I'm gonna make him an offer he can't refuse.
+  cis_covid_vaccine_type_other_2_raw: I'm gonna make him an offer he can't refuse.
   cis_covid_vaccine_type_other_3: They call me *Mister* Tibbs!
+  cis_covid_vaccine_type_other_3_raw: They call me *Mister* Tibbs!
   cis_covid_vaccine_type_other_4: They call me *Mister* Tibbs!
+  cis_covid_vaccine_type_other_4_raw: They call me *Mister* Tibbs!
   cis_covid_vaccine_type_other_5: The only thing we have to fear is fear itself.
+  cis_covid_vaccine_type_other_5_raw: The only thing we have to fear is fear itself.
   cis_covid_vaccine_type_other_6: You're gonna need a bigger boat.
+  cis_covid_vaccine_type_other_6_raw: You're gonna need a bigger boat.
+  cis_covid_vaccine_type_other_raw: Houston, we have a problem.
   cis_covid_vaccine_type_raw: Another vaccine please specify
   cis_flu_vaccine_received: 'No'
   city: null
@@ -1437,14 +1467,26 @@
     feel lucky?"" Well, do ya? Punk!"'
   cis_covid_vaccine_type_other_1: '"You''ve got to ask yourself one question: ""Do
     I feel lucky?"" Well, do ya? Punk!"'
+  cis_covid_vaccine_type_other_1_raw: '"You''ve got to ask yourself one question:
+    ""Do I feel lucky?"" Well, do ya? Punk!"'
   cis_covid_vaccine_type_other_2: A census taker once tried to test me. I ate his
     liver with some fava beans and a nice Chianti.
+  cis_covid_vaccine_type_other_2_raw: A census taker once tried to test me. I ate
+    his liver with some fava beans and a nice Chianti.
   cis_covid_vaccine_type_other_3: Those who refuse to learn from history are condemned
+    to repeat it.
+  cis_covid_vaccine_type_other_3_raw: Those who refuse to learn from history are condemned
     to repeat it.
   cis_covid_vaccine_type_other_4: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
+  cis_covid_vaccine_type_other_4_raw: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
   cis_covid_vaccine_type_other_5: Let them eat cake.
+  cis_covid_vaccine_type_other_5_raw: Let them eat cake.
   cis_covid_vaccine_type_other_6: Houston, we have a problem.
+  cis_covid_vaccine_type_other_6_raw: Houston, we have a problem.
+  cis_covid_vaccine_type_other_raw: '"You''ve got to ask yourself one question: ""Do
+    I feel lucky?"" Well, do ya? Punk!"'
   cis_covid_vaccine_type_raw: Oxford / AstraZeneca
   cis_flu_vaccine_received: null
   city: null
@@ -1887,12 +1929,20 @@
   cis_covid_vaccine_type_6_raw: Novavax
   cis_covid_vaccine_type_other: Frankly, my dear, I don't give a damn.
   cis_covid_vaccine_type_other_1: Houston, we have a problem.
+  cis_covid_vaccine_type_other_1_raw: Houston, we have a problem.
   cis_covid_vaccine_type_other_2: Let them eat cake.
+  cis_covid_vaccine_type_other_2_raw: Let them eat cake.
   cis_covid_vaccine_type_other_3: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
+  cis_covid_vaccine_type_other_3_raw: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
   cis_covid_vaccine_type_other_4: I'm gonna make him an offer he can't refuse.
+  cis_covid_vaccine_type_other_4_raw: I'm gonna make him an offer he can't refuse.
   cis_covid_vaccine_type_other_5: Let them eat cake.
+  cis_covid_vaccine_type_other_5_raw: Let them eat cake.
   cis_covid_vaccine_type_other_6: Here's looking at you, kid.
+  cis_covid_vaccine_type_other_6_raw: Here's looking at you, kid.
+  cis_covid_vaccine_type_other_raw: Frankly, my dear, I don't give a damn.
   cis_covid_vaccine_type_raw: Novavax
   cis_flu_vaccine_received: 'Yes'
   city: null
@@ -2344,12 +2394,21 @@
   cis_covid_vaccine_type_other: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
   cis_covid_vaccine_type_other_1: Houston, we have a problem.
+  cis_covid_vaccine_type_other_1_raw: Houston, we have a problem.
   cis_covid_vaccine_type_other_2: I'm gonna make him an offer he can't refuse.
+  cis_covid_vaccine_type_other_2_raw: I'm gonna make him an offer he can't refuse.
   cis_covid_vaccine_type_other_3: You're gonna need a bigger boat.
+  cis_covid_vaccine_type_other_3_raw: You're gonna need a bigger boat.
   cis_covid_vaccine_type_other_4: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
+  cis_covid_vaccine_type_other_4_raw: Mama always said life was like a box of chocolates.
+    You never know what you're gonna get.
   cis_covid_vaccine_type_other_5: You're gonna need a bigger boat.
+  cis_covid_vaccine_type_other_5_raw: You're gonna need a bigger boat.
   cis_covid_vaccine_type_other_6: Let them eat cake.
+  cis_covid_vaccine_type_other_6_raw: Let them eat cake.
+  cis_covid_vaccine_type_other_raw: Mr. Gorbachev, open this gate! Mr. Gorbachev,
+    tear down this wall!
   cis_covid_vaccine_type_raw: Janssen / Johnson&Johnson
   cis_flu_vaccine_received: 'No'
   city: null
@@ -2799,15 +2858,26 @@
   cis_covid_vaccine_type_6_raw: Sinopharm
   cis_covid_vaccine_type_other: They call me *Mister* Tibbs!
   cis_covid_vaccine_type_other_1: You're gonna need a bigger boat.
+  cis_covid_vaccine_type_other_1_raw: You're gonna need a bigger boat.
   cis_covid_vaccine_type_other_2: Ask not what your country can do for you; ask what
     you can do for your country.
+  cis_covid_vaccine_type_other_2_raw: Ask not what your country can do for you; ask
+    what you can do for your country.
   cis_covid_vaccine_type_other_3: Here's looking at you, kid.
+  cis_covid_vaccine_type_other_3_raw: Here's looking at you, kid.
   cis_covid_vaccine_type_other_4: One morning I shot an elephant in my pajamas. How
     he got in my pajamas, I don't know.
+  cis_covid_vaccine_type_other_4_raw: One morning I shot an elephant in my pajamas.
+    How he got in my pajamas, I don't know.
   cis_covid_vaccine_type_other_5: Ask not what your country can do for you; ask what
     you can do for your country.
+  cis_covid_vaccine_type_other_5_raw: Ask not what your country can do for you; ask
+    what you can do for your country.
   cis_covid_vaccine_type_other_6: A census taker once tried to test me. I ate his
     liver with some fava beans and a nice Chianti.
+  cis_covid_vaccine_type_other_6_raw: A census taker once tried to test me. I ate
+    his liver with some fava beans and a nice Chianti.
+  cis_covid_vaccine_type_other_raw: They call me *Mister* Tibbs!
   cis_covid_vaccine_type_raw: Pfizer / BioNTech
   cis_flu_vaccine_received: 'No'
   city: Saltash
@@ -3252,13 +3322,23 @@
   cis_covid_vaccine_type_other: A census taker once tried to test me. I ate his liver
     with some fava beans and a nice Chianti.
   cis_covid_vaccine_type_other_1: Let them eat cake.
+  cis_covid_vaccine_type_other_1_raw: Let them eat cake.
   cis_covid_vaccine_type_other_2: Here's looking at you, kid.
+  cis_covid_vaccine_type_other_2_raw: Here's looking at you, kid.
   cis_covid_vaccine_type_other_3: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
+  cis_covid_vaccine_type_other_3_raw: Mr. Gorbachev, open this gate! Mr. Gorbachev,
+    tear down this wall!
   cis_covid_vaccine_type_other_4: I'm gonna make him an offer he can't refuse.
+  cis_covid_vaccine_type_other_4_raw: I'm gonna make him an offer he can't refuse.
   cis_covid_vaccine_type_other_5: One morning I shot an elephant in my pajamas. How
     he got in my pajamas, I don't know.
+  cis_covid_vaccine_type_other_5_raw: One morning I shot an elephant in my pajamas.
+    How he got in my pajamas, I don't know.
   cis_covid_vaccine_type_other_6: Elementary, my dear Watson.
+  cis_covid_vaccine_type_other_6_raw: Elementary, my dear Watson.
+  cis_covid_vaccine_type_other_raw: A census taker once tried to test me. I ate his
+    liver with some fava beans and a nice Chianti.
   cis_covid_vaccine_type_raw: Sputnik
   cis_flu_vaccine_received: null
   city: null
@@ -3716,12 +3796,21 @@
   cis_covid_vaccine_type_other: They call me *Mister* Tibbs!
   cis_covid_vaccine_type_other_1: A census taker once tried to test me. I ate his
     liver with some fava beans and a nice Chianti.
+  cis_covid_vaccine_type_other_1_raw: A census taker once tried to test me. I ate
+    his liver with some fava beans and a nice Chianti.
   cis_covid_vaccine_type_other_2: The only thing we have to fear is fear itself.
+  cis_covid_vaccine_type_other_2_raw: The only thing we have to fear is fear itself.
   cis_covid_vaccine_type_other_3: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
+  cis_covid_vaccine_type_other_3_raw: Mr. Gorbachev, open this gate! Mr. Gorbachev,
+    tear down this wall!
   cis_covid_vaccine_type_other_4: Let them eat cake.
+  cis_covid_vaccine_type_other_4_raw: Let them eat cake.
   cis_covid_vaccine_type_other_5: They call me *Mister* Tibbs!
+  cis_covid_vaccine_type_other_5_raw: They call me *Mister* Tibbs!
   cis_covid_vaccine_type_other_6: Houston, we have a problem.
+  cis_covid_vaccine_type_other_6_raw: Houston, we have a problem.
+  cis_covid_vaccine_type_other_raw: They call me *Mister* Tibbs!
   cis_covid_vaccine_type_raw: Don't know type
   cis_flu_vaccine_received: 'No'
   city: Charlbury
@@ -4173,14 +4262,25 @@
   cis_covid_vaccine_type_other: Houston, we have a problem.
   cis_covid_vaccine_type_other_1: Those who refuse to learn from history are condemned
     to repeat it.
+  cis_covid_vaccine_type_other_1_raw: Those who refuse to learn from history are condemned
+    to repeat it.
   cis_covid_vaccine_type_other_2: I'm gonna make him an offer he can't refuse.
+  cis_covid_vaccine_type_other_2_raw: I'm gonna make him an offer he can't refuse.
   cis_covid_vaccine_type_other_3: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
+  cis_covid_vaccine_type_other_3_raw: Mr. Gorbachev, open this gate! Mr. Gorbachev,
+    tear down this wall!
   cis_covid_vaccine_type_other_4: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear
     down this wall!
+  cis_covid_vaccine_type_other_4_raw: Mr. Gorbachev, open this gate! Mr. Gorbachev,
+    tear down this wall!
   cis_covid_vaccine_type_other_5: Let them eat cake.
+  cis_covid_vaccine_type_other_5_raw: Let them eat cake.
   cis_covid_vaccine_type_other_6: Ask not what your country can do for you; ask what
     you can do for your country.
+  cis_covid_vaccine_type_other_6_raw: Ask not what your country can do for you; ask
+    what you can do for your country.
+  cis_covid_vaccine_type_other_raw: Houston, we have a problem.
   cis_covid_vaccine_type_raw: From a research study/trial
   cis_flu_vaccine_received: 'No'
   city: Marlow
