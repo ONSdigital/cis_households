@@ -99,12 +99,11 @@ house_care = match_with_exclusions(
     r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|(?<!NO[NT][ -])MEDICAL|DONOR CARER*",
 )
 residential_care = match_with_exclusions(
-    r"(CARE.|NURSING|RESIDENT[^\s]*|OLD PEOPLE[^\s]*|RETIRE[^\s]*|AGING CARE) *(HOME|FACILITY|CENTER|CENTRE|CARE|CAE?RE*R)",
+    r"(CARE|NURSING|RESIDENT[^\s]*|OLD PEOPLE[^\s]*|RETIRE[^\s]*|AGING CARE) *(HOME|FACILITY|CENTER|CENTRE|CARE|CAE?RE*R)",
     r"(?<!MENTAL )HEALTH *CARE|CRITICAL CARE|MEDICAL|COMM?UNITY|DONOR CARER*|HOSPITAL|AMBULANCE"
     + "|"
     + call_exclusions
     + "|"
-    + domestic_exclusions
     + nursing_or_residential_exclusions,
 )
 pharmacist = match_with_exclusions(
