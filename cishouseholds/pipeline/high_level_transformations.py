@@ -98,6 +98,7 @@ from cishouseholds.edit import correct_date_ranges
 from cishouseholds.edit import correct_date_ranges_union_dependent
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import format_string_upper_and_clean
+from cishouseholds.edit import fuzzy_update
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import normalise_think_had_covid_columns
 from cishouseholds.edit import remove_incorrect_dates
@@ -2481,6 +2482,46 @@ def union_dependent_cleaning(df):
 
     df = apply_value_map_multiple_columns(df, col_val_map)
     df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
+
+    df = fuzzy_update(
+        df,
+        id_column="participant_id",
+        cols_to_check=[
+            "other_covid_infection_test",
+            "other_covid_infection_test_result",
+            "think_had_covid_admitted_to_hospital",
+            "think_had_covid_contacted_nhs",
+        ],
+        update_column="think_had_covid_onset_date",
+        min_matches=3,
+    )
+    # TODO: Add in once dependencies are derived
+    # df = impute_latest_date_flag(
+    #     df=df,
+    #     participant_id_column="participant_id",
+    #     visit_date_column="visit_date",
+    #     visit_id_column="visit_id",
+    #     contact_any_covid_column="contact_known_or_suspected_covid",
+    #     contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
+    # )
+
+    # TODO: Add in once dependencies are derived
+    # df = assign_date_difference(
+    #     df,
+    #     "contact_known_or_suspected_covid_days_since",
+    #     "contact_known_or_suspected_covid_latest_date",
+    #     "visit_datetime",
+    # )
+
+    # TODO: add the following function once contact_known_or_suspected_covid_latest_date() is created
+    # df = contact_known_or_suspected_covid_type(
+    #     df=df,
+    #     contact_known_covid_type_column='contact_known_covid_type',
+    #     contact_any_covid_type_column='contact_any_covid_type',
+    #     contact_any_covid_date_column='contact_any_covid_date',
+    #     contact_known_covid_date_column='contact_known_covid_date',
+    #     contact_suspect_covid_date_column='contact_suspect_covid_date',
+    # )
 
     df = update_face_covering_outside_of_home(
         df=df,
