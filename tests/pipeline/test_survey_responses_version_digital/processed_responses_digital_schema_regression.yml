@@ -1684,7 +1684,35 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: cis_covid_vaccine_type_other_raw
+  nullable: true
+  type: string
+- metadata: {}
   name: cis_covid_vaccine_number_of_doses_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_other_1_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_other_2_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_other_3_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_other_4_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_other_5_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_other_6_raw
   nullable: true
   type: string
 - metadata: {}
