@@ -85,9 +85,8 @@ ipython_config.py
 
 # Visual Studio Code
 .vscode/
-.idea/
 
-# PyCharm
+# PyCharmg
 .idea/
 
 # pyenv

@@ -53,6 +53,7 @@ from cishouseholds.pipeline.high_level_transformations import fill_forwards_tran
 from cishouseholds.pipeline.high_level_transformations import get_differences
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
+from cishouseholds.pipeline.high_level_transformations import ordered_household_id_tranformations
 from cishouseholds.pipeline.high_level_transformations import reclassify_work_variables
 from cishouseholds.pipeline.high_level_transformations import replace_design_weights_transformations
 from cishouseholds.pipeline.high_level_transformations import transform_cis_soc_data
@@ -518,6 +519,7 @@ def join_lookup_table(
     lookup_transformations: List[str] = [],
     pre_join_transformations: List[str] = [],
     post_join_transformations: List[str] = [],
+    output_table_name_key: str = "output_survey_table",
 ):
     """
     Filters input_survey_table into an unjoinable_df, where all join_on_columns are null, and and applies any
@@ -542,6 +544,7 @@ def join_lookup_table(
         "blood_past_positive": blood_past_positive_transformations,
         "design_weights_lookup": design_weights_lookup_transformations,
         "replace_design_weights": replace_design_weights_transformations,
+        "ordered_household_id": ordered_household_id_tranformations,
     }
 
     lookup_df = extract_from_table(lookup_table_name)
@@ -564,7 +567,7 @@ def join_lookup_table(
         df = transformations_dict[transformation](df)
 
     update_table(df, output_survey_table, "overwrite")
-    return {"output_survey_table": output_survey_table}
+    return {output_table_name_key: output_survey_table}
 
 
 @register_pipeline_stage("create_regex_lookup")
