@@ -1,10 +1,10 @@
 import pytest
 
 from cishouseholds.merge import union_multiple_tables
-from cishouseholds.pipeline.high_level_transformations import add_pattern_matching_flags
-from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.pipeline_stages import union_dependent_cleaning
 from cishouseholds.pipeline.pipeline_stages import union_dependent_derivations
+from cishouseholds.pipeline.post_union_transformations import add_pattern_matching_flags
+from cishouseholds.pipeline.post_union_transformations import fill_forwards_transformations
 
 
 @pytest.fixture
