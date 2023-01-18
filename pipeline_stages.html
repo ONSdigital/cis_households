@@ -385,28 +385,6 @@ Note that this stage depends on geography information from the sample files bein
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.join_blood_positive_lookup">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">join_blood_positive_lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lookup_table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.join_blood_positive_lookup" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stage to join blood positive lookup table</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.join_geographic_data">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">join_geographic_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geographic_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.join_geographic_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Join weights file onto survey data by household id.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>geographic_table</strong> – input table name for household data with geographic data</p></li>
-<li><p><strong>survey_responses_table</strong> – input table for individual participant responses</p></li>
-<li><p><strong>geographic_responses_table</strong> – output table name for joined survey responses and household geographic data</p></li>
-<li><p><strong>id_column</strong> – column containing id to join the 2 input tables</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.join_lookup_table">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">join_lookup_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lookup_table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unjoinable_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_on_columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['work_main_job_title',</span> <span class="pre">'work_main_job_role']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lookup_transformations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_join_transformations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">post_join_transformations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_table_name_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'output_survey_table'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.join_lookup_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filters input_survey_table into an unjoinable_df, where all join_on_columns are null, and and applies any
@@ -422,21 +400,6 @@ The df and unjoinable_df are then recombined into an output_survey_table</p>
 <li><p><strong>unjoinable_values</strong> (<em>dict</em>) – dictionary containing {column_name: value_to_assign} pairs to be added to unjoinable_data</p></li>
 <li><p><strong>join_on_column</strong> (<em>list</em>) – list of columns to join on, defaults to [“work_main_job_title”, “work_main_job_role”]</p></li>
 <li><p><strong>transformations</strong> (<em>list</em>) – list of transformation functions to be run on the dataframe once the lookup has been joined</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.join_vaccination_data">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">join_vaccination_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">participant_records_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nims_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vaccination_data_table</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.join_vaccination_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Join NIMS vaccination data onto participant level records and derive vaccination status using NIMS and CIS data.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>participant_records_table</strong> – input table containing participant level records to join</p></li>
-<li><p><strong>nims_table</strong> – nims table containing records to be joined to participant table</p></li>
-<li><p><strong>vaccination_data_table</strong> – output table name for the joined nims and participant table</p></li>
 </ul>
 </dd>
 </dl>
@@ -524,23 +487,6 @@ Columns expected</p>
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.register_pipeline_stage">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">register_pipeline_stage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.register_pipeline_stage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Decorator to register a pipeline stage function.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.replace_design_weights">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">replace_design_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">design_weight_lookup_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">design_weight_columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.replace_design_weights" title="Permalink to this definition">¶</a></dt>
-<dd><p>Temporary stage to replace design weights by lookup.
-Also makes temporary edits to fix raw data issues in geographies.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>design_weight_lookup_table</strong> – </p></li>
-<li><p><strong>input_survey_table</strong> – </p></li>
-<li><p><strong>output_survey_table</strong> – </p></li>
-<li><p><strong>design_weight_columns</strong> (<em>list</em>) – list of columns to be replaced with values from design_weight_lookup_table</p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py function">
