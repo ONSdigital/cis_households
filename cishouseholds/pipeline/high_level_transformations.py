@@ -439,6 +439,23 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
     }
     df = apply_value_map_multiple_columns(df, v1_column_editing_map)
 
+    df = df.withColumn("work_main_job_changed", F.lit(None).cast("string"))
+    fill_forward_columns = [
+        "work_main_job_title",
+        "work_main_job_role",
+        "work_sector",
+        "work_sector_other",
+        "work_health_care_area",
+        "work_nursing_or_residential_care_home",
+        "work_direct_contact_patients_or_clients",
+    ]
+    df = update_to_value_if_any_not_null(
+        df=df,
+        column_name_to_assign="work_main_job_changed",
+        true_false_values=["Yes", "No"],
+        column_list=fill_forward_columns,
+    )
+
     df = df.drop(
         "cis_covid_vaccine_date",
         "cis_covid_vaccine_number_of_doses",
@@ -1515,21 +1532,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
     df = clean_job_description_string(df, "work_main_job_title")
     df = clean_job_description_string(df, "work_main_job_role")
     df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
-    work_columns = [
-        "work_main_job_title",
-        "work_main_job_role",
-        "work_sector",
-        "work_sector_other",
-        "work_health_care_area",
-        "work_nursing_or_residential_care_home",
-        "work_direct_contact_patients_or_clients",
-    ]
-    df = update_work_main_job_changed(
-        df,
-        column_name_to_update="work_main_job_changed",
-        participant_id_column="participant_id",
-        reference_columns=work_columns,
-    )
 
     contact_date = ["last_suspected_covid_contact_date", "last_covid_contact_date"]
 
@@ -2191,7 +2193,7 @@ def union_dependent_cleaning(df):
         ]
         if col in df.columns
     ]
-    df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime")
+    df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime", "visit_id")
     df = remove_incorrect_dates(df, date_cols_to_correct, "visit_datetime", "2019-08-01")
 
     df = apply_value_map_multiple_columns(df, col_val_map)
@@ -2297,7 +2299,7 @@ def union_dependent_derivations(df):
         df=df,
         column_name_to_assign="days_since_enrolment",
         start_reference_column="household_first_visit_datetime",
-        end_reference_column="last_attended_visit_datetime",
+        end_reference_column="visit_datetime",
     )
     df = assign_date_difference(
         df=df,
@@ -2310,7 +2312,7 @@ def union_dependent_derivations(df):
         df,
         reference_column="days_since_enrolment",
         column_name_to_assign="visit_number",
-        map={**{1: 7, 2: 14, 3: 21, 4: 28}, **{((i + 3) * 28): i for i in range(2, 200)}},
+        map={**{0: 1, 14: 2, 21: 3, 28: 4}, **{i * 28: (i + 3) for i in range(2, 200)}},
     )
     df = assign_any_symptoms_around_visit(
         df=df,
@@ -2352,20 +2354,20 @@ def union_dependent_derivations(df):
         "patient_facing_over_20_percent", F.when(patient_facing_percentage >= 0.2, "Yes").otherwise("No")
     )
 
-    df = fill_forward_from_last_change(
-        df=df,
-        fill_forward_columns=[
-            "cis_covid_vaccine_date",
-            "cis_covid_vaccine_number_of_doses",
-            "cis_covid_vaccine_type",
-            "cis_covid_vaccine_type_other",
-            "cis_covid_vaccine_received",
-        ],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
-        record_changed_column="cis_covid_vaccine_received",
-        record_changed_value="Yes",
-    )
+    # df = fill_forward_from_last_change(
+    #     df=df,
+    #     fill_forward_columns=[
+    #         "cis_covid_vaccine_date",
+    #         "cis_covid_vaccine_number_of_doses",
+    #         "cis_covid_vaccine_type",
+    #         "cis_covid_vaccine_type_other",
+    #         "cis_covid_vaccine_received",
+    #     ],
+    #     participant_id_column="participant_id",
+    #     visit_datetime_column="visit_datetime",
+    #     record_changed_column="cis_covid_vaccine_received",
+    #     record_changed_value="Yes",
+    # )
     df = create_formatted_datetime_string_columns(df)
     return df
 
@@ -2764,6 +2766,37 @@ def nims_transformations(df: DataFrame) -> DataFrame:
     df = assign_column_to_date_string(df, "nims_vaccine_dose_2_date", reference_column="nims_vaccine_dose_2_datetime")
 
     # TODO: Derive nims_linkage_status, nims_vaccine_classification, nims_vaccine_dose_1_time, nims_vaccine_dose_2_time
+    return df
+
+
+def blood_past_positive_transformations(df: DataFrame) -> DataFrame:
+    """Run required post-join transformations for blood_past_positive"""
+    df = df.withColumn("blood_past_positive_flag", F.when(F.col("blood_past_positive").isNull(), 0).otherwise(1))
+    return df
+
+
+def design_weights_lookup_transformations(df: DataFrame) -> DataFrame:
+    """Selects only required fields from the design_weight_lookup"""
+    design_weight_columns = ["scaled_design_weight_swab_non_adjusted", "scaled_design_weight_antibodies_non_adjusted"]
+    df = df.select(*design_weight_columns, "ons_household_id")
+    return df
+
+
+def replace_design_weights_transformations(df: DataFrame) -> DataFrame:
+    """Run required post-join transformations for replace_design_weights"""
+    df = df.withColumn(
+        "local_authority_unity_authority_code",
+        F.when(F.col("local_authority_unity_authority_code") == "E06000062", "E07000154")
+        .when(F.col("local_authority_unity_authority_code") == "E06000061", "E07000156")
+        .otherwise(F.col("local_authority_unity_authority_code")),
+    )
+    df = df.withColumn(
+        "region_code",
+        F.when(F.col("region_code") == "W92000004", "W99999999")
+        .when(F.col("region_code") == "S92000003", "S99999999")
+        .when(F.col("region_code") == "N92000002", "N99999999")
+        .otherwise(F.col("region_code")),
+    )
     return df
 
 
