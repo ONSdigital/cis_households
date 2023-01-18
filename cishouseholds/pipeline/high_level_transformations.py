@@ -3191,6 +3191,7 @@ def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
         "work_patient_facing_clean",
         "work_social_care",
         "works_health_care",
+        "work_nursing_or_residential_care_home",
     )
 
 
