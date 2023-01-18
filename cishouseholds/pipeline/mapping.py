@@ -2545,7 +2545,7 @@ _welsh_cis_covid_vaccine_number_of_doses_categories = {
     "6 dos neu fwy": "6 doses or more",
 }
 
-_welsh_other_covid_infection_test_result_categories = {
+_welsh_other_covid_infection_test_results_categories = {
     "Un neu fwy o brofion yn bositif": "One or more tests were positive",
     "Un neu fwy o brofion yn bositif am wrthgyrff": "One or more tests were positive for antibodies",
     "Un neu fwy o brofion yn negatif a dim un yn bositif": "One or more tests were negative and none were positive",

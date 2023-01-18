@@ -2477,7 +2477,7 @@ def union_dependent_cleaning(df):
         id_column="participant_id",
         cols_to_check=[
             "other_covid_infection_test",
-            "other_covid_infection_test_result",
+            "other_covid_infection_test_results",
             "think_had_covid_admitted_to_hospital",
             "think_had_covid_contacted_nhs",
         ],
