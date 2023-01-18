@@ -25,7 +25,7 @@ from cishouseholds.pipeline.mapping import _welsh_face_covering_categories
 from cishouseholds.pipeline.mapping import _welsh_live_with_categories
 from cishouseholds.pipeline.mapping import _welsh_lot_little_not_categories
 from cishouseholds.pipeline.mapping import _welsh_number_of_types_categories
-from cishouseholds.pipeline.mapping import _welsh_other_covid_infection_test_result_categories
+from cishouseholds.pipeline.mapping import _welsh_other_covid_infection_test_results_categories
 from cishouseholds.pipeline.mapping import _welsh_self_isolating_reason_detailed_categories
 from cishouseholds.pipeline.mapping import _welsh_swab_not_taken_missing_parts_categories
 from cishouseholds.pipeline.mapping import _welsh_swab_sample_not_taken_categories
@@ -379,8 +379,8 @@ def translate_welsh_fixed_text_responses_digital(df: DataFrame) -> DataFrame:
         "transport_to_work_or_education": _welsh_transport_to_work_education_categories,
         "ability_to_socially_distance_at_work_or_education": _welsh_ability_to_socially_distance_at_work_or_education_categories,
         "self_isolating_reason_detailed": _welsh_self_isolating_reason_detailed_categories,
-        "other_covid_infection_test_results": _welsh_other_covid_infection_test_result_categories,
-        "other_antibody_test_results": _welsh_other_covid_infection_test_result_categories,  # TODO Check translation values in test file
+        "other_covid_infection_test_results": _welsh_other_covid_infection_test_results_categories,
+        "other_antibody_test_results": _welsh_other_covid_infection_test_results_categories,  # TODO Check translation values in test file
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
 

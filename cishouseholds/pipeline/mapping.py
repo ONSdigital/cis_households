@@ -1455,6 +1455,7 @@ column_name_maps = {
         "Date Samples Arrayed Oxford": "blood_sample_arrayed_date",
         "Date Samples Received Oxford": "blood_sample_received_date",
         "Voyager Date Created": "blood_sample_collected_datetime",
+        "blood_results_source_file": "blood_results_source_file",
     },
     "sample_eng_wl_sc_variable_name_map": {
         "UAC": "unique_access_code",
@@ -2544,7 +2545,7 @@ _welsh_cis_covid_vaccine_number_of_doses_categories = {
     "6 dos neu fwy": "6 doses or more",
 }
 
-_welsh_other_covid_infection_test_result_categories = {
+_welsh_other_covid_infection_test_results_categories = {
     "Un neu fwy o brofion yn bositif": "One or more tests were positive",
     "Un neu fwy o brofion yn bositif am wrthgyrff": "One or more tests were positive for antibodies",
     "Un neu fwy o brofion yn negatif a dim un yn bositif": "One or more tests were negative and none were positive",
