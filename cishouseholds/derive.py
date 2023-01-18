@@ -17,6 +17,7 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 
+from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.expressions import any_column_matches_regex
@@ -26,14 +27,78 @@ from cishouseholds.merge import null_safe_join
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def assign_regex_from_map_additional_rules(
+    df: DataFrame,
+    column_name_to_assign: str,
+    reference_columns: List[str],
+    map: Mapping,
+    priority_map: Mapping,
+    disambiguation_conditions: Optional[dict] = None,
+    value_map: Optional[dict] = None,
+    first_match_only: Optional[bool] = False,
+    overwrite_values: Optional[bool] = False,
+    default_value: Optional[Any] = "Don't know",
+):
+    """
+    Apply additional logic around the `assign_regex_from_map` function to allow for increased specificity/.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    reference_columns
+    map
+        the mapping of values to regex patterns
+    priority_map
+        the priorities of given values; a lower value means the value is more important. only highest priority matches will be retained
+    disambiguation_conditions
+        a dictionary of values to conditions for which they apply
+    value_map
+        a dictionary of values to alternate value mappings for handling duplicate keys in map
+    first_match_only
+        include only the first matching value from the matched list
+    overwrite_values
+        whether to overwrite all pre-existing values in `column_name_to_assign`
+    """
+
+    temp_col = f"{column_name_to_assign}_temp"
+
+    df = assign_regex_from_map(df, temp_col, reference_columns, map, priority_map)
+    if first_match_only:
+        df = df.withColumn("disambiguated_col", F.lit(None))
+        if disambiguation_conditions is not None:
+            for val, condition in disambiguation_conditions.items():
+                df = df.withColumn(
+                    "disambiguated_col",
+                    F.when(
+                        condition & (F.col("disambiguated_col").isNull()) & F.array_contains(temp_col, val), val
+                    ).otherwise(F.col("disambiguated_col")),
+                )
+        df = df.withColumn(
+            temp_col,
+            F.coalesce(
+                F.col("disambiguated_col"),
+                F.when(F.size(temp_col) == 1, F.col(temp_col).getItem(0)).otherwise(default_value),
+            ),
+        )
+    if overwrite_values:
+        df = df.withColumn(column_name_to_assign, F.col(temp_col))
+    else:
+        df = df.withColumn(column_name_to_assign, F.coalesce(F.col(column_name_to_assign), F.col(temp_col)))
+    if value_map is not None:
+        df = update_column_values_from_map(df, column_name_to_assign, value_map)
+    df = df.drop(temp_col, "disambiguated_col")
+    return df
+
+
 def assign_regex_from_map(
-    df: DataFrame, column_name_to_assign: str, reference_columns: List[str], roles: Mapping, priority_map: Mapping
+    df: DataFrame, column_name_to_assign: str, reference_columns: List[str], map: Mapping, priority_map: Mapping
 ):
     regex_columns = {key: [] for key in [1, *list(priority_map.values())]}  # type: ignore
-    for title, pattern in roles.items():
-        col = F.when(F.coalesce(F.concat(*reference_columns), F.lit("")).rlike(pattern), title)
-        if title in priority_map:
-            regex_columns[priority_map[title]].append(col)
+    for assign, pattern in map.items():
+        col = F.when(F.coalesce(F.concat(*reference_columns), F.lit("")).rlike(pattern), assign)
+        if assign in priority_map:
+            regex_columns[priority_map[assign]].append(col)
         else:
             regex_columns[1].append(col)
 
@@ -899,10 +964,11 @@ def assign_filename_column(df: DataFrame, column_name_to_assign: str) -> DataFra
     df
     column_name_to_assign
     """
-    return df.withColumn(
-        column_name_to_assign,
-        F.regexp_replace(F.input_file_name(), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", ""),
-    )
+    if column_name_to_assign not in df.columns:
+        return df.withColumn(
+            column_name_to_assign, F.regexp_replace(F.input_file_name(), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", "")
+        )
+    return df
 
 
 def assign_column_from_mapped_list_key(
@@ -1681,9 +1747,27 @@ def assign_work_status_group(df: DataFrame, colum_name_to_assign: str, reference
     return df
 
 
+def assign_last_non_null_value_from_col_list(df: DataFrame, column_name_to_assign: str, column_list: List[str]):
+    """
+    Assigns a single new value to a column by evaluating values in the column_list, assigning the last non null
+    value in ascending order, having removed any nulls.
+    Parameters
+    ----------
+    df
+    column_name_to_assign: column name of the derived column
+    column_list: the columns you want to order and select the last value when ordered ascending
+    columns should be of same type
+    """
+    df = df.withColumn("temp_array", F.array_sort(F.array(column_list)))
+    df = df.withColumn(column_name_to_assign, F.element_at(F.expr("filter(temp_array, x -> x is not null)"), -1))
+    df = df.drop("temp_array")
+    return df
+
+
 def contact_known_or_suspected_covid_type(
     df: DataFrame,
     contact_known_covid_type_column: str,
+    contact_suspect_covid_type_column: str,
     contact_any_covid_type_column: str,
     contact_any_covid_date_column: str,
     contact_known_covid_date_column: str,
@@ -1707,7 +1791,7 @@ def contact_known_or_suspected_covid_type(
         )
         .when(
             F.col(contact_any_covid_date_column) == F.col(contact_suspect_covid_date_column),
-            F.col(contact_known_covid_type_column),
+            F.col(contact_suspect_covid_type_column),
         )
         .otherwise(None),
     )
