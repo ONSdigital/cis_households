@@ -22,6 +22,45 @@ from cishouseholds.expressions import set_date_component
 from cishouseholds.expressions import sum_within_row
 
 
+def fuzzy_update(
+    left_df: DataFrame,
+    cols_to_check: List[str],
+    update_column: str,
+    min_matches: int,
+    id_column: str,
+    right_df: DataFrame = None,
+):
+    """
+    Update a column value if more than 'min_matches' values match in a series of column values 'cols_to_check'.
+    """
+
+    window = Window.partitionBy(id_column).orderBy(id_column)
+    specific_window = Window.partitionBy(id_column, "ROW_NUM_LEFT").orderBy(F.desc("TEMP"))
+    if right_df is None:
+        right_df = left_df
+    right_df = right_df.select(id_column, update_column, *cols_to_check).filter(F.col(update_column).isNotNull())
+    for c in [*cols_to_check, update_column]:
+        right_df = right_df.withColumnRenamed(c, f"{c}_right")
+    left_df = left_df.withColumn("ROW_NUM_LEFT", F.row_number().over(window))
+    right_df = right_df.withColumn("ROW_NUM_RIGHT", F.row_number().over(window))
+    df = left_df.join(right_df, on=id_column, how="left")
+    df = df.withColumn(
+        "TEMP",
+        reduce(
+            add,
+            [F.when(F.col(column).eqNullSafe(F.col(f"{column}_right")), 1).otherwise(0) for column in cols_to_check],
+        ),
+    )
+    df = df.withColumn("ROW", F.row_number().over(specific_window))
+    df = df.filter((F.col("TEMP") >= min_matches) & (F.col("ROW") == 2)).drop(
+        "ROW", *[f"{c}_right" for c in cols_to_check]
+    )
+    df = left_df.join(
+        df.select(id_column, "ROW_NUM_LEFT", f"{update_column}_right"), on=[id_column, "ROW_NUM_LEFT"], how="left"
+    ).withColumn(update_column, F.coalesce(F.col(update_column), F.col(f"{update_column}_right")))
+    return df.drop("TEMP", "ROW_NUM_LEFT", "ROW_NUM_RIGHT", f"{update_column}_right")
+
+
 def update_work_main_job_changed(
     df: DataFrame,
     column_name_to_update: str,

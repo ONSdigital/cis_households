@@ -1156,6 +1156,13 @@ def report(
         }
     )
 
+    select_cols = [
+        "visit_id",
+        "visit_datetime",
+        *[col for col in valid_df.columns if col.startswith("cis_covid_vaccine_type")],
+    ]
+    other_vaccine_df = valid_df.filter(F.col("cis_covid_vaccine_type") == "Don't know type").select(*select_cols)
+
     output = BytesIO()
     datasets = list(processed_file_log.select("dataset_name").distinct().rdd.flatMap(lambda x: x).collect())
     with pd.ExcelWriter(output) as writer:
@@ -1173,6 +1180,7 @@ def report(
             name = f"{dataset}"
             individual_counts_df.to_excel(writer, sheet_name=name, index=False)
 
+        other_vaccine_df.toPandas().to_excel(writer, sheet_name="un-coded vaccines", index=False)
         counts_df.to_excel(writer, sheet_name="dataset totals", index=False)
         valid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails valid data", index=False)
         invalid_df_errors.toPandas().to_excel(writer, sheet_name="validation fails invalid data", index=False)
