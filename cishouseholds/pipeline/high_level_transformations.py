@@ -3156,6 +3156,14 @@ def process_healthcare_regex(df: DataFrame) -> DataFrame:
             .otherwise(F.col("work_social_care_area")),  # type: ignore
         )
 
+    df = df.withColumn(
+        "work_nursing_or_residential_care_home",
+        F.when(
+            array_contains_any("regex_derived_job_sector", ["residential_care"]),
+            "Yes",
+        ).otherwise("No"),
+    )
+
     # add boolean flags for working in healthcare or socialcare
 
     df = df.withColumn("works_health_care", F.when(F.col("work_health_care_area").isNotNull(), "Yes").otherwise("No"))
@@ -3237,6 +3245,8 @@ def process_healthcare_regex(df: DataFrame) -> DataFrame:
         "work_patient_facing_clean",
         "work_social_care",
         "works_health_care",
+        "work_nursing_or_residential_care_home",
+        "regex_derived_job_sector",
     )
 
 
