@@ -1323,6 +1323,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "other_covid_infection_test_results",
         "other_antibody_test_results",
         "cis_covid_vaccine_type",
+        "cis_covid_vaccine_type_other",
         "cis_covid_vaccine_number_of_doses",
         "cis_covid_vaccine_type_1",
         "cis_covid_vaccine_type_2",
@@ -1330,6 +1331,12 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "cis_covid_vaccine_type_4",
         "cis_covid_vaccine_type_5",
         "cis_covid_vaccine_type_6",
+        "cis_covid_vaccine_type_other_1",
+        "cis_covid_vaccine_type_other_2",
+        "cis_covid_vaccine_type_other_3",
+        "cis_covid_vaccine_type_other_4",
+        "cis_covid_vaccine_type_other_5",
+        "cis_covid_vaccine_type_other_6",
     ]
     df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
     """
