@@ -3114,6 +3114,9 @@ def process_vaccine_regex(df: DataFrame, vaccine_type_col: str) -> DataFrame:
         priority_map=vaccine_regex_priority_map,
     )
     df = df.withColumnRenamed(vaccine_type_col, "cis_covid_vaccine_type_other_raw")
+    df = df.withColumn(
+        vaccine_type_col, F.when(F.col(vaccine_type_col).isNull(), "Don't know type").otherwise(F.col(vaccine_type_col))
+    )
     # df = df.filter(F.col("cis_covid_vaccine_type_corrected").isNotNull())
     return df
 

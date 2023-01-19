@@ -669,6 +669,10 @@ def update_vaccine_types(input_survey_table: str, output_survey_table: str, vacc
                 F.col(vaccine_type_col)
             ),
         )
+        df = df.withColumn(
+            vaccine_type_col,
+            F.when(F.col(vaccine_type_col).isNull(), "Don't know type").otherwise(F.col(vaccine_type_col)),
+        )
         df = df.withColumn(vaccine_type_other_col, F.lit(None).cast("string"))
 
     update_table(df, output_survey_table, "overwrite")
