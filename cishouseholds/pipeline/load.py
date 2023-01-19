@@ -90,8 +90,8 @@ def extract_from_table(table_name: str, break_lineage: bool = False, alternate_p
 
 def update_table(df: DataFrame, table_name, write_mode, archive=False):
     if table_name in list(SurveyTableLengths.table_lengths.keys()):
-        df.cache()
-        SurveyTableLengths.log_length(table_name, df.count())
+        length_df = df.select("visit_id").distinct()
+        SurveyTableLengths.log_length(table_name, length_df.count())
     df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
     if archive:
         now = datetime.strftime(datetime.now(), "%Y%m%d_%H%M%S")
