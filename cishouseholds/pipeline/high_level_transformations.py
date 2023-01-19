@@ -2279,13 +2279,6 @@ def symptom_column_transformations(df):
             "think_have_covid_symptom_loss_of_taste",
             "think_have_covid_symptom_loss_of_smell",
             "think_have_covid_symptom_more_trouble_sleeping",
-            "think_have_covid_symptom_chest_pain",
-            "think_have_covid_symptom_palpitations",
-            "think_have_covid_symptom_vertigo_or_dizziness",
-            "think_have_covid_symptom_anxiety",
-            "think_have_covid_symptom_low_mood",
-            "think_have_covid_symptom_memory_loss_or_confusion",
-            "think_have_covid_symptom_difficulty_concentrating",
             "think_have_covid_symptom_runny_nose_or_sneezing",
             "think_have_covid_symptom_noisy_breathing",
             "think_have_covid_symptom_loss_of_appetite",
@@ -2538,7 +2531,7 @@ def union_dependent_cleaning(df):
         "think_had_covid_admitted_to_hospital",
         "think_had_covid",
         "think_had_covid_contacted_nhs",
-        "sympt_covid_count",
+        "think_have_covid_symptom_count",
         "think_had_covid_onset_date",
     ]
     hospital_covid_cols = ["think_had_covid_contacted_nhs", "think_had_covid_admitted_to_hospital"]
@@ -2624,7 +2617,7 @@ def union_dependent_cleaning(df):
             "think_had_covid_contacted_nhs",
             "think_had_covid_admitted_to_hospital",
             "other_covid_infection_test_results",
-            "sympt_covid_count",
+            "think_have_covid_symptom_count",
             "survey_response_dataset_major_version",
         ],
     )
@@ -2636,7 +2629,7 @@ def union_dependent_cleaning(df):
                 (F.col(col) == "No")
                 & (F.col("think_had_covid") == "No")
                 & (F.col("think_had_covid_onset_date").isNull())
-                & (F.col("sympt_covid_count") == 0)
+                & (F.col("think_have_covid_symptom_count") == 0)
                 & (F.col("survey_response_dataset_major_version") == 1)
                 & (
                     reduce(
@@ -2726,7 +2719,7 @@ def union_dependent_cleaning(df):
                 "think_had_covid_admitted_to_hospital",
                 "other_covid_infection_test",
                 "survey_response_dataset_major_version",
-                "sympt_covid_count",
+                "think_have_covid_symptom_count",
             ],
         )
     # 13
@@ -2742,7 +2735,7 @@ def union_dependent_cleaning(df):
                 "think_had_covid_admitted_to_hospital",
                 "other_covid_infection_test",
                 "survey_response_dataset_major_version",
-                "sympt_covid_count",
+                "think_have_covid_symptom_count",
             ],
         )
     return df
