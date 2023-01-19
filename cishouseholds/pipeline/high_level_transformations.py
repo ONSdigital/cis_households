@@ -2592,8 +2592,13 @@ def union_dependent_cleaning(df):
     df = assign_column_value_from_multiple_column_map(
         df,
         "think_had_covid",
-        ["Yes", ["No", "Yes", "One or more positive test(s)"]],
-        ["think_had_covid", "other_covid_infection_test", "other_covid_infection_test_results"],
+        ["Yes", ["No", "Yes", "One or more positive test(s)", 0]],
+        [
+            "think_had_covid",
+            "other_covid_infection_test",
+            "other_covid_infection_test_results",
+            "survey_response_dataset_major_version",
+        ],
     )
     # 6
     for col in covid_test_cols:
@@ -2602,7 +2607,8 @@ def union_dependent_cleaning(df):
             F.when(
                 (all_columns_values_in_list(covid_test_cols, ["No", "Any tests negative, but none positive", None]))
                 & (F.col("think_had_covid") == "Yes")
-                & (F.col("think_had_covid_onset_date").isNull()),
+                & (F.col("think_had_covid_onset_date").isNull())
+                & (F.col("survey_response_dataset_major_version") == 0),
                 None,
             ).otherwise(F.col(col)),
         )
@@ -2690,8 +2696,9 @@ def union_dependent_cleaning(df):
             & (count_yes == 0)
             & (F.col("other_covid_infection_test_result").isNull())
             & (F.col("think_had_covid_onset_date_string").isNull())
-            & (F.col("survey_response_dataset_major_version") == 0)
-        ),
+            & (F.col("survey_response_dataset_major_version") == 0),
+            "No",
+        ).otherwise(F.col("think_had_covid")),
     )
     # 12
     for col in covid_test_cols:
