@@ -2573,7 +2573,13 @@ def union_dependent_cleaning(df):
                 & (F.col("other_covid_infection_test_results").isNull())
                 & (F.col("survey_response_dataset_major_version") == 0)
                 & (
-                    reduce(add, [F.when(F.col(c).isin(["Yes", "Positive"]), 1).otherwise(0) for c in covid_test_cols])
+                    reduce(
+                        add,
+                        [
+                            F.when(F.col(c).isin(["Yes", "One or more positive test(s)"]), 1).otherwise(0)
+                            for c in covid_test_cols
+                        ],
+                    )
                     == 1
                 ),
                 None,
@@ -2585,7 +2591,7 @@ def union_dependent_cleaning(df):
         "think_had_covid",
         [
             "No",
-            [0, "No", None, ["No", None], 0, None, "Yes", "Negative"],
+            [0, "No", None, ["No", None], 0, None, "Yes", "Any tests negative, but none positive"],
         ],
         [*think_had_covid_cols, "other_covid_infection_test", "other_covid_infection_test_results"],
     )
@@ -2593,7 +2599,7 @@ def union_dependent_cleaning(df):
     df = assign_column_value_from_multiple_column_map(
         df,
         "think_had_covid",
-        ["Yes", ["No", "Yes", "Positive"]],
+        ["Yes", ["No", "Yes", "One or more positive test(s)"]],
         ["think_had_covid", "other_covid_infection_test", "other_covid_infection_test_results"],
     )
     # 6
@@ -2601,7 +2607,7 @@ def union_dependent_cleaning(df):
         df = df.withColumn(
             col,
             F.when(
-                (all_columns_values_in_list(covid_test_cols, ["No", "Negative", None]))
+                (all_columns_values_in_list(covid_test_cols, ["No", "Any tests negative, but none positive", None]))
                 & (F.col("think_had_covid") == "Yes")
                 & (F.col("think_had_covid_onset_date").isNull()),
                 None,
@@ -2635,7 +2641,10 @@ def union_dependent_cleaning(df):
                 & (
                     reduce(
                         add,
-                        [F.when(F.col(c).isin(["No", "Negative", None]), 1).otherwise(0) for c in hospital_covid_cols],
+                        [
+                            F.when(F.col(c).isin(["No", "Any tests negative, but none positive", None]), 1).otherwise(0)
+                            for c in hospital_covid_cols
+                        ],
                     )
                     == 1
                 ),
@@ -2668,7 +2677,7 @@ def union_dependent_cleaning(df):
     df = assign_column_value_from_multiple_column_map(
         df,
         "other_covid_infection_test_results",
-        [None, ["Negative", None, None, None, None, "No", 0]],
+        [None, ["Any tests negative, but none positive", None, None, None, None, "No", 0]],
         [
             "other_covid_infection_test_results",
             "think_had_covid",
@@ -2696,7 +2705,19 @@ def union_dependent_cleaning(df):
         df = assign_column_value_from_multiple_column_map(
             df,
             col,
-            [None, [["Negative", None], "No", None, [None, "No"], [None, "No"], [None, "No"], 0, 0]],
+            [
+                None,
+                [
+                    ["Any tests negative, but none positive", None],
+                    "No",
+                    None,
+                    [None, "No"],
+                    [None, "No"],
+                    [None, "No"],
+                    0,
+                    0,
+                ],
+            ],
             [
                 "other_covid_infection_test_results",
                 "think_had_covid",
@@ -2713,7 +2734,7 @@ def union_dependent_cleaning(df):
         df = assign_column_value_from_multiple_column_map(
             df,
             col,
-            [None, [["Negative", None], "No", None, [None, "No"], "Yes", 0, 0]],
+            [None, [["Any tests negative, but none positive", None], "No", None, [None, "No"], "Yes", 0, 0]],
             [
                 "other_covid_infection_test_results",
                 "think_had_covid",

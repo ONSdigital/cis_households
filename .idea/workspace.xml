@@ -2,21 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a883ae9b-7377-40bc-ad47-d00f1cbffbf0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/cis_households.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/edit/test_fuzzy_update.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/cis_households.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/cis_households.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cishouseholds/edit.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/edit.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/high_level_transformations.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/high_level_transformations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/mapping.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/mapping.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/pipeline_stages.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/pipeline_stages.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/translate.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/translate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/pipeline/test_clean_covid_swab.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/pipeline/test_clean_covid_swab.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/pipeline/test_survey_responses_version_digital/processed_responses_digital_data_regression.yml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/pipeline/test_survey_responses_version_digital/processed_responses_digital_data_regression.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/pipeline/test_survey_responses_version_digital/processed_responses_digital_schema_regression.yml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/pipeline/test_survey_responses_version_digital/processed_responses_digital_schema_regression.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
