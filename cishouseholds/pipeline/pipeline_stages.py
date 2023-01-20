@@ -1066,10 +1066,9 @@ def report(
         "visit_datetime",
         *[col for col in valid_df.columns if col.startswith("cis_covid_vaccine_type")],
     ]
-    other_vaccine_df = valid_df.filter(F.col("cis_covid_vaccine_type") == "Don't know type").select(*select_cols)
-    other_vaccine_df = get_or_create_spark_session().createDataFrame(
-        other_vaccine_df.head(50_000)
-    )  # hacky way to truncate df
+    other_vaccine_df = (
+        valid_df.filter(F.col("cis_covid_vaccine_type") == "Don't know type").select(*select_cols).limit(50000)
+    )
 
     output = BytesIO()
     datasets = list(processed_file_log.select("dataset_name").distinct().rdd.flatMap(lambda x: x).collect())
