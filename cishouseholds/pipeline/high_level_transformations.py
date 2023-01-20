@@ -2656,7 +2656,7 @@ def union_dependent_derivations(df):
     # )
     df = create_formatted_datetime_string_columns(df)
 
-    df = clean_covid_test_swab(df)
+    # df = clean_covid_test_swab(df)
     return df
 
 

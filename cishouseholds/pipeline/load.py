@@ -2,7 +2,6 @@ import functools
 import json
 from datetime import datetime
 from typing import List
-from typing import Union
 
 import pkg_resources
 import pyspark.sql.functions as F
@@ -20,7 +19,7 @@ class TableNotFoundError(Exception):
 def delete_tables(
     prefix: str = None,
     pattern: str = None,
-    table_names: Union[str, List[str]] = None,
+    table_names: List[str] = [],
     ignore_table_prefix: bool = False,
     protected_tables: List[str] = [],
     drop_protected_tables: bool = False,
