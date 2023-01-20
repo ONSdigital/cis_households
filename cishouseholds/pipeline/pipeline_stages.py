@@ -237,6 +237,8 @@ def delete_tables_stage(
         one or more absolute table names to delete (current config prefix added automatically)
     pattern
         drop tables where table with the current config prefix and name matches pattern in SQL format (e.g. "%_responses_%")
+    ignore_table_prefix
+        ignore the table prefix for the environment when deleting
     protected_tables
         list of tables to be protected from any call of this stage
     drop_protected_tables
