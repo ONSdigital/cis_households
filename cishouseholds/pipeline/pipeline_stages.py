@@ -217,9 +217,10 @@ def backup_files(file_list: List[str], backup_directory: str):
 
 @register_pipeline_stage("delete_tables")
 def delete_tables_stage(
-    ignore_table_prefix: bool = False,
-    table_names: Union[str, List[str]] = None,
     prefix: str = None,
+    pattern: str = None,
+    table_names: List[str] = [],
+    ignore_table_prefix: bool = False,
     protected_tables: List[str] = [],
     drop_protected_tables: bool = False,
 ):
@@ -241,7 +242,7 @@ def delete_tables_stage(
     drop_protected_tables
         boolean to drop protected tables
     """
-    delete_tables(prefix, table_names, ignore_table_prefix, protected_tables, drop_protected_tables)
+    delete_tables(prefix, pattern, table_names, ignore_table_prefix, protected_tables, drop_protected_tables)
 
 
 @register_pipeline_stage("generate_dummy_data")
