@@ -125,7 +125,7 @@ def blind_csv_to_table(path: str, table_name: str, sep: str = "|"):
         separator used in file provided in path, by default "|"
     """
     df = extract_input_data(path, None, sep)
-    df = update_table(df, table_name, "overwrite")
+    update_table(df, table_name, "overwrite")
 
 
 @register_pipeline_stage("table_to_table")
