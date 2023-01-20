@@ -674,6 +674,7 @@ def update_vaccine_types(input_survey_table: str, output_survey_table: str, vacc
     update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
+
 @register_pipeline_stage("create_healthcare_regex_lookup")
 def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[str] = None):
     """
@@ -1065,7 +1066,9 @@ def report(
         "visit_datetime",
         *[col for col in valid_df.columns if col.startswith("cis_covid_vaccine_type")],
     ]
-    other_vaccine_df = valid_df.filter(F.col("cis_covid_vaccine_type") == "Don't know type").select(*select_cols)
+    other_vaccine_df = (
+        valid_df.filter(F.col("cis_covid_vaccine_type") == "Don't know type").select(*select_cols).limit(50000)
+    )
 
     output = BytesIO()
     datasets = list(processed_file_log.select("dataset_name").distinct().rdd.flatMap(lambda x: x).collect())
