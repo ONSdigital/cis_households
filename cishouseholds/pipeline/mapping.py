@@ -266,14 +266,14 @@ category_maps = {
         "work_patient_facing_now": {
             "No": 0,
             "Yes": 1,
-            "<=15y": -8,
-            ">=75y": -9,
+            "<=15y": -9,
+            ">=75y": -8,
         },
         "work_person_facing_now": {
             "No": 0,
             "Yes": 1,
-            "<=15y": -8,
-            ">=75y": -9,
+            "<=15y": -9,
+            ">=75y": -8,
         },
         "work_patient_facing_clean": {"No": 0, "Yes": 1, "Not working in health care": 2},
         "work_social_care": {
