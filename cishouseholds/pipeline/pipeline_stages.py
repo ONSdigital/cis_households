@@ -672,7 +672,7 @@ def update_vaccine_types(input_survey_table: str, output_survey_table: str, vacc
         df = df.withColumn(vaccine_type_other_col, F.lit(None).cast("string"))
 
     update_table(df, output_survey_table, "overwrite")
-
+    return {"output_survey_table": output_survey_table}
 
 @register_pipeline_stage("create_healthcare_regex_lookup")
 def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[str] = None):
