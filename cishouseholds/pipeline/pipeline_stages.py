@@ -220,6 +220,7 @@ def delete_tables_stage(
     ignore_table_prefix: bool = False,
     table_names: Union[str, List[str]] = None,
     prefix: str = None,
+    pattern: str = None,
     protected_tables: List[str] = [],
     drop_protected_tables: bool = False,
 ):
@@ -241,7 +242,14 @@ def delete_tables_stage(
     drop_protected_tables
         boolean to drop protected tables
     """
-    delete_tables(prefix, table_names, ignore_table_prefix, protected_tables, drop_protected_tables)
+    delete_tables(
+        prefix=prefix,
+        pattern=pattern,
+        table_names=table_names,
+        ignore_table_prefix=ignore_table_prefix,
+        protected_tables=protected_tables,
+        drop_protected_tables=drop_protected_tables,
+    )
 
 
 @register_pipeline_stage("generate_dummy_data")
@@ -673,6 +681,7 @@ def update_vaccine_types(input_survey_table: str, output_survey_table: str, vacc
 
     update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
+
 
 @register_pipeline_stage("create_healthcare_regex_lookup")
 def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[str] = None):
