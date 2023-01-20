@@ -43,7 +43,6 @@ from cishouseholds.pipeline.design_weights import calculate_design_weights
 from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
-from cishouseholds.pipeline.high_level_transformations import add_pattern_matching_flags
 from cishouseholds.pipeline.high_level_transformations import blood_past_positive_transformations
 from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.high_level_transformations import derive_age_based_columns
@@ -54,6 +53,8 @@ from cishouseholds.pipeline.high_level_transformations import get_differences
 from cishouseholds.pipeline.high_level_transformations import impute_key_columns
 from cishouseholds.pipeline.high_level_transformations import nims_transformations
 from cishouseholds.pipeline.high_level_transformations import ordered_household_id_tranformations
+from cishouseholds.pipeline.high_level_transformations import process_healthcare_regex
+from cishouseholds.pipeline.high_level_transformations import process_vaccine_regex
 from cishouseholds.pipeline.high_level_transformations import reclassify_work_variables
 from cishouseholds.pipeline.high_level_transformations import replace_design_weights_transformations
 from cishouseholds.pipeline.high_level_transformations import transform_cis_soc_data
@@ -216,9 +217,9 @@ def backup_files(file_list: List[str], backup_directory: str):
 
 @register_pipeline_stage("delete_tables")
 def delete_tables_stage(
-    prefix: bool = False,
+    ignore_table_prefix: bool = False,
     table_names: Union[str, List[str]] = None,
-    pattern: str = None,
+    prefix: str = None,
     protected_tables: List[str] = [],
     drop_protected_tables: bool = False,
 ):
@@ -240,7 +241,7 @@ def delete_tables_stage(
     drop_protected_tables
         boolean to drop protected tables
     """
-    delete_tables(prefix, table_names, pattern, protected_tables, drop_protected_tables)
+    delete_tables(prefix, table_names, ignore_table_prefix, protected_tables, drop_protected_tables)
 
 
 @register_pipeline_stage("generate_dummy_data")
@@ -570,7 +571,111 @@ def join_lookup_table(
     return {output_table_name_key: output_survey_table}
 
 
-@register_pipeline_stage("create_regex_lookup")
+@register_pipeline_stage("create_vaccine_regex_lookup")
+def create_vaccine_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[str] = None):
+    """
+    Create or update a regex_lookup_table from an input_survey_table which is filtered
+    to include only rows with non-null values in join_on_columns.
+    If a regex_lookup_table is a parameter and exists then load the filtered df and get distinct value
+    combinations for join_on_columns that are not already in the regex_lookup_table, and update the regex_lookup_table;
+    otherwise create regex_lookup_table from distinct value combinations
+
+    Parameters
+    ----------
+    input_survey_table
+    regex_lookup_table
+    """
+    if regex_lookup_table is not None and check_table_exists(regex_lookup_table):
+        lookup_df = extract_from_table(regex_lookup_table, True)
+        if not set(lookup_df.columns) == set(["cis_covid_vaccine_type_corrected", "cis_covid_vaccine_type_other_raw"]):
+            lookup_df = None
+    else:
+        lookup_df = None
+
+    df = extract_from_table(input_survey_table)
+
+    for vaccine_number in range(0, 7):
+        vaccine_type_col = (
+            "cis_covid_vaccine_type_other" if vaccine_number == 0 else f"cis_covid_vaccine_type_other_{vaccine_number}"
+        )
+
+        df = df.filter(F.col(vaccine_type_col).isNotNull())
+
+        if lookup_df is not None:
+            renamed_lookup_df = lookup_df.withColumnRenamed("cis_covid_vaccine_type_other_raw", vaccine_type_col)
+
+            non_derived_rows = df.join(renamed_lookup_df, on=vaccine_type_col, how="leftanti")
+            non_derived_rows = non_derived_rows.dropDuplicates([vaccine_type_col])
+            count = non_derived_rows.count()
+            print(f"     - located regex lookup df with {count} additional rows to process")  # functional
+            if count > 0:
+                lookup_df = lookup_df.union(process_vaccine_regex(non_derived_rows, vaccine_type_col))
+
+        else:
+            df_to_process = df.dropDuplicates([vaccine_type_col])
+            print(
+                f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
+            )  # functional
+            partitions = int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions"))
+            partitions = int(partitions / 2)
+            df_to_process = df_to_process.repartition(partitions)
+            lookup_df = process_vaccine_regex(df_to_process, vaccine_type_col)
+        update_table(lookup_df, regex_lookup_table, "overwrite")
+
+
+@register_pipeline_stage("join_vaccine_lookup")
+def update_vaccine_types(input_survey_table: str, output_survey_table: str, vaccine_type_lookup: str):
+    df = extract_from_table(input_survey_table)
+    lookup_df = extract_from_table(vaccine_type_lookup)
+    for vaccine_number in range(0, 7):
+
+        vaccine_type_other_col = "cis_covid_vaccine_type_other"
+        vaccine_type_col = "cis_covid_vaccine_type"
+        vaccine_date_col = "cis_covid_vaccine_date"
+
+        if vaccine_number > 0:
+            vaccine_type_other_col = f"{vaccine_type_other_col}_{vaccine_number}"
+            vaccine_type_col = f"{vaccine_type_col}_{vaccine_number}"
+            vaccine_date_col = f"{vaccine_date_col}_{vaccine_number}"
+
+        # match the raw column to the vaccine number
+        renamed_lookup = lookup_df.withColumnRenamed("cis_covid_vaccine_type_other_raw", vaccine_type_other_col)
+        # join on 'vaccine_type_other_col' such that the cleaned data can be applied
+        df = df.join(renamed_lookup, on=vaccine_type_other_col, how="left")
+
+        # remove date dependent vaccine type if after date
+        df = df.withColumn(
+            "cis_covid_vaccine_type_corrected",
+            F.when(
+                F.col(vaccine_date_col) >= "2021-01-31",
+                F.expr("filter(cis_covid_vaccine_type_corrected, x -> x != 'Pfizer/BioNTechDD')"),
+            ).otherwise(F.col("cis_covid_vaccine_type_corrected")),
+        )
+        # get first valid type
+        df = df.withColumn("cis_covid_vaccine_type_corrected", F.col("cis_covid_vaccine_type_corrected").getItem(0))
+
+        # update vaccine type column
+        # set vaccine type col to none when default value
+        df = df.withColumn(
+            vaccine_type_col,
+            F.when(F.col(vaccine_type_col) == "Other / specify", F.col("cis_covid_vaccine_type_corrected")).otherwise(
+                F.col(vaccine_type_col)
+            ),
+        ).drop("cis_covid_vaccine_type_corrected")
+
+        df = df.withColumn(
+            vaccine_type_col,
+            F.when(F.col(vaccine_type_col) == "Pfizer/BioNTechDD", "Pfizer/BioNTech").otherwise(
+                F.col(vaccine_type_col)
+            ),
+        )
+        df = df.withColumn(vaccine_type_other_col, F.lit(None).cast("string"))
+
+    update_table(df, output_survey_table, "overwrite")
+    return {"output_survey_table": output_survey_table}
+
+
+@register_pipeline_stage("create_healthcare_regex_lookup")
 def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[str] = None):
     """
     Create or update a regex_lookup_table from an input_survey_table which is filtered
@@ -594,7 +699,7 @@ def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[st
         print(
             f"     - located regex lookup df with {non_derived_rows.count()} additional rows to process"
         )  # functional
-        update_table(add_pattern_matching_flags(non_derived_rows), regex_lookup_table, "append")
+        update_table(process_healthcare_regex(non_derived_rows), regex_lookup_table, "append")
     else:
         df_to_process = df.dropDuplicates(join_on_columns)
         print(
@@ -603,7 +708,7 @@ def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[st
         partitions = int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions"))
         partitions = int(partitions / 2)
         df_to_process = df_to_process.repartition(partitions)
-        lookup_df = add_pattern_matching_flags(df_to_process)
+        lookup_df = process_healthcare_regex(df_to_process)
         update_table(lookup_df, regex_lookup_table, "overwrite")
 
 

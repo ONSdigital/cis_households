@@ -1604,6 +1604,20 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         "work_patient_facing_now",
     ]
 
+    upper_cols = [
+        "cis_covid_vaccine_type_other",
+        "cis_covid_vaccine_type_other_1",
+        "cis_covid_vaccine_type_other_2",
+        "cis_covid_vaccine_type_other_3",
+        "cis_covid_vaccine_type_other_4",
+        "cis_covid_vaccine_type_other_5",
+        "cis_covid_vaccine_type_other_6",
+    ]
+
+    for col in upper_cols:
+        if col in df.columns:
+            df = df.withColumn(col, F.upper(F.col(col)))
+
     df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
 
     df = assign_raw_copies(df, [column for column in original_copy_list if column in df.columns], "original")
@@ -1738,32 +1752,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
                 contact_date[l - 1],
             ],
         )
-
-    vaccine_cols = []
-    df.cache()
-    if "cis_covid_vaccine_date" in df.columns and "cis_covid_vaccine_type_other" in df.columns:
-        vaccine_cols.append(("cis_covid_vaccine_type", "cis_covid_vaccine_date", "cis_covid_vaccine_type_other"))
-
-    for i in range(1, 7):
-        vaccine_date_col = f"cis_covid_vaccine_date_{i}"
-        vaccine_type_col = f"cis_covid_vaccine_type_other_{i}"
-        if vaccine_date_col in df.columns and vaccine_type_col in df.columns:
-            vaccine_cols.append((f"cis_covid_vaccine_type_{i}", vaccine_date_col, vaccine_type_col))
-
-    for column_name_to_assign, vaccine_date_col, vaccine_type_col in vaccine_cols:
-        df = assign_regex_from_map_additional_rules(
-            df=df,
-            column_name_to_assign=column_name_to_assign,
-            reference_columns=[vaccine_type_col],
-            map=vaccine_regex_map,
-            priority_map=vaccine_regex_priority_map,
-            disambiguation_conditions={"Pfizer/BioNTechDD": (F.col(vaccine_date_col) < "2021-01-31")},
-            value_map={"Pfizer/BioNTechDD": "Pfizer/BioNTech"},
-            first_match_only=True,
-            overwrite_values=False,
-            default_value="Don't know type",
-        )
-
     return df
 
 
@@ -3327,8 +3315,28 @@ def ordered_household_id_tranformations(df: DataFrame) -> DataFrame:
     return df
 
 
-def add_pattern_matching_flags(df: DataFrame) -> DataFrame:
-    """Add result of various regex pattern matchings"""
+def process_vaccine_regex(df: DataFrame, vaccine_type_col: str) -> DataFrame:
+    """Add result of vaccine regex pattern matchings"""
+
+    df = df.select(vaccine_type_col)
+
+    df = assign_regex_from_map(
+        df=df,
+        column_name_to_assign="cis_covid_vaccine_type_corrected",
+        reference_columns=[vaccine_type_col],
+        map=vaccine_regex_map,
+        priority_map=vaccine_regex_priority_map,
+    )
+    df = df.withColumnRenamed(vaccine_type_col, "cis_covid_vaccine_type_other_raw")
+    df = df.withColumn(
+        vaccine_type_col, F.when(F.col(vaccine_type_col).isNull(), "Don't know type").otherwise(F.col(vaccine_type_col))
+    )
+    # df = df.filter(F.col("cis_covid_vaccine_type_corrected").isNotNull())
+    return df
+
+
+def process_healthcare_regex(df: DataFrame) -> DataFrame:
+    """Add result of various healthcare regex pattern matchings"""
     # df = df.drop(
     #     "work_health_care_patient_facing_original",
     #     "work_social_care_original",
