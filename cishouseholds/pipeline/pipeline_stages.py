@@ -221,8 +221,8 @@ def delete_tables_stage(
     pattern: str = None,
     table_names: List[str] = [],
     ignore_table_prefix: bool = False,
-    protected_tables: List[str] = [],
     drop_protected_tables: bool = False,
+    protected_tables: List[str] = [],
 ):
     """
     Deletes HIVE tables. For use at the start of a pipeline run, to reset pipeline logs and data.
