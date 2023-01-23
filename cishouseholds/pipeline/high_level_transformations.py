@@ -2408,112 +2408,7 @@ def derive_contact_any_covid_covid_variables(df: DataFrame):
     return df
 
 
-def union_dependent_cleaning(df):
-    col_val_map = {
-        "ethnicity": {
-            "African": "Black,Caribbean,African-African",
-            "Caribbean": "Black,Caribbean,Afro-Caribbean",
-            "Any other Black or African or Caribbean background": "Any other Black background",
-            "Any other Black| African| Carribbean": "Any other Black background",
-            "Any other Mixed/Multiple background": "Any other Mixed background",
-            "Bangladeshi": "Asian or Asian British-Bangladeshi",
-            "Chinese": "Asian or Asian British-Chinese",
-            "English, Welsh, Scottish, Northern Irish or British": "White-British",
-            "English| Welsh| Scottish| Northern Irish or British": "White-British",
-            "Indian": "Asian or Asian British-Indian",
-            "Irish": "White-Irish",
-            "Pakistani": "Asian or Asian British-Pakistani",
-            "White and Asian": "Mixed-White & Asian",
-            "White and Black African": "Mixed-White & Black African",
-            "White and Black Caribbean": "Mixed-White & Black Caribbean",
-            "Roma": "White-Gypsy or Irish Traveller",
-            "White-Roma": "White-Gypsy or Irish Traveller",
-            "Gypsy or Irish Traveller": "White-Gypsy or Irish Traveller",
-            "Arab": "Other ethnic group-Arab",
-            "Any other white": "Any other white background",
-        },
-        "participant_withdrawal_reason": {
-            "Bad experience with tester / survey": "Bad experience with interviewer/survey",
-            "Swab / blood process too distressing": "Swab/blood process too distressing",
-            "Swab / blood process to distressing": "Swab/blood process too distressing",
-            "Do NOT Reinstate": "Do not reinstate",
-        },
-        "work_health_care_area": {
-            "Secondary care for example in a hospital": "Secondary",
-            "Another type of healthcare - for example mental health services?": "Other",
-            "Primary care - for example in a GP or dentist": "Primary",
-            "Yes, in primary care, e.g. GP, dentist": "Primary",
-            "Secondary care - for example in a hospital": "Secondary",
-            "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
-        },
-    }
-    date_cols_to_correct = [
-        col
-        for col in [
-            "last_covid_contact_date",
-            "last_suspected_covid_contact_date",
-            "think_had_covid_onset_date",
-            "think_have_covid_onset_date",
-            "been_outside_uk_last_return_date",
-            "other_covid_infection_test_first_positive_date",
-            "other_covid_infection_test_last_negative_date",
-            "other_antibody_test_first_positive_date",
-            "other_antibody_test_last_negative_date",
-        ]
-        if col in df.columns
-    ]
-    df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime", "visit_id")
-    df = remove_incorrect_dates(df, date_cols_to_correct, "visit_datetime", "2019-08-01", date_cols_min_date_dict)
-
-    df = apply_value_map_multiple_columns(df, col_val_map)
-    df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
-
-    df = fuzzy_update(
-        df,
-        id_column="participant_id",
-        cols_to_check=[
-            "other_covid_infection_test",
-            "other_covid_infection_test_results",
-            "think_had_covid_admitted_to_hospital",
-            "think_had_covid_contacted_nhs",
-        ],
-        update_column="think_had_covid_onset_date",
-        min_matches=3,
-    )
-    # TODO: Add in once dependencies are derived
-    # df = impute_latest_date_flag(
-    #     df=df,
-    #     participant_id_column="participant_id",
-    #     visit_date_column="visit_date",
-    #     visit_id_column="visit_id",
-    #     contact_any_covid_column="contact_known_or_suspected_covid",
-    #     contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
-    # )
-
-    # TODO: Add in once dependencies are derived
-    # df = assign_date_difference(
-    #     df,
-    #     "contact_known_or_suspected_covid_days_since",
-    #     "contact_known_or_suspected_covid_latest_date",
-    #     "visit_datetime",
-    # )
-
-    # TODO: add the following function once contact_known_or_suspected_covid_latest_date() is created
-    # df = contact_known_or_suspected_covid_type(
-    #     df=df,
-    #     contact_known_covid_type_column='contact_known_covid_type',
-    #     contact_any_covid_type_column='contact_any_covid_type',
-    #     contact_any_covid_date_column='contact_any_covid_date',
-    #     contact_known_covid_date_column='contact_known_covid_date',
-    #     contact_suspect_covid_date_column='contact_suspect_covid_date',
-    # )
-
-    df = update_face_covering_outside_of_home(
-        df=df,
-        column_name_to_update="face_covering_outside_of_home",
-        covered_enclosed_column="face_covering_other_enclosed_places",
-        covered_work_column="face_covering_work_or_education",
-    )
+def clean_covid_event_detail_cols(df):
     think_had_covid_cols = [
         "survey_response_dataset_major_version",
         "think_had_covid_admitted_to_hospital",
@@ -2750,6 +2645,115 @@ def union_dependent_cleaning(df):
     return df
 
 
+def union_dependent_cleaning(df):
+    col_val_map = {
+        "ethnicity": {
+            "African": "Black,Caribbean,African-African",
+            "Caribbean": "Black,Caribbean,Afro-Caribbean",
+            "Any other Black or African or Caribbean background": "Any other Black background",
+            "Any other Black| African| Carribbean": "Any other Black background",
+            "Any other Mixed/Multiple background": "Any other Mixed background",
+            "Bangladeshi": "Asian or Asian British-Bangladeshi",
+            "Chinese": "Asian or Asian British-Chinese",
+            "English, Welsh, Scottish, Northern Irish or British": "White-British",
+            "English| Welsh| Scottish| Northern Irish or British": "White-British",
+            "Indian": "Asian or Asian British-Indian",
+            "Irish": "White-Irish",
+            "Pakistani": "Asian or Asian British-Pakistani",
+            "White and Asian": "Mixed-White & Asian",
+            "White and Black African": "Mixed-White & Black African",
+            "White and Black Caribbean": "Mixed-White & Black Caribbean",
+            "Roma": "White-Gypsy or Irish Traveller",
+            "White-Roma": "White-Gypsy or Irish Traveller",
+            "Gypsy or Irish Traveller": "White-Gypsy or Irish Traveller",
+            "Arab": "Other ethnic group-Arab",
+            "Any other white": "Any other white background",
+        },
+        "participant_withdrawal_reason": {
+            "Bad experience with tester / survey": "Bad experience with interviewer/survey",
+            "Swab / blood process too distressing": "Swab/blood process too distressing",
+            "Swab / blood process to distressing": "Swab/blood process too distressing",
+            "Do NOT Reinstate": "Do not reinstate",
+        },
+        "work_health_care_area": {
+            "Secondary care for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services?": "Other",
+            "Primary care - for example in a GP or dentist": "Primary",
+            "Yes, in primary care, e.g. GP, dentist": "Primary",
+            "Secondary care - for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
+        },
+    }
+    date_cols_to_correct = [
+        col
+        for col in [
+            "last_covid_contact_date",
+            "last_suspected_covid_contact_date",
+            "think_had_covid_onset_date",
+            "think_have_covid_onset_date",
+            "been_outside_uk_last_return_date",
+            "other_covid_infection_test_first_positive_date",
+            "other_covid_infection_test_last_negative_date",
+            "other_antibody_test_first_positive_date",
+            "other_antibody_test_last_negative_date",
+        ]
+        if col in df.columns
+    ]
+    df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime", "visit_id")
+    df = remove_incorrect_dates(df, date_cols_to_correct, "visit_datetime", "2019-08-01", date_cols_min_date_dict)
+
+    df = apply_value_map_multiple_columns(df, col_val_map)
+    df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
+
+    df = fuzzy_update(
+        df,
+        id_column="participant_id",
+        cols_to_check=[
+            "other_covid_infection_test",
+            "other_covid_infection_test_results",
+            "think_had_covid_admitted_to_hospital",
+            "think_had_covid_contacted_nhs",
+        ],
+        update_column="think_had_covid_onset_date",
+        min_matches=3,
+    )
+    # TODO: Add in once dependencies are derived
+    # df = impute_latest_date_flag(
+    #     df=df,
+    #     participant_id_column="participant_id",
+    #     visit_date_column="visit_date",
+    #     visit_id_column="visit_id",
+    #     contact_any_covid_column="contact_known_or_suspected_covid",
+    #     contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
+    # )
+
+    # TODO: Add in once dependencies are derived
+    # df = assign_date_difference(
+    #     df,
+    #     "contact_known_or_suspected_covid_days_since",
+    #     "contact_known_or_suspected_covid_latest_date",
+    #     "visit_datetime",
+    # )
+
+    # TODO: add the following function once contact_known_or_suspected_covid_latest_date() is created
+    # df = contact_known_or_suspected_covid_type(
+    #     df=df,
+    #     contact_known_covid_type_column='contact_known_covid_type',
+    #     contact_any_covid_type_column='contact_any_covid_type',
+    #     contact_any_covid_date_column='contact_any_covid_date',
+    #     contact_known_covid_date_column='contact_known_covid_date',
+    #     contact_suspect_covid_date_column='contact_suspect_covid_date',
+    # )
+
+    df = update_face_covering_outside_of_home(
+        df=df,
+        column_name_to_update="face_covering_outside_of_home",
+        covered_enclosed_column="face_covering_other_enclosed_places",
+        covered_work_column="face_covering_work_or_education",
+    )
+    return df
+
+
 def union_dependent_derivations(df):
     """
     Transformations that must be carried out after the union of the different survey response schemas.
@@ -2868,23 +2872,10 @@ def union_dependent_derivations(df):
         "patient_facing_over_20_percent", F.when(patient_facing_percentage >= 0.2, "Yes").otherwise("No")
     )
 
-    # df = fill_forward_from_last_change(
-    #     df=df,
-    #     fill_forward_columns=[
-    #         "cis_covid_vaccine_date",
-    #         "cis_covid_vaccine_number_of_doses",
-    #         "cis_covid_vaccine_type",
-    #         "cis_covid_vaccine_type_other",
-    #         "cis_covid_vaccine_received",
-    #     ],
-    #     participant_id_column="participant_id",
-    #     visit_datetime_column="visit_datetime",
-    #     record_changed_column="cis_covid_vaccine_received",
-    #     record_changed_value="Yes",
-    # )
     df = create_formatted_datetime_string_columns(df)
 
-    df = clean_covid_test_swab(df)
+    df = clean_covid_test_swab(df)  # a25 stata logic
+    df = clean_covid_event_detail_cols(df)  # a26 stata logic
     return df
 
 
