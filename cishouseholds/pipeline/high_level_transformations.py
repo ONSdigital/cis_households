@@ -1,6 +1,7 @@
 # flake8: noqa
 from datetime import datetime
 from functools import reduce
+from operator import add
 from operator import and_
 from operator import or_
 from typing import List
@@ -117,9 +118,11 @@ from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.edit import update_value_if_multiple_and_ref_in_list
 from cishouseholds.edit import update_work_facing_now_column
 from cishouseholds.edit import update_work_main_job_changed
+from cishouseholds.expressions import all_columns_values_in_list
 from cishouseholds.expressions import any_column_equal_value
 from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import array_contains_any
+from cishouseholds.expressions import count_occurrence_in_row
 from cishouseholds.expressions import first_sorted_val_row_wise
 from cishouseholds.expressions import last_sorted_val_row_wise
 from cishouseholds.expressions import sum_within_row
@@ -2264,13 +2267,6 @@ def symptom_column_transformations(df):
             "think_have_covid_symptom_loss_of_taste",
             "think_have_covid_symptom_loss_of_smell",
             "think_have_covid_symptom_more_trouble_sleeping",
-            "think_have_covid_symptom_chest_pain",
-            "think_have_covid_symptom_palpitations",
-            "think_have_covid_symptom_vertigo_or_dizziness",
-            "think_have_covid_symptom_anxiety",
-            "think_have_covid_symptom_low_mood",
-            "think_have_covid_symptom_memory_loss_or_confusion",
-            "think_have_covid_symptom_difficulty_concentrating",
             "think_have_covid_symptom_runny_nose_or_sneezing",
             "think_have_covid_symptom_noisy_breathing",
             "think_have_covid_symptom_loss_of_appetite",
@@ -2518,7 +2514,233 @@ def union_dependent_cleaning(df):
         covered_enclosed_column="face_covering_other_enclosed_places",
         covered_work_column="face_covering_work_or_education",
     )
-
+    think_had_covid_cols = [
+        "survey_response_dataset_major_version",
+        "think_had_covid_admitted_to_hospital",
+        "think_had_covid",
+        "think_had_covid_contacted_nhs",
+        "think_have_covid_symptom_count",
+        "think_had_covid_onset_date",
+    ]
+    hospital_covid_cols = ["think_had_covid_contacted_nhs", "think_had_covid_admitted_to_hospital"]
+    other_covid_test_cols = ["other_covid_infection_test", "other_covid_infection_test_results"]
+    covid_test_cols = [*hospital_covid_cols, *other_covid_test_cols]
+    # 1
+    df = assign_column_value_from_multiple_column_map(
+        df,
+        "think_had_covid_admitted_to_hospital",
+        [
+            None,
+            [1, "No", "No", "No", 0, None],
+        ],
+        think_had_covid_cols,
+        override_original=False,
+    )
+    # 2
+    df = assign_column_value_from_multiple_column_map(
+        df,
+        "think_had_covid_contacted_nhs",
+        [
+            None,
+            [1, None, "No", "No", 0, None],
+        ],
+        think_had_covid_cols,
+        override_original=False,
+    )
+    # 3
+    for col in ["think_had_covid_contacted_nhs", "think_had_covid_admitted_to_hospital", "other_covid_infection_test"]:
+        df = df.withColumn(
+            col,
+            F.when(
+                (~F.col("think_had_covid").eqNullSafe("Yes"))
+                & (F.col("other_covid_infection_test_results").isNull())
+                & (F.col("survey_response_dataset_major_version") == 0)
+                & (
+                    reduce(
+                        add,
+                        [
+                            F.when(F.col(c).isin(["Yes", "One or more positive test(s)"]), 1).otherwise(0)
+                            for c in covid_test_cols
+                        ],
+                    )
+                    == 1
+                ),
+                None,
+            ).otherwise(F.col(col)),
+        )
+    # 4
+    df = assign_column_value_from_multiple_column_map(
+        df,
+        "think_had_covid",
+        [
+            "No",
+            [0, "No", None, ["No", None], 0, None, "Yes", "Any tests negative, but none positive"],
+        ],
+        [*think_had_covid_cols, "other_covid_infection_test", "other_covid_infection_test_results"],
+        override_original=False,
+    )
+    # 5
+    df = assign_column_value_from_multiple_column_map(
+        df,
+        "think_had_covid",
+        ["Yes", ["No", "Yes", "One or more positive test(s)", 0]],
+        [
+            "think_had_covid",
+            "other_covid_infection_test",
+            "other_covid_infection_test_results",
+            "survey_response_dataset_major_version",
+        ],
+        override_original=False,
+    )
+    # 6
+    for col in covid_test_cols:
+        df = df.withColumn(
+            col,
+            F.when(
+                (all_columns_values_in_list(covid_test_cols, ["No", "Any tests negative, but none positive", None]))
+                & (F.col("think_had_covid") == "Yes")
+                & (F.col("think_had_covid_onset_date").isNull())
+                & (F.col("survey_response_dataset_major_version") == 0),
+                None,
+            ).otherwise(F.col(col)),
+        )
+    # 7
+    df = assign_column_value_from_multiple_column_map(
+        df,
+        "other_covid_infection_test",
+        [None, ["No", "No", None, None, None, 0, 0]],
+        [
+            "other_covid_infection_test",
+            "think_had_covid",
+            "think_had_covid_contacted_nhs",
+            "think_had_covid_admitted_to_hospital",
+            "other_covid_infection_test_results",
+            "think_have_covid_symptom_count",
+            "survey_response_dataset_major_version",
+        ],
+        override_original=False,
+    )
+    # 8
+    for col in hospital_covid_cols:
+        df = df.withColumn(
+            col,
+            F.when(
+                (F.col(col) == "No")
+                & (F.col("think_had_covid") == "No")
+                & (F.col("think_had_covid_onset_date").isNull())
+                & (F.col("think_have_covid_symptom_count") == 0)
+                & (F.col("survey_response_dataset_major_version") == 1)
+                & (
+                    reduce(
+                        add,
+                        [
+                            F.when(F.col(c).isin(["No", "Any tests negative, but none positive", None]), 1).otherwise(0)
+                            for c in hospital_covid_cols
+                        ],
+                    )
+                    == 1
+                ),
+                None,
+            ).otherwise(F.col(col)),
+        )
+    # 9
+    count_no = reduce(
+        add,
+        [
+            *[F.when(F.col(c).eqNullsafe("No"), 1).otherwise(0) for c in hospital_covid_cols],
+            F.when(
+                F.col("other_covid_infection_test") == "No", F.col("survey_response_dataset_major_version")
+            ).otherwise(0),
+        ],
+    )
+    count_yes = count_occurrence_in_row([*hospital_covid_cols, "other_covid_infection_test"], "Yes")
+    for col in [*hospital_covid_cols, "other_covid_infection_test"]:
+        df = df.withColumn(
+            col,
+            F.when(
+                (F.col(col).eqNullSafe("No"))
+                & (F.col("think_had_covid").isNull())
+                & (count_no <= 2)
+                & (F.col("other_covid_infection_test_results").isNull())
+                & (F.col("survey_response_dataset_major_version") == 0)
+            ),
+        )
+    # 10
+    df = assign_column_value_from_multiple_column_map(
+        df,
+        "other_covid_infection_test_results",
+        [None, ["Any tests negative, but none positive", None, None, None, None, "No", 0]],
+        [
+            "other_covid_infection_test_results",
+            "think_had_covid",
+            "think_had_covid_onset_date",
+            "think_had_covid_contacted_nhs",
+            "think_had_covid_admitted_to_hospital",
+            "other_covid_infection_test",
+            "survey_response_dataset_major_version",
+        ],
+        override_original=False,
+    )
+    # 11
+    df = df.withColumn(
+        "think_had_covid",
+        F.when(
+            (F.col("think_had_covid").isNull())
+            & (count_no >= 3)
+            & (count_yes == 0)
+            & (F.col("other_covid_infection_test_result").isNull())
+            & (F.col("think_had_covid_onset_date_string").isNull())
+            & (F.col("survey_response_dataset_major_version") == 0),
+            "No",
+        ).otherwise(F.col("think_had_covid")),
+    )
+    # 12
+    for col in covid_test_cols:
+        df = assign_column_value_from_multiple_column_map(
+            df,
+            col,
+            [
+                None,
+                [
+                    ["Any tests negative, but none positive", None],
+                    "No",
+                    None,
+                    [None, "No"],
+                    [None, "No"],
+                    [None, "No"],
+                    0,
+                    0,
+                ],
+            ],
+            [
+                "other_covid_infection_test_results",
+                "think_had_covid",
+                "think_had_covid_onset_date",
+                "think_had_covid_contacted_nhs",
+                "think_had_covid_admitted_to_hospital",
+                "other_covid_infection_test",
+                "survey_response_dataset_major_version",
+                "think_have_covid_symptom_count",
+            ],
+            override_original=False,
+        )
+    # 13
+    for col in hospital_covid_cols:
+        df = assign_column_value_from_multiple_column_map(
+            df,
+            col,
+            [None, [["Any tests negative, but none positive", None], "No", None, [None, "No"], "Yes", 0, 0]],
+            [
+                "other_covid_infection_test_results",
+                "think_had_covid",
+                "think_had_covid_onset_date",
+                "think_had_covid_admitted_to_hospital",
+                "other_covid_infection_test",
+                "survey_response_dataset_major_version",
+                "think_have_covid_symptom_count",
+            ],
+            override_original=False,
+        )
     return df
 
 
@@ -2656,7 +2878,7 @@ def union_dependent_derivations(df):
     # )
     df = create_formatted_datetime_string_columns(df)
 
-    # df = clean_covid_test_swab(df)
+    df = clean_covid_test_swab(df)
     return df
 
 
@@ -3113,10 +3335,10 @@ def process_vaccine_regex(df: DataFrame, vaccine_type_col: str) -> DataFrame:
         map=vaccine_regex_map,
         priority_map=vaccine_regex_priority_map,
     )
-    df = df.withColumnRenamed(vaccine_type_col, "cis_covid_vaccine_type_other_raw")
     df = df.withColumn(
         vaccine_type_col, F.when(F.col(vaccine_type_col).isNull(), "Don't know type").otherwise(F.col(vaccine_type_col))
     )
+    df = df.withColumnRenamed(vaccine_type_col, "cis_covid_vaccine_type_other_raw")
     # df = df.filter(F.col("cis_covid_vaccine_type_corrected").isNotNull())
     return df
 

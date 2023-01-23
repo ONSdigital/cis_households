@@ -299,6 +299,7 @@ def assign_column_value_from_multiple_column_map(
     column_name_to_assign: str,
     value_to_condition_map: List[List[Any]],
     column_names: List[str],
+    override_original: bool = True,
 ):
     """
     Assign column value based on values of any number of columns in a dictionary
@@ -330,7 +331,8 @@ def assign_column_value_from_multiple_column_map(
     1 | 1 | No
     0 | 0 |
     """
-    df = df.withColumn(column_name_to_assign, F.lit(None))
+    if override_original or column_name_to_assign not in df.columns:
+        df = df.withColumn(column_name_to_assign, F.lit(None))
     for row in value_to_condition_map:
         mapped_value = row[0]
         values = row[1]
