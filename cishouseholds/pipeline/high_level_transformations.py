@@ -2530,8 +2530,10 @@ def union_dependent_cleaning(df):
         df,
         "think_had_covid_admitted_to_hospital",
         [
-            None,
-            [1, "No", "No", "No", 0, None],
+            [
+                None,
+                [1, "No", "No", "No", 0, None],
+            ]
         ],
         think_had_covid_cols,
         override_original=False,
@@ -2541,8 +2543,10 @@ def union_dependent_cleaning(df):
         df,
         "think_had_covid_contacted_nhs",
         [
-            None,
-            [1, None, "No", "No", 0, None],
+            [
+                None,
+                [1, None, "No", "No", 0, None],
+            ]
         ],
         think_had_covid_cols,
         override_original=False,
@@ -2573,8 +2577,10 @@ def union_dependent_cleaning(df):
         df,
         "think_had_covid",
         [
-            "No",
-            [0, "No", None, ["No", None], 0, None, "Yes", "Any tests negative, but none positive"],
+            [
+                "No",
+                [0, "No", None, ["No", None], 0, None, "Yes", "Any tests negative, but none positive"],
+            ],
         ],
         [*think_had_covid_cols, "other_covid_infection_test", "other_covid_infection_test_results"],
         override_original=False,
@@ -2583,7 +2589,7 @@ def union_dependent_cleaning(df):
     df = assign_column_value_from_multiple_column_map(
         df,
         "think_had_covid",
-        ["Yes", ["No", "Yes", "One or more positive test(s)", 0]],
+        [["Yes", ["No", "Yes", "One or more positive test(s)", 0]]],
         [
             "think_had_covid",
             "other_covid_infection_test",
@@ -2608,7 +2614,7 @@ def union_dependent_cleaning(df):
     df = assign_column_value_from_multiple_column_map(
         df,
         "other_covid_infection_test",
-        [None, ["No", "No", None, None, None, 0, 0]],
+        [[None, ["No", "No", None, None, None, 0, 0]]],
         [
             "other_covid_infection_test",
             "think_had_covid",
@@ -2669,7 +2675,7 @@ def union_dependent_cleaning(df):
     df = assign_column_value_from_multiple_column_map(
         df,
         "other_covid_infection_test_results",
-        [None, ["Any tests negative, but none positive", None, None, None, None, "No", 0]],
+        [[None, ["Any tests negative, but none positive", None, None, None, None, "No", 0]]],
         [
             "other_covid_infection_test_results",
             "think_had_covid",
