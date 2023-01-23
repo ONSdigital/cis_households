@@ -2590,8 +2590,8 @@ def clean_covid_event_detail_cols(df):
             (F.col("think_had_covid").isNull())
             & (count_no >= 3)
             & (count_yes == 0)
-            & (F.col("other_covid_infection_test_result").isNull())
-            & (F.col("think_had_covid_onset_date_string").isNull())
+            & (F.col("other_covid_infection_test_results").isNull())
+            & (F.col("think_had_covid_onset_date").isNull())
             & (F.col("survey_response_dataset_major_version") == 0),
             "No",
         ).otherwise(F.col("think_had_covid")),
@@ -2602,17 +2602,19 @@ def clean_covid_event_detail_cols(df):
             df,
             col,
             [
-                None,
                 [
-                    ["Any tests negative, but none positive", None],
-                    "No",
                     None,
-                    [None, "No"],
-                    [None, "No"],
-                    [None, "No"],
-                    0,
-                    0,
-                ],
+                    [
+                        ["Any tests negative, but none positive", None],
+                        "No",
+                        None,
+                        [None, "No"],
+                        [None, "No"],
+                        [None, "No"],
+                        0,
+                        0,
+                    ],
+                ]
             ],
             [
                 "other_covid_infection_test_results",
@@ -2631,7 +2633,7 @@ def clean_covid_event_detail_cols(df):
         df = assign_column_value_from_multiple_column_map(
             df,
             col,
-            [None, [["Any tests negative, but none positive", None], "No", None, [None, "No"], "Yes", 0, 0]],
+            [[None, [["Any tests negative, but none positive", None], "No", None, [None, "No"], "Yes", 0, 0]]],
             [
                 "other_covid_infection_test_results",
                 "think_had_covid",
