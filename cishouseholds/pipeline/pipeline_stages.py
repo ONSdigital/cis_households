@@ -771,7 +771,9 @@ def execute_union_dependent_transformations(input_survey_table: str, output_surv
     df = fill_forwards_transformations(df)
     df = union_dependent_cleaning(df)
     df = union_dependent_derivations(df)
+    df.cache()
     update_table(df, output_survey_table, write_mode="overwrite")
+    df.unpersist()
     return {"output_survey_table": output_survey_table}
 
 
@@ -1066,7 +1068,9 @@ def report(
         "visit_datetime",
         *[col for col in valid_df.columns if col.startswith("cis_covid_vaccine_type")],
     ]
-    other_vaccine_df = valid_df.filter(F.col("cis_covid_vaccine_type") == "Don't know type").select(*select_cols)
+    other_vaccine_df = (
+        valid_df.filter(F.col("cis_covid_vaccine_type") == "Don't know type").select(*select_cols).limit(50000)
+    )
 
     output = BytesIO()
     datasets = list(processed_file_log.select("dataset_name").distinct().rdd.flatMap(lambda x: x).collect())
