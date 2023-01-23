@@ -2563,7 +2563,8 @@ def clean_covid_event_detail_cols(df):
                 & (F.col("think_had_covid").isNull())
                 & (count_no <= 2)
                 & (F.col("other_covid_infection_test_results").isNull())
-                & (F.col("survey_response_dataset_major_version") == 0)
+                & (F.col("survey_response_dataset_major_version") == 0),
+                None,
             ),
         )
     # 10
