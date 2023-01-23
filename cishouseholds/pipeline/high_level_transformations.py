@@ -2653,7 +2653,7 @@ def union_dependent_cleaning(df):
     count_no = reduce(
         add,
         [
-            *[F.when(F.col(c).eqNullsafe("No"), 1).otherwise(0) for c in hospital_covid_cols],
+            *[F.when(F.col(c).eqNullSafe("No"), 1).otherwise(0) for c in hospital_covid_cols],
             F.when(
                 F.col("other_covid_infection_test") == "No", F.col("survey_response_dataset_major_version")
             ).otherwise(0),
