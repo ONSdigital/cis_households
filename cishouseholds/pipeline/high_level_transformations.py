@@ -2534,6 +2534,7 @@ def union_dependent_cleaning(df):
             [1, "No", "No", "No", 0, None],
         ],
         think_had_covid_cols,
+        override_original=False,
     )
     # 2
     df = assign_column_value_from_multiple_column_map(
@@ -2544,6 +2545,7 @@ def union_dependent_cleaning(df):
             [1, None, "No", "No", 0, None],
         ],
         think_had_covid_cols,
+        override_original=False,
     )
     # 3
     for col in ["think_had_covid_contacted_nhs", "think_had_covid_admitted_to_hospital", "other_covid_infection_test"]:
@@ -2575,6 +2577,7 @@ def union_dependent_cleaning(df):
             [0, "No", None, ["No", None], 0, None, "Yes", "Any tests negative, but none positive"],
         ],
         [*think_had_covid_cols, "other_covid_infection_test", "other_covid_infection_test_results"],
+        override_original=False,
     )
     # 5
     df = assign_column_value_from_multiple_column_map(
@@ -2587,6 +2590,7 @@ def union_dependent_cleaning(df):
             "other_covid_infection_test_results",
             "survey_response_dataset_major_version",
         ],
+        override_original=False,
     )
     # 6
     for col in covid_test_cols:
@@ -2614,6 +2618,7 @@ def union_dependent_cleaning(df):
             "think_have_covid_symptom_count",
             "survey_response_dataset_major_version",
         ],
+        override_original=False,
     )
     # 8
     for col in hospital_covid_cols:
@@ -2674,6 +2679,7 @@ def union_dependent_cleaning(df):
             "other_covid_infection_test",
             "survey_response_dataset_major_version",
         ],
+        override_original=False,
     )
     # 11
     df = df.withColumn(
@@ -2716,6 +2722,7 @@ def union_dependent_cleaning(df):
                 "survey_response_dataset_major_version",
                 "think_have_covid_symptom_count",
             ],
+            override_original=False,
         )
     # 13
     for col in hospital_covid_cols:
@@ -2732,6 +2739,7 @@ def union_dependent_cleaning(df):
                 "survey_response_dataset_major_version",
                 "think_have_covid_symptom_count",
             ],
+            override_original=False,
         )
     return df
 
