@@ -509,6 +509,36 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
     update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
+@register_pipeline_stage("join_lab_data")
+def join_lab_data(
+    input_survey_table: str,
+    output_survey_table: str,
+    lab_results_table: str,
+    test_type:str,
+):
+    """"""
+    df = extract_from_table(input_survey_table)
+    lab_df = extract_from_table(lab_results_table)
+    df = df.join(df, lab_df, how="fullouter", on=f"{test_type}_sample_barcode")
+    joinable = F.when(
+        ((F.col(f"{test_type}_taken").isNotNull())
+        & (
+            (F.col("household_completion_window_status") == "Closed")|
+            (
+                (F.col("survey_completed_datetime").isNotNull())|
+                (F.col("survey_completion_status") == "Submitted")
+            )
+        ))
+        &(
+            F.col(f"{test_type}_taken_datetime") < F.col("blood_sample_arrayed_date")
+        )
+        &(
+            (F.col("participant_completion_window_start_datetime")) <=
+            (F.col("") == F.col("blood_sample_arrayed_date"))
+        )
+    )
+    for col in lab_df.columns: # set cols to none if not joinable
+        df = df.withColumn(F.when(joinable,F.col(col)))
 
 @register_pipeline_stage("join_lookup_table")
 def join_lookup_table(
