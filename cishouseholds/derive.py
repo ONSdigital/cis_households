@@ -332,7 +332,7 @@ def assign_column_value_from_multiple_column_map(
     0 | 0 |
     """
     if override_original or column_name_to_assign not in df.columns:
-        df = df.withColumn(column_name_to_assign, F.lit(None))
+        df = df.withColumn(column_name_to_assign, F.lit(None).cast("string"))
     for row in value_to_condition_map:
         mapped_value = row[0]
         values = row[1]
