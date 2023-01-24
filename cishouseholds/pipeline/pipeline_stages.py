@@ -76,6 +76,7 @@ from cishouseholds.pipeline.manifest import Manifest
 from cishouseholds.pipeline.mapping import category_maps
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import soc_regex_map
+from cishouseholds.pipeline.phm import match_type_blood
 from cishouseholds.pipeline.reporting import count_variable_option
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import generate_lab_report
@@ -527,7 +528,7 @@ def join_lab_data(
     lab_results_table: str,
     test_type: str,
 ):
-    """"""
+    """Apply stata logic to match a participants bloods data to their survey response records."""
     df = extract_from_table(input_survey_table)
     lab_df = extract_from_table(lab_results_table)
     df = df.join(df, lab_df, how="fullouter", on=f"{test_type}_sample_barcode")
@@ -544,9 +545,13 @@ def join_lab_data(
         )
         & (F.col(f"{test_type}_taken_datetime") < F.col("blood_sample_arrayed_date"))
         & ((F.col("participant_completion_window_start_datetime")) <= (F.col("") == F.col("blood_sample_arrayed_date")))
+        & (F.col("match_type_blood").isNull())
     )
+    df = match_type_blood(df)
     for col in lab_df.columns:  # set cols to none if not joinable
         df = df.withColumn(F.when(joinable, F.col(col)))
+    update_table(df, output_survey_table, "overwrite")
+    return {"output_survey_table": output_survey_table}
 
 
 @register_pipeline_stage("join_lookup_table")
