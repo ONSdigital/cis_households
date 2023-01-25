@@ -217,11 +217,12 @@ def backup_files(file_list: List[str], backup_directory: str):
 
 @register_pipeline_stage("delete_tables")
 def delete_tables_stage(
-    ignore_table_prefix: bool = False,
-    table_names: Union[str, List[str]] = None,
     prefix: str = None,
-    protected_tables: List[str] = [],
+    pattern: str = None,
+    table_names: List[str] = [],
+    ignore_table_prefix: bool = False,
     drop_protected_tables: bool = False,
+    protected_tables: List[str] = [],
 ):
     """
     Deletes HIVE tables. For use at the start of a pipeline run, to reset pipeline logs and data.
@@ -236,12 +237,21 @@ def delete_tables_stage(
         one or more absolute table names to delete (current config prefix added automatically)
     pattern
         drop tables where table with the current config prefix and name matches pattern in SQL format (e.g. "%_responses_%")
+    ignore_table_prefix
+        ignore the table prefix for the environment when deleting
     protected_tables
         list of tables to be protected from any call of this stage
     drop_protected_tables
         boolean to drop protected tables
     """
-    delete_tables(prefix, table_names, ignore_table_prefix, protected_tables, drop_protected_tables)
+    delete_tables(
+        prefix=prefix,
+        pattern=pattern,
+        table_names=table_names,
+        ignore_table_prefix=ignore_table_prefix,
+        protected_tables=protected_tables,
+        drop_protected_tables=drop_protected_tables,
+    )
 
 
 @register_pipeline_stage("generate_dummy_data")
