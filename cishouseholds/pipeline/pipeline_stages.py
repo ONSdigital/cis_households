@@ -77,6 +77,7 @@ from cishouseholds.pipeline.mapping import category_maps
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import soc_regex_map
 from cishouseholds.pipeline.phm import match_type_blood
+from cishouseholds.pipeline.phm import match_type_swab
 from cishouseholds.pipeline.reporting import count_variable_option
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import generate_lab_report
@@ -530,26 +531,35 @@ def join_lab_data(
 ):
     """Apply stata logic to match a participants bloods data to their survey response records."""
     df = extract_from_table(input_survey_table)
-    lab_df = extract_from_table(lab_results_table)
+    df = df.withColumn(f"{test_type}_sample_barcode_missing_survey", F.col(f"{test_type}_sample_barcode").isNull())
+    lab_df = extract_from_table(lab_results_table).withColumn(
+        f"{test_type}_sample_barcode_missing_lab", F.col(f"{test_type}_sample_barcode").isNull()
+    )
     df = df.join(df, lab_df, how="fullouter", on=f"{test_type}_sample_barcode")
-    joinable = F.when(
-        (
-            (F.col(f"{test_type}_taken").isNotNull())
-            & (
-                (F.col("household_completion_window_status") == "Closed")
-                | (
-                    (F.col("survey_completed_datetime").isNotNull())
-                    | (F.col("survey_completion_status") == "Submitted")
+    if test_type == "blood":
+        joinable = F.when(
+            (
+                (F.col(f"{test_type}_taken").isNotNull())
+                & (
+                    (F.col("household_completion_window_status") == "Closed")
+                    | (
+                        (F.col("survey_completed_datetime").isNotNull())
+                        | (F.col("survey_completion_status") == "Submitted")
+                    )
                 )
             )
+            & (F.col(f"{test_type}_taken_datetime") < F.col("blood_sample_arrayed_date"))
+            & (
+                (F.col("participant_completion_window_start_datetime"))
+                <= (F.col("") == F.col("blood_sample_arrayed_date"))
+            )
+            & (F.col("match_type_blood").isNull())
         )
-        & (F.col(f"{test_type}_taken_datetime") < F.col("blood_sample_arrayed_date"))
-        & ((F.col("participant_completion_window_start_datetime")) <= (F.col("") == F.col("blood_sample_arrayed_date")))
-        & (F.col("match_type_blood").isNull())
-    )
-    df = match_type_blood(df)
-    for col in lab_df.columns:  # set cols to none if not joinable
-        df = df.withColumn(F.when(joinable, F.col(col)))
+        df = match_type_blood(df)
+        for col in lab_df.columns:  # set cols to none if not joinable
+            df = df.withColumn(F.when(joinable, F.col(col)))
+    else:
+        df = match_type_swab(df)
     update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
