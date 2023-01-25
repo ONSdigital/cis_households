@@ -1416,7 +1416,7 @@ column_name_maps = {
         "CH4-Cq": "ms2_pcr_cq_value",
         "VoidReason": "void_reason",
     },
-    "brants_bridge_schema": {
+    "brants_bridge_variable_name_map": {
         "Test": "test_id",
         "Plate": "antibody_test_plate_id",
         "Sample Name": "sample_name",
