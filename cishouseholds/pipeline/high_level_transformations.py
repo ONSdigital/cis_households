@@ -2447,6 +2447,7 @@ def clean_covid_event_detail_cols(df):
         override_original=False,
     )
     # 3
+    df.cache()
     for col in ["think_had_covid_contacted_nhs", "think_had_covid_admitted_to_hospital", "other_covid_infection_test"]:
         df = df.withColumn(
             col,
@@ -2522,6 +2523,7 @@ def clean_covid_event_detail_cols(df):
         override_original=False,
     )
     # 8
+    df.cache()
     for col in hospital_covid_cols:
         df = df.withColumn(
             col,
@@ -2565,7 +2567,7 @@ def clean_covid_event_detail_cols(df):
                 & (F.col("other_covid_infection_test_results").isNull())
                 & (F.col("survey_response_dataset_major_version") == 0),
                 None,
-            ),
+            ).otherwise(F.col(col)),
         )
     # 10
     df = assign_column_value_from_multiple_column_map(
@@ -2645,6 +2647,7 @@ def clean_covid_event_detail_cols(df):
             ],
             override_original=False,
         )
+        df.unpersist()
     return df
 
 
