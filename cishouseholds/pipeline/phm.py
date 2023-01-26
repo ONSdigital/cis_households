@@ -81,12 +81,20 @@ def assign_match_type(df: DataFrame, test_type: str):
                 option_set["b"],
             )
             .when(
-                (F.col(f"{test_type}_sample_barcode_combined").isNotNull())
+                # present for both lab and survey
+                (
+                    (~F.col(f"{test_type}_sample_barcode_missing_lab"))
+                    & (~F.col(f"{test_type}_sample_barcode_missing_survey"))
+                )
                 & (F.datediff(F.col(f"{test_type}_sample_received_date"), F.col(f"{test_type}_taken_datetime")) <= n),
                 option_set["c"],
             )
             .when(
-                (F.col(f"{test_type}_sample_barcode_combined").isNotNull())
+                # present for both lab and survey
+                (
+                    (~F.col(f"{test_type}_sample_barcode_missing_lab"))
+                    & (~F.col(f"{test_type}_sample_barcode_missing_survey"))
+                )
                 & (F.datediff(F.col(f"{test_type}_sample_received_date"), F.col(f"{test_type}_taken_datetime")) > n),
                 option_set["d"],
             ),
