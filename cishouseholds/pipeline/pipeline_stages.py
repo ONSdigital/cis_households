@@ -778,12 +778,10 @@ def execute_union_dependent_transformations(input_survey_table: str, output_surv
     output_survey_table
     """
     df = extract_from_table(input_survey_table)
-    df = fill_forwards_transformations(df)
-    df = union_dependent_cleaning(df)
-    df = union_dependent_derivations(df)
-    df.cache()
+    df = fill_forwards_transformations(df).custom_checkpoint()
+    df = union_dependent_cleaning(df).custom_checkpoint()
+    df = union_dependent_derivations(df).custom_checkpoint()
     update_table(df, output_survey_table, write_mode="overwrite")
-    df.unpersist()
     return {"output_survey_table": output_survey_table}
 
 
