@@ -1,7 +1,7 @@
 import pytest
 from chispa import assert_df_equality
 
-from cishouseholds.pipeline.high_level_transformations import transform_from_lookups
+from cishouseholds.pipeline.lookup_and_regex_transformations import transform_from_lookups
 
 
 def test_transform_antibody_swab_ETL(spark_session):
