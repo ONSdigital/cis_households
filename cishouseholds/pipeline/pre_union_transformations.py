@@ -1,12 +1,9 @@
 # flake8: noqa
 from functools import reduce
 from operator import or_
-from typing import List
 
-import pandas as pd
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
-from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.derive import assign_column_from_mapped_list_key
@@ -20,7 +17,6 @@ from cishouseholds.derive import assign_datetime_from_coalesced_columns_and_log_
 from cishouseholds.derive import assign_grouped_variable_from_days_since
 from cishouseholds.derive import assign_isin_list
 from cishouseholds.derive import assign_raw_copies
-from cishouseholds.derive import assign_regex_from_map_additional_rules
 from cishouseholds.derive import assign_taken_column
 from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import assign_work_health_care
@@ -47,11 +43,10 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_strings_to_sentence_case
 from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.edit import update_value_if_multiple_and_ref_in_list
-from cishouseholds.merge import null_safe_join
 from cishouseholds.pipeline.config import get_config
-from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.mapping import date_cols_min_date_dict
+from cishouseholds.pipeline.post_union_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.translate import backup_and_replace_translation_lookup_df
 from cishouseholds.pipeline.translate import export_responses_to_be_translated_to_translation_directory
 from cishouseholds.pipeline.translate import get_new_translations_from_completed_translations_directory
@@ -59,86 +54,6 @@ from cishouseholds.pipeline.translate import get_welsh_responses_to_be_translate
 from cishouseholds.pipeline.translate import translate_welsh_fixed_text_responses_digital
 from cishouseholds.pipeline.translate import translate_welsh_free_text_responses_digital
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
-from cishouseholds.regex.vaccine_regex import vaccine_regex_map
-from cishouseholds.regex.vaccine_regex import vaccine_regex_priority_map
-
-
-def transform_cis_soc_data(
-    soc_lookup_df: DataFrame, inconsistences_resolution_df: DataFrame, join_on_columns: List[str]
-) -> DataFrame:
-    """
-    transform and process cis soc data
-    """
-
-    soc_lookup_df = soc_lookup_df.drop_duplicates(["standard_occupational_classification_code", *join_on_columns])
-    drop_null_title_df = soc_lookup_df.filter(F.col("work_main_job_title").isNull()).withColumn(
-        "drop_reason", F.lit("null job title")
-    )
-
-    # cleanup soc lookup df and resolve inconsistences
-    soc_lookup_df = soc_lookup_df.filter(F.col("work_main_job_title").isNotNull())
-
-    # allow nullsafe join on title as soc is sometimes assigned without job role
-    soc_lookup_df = null_safe_join(
-        soc_lookup_df.distinct(), inconsistences_resolution_df.distinct(), null_safe_on=join_on_columns, how="left"
-    )
-
-    soc_lookup_df = soc_lookup_df.withColumn(
-        "standard_occupational_classification_code",
-        F.coalesce(F.col("resolved_soc_code"), F.col("standard_occupational_classification_code")),
-    ).drop("resolved_soc_code")
-
-    # normalise uncodeable values
-    soc_lookup_df = soc_lookup_df.withColumn(
-        "standard_occupational_classification_code",
-        F.when(
-            (F.col("standard_occupational_classification_code").rlike(r".*[^0-9].*|^\s*$"))
-            | (F.col("standard_occupational_classification_code").isNull()),
-            "uncodeable",
-        ).otherwise(F.col("standard_occupational_classification_code")),
-    )
-
-    # decide on rows to drop
-    soc_lookup_df = soc_lookup_df.withColumn(
-        "LENGTH",
-        F.length(
-            F.when(
-                F.col("standard_occupational_classification_code") != "uncodeable",
-                F.col("standard_occupational_classification_code"),
-            )
-        ),
-    ).orderBy(F.desc("LENGTH"))
-
-    # create windows with descending soc code
-    window = Window.partitionBy(*join_on_columns)
-
-    # flag non specific soc codes and uncodeable codes
-    soc_lookup_df = soc_lookup_df.withColumn(
-        "drop_reason",
-        F.when(
-            (F.col("LENGTH") != F.max("LENGTH").over(window))
-            | (F.col("standard_occupational_classification_code") == "uncodeable"),
-            "more specific code available",
-        ).otherwise(None),
-    )
-    retain_count = F.sum(F.when(F.col("drop_reason").isNull(), 1).otherwise(0)).over(window)
-    # flag ambiguous codes from remaining set
-    soc_lookup_df = soc_lookup_df.withColumn(
-        "drop_reason",
-        F.when(
-            (retain_count > 1) & (F.col("drop_reason").isNull()),
-            "ambiguous code",
-        ).otherwise(F.col("drop_reason")),
-    ).drop("LENGTH")
-
-    # remove flag from first row of dropped set if all codes from group are flagged
-    soc_lookup_df = soc_lookup_df.withColumn(
-        "drop_reason", F.when(F.count("*").over(window) == 1, None).otherwise(F.col("drop_reason"))
-    )
-    resolved_df = soc_lookup_df.filter(F.col("drop_reason").isNull()).drop("drop_reason", "ROW_NUMBER")
-    duplicate_df = soc_lookup_df.filter(F.col("drop_reason").isNotNull()).drop("ROW_NUMBER")
-
-    return duplicate_df.unionByName(drop_null_title_df), resolved_df
 
 
 def transform_participant_extract_digital(df: DataFrame) -> DataFrame:

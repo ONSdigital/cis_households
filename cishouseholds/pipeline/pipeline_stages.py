@@ -44,8 +44,6 @@ from cishouseholds.pipeline.design_weights import calculate_design_weights
 from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
-from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
-from cishouseholds.pipeline.high_level_transformations import get_differences
 from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
@@ -57,25 +55,27 @@ from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
+from cishouseholds.pipeline.lookup_and_regex_transformations import blood_past_positive_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import design_weights_lookup_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import nims_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import ordered_household_id_tranformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import process_healthcare_regex
+from cishouseholds.pipeline.lookup_and_regex_transformations import process_vaccine_regex
+from cishouseholds.pipeline.lookup_and_regex_transformations import replace_design_weights_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import transform_cis_soc_data
+from cishouseholds.pipeline.lookup_and_regex_transformations import transform_from_lookups
 from cishouseholds.pipeline.manifest import Manifest
 from cishouseholds.pipeline.mapping import category_maps
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import soc_regex_map
-from cishouseholds.pipeline.post_union_transformations import blood_past_positive_transformations
-from cishouseholds.pipeline.post_union_transformations import design_weights_lookup_transformations
+from cishouseholds.pipeline.post_union_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.post_union_transformations import fill_forward_events_for_key_columns
 from cishouseholds.pipeline.post_union_transformations import fill_forwards_transformations
+from cishouseholds.pipeline.post_union_transformations import get_differences
 from cishouseholds.pipeline.post_union_transformations import impute_key_columns
-from cishouseholds.pipeline.post_union_transformations import nims_transformations
-from cishouseholds.pipeline.post_union_transformations import ordered_household_id_tranformations
-from cishouseholds.pipeline.post_union_transformations import process_healthcare_regex
-from cishouseholds.pipeline.post_union_transformations import process_vaccine_regex
 from cishouseholds.pipeline.post_union_transformations import reclassify_work_variables
-from cishouseholds.pipeline.post_union_transformations import replace_design_weights_transformations
-from cishouseholds.pipeline.post_union_transformations import transform_from_lookups
 from cishouseholds.pipeline.post_union_transformations import union_dependent_cleaning
 from cishouseholds.pipeline.post_union_transformations import union_dependent_derivations
-from cishouseholds.pipeline.pre_union_transformations import transform_cis_soc_data
 from cishouseholds.pipeline.reporting import count_variable_option
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import generate_lab_report
@@ -217,11 +217,12 @@ def backup_files(file_list: List[str], backup_directory: str):
 
 @register_pipeline_stage("delete_tables")
 def delete_tables_stage(
-    ignore_table_prefix: bool = False,
-    table_names: Union[str, List[str]] = None,
     prefix: str = None,
-    protected_tables: List[str] = [],
+    pattern: str = None,
+    table_names: List[str] = [],
+    ignore_table_prefix: bool = False,
     drop_protected_tables: bool = False,
+    protected_tables: List[str] = [],
 ):
     """
     Deletes HIVE tables. For use at the start of a pipeline run, to reset pipeline logs and data.
@@ -236,12 +237,21 @@ def delete_tables_stage(
         one or more absolute table names to delete (current config prefix added automatically)
     pattern
         drop tables where table with the current config prefix and name matches pattern in SQL format (e.g. "%_responses_%")
+    ignore_table_prefix
+        ignore the table prefix for the environment when deleting
     protected_tables
         list of tables to be protected from any call of this stage
     drop_protected_tables
         boolean to drop protected tables
     """
-    delete_tables(prefix, table_names, ignore_table_prefix, protected_tables, drop_protected_tables)
+    delete_tables(
+        prefix=prefix,
+        pattern=pattern,
+        table_names=table_names,
+        ignore_table_prefix=ignore_table_prefix,
+        protected_tables=protected_tables,
+        drop_protected_tables=drop_protected_tables,
+    )
 
 
 @register_pipeline_stage("generate_dummy_data")
@@ -771,7 +781,9 @@ def execute_union_dependent_transformations(input_survey_table: str, output_surv
     df = fill_forwards_transformations(df)
     df = union_dependent_cleaning(df)
     df = union_dependent_derivations(df)
+    df.cache()
     update_table(df, output_survey_table, write_mode="overwrite")
+    df.unpersist()
     return {"output_survey_table": output_survey_table}
 
 
