@@ -1,7 +1,7 @@
 import pytest
 from chispa import assert_df_equality
 
-from cishouseholds.pipeline.high_level_transformations import get_differences
+from cishouseholds.pipeline.post_union_transformations import get_differences
 
 
 def test_get_differences(spark_session):

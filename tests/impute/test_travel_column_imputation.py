@@ -2,7 +2,7 @@ from chispa import assert_df_equality
 
 from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.impute import fill_forward_from_last_change
-from cishouseholds.pipeline.high_level_transformations import fill_forwards_travel_column
+from cishouseholds.pipeline.post_union_transformations import fill_forwards_travel_column
 
 # from cishouseholds.edit import update_travel_column
 
