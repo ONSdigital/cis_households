@@ -11,7 +11,6 @@ def match_type_blood(df: DataFrame):
     """Populate match type columns to illustrate how the
     blood data maps to the survey data."""
     df = assign_match_type(df, "blood")
-
     df = assign_named_buckets(
         df,
         "antibody_test_result_value",
@@ -42,18 +41,22 @@ def match_type_swab(df: DataFrame):
 def assign_match_type(df: DataFrame, test_type: str):
     """map the pattern of input data to columns denoting the state of the test perfomed."""
     match_type_options: Dict[str, Any] = {"a": "lab orphan", "b": "survey orphan", "c": "matched", "d": "matched"}
-    match_options: Dict[str, Any] = {"a": "test void", "b": "test failed", "c": "encode", "d": "test_void"}
+    match_options: Dict[str, Any] = {"a": "test void", "b": "test failed", "c": "encode", "d": "test void"}
     void_options: Dict[str, Any] = {"a": None, "b": None, "c": None, "d": "mapped to string"}
-    column_names = [
-        "match_type_swab",
-        "match_result_flu",
-        "match_result_rsv",
-        "match_result_c19",
-        "void_reason_flu",
-        "void_reason_rsv",
-        "void_reason_c19",
-    ]
-    n = 28 if test_type == "blood" else 21
+    if test_type == "blood":
+        column_names = ["match_type_blood", "match_result_blood", "void_reason_blood"]
+        n = 28
+    else:
+        column_names = [
+            "match_type_swab",
+            "match_result_flu",
+            "match_result_rsv",
+            "match_result_c19",
+            "void_reason_flu",
+            "void_reason_rsv",
+            "void_reason_c19",
+        ]
+        n = 21
     for col in column_names:
         if "match_type" in col:
             option_set = match_type_options
@@ -64,9 +67,13 @@ def assign_match_type(df: DataFrame, test_type: str):
 
         df = df.withColumn(
             col,
-            F.when(F.datediff(F.col("file_date"), F.col(f"{test_type}_sample_received_date")) > n, option_set["a"])
+            F.when(
+                F.col(f"{test_type}_sample_barcode_missing_lab")
+                & (F.datediff(F.col("file_date"), F.col(f"{test_type}_sample_received_date")) > n),
+                option_set["a"],
+            )
             .when(
-                (F.col(f"{test_type}_sample_barcode_combined").isNull())
+                F.col(f"{test_type}_sample_barcode_missing_survey")
                 & (
                     (F.datediff(F.col("file_date"), F.col("survey_completed_datetime")) >= 7)
                     | (F.datediff(F.col("file_date"), F.col("participant_completion_window_end_datetime")) >= 7)
