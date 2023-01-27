@@ -299,8 +299,6 @@
   work_main_job_role_raw: Erlang is a general-purpose, concurrent, functional programming
     language.
   work_main_job_title: ANY ELEMENT OF A TUPLE CAN BE ACCESSED IN CONSTANT TIME
-  work_main_job_title_and_role: ANY ELEMENT OF A TUPLE CAN BE ACCESSED IN CONSTANT
-    TIME ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL PROGRAMMING LANGUAGE
   work_main_job_title_raw: Any element of a tuple can be accessed in constant time.
   work_not_from_home_days_per_week: '3'
   work_not_from_home_days_per_week_raw: '3'
@@ -610,9 +608,6 @@
   work_main_job_role_raw: In 1989 the building was heavily damaged by fire, but it
     has since been restored.
   work_main_job_title: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
-  work_main_job_title_and_role: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED
-    FOR SYSTEMS IN 1989 THE BUILDING WAS HEAVILY DAMAGED BY FIRE BUT IT HAS SINCE
-    BEEN RESTORED
   work_main_job_title_raw: Erlang is known for its designs that are well suited for
     systems.
   work_not_from_home_days_per_week: '4'
@@ -927,9 +922,6 @@
   work_main_job_role_raw: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
   work_main_job_title: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
-  work_main_job_title_and_role: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED
-    FOR SYSTEMS HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL PROGRAMMING
-    LANGUAGE WITH NON STRICT SEMANTICS AND STRONG STATIC TYPING
   work_main_job_title_raw: Erlang is known for its designs that are well suited for
     systems.
   work_not_from_home_days_per_week: '7'
@@ -1238,8 +1230,6 @@
   work_main_job_role_raw: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
     are D1, D2, ... Dn.
   work_main_job_title: ANY ELEMENT OF A TUPLE CAN BE ACCESSED IN CONSTANT TIME
-  work_main_job_title_and_role: ANY ELEMENT OF A TUPLE CAN BE ACCESSED IN CONSTANT
-    TIME THE SYNTAX D1D2DN DENOTES A TUPLE WHOSE ARGUMENTS ARE D1 D2  DN
   work_main_job_title_raw: Any element of a tuple can be accessed in constant time.
   work_not_from_home_days_per_week: '5'
   work_not_from_home_days_per_week_raw: '5'
@@ -1552,9 +1542,6 @@
     has since been restored.
   work_main_job_title: MESSAGES CAN BE SENT TO AND RECEIVED FROM PORTS BUT THESE MESSAGES
     MUST OBEY THE SO CALLED PORT PROTOCOL
-  work_main_job_title_and_role: MESSAGES CAN BE SENT TO AND RECEIVED FROM PORTS BUT
-    THESE MESSAGES MUST OBEY THE SO CALLED PORT PROTOCOL IN 1989 THE BUILDING WAS
-    HEAVILY DAMAGED BY FIRE BUT IT HAS SINCE BEEN RESTORED
   work_main_job_title_raw: '"Messages can be sent to and received from ports, but
     these messages must obey the so-called ""port protocol."""'
   work_not_from_home_days_per_week: '2'
@@ -1871,8 +1858,6 @@
   work_main_job_role_raw: The arguments can be primitive data types or compound data
     types.
   work_main_job_title: I DONT EVEN CARE
-  work_main_job_title_and_role: I DONT EVEN CARE THE ARGUMENTS CAN BE PRIMITIVE DATA
-    TYPES OR COMPOUND DATA TYPES
   work_main_job_title_raw: I don't even care.
   work_not_from_home_days_per_week: '7'
   work_not_from_home_days_per_week_raw: '7'
@@ -2184,9 +2169,6 @@
   work_main_job_title: ATOMS CAN CONTAIN ANY CHARACTER IF THEY ARE ENCLOSED WITHIN
     SINGLE QUOTES AND AN ESCAPE CONVENTION EXISTS WHICH ALLOWS ANY CHARACTER TO BE
     USED WITHIN AN ATOM
-  work_main_job_title_and_role: ATOMS CAN CONTAIN ANY CHARACTER IF THEY ARE ENCLOSED
-    WITHIN SINGLE QUOTES AND AN ESCAPE CONVENTION EXISTS WHICH ALLOWS ANY CHARACTER
-    TO BE USED WITHIN AN ATOM ITS MAIN IMPLEMENTATION IS THE GLASGOW HASKELL COMPILER
   work_main_job_title_raw: Atoms can contain any character if they are enclosed within
     single quotes and an escape convention exists which allows any character to be
     used within an atom.
@@ -2498,7 +2480,6 @@
   work_main_job_role: MAKE ME A SANDWICH
   work_main_job_role_raw: Make me a sandwich.
   work_main_job_title: MAKE ME A SANDWICH
-  work_main_job_title_and_role: MAKE ME A SANDWICH MAKE ME A SANDWICH
   work_main_job_title_raw: Make me a sandwich.
   work_not_from_home_days_per_week: '0.5'
   work_not_from_home_days_per_week_raw: up to 1
@@ -2810,9 +2791,6 @@
   work_main_job_role_raw: Type classes first appeared in the Haskell programming language.
   work_main_job_title: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL
     PROGRAMMING LANGUAGE WITH NON STRICT SEMANTICS AND STRONG STATIC TYPING
-  work_main_job_title_and_role: HASKELL IS A STANDARDIZED GENERAL PURPOSE PURELY FUNCTIONAL
-    PROGRAMMING LANGUAGE WITH NON STRICT SEMANTICS AND STRONG STATIC TYPING TYPE CLASSES
-    FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
   work_main_job_title_raw: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
   work_not_from_home_days_per_week: '0.5'
@@ -3127,9 +3105,6 @@
   work_main_job_role_raw: She spent her earliest years reading classic literature,
     and writing poetry.
   work_main_job_title: TUPLES ARE CONTAINERS FOR A FIXED NUMBER OF ERLANG DATA TYPES
-  work_main_job_title_and_role: TUPLES ARE CONTAINERS FOR A FIXED NUMBER OF ERLANG
-    DATA TYPES SHE SPENT HER EARLIEST YEARS READING CLASSIC LITERATURE AND WRITING
-    POETRY
   work_main_job_title_raw: Tuples are containers for a fixed number of Erlang data
     types.
   work_not_from_home_days_per_week: '3'
