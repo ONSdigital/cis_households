@@ -1418,10 +1418,10 @@ column_name_maps = {
     },
     "brants_bridge_variable_name_map": {
         "Test": "test_id",
-        "Plate": "antibody_test_plate_id",
-        "Sample Name": "sample_name",
+        "Plate": "swab_test_plate_id",
+        "Sample Name": "swab_sample_barcode",
         "Well": "antibody_test_well_id",
-        "Well_Number": "antibody_test_well_mumber",
+        "Well_Number": "swab_test_well_number",
         "MS2 CT Threshold": "ct_threshold_ms2",
         "Flu A/B CT Threshold": "ct_threshold_flu_ab",
         "RSV CT Threshold": "ct_threshold_rsv",
