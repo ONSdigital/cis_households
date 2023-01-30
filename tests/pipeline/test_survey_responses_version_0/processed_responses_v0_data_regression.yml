@@ -147,8 +147,6 @@
   work_main_job_role_raw: Tuples are containers for a fixed number of Erlang data
     types.
   work_main_job_title: ITS MAIN IMPLEMENTATION IS THE GLASGOW HASKELL COMPILER
-  work_main_job_title_and_role: ITS MAIN IMPLEMENTATION IS THE GLASGOW HASKELL COMPILER
-    TUPLES ARE CONTAINERS FOR A FIXED NUMBER OF ERLANG DATA TYPES
   work_main_job_title_raw: Its main implementation is the Glasgow Haskell Compiler.
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
@@ -305,9 +303,6 @@
   work_main_job_role_raw: The Galactic Empire is nearing completion of the Death Star,
     a space station with the power to destroy entire planets.
   work_main_job_title: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
-  work_main_job_title_and_role: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED
-    FOR SYSTEMS THE GALACTIC EMPIRE IS NEARING COMPLETION OF THE DEATH STAR A SPACE
-    STATION WITH THE POWER TO DESTROY ENTIRE PLANETS
   work_main_job_title_raw: Erlang is known for its designs that are well suited for
     systems.
   work_not_from_home_days_per_week: '7'
@@ -465,8 +460,6 @@
   work_main_job_role: PORTS ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
   work_main_job_role_raw: Ports are created with the built-in function open_port.
   work_main_job_title: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
-  work_main_job_title_and_role: ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED
-    FOR SYSTEMS PORTS ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
   work_main_job_title_raw: Erlang is known for its designs that are well suited for
     systems.
   work_not_from_home_days_per_week: '0'
@@ -623,8 +616,6 @@
   work_main_job_role_raw: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
     are D1, D2, ... Dn.
   work_main_job_title: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING LANGUAGE
-  work_main_job_title_and_role: TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING
-    LANGUAGE THE SYNTAX D1D2DN DENOTES A TUPLE WHOSE ARGUMENTS ARE D1 D2  DN
   work_main_job_title_raw: Type classes first appeared in the Haskell programming
     language.
   work_not_from_home_days_per_week: '5'
@@ -782,9 +773,6 @@
     systems.
   work_main_job_title: ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL PROGRAMMING
     LANGUAGE
-  work_main_job_title_and_role: ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL
-    PROGRAMMING LANGUAGE ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR
-    SYSTEMS
   work_main_job_title_raw: Erlang is a general-purpose, concurrent, functional programming
     language.
   work_not_from_home_days_per_week: '4'
@@ -944,10 +932,6 @@
   work_main_job_title: ATOMS CAN CONTAIN ANY CHARACTER IF THEY ARE ENCLOSED WITHIN
     SINGLE QUOTES AND AN ESCAPE CONVENTION EXISTS WHICH ALLOWS ANY CHARACTER TO BE
     USED WITHIN AN ATOM
-  work_main_job_title_and_role: ATOMS CAN CONTAIN ANY CHARACTER IF THEY ARE ENCLOSED
-    WITHIN SINGLE QUOTES AND AN ESCAPE CONVENTION EXISTS WHICH ALLOWS ANY CHARACTER
-    TO BE USED WITHIN AN ATOM TYPE CLASSES FIRST APPEARED IN THE HASKELL PROGRAMMING
-    LANGUAGE
   work_main_job_title_raw: Atoms can contain any character if they are enclosed within
     single quotes and an escape convention exists which allows any character to be
     used within an atom.
@@ -1108,8 +1092,6 @@
   work_main_job_role: PORTS ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
   work_main_job_role_raw: Ports are created with the built-in function open_port.
   work_main_job_title: IT IS ALSO A GARBAGE COLLECTED RUNTIME SYSTEM
-  work_main_job_title_and_role: IT IS ALSO A GARBAGE COLLECTED RUNTIME SYSTEM PORTS
-    ARE CREATED WITH THE BUILT IN FUNCTION OPENPORT
   work_main_job_title_raw: It is also a garbage-collected runtime system.
   work_not_from_home_days_per_week: '2'
   work_not_from_home_days_per_week_raw: '2'
@@ -1265,8 +1247,6 @@
   work_main_job_role_raw: He looked inquisitively at his keyboard and wrote another
     sentence.
   work_main_job_title: WHERE ARE MY PANTS
-  work_main_job_title_and_role: WHERE ARE MY PANTS HE LOOKED INQUISITIVELY AT HIS
-    KEYBOARD AND WROTE ANOTHER SENTENCE
   work_main_job_title_raw: Where are my pants?
   work_not_from_home_days_per_week: '0'
   work_not_from_home_days_per_week_raw: '0'
@@ -1421,8 +1401,6 @@
   work_main_job_role_raw: Tuples are containers for a fixed number of Erlang data
     types.
   work_main_job_title: WHERE ARE MY PANTS
-  work_main_job_title_and_role: WHERE ARE MY PANTS TUPLES ARE CONTAINERS FOR A FIXED
-    NUMBER OF ERLANG DATA TYPES
   work_main_job_title_raw: Where are my pants?
   work_not_from_home_days_per_week: '4'
   work_not_from_home_days_per_week_raw: '4'
@@ -1579,8 +1557,6 @@
     systems.
   work_main_job_title: HASKELL FEATURES A TYPE SYSTEM WITH TYPE INFERENCE AND LAZY
     EVALUATION
-  work_main_job_title_and_role: HASKELL FEATURES A TYPE SYSTEM WITH TYPE INFERENCE
-    AND LAZY EVALUATION ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE WELL SUITED FOR SYSTEMS
   work_main_job_title_raw: Haskell features a type system with type inference and
     lazy evaluation.
   work_not_from_home_days_per_week: '1'
