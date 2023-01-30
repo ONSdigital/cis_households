@@ -47,6 +47,8 @@ from cishouseholds.pipeline.generate_outputs import write_csv_rename
 from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
+from cishouseholds.pipeline.job_transformations import job_transformations
+from cishouseholds.pipeline.job_transformations import reclassify_work_variables
 from cishouseholds.pipeline.load import add_error_file_log_entry
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import delete_tables
@@ -69,16 +71,13 @@ from cishouseholds.pipeline.mapping import category_maps
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import soc_regex_map
 from cishouseholds.pipeline.post_union_transformations import create_formatted_datetime_string_columns
-from cishouseholds.pipeline.post_union_transformations import fill_forward_events_for_key_columns
-from cishouseholds.pipeline.post_union_transformations import fill_forwards_transformations
 from cishouseholds.pipeline.post_union_transformations import get_differences
 from cishouseholds.pipeline.post_union_transformations import impute_key_columns
-from cishouseholds.pipeline.post_union_transformations import reclassify_work_variables
-from cishouseholds.pipeline.post_union_transformations import union_dependent_cleaning
-from cishouseholds.pipeline.post_union_transformations import union_dependent_derivations
+from cishouseholds.pipeline.post_union_transformations import post_union_transformations
 from cishouseholds.pipeline.reporting import count_variable_option
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import generate_lab_report
+from cishouseholds.pipeline.symptom_transformations import symptom_transformations
 from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
@@ -778,25 +777,9 @@ def execute_union_dependent_transformations(input_survey_table: str, output_surv
     output_survey_table
     """
     df = extract_from_table(input_survey_table)
-    df = fill_forwards_transformations(df).custom_checkpoint()
-    df = union_dependent_cleaning(df).custom_checkpoint()
-    df = union_dependent_derivations(df).custom_checkpoint()
-    update_table(df, output_survey_table, write_mode="overwrite")
-    return {"output_survey_table": output_survey_table}
-
-
-@register_pipeline_stage("fill_forwards_events")
-def execute_fill_forwards_events(input_survey_table: str, output_survey_table: str):
-    """
-    Separates out the fill_forwards_event implementation of last observation carried forwards (LOCF) logic from STATA code
-
-    Parameters
-    ----------
-    input_survey_table
-    output_survey_table
-    """
-    df = extract_from_table(input_survey_table)
-    df = fill_forward_events_for_key_columns(df)
+    df = post_union_transformations(df)
+    df = job_transformations(df)
+    df = symptom_transformations(df)
     update_table(df, output_survey_table, write_mode="overwrite")
     return {"output_survey_table": output_survey_table}
 
@@ -908,7 +891,7 @@ def geography_and_imputation_dependent_processing(
     #     "work_status_v0",
     #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     # )
-    df = reclassify_work_variables(df, spark_session=get_or_create_spark_session(), drop_original_variables=False)
+    df = reclassify_work_variables(df, drop_original_variables=False)
     df = fill_forward_only_to_nulls(
         df,
         id="participant_id",
