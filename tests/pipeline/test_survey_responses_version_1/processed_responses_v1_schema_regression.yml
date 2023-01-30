@@ -740,10 +740,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: work_main_job_title_and_role
-  nullable: false
-  type: string
-- metadata: {}
   name: work_main_job_changed
   nullable: false
   type: string
