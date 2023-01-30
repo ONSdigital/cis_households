@@ -146,7 +146,8 @@ def symptom_column_transformations(df: DataFrame) -> DataFrame:
             *think_had_covid_columns,
         ],
         update_column="think_had_covid_onset_date",
-        min_matches=len(think_had_covid_columns),
+        min_matches=len(think_had_covid_columns),  # num available columns - (4 + date column itself)
+        right_df_filter=F.col("think_had_covid_onset_date") > F.col("visit_datetimeg"),
     )
     return df
 

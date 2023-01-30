@@ -29,6 +29,7 @@ def fuzzy_update(
     min_matches: int,
     id_column: str,
     right_df: DataFrame = None,
+    right_df_filter=None,
 ):
     """
     Update a column value if more than 'min_matches' values match in a series of column values 'cols_to_check'.
@@ -45,7 +46,12 @@ def fuzzy_update(
         right_df = right_df.withColumnRenamed(c, f"{c}_right")
     left_df = left_df.withColumn("ROW_NUM_LEFT", F.row_number().over(window))
     right_df = right_df.withColumn("ROW_NUM_RIGHT", F.row_number().over(window))
+
+    if right_df_filter is not None:
+        right_df = right_df.filter(right_df_filter)
+
     df = left_df.join(right_df, on=id_column, how="left")
+
     df = df.withColumn(
         "TEMP",
         reduce(

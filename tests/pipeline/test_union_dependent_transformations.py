@@ -1,10 +1,9 @@
 import pytest
 
 from cishouseholds.merge import union_multiple_tables
-from cishouseholds.pipeline.lookup_and_regex_transformations import process_healthcare_regex
-from cishouseholds.pipeline.pipeline_stages import union_dependent_cleaning
-from cishouseholds.pipeline.pipeline_stages import union_dependent_derivations
-from cishouseholds.pipeline.post_union_transformations import fill_forwards_transformations
+from cishouseholds.pipeline.job_transformations import job_transformations
+from cishouseholds.pipeline.post_union_transformations import post_union_transformations
+from cishouseholds.pipeline.symptom_transformations import symptom_transformations
 
 
 @pytest.fixture
@@ -24,9 +23,7 @@ def unioned_tables(
     )
 
 
-@pytest.mark.parametrize(
-    "function", [fill_forwards_transformations, union_dependent_cleaning, union_dependent_derivations]
-)
+@pytest.mark.parametrize("function", [post_union_transformations, job_transformations, symptom_transformations])
 def test_union_dependent_transformations(unioned_tables, function):
     """
     Check that pyspark can build a valid plan for union-dependent processing steps, given outputs from input processing.
