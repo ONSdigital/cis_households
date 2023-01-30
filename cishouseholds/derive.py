@@ -1168,6 +1168,58 @@ def assign_named_buckets(
     return dfb.drop("buckets")
 
 
+def derive_age_based_columns(df: DataFrame, column_name_to_assign: str) -> DataFrame:
+    """
+    Transformations involving participant age.
+    """
+    df = assign_named_buckets(
+        df,
+        reference_column=column_name_to_assign,
+        column_name_to_assign="age_group_5_intervals",
+        map={2: "2-11", 12: "12-19", 20: "20-49", 50: "50-69", 70: "70+"},
+    )
+    df = assign_named_buckets(
+        df,
+        reference_column=column_name_to_assign,
+        column_name_to_assign="age_group_over_16",
+        map={16: "16-49", 50: "50-69", 70: "70+"},
+    )
+    df = assign_named_buckets(
+        df,
+        reference_column=column_name_to_assign,
+        column_name_to_assign="age_group_7_intervals",
+        map={2: "2-11", 12: "12-16", 17: "17-24", 25: "25-34", 35: "35-49", 50: "50-69", 70: "70+"},
+    )
+    df = assign_named_buckets(
+        df,
+        reference_column=column_name_to_assign,
+        column_name_to_assign="age_group_5_year_intervals",
+        map={
+            2: "2-4",
+            5: "5-9",
+            10: "10-14",
+            15: "15-19",
+            20: "20-24",
+            25: "25-29",
+            30: "30-34",
+            35: "35-39",
+            40: "40-44",
+            45: "45-49",
+            50: "50-54",
+            55: "55-59",
+            60: "60-64",
+            65: "65-69",
+            70: "70-74",
+            75: "75-79",
+            80: "80-84",
+            85: "85-89",
+            90: "90+",
+        },
+    )
+
+    return df
+
+
 def assign_age_group_school_year(
     df: DataFrame,
     country_column: str,

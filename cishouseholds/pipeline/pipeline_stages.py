@@ -21,6 +21,7 @@ from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
+from cishouseholds.derive import derive_age_based_columns
 from cishouseholds.derive import household_level_populations
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
@@ -43,24 +44,6 @@ from cishouseholds.pipeline.design_weights import calculate_design_weights
 from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
-from cishouseholds.pipeline.high_level_transformations import blood_past_positive_transformations
-from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
-from cishouseholds.pipeline.high_level_transformations import derive_age_based_columns
-from cishouseholds.pipeline.high_level_transformations import design_weights_lookup_transformations
-from cishouseholds.pipeline.high_level_transformations import fill_forward_events_for_key_columns
-from cishouseholds.pipeline.high_level_transformations import fill_forwards_transformations
-from cishouseholds.pipeline.high_level_transformations import get_differences
-from cishouseholds.pipeline.high_level_transformations import impute_key_columns
-from cishouseholds.pipeline.high_level_transformations import nims_transformations
-from cishouseholds.pipeline.high_level_transformations import ordered_household_id_tranformations
-from cishouseholds.pipeline.high_level_transformations import process_healthcare_regex
-from cishouseholds.pipeline.high_level_transformations import process_vaccine_regex
-from cishouseholds.pipeline.high_level_transformations import reclassify_work_variables
-from cishouseholds.pipeline.high_level_transformations import replace_design_weights_transformations
-from cishouseholds.pipeline.high_level_transformations import transform_cis_soc_data
-from cishouseholds.pipeline.high_level_transformations import transform_from_lookups
-from cishouseholds.pipeline.high_level_transformations import union_dependent_cleaning
-from cishouseholds.pipeline.high_level_transformations import union_dependent_derivations
 from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
@@ -72,10 +55,27 @@ from cishouseholds.pipeline.load import get_full_table_name
 from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
+from cishouseholds.pipeline.lookup_and_regex_transformations import blood_past_positive_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import design_weights_lookup_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import nims_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import ordered_household_id_tranformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import process_healthcare_regex
+from cishouseholds.pipeline.lookup_and_regex_transformations import process_vaccine_regex
+from cishouseholds.pipeline.lookup_and_regex_transformations import replace_design_weights_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import transform_cis_soc_data
+from cishouseholds.pipeline.lookup_and_regex_transformations import transform_from_lookups
 from cishouseholds.pipeline.manifest import Manifest
 from cishouseholds.pipeline.mapping import category_maps
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import soc_regex_map
+from cishouseholds.pipeline.post_union_transformations import create_formatted_datetime_string_columns
+from cishouseholds.pipeline.post_union_transformations import fill_forward_events_for_key_columns
+from cishouseholds.pipeline.post_union_transformations import fill_forwards_transformations
+from cishouseholds.pipeline.post_union_transformations import get_differences
+from cishouseholds.pipeline.post_union_transformations import impute_key_columns
+from cishouseholds.pipeline.post_union_transformations import reclassify_work_variables
+from cishouseholds.pipeline.post_union_transformations import union_dependent_cleaning
+from cishouseholds.pipeline.post_union_transformations import union_dependent_derivations
 from cishouseholds.pipeline.reporting import count_variable_option
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import generate_lab_report
@@ -778,12 +778,10 @@ def execute_union_dependent_transformations(input_survey_table: str, output_surv
     output_survey_table
     """
     df = extract_from_table(input_survey_table)
-    df = fill_forwards_transformations(df)
-    df = union_dependent_cleaning(df)
-    df = union_dependent_derivations(df)
-    df.cache()
+    df = fill_forwards_transformations(df).custom_checkpoint()
+    df = union_dependent_cleaning(df).custom_checkpoint()
+    df = union_dependent_derivations(df).custom_checkpoint()
     update_table(df, output_survey_table, write_mode="overwrite")
-    df.unpersist()
     return {"output_survey_table": output_survey_table}
 
 

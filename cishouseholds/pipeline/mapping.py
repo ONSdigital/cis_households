@@ -32,6 +32,13 @@ consolidation_categories = {
     "multiple errors sample retained": 18,
 }
 
+date_cols_min_date_dict = {
+    "think_had_covid_onset_date": "2019-11-17",
+    "think_had_contacted_nhs": "2019-11-17",
+    "think_had_covid_admitted_to_hospital": "2019-11-17",
+    "been_outside_uk_last_return_date": "2021-04-01",
+}
+
 _yes_no_categories = {"No": 0, "Yes": 1}
 
 category_maps = {
