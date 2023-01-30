@@ -3,6 +3,7 @@ from functools import reduce
 from io import BytesIO
 from operator import and_
 from pathlib import Path
+from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
@@ -57,6 +58,7 @@ from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.lookup_and_regex_transformations import blood_past_positive_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import design_weights_lookup_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import lab_pre_join_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import nims_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import ordered_household_id_tranformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import process_healthcare_regex
@@ -68,8 +70,6 @@ from cishouseholds.pipeline.manifest import Manifest
 from cishouseholds.pipeline.mapping import category_maps
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import soc_regex_map
-from cishouseholds.pipeline.phm import match_type_blood
-from cishouseholds.pipeline.phm import match_type_swab
 from cishouseholds.pipeline.post_union_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.post_union_transformations import fill_forward_events_for_key_columns
 from cishouseholds.pipeline.post_union_transformations import fill_forwards_transformations
@@ -522,59 +522,19 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
     return {"output_survey_table": output_survey_table}
 
 
-@register_pipeline_stage("join_lab_data")
-def join_lab_data(
-    input_survey_table: str,
-    output_survey_table: str,
-    lab_results_table: str,
-    test_type: str,
-):
-    """Apply stata logic to match a participants bloods data to their survey response records."""
-    df = extract_from_table(input_survey_table)
-    df = df.withColumn(f"{test_type}_sample_barcode_missing_survey", F.col(f"{test_type}_sample_barcode").isNull())
-    lab_df = extract_from_table(lab_results_table).withColumn(
-        f"{test_type}_sample_barcode_missing_lab", F.col(f"{test_type}_sample_barcode").isNull()
-    )
-    df = df.join(df, lab_df, how="fullouter", on=f"{test_type}_sample_barcode")
-    if test_type == "blood":
-        joinable = F.when(
-            (
-                (F.col(f"{test_type}_taken").isNotNull())
-                & (
-                    (F.col("household_completion_window_status") == "Closed")
-                    | (
-                        (F.col("survey_completed_datetime").isNotNull())
-                        | (F.col("survey_completion_status") == "Submitted")
-                    )
-                )
-            )
-            & (F.col(f"{test_type}_taken_datetime") < F.col("blood_sample_arrayed_date"))
-            & (
-                (F.col("participant_completion_window_start_datetime"))
-                <= (F.col("") == F.col("blood_sample_arrayed_date"))
-            )
-            & (F.col("match_type_blood").isNull())
-        )
-        df = match_type_blood(df)
-        for col in lab_df.columns:  # set cols to none if not joinable
-            df = df.withColumn(F.when(joinable, F.col(col)))
-    else:
-        df = match_type_swab(df)
-    update_table(df, output_survey_table, "overwrite")
-    return {"output_survey_table": output_survey_table}
-
-
 @register_pipeline_stage("join_lookup_table")
 def join_lookup_table(
     input_survey_table: str,
     output_survey_table: str,
     lookup_table_name: str,
+    join_type: str = "left",
     unjoinable_values: Dict[str, Union[str, int]] = {},
     join_on_columns: List[str] = ["work_main_job_title", "work_main_job_role"],
     lookup_transformations: List[str] = [],
     pre_join_transformations: List[str] = [],
     post_join_transformations: List[str] = [],
     output_table_name_key: str = "output_survey_table",
+    **kwargs: dict,
 ):
     """
     Filters input_survey_table into an unjoinable_df, where all join_on_columns are null, and and applies any
@@ -594,32 +554,41 @@ def join_lookup_table(
     transformations: list
         list of transformation functions to be run on the dataframe once the lookup has been joined
     """
+    transformations_dict: Dict[str, Any]
     transformations_dict = {
         "nims": nims_transformations,
         "blood_past_positive": blood_past_positive_transformations,
         "design_weights_lookup": design_weights_lookup_transformations,
         "replace_design_weights": replace_design_weights_transformations,
         "ordered_household_id": ordered_household_id_tranformations,
+        "lab_pre_join": lab_pre_join_transformations,
+        "lab_lookup": lab_pre_join_transformations,
+        "lab_post_join": lab_pre_join_transformations,
     }
 
     lookup_df = extract_from_table(lookup_table_name)
     for transformation in lookup_transformations:
-        lookup_df = transformations_dict[transformation](lookup_df)
+        lookup_df = transformations_dict[transformation](lookup_df, **kwargs)
 
     df = extract_from_table(input_survey_table)
     for transformation in pre_join_transformations:
-        df = transformations_dict[transformation](df)
+        df = transformations_dict[transformation](df, **kwargs)
 
     unjoinable_df = df.filter(all_columns_null(join_on_columns))
     for col, val in unjoinable_values.items():
         unjoinable_df = unjoinable_df.withColumn(col, F.lit(val))
 
     df = df.filter(any_column_not_null(join_on_columns))
-    df = left_join_keep_right(df, lookup_df, join_on_columns)
+
+    if join_type == "left":
+        df = left_join_keep_right(df, lookup_df, join_on_columns)
+    if join_type == "fullouter":
+        df = df.join(df, lookup_df, how="fullouter", on=join_on_columns)
+
     df = union_multiple_tables([df, unjoinable_df])
 
     for transformation in post_join_transformations:
-        df = transformations_dict[transformation](df)
+        df = transformations_dict[transformation](df, **kwargs)
 
     update_table(df, output_survey_table, "overwrite")
     return {output_table_name_key: output_survey_table}
@@ -822,12 +791,10 @@ def execute_union_dependent_transformations(input_survey_table: str, output_surv
     output_survey_table
     """
     df = extract_from_table(input_survey_table)
-    df = fill_forwards_transformations(df)
-    df = union_dependent_cleaning(df)
-    df = union_dependent_derivations(df)
-    df.cache()
+    df = fill_forwards_transformations(df).custom_checkpoint()
+    df = union_dependent_cleaning(df).custom_checkpoint()
+    df = union_dependent_derivations(df).custom_checkpoint()
     update_table(df, output_survey_table, write_mode="overwrite")
-    df.unpersist()
     return {"output_survey_table": output_survey_table}
 
 

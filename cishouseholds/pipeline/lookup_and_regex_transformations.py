@@ -14,6 +14,8 @@ from cishouseholds.edit import rename_column_names
 from cishouseholds.expressions import array_contains_any
 from cishouseholds.merge import null_safe_join
 from cishouseholds.pipeline.mapping import column_name_maps
+from cishouseholds.pipeline.phm import match_type_blood
+from cishouseholds.pipeline.phm import match_type_swab
 from cishouseholds.regex.healthcare_regex import healthcare_classification
 from cishouseholds.regex.healthcare_regex import patient_facing_classification
 from cishouseholds.regex.healthcare_regex import patient_facing_pattern
@@ -133,7 +135,7 @@ def transform_from_lookups(
     return df
 
 
-def nims_transformations(df: DataFrame) -> DataFrame:
+def nims_transformations(df: DataFrame, **kwargs: dict) -> DataFrame:
     """Clean and transform NIMS data after reading from table."""
     df = rename_column_names(df, column_name_maps["nims_column_name_map"])
     df = assign_column_to_date_string(df, "nims_vaccine_dose_1_date", reference_column="nims_vaccine_dose_1_datetime")
@@ -143,20 +145,20 @@ def nims_transformations(df: DataFrame) -> DataFrame:
     return df
 
 
-def blood_past_positive_transformations(df: DataFrame) -> DataFrame:
+def blood_past_positive_transformations(df: DataFrame, **kwargs: dict) -> DataFrame:
     """Run required post-join transformations for blood_past_positive"""
     df = df.withColumn("blood_past_positive_flag", F.when(F.col("blood_past_positive").isNull(), 0).otherwise(1))
     return df
 
 
-def design_weights_lookup_transformations(df: DataFrame) -> DataFrame:
+def design_weights_lookup_transformations(df: DataFrame, **kwargs: dict) -> DataFrame:
     """Selects only required fields from the design_weight_lookup"""
     design_weight_columns = ["scaled_design_weight_swab_non_adjusted", "scaled_design_weight_antibodies_non_adjusted"]
     df = df.select(*design_weight_columns, "ons_household_id")
     return df
 
 
-def replace_design_weights_transformations(df: DataFrame) -> DataFrame:
+def replace_design_weights_transformations(df: DataFrame, **kwargs: dict) -> DataFrame:
     """Run required post-join transformations for replace_design_weights"""
     df = df.withColumn(
         "local_authority_unity_authority_code",
@@ -174,15 +176,53 @@ def replace_design_weights_transformations(df: DataFrame) -> DataFrame:
     return df
 
 
-def derive_overall_vaccination(df: DataFrame) -> DataFrame:
+def derive_overall_vaccination(df: DataFrame, **kwargs: dict) -> DataFrame:
     """Derive overall vaccination status from NIMS and CIS data."""
     return df
 
 
-def ordered_household_id_tranformations(df: DataFrame) -> DataFrame:
+def ordered_household_id_tranformations(df: DataFrame, **kwargs: dict) -> DataFrame:
     """Read in a survey responses table and join it onto the participants extract to ensure matching ordered household ids"""
     join_on_columns = ["ons_household_id", "ordered_household_id"]
     df = df.select(join_on_columns).distinct()
+    return df
+
+
+def lab_pre_join_transformations(df: DataFrame, test_type: str, **kwargs: dict) -> DataFrame:
+    df = df.withColumn(f"{test_type}_sample_barcode_missing_survey", F.col(f"{test_type}_sample_barcode").isNull())
+    return df
+
+
+def lab_lookup_transformations(df: DataFrame, test_type: str, **kwargs: dict) -> DataFrame:
+    df = df.withColumn(f"{test_type}_sample_barcode_missing_lab", F.col(f"{test_type}_sample_barcode").isNull())
+    return df
+
+
+def lab_post_join_transformations(df: DataFrame, test_type: str, lookup_df: DataFrame, **kwargs: dict) -> DataFrame:
+    if test_type == "blood":
+        joinable = F.when(
+            (
+                (F.col("blood_taken").isNotNull())
+                & (
+                    (F.col("household_completion_window_status") == "Closed")
+                    | (
+                        (F.col("survey_completed_datetime").isNotNull())
+                        | (F.col("survey_completion_status") == "Submitted")
+                    )
+                )
+            )
+            & (F.col(f"blood_taken_datetime") < F.col("blood_sample_arrayed_date"))
+            & (
+                (F.col("participant_completion_window_start_datetime"))
+                <= (F.col("") == F.col("blood_sample_arrayed_date"))
+            )
+            & (F.col("match_type_blood").isNull())
+        )
+        df = match_type_blood(df)
+        for col in lookup_df.columns:  # set cols to none if not joinable
+            df = df.withColumn(F.when(joinable, F.col(col)))
+    else:
+        df = match_type_swab(df)
     return df
 
 
