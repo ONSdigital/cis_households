@@ -193,9 +193,6 @@
   work_main_job_role_raw: Initially composing light-hearted and irreverent works,
     he also wrote serious, sombre and religious pieces beginning in the 1930s.
   work_main_job_title: ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
-  work_main_job_title_and_role: ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED
-    VALUES INITIALLY COMPOSING LIGHT HEARTED AND IRREVERENT WORKS HE ALSO WROTE SERIOUS
-    SOMBRE AND RELIGIOUS PIECES BEGINNING IN THE 1930S
   work_main_job_title_raw: Atoms are used within a program to denote distinguished
     values.
   work_not_from_home_days_per_week: I'm gonna make him an offer he can't refuse.
@@ -408,8 +405,6 @@
   work_main_job_role_raw: Erlang is a general-purpose, concurrent, functional programming
     language.
   work_main_job_title: ANY ELEMENT OF A TUPLE CAN BE ACCESSED IN CONSTANT TIME
-  work_main_job_title_and_role: ANY ELEMENT OF A TUPLE CAN BE ACCESSED IN CONSTANT
-    TIME ERLANG IS A GENERAL PURPOSE CONCURRENT FUNCTIONAL PROGRAMMING LANGUAGE
   work_main_job_title_raw: Any element of a tuple can be accessed in constant time.
   work_not_from_home_days_per_week: I'm gonna make him an offer he can't refuse.
   work_not_from_home_days_per_week_raw: I'm gonna make him an offer he can't refuse.
@@ -621,9 +616,6 @@
     single quotes and an escape convention exists which allows any character to be
     used within an atom.
   work_main_job_title: DO YOU COME HERE OFTEN
-  work_main_job_title_and_role: DO YOU COME HERE OFTEN ATOMS CAN CONTAIN ANY CHARACTER
-    IF THEY ARE ENCLOSED WITHIN SINGLE QUOTES AND AN ESCAPE CONVENTION EXISTS WHICH
-    ALLOWS ANY CHARACTER TO BE USED WITHIN AN ATOM
   work_main_job_title_raw: Do you come here often?
   work_not_from_home_days_per_week: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
@@ -836,7 +828,6 @@
   work_main_job_role: WHERE ARE MY PANTS
   work_main_job_role_raw: Where are my pants?
   work_main_job_title: I DONT EVEN CARE
-  work_main_job_title_and_role: I DONT EVEN CARE WHERE ARE MY PANTS
   work_main_job_title_raw: I don't even care.
   work_not_from_home_days_per_week: Mama always said life was like a box of chocolates.
     You never know what you're gonna get.
@@ -1049,9 +1040,6 @@
   work_main_job_role_raw: The sequential subset of Erlang supports eager evaluation,
     single assignment, and dynamic typing.
   work_main_job_title: PORTS ARE USED TO COMMUNICATE WITH THE EXTERNAL WORLD
-  work_main_job_title_and_role: PORTS ARE USED TO COMMUNICATE WITH THE EXTERNAL WORLD
-    THE SEQUENTIAL SUBSET OF ERLANG SUPPORTS EAGER EVALUATION SINGLE ASSIGNMENT AND
-    DYNAMIC TYPING
   work_main_job_title_raw: Ports are used to communicate with the external world.
   work_not_from_home_days_per_week: The only thing we have to fear is fear itself.
   work_not_from_home_days_per_week_raw: The only thing we have to fear is fear itself.
@@ -1263,9 +1251,6 @@
     systems.
   work_main_job_title: THE SEQUENTIAL SUBSET OF ERLANG SUPPORTS EAGER EVALUATION SINGLE
     ASSIGNMENT AND DYNAMIC TYPING
-  work_main_job_title_and_role: THE SEQUENTIAL SUBSET OF ERLANG SUPPORTS EAGER EVALUATION
-    SINGLE ASSIGNMENT AND DYNAMIC TYPING ERLANG IS KNOWN FOR ITS DESIGNS THAT ARE
-    WELL SUITED FOR SYSTEMS
   work_main_job_title_raw: The sequential subset of Erlang supports eager evaluation,
     single assignment, and dynamic typing.
   work_not_from_home_days_per_week: Mama always said life was like a box of chocolates.
@@ -1476,9 +1461,6 @@
   work_main_job_role_raw: The sequential subset of Erlang supports eager evaluation,
     single assignment, and dynamic typing.
   work_main_job_title: TUPLES ARE CONTAINERS FOR A FIXED NUMBER OF ERLANG DATA TYPES
-  work_main_job_title_and_role: TUPLES ARE CONTAINERS FOR A FIXED NUMBER OF ERLANG
-    DATA TYPES THE SEQUENTIAL SUBSET OF ERLANG SUPPORTS EAGER EVALUATION SINGLE ASSIGNMENT
-    AND DYNAMIC TYPING
   work_main_job_title_raw: Tuples are containers for a fixed number of Erlang data
     types.
   work_not_from_home_days_per_week: Mama always said life was like a box of chocolates.
@@ -1689,10 +1671,6 @@
     programming language, with non-strict semantics and strong static typing.
   work_main_job_title: THE GALACTIC EMPIRE IS NEARING COMPLETION OF THE DEATH STAR
     A SPACE STATION WITH THE POWER TO DESTROY ENTIRE PLANETS
-  work_main_job_title_and_role: THE GALACTIC EMPIRE IS NEARING COMPLETION OF THE DEATH
-    STAR A SPACE STATION WITH THE POWER TO DESTROY ENTIRE PLANETS HASKELL IS A STANDARDIZED
-    GENERAL PURPOSE PURELY FUNCTIONAL PROGRAMMING LANGUAGE WITH NON STRICT SEMANTICS
-    AND STRONG STATIC TYPING
   work_main_job_title_raw: The Galactic Empire is nearing completion of the Death
     Star, a space station with the power to destroy entire planets.
   work_not_from_home_days_per_week: Here's looking at you, kid.
@@ -1902,8 +1880,6 @@
   work_main_job_role: ANY ELEMENT OF A TUPLE CAN BE ACCESSED IN CONSTANT TIME
   work_main_job_role_raw: Any element of a tuple can be accessed in constant time.
   work_main_job_title: WHERE ARE MY PANTS
-  work_main_job_title_and_role: WHERE ARE MY PANTS ANY ELEMENT OF A TUPLE CAN BE ACCESSED
-    IN CONSTANT TIME
   work_main_job_title_raw: Where are my pants?
   work_not_from_home_days_per_week: Those who refuse to learn from history are condemned
     to repeat it.
@@ -2118,8 +2094,6 @@
   work_main_job_role_raw: Atoms are used within a program to denote distinguished
     values.
   work_main_job_title: THE SYNTAX D1D2DN DENOTES A TUPLE WHOSE ARGUMENTS ARE D1 D2  DN
-  work_main_job_title_and_role: THE SYNTAX D1D2DN DENOTES A TUPLE WHOSE ARGUMENTS
-    ARE D1 D2  DN ATOMS ARE USED WITHIN A PROGRAM TO DENOTE DISTINGUISHED VALUES
   work_main_job_title_raw: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments
     are D1, D2, ... Dn.
   work_not_from_home_days_per_week: The only thing we have to fear is fear itself.

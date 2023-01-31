@@ -43,6 +43,7 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_strings_to_sentence_case
 from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.edit import update_value_if_multiple_and_ref_in_list
+from cishouseholds.edit import update_work_main_job_changed
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.mapping import date_cols_min_date_dict
@@ -265,7 +266,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
 
     df = clean_job_description_string(df, "work_main_job_title")
     df = clean_job_description_string(df, "work_main_job_role")
-    df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
 
     contact_date = ["last_suspected_covid_contact_date", "last_covid_contact_date"]
 
@@ -428,20 +428,22 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
     df = apply_value_map_multiple_columns(df, v1_column_editing_map)
 
     df = df.withColumn("work_main_job_changed", F.lit(None).cast("string"))
-    fill_forward_columns = [
-        "work_main_job_title",
-        "work_main_job_role",
-        "work_sector",
-        "work_sector_other",
-        "work_health_care_area",
-        "work_nursing_or_residential_care_home",
-        "work_direct_contact_patients_or_clients",
-    ]
-    df = update_to_value_if_any_not_null(
-        df=df,
-        column_name_to_assign="work_main_job_changed",
-        true_false_values=["Yes", "No"],
-        column_list=fill_forward_columns,
+    df = update_work_main_job_changed(
+        df,
+        column_name_to_update="work_main_job_changed",
+        participant_id_column="participant_id",
+        reference_not_null_columns=[
+            "work_main_job_title",
+            "work_main_job_role",
+            "work_sector",
+            "work_sector_other",
+            "work_health_care_area",
+        ],
+        reference_value_columns=[
+            "work_nursing_or_residential_care_home",
+            "work_direct_contact_patients_or_clients",
+        ],
+        value="Yes",
     )
 
     df = df.drop(

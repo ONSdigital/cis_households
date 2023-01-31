@@ -186,6 +186,8 @@ def fill_forwards_transformations(df):
             "ethnicity",
         ],
     )
+    df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
+
     return df
 
 

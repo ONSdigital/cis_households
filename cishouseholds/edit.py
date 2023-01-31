@@ -15,11 +15,54 @@ from pyspark.sql import DataFrame
 from pyspark.sql import Window
 
 from cishouseholds.expressions import all_columns_null
+from cishouseholds.expressions import any_column_equal_value
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import count_occurrence_in_row
 from cishouseholds.expressions import set_date_component
 from cishouseholds.expressions import sum_within_row
+
+
+def update_work_main_job_changed(
+    df: DataFrame,
+    column_name_to_update: str,
+    participant_id_column: str,
+    reference_not_null_columns: List[str],
+    reference_value_columns: List[str],
+    value: Any,
+):
+    """
+    re-derive work main job changed to denote whether any of the work variables differ between rows.
+    """
+    if column_name_to_update not in df.columns:
+        df = df.withColumn(column_name_to_update, F.lit(None))
+
+    reference_not_null_columns = [c for c in reference_not_null_columns if c in df.columns]
+    reference_value_columns = [c for c in reference_value_columns if c in df.columns]
+
+    window = Window.partitionBy(participant_id_column).orderBy(F.lit("A"))
+    x = lambda c: (~F.lag(c, 1).over(window).eqNullSafe(F.col(c))) & (F.col(c).isNotNull())  # noqa: E731
+    y = lambda c: (~F.lag(c, 1).over(window).eqNullSafe(F.col(c))) & (F.col(c) == value)  # noqa: E731
+
+    df = df.withColumn("ROW", F.row_number().over(window))
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            ~F.col(column_name_to_update).eqNullSafe("Yes"),
+            F.when(
+                (
+                    ((F.col("ROW") == 1) & any_column_not_null(reference_not_null_columns))
+                    | (reduce(or_, [x(c) for c in reference_not_null_columns], F.lit(False)))
+                )
+                & (
+                    ((F.col("ROW") == 1) & any_column_equal_value(reference_value_columns, value))
+                    | (reduce(or_, [y(c) for c in reference_value_columns], F.lit(True)))
+                ),
+                "Yes",
+            ).otherwise("No"),
+        ).otherwise("Yes"),
+    )
+    return df.drop("ROW")
 
 
 def fuzzy_update(
@@ -59,38 +102,6 @@ def fuzzy_update(
         df.select(id_column, "ROW_NUM_LEFT", f"{update_column}_right"), on=[id_column, "ROW_NUM_LEFT"], how="left"
     ).withColumn(update_column, F.coalesce(F.col(update_column), F.col(f"{update_column}_right")))
     return df.drop("TEMP", "ROW_NUM_LEFT", "ROW_NUM_RIGHT", f"{update_column}_right")
-
-
-def update_work_main_job_changed(
-    df: DataFrame,
-    column_name_to_update: str,
-    participant_id_column: str,
-    reference_columns: List[str],
-):
-    """
-    re-derive work main job changed to denote whether any of the work variables differ between rows.
-    """
-    if column_name_to_update not in df.columns:
-        df = df.withColumn(column_name_to_update, F.lit(None))
-
-    reference_columns = [c for c in reference_columns if c in df.columns]
-
-    window = Window.partitionBy(participant_id_column).orderBy(F.lit("A"))
-    x = lambda c: (~F.lag(c, 1).over(window).eqNullSafe(F.col(c))) & (F.col(c).isNotNull())  # noqa: E731
-
-    df = df.withColumn("ROW", F.row_number().over(window))
-    df = df.withColumn(
-        column_name_to_update,
-        F.when(
-            ~F.col(column_name_to_update).eqNullSafe("Yes"),
-            F.when(
-                ((F.col("ROW") == 1) & any_column_not_null(reference_columns))
-                | (reduce(or_, [x(c) for c in reference_columns])),
-                "Yes",
-            ).otherwise("No"),
-        ).otherwise("Yes"),
-    )
-    return df.drop("ROW")
 
 
 def normalise_think_had_covid_columns(df: DataFrame, symptom_columns_prefix: str):
