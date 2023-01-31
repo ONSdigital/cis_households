@@ -385,7 +385,7 @@ Returns dataframe for use in testing.</p>
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">impute_demographic_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imputed_values_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.impute_demographic_columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Impute values for sex, ethnicity and date of birth.
 Assumes that columns to be imputed have been filled forwards, as the latest value from each participant is used.
-Specific imputations are carried out for for each key demographic column. The resulting columns should have no
+Specific imputations are carried out for each key demographic column. The resulting columns should have no
 missing values.
 Stores imputed values in a lookup table, for reuse in subsequent imputation rounds. This table is also backed up
 with a datetime suffix.
