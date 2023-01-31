@@ -126,7 +126,7 @@ swab_results_parameters = {
 brants_bridge_parameters = {
     "stage_name": "brants_bridge_ETL",
     "dataset_name": "brants_bridge",
-    "id_column": "swab_test_well_id",
+    "id_column": "swab_sample_barcode",
     "validation_schema": validation_schemas["brants_bridge_schema"],
     "datetime_column_map": None,
     "column_name_map": column_name_maps["brants_bridge_variable_name_map"],
