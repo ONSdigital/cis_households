@@ -15,7 +15,7 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.load import add_run_log_entry
 from cishouseholds.pipeline.load import add_run_status
 from cishouseholds.pipeline.load import check_table_exists
-from cishouseholds.pipeline.logging import SurveyTableLengths
+from cishouseholds.pipeline.logging import check_survey_table_lengths
 from cishouseholds.pipeline.pipeline_stages import pipeline_stages
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.pyspark_utils import get_spark_application_id
@@ -45,14 +45,6 @@ def check_conditions(stage_responses: dict, stage_config: dict):
     elif stage_config["when"]["operator"] == "any":
         return any(stage_responses[stage] == status for stage, status in stage_config["when"]["conditions"].items())
     return False
-
-
-def get_survey_tables(stages_to_run, stages_config):
-    survey_tables = []
-    for stage in stages_to_run:
-        if "output_tables" in stages_config[stage] and "output_survey_table" in stages_config[stage]["output_tables"]:
-            survey_tables.append(stages_config[stage]["output_tables"]["output_survey_table"])
-    return survey_tables
 
 
 def check_dependencies(stages_to_run, stages_config):  # TODO: ensure check in order. look before current stage only
@@ -125,7 +117,6 @@ def run_from_config():
 
     run_datetime = datetime.now()
     splunk_logger = SplunkLogger(config.get("splunk_log_directory"))
-    SurveyTableLengths.set_survey_tables(get_survey_tables(stages_to_run, config["stages"]))
 
     with spark_description_set("adding run log entry"):
         run_id = add_run_log_entry(run_datetime)
@@ -165,7 +156,7 @@ def run_from_config():
     run_time = (datetime.now() - run_datetime).total_seconds()
 
     try:
-        SurveyTableLengths.check_lengths()
+        check_survey_table_lengths()
     except ValueError as e:
         add_run_status(run_id, "Error in cleanup", "cleanup", e)
         pipeline_error_count += 1
