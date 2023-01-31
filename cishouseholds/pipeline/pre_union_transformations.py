@@ -266,7 +266,6 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
 
     df = clean_job_description_string(df, "work_main_job_title")
     df = clean_job_description_string(df, "work_main_job_role")
-    df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
 
     contact_date = ["last_suspected_covid_contact_date", "last_covid_contact_date"]
 
