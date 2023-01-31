@@ -1427,7 +1427,7 @@ column_name_maps = {
         "Test": "test_id",
         "Plate": "swab_test_plate_id",
         "Sample Name": "swab_sample_barcode",
-        "Well": "antibody_test_well_id",
+        "Well": "swab_test_well_id",
         "Well_Number": "swab_test_well_number",
         "MS2 CT Threshold": "ct_threshold_ms2",
         "Flu A/B CT Threshold": "ct_threshold_flu_ab",
