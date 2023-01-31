@@ -516,7 +516,7 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
     df_list = [extract_from_table(table) for table in tables_to_process]
 
     df = union_multiple_tables(df_list)
-    update_table(df, output_survey_table, "overwrite")
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
 
@@ -681,7 +681,7 @@ def update_vaccine_types(input_survey_table: str, output_survey_table: str, vacc
         )
         df = df.withColumn(vaccine_type_other_col, F.lit(None).cast("string"))
 
-    update_table(df, output_survey_table, "overwrite")
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
 
@@ -762,7 +762,7 @@ def lookup_based_editing(
         )
 
     df = transform_from_lookups(df, cohort_lookup, travel_countries_lookup, tenure_group)
-    update_table(df, output_survey_table, write_mode="overwrite")
+    update_table(df, output_survey_table, write_mode="overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
 
@@ -781,7 +781,7 @@ def execute_union_dependent_transformations(input_survey_table: str, output_surv
     df = fill_forwards_transformations(df).custom_checkpoint()
     df = union_dependent_cleaning(df).custom_checkpoint()
     df = union_dependent_derivations(df).custom_checkpoint()
-    update_table(df, output_survey_table, write_mode="overwrite")
+    update_table(df, output_survey_table, write_mode="overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
 
@@ -797,7 +797,7 @@ def execute_fill_forwards_events(input_survey_table: str, output_survey_table: s
     """
     df = extract_from_table(input_survey_table)
     df = fill_forward_events_for_key_columns(df)
-    update_table(df, output_survey_table, write_mode="overwrite")
+    update_table(df, output_survey_table, write_mode="overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
 
@@ -806,7 +806,7 @@ def impute_demographic_columns(input_survey_table: str, imputed_values_table: st
     """
     Impute values for sex, ethnicity and date of birth.
     Assumes that columns to be imputed have been filled forwards, as the latest value from each participant is used.
-    Specific imputations are carried out for for each key demographic column. The resulting columns should have no
+    Specific imputations are carried out for each key demographic column. The resulting columns should have no
     missing values.
     Stores imputed values in a lookup table, for reuse in subsequent imputation rounds. This table is also backed up
     with a datetime suffix.
@@ -832,7 +832,7 @@ def impute_demographic_columns(input_survey_table: str, imputed_values_table: st
     df_with_imputed_values, new_imputed_value_lookup = post_imputation_wrapper(df, key_columns_imputed_df)
 
     update_table(new_imputed_value_lookup, imputed_values_table, "overwrite", archive=True)
-    update_table(df_with_imputed_values, output_survey_table, "overwrite")
+    update_table(df_with_imputed_values, output_survey_table, "overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
 
@@ -922,7 +922,7 @@ def geography_and_imputation_dependent_processing(
         ],
     )
     df = create_formatted_datetime_string_columns(df)
-    update_table(df, output_survey_table, write_mode="overwrite")
+    update_table(df, output_survey_table, write_mode="overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
 
@@ -989,7 +989,7 @@ def validate_survey_responses(
     # invalid_survey_responses_table = fix_timestamps(erroneous_survey_responses)
     update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
     update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
-    update_table(valid_survey_responses, output_survey_table, write_mode="overwrite", archive=True)
+    update_table(valid_survey_responses, output_survey_table, write_mode="overwrite", archive=True, survey_table=True)
     update_table(erroneous_survey_responses, invalid_survey_responses_table, write_mode="overwrite")
     return {"output_survey_table": output_survey_table}
 
