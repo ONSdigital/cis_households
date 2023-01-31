@@ -2297,20 +2297,13 @@ def symptom_column_transformations(df):
             "think_had_covid_symptom_loss_of_taste",
             "think_had_covid_symptom_loss_of_smell",
             "think_had_covid_symptom_more_trouble_sleeping",
-            "think_had_covid_symptom_chest_pain",
-            "think_had_covid_symptom_palpitations",
-            "think_had_covid_symptom_vertigo_or_dizziness",
-            "think_had_covid_symptom_anxiety",
-            "think_had_covid_symptom_low_mood",
-            "think_had_covid_symptom_memory_loss_or_confusion",
-            "think_had_covid_symptom_difficulty_concentrating",
             "think_had_covid_symptom_runny_nose_or_sneezing",
             "think_had_covid_symptom_noisy_breathing",
             "think_had_covid_symptom_loss_of_appetite",
         ],
         count_if_value="Yes",
     )
-    df = update_think_have_covid_symptom_any(
+    df = updte_think_have_covid_symptom_any(
         df=df,
         column_name_to_update="think_have_covid_symptom_any",
     )
