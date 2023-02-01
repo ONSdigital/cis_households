@@ -8,7 +8,6 @@ import pyspark.sql.functions as F
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.pipeline.config import get_config
-from cishouseholds.pipeline.logging import SurveyTableLengths
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -98,11 +97,9 @@ def extract_from_table(table_name: str, break_lineage: bool = False, alternate_p
     return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix)}")
 
 
-def update_table(df: DataFrame, table_name, write_mode, archive=False):
-    if table_name in list(SurveyTableLengths.table_lengths.keys()) and "visit_id" in df.columns:
-        length_df = df.select("visit_id").distinct()
-        SurveyTableLengths.log_length(table_name, length_df.count())
+def update_table(df: DataFrame, table_name, write_mode, archive=False, survey_table=False):
     df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
+    add_table_log_entry(table_name, survey_table, write_mode)
     if archive:
         now = datetime.strftime(datetime.now(), "%Y%m%d_%H%M%S")
         df.write.mode(write_mode).saveAsTable(f"{get_full_table_name(table_name)}_{now}")
@@ -124,6 +121,15 @@ def add_error_file_log_entry(file_path: str, error_text: str):
     run_id = get_run_id()
     file_log_entry = _create_error_file_log_entry(run_id, file_path, error_text)
     file_log_entry.write.mode("append").saveAsTable(get_full_table_name("error_file_log"))  # Always append
+
+
+def add_table_log_entry(table_name: str, survey_table: bool, write_mode: str):
+    """
+    Log the state of the updated table to the table log
+    """
+    run_id = get_run_id()
+    file_log_entry = _create_table_log_entry(run_id, table_name, survey_table, write_mode)
+    file_log_entry.write.mode("append").saveAsTable(get_full_table_name("table_log"))  # Always append
 
 
 def add_run_log_entry(run_datetime: datetime):
@@ -178,6 +184,18 @@ def _create_error_file_log_entry(run_id: int, file_path: str, error_text: str):
     return spark_session.createDataFrame(file_log_entry, schema)
 
 
+def _create_table_log_entry(run_id: int, table_name: str, survey_table: bool, write_mode: str):
+    """
+    Creates an entry (row) to be inserted into the table log
+    """
+    spark_session = get_or_create_spark_session()
+    schema = "run_id integer, table_name string, survey_table string, write_mode string"
+
+    table_log_entry = [[run_id, table_name, survey_table, write_mode]]
+
+    return spark_session.createDataFrame(table_log_entry, schema)
+
+
 def _create_run_log_entry(run_datetime: datetime, run_id: int, version: str, pipeline: str):
     """
     Creates an entry (row) to be inserted into the run log.
@@ -226,12 +244,13 @@ def update_table_and_log_source_files(
     filename_column: str,
     dataset_name: str,
     override_mode: str = None,
+    survey_table: bool = False,
 ):
     """
     Update a table with the specified dataframe and log the source files that have been processed.
     Used to record which files have been processed for each input file type.
     """
-    update_table(df, table_name, override_mode)
+    update_table(df, table_name, override_mode, survey_table=survey_table)
     update_processed_file_log(df, filename_column, dataset_name)
 
 
