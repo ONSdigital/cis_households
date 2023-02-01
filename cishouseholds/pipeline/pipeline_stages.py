@@ -3,6 +3,7 @@ from functools import reduce
 from io import BytesIO
 from operator import and_
 from pathlib import Path
+from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
@@ -57,6 +58,7 @@ from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.lookup_and_regex_transformations import blood_past_positive_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import design_weights_lookup_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import lab_pre_join_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import nims_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import ordered_household_id_tranformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import process_healthcare_regex
@@ -525,12 +527,14 @@ def join_lookup_table(
     input_survey_table: str,
     output_survey_table: str,
     lookup_table_name: str,
+    join_type: str = "left",
     unjoinable_values: Dict[str, Union[str, int]] = {},
     join_on_columns: List[str] = ["work_main_job_title", "work_main_job_role"],
     lookup_transformations: List[str] = [],
     pre_join_transformations: List[str] = [],
     post_join_transformations: List[str] = [],
     output_table_name_key: str = "output_survey_table",
+    **kwargs: dict,
 ):
     """
     Filters input_survey_table into an unjoinable_df, where all join_on_columns are null, and and applies any
@@ -550,32 +554,41 @@ def join_lookup_table(
     transformations: list
         list of transformation functions to be run on the dataframe once the lookup has been joined
     """
+    transformations_dict: Dict[str, Any]
     transformations_dict = {
         "nims": nims_transformations,
         "blood_past_positive": blood_past_positive_transformations,
         "design_weights_lookup": design_weights_lookup_transformations,
         "replace_design_weights": replace_design_weights_transformations,
         "ordered_household_id": ordered_household_id_tranformations,
+        "lab_pre_join": lab_pre_join_transformations,
+        "lab_lookup": lab_pre_join_transformations,
+        "lab_post_join": lab_pre_join_transformations,
     }
 
     lookup_df = extract_from_table(lookup_table_name)
     for transformation in lookup_transformations:
-        lookup_df = transformations_dict[transformation](lookup_df)
+        lookup_df = transformations_dict[transformation](lookup_df, **kwargs)
 
     df = extract_from_table(input_survey_table)
     for transformation in pre_join_transformations:
-        df = transformations_dict[transformation](df)
+        df = transformations_dict[transformation](df, **kwargs)
 
     unjoinable_df = df.filter(all_columns_null(join_on_columns))
     for col, val in unjoinable_values.items():
         unjoinable_df = unjoinable_df.withColumn(col, F.lit(val))
 
     df = df.filter(any_column_not_null(join_on_columns))
-    df = left_join_keep_right(df, lookup_df, join_on_columns)
+
+    if join_type == "left":
+        df = left_join_keep_right(df, lookup_df, join_on_columns)
+    if join_type == "fullouter":
+        df = df.join(df, lookup_df, how="fullouter", on=join_on_columns)
+
     df = union_multiple_tables([df, unjoinable_df])
 
     for transformation in post_join_transformations:
-        df = transformations_dict[transformation](df)
+        df = transformations_dict[transformation](df, **kwargs)
 
     update_table(df, output_survey_table, "overwrite")
     return {output_table_name_key: output_survey_table}
