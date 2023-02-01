@@ -6,7 +6,7 @@ from cishouseholds.pipeline.pre_union_transformations import assign_has_been_col
 from cishouseholds.pipeline.pre_union_transformations import clean_survey_responses_version_1
 from cishouseholds.pipeline.pre_union_transformations import clean_survey_responses_version_2
 from cishouseholds.pipeline.pre_union_transformations import derive_additional_v1_2_columns
-from cishouseholds.pipeline.pre_union_transformations import pre_generic_digital_transformations
+from cishouseholds.pipeline.pre_union_transformations import digital_responses_preprocessing
 from cishouseholds.pipeline.pre_union_transformations import transform_participant_extract_digital
 from cishouseholds.pipeline.pre_union_transformations import transform_survey_responses_generic
 from cishouseholds.pipeline.pre_union_transformations import transform_survey_responses_version_0_delta
@@ -47,7 +47,7 @@ cis_digital_parameters = {
     "datetime_column_map": cis_digital_datetime_map,
     "transformation_functions": [
         translate_welsh_survey_responses_version_digital,
-        pre_generic_digital_transformations,
+        digital_responses_preprocessing,
         transform_survey_responses_generic,
         transform_survey_responses_version_digital_delta,
         assign_has_been_columns,

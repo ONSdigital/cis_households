@@ -2,6 +2,8 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import Window
 
+from cishouseholds.derive import assign_work_patient_facing_now
+from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_status_group
 from cishouseholds.derive import flag_records_for_childcare_v0_rules
 from cishouseholds.derive import flag_records_for_childcare_v1_rules
@@ -33,8 +35,11 @@ from cishouseholds.derive import flag_records_for_work_from_home_rules
 from cishouseholds.derive import flag_records_for_work_location_null
 from cishouseholds.derive import flag_records_for_work_location_student
 from cishouseholds.derive import regex_match_result
+from cishouseholds.edit import clean_job_description_string
+from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change_marked_subset
+from cishouseholds.impute import fill_forward_only_to_nulls
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.regex.regex_patterns import at_school_pattern
 from cishouseholds.regex.regex_patterns import at_university_pattern
@@ -53,11 +58,22 @@ def job_transformations(df: DataFrame):
     """apply all transformations in order related to a persons vocation."""
     df = fill_forwards(df).custom_checkpoint()
     df = data_dependent_transformations(df).custom_checkpoint()
-    df = flag_records_to_reclassify(df).custom_checkpoint()
     return df
 
 
-def fill_forwards(df):
+def preprocessing(df: DataFrame):
+    """"""
+    df = clean_job_description_string(df, "work_main_job_title")
+    df = clean_job_description_string(df, "work_main_job_role")
+    df = update_column_values_from_map(
+        df,
+        "work_not_from_home_days_per_week",
+        {"NA": "99", "N/A (not working/in education etc)": "99", "up to 1": "0.5"},
+    )
+    return df
+
+
+def fill_forwards(df: DataFrame):
     df = fill_forward_from_last_change_marked_subset(
         df=df,
         fill_forward_columns=[
@@ -78,12 +94,12 @@ def fill_forwards(df):
         dateset_version_column="survey_response_dataset_major_version",
         minimum_dateset_version=2,
     )
-    df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
     return df
 
 
 def data_dependent_transformations(df: DataFrame) -> DataFrame:
     """Apply transformations that require all data to have been previously filled over rows."""
+    df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
     df = fill_backwards_work_status_v2(
         df=df,
         date="visit_datetime",
@@ -108,63 +124,6 @@ def data_dependent_transformations(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "patient_facing_over_20_percent", F.when(patient_facing_percentage >= 0.2, "Yes").otherwise("No")
     )
-    return df
-
-
-def flag_records_to_reclassify(df: DataFrame) -> DataFrame:
-    """
-    Adds various flags to indicate which rules were triggered for a given record.
-    TODO: Don't use this function - it is not up to date with derive module
-    """
-    # Work from Home rules
-    df = df.withColumn("wfh_rules", flag_records_for_work_from_home_rules())
-
-    # Furlough rules
-    df = df.withColumn("furlough_rules_v0", flag_records_for_furlough_rules_v0())
-
-    df = df.withColumn("furlough_rules_v1_a", flag_records_for_furlough_rules_v1_a())
-
-    df = df.withColumn("furlough_rules_v1_b", flag_records_for_furlough_rules_v1_b())
-
-    df = df.withColumn("furlough_rules_v2_a", flag_records_for_furlough_rules_v2_a())
-
-    df = df.withColumn("furlough_rules_v2_b", flag_records_for_furlough_rules_v2_b())
-
-    # Self-employed rules
-    df = df.withColumn("self_employed_rules_v1_a", flag_records_for_self_employed_rules_v1_a())
-
-    df = df.withColumn("self_employed_rules_v1_b", flag_records_for_self_employed_rules_v1_b())
-
-    df = df.withColumn("self_employed_rules_v2_a", flag_records_for_self_employed_rules_v2_a())
-
-    df = df.withColumn("self_employed_rules_v2_b", flag_records_for_self_employed_rules_v2_b())
-
-    # Retired rules
-    df = df.withColumn("retired_rules_generic", flag_records_for_retired_rules())
-
-    # Not-working rules
-    df = df.withColumn("not_working_rules_v0", flag_records_for_not_working_rules_v0())
-
-    df = df.withColumn("not_working_rules_v1_a", flag_records_for_not_working_rules_v1_a())
-
-    df = df.withColumn("not_working_rules_v1_b", flag_records_for_not_working_rules_v1_b())
-
-    df = df.withColumn("not_working_rules_v2_a", flag_records_for_not_working_rules_v2_a())
-
-    df = df.withColumn("not_working_rules_v2_b", flag_records_for_not_working_rules_v2_b())
-
-    # Student rules
-    # df = df.withColumn("student_rules_v0", flag_records_for_student_v0_rules())
-
-    # df = df.withColumn("student_rules_v1", flag_records_for_student_v1_rules())
-
-    df = df.withColumn("school_rules_v2", flag_records_for_school_v2_rules())
-
-    # University rules
-    df = df.withColumn("uni_rules_v2", flag_records_for_uni_v2_rules())
-
-    df = df.withColumn("college_rules_v2", flag_records_for_college_v2_rules())
-
     return df
 
 
@@ -517,3 +476,39 @@ def reclassify_work_variables(df: DataFrame, drop_original_variables: bool = Tru
         )
 
     return _df5
+
+
+def assign_work_classifications(df: DataFrame):
+    """"""
+    df = assign_work_patient_facing_now(
+        df,
+        column_name_to_assign="work_patient_facing_now",
+        age_column="age_at_visit",
+        work_healthcare_column="work_health_care_patient_facing",
+    )
+    df = assign_work_person_facing_now(
+        df,
+        column_name_to_assign="work_person_facing_now",
+        work_patient_facing_now_column="work_patient_facing_now",
+        work_social_care_column="work_social_care",
+        age_at_visit_column="age_at_visit",
+    )
+    # df = update_work_facing_now_column(
+    #     df,
+    #     "work_patient_facing_now",
+    #     "work_status_v0",
+    #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
+    # )
+    df = reclassify_work_variables(df, drop_original_variables=False)
+    df = fill_forward_only_to_nulls(
+        df,
+        id="participant_id",
+        date="visit_datetime",
+        list_fill_forward=[
+            "work_status_v0",
+            "work_status_v1",
+            "work_status_v2",
+            "work_location",
+            "work_not_from_home_days_per_week",
+        ],
+    )

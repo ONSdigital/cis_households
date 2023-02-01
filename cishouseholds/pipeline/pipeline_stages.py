@@ -789,7 +789,7 @@ def impute_demographic_columns(input_survey_table: str, imputed_values_table: st
     """
     Impute values for sex, ethnicity and date of birth.
     Assumes that columns to be imputed have been filled forwards, as the latest value from each participant is used.
-    Specific imputations are carried out for for each key demographic column. The resulting columns should have no
+    Specific imputations are carried out for each key demographic column. The resulting columns should have no
     missing values.
     Stores imputed values in a lookup table, for reuse in subsequent imputation rounds. This table is also backed up
     with a datetime suffix.
@@ -812,101 +812,9 @@ def impute_demographic_columns(input_survey_table: str, imputed_values_table: st
     key_columns_imputed_df = impute_key_columns(
         df, imputed_value_lookup_df, get_config().get("imputation_log_directory", "./")
     )
-    df_with_imputed_values, new_imputed_value_lookup = post_imputation_wrapper(df, key_columns_imputed_df)
+    new_imputed_value_lookup = post_imputation_wrapper(df, key_columns_imputed_df)
 
     update_table(new_imputed_value_lookup, imputed_values_table, "overwrite", archive=True)
-    update_table(df_with_imputed_values, output_survey_table, "overwrite")
-    return {"output_survey_table": output_survey_table}
-
-
-@register_pipeline_stage("geography_and_imputation_dependent_logic")
-def geography_and_imputation_dependent_processing(
-    input_survey_table: str,
-    rural_urban_lookup_path: str,
-    output_survey_table: str,
-):
-    """
-    Processing that depends on geographies and and imputed demographic infromation.
-
-    Parameters
-    ----------
-    input_survey_table
-        name of the table containing data to be processed
-    rural_urban_lookup_path
-        path to the rural urban lookup to be joined onto responses
-    edited_table
-        name of table to write processed data to
-    """
-    df = extract_from_table(input_survey_table)
-    rural_urban_lookup_df = get_or_create_spark_session().read.csv(
-        rural_urban_lookup_path,
-        header=True,
-        schema="""
-            lower_super_output_area_code_11 string,
-            cis_rural_urban_classification string
-        """,
-    )  # Prefer version from sample
-    df = df.join(
-        F.broadcast(rural_urban_lookup_df),
-        how="left",
-        on="lower_super_output_area_code_11",
-    )
-    df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
-
-    df = assign_multigenerational(
-        df=df,
-        column_name_to_assign="multigenerational_household",
-        participant_id_column="participant_id",
-        household_id_column="ons_household_id",
-        visit_date_column="visit_datetime",
-        date_of_birth_column="date_of_birth",
-        country_column="country_name_12",
-    )  # Includes school year and age_at_visit derivations
-
-    df = derive_age_based_columns(df, "age_at_visit")
-    df = assign_age_group_school_year(
-        df,
-        country_column="country_name_12",
-        age_column="age_at_visit",
-        school_year_column="school_year",
-        column_name_to_assign="age_group_school_year",
-    )
-    df = assign_work_patient_facing_now(
-        df,
-        column_name_to_assign="work_patient_facing_now",
-        age_column="age_at_visit",
-        work_healthcare_column="work_health_care_patient_facing",
-    )
-    df = assign_work_person_facing_now(
-        df,
-        column_name_to_assign="work_person_facing_now",
-        work_patient_facing_now_column="work_patient_facing_now",
-        work_social_care_column="work_social_care",
-        age_at_visit_column="age_at_visit",
-    )
-
-    # df = update_work_facing_now_column(
-    #     df,
-    #     "work_patient_facing_now",
-    #     "work_status_v0",
-    #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
-    # )
-    df = reclassify_work_variables(df, drop_original_variables=False)
-    df = fill_forward_only_to_nulls(
-        df,
-        id="participant_id",
-        date="visit_datetime",
-        list_fill_forward=[
-            "work_status_v0",
-            "work_status_v1",
-            "work_status_v2",
-            "work_location",
-            "work_not_from_home_days_per_week",
-        ],
-    )
-    df = create_formatted_datetime_string_columns(df)
-    update_table(df, output_survey_table, write_mode="overwrite")
-    return {"output_survey_table": output_survey_table}
 
 
 @register_pipeline_stage("validate_survey_responses")
@@ -1282,6 +1190,7 @@ def calculate_household_level_populations(
     household_level_populations_table
         HIVE table to write household level populations to
     """
+    # TODO: add rural urban lookup to this.
     address_lookup_df = extract_from_table(address_lookup_table).select("unique_property_reference_code", "postcode")
     postcode_lookup_df = (
         extract_from_table(postcode_lookup_table)

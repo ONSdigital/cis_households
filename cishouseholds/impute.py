@@ -1430,7 +1430,7 @@ def impute_date_by_k_nearest_neighbours(
     return df.drop("_IMPUTED_month", "_IMPUTED_year")
 
 
-def post_imputation_wrapper(df: DataFrame, key_columns_imputed_df: DataFrame):
+def post_imputation_wrapper(key_columns_imputed_df: DataFrame):
     """
     Prepare imputed value lookup and join imputed values onto survey responses.
     """
@@ -1447,9 +1447,6 @@ def post_imputation_wrapper(df: DataFrame, key_columns_imputed_df: DataFrame):
         "participant_id",
         *lookup_columns,
     )
-
-    df_no_imputation_col = df.drop(*[col for col in key_columns_imputed_df.columns if col != "participant_id"])
-
-    df_with_imputed_values = df_no_imputation_col.join(key_columns_imputed_df, on="participant_id", how="left")
+    return new_imputed_value_lookup
 
     return df_with_imputed_values, new_imputed_value_lookup

@@ -7,10 +7,15 @@ from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_any_symptoms_around_visit
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
+from cishouseholds.derive import assign_date_difference
+from cishouseholds.derive import assign_grouped_variable_from_days_since
 from cishouseholds.derive import assign_true_if_any
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
+from cishouseholds.edit import conditionally_set_column_values
 from cishouseholds.edit import fuzzy_update
+from cishouseholds.edit import normalise_think_had_covid_columns
 from cishouseholds.edit import update_think_have_covid_symptom_any
+from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.expressions import all_columns_values_in_list
 from cishouseholds.expressions import count_occurrence_in_row
 from cishouseholds.impute import fill_forward_event
@@ -20,6 +25,7 @@ from cishouseholds.pipeline.post_union_transformations import derive_contact_any
 def symptom_transformations(df: DataFrame) -> DataFrame:
     """Apply all transformations related to symptom columns in order."""
     df = symptom_column_transformations(df).custom_checkpoint()
+    df = multi_stage_transformations(df).custom_checkpoint()
     df = clean_covid_event_detail_cols(df).custom_checkpoint()  # a26 stata logic
     df = clean_covid_test_swab(df).custom_checkpoint()  # a25 stata logic
     df = fill_forward(df).custom_checkpoint()
@@ -28,6 +34,34 @@ def symptom_transformations(df: DataFrame) -> DataFrame:
 
 
 def symptom_column_transformations(df: DataFrame) -> DataFrame:
+    """"""
+    df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_onset_date", "visit_datetime")
+
+    contact_date = ["last_suspected_covid_contact_date", "last_covid_contact_date"]
+
+    covid_contact = ["contact_suspected_positive_covid_last_28_days", "contact_known_positive_covid_last_28_days"]
+
+    contact_type = ["last_suspected_covid_contact_type", "last_covid_contact_type"]
+
+    for l in range(len(contact_date)):
+        # correct covid contact based on date
+        df = update_to_value_if_any_not_null(
+            df=df,
+            column_name_to_assign=covid_contact[l - 1],
+            true_false_values=["Yes", "No"],
+            column_list=[contact_date[l - 1]],
+        )
+
+        # correct covid type based on date
+        df = update_to_value_if_any_not_null(
+            df=df,
+            column_name_to_assign=contact_type[l - 1],
+            true_false_values=[F.col(contact_type[l - 1]), None],
+            column_list=[
+                contact_date[l - 1],
+            ],
+        )
+
     df = count_value_occurrences_in_column_subset_row_wise(
         df=df,
         column_name_to_assign="think_have_covid_symptom_count",
@@ -148,6 +182,62 @@ def symptom_column_transformations(df: DataFrame) -> DataFrame:
         update_column="think_had_covid_onset_date",
         min_matches=len(think_had_covid_columns),  # num available columns - (4 + date column itself)
         right_df_filter=F.col("think_had_covid_onset_date") > F.col("visit_datetimeg"),
+    )
+    return df
+
+
+def multi_stage_transformations(df: DataFrame) -> DataFrame:
+    """"""
+    invalid_covid_date = "2019-11-17"
+
+    conditions = {
+        "think_had_covid_onset_date": (
+            (F.col("think_had_covid_onset_date").isNotNull())
+            & (F.col("think_had_covid_onset_date") < invalid_covid_date)
+        ),
+        "last_suspected_covid_contact_date": (
+            (F.col("last_suspected_covid_contact_date").isNotNull())
+            & (F.col("last_suspected_covid_contact_date") < invalid_covid_date)
+        ),
+        "last_covid_contact_date": (
+            (F.col("last_covid_contact_date").isNotNull()) & (F.col("last_covid_contact_date") < invalid_covid_date)
+        ),
+    }
+    col_value_maps = {
+        "think_had_covid_onset_date": {
+            "think_had_covid_onset_date": None,
+            "think_had_covid_contacted_nhs": None,
+            "think_had_covid_admitted_to_hospital": None,
+            "think_had_covid_symptom_": None,
+        },
+        "last_suspected_covid_contact_date": {
+            "last_suspected_covid_": None,
+            "think_had_covid_onset_date": None,
+            "contact_suspected_positive_covid_last_28_days": "No",
+        },
+        "last_covid_contact_date": {
+            "last_covid_": None,
+            "think_had_covid_onset_date": None,
+            "contact_known_positive_covid_last_28_days": "No",
+        },
+    }
+    df = assign_grouped_variable_from_days_since(
+        df=df,
+        binary_reference_column="think_had_covid",
+        days_since_reference_column="days_since_think_had_covid",
+        column_name_to_assign="days_since_think_had_covid_group",
+    )
+    df = normalise_think_had_covid_columns(df, "think_had_covid_symptom")
+    for condition in list(conditions.keys()):
+        df = conditionally_set_column_values(
+            df=df,
+            condition=conditions.get(condition),
+            cols_to_set_to_value=col_value_maps.get(condition),
+        )
+
+    df = df.withColumn(
+        "think_had_covid",
+        F.when(conditions.get("think_had_covid_onset_date"), "No").otherwise(F.col("think_had_covid")),
     )
     return df
 
