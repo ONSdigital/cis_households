@@ -1,7 +1,6 @@
 from typing import Any
 from typing import Dict
 
-
 validation_schemas: Dict[str, Dict[str, Any]]
 
 string_dict = {"type": "string"}
@@ -9,6 +8,8 @@ string_dict = {"type": "string"}
 integer_dict = {"type": "integer"}
 
 long_dict = {"type": "long"}
+
+float_dict = {"type": "double"}
 
 swab_allowed_pcr_results = ["Inconclusive", "Negative", "Positive", "Rejected"]
 
@@ -427,6 +428,25 @@ validation_schemas = {
         "CH4-Target": {"type": "string", "allowed": ["MS2"]},
         "CH4-Result": {"type": "string", "allowed": swab_allowed_pcr_results},
         "CH4-Cq": {"type": "double", "nullable": True, "min": 0},
+    },
+    "brants_bridge_schema": {
+        "Test": string_dict,
+        "Plate": string_dict,
+        "Sample Name": string_dict,
+        "Well": string_dict,
+        "Well_Number": integer_dict,
+        "MS2 CT Threshold": integer_dict,
+        "Flu A/B CT Threshold": integer_dict,
+        "RSV CT Threshold": integer_dict,
+        "C19 CT Threshold": integer_dict,
+        "MS2 Ct": float_dict,
+        "Flu A/B Ct": string_dict,
+        "RSV Ct": string_dict,
+        "C19 Ct": string_dict,
+        "MS2": string_dict,
+        "Flu A/B": string_dict,
+        "RSV": string_dict,
+        "C19": string_dict,
     },
     "lab_results_glasgow_schema": {
         "Sample": {"type": "string", "regex": r"ONS\d{8}"},
