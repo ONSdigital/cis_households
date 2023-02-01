@@ -37,6 +37,7 @@ from cishouseholds.edit import correct_date_ranges
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import normalise_think_had_covid_columns
+from cishouseholds.edit import nullify_columns_before_date
 from cishouseholds.edit import survey_edit_auto_complete
 from cishouseholds.edit import update_column_in_time_window
 from cishouseholds.edit import update_column_values_from_map
@@ -187,6 +188,32 @@ def transform_survey_responses_generic(df: DataFrame) -> DataFrame:
         F.when(reduce(or_, [~F.col(col).eqNullSafe(F.col(f"{col}_pdc")) for col in date_cols_to_correct]), "Yes"),
     )
     df = df.drop(*[f"{col}_pdc" for col in date_cols_to_correct])
+
+    df = nullify_columns_before_date(
+        df,
+        column_list=[
+            "sympt_covid_loss_of_appetite",
+            "sympt_covid_runny_nose_sneezing",
+            "sympt_covid_noisy_breathing",
+            "sympt_covid_trouble_sleeping",
+        ],
+        date_column="visit_datetime",
+        date="2021-08-26",
+    )
+    df = nullify_columns_before_date(
+        df,
+        column_list=[
+            "sympt_covid_chest_pain",
+            "sympt_covid_difficult_concemtra",
+            "sympt_covid_lowmood_notenjoying",
+            "sympt_covid_memoryloss_confused",
+            "sympt_covid_palpitations",
+            "sympt_covid_vertigo_dizziness",
+            "sympt_covid_worry_anxiety",
+        ],
+        date_column="visit_datetime",
+        date="2022-01-26",
+    )
     df = assign_column_regex_match(
         df,
         "bad_email",

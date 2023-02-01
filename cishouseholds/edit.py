@@ -911,6 +911,15 @@ def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str):
     return df
 
 
+def nullify_columns_before_date(df: DataFrame, column_list: List[str], date_column: str, date: str):
+    """
+    Nullify the values of a list of column names if the date in the `date_column` is before the specified `date`.
+    """
+    for col in [c for c in column_list if c in df.columns]:
+        df = df.withColumn(col, F.when(F.col(date_column) >= date, F.col(col)))
+    return df
+
+
 def map_column_values_to_null(df: DataFrame, column_list: List[str], value: str):
     """
     Map columns from column list with given value to null
