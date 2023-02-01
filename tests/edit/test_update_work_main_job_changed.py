@@ -40,6 +40,20 @@ def test_update_work_main_job_changed(spark_session):
         schema=schema
     )
 
+    expected_df_2 = spark_session.createDataFrame(
+        # fmt: off
+        data=[
+            (1, None, None, None, 1, "No"),#first row and none null response
+            (1, 1,    0,    0,    1, "No"), #d hasn't changed
+            (1, 1,    2,    0,    2, "No"),
+            (1, 1,    2,    0,    None, "No"), #only d has changed
+            (1, None, None, None, 3, "No"),
+            (1, None, None, None, 5, "No")
+        ],
+        # fmt: on
+        schema=schema
+    )
+
     output_df = update_work_main_job_changed(
         df=input_df,
         column_name_to_update="changed",

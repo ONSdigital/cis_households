@@ -61,7 +61,7 @@ def update_work_main_job_changed(
                         (F.col("ROW") == 1) & any_column_not_null(change_to_any_columns)
                     )  # patient facing not null and first row
                     | (
-                        (reduce(or_, [y(c) for c in change_to_any_columns], F.lit(True)))
+                        reduce(or_, [y(c) for c in change_to_any_columns], F.lit(False))
                     )  # or patient facing changed i.e Yes to No
                 ),
                 "Yes",
