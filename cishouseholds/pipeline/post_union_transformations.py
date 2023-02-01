@@ -1094,9 +1094,6 @@ def union_dependent_derivations(df):
     )
 
     df = create_formatted_datetime_string_columns(df)
-
-    df = clean_covid_test_swab(df)  # a25 stata logic
-    df = clean_covid_event_detail_cols(df)  # a26 stata logic
     return df
 
 
@@ -1144,6 +1141,29 @@ def fill_forward_events_for_key_columns(df):
     """
     Function that contains all fill_forward_event calls required to implement STATA-based last observation carried forward logic.
     """
+    # Derive these after fill forwards and other changes to dates
+    df = fill_forward_event(
+        df=df,
+        event_indicator_column="contact_suspected_positive_covid_last_28_days",
+        event_date_column="last_suspected_covid_contact_date",
+        event_date_tolerance=7,
+        detail_columns=["last_suspected_covid_contact_type"],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+        visit_id_column="visit_id",
+    )
+    df = fill_forward_event(
+        df=df,
+        event_indicator_column="contact_known_positive_covid_last_28_days",
+        event_date_column="last_covid_contact_date",
+        event_date_tolerance=7,
+        detail_columns=["last_covid_contact_type"],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+        visit_id_column="visit_id",
+    )
+    df = clean_covid_test_swab(df)  # a25 stata logic
+    df = clean_covid_event_detail_cols(df)  # a26 stata logic
     df = fill_forward_event(
         df=df,
         event_indicator_column="think_had_covid",
@@ -1179,27 +1199,6 @@ def fill_forward_events_for_key_columns(df):
             "think_had_covid_symptom_palpitations",
             "think_had_covid_symptom_low_mood",
         ],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
-        visit_id_column="visit_id",
-    )
-    # Derive these after fill forwards and other changes to dates
-    df = fill_forward_event(
-        df=df,
-        event_indicator_column="contact_suspected_positive_covid_last_28_days",
-        event_date_column="last_suspected_covid_contact_date",
-        event_date_tolerance=7,
-        detail_columns=["last_suspected_covid_contact_type"],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
-        visit_id_column="visit_id",
-    )
-    df = fill_forward_event(
-        df=df,
-        event_indicator_column="contact_known_positive_covid_last_28_days",
-        event_date_column="last_covid_contact_date",
-        event_date_tolerance=7,
-        detail_columns=["last_covid_contact_type"],
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",
         visit_id_column="visit_id",
