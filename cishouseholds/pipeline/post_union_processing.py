@@ -82,6 +82,7 @@ def date_corrections(df: DataFrame):
         F.when(reduce(or_, [~F.col(col).eqNullSafe(F.col(f"{col}_pdc")) for col in date_cols_to_correct]), "Yes"),
     )
     df = df.drop(*[f"{col}_pdc" for col in date_cols_to_correct])
+    return df
 
 
 def generic_processing(df: DataFrame):

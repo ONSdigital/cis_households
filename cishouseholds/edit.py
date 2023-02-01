@@ -28,8 +28,9 @@ def fuzzy_update(
     update_column: str,
     min_matches: int,
     id_column: str,
+    visit_date_column: str,
     right_df: DataFrame = None,
-    right_df_filter=None,
+    filter_out_of_range: bool = False,
 ):
     """
     Update a column value if more than 'min_matches' values match in a series of column values 'cols_to_check'.
@@ -42,15 +43,17 @@ def fuzzy_update(
     if right_df is None:
         right_df = left_df
     right_df = right_df.select(id_column, update_column, *cols_to_check).filter(F.col(update_column).isNotNull())
-    for c in [*cols_to_check, update_column]:
+
+    for c in [c for c in right_df.columns if c != id_column]:
         right_df = right_df.withColumnRenamed(c, f"{c}_right")
+
     left_df = left_df.withColumn("ROW_NUM_LEFT", F.row_number().over(window))
     right_df = right_df.withColumn("ROW_NUM_RIGHT", F.row_number().over(window))
 
-    if right_df_filter is not None:
-        right_df = right_df.filter(right_df_filter)
-
     df = left_df.join(right_df, on=id_column, how="left")
+
+    if filter_out_of_range:
+        df = df.filter(F.col(f"{update_column}_right") <= F.col(visit_date_column))
 
     df = df.withColumn(
         "TEMP",

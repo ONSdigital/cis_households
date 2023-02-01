@@ -18,8 +18,10 @@ from cishouseholds.derive import derive_age_based_columns
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_person_count_from_ages
+from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
+from cishouseholds.impute import fill_forward_from_last_change
 from cishouseholds.impute import fill_forward_only_to_nulls
 from cishouseholds.pipeline.job_transformations import reclassify_work_variables
 from cishouseholds.pipeline.post_union_transformations import create_formatted_datetime_string_columns
@@ -34,7 +36,7 @@ def demographic_transformations(df: DataFrame):
     pass
 
 
-def pre_processing(df: DataFrame):
+def generic_processing(df: DataFrame):
     """"""
     df = assign_column_regex_match(
         df,
@@ -53,7 +55,12 @@ def pre_processing(df: DataFrame):
     df = df.withColumn(
         "study_cohort", F.when(F.col("study_cohort").isNull(), "Original").otherwise(F.col("study_cohort"))
     )
-
+    df = update_to_value_if_any_not_null(
+        df=df,
+        column_name_to_assign="been_outside_uk",
+        true_false_values=["Yes", "No"],
+        column_list=["been_outside_uk_last_country", "been_outside_uk_last_return_date"],
+    )
     return df
 
 
@@ -149,6 +156,18 @@ def populate_missing_data(df: DataFrame):
             "date_of_birth",
             "ethnicity",
         ],
+    )
+    df = fill_forward_from_last_change(
+        df=df,
+        fill_forward_columns=[
+            "been_outside_uk_last_country",
+            "been_outside_uk_last_return_date",
+            "been_outside_uk",
+        ],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+        record_changed_column="been_outside_uk",
+        record_changed_value="Yes",
     )
     return df
 
