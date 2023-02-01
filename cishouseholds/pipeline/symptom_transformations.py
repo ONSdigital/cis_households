@@ -142,7 +142,7 @@ def derive_new_columns(df: DataFrame) -> DataFrame:
     - any_think_have_covid_symptom_or_now
 
     Reference columns:
-    -
+    - think_had_covid_symptom_*
     """
     df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_onset_date", "visit_datetime")
 
