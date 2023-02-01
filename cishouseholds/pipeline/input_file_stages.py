@@ -123,6 +123,19 @@ swab_results_parameters = {
     "source_file_column": "swab_results_source_file",
 }
 
+brants_bridge_parameters = {
+    "stage_name": "brants_bridge_ETL",
+    "dataset_name": "brants_bridge",
+    "id_column": "swab_sample_barcode",
+    "validation_schema": validation_schemas["brants_bridge_schema"],
+    "datetime_column_map": None,
+    "column_name_map": column_name_maps["brants_bridge_variable_name_map"],
+    "transformation_functions": [],
+    "sep": ",",
+    "cast_to_double_list": [],
+    "source_file_column": "brants_bridge_source_file",
+}
+
 blood_results_parameters = {
     "stage_name": "blood_results_ETL",
     "dataset_name": "blood_results",
