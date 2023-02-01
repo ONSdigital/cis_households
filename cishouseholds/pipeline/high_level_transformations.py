@@ -2303,7 +2303,7 @@ def symptom_column_transformations(df):
         ],
         count_if_value="Yes",
     )
-    df = updte_think_have_covid_symptom_any(
+    df = update_think_have_covid_symptom_any(
         df=df,
         column_name_to_update="think_have_covid_symptom_any",
     )
