@@ -15,7 +15,6 @@ from pyspark.sql import DataFrame
 from pyspark.sql import Window
 
 from cishouseholds.expressions import all_columns_null
-from cishouseholds.expressions import any_column_equal_value
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import count_occurrence_in_row
@@ -27,9 +26,8 @@ def update_work_main_job_changed(
     df: DataFrame,
     column_name_to_update: str,
     participant_id_column: str,
-    reference_not_null_columns: List[str],
-    reference_value_columns: List[str],
-    value: Any,
+    change_to_any_columns: List[str],
+    change_to_not_null_columns: List[str],
 ):
     """
     re-derive work main job changed to denote whether any of the work variables differ between rows.
@@ -37,12 +35,12 @@ def update_work_main_job_changed(
     if column_name_to_update not in df.columns:
         df = df.withColumn(column_name_to_update, F.lit(None))
 
-    reference_not_null_columns = [c for c in reference_not_null_columns if c in df.columns]
-    reference_value_columns = [c for c in reference_value_columns if c in df.columns]
+    change_to_any_columns = [c for c in change_to_any_columns if c in df.columns]
+    change_to_not_null_columns = [c for c in change_to_not_null_columns if c in df.columns]
 
     window = Window.partitionBy(participant_id_column).orderBy(F.lit("A"))
-    x = lambda c: (~F.lag(c, 1).over(window).eqNullSafe(F.col(c))) & (F.col(c).isNotNull())  # noqa: E731
-    y = lambda c: (~F.lag(c, 1).over(window).eqNullSafe(F.col(c))) & (F.col(c) == value)  # noqa: E731
+    x = lambda c: (~F.lag(c, 1).over(window).eqNullSafe(F.col(c))) & (F.col(c).isNotNull())  # noqa:
+    y = lambda c: (~F.lag(c, 1).over(window).eqNullSafe(F.col(c)))  # noqa: E731
 
     df = df.withColumn("ROW", F.row_number().over(window))
     df = df.withColumn(
@@ -51,12 +49,20 @@ def update_work_main_job_changed(
             ~F.col(column_name_to_update).eqNullSafe("Yes"),
             F.when(
                 (
-                    ((F.col("ROW") == 1) & any_column_not_null(reference_not_null_columns))
-                    | (reduce(or_, [x(c) for c in reference_not_null_columns], F.lit(False)))
+                    (
+                        (F.col("ROW") == 1) & any_column_not_null(change_to_not_null_columns)
+                    )  # title is not null and is first row
+                    | (
+                        reduce(or_, [x(c) for c in change_to_not_null_columns], F.lit(False))
+                    )  # work title goes from null to not null
                 )
-                & (
-                    ((F.col("ROW") == 1) & any_column_equal_value(reference_value_columns, value))
-                    | (reduce(or_, [y(c) for c in reference_value_columns], F.lit(True)))
+                | (
+                    (
+                        (F.col("ROW") == 1) & any_column_not_null(change_to_any_columns)
+                    )  # patient facing not null and first row
+                    | (
+                        reduce(or_, [y(c) for c in change_to_any_columns], F.lit(False))
+                    )  # or patient facing changed i.e Yes to No
                 ),
                 "Yes",
             ).otherwise("No"),

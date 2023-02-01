@@ -432,18 +432,17 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
         df,
         column_name_to_update="work_main_job_changed",
         participant_id_column="participant_id",
-        reference_not_null_columns=[
+        change_to_not_null_columns=[
             "work_main_job_title",
             "work_main_job_role",
             "work_sector",
             "work_sector_other",
             "work_health_care_area",
         ],
-        reference_value_columns=[
+        change_to_any_columns=[
             "work_nursing_or_residential_care_home",
             "work_direct_contact_patients_or_clients",
         ],
-        value="Yes",
     )
 
     df = df.drop(

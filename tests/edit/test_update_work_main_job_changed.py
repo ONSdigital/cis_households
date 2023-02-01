@@ -9,17 +9,18 @@ def test_update_work_main_job_changed(spark_session):
         a integer,
         b integer,
         c integer,
+        d integer,
         changed string
         """
     input_df = spark_session.createDataFrame(
         # fmt: off
         data=[
-            (1, None, None, None,  None),
-            (1, 1,    0,    0,    "Yes"),
-            (1, 1,    2,    0,     None),
-            (1, 1,    2,    0,     "No"),
-            (1, None, None, None,  "Yes"),
-            (1, None, None, None,  None)
+            (1, None, None, None,  1, None),
+            (1, 1,    0,    0,    1, "No"),
+            (1, 1,    2,    0,     2, None),
+            (1, 1,    2,    0,     None, "No"),
+            (1, None, None, None,  3, "Yes"),
+            (1, None, None, None,  5, "No")
         ],
         # fmt: on
         schema=schema
@@ -28,12 +29,26 @@ def test_update_work_main_job_changed(spark_session):
     expected_df = spark_session.createDataFrame(
         # fmt: off
         data=[
-            (1, None, None, None, "No"),
-            (1, 1,    0,    0,    "Yes"),
-            (1, 1,    2,    0,    "Yes"),
-            (1, 1,    2,    0,    "No"),
-            (1, None, None, None, "Yes"),
-            (1, None, None, None, "No")
+            (1, None, None, None, 1, "Yes"),#first row and none null response
+            (1, 1,    0,    0,    1, "Yes"), #d hasn't changed
+            (1, 1,    2,    0,    2, "Yes"),
+            (1, 1,    2,    0,    None, "Yes"), #only d has changed
+            (1, None, None, None, 3, "Yes"),
+            (1, None, None, None, 5, "Yes")
+        ],
+        # fmt: on
+        schema=schema
+    )
+
+    expected_df_2 = spark_session.createDataFrame(
+        # fmt: off
+        data=[
+            (1, None, None, None, 1, "No"),#first row and none null response
+            (1, 1,    0,    0,    1, "No"), #d hasn't changed
+            (1, 1,    2,    0,    2, "No"),
+            (1, 1,    2,    0,    None, "No"), #only d has changed
+            (1, None, None, None, 3, "No"),
+            (1, None, None, None, 5, "No")
         ],
         # fmt: on
         schema=schema
@@ -43,7 +58,8 @@ def test_update_work_main_job_changed(spark_session):
         df=input_df,
         column_name_to_update="changed",
         participant_id_column="id",
-        reference_columns=["a", "b", "c"],
+        change_to_any_columns=["d"],
+        change_to_not_null_columns=["a", "b", "c"],
     )
 
     assert_df_equality(output_df, expected_df, ignore_nullable=True, ignore_row_order=True)
