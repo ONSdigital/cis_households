@@ -3,7 +3,7 @@ import pytest
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.job_transformations import job_transformations
 from cishouseholds.pipeline.post_union_transformations import post_union_transformations
-from cishouseholds.pipeline.symptom_transformations import symptom_transformations
+from cishouseholds.pipeline.covid_event_transformations import symptom_transformations
 
 
 @pytest.fixture

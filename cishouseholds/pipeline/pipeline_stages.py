@@ -77,7 +77,7 @@ from cishouseholds.pipeline.post_union_transformations import post_union_transfo
 from cishouseholds.pipeline.reporting import count_variable_option
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import generate_lab_report
-from cishouseholds.pipeline.symptom_transformations import symptom_transformations
+from cishouseholds.pipeline.covid_event_transformations import symptom_transformations
 from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
@@ -108,6 +108,18 @@ def register_pipeline_stage(key):
 
     return _add_pipeline_stage
 
+
+@register_pipeline_stage("job_transformations")
+def execute_job_transformations(input_survey_table:str,output_survey_table:str,soc_lookup_table:str,job_lookup_table:str=None):
+    """"""
+    df = extract_from_table(input_survey_table)
+    soc_lookup_df = extract_from_table(soc_lookup_table)
+    if check_table_exists(job_lookup_table):
+        job_lookup_df = extract_from_table(job_lookup_table,break_lineage=True)
+    df,job_lookup_df = job_transformations(df)
+    update_table(df,output_survey_table,"overwrite")
+    update_table(job_lookup_df,job_lookup_table)
+    return {"output_survey_table":output_survey_table}
 
 @register_pipeline_stage("blind_csv_to_table")
 def blind_csv_to_table(path: str, table_name: str, sep: str = "|"):

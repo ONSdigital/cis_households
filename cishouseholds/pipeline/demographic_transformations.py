@@ -2,7 +2,7 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import Window
 
-from cishouseholds.derive import assign_age_group_school_year
+from cishouseholds.derive import assign_age_group_school_year, assign_work_status_group
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_consent_code
@@ -38,6 +38,7 @@ def demographic_transformations(df: DataFrame):
 
 def generic_processing(df: DataFrame):
     """"""
+    df = assign_work_status_group(df, "work_status_group", "work_status_v0")
     df = assign_column_regex_match(
         df,
         "bad_email",

@@ -12,7 +12,7 @@ from cishouseholds.derive import assign_grouped_variable_from_days_since
 from cishouseholds.derive import assign_true_if_any
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.edit import conditionally_set_column_values
-from cishouseholds.edit import fuzzy_update
+# from cishouseholds.edit import fuzzy_update
 from cishouseholds.edit import normalise_think_had_covid_columns
 from cishouseholds.edit import update_think_have_covid_symptom_any
 from cishouseholds.edit import update_to_value_if_any_not_null
@@ -22,14 +22,14 @@ from cishouseholds.impute import fill_forward_event
 from cishouseholds.pipeline.post_union_transformations import derive_contact_any_covid_covid_variables
 
 
-def symptom_transformations(df: DataFrame) -> DataFrame:
-    """Apply all transformations related to symptom columns in order."""
+def covid_event_transformations(df: DataFrame) -> DataFrame:
+    """Apply all transformations related to covid event columns in order."""
     df = edit_existing_columns(df).custom_checkpoint()
     df = derive_new_columns(df).custom_checkpoint()
-    df = clean_covid_event_detail_cols(df).custom_checkpoint()  # a26 stata logic
-    df = clean_covid_test_swab(df).custom_checkpoint()  # a25 stata logic
     df = fill_forward(df).custom_checkpoint()
-    df = data_dependent_transformations(df).custom_checkpoint()
+    df = clean_inconsistent_event_detail_part_1(df).custom_checkpoint()  # a25 stata logic
+    df = clean_inconsistent_event_detail_part_2(df).custom_checkpoint()  # a26 stata logic
+    df = data_dependent_derivations(df).custom_checkpoint()
     return df
 
 
@@ -37,12 +37,16 @@ def edit_existing_columns(df: DataFrame) -> DataFrame:
     """
     Edited columns:
     - think_had_covid_onset_date
-    - think_had_covid_contacted_nhs
     - last_suspected_covid_contact_date
-    - think_had_covid_admitted_to_hospital
     - last_covid_contact_date
     - contact_suspected_positive_covid_last_28_days
+    - contact_known_positive_covid_last_28_days
+    - think_had_covid
     - think_had_covid_symptom_*
+
+    Reference columns:
+    - think_had_covid_admitted_to_hospital
+    - think_had_covid_contacted_nhs
     """
     invalid_covid_date = "2019-11-17"
 
@@ -113,20 +117,20 @@ def edit_existing_columns(df: DataFrame) -> DataFrame:
         F.when(conditions.get("think_had_covid_onset_date"), "No").otherwise(F.col("think_had_covid")),
     )
     think_had_covid_columns = [c for c in df.columns if c.startswith("think_had_covid_symptom_")]
-    df = fuzzy_update(
-        df,
-        id_column="participant_id",
-        cols_to_check=[
-            "other_covid_infection_test",
-            "other_covid_infection_test_results",
-            "think_had_covid_admitted_to_hospital",
-            "think_had_covid_contacted_nhs",
-            *think_had_covid_columns,
-        ],
-        update_column="think_had_covid_onset_date",
-        min_matches=len(think_had_covid_columns),  # num available columns - (4 + date column itself)
-        filter_out_of_range=True,
-    )
+    # df = fuzzy_update(
+    #     df,
+    #     id_column="participant_id",
+    #     cols_to_check=[
+    #         "other_covid_infection_test",
+    #         "other_covid_infection_test_results",
+    #         "think_had_covid_admitted_to_hospital",
+    #         "think_had_covid_contacted_nhs",
+    #         *think_had_covid_columns,
+    #     ],
+    #     update_column="think_had_covid_onset_date",
+    #     min_matches=len(think_had_covid_columns),  # num available columns - (4 + date column itself)
+    #     filter_out_of_range=True,
+    # )
     return df
 
 
@@ -240,7 +244,182 @@ def derive_new_columns(df: DataFrame) -> DataFrame:
     return df
 
 
-def clean_covid_event_detail_cols(df) -> DataFrame:
+def fill_forward(df) -> DataFrame:
+    """
+    Function that contains all fill_forward_event calls required to implement STATA-based last observation carried forward logic.
+    """
+    # Derive these after fill forwards and other changes to dates
+    df = fill_forward_event(
+        df=df,
+        event_indicator_column="contact_suspected_positive_covid_last_28_days",
+        event_date_column="last_suspected_covid_contact_date",
+        event_date_tolerance=7,
+        detail_columns=["last_suspected_covid_contact_type"],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+        visit_id_column="visit_id",
+    )
+    df = fill_forward_event(
+        df=df,
+        event_indicator_column="contact_known_positive_covid_last_28_days",
+        event_date_column="last_covid_contact_date",
+        event_date_tolerance=7,
+        detail_columns=["last_covid_contact_type"],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+        visit_id_column="visit_id",
+    )
+    return df
+
+
+def clean_inconsistent_event_detail_part_1(df: DataFrame) -> DataFrame:
+    """
+    Clean all variables related to the swab covid test.
+
+    Edited columns:
+     - think_had_covid
+     - other_covid_infection_test_results
+     - other_covid_infection_test
+     - think_had_covid_contacted_nhs
+     - think_had_covid_admitted_to_hospital
+    """
+    # Clean where date and/or symptoms are present, but ‘feeder question’ is no to thinking had covid.
+
+    df = df.withColumn(
+        "think_had_covid",
+        F.when(
+            (F.col("think_had_covid_onset_date").isNotNull()) | (F.col("think_had_covid_symptom_count") > 0), "Yes"
+        ).otherwise(F.col("think_had_covid")),
+    )
+    df = df.withColumn(
+        "other_covid_infection_test_results",
+        F.when(
+            (
+                (F.col("other_covid_infection_test_results") == "Negative")
+                & (F.col("think_had_covid_onset_date").isNull())
+                & (F.col("think_had_covid_symptom_count") == 0)
+            ),
+            None,
+        ).otherwise(F.col("other_covid_infection_test_results")),
+    )
+
+    # if the participant sais they have not had another covid test but there is a result for the test
+    # and covid symptoms present or a date where symptoms occurred exists or the user has been involved with a hospital
+    # due to covid then set to 'Yes'
+    df = df.withColumn(
+        "other_covid_infection_test",
+        F.when(
+            (~F.col("other_covid_infection_test").eqNullSafe("Yes"))
+            & (F.col("other_covid_infection_test_results").isNotNull())
+            & (
+                ((F.col("think_had_covid_symptom_count") > 0) | (F.col("think_had_covid_onset_date").isNotNull()))
+                | (
+                    (F.col("think_had_covid_admitted_to_hospital") == "Yes")
+                    & (F.col("think_had_covid_contacted_nhs") == "Yes")
+                )
+            ),
+            "Yes",
+        ).otherwise(F.col("other_covid_infection_test")),
+    )
+    df.cache()
+
+    # Reset no (0) to missing where ‘No’ overall and random ‘No’s given for other covid variables.
+    flag = (
+        (F.col("think_had_covid_symptom_count") == 0)
+        & (~F.col("other_covid_infection_test_results").eqNullSafe("Positive"))
+        & reduce(
+            and_,
+            (
+                (~F.col(c).eqNullSafe("Yes"))
+                for c in [
+                    "think_had_covid",
+                    "think_had_covid_contacted_nhs",
+                    "think_had_covid_admitted_to_hospital",
+                    "other_covid_infection_test",
+                ]
+            ),
+        )
+    )
+    for col in ["think_had_covid_contacted_nhs", "think_had_covid_admitted_to_hospital"]:
+        df = df.withColumn(col, F.when(flag, None).otherwise(F.col(col)))
+
+    for col in ["other_covid_infection_test", "other_covid_infection_test_results"]:
+        df = df.withColumn(
+            col,
+            F.when((flag) & (F.col("survey_response_dataset_major_version") == 0), None).otherwise(F.col(col)),
+        )
+
+    df.unpersist()
+    df.cache()
+
+    # Clean where admitted is 1 but no to ‘feeder question’ for v0 dataset.
+
+    for col in ["think_had_covid", "think_had_covid_admitted_to_hospital"]:
+        df = df.withColumn(
+            col,
+            F.when(
+                (F.col("think_had_covid_admitted_to_hospital") == "Yes")
+                & (~F.col("think_had_covid_contacted_nhs").eqNullSafe("Yes"))
+                & (~F.col("other_covid_infection_test").eqNullSafe("Yes"))
+                & (F.col("think_had_covid_symptom_count") == 0)
+                & (~F.col("other_covid_infection_test_results").eqNullSafe("Positive")),
+                "No",
+            ).otherwise(F.col(col)),
+        )
+
+    for col in ["think_had_covid_admitted_to_hospital", "think_had_covid_contacted_nhs"]:
+        df = df.withColumn(
+            col,
+            F.when(
+                (F.col("think_had_covid") == "No")
+                & (F.col("think_had_covid_admitted_to_hospital") == "Yes")
+                & (F.col("think_had_covid_contacted_nhs") == "Yes")
+                & (~F.col("other_covid_infection_test").eqNullSafe("Yes"))
+                & (F.col("other_covid_infection_test_results").isNull())
+                & (F.col("think_had_covid_onset_date").isNull())
+                & (F.col("think_had_covid_symptom_count") == 0)
+                & (F.col("survey_response_dataset_major_version") == 0),
+                "No",
+            ).otherwise(F.col(col)),
+        )
+
+    for col in ["think_had_covid_admitted_to_hospital", "other_covid_infection_test", "think_had_covid"]:
+        df = df.withColumn(
+            col,
+            F.when(
+                F.col("think_had_covid").isNull()
+                & (F.col("think_had_covid_admitted_to_hospital") == "Yes")
+                & (~F.col("think_had_covid_contacted_nhs").eqNullSafe("Yes"))
+                & (F.col("other_covid_infection_test") == "Yes")
+                & (F.col("other_covid_infection_test_results").isNull())
+                & (F.col("think_had_covid_onset_date").isNull())
+                & (F.col("think_had_covid_symptom_count") == 0)
+                & (F.col("survey_response_dataset_major_version") == 0),
+                "No",
+            ).otherwise(F.col(col)),
+        )
+
+    # Clean where admitted is 1 but no to ‘feeder question’.
+
+    df = df.withColumn(
+        "think_had_covid",
+        F.when(
+            (F.col("think_had_covid") != "Yes")
+            & (F.col("think_had_covid_admitted_to_hospital") == "Yes")
+            & (F.col("think_had_covid_symptom_count") == 0)
+            & (
+                (F.col("think_had_covid_contacted_nhs") != "Yes")
+                | (F.col("other_covid_infection_test_results").isNotNull())
+            )
+            & (F.col("other_covid_infection_test") == "Yes"),
+            "Yes",
+        ).otherwise(F.col("think_had_covid")),
+    )
+    df.unpersist()
+    return df
+
+
+def clean_inconsistent_event_detail_part_2(df) -> DataFrame:
     """
     Edited columns:
     - think_had_covid
@@ -494,214 +673,7 @@ def clean_covid_event_detail_cols(df) -> DataFrame:
     return df
 
 
-def clean_covid_test_swab(df: DataFrame) -> DataFrame:
-    """
-    Clean all variables related to the swab covid test.
-    """
-    # Clean where date and/or symptoms are present, but ‘feeder question’ is no to thinking had covid.
-
-    df = df.withColumn(
-        "think_had_covid",
-        F.when(
-            (F.col("think_had_covid_onset_date").isNotNull()) | (F.col("think_had_covid_symptom_count") > 0), "Yes"
-        ).otherwise(F.col("think_had_covid")),
-    )
-    df = df.withColumn(
-        "other_covid_infection_test_results",
-        F.when(
-            (
-                (F.col("other_covid_infection_test_results") == "Negative")
-                & (F.col("think_had_covid_onset_date").isNull())
-                & (F.col("think_had_covid_symptom_count") == 0)
-            ),
-            None,
-        ).otherwise(F.col("other_covid_infection_test_results")),
-    )
-
-    # if the participant sais they have not had another covid test but there is a result for the test
-    # and covid symptoms present or a date where symptoms occurred exists or the user has been involved with a hospital
-    # due to covid then set to 'Yes'
-    df = df.withColumn(
-        "other_covid_infection_test",
-        F.when(
-            (~F.col("other_covid_infection_test").eqNullSafe("Yes"))
-            & (F.col("other_covid_infection_test_results").isNotNull())
-            & (
-                ((F.col("think_had_covid_symptom_count") > 0) | (F.col("think_had_covid_onset_date").isNotNull()))
-                | (
-                    (F.col("think_had_covid_admitted_to_hospital") == "Yes")
-                    & (F.col("think_had_covid_contacted_nhs") == "Yes")
-                )
-            ),
-            "Yes",
-        ).otherwise(F.col("other_covid_infection_test")),
-    )
-    df.cache()
-
-    # Reset no (0) to missing where ‘No’ overall and random ‘No’s given for other covid variables.
-    flag = (
-        (F.col("think_had_covid_symptom_count") == 0)
-        & (~F.col("other_covid_infection_test_results").eqNullSafe("Positive"))
-        & reduce(
-            and_,
-            (
-                (~F.col(c).eqNullSafe("Yes"))
-                for c in [
-                    "think_had_covid",
-                    "think_had_covid_contacted_nhs",
-                    "think_had_covid_admitted_to_hospital",
-                    "other_covid_infection_test",
-                ]
-            ),
-        )
-    )
-    for col in ["think_had_covid_contacted_nhs", "think_had_covid_admitted_to_hospital"]:
-        df = df.withColumn(col, F.when(flag, None).otherwise(F.col(col)))
-
-    for col in ["other_covid_infection_test", "other_covid_infection_test_results"]:
-        df = df.withColumn(
-            col,
-            F.when((flag) & (F.col("survey_response_dataset_major_version") == 0), None).otherwise(F.col(col)),
-        )
-
-    df.unpersist()
-    df.cache()
-
-    # Clean where admitted is 1 but no to ‘feeder question’ for v0 dataset.
-
-    for col in ["think_had_covid", "think_had_covid_admitted_to_hospital"]:
-        df = df.withColumn(
-            col,
-            F.when(
-                (F.col("think_had_covid_admitted_to_hospital") == "Yes")
-                & (~F.col("think_had_covid_contacted_nhs").eqNullSafe("Yes"))
-                & (~F.col("other_covid_infection_test").eqNullSafe("Yes"))
-                & (F.col("think_had_covid_symptom_count") == 0)
-                & (~F.col("other_covid_infection_test_results").eqNullSafe("Positive")),
-                "No",
-            ).otherwise(F.col(col)),
-        )
-
-    for col in ["think_had_covid_admitted_to_hospital", "think_had_covid_contacted_nhs"]:
-        df = df.withColumn(
-            col,
-            F.when(
-                (F.col("think_had_covid") == "No")
-                & (F.col("think_had_covid_admitted_to_hospital") == "Yes")
-                & (F.col("think_had_covid_contacted_nhs") == "Yes")
-                & (~F.col("other_covid_infection_test").eqNullSafe("Yes"))
-                & (F.col("other_covid_infection_test_results").isNull())
-                & (F.col("think_had_covid_onset_date").isNull())
-                & (F.col("think_had_covid_symptom_count") == 0)
-                & (F.col("survey_response_dataset_major_version") == 0),
-                "No",
-            ).otherwise(F.col(col)),
-        )
-
-    for col in ["think_had_covid_admitted_to_hospital", "other_covid_infection_test", "think_had_covid"]:
-        df = df.withColumn(
-            col,
-            F.when(
-                F.col("think_had_covid").isNull()
-                & (F.col("think_had_covid_admitted_to_hospital") == "Yes")
-                & (~F.col("think_had_covid_contacted_nhs").eqNullSafe("Yes"))
-                & (F.col("other_covid_infection_test") == "Yes")
-                & (F.col("other_covid_infection_test_results").isNull())
-                & (F.col("think_had_covid_onset_date").isNull())
-                & (F.col("think_had_covid_symptom_count") == 0)
-                & (F.col("survey_response_dataset_major_version") == 0),
-                "No",
-            ).otherwise(F.col(col)),
-        )
-
-    # Clean where admitted is 1 but no to ‘feeder question’.
-
-    df = df.withColumn(
-        "think_had_covid",
-        F.when(
-            (F.col("think_had_covid") != "Yes")
-            & (F.col("think_had_covid_admitted_to_hospital") == "Yes")
-            & (F.col("think_had_covid_symptom_count") == 0)
-            & (
-                (F.col("think_had_covid_contacted_nhs") != "Yes")
-                | (F.col("other_covid_infection_test_results").isNotNull())
-            )
-            & (F.col("other_covid_infection_test") == "Yes"),
-            "Yes",
-        ).otherwise(F.col("think_had_covid")),
-    )
-    df.unpersist()
-    return df
-
-
-def fill_forward(df) -> DataFrame:
-    """
-    Function that contains all fill_forward_event calls required to implement STATA-based last observation carried forward logic.
-    """
-    df = fill_forward_event(
-        df=df,
-        event_indicator_column="think_had_covid",
-        event_date_column="think_had_covid_onset_date",
-        event_date_tolerance=7,
-        detail_columns=[
-            "other_covid_infection_test",
-            "other_covid_infection_test_results",
-            "think_had_covid_any_symptoms",
-            "think_had_covid_admitted_to_hospital",
-            "think_had_covid_contacted_nhs",
-            "think_had_covid_symptom_fever",
-            "think_had_covid_symptom_muscle_ache",
-            "think_had_covid_symptom_fatigue",
-            "think_had_covid_symptom_sore_throat",
-            "think_had_covid_symptom_cough",
-            "think_had_covid_symptom_shortness_of_breath",
-            "think_had_covid_symptom_headache",
-            "think_had_covid_symptom_nausea_or_vomiting",
-            "think_had_covid_symptom_abdominal_pain",
-            "think_had_covid_symptom_loss_of_appetite",
-            "think_had_covid_symptom_noisy_breathing",
-            "think_had_covid_symptom_runny_nose_or_sneezing",
-            "think_had_covid_symptom_more_trouble_sleeping",
-            "think_had_covid_symptom_diarrhoea",
-            "think_had_covid_symptom_loss_of_taste",
-            "think_had_covid_symptom_loss_of_smell",
-            "think_had_covid_symptom_memory_loss_or_confusion",
-            "think_had_covid_symptom_chest_pain",
-            "think_had_covid_symptom_vertigo_or_dizziness",
-            "think_had_covid_symptom_difficulty_concentrating",
-            "think_had_covid_symptom_anxiety",
-            "think_had_covid_symptom_palpitations",
-            "think_had_covid_symptom_low_mood",
-        ],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
-        visit_id_column="visit_id",
-    )
-    # Derive these after fill forwards and other changes to dates
-    df = fill_forward_event(
-        df=df,
-        event_indicator_column="contact_suspected_positive_covid_last_28_days",
-        event_date_column="last_suspected_covid_contact_date",
-        event_date_tolerance=7,
-        detail_columns=["last_suspected_covid_contact_type"],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
-        visit_id_column="visit_id",
-    )
-    df = fill_forward_event(
-        df=df,
-        event_indicator_column="contact_known_positive_covid_last_28_days",
-        event_date_column="last_covid_contact_date",
-        event_date_tolerance=7,
-        detail_columns=["last_covid_contact_type"],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
-        visit_id_column="visit_id",
-    )
-    return df
-
-
-def data_dependent_transformations(df: DataFrame) -> DataFrame:
+def data_dependent_derivations(df: DataFrame) -> DataFrame:
     df = assign_any_symptoms_around_visit(
         df=df,
         column_name_to_assign="any_symptoms_around_visit",

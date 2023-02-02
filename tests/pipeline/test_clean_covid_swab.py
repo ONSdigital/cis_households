@@ -1,7 +1,7 @@
 import pytest
 from chispa import assert_df_equality
 
-from cishouseholds.pipeline.symptom_transformations import clean_covid_test_swab
+from cishouseholds.pipeline.covid_event_transformations import clean_covid_test_swab
 
 # fmt: off
 
