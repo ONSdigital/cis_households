@@ -1,8 +1,10 @@
+from typing import Optional
+
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import Window
 
-from cishouseholds.derive import assign_age_group_school_year, assign_work_status_group
+from cishouseholds.derive import assign_age_group_school_year
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_consent_code
@@ -11,11 +13,9 @@ from cishouseholds.derive import assign_household_participant_count
 from cishouseholds.derive import assign_household_under_2_count
 from cishouseholds.derive import assign_multigenerational
 from cishouseholds.derive import assign_outward_postcode
-from cishouseholds.derive import assign_work_patient_facing_now
-from cishouseholds.derive import assign_work_person_facing_now
+from cishouseholds.derive import assign_work_status_group
 from cishouseholds.derive import clean_postcode
 from cishouseholds.derive import derive_age_based_columns
-from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_person_count_from_ages
 from cishouseholds.edit import update_to_value_if_any_not_null
@@ -23,16 +23,40 @@ from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_forward_from_last_change
 from cishouseholds.impute import fill_forward_only_to_nulls
-from cishouseholds.pipeline.job_transformations import reclassify_work_variables
-from cishouseholds.pipeline.post_union_transformations import create_formatted_datetime_string_columns
+from cishouseholds.impute import impute_and_flag
+from cishouseholds.impute import impute_by_distribution
+from cishouseholds.impute import impute_by_k_nearest_neighbours
+from cishouseholds.impute import impute_by_mode
+from cishouseholds.impute import impute_date_by_k_nearest_neighbours
+from cishouseholds.impute import merge_previous_imputed_values
+from cishouseholds.pipeline.load import extract_from_table
 
 
-def demographic_transformations(df: DataFrame):
+def demographic_transformations(
+    df: DataFrame,
+    log_directory: str,
+    geography_lookup_table: DataFrame,
+    imputed_value_lookup_table: Optional[DataFrame] = None,
+):
     """
     Modify the unioned survey response files by transforming the demographic data columns.
 
     call all functions in order necessary to update the demographic columns.
     """
+    df = generic_processing(df)
+    df = replace_design_weights_transformations(df)
+    df = ethnicity_transformations(df)
+    df = populate_missing_data(df)
+    df = data_dependent_transformations(df)
+    if imputed_value_lookup_table is not None:
+        imputed_value_lookup_df = extract_from_table(imputed_value_lookup_table)
+    else:
+        imputed_value_lookup_df = None
+    imputed_demographic_columns_df = impute_key_columns(df, imputed_value_lookup_df, log_directory)
+    geography_lookup_df = extract_from_table(geography_lookup_table)
+    df = geography_dependent_transformations(
+        df, geography_lookup_df=geography_lookup_df, imputed_demographic_columns_df=imputed_demographic_columns_df
+    )
     pass
 
 
@@ -83,7 +107,7 @@ def replace_design_weights_transformations(df: DataFrame) -> DataFrame:
     return df
 
 
-def ethnicty_transformations(df: DataFrame):
+def ethnicity_transformations(df: DataFrame):
     """"""
     ethnic_group_map = {
         "White": ["White-British", "White-Irish", "White-Gypsy or Irish Traveller", "Any other white background"],
@@ -125,7 +149,7 @@ def ethnicty_transformations(df: DataFrame):
         "Arab": "Other ethnic group-Arab",
         "Any other white": "Any other white background",
     }
-    df = update_column_values_from_map(df, ethnicity_value_map)
+    df = update_column_values_from_map(df, "ethnicity", ethnicity_value_map)
     df = assign_column_from_mapped_list_key(
         df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnic_group_map
     )
@@ -175,10 +199,72 @@ def populate_missing_data(df: DataFrame):
 
 def data_dependent_transformations(df: DataFrame):
     """"""
+    df = derive_people_in_household_count(df)
     pass
 
 
 # Transformations that require all data to be present in each row (as much as possible)
+
+
+def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_directory: str) -> DataFrame:
+    """
+    Impute missing values for key variables that are required for weight calibration.
+    Most imputations require geographic data being joined onto the response records.
+
+    Returns a single record per participant, with response values (when available) and missing values imputed.
+    """
+    unique_id_column = "participant_id"
+
+    # Get latest record for each participant, assumes that they have been filled forwards
+    participant_window = Window.partitionBy(unique_id_column).orderBy(F.col("visit_datetime").desc())
+    deduplicated_df = (
+        df.withColumn("ROW_NUMBER", F.row_number().over(participant_window))
+        .filter(F.col("ROW_NUMBER") == 1)
+        .drop("ROW_NUMBER")
+    )
+
+    if imputed_value_lookup_df is not None:
+        deduplicated_df = merge_previous_imputed_values(deduplicated_df, imputed_value_lookup_df, unique_id_column)
+
+    deduplicated_df = impute_and_flag(
+        deduplicated_df,
+        imputation_function=impute_by_mode,
+        reference_column="ethnicity_white",
+        group_by_column="ons_household_id",
+    ).custom_checkpoint()
+
+    deduplicated_df = impute_and_flag(
+        deduplicated_df,
+        impute_by_k_nearest_neighbours,
+        reference_column="ethnicity_white",
+        donor_group_columns=["cis_area_code_20"],
+        donor_group_column_weights=[5000],
+        log_file_path=log_directory,
+    ).custom_checkpoint()
+
+    deduplicated_df = impute_and_flag(
+        deduplicated_df,
+        imputation_function=impute_by_distribution,
+        reference_column="sex",
+        group_by_columns=["ethnicity_white", "region_code"],
+        first_imputation_value="Female",
+        second_imputation_value="Male",
+    ).custom_checkpoint()
+
+    deduplicated_df = impute_and_flag(
+        deduplicated_df,
+        impute_date_by_k_nearest_neighbours,
+        reference_column="date_of_birth",
+        donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
+        log_file_path=log_directory,
+    )
+
+    return deduplicated_df.select(
+        unique_id_column,
+        *["ethnicity_white", "sex", "date_of_birth"],
+        *[col for col in deduplicated_df.columns if col.endswith("_imputation_method")],
+        *[col for col in deduplicated_df.columns if col.endswith("_is_imputed")],
+    )
 
 
 def geography_dependent_transformations(

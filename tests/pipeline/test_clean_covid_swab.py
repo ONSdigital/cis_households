@@ -1,7 +1,7 @@
 import pytest
 from chispa import assert_df_equality
 
-from cishouseholds.pipeline.covid_event_transformations import clean_covid_test_swab
+from cishouseholds.pipeline.covid_event_transformations import clean_inconsistent_event_detail_part_1
 
 # fmt: off
 
@@ -68,7 +68,7 @@ from cishouseholds.pipeline.covid_event_transformations import clean_covid_test_
         )
     )
 )
-def test_clean_covid_test_swab(spark_session, input_data, expected_data):
+def test_clean_inconsistent_event_detail_part_1(spark_session, input_data, expected_data):
     input_df = spark_session.createDataFrame(
         data=input_data,
         schema="think_had_covid_onset_date string, other_covid_infection_test string, other_covid_infection_test_results string, think_had_covid_symptom_count integer, think_had_covid_contacted_nhs string, think_had_covid_admitted_to_hospital string, think_had_covid string, survey_response_dataset_major_version integer",
@@ -77,5 +77,5 @@ def test_clean_covid_test_swab(spark_session, input_data, expected_data):
         data=expected_data,
         schema="think_had_covid_onset_date string, other_covid_infection_test string, other_covid_infection_test_results string, think_had_covid_symptom_count integer, think_had_covid_contacted_nhs string, think_had_covid_admitted_to_hospital string, think_had_covid string,  survey_response_dataset_major_version integer",
     )
-    output_df = clean_covid_test_swab(input_df)
+    output_df = clean_inconsistent_event_detail_part_1(input_df)
     assert_df_equality(output_df, expected_df, ignore_nullable=True, ignore_row_order=True, ignore_column_order=True)

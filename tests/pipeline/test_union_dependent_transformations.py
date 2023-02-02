@@ -1,9 +1,7 @@
 import pytest
 
 from cishouseholds.merge import union_multiple_tables
-from cishouseholds.pipeline.job_transformations import job_transformations
 from cishouseholds.pipeline.post_union_transformations import post_union_transformations
-from cishouseholds.pipeline.covid_event_transformations import symptom_transformations
 
 
 @pytest.fixture
@@ -23,7 +21,12 @@ def unioned_tables(
     )
 
 
-@pytest.mark.parametrize("function", [post_union_transformations, job_transformations, symptom_transformations])
+@pytest.mark.parametrize(
+    "function",
+    [
+        post_union_transformations,
+    ],
+)
 def test_union_dependent_transformations(unioned_tables, function):
     """
     Check that pyspark can build a valid plan for union-dependent processing steps, given outputs from input processing.

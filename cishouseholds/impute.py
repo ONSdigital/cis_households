@@ -1448,5 +1448,3 @@ def post_imputation_wrapper(key_columns_imputed_df: DataFrame):
         *lookup_columns,
     )
     return new_imputed_value_lookup
-
-    return df_with_imputed_values, new_imputed_value_lookup

@@ -8,7 +8,6 @@ from cishouseholds.pipeline.pre_union_transformations import clean_survey_respon
 from cishouseholds.pipeline.pre_union_transformations import derive_additional_v1_2_columns
 from cishouseholds.pipeline.pre_union_transformations import digital_responses_preprocessing
 from cishouseholds.pipeline.pre_union_transformations import transform_participant_extract_digital
-from cishouseholds.pipeline.pre_union_transformations import transform_survey_responses_generic
 from cishouseholds.pipeline.pre_union_transformations import transform_survey_responses_version_0_delta
 from cishouseholds.pipeline.pre_union_transformations import transform_survey_responses_version_1_delta
 from cishouseholds.pipeline.pre_union_transformations import transform_survey_responses_version_2_delta
@@ -48,7 +47,6 @@ cis_digital_parameters = {
     "transformation_functions": [
         translate_welsh_survey_responses_version_digital,
         digital_responses_preprocessing,
-        transform_survey_responses_generic,
         transform_survey_responses_version_digital_delta,
         assign_has_been_columns,
     ],
@@ -65,7 +63,6 @@ survey_responses_v2_parameters = {
     "column_name_map": column_name_maps["survey_responses_v2_variable_name_map"],
     "datetime_column_map": survey_responses_v2_datetime_map,
     "transformation_functions": [
-        transform_survey_responses_generic,
         clean_survey_responses_version_2,
         derive_additional_v1_2_columns,
         transform_survey_responses_version_2_delta,
@@ -84,7 +81,6 @@ survey_responses_v1_parameters = {
     "column_name_map": column_name_maps["survey_responses_v1_variable_name_map"],
     "datetime_column_map": survey_responses_v1_datetime_map,
     "transformation_functions": [
-        transform_survey_responses_generic,
         clean_survey_responses_version_1,
         derive_additional_v1_2_columns,
         transform_survey_responses_version_1_delta,
@@ -102,7 +98,6 @@ survey_responses_v0_parameters = {
     "column_name_map": column_name_maps["survey_responses_v0_variable_name_map"],
     "datetime_column_map": survey_responses_v0_datetime_map,
     "transformation_functions": [
-        transform_survey_responses_generic,
         transform_survey_responses_version_0_delta,
     ],
     "sep": "|",

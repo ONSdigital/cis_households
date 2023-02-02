@@ -1,3 +1,5 @@
+from typing import Optional
+
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import Window
@@ -5,27 +7,28 @@ from pyspark.sql import Window
 from cishouseholds.derive import assign_work_patient_facing_now
 from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_status_group
+from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_job_description_string
-from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change_marked_subset
 from cishouseholds.impute import fill_forward_only_to_nulls
 from cishouseholds.merge import left_join_keep_right
+from cishouseholds.pipeline.lookup_and_regex_transformations import process_healthcare_regex
+from cishouseholds.pipeline.lookup_and_regex_transformations import reclassify_work_variables
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-
-from typing import Optional
-from cishouseholds.pipeline.lookup_and_regex_transformations import process_healthcare_regex, reclassify_work_variables
 
 
 # this wall feed in data from the joined healthcare regex
 
 
-def job_transformations(df: DataFrame, soc_lookup_df:DataFrame, job_lookup_df: Optional[DataFrame]=None):
+def job_transformations(df: DataFrame, soc_lookup_df: DataFrame, job_lookup_df: Optional[DataFrame] = None):
     """apply all transformations in order related to a persons vocation."""
     df = preprocessing(df)
-    job_lookup_df = create_job_lookup(df,soc_lookup_df=soc_lookup_df,lookup_df=job_lookup_df).custom_checkpoint()
-    df = left_join_keep_right(left_df=df,right_df=job_lookup_df,join_on_columns=["work_main_job_title", "work_main_job_role"])
+    job_lookup_df = create_job_lookup(df, soc_lookup_df=soc_lookup_df, lookup_df=job_lookup_df).custom_checkpoint()
+    df = left_join_keep_right(
+        left_df=df, right_df=job_lookup_df, join_on_columns=["work_main_job_title", "work_main_job_role"]
+    )
     df = fill_forwards_and_backwards(df).custom_checkpoint()
     df = data_dependent_derivations(df).custom_checkpoint()
     return df, job_lookup_df
@@ -35,15 +38,22 @@ def preprocessing(df: DataFrame):
     """"""
     df = clean_job_description_string(df, "work_main_job_title")
     df = clean_job_description_string(df, "work_main_job_role")
-    df = update_column_values_from_map(
-        df,
-        "work_not_from_home_days_per_week",
-        {"NA": "99", "N/A (not working/in education etc)": "99", "up to 1": "0.5"},
-    )
+    col_val_map = {
+        "work_health_care_area": {
+            "Secondary care for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services?": "Other",
+            "Primary care - for example in a GP or dentist": "Primary",
+            "Yes, in primary care, e.g. GP, dentist": "Primary",
+            "Secondary care - for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
+        },
+        "work_not_from_home_days_per_week": {"NA": "99", "N/A (not working/in education etc)": "99", "up to 1": "0.5"},
+    }
+    df = apply_value_map_multiple_columns(df, col_val_map)
     return df
 
 
-def get_unprocessed_rows(df:DataFrame, lookup_df:Optional[DataFrame] = None):
+def get_unprocessed_rows(df: DataFrame, lookup_df: Optional[DataFrame] = None):
     """"""
     join_on_columns = ["work_main_job_title", "work_main_job_role"]
     df = df.filter(any_column_not_null(join_on_columns))
@@ -61,17 +71,16 @@ def get_unprocessed_rows(df:DataFrame, lookup_df:Optional[DataFrame] = None):
     return df_to_process
 
 
-def create_job_lookup(df:DataFrame, soc_lookup_df:DataFrame, lookup_df:Optional[DataFrame]=None):
-    df_to_process = get_unprocessed_rows(df,lookup_df)
+def create_job_lookup(df: DataFrame, soc_lookup_df: DataFrame, lookup_df: Optional[DataFrame] = None):
+    df_to_process = get_unprocessed_rows(df, lookup_df)
     df_to_process = process_healthcare_regex(df_to_process)
     df_to_process = reclassify_work_variables(df_to_process)
-    df_to_process = df_to_process.join(soc_lookup_df,on=["work_main_job_title", "work_main_job_role"],how="left")
+    df_to_process = df_to_process.join(soc_lookup_df, on=["work_main_job_title", "work_main_job_role"], how="left")
 
     processed_df = df_to_process.select(
         "work_main_job_title",
         "work_main_job_role",
-
-        #from healthcare
+        # from healthcare
         "work_direct_contact_patients_or_clients",
         "work_social_care_area",
         "work_health_care_area",
@@ -81,12 +90,11 @@ def create_job_lookup(df:DataFrame, soc_lookup_df:DataFrame, lookup_df:Optional[
         "works_health_care",
         "work_nursing_or_residential_care_home",
         "regex_derived_job_sector",
-
-        #from reclassify
+        # from reclassify
         "work_status_v0",
         "work_status_v1",
         "work_status_v2",
-        "work_location"
+        "work_location",
     )
     if lookup_df is not None:
         return lookup_df.unionByName(processed_df)
@@ -177,4 +185,3 @@ def data_dependent_derivations(df: DataFrame) -> DataFrame:
     #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     # )
     return df
-

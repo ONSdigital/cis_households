@@ -5,15 +5,19 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_date_from_filename
+from cishouseholds.derive import assign_fake_id
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.edit import apply_value_map_multiple_columns
+from cishouseholds.edit import convert_null_if_not_in_list
 from cishouseholds.edit import correct_date_ranges
 from cishouseholds.edit import map_column_values_to_null
+from cishouseholds.edit import update_column_values_from_map
+from cishouseholds.edit import update_face_covering_outside_of_home
 from cishouseholds.pipeline.mapping import date_cols_min_date_dict
 
 
-def raw_copies():
+def raw_copies(df: DataFrame):
     raw_copy_list = [
         "think_had_covid_any_symptoms",
         "think_have_covid_symptom_any",
@@ -55,6 +59,7 @@ def raw_copies():
     df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
 
     df = assign_raw_copies(df, [column for column in original_copy_list if column in df.columns], "original")
+    return df
 
 
 def date_corrections(df: DataFrame):
@@ -75,7 +80,7 @@ def date_corrections(df: DataFrame):
         if col in df.columns
     ]
 
-    df = assign_raw_copies(df, date_cols_to_correct, "pdc")
+    df = assign_raw_copies(df, date_cols_to_correct, "pdc")  # pre date correction?
     df = correct_date_ranges(df, date_cols_to_correct, "visit_datetime", "2019-08-01", date_cols_min_date_dict)
     df = df.withColumn(
         "any_date_corrected",
@@ -179,3 +184,29 @@ def generic_processing(df: DataFrame):
             "work_not_from_home_days_per_week",
         ],
     )
+    col_val_map = {
+        "participant_withdrawal_reason": {
+            "Bad experience with tester / survey": "Bad experience with interviewer/survey",
+            "Swab / blood process too distressing": "Swab/blood process too distressing",
+            "Swab / blood process to distressing": "Swab/blood process too distressing",
+            "Do NOT Reinstate": "Do not reinstate",
+        },
+    }
+    df = apply_value_map_multiple_columns(df, col_val_map)
+
+    df = convert_null_if_not_in_list(df, "sex", options_list=["Male", "Female"])
+
+    df = update_face_covering_outside_of_home(
+        df=df,
+        column_name_to_update="face_covering_outside_of_home",
+        covered_enclosed_column="face_covering_other_enclosed_places",
+        covered_work_column="face_covering_work_or_education",
+    )
+    df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
+    df = update_column_values_from_map(
+        df=df,
+        column="smokes_nothing_now",
+        map={"Yes": "No", "No": "Yes"},
+        condition_column="currently_smokes_or_vapes",
+    )
+    return df
