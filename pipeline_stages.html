@@ -254,24 +254,6 @@ CIS area and country code.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.create_regex_lookup">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">create_regex_lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex_lookup_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.create_regex_lookup" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create or update a regex_lookup_table from an input_survey_table which is filtered
-to include only rows with non-null values in join_on_columns.
-If a regex_lookup_table is a parameter and exists then load the filtered df and get distinct value
-combinations for join_on_columns that are not already in the regex_lookup_table, and update the regex_lookup_table;
-otherwise create regex_lookup_table from distinct value combinations</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>input_survey_table</strong> – </p></li>
-<li><p><strong>regex_lookup_table</strong> – </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.create_vaccine_regex_lookup">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">create_vaccine_regex_lookup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex_lookup_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.create_vaccine_regex_lookup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create or update a regex_lookup_table from an input_survey_table which is filtered
@@ -317,28 +299,17 @@ Use one or more of the optional parameters.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.execute_fill_forwards_events">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">execute_fill_forwards_events</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.execute_fill_forwards_events" title="Permalink to this definition">¶</a></dt>
-<dd><p>Separates out the fill_forwards_event implementation of last observation carried forwards (LOCF) logic from STATA code</p>
+<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.execute_post_union_processing">
+<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">execute_post_union_processing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cohort_lookup_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">travel_countries_lookup_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tenure_group_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.execute_post_union_processing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Edit columns based on mappings from lookup tables. Often used to correct data quality issues.
+Requires lookup_tables to exist or be created prior to being called</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>input_survey_table</strong> – </p></li>
-<li><p><strong>output_survey_table</strong> – </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.execute_union_dependent_transformations">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">execute_union_dependent_transformations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.execute_union_dependent_transformations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transformations that require the union of the different input survey response files.
-Includes filling forwards or backwards over time and deriving new information over time.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>input_survey_table</strong> – </p></li>
+<li><p><strong>cohort_lookup_table</strong> – input table name for cohort corrections lookup table</p></li>
+<li><p><strong>travel_countries_lookup_table</strong> – input table name for travel_countries corrections lookup table</p></li>
+<li><p><strong>tenure_group_table</strong> – input table name for tenure_group corrections lookup table</p></li>
 <li><p><strong>output_survey_table</strong> – </p></li>
 </ul>
 </dd>
@@ -366,44 +337,6 @@ Returns dataframe for use in testing.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.geography_and_imputation_dependent_processing">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">geography_and_imputation_dependent_processing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rural_urban_lookup_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.geography_and_imputation_dependent_processing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Processing that depends on geographies and and imputed demographic infromation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>input_survey_table</strong> – name of the table containing data to be processed</p></li>
-<li><p><strong>rural_urban_lookup_path</strong> – path to the rural urban lookup to be joined onto responses</p></li>
-<li><p><strong>edited_table</strong> – name of table to write processed data to</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.impute_demographic_columns">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">impute_demographic_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imputed_values_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.impute_demographic_columns" title="Permalink to this definition">¶</a></dt>
-<dd><p>Impute values for sex, ethnicity and date of birth.
-Assumes that columns to be imputed have been filled forwards, as the latest value from each participant is used.
-Specific imputations are carried out for each key demographic column. The resulting columns should have no
-missing values.
-Stores imputed values in a lookup table, for reuse in subsequent imputation rounds. This table is also backed up
-with a datetime suffix.
-Also outputs a table of survey response records with imputed values.
-Note that this stage depends on geography information from the sample files being available
-(from sample file processing).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>input_survey_table</strong> – </p></li>
-<li><p><strong>imputed_values_table</strong> – name of HIVE table containing previously imputed values by participant</p></li>
-<li><p><strong>output_survey_table</strong> – </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.join_lookup_table">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">join_lookup_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lookup_table_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'left'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unjoinable_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">join_on_columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['work_main_job_title',</span> <span class="pre">'work_main_job_role']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lookup_transformations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pre_join_transformations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">post_join_transformations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_table_name_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'output_survey_table'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.join_lookup_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filters input_survey_table into an unjoinable_df, where all join_on_columns are null, and and applies any
@@ -428,24 +361,6 @@ The df and unjoinable_df are then recombined into an output_survey_table</p>
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.lab_report">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">lab_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swab_report_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blood_report_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pyspark.sql.dataframe.DataFrame</span></span></span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.lab_report" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate reports of most recent 7 days of swab and blood data</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.lookup_based_editing">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">lookup_based_editing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cohort_lookup_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">travel_countries_lookup_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tenure_group_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.lookup_based_editing" title="Permalink to this definition">¶</a></dt>
-<dd><p>Edit columns based on mappings from lookup tables. Often used to correct data quality issues.
-Requires lookup_tables to exist or be created prior to being called</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>input_survey_table</strong> – </p></li>
-<li><p><strong>cohort_lookup_table</strong> – input table name for cohort corrections lookup table</p></li>
-<li><p><strong>travel_countries_lookup_table</strong> – input table name for travel_countries corrections lookup table</p></li>
-<li><p><strong>tenure_group_table</strong> – input table name for tenure_group corrections lookup table</p></li>
-<li><p><strong>output_survey_table</strong> – </p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py function">
