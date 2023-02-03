@@ -95,6 +95,8 @@ def create_job_lookup(df: DataFrame, soc_lookup_df: DataFrame, lookup_df: Option
         "work_status_v1",
         "work_status_v2",
         "work_location",
+        # soc codes
+        "standard_occupational_classification_code",
     )
     if lookup_df is not None:
         return lookup_df.unionByName(processed_df)
