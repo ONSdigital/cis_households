@@ -39,23 +39,6 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
     }
     df = apply_value_map_multiple_columns(df, v1_column_editing_map)
 
-    df = df.withColumn("work_main_job_changed", F.lit(None).cast("string"))
-    fill_forward_columns = [
-        "work_main_job_title",
-        "work_main_job_role",
-        "work_sector",
-        "work_sector_other",
-        "work_health_care_area",
-        "work_nursing_or_residential_care_home",
-        "work_direct_contact_patients_or_clients",
-    ]
-    df = update_to_value_if_any_not_null(
-        df=df,
-        column_name_to_update="work_main_job_changed",
-        true_false_values=["Yes", "No"],
-        column_list=fill_forward_columns,
-    )
-
     df = df.drop(
         "cis_covid_vaccine_date",
         "cis_covid_vaccine_number_of_doses",

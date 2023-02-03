@@ -54,6 +54,9 @@ from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.lookup_and_regex_transformations import blood_past_positive_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import design_weights_lookup_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import lab_lookup_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import lab_post_join_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import lab_pre_join_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import nims_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import ordered_household_id_tranformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import process_vaccine_regex
@@ -568,7 +571,7 @@ def execute_demographic_transformations(
     df, imputed_value_lookup_df = demographic_transformations(
         df=df, imputed_value_lookup_df=imputed_value_lookup_df, geography_lookup_df=geography_lookup_df
     )
-    update_table(df, output_survey_table, "overwrite")
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
     update_table(imputed_value_lookup_df, imputed_value_lookup_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
@@ -581,7 +584,7 @@ def execute_visit_transformations(
     """"""
     df = extract_from_table(input_survey_table)
     df = visit_transformations(df)
-    update_table(df, output_survey_table, "overwrite")
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
 
@@ -596,7 +599,7 @@ def execute_job_transformations(
     if check_table_exists(job_lookup_table):
         job_lookup_df = extract_from_table(job_lookup_table, break_lineage=True)
     df, job_lookup_df = job_transformations(df=df, soc_lookup_df=soc_lookup_df, job_lookup_df=job_lookup_df)
-    update_table(df, output_survey_table, "overwrite")
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
     update_table(job_lookup_df, job_lookup_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
@@ -609,7 +612,7 @@ def execute_covid_transformations(
     """"""
     df = extract_from_table(input_survey_table)
     df = covid_event_transformations(df)
-    update_table(df, output_survey_table, "overwrite")
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
 
@@ -651,6 +654,9 @@ def join_lookup_table(
         "blood_past_positive": blood_past_positive_transformations,
         "design_weights_lookup": design_weights_lookup_transformations,
         "ordered_household_id": ordered_household_id_tranformations,
+        "lab_pre_join": lab_pre_join_transformations,
+        "lab_lookup": lab_lookup_transformations,
+        "lab_post_join": lab_post_join_transformations,
     }
 
     lookup_df = extract_from_table(lookup_table_name)
@@ -677,7 +683,7 @@ def join_lookup_table(
     for transformation in post_join_transformations:
         df = transformations_dict[transformation](df, **kwargs)
 
-    update_table(df, output_survey_table, "overwrite")
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
     return {output_table_name_key: output_survey_table}
 
 

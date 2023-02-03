@@ -10,6 +10,8 @@ integer_dict = {"type": "integer"}
 
 long_dict = {"type": "long"}
 
+float_dict = {"type": "double"}
+
 swab_allowed_pcr_results = ["Inconclusive", "Negative", "Positive", "Rejected"]
 
 projections_column_map = {
@@ -427,6 +429,25 @@ validation_schemas = {
         "CH4-Target": {"type": "string", "allowed": ["MS2"]},
         "CH4-Result": {"type": "string", "allowed": swab_allowed_pcr_results},
         "CH4-Cq": {"type": "double", "nullable": True, "min": 0},
+    },
+    "brants_bridge_variable_name_map": {
+        "Test": "test_id",
+        "Plate": "swab_test_plate_id",
+        "Sample Name": "swab_sample_barcode",
+        "Well": "swab_test_well_id",
+        "Well_Number": "swab_test_well_number",
+        "MS2 CT Threshold": "ct_threshold_ms2",
+        "Flu A/B CT Threshold": "ct_threshold_flu_ab",
+        "RSV CT Threshold": "ct_threshold_rsv",
+        "C19 CT Threshold": "ct_threshold_c19",
+        "MS2 Ct": "ct_ms2",
+        "Flu A/B Ct": "ct_flu_ab",
+        "RSV Ct": "ct_rsv",
+        "C19 Ct": "ct_c19",
+        "MS2": "ms2",
+        "Flu A/B": "flu_ab",
+        "RSV": "rsv",
+        "C19": "c19",
     },
     "lab_results_glasgow_schema": {
         "Sample": {"type": "string", "regex": r"ONS\d{8}"},

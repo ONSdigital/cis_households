@@ -9,6 +9,7 @@ from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_status_group
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_job_description_string
+from cishouseholds.edit import update_work_main_job_changed
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change_marked_subset
@@ -50,6 +51,22 @@ def preprocessing(df: DataFrame):
         "work_not_from_home_days_per_week": {"NA": "99", "N/A (not working/in education etc)": "99", "up to 1": "0.5"},
     }
     df = apply_value_map_multiple_columns(df, col_val_map)
+    df = update_work_main_job_changed(
+        df,
+        column_name_to_update="work_main_job_changed",
+        participant_id_column="participant_id",
+        change_to_not_null_columns=[
+            "work_main_job_title",
+            "work_main_job_role",
+            "work_sector",
+            "work_sector_other",
+            "work_health_care_area",
+        ],
+        change_to_any_columns=[
+            "work_nursing_or_residential_care_home",
+            "work_direct_contact_patients_or_clients",
+        ],
+    )
     return df
 
 

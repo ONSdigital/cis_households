@@ -22,6 +22,55 @@ from cishouseholds.expressions import set_date_component
 from cishouseholds.expressions import sum_within_row
 
 
+def update_work_main_job_changed(
+    df: DataFrame,
+    column_name_to_update: str,
+    participant_id_column: str,
+    change_to_any_columns: List[str],
+    change_to_not_null_columns: List[str],
+):
+    """
+    re-derive work main job changed to denote whether any of the work variables differ between rows.
+    """
+    if column_name_to_update not in df.columns:
+        df = df.withColumn(column_name_to_update, F.lit(None))
+
+    change_to_any_columns = [c for c in change_to_any_columns if c in df.columns]
+    change_to_not_null_columns = [c for c in change_to_not_null_columns if c in df.columns]
+
+    window = Window.partitionBy(participant_id_column).orderBy(F.lit("A"))
+    x = lambda c: (~F.lag(c, 1).over(window).eqNullSafe(F.col(c))) & (F.col(c).isNotNull())  # noqa:
+    y = lambda c: (~F.lag(c, 1).over(window).eqNullSafe(F.col(c)))  # noqa: E731
+
+    df = df.withColumn("ROW", F.row_number().over(window))
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(
+            ~F.col(column_name_to_update).eqNullSafe("Yes"),
+            F.when(
+                (
+                    (
+                        (F.col("ROW") == 1) & any_column_not_null(change_to_not_null_columns)
+                    )  # title is not null and is first row
+                    | (
+                        reduce(or_, [x(c) for c in change_to_not_null_columns], F.lit(False))
+                    )  # work title goes from null to not null
+                )
+                | (
+                    (
+                        (F.col("ROW") == 1) & any_column_not_null(change_to_any_columns)
+                    )  # patient facing not null and first row
+                    | (
+                        reduce(or_, [y(c) for c in change_to_any_columns], F.lit(False))
+                    )  # or patient facing changed i.e Yes to No
+                ),
+                "Yes",
+            ).otherwise("No"),
+        ).otherwise("Yes"),
+    )
+    return df.drop("ROW")
+
+
 def fuzzy_update(
     left_df: DataFrame,
     cols_to_check: List[str],
@@ -70,38 +119,6 @@ def fuzzy_update(
         df.select(id_column, "ROW_NUM_LEFT", f"{update_column}_right"), on=[id_column, "ROW_NUM_LEFT"], how="left"
     ).withColumn(update_column, F.coalesce(F.col(update_column), F.col(f"{update_column}_right")))
     return df.drop("TEMP", "ROW_NUM_LEFT", "ROW_NUM_RIGHT", f"{update_column}_right")
-
-
-def update_work_main_job_changed(
-    df: DataFrame,
-    column_name_to_update: str,
-    participant_id_column: str,
-    reference_columns: List[str],
-):
-    """
-    re-derive work main job changed to denote whether any of the work variables differ between rows.
-    """
-    if column_name_to_update not in df.columns:
-        df = df.withColumn(column_name_to_update, F.lit(None))
-
-    reference_columns = [c for c in reference_columns if c in df.columns]
-
-    window = Window.partitionBy(participant_id_column).orderBy(F.lit("A"))
-    x = lambda c: (~F.lag(c, 1).over(window).eqNullSafe(F.col(c))) & (F.col(c).isNotNull())  # noqa: E731
-
-    df = df.withColumn("ROW", F.row_number().over(window))
-    df = df.withColumn(
-        column_name_to_update,
-        F.when(
-            ~F.col(column_name_to_update).eqNullSafe("Yes"),
-            F.when(
-                ((F.col("ROW") == 1) & any_column_not_null(reference_columns))
-                | (reduce(or_, [x(c) for c in reference_columns])),
-                "Yes",
-            ).otherwise("No"),
-        ).otherwise("Yes"),
-    )
-    return df.drop("ROW")
 
 
 def normalise_think_had_covid_columns(df: DataFrame, symptom_columns_prefix: str):
@@ -908,6 +925,15 @@ def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str):
         ),
     )
 
+    return df
+
+
+def nullify_columns_before_date(df: DataFrame, column_list: List[str], date_column: str, date: str):
+    """
+    Nullify the values of a list of column names if the date in the `date_column` is before the specified `date`.
+    """
+    for col in [c for c in column_list if c in df.columns]:
+        df = df.withColumn(col, F.when(F.col(date_column) >= date, F.col(col)))
     return df
 
 

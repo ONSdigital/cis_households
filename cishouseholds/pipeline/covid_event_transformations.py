@@ -16,6 +16,7 @@ from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wi
 from cishouseholds.edit import conditionally_set_column_values
 from cishouseholds.edit import correct_date_ranges_union_dependent
 from cishouseholds.edit import normalise_think_had_covid_columns
+from cishouseholds.edit import nullify_columns_before_date
 from cishouseholds.edit import remove_incorrect_dates
 from cishouseholds.edit import update_think_have_covid_symptom_any
 from cishouseholds.edit import update_to_value_if_any_not_null
@@ -231,13 +232,6 @@ def derive_new_columns(df: DataFrame) -> DataFrame:
             "think_had_covid_symptom_loss_of_taste",
             "think_had_covid_symptom_loss_of_smell",
             "think_had_covid_symptom_more_trouble_sleeping",
-            "think_had_covid_symptom_chest_pain",
-            "think_had_covid_symptom_palpitations",
-            "think_had_covid_symptom_vertigo_or_dizziness",
-            "think_had_covid_symptom_anxiety",
-            "think_had_covid_symptom_low_mood",
-            "think_had_covid_symptom_memory_loss_or_confusion",
-            "think_had_covid_symptom_difficulty_concentrating",
             "think_had_covid_symptom_runny_nose_or_sneezing",
             "think_had_covid_symptom_noisy_breathing",
             "think_had_covid_symptom_loss_of_appetite",
@@ -725,6 +719,31 @@ def data_dependent_derivations(df: DataFrame) -> DataFrame:
         visit_id_column="visit_id",
     )
     df = derive_contact_any_covid_covid_variables(df)
+    df = nullify_columns_before_date(
+        df,
+        column_list=[
+            "think_had_covid_symptom_loss_of_appetite",
+            "think_had_covid_symptom_runny_nose_or_sneezing",
+            "think_had_covid_symptom_noisy_breathing",
+            "think_had_covid_symptom_more_trouble_sleeping",
+        ],
+        date_column="visit_datetime",
+        date="2021-08-26",
+    )
+    df = nullify_columns_before_date(
+        df,
+        column_list=[
+            "think_had_covid_symptom_chest_pain",
+            "think_had_covid_symptom_difficulty_concentrating",
+            "think_had_covid_symptom_low_mood",
+            "think_had_covid_symptom_memory_loss_or_confusion",
+            "think_had_covid_symptom_palpitations",
+            "think_had_covid_symptom_vertigo_or_dizziness",
+            "think_had_covid_symptom_anxiety",
+        ],
+        date_column="visit_datetime",
+        date="2022-01-26",
+    )
     return df
 
 

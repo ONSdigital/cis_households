@@ -1,5 +1,6 @@
 # flake8: noqa
-from typing import List,Optional
+from typing import List
+from typing import Optional
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -10,21 +11,6 @@ from cishouseholds.derive import assign_column_to_date_string
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_regex_from_map
 from cishouseholds.derive import assign_regex_match_result
-from cishouseholds.edit import rename_column_names
-from cishouseholds.expressions import array_contains_any, any_column_not_null
-from cishouseholds.merge import null_safe_join
-from cishouseholds.pipeline.mapping import column_name_maps
-from cishouseholds.pyspark_utils import get_or_create_spark_session
-from cishouseholds.regex.healthcare_regex import healthcare_classification
-from cishouseholds.regex.healthcare_regex import patient_facing_classification
-from cishouseholds.regex.healthcare_regex import patient_facing_pattern
-from cishouseholds.regex.healthcare_regex import priority_map
-from cishouseholds.regex.healthcare_regex import roles_map
-from cishouseholds.regex.healthcare_regex import social_care_classification
-from cishouseholds.regex.vaccine_regex import vaccine_regex_map
-from cishouseholds.regex.vaccine_regex import vaccine_regex_priority_map
-
-
 from cishouseholds.derive import flag_records_for_childcare_v0_rules
 from cishouseholds.derive import flag_records_for_childcare_v1_rules
 from cishouseholds.derive import flag_records_for_childcare_v2_b_rules
@@ -55,7 +41,20 @@ from cishouseholds.derive import flag_records_for_work_from_home_rules
 from cishouseholds.derive import flag_records_for_work_location_null
 from cishouseholds.derive import flag_records_for_work_location_student
 from cishouseholds.derive import regex_match_result
-
+from cishouseholds.edit import rename_column_names
+from cishouseholds.expressions import any_column_not_null
+from cishouseholds.expressions import array_contains_any
+from cishouseholds.merge import null_safe_join
+from cishouseholds.pipeline.mapping import column_name_maps
+from cishouseholds.pipeline.phm import match_type_blood
+from cishouseholds.pipeline.phm import match_type_swab
+from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.regex.healthcare_regex import healthcare_classification
+from cishouseholds.regex.healthcare_regex import patient_facing_classification
+from cishouseholds.regex.healthcare_regex import patient_facing_pattern
+from cishouseholds.regex.healthcare_regex import priority_map
+from cishouseholds.regex.healthcare_regex import roles_map
+from cishouseholds.regex.healthcare_regex import social_care_classification
 from cishouseholds.regex.regex_patterns import at_school_pattern
 from cishouseholds.regex.regex_patterns import at_university_pattern
 from cishouseholds.regex.regex_patterns import childcare_pattern
@@ -65,6 +64,8 @@ from cishouseholds.regex.regex_patterns import not_working_pattern
 from cishouseholds.regex.regex_patterns import retired_regex_pattern
 from cishouseholds.regex.regex_patterns import self_employed_regex
 from cishouseholds.regex.regex_patterns import work_from_home_pattern
+from cishouseholds.regex.vaccine_regex import vaccine_regex_map
+from cishouseholds.regex.vaccine_regex import vaccine_regex_priority_map
 
 
 def transform_cis_soc_data(
@@ -176,7 +177,7 @@ def transform_from_lookups(
     return df
 
 
-def nims_transformations(df: DataFrame) -> DataFrame:
+def nims_transformations(df: DataFrame, **kwargs: dict) -> DataFrame:
     """Clean and transform NIMS data after reading from table."""
     df = rename_column_names(df, column_name_maps["nims_column_name_map"])
     df = assign_column_to_date_string(df, "nims_vaccine_dose_1_date", reference_column="nims_vaccine_dose_1_datetime")
@@ -186,28 +187,66 @@ def nims_transformations(df: DataFrame) -> DataFrame:
     return df
 
 
-def blood_past_positive_transformations(df: DataFrame) -> DataFrame:
+def blood_past_positive_transformations(df: DataFrame, **kwargs: dict) -> DataFrame:
     """Run required post-join transformations for blood_past_positive"""
     df = df.withColumn("blood_past_positive_flag", F.when(F.col("blood_past_positive").isNull(), 0).otherwise(1))
     return df
 
 
-def design_weights_lookup_transformations(df: DataFrame) -> DataFrame:
+def design_weights_lookup_transformations(df: DataFrame, **kwargs: dict) -> DataFrame:
     """Selects only required fields from the design_weight_lookup"""
     design_weight_columns = ["scaled_design_weight_swab_non_adjusted", "scaled_design_weight_antibodies_non_adjusted"]
     df = df.select(*design_weight_columns, "ons_household_id")
     return df
 
 
-def derive_overall_vaccination(df: DataFrame) -> DataFrame:
+def derive_overall_vaccination(df: DataFrame, **kwargs: dict) -> DataFrame:
     """Derive overall vaccination status from NIMS and CIS data."""
     return df
 
 
-def ordered_household_id_tranformations(df: DataFrame) -> DataFrame:
+def ordered_household_id_tranformations(df: DataFrame, **kwargs: dict) -> DataFrame:
     """Read in a survey responses table and join it onto the participants extract to ensure matching ordered household ids"""
     join_on_columns = ["ons_household_id", "ordered_household_id"]
     df = df.select(join_on_columns).distinct()
+    return df
+
+
+def lab_pre_join_transformations(df: DataFrame, test_type: str, **kwargs: dict) -> DataFrame:
+    df = df.withColumn(f"{test_type}_sample_barcode_missing_survey", F.col(f"{test_type}_sample_barcode").isNull())
+    return df
+
+
+def lab_lookup_transformations(df: DataFrame, test_type: str, **kwargs: dict) -> DataFrame:
+    df = df.withColumn(f"{test_type}_sample_barcode_missing_lab", F.col(f"{test_type}_sample_barcode").isNull())
+    return df
+
+
+def lab_post_join_transformations(df: DataFrame, test_type: str, lookup_df: DataFrame, **kwargs: dict) -> DataFrame:
+    if test_type == "blood":
+        joinable = F.when(
+            (
+                (F.col("blood_taken").isNotNull())
+                & (
+                    (F.col("household_completion_window_status") == "Closed")
+                    | (
+                        (F.col("survey_completed_datetime").isNotNull())
+                        | (F.col("survey_completion_status") == "Submitted")
+                    )
+                )
+            )
+            & (F.col(f"blood_taken_datetime") < F.col("blood_sample_arrayed_date"))
+            & (
+                (F.col("participant_completion_window_start_datetime"))
+                <= (F.col("") == F.col("blood_sample_arrayed_date"))
+            )
+            & (F.col("match_type_blood").isNull())
+        )
+        df = match_type_blood(df)
+        for col in lookup_df.columns:  # set cols to none if not joinable
+            df = df.withColumn(F.when(joinable, F.col(col)))
+    else:
+        df = match_type_swab(df)
     return df
 
 

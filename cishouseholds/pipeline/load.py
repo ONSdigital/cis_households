@@ -244,12 +244,13 @@ def update_table_and_log_source_files(
     filename_column: str,
     dataset_name: str,
     override_mode: str = None,
+    survey_table: bool = False,
 ):
     """
     Update a table with the specified dataframe and log the source files that have been processed.
     Used to record which files have been processed for each input file type.
     """
-    update_table(df, table_name, override_mode)
+    update_table(df, table_name, override_mode, survey_table=survey_table)
     update_processed_file_log(df, filename_column, dataset_name)
 
 
