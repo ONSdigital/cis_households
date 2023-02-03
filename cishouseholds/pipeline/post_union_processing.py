@@ -17,6 +17,14 @@ from cishouseholds.edit import update_face_covering_outside_of_home
 from cishouseholds.pipeline.mapping import date_cols_min_date_dict
 
 
+def post_union_processing(df: DataFrame):
+    """"""
+    df = raw_copies(df)
+    df = date_corrections(df)
+    df = generic_processing(df)
+    return df
+
+
 def raw_copies(df: DataFrame):
     raw_copy_list = [
         "think_had_covid_any_symptoms",

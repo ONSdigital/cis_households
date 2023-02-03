@@ -1,7 +1,7 @@
 import pyspark.sql.functions as F
 from chispa import assert_df_equality
 
-from cishouseholds.pipeline.post_union_transformations import fix_timestamps
+from cishouseholds.pipeline.high_level_transformations import fix_timestamps
 
 
 def test_fix_timestamps(spark_session):

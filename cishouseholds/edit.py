@@ -303,7 +303,7 @@ def update_column_in_time_window(
 
 
 def update_to_value_if_any_not_null(
-    df: DataFrame, column_name_to_assign: str, true_false_values: list, column_list: list
+    df: DataFrame, column_name_to_update: str, true_false_values: list, column_list: list
 ):
     """Edit existing column to `value_to_assign` when a value is present in any of the listed columns.
 
@@ -311,7 +311,7 @@ def update_to_value_if_any_not_null(
     ----------
     df
         The input DataFrame to process
-    column_name_to_assign
+    column_name_to_update
         The name of the existing column
     true_false_values
         True and false values to be assigned
@@ -319,7 +319,7 @@ def update_to_value_if_any_not_null(
         A list of columns to check if any of them do not have null values
     """
     df = df.withColumn(
-        column_name_to_assign,
+        column_name_to_update,
         F.when(any_column_not_null(column_list), true_false_values[0]).otherwise(true_false_values[1]),
     )
     return df

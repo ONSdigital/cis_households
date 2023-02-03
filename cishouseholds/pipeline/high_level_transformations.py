@@ -3,18 +3,8 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
-from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_column_to_date_string
-from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
-
-
-def post_union_transformations(df: DataFrame) -> DataFrame:
-    """apply all transformations that occur immediately after union in order."""
-    df = create_formatted_datetime_string_columns(df).custom_checkpoint()
-    df = fill_forwards(df).custom_checkpoint()
-    df = union_dependent_derivations(df).custom_checkpoint()
-    return df
 
 
 def fill_forwards(df: DataFrame) -> DataFrame:
@@ -42,40 +32,6 @@ def fill_forwards(df: DataFrame) -> DataFrame:
     #     ],
     # )
 
-    return df
-
-
-def create_ever_variable_columns(df: DataFrame) -> DataFrame:
-    df = assign_column_given_proportion(
-        df=df,
-        column_name_to_assign="ever_work_person_facing_or_social_care",
-        groupby_column="participant_id",
-        reference_columns=["work_social_care"],
-        count_if=["Yes, care/residential home, resident-facing", "Yes, other social care, resident-facing", "Yes"],
-        true_false_values=["Yes", "No"],
-    )
-    df = assign_column_given_proportion(
-        df=df,
-        column_name_to_assign="ever_care_home_worker",
-        groupby_column="participant_id",
-        reference_columns=["work_social_care", "work_nursing_or_residential_care_home"],
-        count_if=["Yes", "Yes, care/residential home, resident-facing"],
-        true_false_values=["Yes", "No"],
-    )
-    df = assign_column_given_proportion(
-        df=df,
-        column_name_to_assign="ever_had_long_term_health_condition",
-        groupby_column="participant_id",
-        reference_columns=["illness_lasting_over_12_months"],
-        count_if=["Yes"],
-        true_false_values=["Yes", "No"],
-    )
-    df = assign_ever_had_long_term_health_condition_or_disabled(
-        df=df,
-        column_name_to_assign="ever_had_long_term_health_condition_or_disabled",
-        health_conditions_column="illness_lasting_over_12_months",
-        condition_impact_column="illness_reduces_activity_or_ability",
-    )
     return df
 
 
@@ -161,15 +117,6 @@ def create_formatted_datetime_string_columns(df) -> DataFrame:
                 time_format="ddMMMyyyy HH:mm:ss",
                 lower_case=True,
             )
-    return df
-
-
-def union_dependent_derivations(df) -> DataFrame:
-    """
-    Transformations that must be carried out after the union of the different survey response schemas.
-    """
-    df = create_ever_variable_columns(df)
-
     return df
 
 

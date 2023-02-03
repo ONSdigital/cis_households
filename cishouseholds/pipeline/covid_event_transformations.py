@@ -114,7 +114,7 @@ def edit_existing_columns(df: DataFrame) -> DataFrame:
         # correct covid contact based on date
         df = update_to_value_if_any_not_null(
             df=df,
-            column_name_to_assign=contact,
+            column_name_to_update=contact,
             true_false_values=["Yes", "No"],
             column_list=[contact_date],
         )
@@ -122,7 +122,7 @@ def edit_existing_columns(df: DataFrame) -> DataFrame:
         # correct covid type based on date
         df = update_to_value_if_any_not_null(
             df=df,
-            column_name_to_assign=contact_type,
+            column_name_to_update=contact_type,
             true_false_values=[F.col(contact_type), None],
             column_list=[contact_date],
         )
