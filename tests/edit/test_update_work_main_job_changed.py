@@ -16,7 +16,7 @@ def test_update_work_main_job_changed(spark_session):
         # fmt: off
         data=[
             (1, None, None, None,  1, None),
-            (1, 1,    0,    0,    1, "No"),
+            (1, 1,    0,    0,     1, "No"),
             (1, 1,    2,    0,     2, None),
             (1, 1,    2,    0,     None, "No"),
             (1, None, None, None,  3, "Yes"),
@@ -29,10 +29,10 @@ def test_update_work_main_job_changed(spark_session):
     expected_df = spark_session.createDataFrame(
         # fmt: off
         data=[
-            (1, None, None, None, 1, "Yes"),#first row and none null response
-            (1, 1,    0,    0,    1, "Yes"), #d hasn't changed
+            (1, None, None, None, 1, "Yes"), # first row and none null response
+            (1, 1,    0,    0,    1, "Yes"), # d hasn't changed
             (1, 1,    2,    0,    2, "Yes"),
-            (1, 1,    2,    0,    None, "Yes"), #only d has changed
+            (1, 1,    2,    0,    None, "Yes"), # only d has changed
             (1, None, None, None, 3, "Yes"),
             (1, None, None, None, 5, "Yes")
         ],
@@ -43,10 +43,10 @@ def test_update_work_main_job_changed(spark_session):
     expected_df_2 = spark_session.createDataFrame(
         # fmt: off
         data=[
-            (1, None, None, None, 1, "No"),#first row and none null response
-            (1, 1,    0,    0,    1, "No"), #d hasn't changed
+            (1, None, None, None, 1, "No"), # first row and none null response
+            (1, 1,    0,    0,    1, "No"), # d hasn't changed
             (1, 1,    2,    0,    2, "No"),
-            (1, 1,    2,    0,    None, "No"), #only d has changed
+            (1, 1,    2,    0,    None, "No"), # only d has changed
             (1, None, None, None, 3, "No"),
             (1, None, None, None, 5, "No")
         ],

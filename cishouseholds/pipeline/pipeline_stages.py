@@ -15,14 +15,8 @@ from pyspark.sql import functions as F
 
 from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
-from cishouseholds.derive import assign_age_group_school_year
 from cishouseholds.derive import assign_filename_column
-from cishouseholds.derive import assign_multigenerational
-from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_unique_id_column
-from cishouseholds.derive import assign_work_patient_facing_now
-from cishouseholds.derive import assign_work_person_facing_now
-from cishouseholds.derive import derive_age_based_columns
 from cishouseholds.derive import household_level_populations
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
@@ -35,19 +29,21 @@ from cishouseholds.hdfs_utils import create_dir
 from cishouseholds.hdfs_utils import isdir
 from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
-from cishouseholds.impute import fill_forward_only_to_nulls
-from cishouseholds.impute import post_imputation_wrapper
 from cishouseholds.merge import left_join_keep_right
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
+from cishouseholds.pipeline.covid_event_transformations import covid_event_transformations
+from cishouseholds.pipeline.demographic_transformations import demographic_transformations
 from cishouseholds.pipeline.design_weights import calculate_design_weights
 from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
+from cishouseholds.pipeline.high_level_transformations import get_differences
 from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
+from cishouseholds.pipeline.job_transformations import job_transformations
 from cishouseholds.pipeline.load import add_error_file_log_entry
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import delete_tables
@@ -58,26 +54,19 @@ from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.lookup_and_regex_transformations import blood_past_positive_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import design_weights_lookup_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import lab_lookup_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import lab_post_join_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import lab_pre_join_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import nims_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import ordered_household_id_tranformations
-from cishouseholds.pipeline.lookup_and_regex_transformations import process_healthcare_regex
 from cishouseholds.pipeline.lookup_and_regex_transformations import process_vaccine_regex
-from cishouseholds.pipeline.lookup_and_regex_transformations import replace_design_weights_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import transform_cis_soc_data
 from cishouseholds.pipeline.lookup_and_regex_transformations import transform_from_lookups
 from cishouseholds.pipeline.manifest import Manifest
 from cishouseholds.pipeline.mapping import category_maps
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import soc_regex_map
-from cishouseholds.pipeline.post_union_transformations import create_formatted_datetime_string_columns
-from cishouseholds.pipeline.post_union_transformations import fill_forward_events_for_key_columns
-from cishouseholds.pipeline.post_union_transformations import fill_forwards_transformations
-from cishouseholds.pipeline.post_union_transformations import get_differences
-from cishouseholds.pipeline.post_union_transformations import impute_key_columns
-from cishouseholds.pipeline.post_union_transformations import reclassify_work_variables
-from cishouseholds.pipeline.post_union_transformations import union_dependent_cleaning
-from cishouseholds.pipeline.post_union_transformations import union_dependent_derivations
+from cishouseholds.pipeline.post_union_processing import post_union_processing
 from cishouseholds.pipeline.reporting import count_variable_option
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import generate_lab_report
@@ -85,6 +74,7 @@ from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
+from cishouseholds.pipeline.visit_transformations import visit_transformations
 from cishouseholds.prediction_checker_class import PredictionChecker
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import check_lookup_table_joined_columns_unique
@@ -96,8 +86,6 @@ from dummy_data_generation.generate_data import generate_nims_table
 from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
-
-# from cishouseholds.pipeline.high_level_transformations import fix_timestamps
 
 pipeline_stages = {}
 
@@ -522,6 +510,112 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
     return {"output_survey_table": output_survey_table}
 
 
+@register_pipeline_stage("post_union_processing")
+def execute_post_union_processing(
+    input_survey_table: str,
+    cohort_lookup_table: str,
+    travel_countries_lookup_table: str,
+    tenure_group_table: str,
+    output_survey_table: str,
+):
+    """
+    Edit columns based on mappings from lookup tables. Often used to correct data quality issues.
+    Requires lookup_tables to exist or be created prior to being called
+
+    Parameters
+    ----------
+    input_survey_table
+    cohort_lookup_table
+        input table name for cohort corrections lookup table
+    travel_countries_lookup_table
+        input table name for travel_countries corrections lookup table
+    tenure_group_table
+        input table name for tenure_group corrections lookup table
+    output_survey_table
+    """
+    df = extract_from_table(input_survey_table)
+    cohort_lookup = extract_from_table(cohort_lookup_table)
+    travel_countries_lookup = extract_from_table(travel_countries_lookup_table)
+    tenure_group = extract_from_table(tenure_group_table).select(
+        "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
+    )
+    for lookup_table_name, lookup_df, join_on_column_list in zip(
+        [cohort_lookup_table, travel_countries_lookup_table, tenure_group_table],
+        [cohort_lookup, travel_countries_lookup, tenure_group],
+        [["participant_id", "old_cohort"], ["been_outside_uk_last_country_old"], ["UAC"]],
+    ):
+        check_lookup_table_joined_columns_unique(
+            df=lookup_df, join_column_list=join_on_column_list, name_of_df=lookup_table_name
+        )
+
+    df = transform_from_lookups(df, cohort_lookup, travel_countries_lookup, tenure_group)
+    df = post_union_processing(df)
+    update_table(df, output_survey_table, write_mode="overwrite", survey_table=True)
+
+    return {"output_survey_table": output_survey_table}
+
+
+@register_pipeline_stage("demographic_transformations")
+def execute_demographic_transformations(
+    input_survey_table: str,
+    output_survey_table: str,
+    imputed_value_lookup_table: str,
+    geography_lookup_table: str,
+):
+    """"""
+    df = extract_from_table(input_survey_table)
+    geography_lookup_df = extract_from_table(geography_lookup_table)
+    imputed_value_lookup_df = None
+    if check_table_exists(imputed_value_lookup_table):
+        imputed_value_lookup_df = extract_from_table(imputed_value_lookup_table, break_lineage=True)
+    df, imputed_value_lookup_df = demographic_transformations(
+        df=df, imputed_value_lookup_df=imputed_value_lookup_df, geography_lookup_df=geography_lookup_df
+    )
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
+    update_table(imputed_value_lookup_df, imputed_value_lookup_table, "overwrite")
+    return {"output_survey_table": output_survey_table}
+
+
+@register_pipeline_stage("visit_transformations")
+def execute_visit_transformations(
+    input_survey_table: str,
+    output_survey_table: str,
+):
+    """"""
+    df = extract_from_table(input_survey_table)
+    df = visit_transformations(df)
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
+    return {"output_survey_table": output_survey_table}
+
+
+@register_pipeline_stage("job_transformations")
+def execute_job_transformations(
+    input_survey_table: str, output_survey_table: str, soc_lookup_table: str, job_lookup_table: str
+):
+    """"""
+    df = extract_from_table(input_survey_table)
+    soc_lookup_df = extract_from_table(soc_lookup_table)
+    job_lookup_df = None
+    if check_table_exists(job_lookup_table):
+        job_lookup_df = extract_from_table(job_lookup_table, break_lineage=True)
+    df, job_lookup_df = job_transformations(df=df, soc_lookup_df=soc_lookup_df, job_lookup_df=job_lookup_df)
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
+    update_table(job_lookup_df, job_lookup_table, "overwrite")
+    return {"output_survey_table": output_survey_table}
+
+
+@register_pipeline_stage("covid_transformations")
+def execute_covid_transformations(
+    input_survey_table: str,
+    output_survey_table: str,
+):
+    """"""
+    df = extract_from_table(input_survey_table)
+    df = covid_event_transformations(df)
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
+    return {"output_survey_table": output_survey_table}
+
+
 @register_pipeline_stage("join_lookup_table")
 def join_lookup_table(
     input_survey_table: str,
@@ -559,11 +653,10 @@ def join_lookup_table(
         "nims": nims_transformations,
         "blood_past_positive": blood_past_positive_transformations,
         "design_weights_lookup": design_weights_lookup_transformations,
-        "replace_design_weights": replace_design_weights_transformations,
         "ordered_household_id": ordered_household_id_tranformations,
         "lab_pre_join": lab_pre_join_transformations,
-        "lab_lookup": lab_pre_join_transformations,
-        "lab_post_join": lab_pre_join_transformations,
+        "lab_lookup": lab_lookup_transformations,
+        "lab_post_join": lab_post_join_transformations,
     }
 
     lookup_df = extract_from_table(lookup_table_name)
@@ -590,7 +683,7 @@ def join_lookup_table(
     for transformation in post_join_transformations:
         df = transformations_dict[transformation](df, **kwargs)
 
-    update_table(df, output_survey_table, "overwrite")
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
     return {output_table_name_key: output_survey_table}
 
 
@@ -695,247 +788,6 @@ def update_vaccine_types(input_survey_table: str, output_survey_table: str, vacc
         df = df.withColumn(vaccine_type_other_col, F.lit(None).cast("string"))
 
     update_table(df, output_survey_table, "overwrite", survey_table=True)
-    return {"output_survey_table": output_survey_table}
-
-
-@register_pipeline_stage("create_healthcare_regex_lookup")
-def create_regex_lookup(input_survey_table: str, regex_lookup_table: Optional[str] = None):
-    """
-    Create or update a regex_lookup_table from an input_survey_table which is filtered
-    to include only rows with non-null values in join_on_columns.
-    If a regex_lookup_table is a parameter and exists then load the filtered df and get distinct value
-    combinations for join_on_columns that are not already in the regex_lookup_table, and update the regex_lookup_table;
-    otherwise create regex_lookup_table from distinct value combinations
-
-    Parameters
-    ----------
-    input_survey_table
-    regex_lookup_table
-    """
-    join_on_columns = ["work_main_job_title", "work_main_job_role"]
-    df = extract_from_table(input_survey_table)
-    df = df.filter(any_column_not_null(join_on_columns))
-    if regex_lookup_table is not None and check_table_exists(regex_lookup_table):
-        lookup_df = extract_from_table(regex_lookup_table, True)
-        non_derived_rows = df.join(lookup_df, on=join_on_columns, how="leftanti")
-        non_derived_rows = non_derived_rows.dropDuplicates(join_on_columns)
-        print(
-            f"     - located regex lookup df with {non_derived_rows.count()} additional rows to process"
-        )  # functional
-        update_table(process_healthcare_regex(non_derived_rows), regex_lookup_table, "append")
-    else:
-        df_to_process = df.dropDuplicates(join_on_columns)
-        print(
-            f"     - creating regex lookup table from {df_to_process.count()} rows. This may take some time ... "
-        )  # functional
-        partitions = int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions"))
-        partitions = int(partitions / 2)
-        df_to_process = df_to_process.repartition(partitions)
-        lookup_df = process_healthcare_regex(df_to_process)
-        update_table(lookup_df, regex_lookup_table, "overwrite")
-
-
-@register_pipeline_stage("lookup_based_editing")
-def lookup_based_editing(
-    input_survey_table: str,
-    cohort_lookup_table: str,
-    travel_countries_lookup_table: str,
-    tenure_group_table: str,
-    output_survey_table: str,
-):
-    """
-    Edit columns based on mappings from lookup tables. Often used to correct data quality issues.
-    Requires lookup_tables to exist or be created prior to being called
-
-    Parameters
-    ----------
-    input_survey_table
-    cohort_lookup_table
-        input table name for cohort corrections lookup table
-    travel_countries_lookup_table
-        input table name for travel_countries corrections lookup table
-    tenure_group_table
-        input table name for tenure_group corrections lookup table
-    output_survey_table
-    """
-
-    df = extract_from_table(input_survey_table)
-    cohort_lookup = extract_from_table(cohort_lookup_table)
-    travel_countries_lookup = extract_from_table(travel_countries_lookup_table)
-    tenure_group = extract_from_table(tenure_group_table).select(
-        "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
-    )
-    for lookup_table_name, lookup_df, join_on_column_list in zip(
-        [cohort_lookup_table, travel_countries_lookup_table, tenure_group_table],
-        [cohort_lookup, travel_countries_lookup, tenure_group],
-        [["participant_id", "old_cohort"], ["been_outside_uk_last_country_old"], ["UAC"]],
-    ):
-        check_lookup_table_joined_columns_unique(
-            df=lookup_df, join_column_list=join_on_column_list, name_of_df=lookup_table_name
-        )
-
-    df = transform_from_lookups(df, cohort_lookup, travel_countries_lookup, tenure_group)
-    update_table(df, output_survey_table, write_mode="overwrite", survey_table=True)
-    return {"output_survey_table": output_survey_table}
-
-
-@register_pipeline_stage("union_dependent_transformations")
-def execute_union_dependent_transformations(input_survey_table: str, output_survey_table: str):
-    """
-    Transformations that require the union of the different input survey response files.
-    Includes filling forwards or backwards over time and deriving new information over time.
-
-    Parameters
-    ----------
-    input_survey_table
-    output_survey_table
-    """
-    df = extract_from_table(input_survey_table)
-    df = fill_forwards_transformations(df).custom_checkpoint()
-    df = union_dependent_cleaning(df).custom_checkpoint()
-    df = union_dependent_derivations(df).custom_checkpoint()
-    update_table(df, output_survey_table, write_mode="overwrite", survey_table=True)
-    return {"output_survey_table": output_survey_table}
-
-
-@register_pipeline_stage("fill_forwards_events")
-def execute_fill_forwards_events(input_survey_table: str, output_survey_table: str):
-    """
-    Separates out the fill_forwards_event implementation of last observation carried forwards (LOCF) logic from STATA code
-
-    Parameters
-    ----------
-    input_survey_table
-    output_survey_table
-    """
-    df = extract_from_table(input_survey_table)
-    df = fill_forward_events_for_key_columns(df)
-    update_table(df, output_survey_table, write_mode="overwrite", survey_table=True)
-    return {"output_survey_table": output_survey_table}
-
-
-@register_pipeline_stage("impute_demographic_columns")
-def impute_demographic_columns(input_survey_table: str, imputed_values_table: str, output_survey_table: str):
-    """
-    Impute values for sex, ethnicity and date of birth.
-    Assumes that columns to be imputed have been filled forwards, as the latest value from each participant is used.
-    Specific imputations are carried out for each key demographic column. The resulting columns should have no
-    missing values.
-    Stores imputed values in a lookup table, for reuse in subsequent imputation rounds. This table is also backed up
-    with a datetime suffix.
-    Also outputs a table of survey response records with imputed values.
-    Note that this stage depends on geography information from the sample files being available
-    (from sample file processing).
-
-    Parameters
-    ----------
-    input_survey_table
-    imputed_values_table
-        name of HIVE table containing previously imputed values by participant
-    output_survey_table
-    """
-    imputed_value_lookup_df = None
-    if check_table_exists(imputed_values_table):
-        imputed_value_lookup_df = extract_from_table(imputed_values_table, break_lineage=True)
-    df = extract_from_table(input_survey_table)
-
-    key_columns_imputed_df = impute_key_columns(
-        df, imputed_value_lookup_df, get_config().get("imputation_log_directory", "./")
-    )
-    df_with_imputed_values, new_imputed_value_lookup = post_imputation_wrapper(df, key_columns_imputed_df)
-
-    update_table(new_imputed_value_lookup, imputed_values_table, "overwrite", archive=True)
-    update_table(df_with_imputed_values, output_survey_table, "overwrite", survey_table=True)
-    return {"output_survey_table": output_survey_table}
-
-
-@register_pipeline_stage("geography_and_imputation_dependent_logic")
-def geography_and_imputation_dependent_processing(
-    input_survey_table: str,
-    rural_urban_lookup_path: str,
-    output_survey_table: str,
-):
-    """
-    Processing that depends on geographies and and imputed demographic infromation.
-
-    Parameters
-    ----------
-    input_survey_table
-        name of the table containing data to be processed
-    rural_urban_lookup_path
-        path to the rural urban lookup to be joined onto responses
-    edited_table
-        name of table to write processed data to
-    """
-    df = extract_from_table(input_survey_table)
-    rural_urban_lookup_df = get_or_create_spark_session().read.csv(
-        rural_urban_lookup_path,
-        header=True,
-        schema="""
-            lower_super_output_area_code_11 string,
-            cis_rural_urban_classification string
-        """,
-    )  # Prefer version from sample
-    df = df.join(
-        F.broadcast(rural_urban_lookup_df),
-        how="left",
-        on="lower_super_output_area_code_11",
-    )
-    df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
-
-    df = assign_multigenerational(
-        df=df,
-        column_name_to_assign="multigenerational_household",
-        participant_id_column="participant_id",
-        household_id_column="ons_household_id",
-        visit_date_column="visit_datetime",
-        date_of_birth_column="date_of_birth",
-        country_column="country_name_12",
-    )  # Includes school year and age_at_visit derivations
-
-    df = derive_age_based_columns(df, "age_at_visit")
-    df = assign_age_group_school_year(
-        df,
-        country_column="country_name_12",
-        age_column="age_at_visit",
-        school_year_column="school_year",
-        column_name_to_assign="age_group_school_year",
-    )
-    df = assign_work_patient_facing_now(
-        df,
-        column_name_to_assign="work_patient_facing_now",
-        age_column="age_at_visit",
-        work_healthcare_column="work_health_care_patient_facing",
-    )
-    df = assign_work_person_facing_now(
-        df,
-        column_name_to_assign="work_person_facing_now",
-        work_patient_facing_now_column="work_patient_facing_now",
-        work_social_care_column="work_social_care",
-        age_at_visit_column="age_at_visit",
-    )
-
-    # df = update_work_facing_now_column(
-    #     df,
-    #     "work_patient_facing_now",
-    #     "work_status_v0",
-    #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
-    # )
-    df = reclassify_work_variables(df, spark_session=get_or_create_spark_session(), drop_original_variables=False)
-    df = fill_forward_only_to_nulls(
-        df,
-        id="participant_id",
-        date="visit_datetime",
-        list_fill_forward=[
-            "work_status_v0",
-            "work_status_v1",
-            "work_status_v2",
-            "work_location",
-            "work_not_from_home_days_per_week",
-        ],
-    )
-    df = create_formatted_datetime_string_columns(df)
-    update_table(df, output_survey_table, write_mode="overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
 

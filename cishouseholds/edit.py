@@ -77,10 +77,14 @@ def fuzzy_update(
     update_column: str,
     min_matches: int,
     id_column: str,
+    visit_date_column: str,
     right_df: DataFrame = None,
+    filter_out_of_range: bool = False,
 ):
     """
     Update a column value if more than 'min_matches' values match in a series of column values 'cols_to_check'.
+
+    Does not update values that already exist.
     """
 
     window = Window.partitionBy(id_column).orderBy(id_column)
@@ -88,11 +92,18 @@ def fuzzy_update(
     if right_df is None:
         right_df = left_df
     right_df = right_df.select(id_column, update_column, *cols_to_check).filter(F.col(update_column).isNotNull())
-    for c in [*cols_to_check, update_column]:
+
+    for c in [c for c in right_df.columns if c != id_column]:
         right_df = right_df.withColumnRenamed(c, f"{c}_right")
+
     left_df = left_df.withColumn("ROW_NUM_LEFT", F.row_number().over(window))
     right_df = right_df.withColumn("ROW_NUM_RIGHT", F.row_number().over(window))
+
     df = left_df.join(right_df, on=id_column, how="left")
+
+    if filter_out_of_range:
+        df = df.filter(F.col(f"{update_column}_right") <= F.col(visit_date_column))
+
     df = df.withColumn(
         "TEMP",
         reduce(
@@ -309,7 +320,7 @@ def update_column_in_time_window(
 
 
 def update_to_value_if_any_not_null(
-    df: DataFrame, column_name_to_assign: str, true_false_values: list, column_list: list
+    df: DataFrame, column_name_to_update: str, true_false_values: list, column_list: list
 ):
     """Edit existing column to `value_to_assign` when a value is present in any of the listed columns.
 
@@ -317,7 +328,7 @@ def update_to_value_if_any_not_null(
     ----------
     df
         The input DataFrame to process
-    column_name_to_assign
+    column_name_to_update
         The name of the existing column
     true_false_values
         True and false values to be assigned
@@ -325,7 +336,7 @@ def update_to_value_if_any_not_null(
         A list of columns to check if any of them do not have null values
     """
     df = df.withColumn(
-        column_name_to_assign,
+        column_name_to_update,
         F.when(any_column_not_null(column_list), true_false_values[0]).otherwise(true_false_values[1]),
     )
     return df
@@ -914,6 +925,15 @@ def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str):
         ),
     )
 
+    return df
+
+
+def nullify_columns_before_date(df: DataFrame, column_list: List[str], date_column: str, date: str):
+    """
+    Nullify the values of a list of column names if the date in the `date_column` is before the specified `date`.
+    """
+    for col in [c for c in column_list if c in df.columns]:
+        df = df.withColumn(col, F.when(F.col(date_column) >= date, F.col(col)))
     return df
 
 

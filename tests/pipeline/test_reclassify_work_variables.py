@@ -4,7 +4,7 @@ from chispa.dataframe_comparer import assert_df_equality
 from pyspark.sql import functions as F
 from pyspark.sql import types as t
 
-from cishouseholds.pipeline.post_union_transformations import reclassify_work_variables
+from cishouseholds.pipeline.job_transformations import reclassify_work_variables
 
 
 @pytest.fixture
@@ -60,7 +60,7 @@ def test_reclassify_work_variables(spark_session, load_test_cases):
         .replace("NaN", None)
         .withColumn("school_year", F.col("school_year").cast("integer"))
     )
-    actual_df = reclassify_work_variables(input_df, spark_session=spark_session, drop_original_variables=True)
+    actual_df = reclassify_work_variables(input_df, drop_original_variables=True)
 
     assert_df_equality(
         actual_df,
