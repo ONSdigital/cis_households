@@ -51,31 +51,30 @@ def check_dependencies(stages_to_run, stages_config):  # TODO: ensure check in o
 
     available_tables = []
     for stage in stages_to_run:  # generate available and required tables from stage config
-        required_tables = []
-        input_tables = stages_config[stage].get("input_tables", {})
+        required_tables = stages_config[stage].get("input_tables", {})
 
         function = stages_config[stage].get("function", stage)
 
-        if type(input_tables) == dict:
-            required_tables.extend(input_tables.values())
-        elif type(input_tables) == list:
-            required_tables.extend(input_tables)
         if "tables_to_process" in stages_config[stage]:
-            required_tables.extend(stages_config[stage]["tables_to_process"])
+            required_tables.update(
+                {f"table_to_process_{i}": t for i, t in enumerate(stages_config[stage]["tables_to_process"])}
+            )
 
-        unavailable_tables = [
-            table for table in required_tables if not check_table_exists(table)
-        ]  # remove existing tables
-        unavailable_tables = [
-            table for table in unavailable_tables if table not in available_tables
-        ]  # remove tables that will be created
         optional_input_args = [
             arg
             for arg in inspect.getfullargspec(pipeline_stages[function]).args
             if "="  # meaning it will check only non default input parameters
             in str(inspect.signature(pipeline_stages[function]).parameters[arg])
         ]
-        unavailable_tables = [table for table in unavailable_tables if table not in optional_input_args]
+
+        unavailable_tables = [table for k, table in required_tables.items() if k not in optional_input_args]
+        unavailable_tables = [
+            table for table in unavailable_tables if not check_table_exists(table)
+        ]  # remove existing tables
+        unavailable_tables = [
+            table for table in unavailable_tables if table not in available_tables
+        ]  # remove tables that will be created
+
         missing_tables = ",".join(unavailable_tables)
 
         if len(unavailable_tables) > 0:

@@ -514,8 +514,8 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
 def execute_post_union_processing(
     input_survey_table: str,
     cohort_lookup_table: str,
-    travel_countries_lookup_table: str,
-    tenure_group_table: str,
+    travel_country_lookup_table: str,
+    tenure_group_lookup_table: str,
     output_survey_table: str,
 ):
     """
@@ -535,12 +535,12 @@ def execute_post_union_processing(
     """
     df = extract_from_table(input_survey_table)
     cohort_lookup = extract_from_table(cohort_lookup_table)
-    travel_countries_lookup = extract_from_table(travel_countries_lookup_table)
-    tenure_group = extract_from_table(tenure_group_table).select(
+    travel_countries_lookup = extract_from_table(travel_country_lookup_table)
+    tenure_group = extract_from_table(tenure_group_lookup_table).select(
         "UAC", "numAdult", "numChild", "dvhsize", "tenure_group"
     )
     for lookup_table_name, lookup_df, join_on_column_list in zip(
-        [cohort_lookup_table, travel_countries_lookup_table, tenure_group_table],
+        [cohort_lookup_table, travel_country_lookup_table, tenure_group_lookup_table],
         [cohort_lookup, travel_countries_lookup, tenure_group],
         [["participant_id", "old_cohort"], ["been_outside_uk_last_country_old"], ["UAC"]],
     ):

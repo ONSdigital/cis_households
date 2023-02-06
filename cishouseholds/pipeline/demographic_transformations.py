@@ -45,7 +45,7 @@ def demographic_transformations(
 
     call all functions in order necessary to update the demographic columns.
     """
-    log_directory = get_config()["imputation_log_directory"]
+    log_directory: str = get_config()["imputation_log_directory"]
 
     df = generic_processing(df).custom_checkpoint()
     df = replace_design_weights_transformations(
