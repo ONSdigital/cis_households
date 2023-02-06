@@ -51,15 +51,10 @@ def check_dependencies(stages_to_run, stages_config):  # TODO: ensure check in o
 
     available_tables = []
     for stage in stages_to_run:  # generate available and required tables from stage config
-        required_tables = {}
-        input_tables = stages_config[stage].get("input_tables", {})
+        required_tables = stages_config[stage].get("input_tables", {})
 
         function = stages_config[stage].get("function", stage)
 
-        # if type(input_tables) == dict:
-        required_tables.update(input_tables)
-        # elif type(input_tables) == list:
-        #    required_tables.extend(input_tables)
         if "tables_to_process" in stages_config[stage]:
             required_tables.update(
                 {f"table_to_process_{i}": t for i, t in enumerate(stages_config[stage]["tables_to_process"])}
