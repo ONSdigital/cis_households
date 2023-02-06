@@ -68,11 +68,13 @@ def assign_match_type(df: DataFrame, test_type: str):
         df = df.withColumn(
             col,
             F.when(
+                # missing from survey
                 F.col(f"{test_type}_sample_barcode_missing_survey")
                 & (F.datediff(F.col("file_date"), F.col(f"{test_type}_sample_received_date")) > n),
                 option_set["a"],
             )
             .when(
+                # missing from lab
                 F.col(f"{test_type}_sample_barcode_missing_lab")
                 & (
                     (F.datediff(F.col("file_date"), F.col("survey_completed_datetime")) >= 7)
