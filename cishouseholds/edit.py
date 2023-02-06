@@ -1365,7 +1365,7 @@ def conditionally_set_column_values(df: DataFrame, condition: Any, cols_to_set_t
         Due to the list comprehension this can accept either a specific column name or a prefix
         eg think_had_covid_date or think_had_covid_
     """
-    df = df.withColumn("condition_col", condition).cache()
+    df = df.withColumn("condition_col", condition)
     for col_prefix in cols_to_set_to_value:
         value = cols_to_set_to_value.get(col_prefix)
         columns = [col for col in df.columns if col_prefix in col]
