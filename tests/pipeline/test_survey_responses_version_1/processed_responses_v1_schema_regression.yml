@@ -449,7 +449,7 @@ fields:
   type: string
 - metadata: {}
   name: contact_known_positive_covid_last_28_days
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: last_covid_contact_date
@@ -461,7 +461,7 @@ fields:
   type: string
 - metadata: {}
   name: contact_suspected_positive_covid_last_28_days
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: last_suspected_covid_contact_date
@@ -645,102 +645,6 @@ fields:
   type: timestamp
 - metadata: {}
   name: survey_response_source_file
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_had_covid_any_symptoms_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_have_covid_symptom_any_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_health_care_area_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_main_job_title_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_main_job_role_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_status_v1_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_not_from_home_days_per_week_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_location_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: sex_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: participant_withdrawal_reason_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: blood_sample_barcode_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: swab_sample_barcode_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_health_care_area_original
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_nursing_or_residential_care_home_original
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_direct_contact_patients_or_clients_original
-  nullable: true
-  type: string
-- metadata: {}
-  name: unique_participant_response_id
-  nullable: false
-  type: string
-- metadata: {}
-  name: file_date
-  nullable: true
-  type: timestamp
-- metadata: {}
-  name: any_date_corrected
-  nullable: true
-  type: string
-- metadata: {}
-  name: bad_email
-  nullable: true
-  type: boolean
-- metadata: {}
-  name: consent_summary
-  nullable: true
-  type: double
-- metadata: {}
-  name: days_since_think_had_covid
-  nullable: true
-  type: integer
-- metadata: {}
-  name: days_since_think_had_covid_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: hh_id
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_main_job_changed
   nullable: false
   type: string
 - metadata: {}
