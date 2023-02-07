@@ -1129,7 +1129,7 @@ fields:
   type: string
 - metadata: {}
   name: contact_known_positive_covid_last_28_days
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: last_covid_contact_date
@@ -1141,7 +1141,7 @@ fields:
   type: string
 - metadata: {}
   name: contact_suspected_positive_covid_last_28_days
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: last_suspected_covid_contact_date
@@ -1316,198 +1316,6 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: think_had_covid_any_symptoms_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_health_care_area_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_main_job_title_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_main_job_role_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_not_from_home_days_per_week_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_location_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: sex_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: participant_withdrawal_reason_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: blood_sample_barcode_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: swab_sample_barcode_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_health_care_area_original
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_nursing_or_residential_care_home_original
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_direct_contact_patients_or_clients_original
-  nullable: true
-  type: string
-- metadata: {}
-  name: unique_participant_response_id
-  nullable: false
-  type: string
-- metadata: {}
-  name: any_date_corrected
-  nullable: true
-  type: string
-- metadata: {}
-  name: bad_email
-  nullable: true
-  type: boolean
-- metadata: {}
-  name: days_since_think_had_covid
-  nullable: true
-  type: integer
-- metadata: {}
-  name: days_since_think_had_covid_group
-  nullable: true
-  type: string
-- metadata: {}
-  name: hh_id
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_in_additional_paid_employment_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_nursing_or_residential_care_home_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_direct_contact_patients_or_clients_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: self_isolating_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: illness_lasting_over_12_months_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: ever_smoked_regularly_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: currently_smokes_or_vapes_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_type_1_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_type_2_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_type_3_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_type_4_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_type_5_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_type_6_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: other_household_member_hospital_last_28_days_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: other_household_member_care_home_last_28_days_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: hours_a_day_with_someone_else_at_home_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: physical_contact_under_18_years_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: physical_contact_18_to_69_years_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: physical_contact_over_70_years_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: social_distance_contact_under_18_years_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: social_distance_contact_18_to_69_years_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: social_distance_contact_over_70_years_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: times_hour_or_longer_another_home_last_7_days_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: times_hour_or_longer_another_person_your_home_last_7_days_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: times_shopping_last_7_days_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: times_socialising_last_7_days_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: face_covering_work_or_education_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: face_covering_other_enclosed_places_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_type_raw
-  nullable: true
-  type: string
-- metadata: {}
   name: self_isolating_reason
   nullable: true
   type: string
@@ -1672,6 +1480,54 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: physical_contact_under_18_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: physical_contact_18_to_69_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: physical_contact_over_70_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: social_distance_contact_under_18_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: social_distance_contact_18_to_69_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: social_distance_contact_over_70_years_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: times_hour_or_longer_another_home_last_7_days_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: times_hour_or_longer_another_person_your_home_last_7_days_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: times_shopping_last_7_days_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: times_socialising_last_7_days_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: face_covering_work_or_education_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: face_covering_other_enclosed_places_raw
+  nullable: true
+  type: string
+- metadata: {}
   name: other_covid_infection_test_results_raw
   nullable: true
   type: string
@@ -1680,11 +1536,39 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: cis_covid_vaccine_type_raw
+  nullable: true
+  type: string
+- metadata: {}
   name: cis_covid_vaccine_type_other_raw
   nullable: true
   type: string
 - metadata: {}
   name: cis_covid_vaccine_number_of_doses_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_1_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_2_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_3_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_4_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_5_raw
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_6_raw
   nullable: true
   type: string
 - metadata: {}

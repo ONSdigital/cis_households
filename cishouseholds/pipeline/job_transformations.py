@@ -203,4 +203,6 @@ def data_dependent_derivations(df: DataFrame) -> DataFrame:
     #     "work_status_v0",
     #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
     # )
+    soc_code_col = "standard_occupational_classification_code"
+    df = df.withColumn(soc_code_col, F.when(F.col(soc_code_col).isNull(), "uncodeable").otherwise(F.col(soc_code_col)))
     return df

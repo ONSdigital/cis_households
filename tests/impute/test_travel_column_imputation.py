@@ -2,7 +2,6 @@ from chispa import assert_df_equality
 
 from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.impute import fill_forward_from_last_change
-from cishouseholds.pipeline.high_level_transformations import fill_forwards
 
 # from cishouseholds.edit import update_travel_column
 
@@ -75,6 +74,22 @@ def test_travel_column_imputation(spark_session):
         ],
         schema=schema,
     )
-
-    output_df = fill_forwards(input_df)
+    temp_df = update_to_value_if_any_not_null(
+        df=input_df,
+        column_name_to_update="been_outside_uk",
+        true_false_values=["Yes", "No"],
+        column_list=["been_outside_uk_last_country", "been_outside_uk_last_return_date"],
+    )
+    output_df = fill_forward_from_last_change(
+        df=temp_df,
+        fill_forward_columns=[
+            "been_outside_uk_last_country",
+            "been_outside_uk_last_return_date",
+            "been_outside_uk",
+        ],
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+        record_changed_column="been_outside_uk",
+        record_changed_value="Yes",
+    )
     assert_df_equality(output_df, expected_df, ignore_row_order=False, ignore_column_order=True)
