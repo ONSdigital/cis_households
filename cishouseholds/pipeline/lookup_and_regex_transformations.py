@@ -214,12 +214,12 @@ def ordered_household_id_tranformations(df: DataFrame, **kwargs: dict) -> DataFr
 
 
 def lab_pre_join_transformations(df: DataFrame, test_type: str, **kwargs: dict) -> DataFrame:
-    df = df.withColumn(f"{test_type}_sample_barcode_missing_survey", F.col(f"{test_type}_sample_barcode").isNull())
+    df = df.withColumn(f"{test_type}_sample_barcode_survey_missing_lab", F.col(f"{test_type}_sample_barcode").isNull())
     return df
 
 
 def lab_lookup_transformations(df: DataFrame, test_type: str, **kwargs: dict) -> DataFrame:
-    df = df.withColumn(f"{test_type}_sample_barcode_missing_lab", F.col(f"{test_type}_sample_barcode").isNull())
+    df = df.withColumn(f"{test_type}_sample_barcode_lab_missing_survey", F.col(f"{test_type}_sample_barcode").isNull())
     return df
 
 

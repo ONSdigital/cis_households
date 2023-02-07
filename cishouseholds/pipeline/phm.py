@@ -69,13 +69,13 @@ def assign_match_type(df: DataFrame, test_type: str):
             col,
             F.when(
                 # missing from survey
-                F.col(f"{test_type}_sample_barcode_missing_survey")
+                F.col(f"{test_type}_sample_barcode_lab_missing_survey")
                 & (F.datediff(F.col("file_date"), F.col(f"{test_type}_sample_received_date")) > n),
                 option_set["a"],
             )
             .when(
                 # missing from lab
-                F.col(f"{test_type}_sample_barcode_missing_lab")
+                F.col(f"{test_type}_sample_barcode_survey_missing_lab")
                 & (
                     (F.datediff(F.col("file_date"), F.col("survey_completed_datetime")) >= 7)
                     | (F.datediff(F.col("file_date"), F.col("participant_completion_window_end_datetime")) >= 7)
@@ -85,8 +85,8 @@ def assign_match_type(df: DataFrame, test_type: str):
             .when(
                 # present for both lab and survey
                 (
-                    (~F.col(f"{test_type}_sample_barcode_missing_lab"))
-                    & (~F.col(f"{test_type}_sample_barcode_missing_survey"))
+                    (~F.col(f"{test_type}_sample_barcode_survey_missing_lab"))
+                    & (~F.col(f"{test_type}_sample_barcode_lab_missing_survey"))
                 )
                 & (F.datediff(F.col(f"{test_type}_sample_received_date"), F.col(f"{test_type}_taken_datetime")) <= n),
                 option_set["c"],
@@ -94,8 +94,8 @@ def assign_match_type(df: DataFrame, test_type: str):
             .when(
                 # present for both lab and survey
                 (
-                    (~F.col(f"{test_type}_sample_barcode_missing_lab"))
-                    & (~F.col(f"{test_type}_sample_barcode_missing_survey"))
+                    (~F.col(f"{test_type}_sample_barcode_survey_missing_lab"))
+                    & (~F.col(f"{test_type}_sample_barcode_lab_missing_survey"))
                 )
                 & (F.datediff(F.col(f"{test_type}_sample_received_date"), F.col(f"{test_type}_taken_datetime")) > n),
                 option_set["d"],
