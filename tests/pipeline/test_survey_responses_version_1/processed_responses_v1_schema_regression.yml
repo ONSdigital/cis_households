@@ -648,6 +648,10 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: work_main_job_changed
+  nullable: false
+  type: string
+- metadata: {}
   name: work_social_care
   nullable: true
   type: string
