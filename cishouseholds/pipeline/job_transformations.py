@@ -1,4 +1,4 @@
-# flake8: noqa
+from typing import List
 from typing import Optional
 
 import pyspark.sql.functions as F
@@ -10,7 +10,6 @@ from cishouseholds.derive import assign_work_person_facing_now
 from cishouseholds.derive import assign_work_status_group
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_job_description_string
-from cishouseholds.edit import update_work_main_job_changed
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.impute import fill_backwards_work_status_v2
 from cishouseholds.impute import fill_forward_from_last_change_marked_subset
@@ -19,6 +18,8 @@ from cishouseholds.merge import left_join_keep_right
 from cishouseholds.pipeline.lookup_and_regex_transformations import process_healthcare_regex
 from cishouseholds.pipeline.lookup_and_regex_transformations import reclassify_work_variables
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+# from cishouseholds.edit import update_work_main_job_changed
 
 
 # this wall feed in data from the joined healthcare regex
@@ -31,6 +32,7 @@ def job_transformations(df: DataFrame, soc_lookup_df: DataFrame, job_lookup_df: 
     df = left_join_keep_right(
         left_df=df, right_df=job_lookup_df, join_on_columns=["work_main_job_title", "work_main_job_role"]
     )
+    df = repopulate_missing_from_original(df=df, columns_to_update=job_lookup_df.columns)
     df = fill_forwards_and_backwards(df).custom_checkpoint()
     df = data_dependent_derivations(df).custom_checkpoint()
     return df, job_lookup_df
@@ -121,7 +123,18 @@ def create_job_lookup(df: DataFrame, soc_lookup_df: DataFrame, lookup_df: Option
     return processed_df
 
 
+def repopulate_missing_from_original(df: DataFrame, columns_to_update: List[str]):
+    """Attempt to update columns with their original values if they have been nullified"""
+    for col in columns_to_update:
+        if f"{col}_original" in df.columns:
+            df = df.withColumn(col, F.coalesce(F.col(f"{col}_original"), F.col(col)))
+        elif f"{col}_raw" in df.columns:
+            df = df.withColumn(col, F.coalesce(F.col(f"{col}_raw"), F.col(col)))
+    return df
+
+
 def fill_forwards_and_backwards(df: DataFrame):
+    """Attempt to add data by adding data to rows where the datetime suggests the data point will be valid."""
     df = fill_forward_from_last_change_marked_subset(
         df=df,
         fill_forward_columns=[
