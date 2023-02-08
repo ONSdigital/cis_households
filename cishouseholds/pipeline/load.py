@@ -7,6 +7,7 @@ import pkg_resources
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
+from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
@@ -102,10 +103,13 @@ def extract_from_table(table_name: str, break_lineage: bool = False, alternate_p
 
 def update_table(df: DataFrame, table_name, write_mode, archive=False, survey_table=False):
     if write_mode == "append":
-        check = extract_from_table(table_name, break_lineage=True)
-        if check.columns != df.columns:
-            print(" - overwriting table as the columns differ")  # functional
-            write_mode = "overwrite"
+        if check_table_exists(table_name):
+            check = extract_from_table(table_name, break_lineage=True)
+            if check.columns != df.columns:
+                print(" - overwriting table as the columns differ")  # functional
+                df = union_multiple_tables([check, df])
+                df = df.distinct()
+                write_mode = "overwrite"
     df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
     add_table_log_entry(table_name, survey_table, write_mode)
     if archive:
