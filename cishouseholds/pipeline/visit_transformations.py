@@ -53,6 +53,13 @@ def visit_derivations(df: DataFrame):
     )
     df = assign_date_difference(
         df=df,
+        column_name_to_assign="fortnight_since_enrolment",
+        start_reference_column="household_first_visit_datetime",
+        end_reference_column="visit_datetime",
+        format="fortnight",
+    )
+    df = assign_date_difference(
+        df=df,
         column_name_to_assign="household_weeks_since_survey_enrolment",
         start_reference_column="survey start",
         end_reference_column="visit_datetime",
