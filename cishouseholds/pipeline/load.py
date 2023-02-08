@@ -7,7 +7,6 @@ import pkg_resources
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
-from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
@@ -102,6 +101,8 @@ def extract_from_table(table_name: str, break_lineage: bool = False, alternate_p
 
 
 def update_table(df: DataFrame, table_name, write_mode, archive=False, survey_table=False):
+    from cishouseholds.merge import union_multiple_tables
+
     if write_mode == "append":
         if check_table_exists(table_name):
             check = extract_from_table(table_name, break_lineage=True)
