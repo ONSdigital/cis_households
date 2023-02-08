@@ -64,8 +64,10 @@ def edit_existing_columns(df: DataFrame) -> DataFrame:
     - visit_id
     - participant_id
     """
-    invalid_covid_date = "2019-11-17"
 
+    df = normalise_think_had_covid_columns(df, "think_had_covid_symptom")
+
+    invalid_covid_date = "2019-11-17"
     conditions = {
         "think_had_covid_onset_date": (
             (F.col("think_had_covid_onset_date").isNotNull())
@@ -97,7 +99,6 @@ def edit_existing_columns(df: DataFrame) -> DataFrame:
             "contact_known_positive_covid_last_28_days": "No",
         },
     }
-    df = normalise_think_had_covid_columns(df, "think_had_covid_symptom")
     for condition in list(conditions.keys()):
         df = conditionally_set_column_values(
             df=df,
@@ -105,12 +106,11 @@ def edit_existing_columns(df: DataFrame) -> DataFrame:
             cols_to_set_to_value=col_value_maps.get(condition),
         )
 
+    df = df.custom_checkpoint()
+
     contact_dates = ["last_suspected_covid_contact_date", "last_covid_contact_date"]
-
     covid_contacts = ["contact_suspected_positive_covid_last_28_days", "contact_known_positive_covid_last_28_days"]
-
     contact_types = ["last_suspected_covid_contact_type", "last_covid_contact_type"]
-
     for contact_date, contact_type, contact in zip(contact_dates, contact_types, covid_contacts):
         # correct covid contact based on date
         df = update_to_value_if_any_not_null(

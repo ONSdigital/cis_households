@@ -304,7 +304,7 @@ def validate_config_stages(pipeline_stage_functions: Dict, stages_to_run: List[s
             list_of_unrecognised_arg = [
                 x
                 for x in function_config_other_params
-                if ((x not in all_func_config_parameters_from_object) and (x != "when"))
+                if ((x not in all_func_config_parameters_from_object) and (x not in ["when", "kwargs"]))
             ]
             if list_not_passed_arg != []:
                 error_msg += f"""  - {function_name} stage does not have in the config file: {', '.join(list_not_passed_arg)}.\n"""  # noqa: E501

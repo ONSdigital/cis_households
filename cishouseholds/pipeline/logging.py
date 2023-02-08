@@ -6,7 +6,7 @@ from cishouseholds.pipeline.load import get_run_id
 
 def check_survey_table_lengths():
     tables_df = extract_from_table("table_log").filter(
-        (F.col("survey_table") is True) & (F.col("run_id") == get_run_id())
+        (F.col("survey_table") == True) & (F.col("run_id") == get_run_id())  # noqa
     )
     table_names = tables_df.toPandas()["table_name"].to_list()
     lengths = [extract_from_table(table).count() for table in table_names]
