@@ -100,17 +100,24 @@ def extract_from_table(table_name: str, break_lineage: bool = False, alternate_p
     return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix)}")
 
 
-def update_table(df: DataFrame, table_name, write_mode, archive=False, survey_table=False):
+def update_table(
+    df: DataFrame, table_name, write_mode, archive=False, survey_table=False, error_if_cols_differ: bool = True
+):
     from cishouseholds.merge import union_multiple_tables
 
     if write_mode == "append":
         if check_table_exists(table_name):
             check = extract_from_table(table_name, break_lineage=True)
             if check.columns != df.columns:
-                print(" - overwriting table as the columns differ")  # functional
-                df = union_multiple_tables([check, df])
-                df = df.distinct()
-                write_mode = "overwrite"
+                msg = f"Trying to append to {table_name} but columns differ"  # functional
+                if error_if_cols_differ:
+                    raise ValueError(msg)
+                    return
+                else:
+                    print(f"    - {msg}")  # functional
+                    df = union_multiple_tables([check, df])
+                    df = df.distinct()
+                    write_mode = "overwrite"
     df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
     add_table_log_entry(table_name, survey_table, write_mode)
     if archive:
@@ -285,4 +292,4 @@ def update_processed_file_log(df: DataFrame, filename_column: str, dataset_name:
         for filename, row_count in zip(newly_processed_files, file_lengths)
     ]
     df = spark_session.createDataFrame(entry, schema)
-    update_table(df, "processed_filenames", "append")
+    update_table(df, "processed_filenames", "append", error_if_cols_differ=False)
