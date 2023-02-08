@@ -1470,7 +1470,7 @@ def assign_date_difference(
     end_reference_column
         Second date column name.
     format
-        time format (days, weeks, months)
+        time format (days, weeks, fortnight, months)
 
     Return
     ------

@@ -10,7 +10,7 @@ def test_assign_any_symptoms_around_visit(spark_session):
             (1, "2020-07-20", "2020-07-29", 9),
             (2, "2020-07-20", "2020-08-12", 3),
             (3, None, "2020-08-12", 93),
-            (4, None, "2020-08-12", "2020-08-27", 1),
+            (4, "2020-08-12", "2020-08-27", 1),
         ],
         schema="id integer, date_1 string, date_2 string, diff integer",
     )
@@ -36,7 +36,7 @@ def test_assign_any_symptoms_around_visit(spark_session):
     output_df4 = assign_date_difference(
         df=expected_df.drop("ref").filter(F.col("id") == 4),
         column_name_to_assign="diff",
-        start_reference_column="survey start",
+        start_reference_column="date_1",
         end_reference_column="date_2",
         format="fortnight",
     )
