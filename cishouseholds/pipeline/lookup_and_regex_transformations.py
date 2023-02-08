@@ -75,7 +75,6 @@ def transform_cis_soc_data(
     transform and process cis soc data
     """
 
-    soc_lookup_df = soc_lookup_df.drop_duplicates(["standard_occupational_classification_code", *join_on_columns])
     drop_null_title_df = soc_lookup_df.filter(F.col("work_main_job_title").isNull()).withColumn(
         "drop_reason", F.lit("null job title")
     )
@@ -85,8 +84,10 @@ def transform_cis_soc_data(
 
     # allow nullsafe join on title as soc is sometimes assigned without job role
     soc_lookup_df = null_safe_join(
-        soc_lookup_df.distinct(), inconsistences_resolution_df.distinct(), null_safe_on=join_on_columns, how="left"
+        soc_lookup_df, inconsistences_resolution_df, null_safe_on=join_on_columns, how="left"
     )
+
+    soc_lookup_df = soc_lookup_df.drop_duplicates(["standard_occupational_classification_code", *join_on_columns])
 
     soc_lookup_df = soc_lookup_df.withColumn(
         "standard_occupational_classification_code",
@@ -213,12 +214,12 @@ def ordered_household_id_tranformations(df: DataFrame, **kwargs: dict) -> DataFr
 
 
 def lab_pre_join_transformations(df: DataFrame, test_type: str, **kwargs: dict) -> DataFrame:
-    df = df.withColumn(f"{test_type}_sample_barcode_missing_survey", F.col(f"{test_type}_sample_barcode").isNull())
+    df = df.withColumn(f"{test_type}_sample_barcode_survey_missing_lab", F.col(f"{test_type}_sample_barcode").isNull())
     return df
 
 
 def lab_lookup_transformations(df: DataFrame, test_type: str, **kwargs: dict) -> DataFrame:
-    df = df.withColumn(f"{test_type}_sample_barcode_missing_lab", F.col(f"{test_type}_sample_barcode").isNull())
+    df = df.withColumn(f"{test_type}_sample_barcode_lab_missing_survey", F.col(f"{test_type}_sample_barcode").isNull())
     return df
 
 

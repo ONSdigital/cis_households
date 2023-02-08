@@ -29,12 +29,15 @@ from cishouseholds.impute import impute_by_k_nearest_neighbours
 from cishouseholds.impute import impute_by_mode
 from cishouseholds.impute import impute_date_by_k_nearest_neighbours
 from cishouseholds.impute import merge_previous_imputed_values
+from cishouseholds.merge import left_join_keep_right
 from cishouseholds.pipeline.config import get_config
+from cishouseholds.pipeline.lookup_and_regex_transformations import design_weights_lookup_transformations
 
 
 def demographic_transformations(
     df: DataFrame,
     geography_lookup_df: DataFrame,
+    design_weights_lookup_df: DataFrame,
     imputed_value_lookup_df: Optional[DataFrame] = None,
 ):
     """
@@ -45,14 +48,16 @@ def demographic_transformations(
     log_directory: str = get_config()["imputation_log_directory"]
 
     df = generic_processing(df).custom_checkpoint()
-    df = replace_design_weights_transformations(df).custom_checkpoint()
+    df = replace_design_weights_transformations(
+        df=df, geography_lookup_df=geography_lookup_df, design_weights_lookup_df=design_weights_lookup_df
+    ).custom_checkpoint()
     df = ethnicity_transformations(df).custom_checkpoint()
     df = fill_forwards_and_backwards(df).custom_checkpoint()
     df = derive_people_in_household_count(df).custom_checkpoint()
 
     imputed_demographic_columns_df = impute_key_columns(df, imputed_value_lookup_df, log_directory).custom_checkpoint()
     df = geography_dependent_transformations(
-        df, geography_lookup_df=geography_lookup_df, imputed_demographic_columns_df=imputed_demographic_columns_df
+        df=df, imputed_demographic_columns_df=imputed_demographic_columns_df
     ).custom_checkpoint()
     return df, imputed_value_lookup_df
 
@@ -95,8 +100,17 @@ def generic_processing(df: DataFrame):
     return df
 
 
-def replace_design_weights_transformations(df: DataFrame) -> DataFrame:
+def replace_design_weights_transformations(
+    df: DataFrame,
+    geography_lookup_df: DataFrame,  # should include rural urban lookup,
+    design_weights_lookup_df: DataFrame,
+) -> DataFrame:
     """Run required post-join transformations for replace_design_weights"""
+
+    df = left_join_keep_right(df, geography_lookup_df, ["ons_household_id"])
+    design_weights_lookup_df = design_weights_lookup_transformations(design_weights_lookup_df)
+    df = left_join_keep_right(df, design_weights_lookup_df, ["ons_household_id"])
+
     df = df.withColumn(
         "local_authority_unity_authority_code",
         F.when(F.col("local_authority_unity_authority_code") == "E06000062", "E07000154")
@@ -355,7 +369,6 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
 
 def geography_dependent_transformations(
     df: DataFrame,
-    geography_lookup_df: DataFrame,  # should include rural urban lookup
     imputed_demographic_columns_df: DataFrame,
 ):
     """
@@ -372,15 +385,11 @@ def geography_dependent_transformations(
     - country_name_12
     - school_year
     """
-    df = df.join(geography_lookup_df, on="ons_household_id", how="left")  # join geography data
-
     df = df.drop(*[col for col in imputed_demographic_columns_df.columns if col != "participant_id"])
 
     df = df.join(imputed_demographic_columns_df, on="participant_id", how="left")  # join imputed data
 
     df = assign_outward_postcode(df, "outward_postcode", reference_column="postcode")
-
-    df = derive_age_based_columns(df, "age_at_visit")
 
     df = assign_multigenerational(
         df=df,
@@ -391,6 +400,8 @@ def geography_dependent_transformations(
         date_of_birth_column="date_of_birth",
         country_column="country_name_12",
     )  # Includes school year and age_at_visit derivations
+
+    df = derive_age_based_columns(df, "age_at_visit")
 
     df = assign_age_group_school_year(
         df,
