@@ -32,7 +32,7 @@ def job_transformations(df: DataFrame, soc_lookup_df: DataFrame, job_lookup_df: 
     df = left_join_keep_right(
         left_df=df, right_df=job_lookup_df, join_on_columns=["work_main_job_title", "work_main_job_role"]
     )
-    df = repopulate_missing_from_original(df=df, columns_to_update=job_lookup_df.column)
+    df = repopulate_missing_from_original(df=df, columns_to_update=job_lookup_df.columns)
     df = fill_forwards_and_backwards(df).custom_checkpoint()
     df = data_dependent_derivations(df).custom_checkpoint()
     return df, job_lookup_df
@@ -127,9 +127,9 @@ def repopulate_missing_from_original(df: DataFrame, columns_to_update: List[str]
     """Attempt to update columns with their original values if they have been nullified"""
     for col in columns_to_update:
         if f"{col}_original" in df.columns:
-            df = df.withColumn(F.when(F.col(col).isNull(), F.col(f"{col}_original")).otherwise(F.col(col)))
+            df = df.withColumn(F.coalesce(F.col(f"{col}_original"), F.col(col)))
         elif f"{col}_raw" in df.columns:
-            df = df.withColumn(F.when(F.col(col).isNull(), F.col(f"{col}_raw")).otherwise(F.col(col)))
+            df = df.withColumn(F.coalesce(F.col(f"{col}_raw"), F.col(col)))
     return df
 
 
