@@ -1470,19 +1470,22 @@ def assign_date_difference(
     end_reference_column
         Second date column name.
     format
-        time format (days, weeks, months)
+        time format (days, weeks, fortnight, months)
 
     Return
     ------
     pyspark.sql.DataFrame
     """
-    allowed_formats = ["days", "weeks"]
+    allowed_formats = ["days", "weeks", "fortnight"]
     if format in allowed_formats:
         if start_reference_column == "survey start":
             start = F.to_timestamp(F.lit("2020-05-11 00:00:00"))
         else:
             start = F.col(start_reference_column)
-        modifications = {"weeks": F.floor(F.col(column_name_to_assign) / 7)}
+        modifications = {
+            "weeks": F.floor(F.col(column_name_to_assign) / 7),
+            "fortnight": F.floor(F.col(column_name_to_assign) / 14),
+        }
         df = df.withColumn(
             column_name_to_assign,
             F.datediff(end=F.col(end_reference_column), start=start),

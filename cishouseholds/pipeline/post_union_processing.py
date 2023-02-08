@@ -40,6 +40,11 @@ def raw_copies(df: DataFrame):
         "participant_withdrawal_reason",
         "blood_sample_barcode",
         "swab_sample_barcode",
+        "think_had_covid",
+        "other_covid_infection_test",
+        "other_covid_infection_test_result",
+        "think_had_covid_admitted_to_hospital",
+        "think_had_covid_contacted_nhs",
     ]
     original_copy_list = [
         "work_health_care_patient_facing",
