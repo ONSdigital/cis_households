@@ -169,6 +169,7 @@
   work_health_care_area: null
   work_health_care_patient_facing: null
   work_location: Mr. Gorbachev, open this gate! Mr. Gorbachev, tear down this wall!
+  work_main_job_changed: 'Yes'
   work_main_job_role: Initially composing light-hearted and irreverent works, he also
     wrote serious, sombre and religious pieces beginning in the 1930s.
   work_main_job_title: Atoms are used within a program to denote distinguished values.
@@ -354,6 +355,7 @@
   work_health_care_patient_facing: null
   work_location: Mama always said life was like a box of chocolates. You never know
     what you're gonna get.
+  work_main_job_changed: 'Yes'
   work_main_job_role: Erlang is a general-purpose, concurrent, functional programming
     language.
   work_main_job_title: Any element of a tuple can be accessed in constant time.
@@ -537,6 +539,7 @@
   work_health_care_patient_facing: null
   work_location: One morning I shot an elephant in my pajamas. How he got in my pajamas,
     I don't know.
+  work_main_job_changed: 'Yes'
   work_main_job_role: Atoms can contain any character if they are enclosed within
     single quotes and an escape convention exists which allows any character to be
     used within an atom.
@@ -728,6 +731,7 @@
   work_health_care_area: 'No'
   work_health_care_patient_facing: 'No'
   work_location: Here's looking at you, kid.
+  work_main_job_changed: 'Yes'
   work_main_job_role: Where are my pants?
   work_main_job_title: I don't even care.
   work_not_from_home_days_per_week: Mama always said life was like a box of chocolates.
@@ -913,6 +917,7 @@
   work_health_care_patient_facing: 'No'
   work_location: Mama always said life was like a box of chocolates. You never know
     what you're gonna get.
+  work_main_job_changed: 'Yes'
   work_main_job_role: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
   work_main_job_title: Ports are used to communicate with the external world.
@@ -1099,6 +1104,7 @@
   work_health_care_area: 'No'
   work_health_care_patient_facing: 'No'
   work_location: Those who refuse to learn from history are condemned to repeat it.
+  work_main_job_changed: 'Yes'
   work_main_job_role: Erlang is known for its designs that are well suited for systems.
   work_main_job_title: The sequential subset of Erlang supports eager evaluation,
     single assignment, and dynamic typing.
@@ -1282,6 +1288,7 @@
   work_health_care_area: null
   work_health_care_patient_facing: null
   work_location: You're gonna need a bigger boat.
+  work_main_job_changed: 'Yes'
   work_main_job_role: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
   work_main_job_title: Tuples are containers for a fixed number of Erlang data types.
@@ -1465,6 +1472,7 @@
   work_health_care_area: null
   work_health_care_patient_facing: null
   work_location: Get your stinking paws off me, you damned dirty ape.
+  work_main_job_changed: 'Yes'
   work_main_job_role: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
   work_main_job_title: The Galactic Empire is nearing completion of the Death Star,
@@ -1652,6 +1660,7 @@
   work_health_care_area: null
   work_health_care_patient_facing: null
   work_location: Houston, we have a problem.
+  work_main_job_changed: 'Yes'
   work_main_job_role: Any element of a tuple can be accessed in constant time.
   work_main_job_title: Where are my pants?
   work_not_from_home_days_per_week: Those who refuse to learn from history are condemned
@@ -1839,6 +1848,7 @@
   work_health_care_area: Primary
   work_health_care_patient_facing: null
   work_location: Those who refuse to learn from history are condemned to repeat it.
+  work_main_job_changed: 'Yes'
   work_main_job_role: Atoms are used within a program to denote distinguished values.
   work_main_job_title: The syntax {D1,D2,...,Dn} denotes a tuple whose arguments are
     D1, D2, ... Dn.
