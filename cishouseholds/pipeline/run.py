@@ -81,6 +81,7 @@ def check_dependencies(stages_to_run, stages_config):  # TODO: ensure check in o
             raise MissingTablesError(f"Cannot run pipeline; stage {stage} is missing tables: {missing_tables}")
 
         available_tables.extend(stages_config[stage].get("output_tables", {}).values())
+        available_tables.extend(stages_config[stage].get("io_tables", {}).values())
         if "dataset_name" in stages_config[stage]:  # handle auto name delta tables
             available_tables.append(f"transformed_{stages_config[stage]['dataset_name']}")
 
