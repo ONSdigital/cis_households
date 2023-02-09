@@ -143,7 +143,7 @@ def extract_validate_transform_input_data(
 def extract_input_data(
     file_paths: Union[List[str], str],
     validation_schema: Union[dict, None],
-    sep: str,
+    sep: str = ",",
     source_file_column: str = "",
 ) -> DataFrame:
     """
@@ -159,22 +159,40 @@ def extract_input_data(
     """
     spark_session = get_or_create_spark_session()
     spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
-    file_paths = [file_paths] if type(file_paths) == str else file_paths
-    if all(Path(path).suffix in [".txt", ".csv"] for path in file_paths):
-        return spark_session.read.csv(
-            file_paths,
+    file_paths = [Path(file_paths)] if type(file_paths) == str else [Path(p) for p in file_paths]
+    csv_file_paths = [p for p in file_paths if p.suffix in [".txt", ".csv"]]
+    xl_file_paths = [p for p in file_paths if p.suffix == ".xlsx"]
+    json_file_paths = [p for p in file_paths if p.suffix == ".json"]
+    df = None
+    if csv_file_paths:
+        df = spark_session.read.csv(
+            csv_file_paths,
             header=True,
             schema=spark_schema,
             ignoreLeadingWhiteSpace=True,
             ignoreTrailingWhiteSpace=True,
             sep=sep,
         )
-    elif all(Path(path).suffix in [".xlsx"] for path in file_paths):
+    if xl_file_paths:
         spark = get_or_create_spark_session()
         dfs = [
             spark.createDataFrame(
                 data=pd.read_excel(read_file_to_string(file, True), engine="openpyxl"), schema=spark_schema
             ).withColumn(source_file_column, (F.regexp_replace(F.lit(file), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", "")))
-            for file in file_paths
+            for file in xl_file_paths
         ]
-        return union_multiple_tables(dfs)
+        if df is None:
+            df = union_multiple_tables(dfs)
+        else:
+            df = union_multiple_tables([df, *dfs])
+    if json_file_paths:
+        json_df = spark_session.read.json(
+            json_file_paths,
+            header=True,
+            #schema=spark_schema,
+        )
+        if df is None:
+            df = json_df
+        else:
+            df = union_multiple_tables(df, json_df)
+    return df

@@ -179,6 +179,17 @@ historical_blood_results_parameters = {
     "source_file_column": "historical_blood_results_source_file",
 }
 
+json_test_parameters = {
+    "stage_name": "json_test",
+    "dataset_name": "json_test",
+    "id_column": "id",
+    "validation_schema": {},
+    "datetime_column_map": {},
+    "transformation_functions": [],
+    "cast_to_double_list": [],
+    "source_file_column": "json_test_file",
+}
+
 for parameters in [
     participant_extract_digital_parameters,
     cis_digital_parameters,
@@ -188,5 +199,6 @@ for parameters in [
     swab_results_parameters,
     blood_results_parameters,
     historical_blood_results_parameters,
+    json_test_parameters
 ]:
     generate_input_processing_function(**parameters)  # type:ignore
