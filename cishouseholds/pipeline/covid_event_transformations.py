@@ -782,4 +782,11 @@ def derive_contact_any_covid_covid_variables(df: DataFrame) -> DataFrame:
         "visit_datetime",
     )
 
+    df = assign_grouped_variable_from_days_since(
+        df=df,
+        binary_reference_column="contact_known_or_suspected_covid",
+        days_since_reference_column="contact_known_or_suspected_covid_days_since",
+        column_name_to_assign="contact_known_or_suspected_covid_days_since_grouped",
+    )
+
     return df
