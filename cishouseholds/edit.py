@@ -562,7 +562,7 @@ def update_face_covering_outside_of_home(
     return df
 
 
-def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: str):
+def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: str, symptom_list: List[str]):
     """
     Update value to no if count of original 12 symptoms is 0 otherwise set to Yes
 
@@ -571,22 +571,14 @@ def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: st
     df
     column_name_to_update
     """
-    original_symptoms = [
-        "think_have_covid_symptom_fever",
-        "think_have_covid_symptom_muscle_ache",
-        "think_have_covid_symptom_fatigue",
-        "think_have_covid_symptom_sore_throat",
-        "think_have_covid_symptom_cough",
-        "think_have_covid_symptom_shortness_of_breath",
-        "think_have_covid_symptom_headache",
-        "think_have_covid_symptom_nausea_or_vomiting",
-        "think_have_covid_symptom_abdominal_pain",
-        "think_have_covid_symptom_diarrhoea",
-        "think_have_covid_symptom_loss_of_taste",
-        "think_have_covid_symptom_loss_of_smell",
-    ]
     df = df.withColumn(
-        column_name_to_update, F.when(count_occurrence_in_row(original_symptoms, "Yes") > 0, "Yes").otherwise("No")
+        column_name_to_update,
+        F.when((F.col("survey_response_dataset_major_version") != 3), F.col(column_name_to_update))
+        .when(
+            (F.col("survey_completion_status").isin(["Partially Completed", "Completed", "Auto Completed"])),
+            F.when((count_occurrence_in_row(symptom_list, "Yes") > 0), "Yes").otherwise("No"),
+        )
+        .otherwise(F.col(column_name_to_update)),
     )
     return df
 
