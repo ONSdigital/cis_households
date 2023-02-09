@@ -223,9 +223,11 @@ def run_pipeline_stages(
         stage_text = f"Stage {n + 1 :0{max_digits}}/{number_of_stages}: {stage_name} at {stage_start}"
 
         stage_input_tables = stage_config.pop("input_tables", {})
+        stage_io_tables = stage_config.pop("io_tables", {})
         stage_output_tables = stage_config.pop("output_tables", {})
 
         stage_config.update(stage_input_tables)
+        stage_config.update(stage_io_tables)
         stage_config.update(stage_output_tables)
 
         print(stage_text)  # functional
