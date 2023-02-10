@@ -79,13 +79,14 @@ from cishouseholds.prediction_checker_class import PredictionChecker
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import check_lookup_table_joined_columns_unique
 from cishouseholds.validate import normalise_schema
-from cishouseholds.validate import validate_files
 from dummy_data_generation.generate_data import generate_cis_soc_data
 from dummy_data_generation.generate_data import generate_digital_data
 from dummy_data_generation.generate_data import generate_nims_table
 from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
+
+# from cishouseholds.validate import validate_files
 
 pipeline_stages = {}
 
@@ -374,19 +375,19 @@ def process_soc_deltas(
 
 
 def generate_input_processing_function(
-    stage_name:str,
-    dataset_name:str,
-    id_column:str,
-    validation_schema:Dict[str,Any],
-    datetime_column_map:Dict[str,str],
-    transformation_functions:list,
-    source_file_column:str,
-    write_mode:str="overwrite",
-    column_name_map:Dict[str,str]=None,
-    sep:str=",",
-    cast_to_double_list:List[str]=[],
-    include_hadoop_read_write:bool = True,
-    date_from_filename:bool = True
+    stage_name: str,
+    dataset_name: str,
+    id_column: str,
+    validation_schema: Dict[str, Any],
+    datetime_column_map: Dict[str, str],
+    transformation_functions: list,
+    source_file_column: str,
+    write_mode: str = "overwrite",
+    column_name_map: Dict[str, str] = None,
+    sep: str = ",",
+    cast_to_double_list: List[str] = [],
+    include_hadoop_read_write: bool = True,
+    date_from_filename: bool = True,
 ):
     """
     Generate an input file processing stage function and register it.
@@ -457,7 +458,7 @@ def generate_input_processing_function(
                 end_date=end_date,
                 include_processed=include_processed,
                 include_invalid=include_invalid,
-                date_from_filename=date_from_filename
+                date_from_filename=date_from_filename,
             )
         if not file_path_list:
             print(f"        - No files selected in {resource_path}")  # functional

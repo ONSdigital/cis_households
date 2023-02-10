@@ -1,5 +1,6 @@
 import json
 from collections import defaultdict
+from typing import Union
 
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from phm.lookup import lookup
@@ -11,7 +12,8 @@ from phm.lookup import phm_validation_schema
 # json.loads()
 
 
-def decode_phm_json(json_dict: dict):
+def decode_phm_json(json_str: Union[str, bytes]):
+    json_dict = json.loads(json_str)
     table = json_dict["submission"]
     meta = table.pop("survey_metadata")
     data = table.pop("data")
@@ -38,8 +40,7 @@ def decode_phm_json(json_dict: dict):
 
 
 with open("C:/code/cis_households/phm/json_example.json", encoding="utf-8") as F:
-    json_data = json.loads(F.read())
-    answers, list_items = decode_phm_json(json_data)
+    answers, list_items = decode_phm_json(F.read())
 
 test = {k: v for k, v in answers.items() if not isinstance(v, list)}
 df = get_or_create_spark_session().createDataFrame(data=[tuple(test.values())], schema=phm_validation_schema)

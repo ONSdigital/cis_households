@@ -21,6 +21,8 @@ from cishouseholds.pipeline.validation_schema import validation_schemas
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
+from phm.json_decoder import decode_phm_json
+from phm.lookup import phm_validation_schema
 
 
 class InvalidFileError(Exception):
@@ -165,7 +167,8 @@ def extract_input_data(
     json_file_paths = [p for p in file_paths if Path(p).suffix == ".json"]
     df = None
     if csv_file_paths:
-        valid_file_paths = validate_files(csv_file_paths, validation_schema, sep=sep)
+        if validation_schema:
+            valid_file_paths = validate_files(csv_file_paths, validation_schema, sep=sep)
         if not valid_file_paths:
             print(f"        - No valid files found in: {csv_file_paths}.")  # functional
             return {"status": "Error"}
@@ -190,12 +193,13 @@ def extract_input_data(
         else:
             df = union_multiple_tables([df, *dfs])
     if json_file_paths:
-        json_df = spark_session.read.json(
-            json_file_paths,
-            #schema=spark_schema,
-        )
+        dfs = []
+        data_strings = [read_file_to_string(file, True) for file in json_file_paths]
+        for data_string in data_strings:
+            answers, list_items = decode_phm_json(data_string)
+            dfs.append(spark_session.createDataFrame(data=[tuple(answers.values())], schema=phm_validation_schema))
         if df is None:
-            df = json_df
+            df = union_multiple_tables(dfs)
         else:
-            df = union_multiple_tables(df, json_df)
+            df = union_multiple_tables([df, *dfs])
     return df
