@@ -39,9 +39,11 @@ def job_transformations(df: DataFrame, soc_lookup_df: DataFrame, job_lookup_df: 
 
 
 def preprocessing(df: DataFrame):
-    """"""
+    """Apply transformations that must occur before all other transformations can be processed."""
     df = clean_job_description_string(df, "work_main_job_title")
     df = clean_job_description_string(df, "work_main_job_role")
+    df = clean_job_description_string(df, "work_main_job_title_raw")
+    df = clean_job_description_string(df, "work_main_job_role_raw")
     col_val_map = {
         "work_health_care_area": {
             "Secondary care for example in a hospital": "Secondary",
