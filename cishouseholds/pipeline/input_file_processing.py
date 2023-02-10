@@ -192,7 +192,7 @@ def extract_input_data(
     if json_file_paths:
         json_df = spark_session.read.json(
             json_file_paths,
-            #schema=spark_schema,
+            # schema=spark_schema,
         )
         if df is None:
             df = json_df
