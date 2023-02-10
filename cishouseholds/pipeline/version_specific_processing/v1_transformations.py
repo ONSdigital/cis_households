@@ -18,6 +18,7 @@ def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
         "Yes, in secondary care, e.g. hospital": "Secondary",
         "Yes, in other healthcare settings, e.g. mental health": "Other",
         "Yes, in primary care, e.g. GP,dentist": "Primary",
+        "Yes, in primary care, e.g. GP, dentist": "Primary",
         "Another type of healthcare-for example mental health services?": "Other",
     }
 

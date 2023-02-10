@@ -127,9 +127,9 @@ def repopulate_missing_from_original(df: DataFrame, columns_to_update: List[str]
     """Attempt to update columns with their original values if they have been nullified"""
     for col in columns_to_update:
         if f"{col}_original" in df.columns:
-            df = df.withColumn(col, F.coalesce(F.col(f"{col}_original"), F.col(col)))
+            df = df.withColumn(col, F.coalesce(F.col(col), F.col(f"{col}_original")))
         elif f"{col}_raw" in df.columns:
-            df = df.withColumn(col, F.coalesce(F.col(f"{col}_raw"), F.col(col)))
+            df = df.withColumn(col, F.coalesce(F.col(col), F.col(f"{col}_raw")))
     return df
 
 
