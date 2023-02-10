@@ -39,9 +39,11 @@ def job_transformations(df: DataFrame, soc_lookup_df: DataFrame, job_lookup_df: 
 
 
 def preprocessing(df: DataFrame):
-    """"""
+    """Apply transformations that must occur before all other transformations can be processed."""
     df = clean_job_description_string(df, "work_main_job_title")
     df = clean_job_description_string(df, "work_main_job_role")
+    df = clean_job_description_string(df, "work_main_job_title_raw")
+    df = clean_job_description_string(df, "work_main_job_role_raw")
     col_val_map = {
         "work_health_care_area": {
             "Secondary care for example in a hospital": "Secondary",
@@ -127,9 +129,9 @@ def repopulate_missing_from_original(df: DataFrame, columns_to_update: List[str]
     """Attempt to update columns with their original values if they have been nullified"""
     for col in columns_to_update:
         if f"{col}_original" in df.columns:
-            df = df.withColumn(col, F.coalesce(F.col(col),F.col(f"{col}_original")))
+            df = df.withColumn(col, F.coalesce(F.col(col), F.col(f"{col}_original")))
         elif f"{col}_raw" in df.columns:
-            df = df.withColumn(col, F.coalesce(F.col(col),F.col(f"{col}_raw")))
+            df = df.withColumn(col, F.coalesce(F.col(col), F.col(f"{col}_raw")))
     return df
 
 

@@ -256,8 +256,9 @@ def validate_config_stages(pipeline_stage_functions: Dict, stages_to_run: List[s
 
         config_arguments_dict = {
             **stages_config[stage_name].get("input_tables", {}),  # type: ignore
+            **stages_config[stage_name].get("io_tables", {}),  # type: ignore
             **stages_config[stage_name].get("output_tables", {}),  # type: ignore
-            **{k: v for k, v in stages_config[stage_name].items() if k not in ["input_tables", "output_tables"]},  # type: ignore
+            **{k: v for k, v in stages_config[stage_name].items() if k not in ["input_tables", "io_tables", "output_tables"]},  # type: ignore
         }  # type: ignore
         function_config_other_params = [x for x in config_arguments_dict.keys() if (x not in optional_parameters)]
 
