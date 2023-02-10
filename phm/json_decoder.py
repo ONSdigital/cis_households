@@ -2,9 +2,7 @@ import json
 from collections import defaultdict
 from typing import Union
 
-from cishouseholds.pyspark_utils import get_or_create_spark_session
 from phm.lookup import lookup
-from phm.lookup import phm_validation_schema
 
 # Open a json file into a json object
 # Note that F.read() returns the content
@@ -37,10 +35,3 @@ def decode_phm_json(json_str: Union[str, bytes]):
     # update keys from lookup
     answers = {lookup.get(k, k): v for k, v in answers.items()}  # type: ignore
     return answers, list_items
-
-
-with open("C:/code/cis_households/phm/json_example.json", encoding="utf-8") as F:
-    answers, list_items = decode_phm_json(F.read())
-
-test = {k: v for k, v in answers.items() if not isinstance(v, list)}
-df = get_or_create_spark_session().createDataFrame(data=[tuple(test.values())], schema=phm_validation_schema)
