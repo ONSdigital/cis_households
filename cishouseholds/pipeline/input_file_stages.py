@@ -188,7 +188,7 @@ json_test_parameters = {
     "transformation_functions": [],
     "cast_to_double_list": [],
     "source_file_column": "json_test_file",
-    "date_from_filename": False
+    "date_from_filename": False,
 }
 
 for parameters in [
@@ -200,6 +200,6 @@ for parameters in [
     swab_results_parameters,
     blood_results_parameters,
     historical_blood_results_parameters,
-    json_test_parameters
+    json_test_parameters,
 ]:
     generate_input_processing_function(**parameters)  # type:ignore
