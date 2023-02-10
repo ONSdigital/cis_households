@@ -188,6 +188,7 @@ json_test_parameters = {
     "transformation_functions": [],
     "cast_to_double_list": [],
     "source_file_column": "json_test_file",
+    "date_from_filename": False
 }
 
 for parameters in [

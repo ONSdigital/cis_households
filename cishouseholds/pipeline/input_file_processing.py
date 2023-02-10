@@ -159,12 +159,16 @@ def extract_input_data(
     """
     spark_session = get_or_create_spark_session()
     spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
-    file_paths = [Path(file_paths)] if type(file_paths) == str else [Path(p) for p in file_paths]
-    csv_file_paths = [p for p in file_paths if p.suffix in [".txt", ".csv"]]
-    xl_file_paths = [p for p in file_paths if p.suffix == ".xlsx"]
-    json_file_paths = [p for p in file_paths if p.suffix == ".json"]
+    file_paths = [file_paths] if type(file_paths) == str else file_paths
+    csv_file_paths = [p for p in file_paths if Path(p).suffix in [".txt", ".csv"]]
+    xl_file_paths = [p for p in file_paths if Path(p).suffix == ".xlsx"]
+    json_file_paths = [p for p in file_paths if Path(p).suffix == ".json"]
     df = None
     if csv_file_paths:
+        valid_file_paths = validate_files(csv_file_paths, validation_schema, sep=sep)
+        if not valid_file_paths:
+            print(f"        - No valid files found in: {csv_file_paths}.")  # functional
+            return {"status": "Error"}
         df = spark_session.read.csv(
             csv_file_paths,
             header=True,
@@ -188,7 +192,6 @@ def extract_input_data(
     if json_file_paths:
         json_df = spark_session.read.json(
             json_file_paths,
-            header=True,
             #schema=spark_schema,
         )
         if df is None:

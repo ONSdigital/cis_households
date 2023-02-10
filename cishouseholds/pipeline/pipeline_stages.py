@@ -374,18 +374,19 @@ def process_soc_deltas(
 
 
 def generate_input_processing_function(
-    stage_name,
-    dataset_name,
-    id_column,
-    validation_schema,
-    datetime_column_map,
-    transformation_functions,
-    source_file_column,
-    write_mode="overwrite",
-    column_name_map=None,
-    sep=",",
-    cast_to_double_list=[],
-    include_hadoop_read_write=True,
+    stage_name:str,
+    dataset_name:str,
+    id_column:str,
+    validation_schema:Dict[str,Any],
+    datetime_column_map:Dict[str,str],
+    transformation_functions:list,
+    source_file_column:str,
+    write_mode:str="overwrite",
+    column_name_map:Dict[str,str]=None,
+    sep:str=",",
+    cast_to_double_list:List[str]=[],
+    include_hadoop_read_write:bool = True,
+    date_from_filename:bool = True
 ):
     """
     Generate an input file processing stage function and register it.
@@ -456,15 +457,11 @@ def generate_input_processing_function(
                 end_date=end_date,
                 include_processed=include_processed,
                 include_invalid=include_invalid,
+                date_from_filename=date_from_filename
             )
         if not file_path_list:
             print(f"        - No files selected in {resource_path}")  # functional
             return {"status": "No files"}
-
-        valid_file_paths = validate_files(file_path_list, validation_schema, sep=sep)
-        if not valid_file_paths:
-            print(f"        - No valid files found in: {resource_path}.")  # functional
-            return {"status": "Error"}
 
         df = extract_validate_transform_input_data(
             include_hadoop_read_write=include_hadoop_read_write,
