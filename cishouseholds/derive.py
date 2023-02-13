@@ -1708,7 +1708,6 @@ def assign_correct_age_at_date(df: DataFrame, column_name_to_assign, reference_d
 
 def assign_grouped_variable_from_days_since(
     df: DataFrame,
-    binary_reference_column: str,
     days_since_reference_column: str,
     column_name_to_assign: str,
 ) -> DataFrame:
@@ -1721,8 +1720,6 @@ def assign_grouped_variable_from_days_since(
     Parameters
     ----------
     df
-    binary_reference_column
-        yes/no values that describe whether the patient thinks have had covid
     days_since_reference_column
         column from which extract the number of days transcurred that needs to
         be grouped
@@ -1738,8 +1735,8 @@ def assign_grouped_variable_from_days_since(
     return df.withColumn(
         column_name_to_assign,
         F.when(
-            (F.col(binary_reference_column) == "Yes") & (F.col(days_since_reference_column).isNull()),
-            "Date not given",
+            (F.col(days_since_reference_column).isNull()),
+            "6",
         )
         .otherwise(F.col(column_name_to_assign))
         .cast("string"),
