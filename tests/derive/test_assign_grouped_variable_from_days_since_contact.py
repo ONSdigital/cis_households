@@ -22,7 +22,7 @@ def test_assign_grouped_variable_from_days_since_contact(spark_session):
 
     output_df = assign_grouped_variable_from_days_since_contact(
         df=input_df,
-        binary_reference_column="contact_known_or_suspected_covid",
+        reference_column="contact_known_or_suspected_covid",
         days_since_reference_column="contact_known_or_suspected_covid_days_since",
         column_name_to_assign="contact_known_or_suspected_covid_days_since_group",
     )
