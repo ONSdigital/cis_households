@@ -57,22 +57,6 @@ def preprocessing(df: DataFrame):
         "work_not_from_home_days_per_week": {"NA": "99", "N/A (not working/in education etc)": "99", "up to 1": "0.5"},
     }
     df = apply_value_map_multiple_columns(df, col_val_map)
-    # df = update_work_main_job_changed(
-    #     df,
-    #     column_name_to_update="work_main_job_changed",
-    #     participant_id_column="participant_id",
-    #     change_to_not_null_columns=[
-    #         "work_main_job_title",
-    #         "work_main_job_role",
-    #         "work_sector",
-    #         "work_sector_other",
-    #         "work_health_care_area",
-    #     ],
-    #     change_to_any_columns=[
-    #         "work_nursing_or_residential_care_home",
-    #         "work_direct_contact_patients_or_clients",
-    #     ],
-    # )
     return df
 
 
