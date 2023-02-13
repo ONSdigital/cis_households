@@ -28,6 +28,7 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 def job_transformations(df: DataFrame, soc_lookup_df: DataFrame, job_lookup_df: Optional[DataFrame] = None):
     """apply all transformations in order related to a persons vocation."""
     df = preprocessing(df)
+    df = reclassify_work_variables(df).custom_checkpoint()
     job_lookup_df = create_job_lookup(df, soc_lookup_df=soc_lookup_df, lookup_df=job_lookup_df).custom_checkpoint()
     df = left_join_keep_right(
         left_df=df, right_df=job_lookup_df, join_on_columns=["work_main_job_title", "work_main_job_role"]
@@ -96,7 +97,6 @@ def get_unprocessed_rows(df: DataFrame, lookup_df: Optional[DataFrame] = None):
 def create_job_lookup(df: DataFrame, soc_lookup_df: DataFrame, lookup_df: Optional[DataFrame] = None):
     df_to_process = get_unprocessed_rows(df, lookup_df)
     df_to_process = process_healthcare_regex(df_to_process)
-    df_to_process = reclassify_work_variables(df_to_process)
     df_to_process = df_to_process.join(soc_lookup_df, on=["work_main_job_title", "work_main_job_role"], how="left")
 
     processed_df = df_to_process.select(
@@ -112,11 +112,6 @@ def create_job_lookup(df: DataFrame, soc_lookup_df: DataFrame, lookup_df: Option
         "works_health_care",
         "work_nursing_or_residential_care_home",
         "regex_derived_job_sector",
-        # from reclassify
-        "work_status_v0",
-        "work_status_v1",
-        "work_status_v2",
-        "work_location",
         # soc codes
         "standard_occupational_classification_code",
     )
