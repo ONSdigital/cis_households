@@ -3,7 +3,7 @@ from chispa import assert_df_equality
 from cishouseholds.derive import assign_grouped_variable_from_days_since_contact
 
 
-def test_assign_grouped_variable_from_days_since(spark_session):
+def test_assign_grouped_variable_from_days_since_contact(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             ("Living in your own home", 7, "1"),
@@ -20,7 +20,7 @@ def test_assign_grouped_variable_from_days_since(spark_session):
     )
     input_df = expected_df.drop("days_since_think_had_covid_group")
 
-    output_df = assign_grouped_variable_from_days_since(
+    output_df = assign_grouped_variable_from_days_since_contact(
         df=input_df,
         binary_reference_column="contact_known_or_suspected_covid",
         days_since_reference_column="contact_known_or_suspected_covid_days_since",
