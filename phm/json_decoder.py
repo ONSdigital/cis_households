@@ -3,6 +3,7 @@ from collections import defaultdict
 from typing import Union
 
 from phm.lookup import lookup
+from phm.lookup import phm_validation_schema
 
 # Open a json file into a json object
 # Note that F.read() returns the content
@@ -34,4 +35,7 @@ def decode_phm_json(json_str: Union[str, bytes]):
 
     # update keys from lookup
     answers = {lookup.get(k, k): v for k, v in answers.items()}  # type: ignore
+
+    # add missing values
+    answers = {k: answers.get(k) for k in phm_validation_schema.keys()}  # type: ignore
     return answers, list_items
