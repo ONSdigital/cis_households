@@ -9,6 +9,7 @@ from cishouseholds.derive import assign_any_symptoms_around_visit
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_grouped_variable_from_days_since
+from cishouseholds.derive import assign_grouped_variable_from_days_since_contact
 from cishouseholds.derive import assign_last_non_null_value_from_col_list
 from cishouseholds.derive import assign_true_if_any
 from cishouseholds.derive import contact_known_or_suspected_covid_type
@@ -185,13 +186,12 @@ def derive_new_columns(df: DataFrame) -> DataFrame:
     """
     df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_onset_date", "visit_datetime")
 
-    # commenting this out as binary reference argument has been removed from the original function and days_since_think_had_covid_group not needed in the output for SP team
-    # df = assign_grouped_variable_from_days_since(
-    #     df=df,
-    #     binary_reference_column="think_had_covid",
-    #     days_since_reference_column="days_since_think_had_covid",
-    #     column_name_to_assign="days_since_think_had_covid_group",
-    # )
+    df = assign_grouped_variable_from_days_since(
+        df=df,
+        binary_reference_column="think_had_covid",
+        days_since_reference_column="days_since_think_had_covid",
+        column_name_to_assign="days_since_think_had_covid_group",
+    )
     original_think_have_symptoms = [
         "think_have_covid_symptom_fever",
         "think_have_covid_symptom_muscle_ache",
@@ -783,8 +783,9 @@ def derive_contact_any_covid_covid_variables(df: DataFrame) -> DataFrame:
         "visit_datetime",
     )
 
-    df = assign_grouped_variable_from_days_since(
+    df = assign_grouped_variable_from_days_since_contact(
         df=df,
+        reference_column="contact_known_or_suspected",
         days_since_reference_column="contact_known_or_suspected_covid_days_since",
         column_name_to_assign="contact_known_or_suspected_covid_days_since_group",
     )
