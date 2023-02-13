@@ -1733,7 +1733,7 @@ def assign_grouped_variable_from_days_since(
         df=df,
         reference_column=days_since_reference_column,
         column_name_to_assign=column_name_to_assign,
-        map={1: "0-14", 2: "15-28", 3: "29-60", 4: "61-90", 5: "91+", 6: None},
+        map={0: "1", 15: "2", 29: "3", 61: "4", 91: "5", None: "6"},
     )
     return df.withColumn(
         column_name_to_assign,

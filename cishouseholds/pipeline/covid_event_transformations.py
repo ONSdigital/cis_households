@@ -786,7 +786,7 @@ def derive_contact_any_covid_covid_variables(df: DataFrame) -> DataFrame:
         df=df,
         binary_reference_column="contact_known_or_suspected_covid",
         days_since_reference_column="contact_known_or_suspected_covid_days_since",
-        column_name_to_assign="contact_known_or_suspected_covid_days_since_grouped",
+        column_name_to_assign="contact_known_or_suspected_covid_days_since_group",
     )
 
     return df
