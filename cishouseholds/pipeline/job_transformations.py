@@ -28,20 +28,24 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 def job_transformations(df: DataFrame, soc_lookup_df: DataFrame, job_lookup_df: Optional[DataFrame] = None):
     """apply all transformations in order related to a persons vocation."""
     df = preprocessing(df)
+    df = fill_forwards_and_backwards(df).custom_checkpoint()
+    df = reclassify_work_variables(df).custom_checkpoint()
     job_lookup_df = create_job_lookup(df, soc_lookup_df=soc_lookup_df, lookup_df=job_lookup_df).custom_checkpoint()
     df = left_join_keep_right(
         left_df=df, right_df=job_lookup_df, join_on_columns=["work_main_job_title", "work_main_job_role"]
     )
     df = repopulate_missing_from_original(df=df, columns_to_update=job_lookup_df.columns)
-    df = fill_forwards_and_backwards(df).custom_checkpoint()
+
     df = data_dependent_derivations(df).custom_checkpoint()
     return df, job_lookup_df
 
 
 def preprocessing(df: DataFrame):
-    """"""
+    """Apply transformations that must occur before all other transformations can be processed."""
     df = clean_job_description_string(df, "work_main_job_title")
     df = clean_job_description_string(df, "work_main_job_role")
+    df = clean_job_description_string(df, "work_main_job_title_raw")
+    df = clean_job_description_string(df, "work_main_job_role_raw")
     col_val_map = {
         "work_health_care_area": {
             "Secondary care for example in a hospital": "Secondary",
@@ -54,22 +58,6 @@ def preprocessing(df: DataFrame):
         "work_not_from_home_days_per_week": {"NA": "99", "N/A (not working/in education etc)": "99", "up to 1": "0.5"},
     }
     df = apply_value_map_multiple_columns(df, col_val_map)
-    # df = update_work_main_job_changed(
-    #     df,
-    #     column_name_to_update="work_main_job_changed",
-    #     participant_id_column="participant_id",
-    #     change_to_not_null_columns=[
-    #         "work_main_job_title",
-    #         "work_main_job_role",
-    #         "work_sector",
-    #         "work_sector_other",
-    #         "work_health_care_area",
-    #     ],
-    #     change_to_any_columns=[
-    #         "work_nursing_or_residential_care_home",
-    #         "work_direct_contact_patients_or_clients",
-    #     ],
-    # )
     return df
 
 
@@ -94,7 +82,6 @@ def get_unprocessed_rows(df: DataFrame, lookup_df: Optional[DataFrame] = None):
 def create_job_lookup(df: DataFrame, soc_lookup_df: DataFrame, lookup_df: Optional[DataFrame] = None):
     df_to_process = get_unprocessed_rows(df, lookup_df)
     df_to_process = process_healthcare_regex(df_to_process)
-    df_to_process = reclassify_work_variables(df_to_process)
     df_to_process = df_to_process.join(soc_lookup_df, on=["work_main_job_title", "work_main_job_role"], how="left")
 
     processed_df = df_to_process.select(
@@ -110,11 +97,6 @@ def create_job_lookup(df: DataFrame, soc_lookup_df: DataFrame, lookup_df: Option
         "works_health_care",
         "work_nursing_or_residential_care_home",
         "regex_derived_job_sector",
-        # from reclassify
-        "work_status_v0",
-        "work_status_v1",
-        "work_status_v2",
-        "work_location",
         # soc codes
         "standard_occupational_classification_code",
     )
@@ -127,9 +109,9 @@ def repopulate_missing_from_original(df: DataFrame, columns_to_update: List[str]
     """Attempt to update columns with their original values if they have been nullified"""
     for col in columns_to_update:
         if f"{col}_original" in df.columns:
-            df = df.withColumn(col, F.coalesce(F.col(f"{col}_original"), F.col(col)))
+            df = df.withColumn(col, F.coalesce(F.col(col), F.col(f"{col}_original")))
         elif f"{col}_raw" in df.columns:
-            df = df.withColumn(col, F.coalesce(F.col(f"{col}_raw"), F.col(col)))
+            df = df.withColumn(col, F.coalesce(F.col(col), F.col(f"{col}_raw")))
     return df
 
 
