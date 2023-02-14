@@ -1,3 +1,4 @@
+from cishouseholds.phm.lookup import phm_validation_schema
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import survey_response_cast_to_double
 from cishouseholds.pipeline.mapping import survey_response_cisd_cast_to_double
@@ -182,8 +183,8 @@ historical_blood_results_parameters = {
 json_test_parameters = {
     "stage_name": "json_test",
     "dataset_name": "json_test",
-    "id_column": "id",
-    "validation_schema": {},
+    "id_column": "survey_id",
+    "validation_schema": phm_validation_schema,
     "datetime_column_map": {},
     "transformation_functions": [],
     "cast_to_double_list": [],

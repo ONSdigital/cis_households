@@ -2,8 +2,8 @@ import json
 from collections import defaultdict
 from typing import Union
 
-from phm.lookup import lookup
-from phm.lookup import phm_validation_schema
+from cishouseholds.phm.lookup import lookup
+from cishouseholds.phm.lookup import phm_validation_schema
 
 # Open a json file into a json object
 # Note that F.read() returns the content

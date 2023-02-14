@@ -14,6 +14,7 @@ from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.hdfs_utils import read_file_to_string
 from cishouseholds.merge import union_multiple_tables
+from cishouseholds.phm.json_decode import decode_phm_json
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.load import update_table
@@ -21,8 +22,6 @@ from cishouseholds.pipeline.validation_schema import validation_schemas
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
-from phm.json_decoder import decode_phm_json
-from phm.lookup import phm_validation_schema
 
 
 class InvalidFileError(Exception):
@@ -197,7 +196,7 @@ def extract_input_data(
         data_strings = [read_file_to_string(file, True) for file in json_file_paths]
         for data_string in data_strings:
             answers, list_items = decode_phm_json(data_string)
-            dfs.append(spark_session.createDataFrame(data=[tuple(answers.values())], schema=phm_validation_schema))
+            dfs.append(spark_session.createDataFrame(data=[tuple(answers.values())], schema=spark_schema))
         if df is None:
             df = union_multiple_tables(dfs)
         else:
