@@ -9,6 +9,7 @@ from cishouseholds.derive import assign_any_symptoms_around_visit
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_grouped_variable_from_days_since
+from cishouseholds.derive import assign_grouped_variable_from_days_since_contact
 from cishouseholds.derive import assign_last_non_null_value_from_col_list
 from cishouseholds.derive import assign_true_if_any
 from cishouseholds.derive import contact_known_or_suspected_covid_type
@@ -191,29 +192,32 @@ def derive_new_columns(df: DataFrame) -> DataFrame:
         days_since_reference_column="days_since_think_had_covid",
         column_name_to_assign="days_since_think_had_covid_group",
     )
-
+    original_think_have_symptoms = [
+        "think_have_covid_symptom_fever",
+        "think_have_covid_symptom_muscle_ache",
+        "think_have_covid_symptom_fatigue",
+        "think_have_covid_symptom_sore_throat",
+        "think_have_covid_symptom_cough",
+        "think_have_covid_symptom_shortness_of_breath",
+        "think_have_covid_symptom_headache",
+        "think_have_covid_symptom_nausea_or_vomiting",
+        "think_have_covid_symptom_abdominal_pain",
+        "think_have_covid_symptom_diarrhoea",
+        "think_have_covid_symptom_loss_of_taste",
+        "think_have_covid_symptom_loss_of_smell",
+        "think_have_covid_symptom_more_trouble_sleeping",
+        "think_have_covid_symptom_runny_nose_or_sneezing",
+        "think_have_covid_symptom_noisy_breathing",
+        "think_have_covid_symptom_loss_of_appetite",
+    ]
     df = count_value_occurrences_in_column_subset_row_wise(
         df=df,
         column_name_to_assign="think_have_covid_symptom_count",
-        selection_columns=[
-            "think_have_covid_symptom_fever",
-            "think_have_covid_symptom_muscle_ache",
-            "think_have_covid_symptom_fatigue",
-            "think_have_covid_symptom_sore_throat",
-            "think_have_covid_symptom_cough",
-            "think_have_covid_symptom_shortness_of_breath",
-            "think_have_covid_symptom_headache",
-            "think_have_covid_symptom_nausea_or_vomiting",
-            "think_have_covid_symptom_abdominal_pain",
-            "think_have_covid_symptom_diarrhoea",
-            "think_have_covid_symptom_loss_of_taste",
-            "think_have_covid_symptom_loss_of_smell",
-            "think_have_covid_symptom_more_trouble_sleeping",
-            "think_have_covid_symptom_runny_nose_or_sneezing",
-            "think_have_covid_symptom_noisy_breathing",
-            "think_have_covid_symptom_loss_of_appetite",
-        ],
+        selection_columns=original_think_have_symptoms,
         count_if_value="Yes",
+    )
+    df = update_think_have_covid_symptom_any(
+        df=df, column_name_to_update="think_have_covid_symptom_any", symptom_list=original_think_have_symptoms
     )
     df = count_value_occurrences_in_column_subset_row_wise(
         df=df,
@@ -238,11 +242,6 @@ def derive_new_columns(df: DataFrame) -> DataFrame:
         ],
         count_if_value="Yes",
     )
-    df = update_think_have_covid_symptom_any(
-        df=df,
-        column_name_to_update="think_have_covid_symptom_any",
-    )
-
     df = assign_true_if_any(
         df=df,
         column_name_to_assign="any_think_have_covid_symptom_or_now",
@@ -782,6 +781,13 @@ def derive_contact_any_covid_covid_variables(df: DataFrame) -> DataFrame:
         "contact_known_or_suspected_covid_days_since",
         "contact_known_or_suspected_covid_latest_date",
         "visit_datetime",
+    )
+
+    df = assign_grouped_variable_from_days_since_contact(
+        df=df,
+        reference_column="contact_known_or_suspected_covid",
+        days_since_reference_column="contact_known_or_suspected_covid_days_since",
+        column_name_to_assign="contact_known_or_suspected_covid_days_since_group",
     )
 
     return df
