@@ -619,7 +619,7 @@ def execute_covid_transformations(
     return {"output_survey_table": output_survey_table}
 
 
-@register_pipeline_stage("covid_transformations")
+@register_pipeline_stage("lab_transformations")
 def execute_lab_transformations(
     input_survey_table: str,
     blood_results_table: str,

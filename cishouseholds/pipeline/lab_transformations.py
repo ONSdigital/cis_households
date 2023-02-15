@@ -3,23 +3,28 @@ from pyspark.sql import DataFrame
 
 from cishouseholds.pipeline.phm import match_type_blood
 from cishouseholds.pipeline.phm import match_type_swab
+from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
 def lab_transformations(df: DataFrame, blood_lookup_df: DataFrame, swab_lookup_df: DataFrame) -> DataFrame:
     """Apply all transformations related to lab columns in order."""
     df = join_blood_lookup_df(df, blood_lookup_df).custom_checkpoint()
-    df = join_swab_lookup_df(df, blood_lookup_df).custom_checkpoint()
+    df = join_swab_lookup_df(df, swab_lookup_df).custom_checkpoint()
     return df
 
 
 def join_blood_lookup_df(df: DataFrame, blood_lookup_df: DataFrame) -> DataFrame:
-    """"""
+    """Joins blood lookup to df and runs transformation logic post join"""
     blood_lookup_df = blood_lookup_df.withColumn(
         "blood_sample_barcode_survey_missing_lab", F.col("blood_sample_barcode").isNull()
     )
     df = df.withColumn("blood_sample_barcode_lab_missing_survey", F.col("blood_sample_barcode").isNull())
-    df = df.join(df, blood_lookup_df, how="fullouter", on=["blood_sample_barcode"])
-    joinable = F.when(
+    df = df.join(blood_lookup_df, on="blood_sample_barcode", how="fullouter")
+    partitions = int(get_or_create_spark_session().sparkContext.getConf().get("spark.sql.shuffle.partitions"))
+    partitions = int(partitions / 2)
+    df = df.repartition(partitions)
+    df = match_type_blood(df)
+    joinable = (
         (
             (F.col("blood_taken").isNotNull())
             & (
@@ -31,21 +36,20 @@ def join_blood_lookup_df(df: DataFrame, blood_lookup_df: DataFrame) -> DataFrame
             )
         )
         & (F.col("blood_taken_datetime") < F.col("blood_sample_arrayed_date"))
-        & ((F.col("participant_completion_window_start_datetime")) <= (F.col("") == F.col("blood_sample_arrayed_date")))
+        & (F.col("participant_completion_window_start_datetime") <= F.col("blood_sample_arrayed_date"))
         & (F.col("match_type_blood").isNull())
     )
-    df = match_type_blood(df)
     for col in blood_lookup_df.columns:  # set cols to none if not joinable
-        df = df.withColumn(F.when(joinable, F.col(col)))
+        df = df.withColumn(col, F.when(joinable, F.col(col)).otherwise(None))
     return df
 
 
-def join_swab_lookup_df(df: DataFrame, blood_lookup_df: DataFrame) -> DataFrame:
-    """"""
-    blood_lookup_df = blood_lookup_df.withColumn(
+def join_swab_lookup_df(df: DataFrame, swab_lookup_df: DataFrame) -> DataFrame:
+    """Joins swab lookup to df"""
+    swab_lookup_df = swab_lookup_df.withColumn(
         "swab_sample_barcode_survey_missing_lab", F.col("swab_sample_barcode").isNull()
     )
-    df = df.join(df, blood_lookup_df, how="fullouter", on=["swab_sample_barcode"])
+    df = df.join(swab_lookup_df, on="swab_sample_barcode", how="fullouter")
     df = df.withColumn("swab_sample_barcode_lab_missing_survey", F.col("swab_sample_barcode").isNull())
     df = match_type_swab(df)
     return df
