@@ -195,8 +195,8 @@ def extract_input_data(
         dfs = []
         data_strings = [read_file_to_string(file, True) for file in json_file_paths]
         for data_string in data_strings:
-            answers, list_items = decode_phm_json(data_string)
-            dfs.append(spark_session.createDataFrame(data=[tuple(answers.values())], schema=spark_schema))
+            data = decode_phm_json(data_string)
+            dfs.append(spark_session.createDataFrame(data=data, schema=spark_schema))
         if df is None:
             df = union_multiple_tables(dfs)
         else:

@@ -141,6 +141,9 @@ lookup = {
     "PHM-FUP-CON-019": "face_covering_work_or_education",
     "PHM-FUP-END-001": "end_screen_questionnaire",
     "PHM-FUP-END-002": "end_screen_sample",
+    "PARTICIPANT_ID": "participant_id",
+    "BLOOD_TEST_BARCODE": "blood_sample_barcode",
+    "SWAB_TEST_BARCODE": "swab_sample_barcode",
 }
 
 
