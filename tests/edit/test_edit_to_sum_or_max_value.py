@@ -36,6 +36,7 @@ def test_edit_to_sum_or_max_value(spark_session):
             # fmt: off
             (6, None, "5", None, None),  # value cast to integer so that sum > max_value
             (7, None, "1", "2",  "1"),
+            (8, None, "don't know", 0, "don't know"),
             # fmt: on
         ],
         schema=schema2,
@@ -57,6 +58,7 @@ def test_edit_to_sum_or_max_value(spark_session):
             # fmt: off
             (6, 5,  5, None, None),
             (7, 4,  1, 2,    1),
+            (8, 0, "don't know",0,"don't know"),
             # fmt: on
         ],
         schema=schema2,
