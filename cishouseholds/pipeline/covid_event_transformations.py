@@ -9,6 +9,7 @@ from cishouseholds.derive import assign_any_symptoms_around_visit
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_grouped_variable_from_days_since
+from cishouseholds.derive import assign_grouped_variable_from_days_since_contact
 from cishouseholds.derive import assign_last_non_null_value_from_col_list
 from cishouseholds.derive import assign_true_if_any
 from cishouseholds.derive import contact_known_or_suspected_covid_type
@@ -780,6 +781,13 @@ def derive_contact_any_covid_covid_variables(df: DataFrame) -> DataFrame:
         "contact_known_or_suspected_covid_days_since",
         "contact_known_or_suspected_covid_latest_date",
         "visit_datetime",
+    )
+
+    df = assign_grouped_variable_from_days_since_contact(
+        df=df,
+        reference_column="contact_known_or_suspected_covid",
+        days_since_reference_column="contact_known_or_suspected_covid_days_since",
+        column_name_to_assign="contact_known_or_suspected_covid_days_since_group",
     )
 
     return df
