@@ -14,12 +14,14 @@ from cishouseholds.edit import correct_date_ranges
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
+from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.mapping import date_cols_min_date_dict
 
 
 def post_union_processing(df: DataFrame):
     """"""
     df = raw_copies(df)
+    df = create_formatted_datetime_string_columns(df)
     df = date_corrections(df)
     df = generic_processing(df)
     return df
@@ -41,11 +43,16 @@ def raw_copies(df: DataFrame):
         "blood_sample_barcode",
         "swab_sample_barcode",
         "think_had_covid",
+        "think_have_covid_onset_date",
         "other_covid_infection_test",
         "other_covid_infection_test_result",
         "think_had_covid_admitted_to_hospital",
         "think_had_covid_contacted_nhs",
+        "last_covid_contact_date",
+        "contact_suspected_positive_covid_last_28_days",
+        "contact_known_positive_covid_last_28_days",
     ]
+
     original_copy_list = [
         "work_health_care_patient_facing",
         "work_health_care_area",
