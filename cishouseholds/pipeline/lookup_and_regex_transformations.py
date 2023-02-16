@@ -69,22 +69,25 @@ from cishouseholds.regex.vaccine_regex import vaccine_regex_priority_map
 
 
 def transform_cis_soc_data(
-    soc_lookup_df: DataFrame, inconsistences_resolution_df: DataFrame, join_on_columns: List[str]
+    soc_lookup_df: DataFrame, inconsistencies_resolution_df: DataFrame, join_on_columns: List[str]
 ) -> DataFrame:
     """
     transform and process cis soc data
     """
+    for col in join_on_columns:
+        inconsistencies_resolution_df = inconsistencies_resolution_df.withColumn(col, F.upper(F.col(col)))
+        soc_lookup_df = soc_lookup_df.withColumn(col, F.upper(F.col(col)))
 
     drop_null_title_df = soc_lookup_df.filter(F.col("work_main_job_title").isNull()).withColumn(
         "drop_reason", F.lit("null job title")
     )
 
-    # cleanup soc lookup df and resolve inconsistences
+    # cleanup soc lookup df and resolve inconsistencies
     soc_lookup_df = soc_lookup_df.filter(F.col("work_main_job_title").isNotNull())
 
     # allow nullsafe join on title as soc is sometimes assigned without job role
     soc_lookup_df = null_safe_join(
-        soc_lookup_df, inconsistences_resolution_df, null_safe_on=join_on_columns, how="left"
+        soc_lookup_df, inconsistencies_resolution_df, null_safe_on=join_on_columns, how="left"
     )
 
     soc_lookup_df = soc_lookup_df.drop_duplicates(["standard_occupational_classification_code", *join_on_columns])
