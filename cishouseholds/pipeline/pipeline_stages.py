@@ -1144,12 +1144,12 @@ def sample_df(
     generate_sample(df, sample_type, cols, cols_to_evaluate, rows_per_file, num_files, output_folder_name)
 
 
-@register_pipeline_stage("calculate_household_level_populations")
 def calculate_household_level_populations(
     address_lookup_table,
     postcode_lookup_table,
     lsoa_cis_lookup_table,
     country_lookup_table,
+    rural_urban_lookup_table,
     household_level_populations_table,
 ):
     """
@@ -1183,9 +1183,9 @@ def calculate_household_level_populations(
         .distinct()
     )
     country_lookup_df = extract_from_table(country_lookup_table).select("country_code_12", "country_name_12").distinct()
-
+    rural_urban_lookup_df = extract_from_table(rural_urban_lookup_table)
     household_info_df = household_level_populations(
-        address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df
+        address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df, rural_urban_lookup_df
     )
     update_table(household_info_df, household_level_populations_table, write_mode="overwrite")
 
