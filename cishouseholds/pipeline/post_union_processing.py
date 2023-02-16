@@ -14,14 +14,12 @@ from cishouseholds.edit import correct_date_ranges
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
-from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 from cishouseholds.pipeline.mapping import date_cols_min_date_dict
 
 
 def post_union_processing(df: DataFrame):
     """"""
     df = raw_copies(df)
-    df = create_formatted_datetime_string_columns(df)
     df = date_corrections(df)
     df = generic_processing(df)
     return df
