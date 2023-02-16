@@ -2431,7 +2431,11 @@ def clean_postcode(df: DataFrame, postcode_column: str):
 
 
 def household_level_populations(
-    address_lookup: DataFrame, postcode_lookup: DataFrame, lsoa_cis_lookup: DataFrame, country_lookup: DataFrame
+    address_lookup: DataFrame,
+    postcode_lookup: DataFrame,
+    lsoa_cis_lookup: DataFrame,
+    country_lookup: DataFrame,
+    rural_urban_lookup: DataFrame,
 ) -> DataFrame:
     """
     1. join address base extract with NSPL by postcode to get LSOA 11 and country 12
@@ -2446,6 +2450,7 @@ def household_level_populations(
     df = address_lookup.join(F.broadcast(postcode_lookup), on="postcode", how="left")
     df = df.join(F.broadcast(lsoa_cis_lookup), on="lower_super_output_area_code_11", how="left")
     df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
+    df = df.join(F.broadcast(rural_urban_lookup), on="lower_super_output_area_code_11", how="left")
     df = assign_count_by_group(df, "number_of_households_by_cis_area", ["cis_area_code_20"])
     df = assign_count_by_group(df, "number_of_households_by_country", ["country_code_12"])
 
