@@ -28,13 +28,14 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 def job_transformations(df: DataFrame, soc_lookup_df: DataFrame, job_lookup_df: Optional[DataFrame] = None):
     """apply all transformations in order related to a persons vocation."""
     df = preprocessing(df)
+    df = fill_forwards_and_backwards(df).custom_checkpoint()
     df = reclassify_work_variables(df).custom_checkpoint()
     job_lookup_df = create_job_lookup(df, soc_lookup_df=soc_lookup_df, lookup_df=job_lookup_df).custom_checkpoint()
     df = left_join_keep_right(
         left_df=df, right_df=job_lookup_df, join_on_columns=["work_main_job_title", "work_main_job_role"]
     )
     df = repopulate_missing_from_original(df=df, columns_to_update=job_lookup_df.columns)
-    df = fill_forwards_and_backwards(df).custom_checkpoint()
+
     df = data_dependent_derivations(df).custom_checkpoint()
     return df, job_lookup_df
 
