@@ -831,6 +831,7 @@ def validate_survey_responses(
         string specifying id column in input_survey_table
     """
     unioned_survey_responses = extract_from_table(input_survey_table)
+    unioned_survey_responses = create_formatted_datetime_string_columns(unioned_survey_responses)
     valid_survey_responses, erroneous_survey_responses = validation_ETL(
         df=unioned_survey_responses,
         validation_check_failure_column_name=validation_failure_flag_column,
@@ -858,7 +859,6 @@ def validate_survey_responses(
     )
     # valid_survey_responses = fix_timestamps(valid_survey_responses)
     # invalid_survey_responses_table = fix_timestamps(erroneous_survey_responses)
-    valid_survey_responses = create_formatted_datetime_string_columns(valid_survey_responses)
     update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
     update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
     update_table(valid_survey_responses, output_survey_table, write_mode="overwrite", archive=True, survey_table=True)
