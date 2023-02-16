@@ -65,6 +65,8 @@ def join_swab_lookup_df(df: DataFrame, swab_lookup_df: DataFrame) -> DataFrame:
 
     # Set columns required for analysis
     swab_lookup_df = swab_lookup_df.withColumn("swab_sample_barcode_survey_missing_lab", record_unjoinable)
+    # Current lookup doesn't have a received date on the labs file so use result record as proxy
+    swab_lookup_df = swab_lookup_df.withColumn("swab_sample_received_datetime", F.col("pcr_result_recorded_datetime"))
     df = df.withColumn("swab_sample_barcode_lab_missing_survey", record_unjoinable)
 
     # Create unjoinable df to streamline processing time

@@ -57,6 +57,7 @@ def assign_match_type(df: DataFrame, test_type: str):
             "void_reason_c19",
         ]
         n = 21
+
     for col in column_names:
         if "match_type" in col:
             option_set = match_type_options
