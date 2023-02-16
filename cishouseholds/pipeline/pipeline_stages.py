@@ -830,6 +830,7 @@ def validate_survey_responses(
         string specifying id column in input_survey_table
     """
     unioned_survey_responses = extract_from_table(input_survey_table)
+    unioned_survey_responses = create_formatted_datetime_string_columns(unioned_survey_responses)
     valid_survey_responses, erroneous_survey_responses = validation_ETL(
         df=unioned_survey_responses,
         validation_check_failure_column_name=validation_failure_flag_column,
