@@ -46,6 +46,12 @@ def preprocessing(df: DataFrame):
     df = clean_job_description_string(df, "work_main_job_role")
     df = clean_job_description_string(df, "work_main_job_title_raw")
     df = clean_job_description_string(df, "work_main_job_role_raw")
+    df = (
+        df.withColumn("work_location_original", F.col("work_location"))
+        .withColumn("work_status_v0_original", F.col("work_status_v0"))
+        .withColumn("work_status_v1_original", F.col("work_status_v1"))
+        .withColumn("work_status_v2_original", F.col("work_status_v2"))
+    )
     col_val_map = {
         "work_health_care_area": {
             "Secondary care for example in a hospital": "Secondary",
