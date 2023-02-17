@@ -41,11 +41,16 @@ def raw_copies(df: DataFrame):
         "blood_sample_barcode",
         "swab_sample_barcode",
         "think_had_covid",
+        "think_have_covid_onset_date",
         "other_covid_infection_test",
         "other_covid_infection_test_result",
         "think_had_covid_admitted_to_hospital",
         "think_had_covid_contacted_nhs",
+        "last_covid_contact_date",
+        "contact_suspected_positive_covid_last_28_days",
+        "contact_known_positive_covid_last_28_days",
     ]
+
     original_copy_list = [
         "work_health_care_patient_facing",
         "work_health_care_area",
@@ -53,6 +58,10 @@ def raw_copies(df: DataFrame):
         "work_nursing_or_residential_care_home",
         "work_direct_contact_patients_or_clients",
         "work_patient_facing_now",
+        "work_location",
+        "work_status_v0",
+        "work_status_v1",
+        "work_status_v2",
     ]
 
     upper_cols = [

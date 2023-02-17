@@ -305,6 +305,10 @@ validation_schemas = {
         "CIS20CD": string_dict,
         "RGN19CD": string_dict,
     },
+    "rural_urban_schema": {
+        "lower_super_output_area_code_11": string_dict,
+        "cis_rural_urban_classification": string_dict,
+    },
     "cis_phase_schema": {  # check
         "phase_name": string_dict,
         "phase_visits": string_dict,

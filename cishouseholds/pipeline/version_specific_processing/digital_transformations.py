@@ -59,6 +59,7 @@ def digital_responses_preprocessing(df: DataFrame) -> DataFrame:
         "Telephone",
         ["20-05-2022T21:30:00", "25-05-2022 11:00:00"],
     )
+
     return df
 
 
