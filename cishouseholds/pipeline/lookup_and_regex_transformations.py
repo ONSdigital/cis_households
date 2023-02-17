@@ -520,11 +520,7 @@ def reclassify_work_variables(df: DataFrame, drop_original_variables: bool = Tru
 
     # first start by taking a copy of the original work variables
     _df = (
-        df.withColumn("work_location_original", F.col("work_location"))
-        .withColumn("work_status_v0_original", F.col("work_status_v0"))
-        .withColumn("work_status_v1_original", F.col("work_status_v1"))
-        .withColumn("work_status_v2_original", F.col("work_status_v2"))
-        .withColumn(
+        df.withColumn(
             "work_location",
             F.when(update_work_location, F.lit("Working from home")).otherwise(F.col("work_location")),
         )
