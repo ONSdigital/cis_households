@@ -58,6 +58,10 @@ def raw_copies(df: DataFrame):
         "work_nursing_or_residential_care_home",
         "work_direct_contact_patients_or_clients",
         "work_patient_facing_now",
+        "work_location",
+        "work_status_v0",
+        "work_status_v1",
+        "work_status_v2",
     ]
 
     upper_cols = [

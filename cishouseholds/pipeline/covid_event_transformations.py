@@ -260,6 +260,19 @@ def derive_new_columns(df: DataFrame) -> DataFrame:
         ],
         true_false_values=["Yes", "No"],
     )
+
+    df = assign_true_if_any(
+        df=df,
+        column_name_to_assign="think_had_covid_cghfevamn_symptom_group",
+        reference_columns=[
+            "think_had_covid_symptom_cough",
+            "think_had_covid_symptom_fever",
+            "think_had_covid_symptom_loss_of_smell",
+            "think_had_covid_symptom_loss_of_taste",
+        ],
+        true_false_values=["Yes", "No"],
+    )
+
     df = assign_any_symptoms_around_visit(
         df=df,
         column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
