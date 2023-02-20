@@ -32,6 +32,7 @@ def raw_copies(df: DataFrame):
         "work_health_care_area",
         "work_main_job_title",
         "work_main_job_role",
+        "work_status_v0",
         "work_status_v1",
         "work_status_v2",
         "work_not_from_home_days_per_week",
