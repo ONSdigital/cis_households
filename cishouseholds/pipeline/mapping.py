@@ -134,7 +134,12 @@ category_maps = {
         "think_had_covid_contacted_nhs_raw": _yes_no_categories,
         "think_had_covid_admitted_to_hospital_raw": _yes_no_categories,
         "other_covid_infection_test_raw": _yes_no_categories,
-        "other_covid_infestion_test_results_raw": _yes_no_categories,
+        "other_covid_infection_test_results_raw": {
+            "Any tests negative, but none positive": 0,
+            "One or more positive test(s)": 1,
+            "Waiting for all results": 2,
+            "All Tests failed": 9,
+        },
         "think_had_covid": _yes_no_categories,
         "think_had_covid_contacted_nhs": _yes_no_categories,
         "think_had_covid_admitted_to_hospital": _yes_no_categories,
