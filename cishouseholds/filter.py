@@ -37,9 +37,6 @@ def filter_invalid_vaccines(
     return df
 
 
-#
-
-
 def filter_all_not_null(df: DataFrame, reference_columns: List[str]) -> DataFrame:
     """
     Filter rows which have NULL values in all the specified columns.
