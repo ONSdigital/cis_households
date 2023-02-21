@@ -47,6 +47,23 @@ participant_extract_digital_parameters = {
     "source_file_column": "participant_extract_source_file",
 }
 
+phm_parameters = {
+    "stage_name": "survey_responses_version_phm_ETL",
+    "dataset_name": "survey_responses_phm",
+    "id_column": "participant_completion_window_id",
+    "validation_schema": validation_schemas["phm_validation_schema"],
+    "datetime_column_map": cis_digital_datetime_map,
+    # "transformation_functions": [
+    #    translate_welsh_survey_responses_version_phm,
+    #    digital_responses_preprocessing,
+    #    transform_survey_responses_version_phm_delta,
+    #    assign_has_been_columns,
+    # ],
+    "sep": "|",
+    # "cast_to_double_list": survey_response_cisd_cast_to_double,
+    "source_file_column": "survey_response_source_file",
+}
+
 cis_digital_parameters = {
     "stage_name": "survey_responses_version_digital_ETL",
     "dataset_name": "survey_responses_digital",
