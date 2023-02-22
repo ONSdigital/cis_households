@@ -11,7 +11,7 @@ def filter_invalid_vaccines(
     num_doses_column: str,
     participant_id_column: str,
     visit_datetime_column: str,
-    vaccine_datetime_column: str,
+    vaccine_date_column: str,
 ):
     """Filter out rows where the vaccine count is inconsistent and there is a difference of more than 331 days betweeen the visit date an the test date"""
     window = (
@@ -28,7 +28,7 @@ def filter_invalid_vaccines(
     df = df.withColumn(
         "TEST",
         F.when(
-            (F.abs(F.datediff(F.col(visit_datetime_column), F.col(vaccine_datetime_column))) > 331)
+            (F.abs(F.datediff(F.col(visit_datetime_column), F.col(vaccine_date_column))) > 331)
             & (F.col("TEST") == True),  # noqa: E712
             True,
         ).otherwise(False),
