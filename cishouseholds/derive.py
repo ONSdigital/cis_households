@@ -1502,7 +1502,7 @@ def derive_digital_merge_type(
     column_name_to_assign: str,
 ) -> DataFrame:
     """
-    Calculate the difference in days between two dates.
+    Derive the digital merge type
     From households_aggregate_processes.xlsx, derivation number 27.
 
     Parameters
@@ -1510,10 +1510,12 @@ def derive_digital_merge_type(
     df
     survey_completion_status
         Variable with survey completion status.
-    start_reference_column
+    form_start_datetime
         First date column name.
-    end_reference_column
-        Second date column name.
+    participant_completion_window_end_datetime
+        Final date column name.
+    file_date
+        The date the file was created
 
     Return
     ------
@@ -1522,9 +1524,7 @@ def derive_digital_merge_type(
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            (F.col("form_start_datetime").isNull())
-            & (F.col("participant_completion_window_end_datetime").isNull())
-            & (F.col("Survey_completion_status").isin(["Submitted", "Completed"])),
+            (F.col("Survey_completion_status").isin(["Submitted", "Completed"])),
             "Matched",
         )
         .when(
