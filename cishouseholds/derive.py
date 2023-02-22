@@ -27,6 +27,49 @@ from cishouseholds.merge import null_safe_join
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def group_participant_within_date_range(
+    df: DataFrame, column_name_to_assign: str, participant_id_column: str, date_column: str, date_range: int
+):
+    """For each participant id group by a date variable within a given range."""
+    window = Window.partitionBy(participant_id_column).orderBy(date_column)
+
+    df = df.withColumn(
+        column_name_to_assign,
+        (F.datediff(F.col(date_column), F.first(date_column).over(window)) / date_range).cast("integer"),
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.dense_rank().over(Window.partitionBy(participant_id_column).orderBy(column_name_to_assign)),
+    )
+    return df
+
+
+def assign_max_doses(
+    df: DataFrame, column_name_to_assign: str, i_dose_column: str, num_doses_column: str, participant_id_column: str
+):
+    """Assign a variable true or false depending on whether a participant has had their max number of vaccine doses."""
+    window = Window.partitionBy(participant_id_column, i_dose_column)
+
+    df = df.withColumn(
+        column_name_to_assign, F.when(F.max(F.col(num_doses_column)).over(window) >= 3, "Yes").otherwise("No")
+    )
+    return df
+
+
+def assign_pos_1_2(
+    df: DataFrame, column_name_to_assign: str, i_dose_column: str, num_doses_column: str, participant_id_column: str
+):
+    """Assign a variable true or false depending on whether a participant has had their max number of vaccine doses."""
+    window = Window.partitionBy(participant_id_column, i_dose_column).rowsBetween(
+        Window.unboundedPreceding, Window.currentRow
+    )
+
+    df = df.withColumn(
+        column_name_to_assign, F.when(F.max(F.col(num_doses_column)).over(window) < 3, "Yes").otherwise("No")
+    )
+    return df
+
+
 def assign_regex_from_map_additional_rules(
     df: DataFrame,
     column_name_to_assign: str,
