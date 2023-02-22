@@ -27,6 +27,27 @@ from cishouseholds.merge import null_safe_join
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def assign_max_1_2_doses(
+    df: DataFrame,
+    column_name_to_assign: str,
+    participant_id_column: str,
+    vaccine_date_column: str,
+    num_doses_column: str,
+):
+    """
+    Assign the greatest num doses that is less than 3 between the first row and current row by covid vaccine date.
+    """
+    window = (
+        Window.partitionBy(participant_id_column)
+        .orderBy(vaccine_date_column)
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
+    df = df.withColumn(
+        column_name_to_assign, F.max(F.when(F.col(num_doses_column) <= 2, F.col(num_doses_column))).over(window)
+    )
+    return df
+
+
 def assign_regex_from_map_additional_rules(
     df: DataFrame,
     column_name_to_assign: str,
