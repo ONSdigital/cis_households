@@ -1777,7 +1777,8 @@ def assign_grouped_variable_from_days_since(
     give a number that will be grouped in a range.
 
     Parameters
-    ----------
+    ----
+    ------
     df
     binary_reference_column
         yes/no values that describe whether the patient thinks have had covid
@@ -1798,6 +1799,44 @@ def assign_grouped_variable_from_days_since(
         F.when(
             (F.col(binary_reference_column) == "Yes") & (F.col(days_since_reference_column).isNull()),
             "Date not given",
+        )
+        .otherwise(F.col(column_name_to_assign))
+        .cast("string"),
+    )
+
+
+def assign_grouped_variable_from_days_since_contact(
+    df: DataFrame,
+    reference_column: str,
+    days_since_reference_column: str,
+    column_name_to_assign: str,
+) -> DataFrame:
+    """
+    Function create variables applied for contact_known_or_suspected_covid_days_since_group. The variable contact_known_or_suspected_covid_days_since will
+    give a number that will be grouped in a range.
+
+    Parameters
+    ----------
+    df
+    reference_column
+        describes where the respondent had contact with someone with covid
+    days_since_reference_column
+        column from which extract the number of days transcurred that needs to
+        be grouped
+    column_name_to_assign
+        grouping column
+    """
+    df = assign_named_buckets(
+        df=df,
+        reference_column=days_since_reference_column,
+        column_name_to_assign=column_name_to_assign,
+        map={0: "1", 15: "2", 29: "3", 61: "4", 91: "5"},
+    )
+    return df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col(reference_column).isNotNull()) & (F.col(days_since_reference_column).isNull()),
+            "6",
         )
         .otherwise(F.col(column_name_to_assign))
         .cast("string"),
