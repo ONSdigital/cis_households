@@ -320,18 +320,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: consent_contact_extra_research_yn
-  nullable: true
-  type: string
-- metadata: {}
-  name: consent_use_of_surplus_blood_samples_yn
-  nullable: true
-  type: string
-- metadata: {}
-  name: consent_blood_samples_if_positive
-  nullable: true
-  type: string
-- metadata: {}
   name: type_preference
   nullable: true
   type: string
