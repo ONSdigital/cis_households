@@ -21,6 +21,37 @@ def filter_before_date_or_null(df: DataFrame, date_column: str, min_date: str):
     return df.filter(F.when((F.col(date_column) >= min_date) | (F.col(date_column).isNull())))
 
 
+def filter_invalid_vaccines(
+    df: DataFrame,
+    num_doses_column: str,
+    participant_id_column: str,
+    visit_datetime_column: str,
+    vaccine_date_column: str,
+):
+    """Filter out rows where the vaccine count is inconsistent and there is a difference of more than 331 days betweeen the visit date an the test date"""
+    window = (
+        Window.partitionBy(participant_id_column)
+        .orderBy(visit_datetime_column)
+        .rowsBetween(Window.currentRow, Window.unboundedFollowing)
+    )
+    df = df.withColumn(
+        "TEST",
+        F.when((F.col(num_doses_column) >= 3) & (F.min(F.col(num_doses_column)).over(window) < 3), True).otherwise(
+            False
+        ),
+    )
+    df = df.withColumn(
+        "TEST",
+        F.when(
+            (F.abs(F.datediff(F.col(visit_datetime_column), F.col(vaccine_date_column))) > 331)
+            & (F.col("TEST") == True),  # noqa: E712
+            True,
+        ).otherwise(False),
+    )
+    df = df.filter(F.col("TEST") == False).drop("TEST")  # noqa: E712
+    return df
+
+
 def filter_all_not_null(df: DataFrame, reference_columns: List[str]) -> DataFrame:
     """
     Filter rows which have NULL values in all the specified columns.
