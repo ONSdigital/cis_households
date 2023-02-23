@@ -10,7 +10,7 @@ from cishouseholds.derive import assign_order_number
 from cishouseholds.derive import assign_pos_1_2
 from cishouseholds.derive import group_participant_within_date_range
 from cishouseholds.edit import update_column_values_from_map
-from tests.filter.test_filter_single_dose import test_filter_single_dose
+from cishouseholds.filter import filter_single_dose
 
 # from pyspark.sql import Window
 
@@ -65,6 +65,7 @@ def preprocesing(df: DataFrame):
         df=df,
         column_name_to_assign="order_number",
         covid_vaccine_type_column="cis_covid_vaccine_type",
+        num_doses_column="cis_covid_vaccine_number_of_doses",
         max_doses_column="max_doses",
         pos_1_2_column="pos_1_2",
     )
@@ -77,7 +78,7 @@ def preprocesing(df: DataFrame):
         column_names=["order", "poss_1_2", "max_doses"],
         override_original=False,
     )
-    df = test_filter_single_dose(
+    df = filter_single_dose(
         df=df,
         participant_id_column="participant_id",
         visit_datetime_column="visit_datetime",

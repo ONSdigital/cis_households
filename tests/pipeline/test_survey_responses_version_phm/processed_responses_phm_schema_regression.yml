@@ -38,7 +38,7 @@ fields:
 - metadata: {}
   name: swab_taken_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: swab_taken_time_hour
   nullable: true
@@ -306,7 +306,7 @@ fields:
 - metadata: {}
   name: phm_think_had_flu_onset_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: think_had_flu_symptom_list_1
   nullable: true
@@ -318,7 +318,7 @@ fields:
 - metadata: {}
   name: phm_think_had_other_infection_onset_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: think_had_other_infection_symptom_list_1
   nullable: true
@@ -346,7 +346,7 @@ fields:
 - metadata: {}
   name: other_covid_infection_test_negative_date
   nullable: true
-  type: timestamp
+  type: string
 - metadata: {}
   name: last_28_days_unable_usual_activities
   nullable: true
