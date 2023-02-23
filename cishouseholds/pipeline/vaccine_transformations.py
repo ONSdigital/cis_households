@@ -3,12 +3,14 @@
 # import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
-from cishouseholds.derive import assign_default_date_flag, assign_column_value_from_multiple_column_map
+from cishouseholds.derive import assign_column_value_from_multiple_column_map
+from cishouseholds.derive import assign_default_date_flag
 from cishouseholds.derive import assign_max_doses
 from cishouseholds.derive import assign_order_number
 from cishouseholds.derive import assign_pos_1_2
 from cishouseholds.derive import group_participant_within_date_range
 from cishouseholds.edit import update_column_values_from_map
+from tests.filter.test_filter_single_dose import test_filter_single_dose
 
 # from pyspark.sql import Window
 
@@ -67,10 +69,23 @@ def preprocesing(df: DataFrame):
         pos_1_2_column="pos_1_2",
     )
     df = assign_column_value_from_multiple_column_map(
+        df=df,
         column_name_to_assign="cis_covid_vaccine_type",
         value_to_condition_map=[
-            ["Don't know type", [[4,5], 1, "No"]],
+            ["Don't know type", [[4, 5], 1, "No"]],
         ],
         column_names=["order", "poss_1_2", "max_doses"],
+        override_original=False,
+    )
+    df = test_filter_single_dose(
+        df=df,
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+        order_column="order_number",
+        i_dose_column="i_dose",
+        poss_1_2_column="poss_1_2",
+        default_date_column="default_date",
+        vaccine_type_column="cis_covid_vaccine_type",
+        allowed_vaccine_types=["AZ", "Pfizer", "Moderna"],
     )
     return df

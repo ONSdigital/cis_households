@@ -1174,6 +1174,13 @@ category_maps = {
             "Arrived at Lab": 4,
             "Results Returned": 5,
         },
+        # derive_merge_type
+        "digital_merge_type": {
+            "Matched": 0,
+            "Temporary Orphan Status": 1,
+            "Potential Orphan": 2,
+            "Permanent Orphan": 3,
+        },
         # "sample_kit_not_dispatched_code": {},  # TODO Need categories to map
         "survey_completion_status": {
             "New": 1,
@@ -2209,9 +2216,6 @@ column_name_maps = {
         "person9_reason_for_not_consenting": "person_9_reason_for_not_consenting",
         "count_of_non_consenting": "person_non_consenting_count",
         "email": "email",
-        "consent_to_be_contacted_extra_researchyn": "consent_contact_extra_research_yn",
-        "consent_to_use_of_surplus_blood_samplesyn": "consent_use_of_surplus_blood_samples_yn",
-        "consent_to_blood_samples_if_positive": "consent_blood_samples_if_positive",
         "participant_digital_type_preference": "type_preference",
         "participant_digital_communication_preference": "communication_preference",
         "participant_digital_sample_return_preference": "sample_return_preference",
