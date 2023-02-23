@@ -216,44 +216,6 @@ def ordered_household_id_tranformations(df: DataFrame, **kwargs: dict) -> DataFr
     return df
 
 
-def lab_pre_join_transformations(df: DataFrame, test_type: str, **kwargs: dict) -> DataFrame:
-    df = df.withColumn(f"{test_type}_sample_barcode_survey_missing_lab", F.col(f"{test_type}_sample_barcode").isNull())
-    return df
-
-
-def lab_lookup_transformations(df: DataFrame, test_type: str, **kwargs: dict) -> DataFrame:
-    df = df.withColumn(f"{test_type}_sample_barcode_lab_missing_survey", F.col(f"{test_type}_sample_barcode").isNull())
-    return df
-
-
-def lab_post_join_transformations(df: DataFrame, test_type: str, lookup_df: DataFrame, **kwargs: dict) -> DataFrame:
-    if test_type == "blood":
-        joinable = F.when(
-            (
-                (F.col("blood_taken").isNotNull())
-                & (
-                    (F.col("household_completion_window_status") == "Closed")
-                    | (
-                        (F.col("survey_completed_datetime").isNotNull())
-                        | (F.col("survey_completion_status") == "Submitted")
-                    )
-                )
-            )
-            & (F.col(f"blood_taken_datetime") < F.col("blood_sample_arrayed_date"))
-            & (
-                (F.col("participant_completion_window_start_datetime"))
-                <= (F.col("") == F.col("blood_sample_arrayed_date"))
-            )
-            & (F.col("match_type_blood").isNull())
-        )
-        df = match_type_blood(df)
-        for col in lookup_df.columns:  # set cols to none if not joinable
-            df = df.withColumn(F.when(joinable, F.col(col)))
-    else:
-        df = match_type_swab(df)
-    return df
-
-
 def process_vaccine_regex(df: DataFrame, vaccine_type_col: str) -> DataFrame:
     """Add result of vaccine regex pattern matchings"""
 

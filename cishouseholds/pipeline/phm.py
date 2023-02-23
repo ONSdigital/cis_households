@@ -28,13 +28,14 @@ def match_type_swab(df: DataFrame):
     """Populate match type columns to illustrate how the
     swab data maps to the survey data."""
     df = assign_match_type(df, "swab")
-    map = {
-        "match_result_flu": "pcr_result_classification_flu",
-        "match_result_rsv": "pcr_result_classification_rsv",
-        "match_result_c19": "pcr_result_classification_c19",
-    }
-    for col, lookup in map.items():
-        df = df.withColumn(col, F.when(F.col(col) == "encode", F.col(lookup)).otherwise(F.col(col)))
+    # No encoded remapping required for current responses
+    # map = {
+    #     "match_result_flu": "pcr_result_classification_flu",
+    #     "match_result_rsv": "pcr_result_classification_rsv",
+    #     "match_result_c19": "pcr_result_classification_c19",
+    # }
+    # for col, lookup in map.items():
+    #     df = df.withColumn(col, F.when(F.col(col) == "encode", F.col(lookup)).otherwise(F.col(col)))
     return df
 
 
@@ -57,6 +58,7 @@ def assign_match_type(df: DataFrame, test_type: str):
             "void_reason_c19",
         ]
         n = 21
+
     for col in column_names:
         if "match_type" in col:
             option_set = match_type_options

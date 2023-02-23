@@ -45,6 +45,7 @@ from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
 from cishouseholds.pipeline.job_transformations import job_transformations
+from cishouseholds.pipeline.lab_transformations import lab_transformations
 from cishouseholds.pipeline.load import add_error_file_log_entry
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import delete_tables
@@ -55,9 +56,6 @@ from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.lookup_and_regex_transformations import blood_past_positive_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import design_weights_lookup_transformations
-from cishouseholds.pipeline.lookup_and_regex_transformations import lab_lookup_transformations
-from cishouseholds.pipeline.lookup_and_regex_transformations import lab_post_join_transformations
-from cishouseholds.pipeline.lookup_and_regex_transformations import lab_pre_join_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import nims_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import ordered_household_id_tranformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import process_vaccine_regex
@@ -633,12 +631,27 @@ def execute_covid_transformations(
     return {"output_survey_table": output_survey_table}
 
 
+@register_pipeline_stage("lab_transformations")
+def execute_lab_transformations(
+    input_survey_table: str,
+    blood_results_table: str,
+    swab_results_table: str,
+    output_survey_table: str,
+):
+    """"""
+    df = extract_from_table(input_survey_table)
+    blood_lookup_df = extract_from_table(blood_results_table)
+    swab_lookup_df = extract_from_table(swab_results_table)
+    df = lab_transformations(df, blood_lookup_df=blood_lookup_df, swab_lookup_df=swab_lookup_df)
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
+    return {"output_survey_table": output_survey_table}
+
+
 @register_pipeline_stage("join_lookup_table")
 def join_lookup_table(
     input_survey_table: str,
     output_survey_table: str,
     lookup_table_name: str,
-    join_type: str = "left",
     unjoinable_values: Dict[str, Union[str, int]] = {},
     join_on_columns: List[str] = ["work_main_job_title", "work_main_job_role"],
     lookup_transformations: List[str] = [],
@@ -671,9 +684,6 @@ def join_lookup_table(
         "blood_past_positive": blood_past_positive_transformations,
         "design_weights_lookup": design_weights_lookup_transformations,
         "ordered_household_id": ordered_household_id_tranformations,
-        "lab_pre_join": lab_pre_join_transformations,
-        "lab_lookup": lab_lookup_transformations,
-        "lab_post_join": lab_post_join_transformations,
     }
 
     lookup_df = extract_from_table(lookup_table_name)
@@ -689,12 +699,7 @@ def join_lookup_table(
         unjoinable_df = unjoinable_df.withColumn(col, F.lit(val))
 
     df = df.filter(any_column_not_null(join_on_columns))
-
-    if join_type == "left":
-        df = left_join_keep_right(df, lookup_df, join_on_columns)
-    if join_type == "fullouter":
-        df = df.join(df, lookup_df, how="fullouter", on=join_on_columns)
-
+    df = left_join_keep_right(df, lookup_df, join_on_columns)
     df = union_multiple_tables([df, unjoinable_df])
 
     for transformation in post_join_transformations:
