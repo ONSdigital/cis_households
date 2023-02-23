@@ -3322,6 +3322,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         # "participant_id":_("random.custom_code", mask="DHR-############", digit="#"),
         # "cohort": _("choice", items=["Swab Only", "Fingerprick and Swab", None]),
         # "participant_under_16": _("choice", items=yes_no_none_choice),
+        "participant_completion_window_id": _("random.custom_code", mask="####", digit="#"),
         "participant_first_name_confirmation": _("choice", items=yes_no_none_choice),
         "participant_first_name_on_behalf": _("choice", items=yes_no_none_choice),
         "problem_with_survey_access_helpline": _("choice", items=["Continue", None]),
@@ -3390,9 +3391,21 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         "blood_not_taken_reason": _(
             "choice",
             items=[
+                "I am near the end of my testing window and my swab test kit has not arrived",
+                "I asked not to receive a blood test kit this month",
+                "I decided not to take it this month",
+                "I tried but could not take it",
+                "The blood test kit arrived both damaged and with parts missing",
+                "The blood test kit arrived damaged",
+                "The blood test kit arrived with parts missing",
+                None,
+            ],
+        ),
+        "blood_not_taken_could_not_reason": _(
+            "choice",
+            items=[
                 "I couldn't get enough blood into the pot",
                 "The pot spilled",
-                "There were issues with the kit",
                 "I had bruising or pain",
                 "I felt unwell",
                 "Other please specify",
@@ -3401,7 +3414,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         ),
         "blood_not_taken_could_not_other": _("text.sentence"),
         "blood_sample_barcode_correct": _("choice", items=yes_no_none_choice),
-        "blood_sample_barcode_user_entered": _("random.custom_code", mask="BLT########", digit="#"),
+        "blood_barcode_user_entered": _("random.custom_code", mask="BLT########", digit="#"),
         "blood_taken_date": _(
             "discrete_distribution",
             population=[
@@ -3802,7 +3815,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         "times_hour_or_longer_another_home_last_7_days": _("choice", items=times_count),
         "times_hour_or_longer_another_person_your_home_last_7_days": _("choice", items=times_count),
         "times_shopping_last_7_days": _("choice", items=times_count),
-        "times_socialising_last_7_days": _("choice", items=times_count),
+        "times_socialise_last_7_days": _("choice", items=times_count),
         "times_indoor_exercise_last_28_days": _(
             "choice",
             items=[

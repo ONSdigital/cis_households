@@ -47,7 +47,7 @@ participant_extract_digital_parameters = {
     "source_file_column": "participant_extract_source_file",
 }
 
-cis_phm_parameters = {
+phm_parameters = {
     "stage_name": "survey_responses_version_phm_ETL",
     "dataset_name": "survey_responses_phm",
     "id_column": "participant_completion_window_id",
