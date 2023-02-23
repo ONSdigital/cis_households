@@ -8,6 +8,7 @@ from cishouseholds.derive import assign_first_visit
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_visit_order
+from cishouseholds.derive import derive_digital_merge_type
 from cishouseholds.edit import replace_sample_barcode
 
 
@@ -30,6 +31,7 @@ def visit_derivations(df: DataFrame):
         "participant_visit_status", F.coalesce(F.col("participant_visit_status"), F.col("survey_completion_status"))
     )
 
+    df = derive_digital_merge_type(df=df, column_name_to_assign="digital_merge_type")
     df = replace_sample_barcode(df=df)
 
     df = assign_first_visit(

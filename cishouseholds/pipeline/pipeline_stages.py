@@ -82,6 +82,7 @@ from cishouseholds.validate import validate_files
 from dummy_data_generation.generate_data import generate_cis_soc_data
 from dummy_data_generation.generate_data import generate_digital_data
 from dummy_data_generation.generate_data import generate_nims_table
+from dummy_data_generation.generate_data import generate_phm_survey_data
 from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
@@ -253,6 +254,7 @@ def generate_dummy_data(output_directory):
     blood_dir = raw_dir / "blood"
     survey_dir = raw_dir / "survey"
     digital_survey_dir = raw_dir / "responses_digital"
+    phm_survey_dir = raw_dir / "responses_phm"
     northern_ireland_dir = raw_dir / "northern_ireland_sample"
     sample_direct_dir = raw_dir / "england_wales_sample"
     unprocessed_bloods_dir = raw_dir / "unprocessed_blood"
@@ -266,6 +268,7 @@ def generate_dummy_data(output_directory):
         blood_dir,
         survey_dir,
         digital_survey_dir,
+        phm_survey_dir,
         northern_ireland_dir,
         sample_direct_dir,
         unprocessed_bloods_dir,
@@ -287,6 +290,14 @@ def generate_dummy_data(output_directory):
     )
     generate_digital_data(
         directory=digital_survey_dir,
+        file_date=file_date,
+        records=50,
+        swab_barcodes=[],
+        blood_barcodes=[],
+    )
+
+    generate_phm_survey_data(
+        directory=phm_survey_dir,
         file_date=file_date,
         records=50,
         swab_barcodes=[],
