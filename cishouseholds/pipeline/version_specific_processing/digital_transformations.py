@@ -59,6 +59,7 @@ def digital_responses_preprocessing(df: DataFrame) -> DataFrame:
         "Telephone",
         ["20-05-2022T21:30:00", "25-05-2022 11:00:00"],
     )
+
     return df
 
 
@@ -684,14 +685,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "One or more tests were positive for antibodies": "One or more positive test(s)",
         },
         "cis_covid_vaccine_type": vaccine_type_map,
-        "cis_covid_vaccine_number_of_doses": {
-            "1 dose": "1",
-            "2 doses": "2",
-            "3 doses": "3 or more",
-            "4 doses": "3 or more",
-            "5 doses": "3 or more",
-            "6 doses or more": "3 or more",
-        },
         "cis_covid_vaccine_type_1": vaccine_type_map,
         "cis_covid_vaccine_type_2": vaccine_type_map,
         "cis_covid_vaccine_type_3": vaccine_type_map,

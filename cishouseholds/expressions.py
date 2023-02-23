@@ -82,7 +82,7 @@ def sum_within_row(column_list: List[str]):
     Sum of values from one or more columns within a row.
     N.B. Null values are treated as 0. If is values are Null, sum will be 0.
     """
-    return reduce(add, [F.coalesce(F.col(column), F.lit(0)) for column in column_list])
+    return reduce(add, [F.coalesce(F.col(column).cast("integer"), F.lit(0)) for column in column_list])
 
 
 def count_occurrence_in_row(column_list: List[str], val_to_count: Any):
