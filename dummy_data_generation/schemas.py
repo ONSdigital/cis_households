@@ -245,6 +245,39 @@ countries = (
 start_date_list = datetime(2022, 1, 1)
 end_date_list = datetime(2022, 1, 10)
 
+symptoms_list_2 = [
+    "Headache",
+    "Muscle ache",
+    "Weakness or tiredness",
+    "Fever, including high temperature",
+    "More trouble sleeping than usual",
+    "Memory loss or confusion",
+    "Difficulty concentrating",
+    "Worry or anxiety",
+    "Low mood or not enjoying anything",
+]
+
+symptoms_list_1 = [
+    "Runny nose or sneezing",
+    "Loss of smell",
+    "Loss of taste",
+    "Sore throat",
+    "Cough",
+    "Shortness of breath",
+    "Noisy breathing or wheezing",
+    "Abdominal pain",
+    "Nausea or vomiting",
+    "Diarrhoea",
+    "Loss of appetite or eating less than usual",
+]
+
+infections = [
+    "COVID-19",
+    "Flu",
+    "Another type of respiratory infection of illness",
+    "Do not know the type",
+]
+
 
 def get_cis_soc_data_description(_):
     option = int(_("custom_random.random_integer", lower=1, upper=2, null_percent=0))
@@ -3275,4 +3308,547 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "think_respiratory_infection": _("choice", items=yes_no_none_choice),
         "time_off_respiratory_infection": _("custom_random.random_integer", lower=0, upper=28, null_percent=15),
         "time_off_health_reasons": _("custom_random.random_integer", lower=0, upper=28, null_percent=15),
+    }
+
+
+phm_date_format = "%d/%m/%Y"
+
+
+def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
+    return lambda: {  # noqa: E731
+        # "uac": _("random.custom_code", mask="################", digit="#"),
+        # "household_completion_window_id": _("random.custom_code", mask="####", digit="#"),
+        # "ons_household_id": _("random.custom_code", mask="############", digit="#"),
+        # "participant_id":_("random.custom_code", mask="DHR-############", digit="#"),
+        # "cohort": _("choice", items=["Swab Only", "Fingerprick and Swab", None]),
+        # "participant_under_16": _("choice", items=yes_no_none_choice),
+        "participant_first_name_confirmation": _("choice", items=yes_no_none_choice),
+        "participant_first_name_on_behalf": _("choice", items=yes_no_none_choice),
+        "problem_with_survey_access_helpline": _("choice", items=["Continue", None]),
+        "cohort_type_PHM": _(
+            "choice", items=["Do this questionnaire only", "Do this questionnaire and take a swab sample"]
+        ),
+        "swab_taken": _("choice", items=yes_no_none_choice),
+        "swab_not_taken_reason": _(
+            "choice",
+            items=[
+                "I am near the end of my testing window and my swab test kit has not arrived",
+                "I did not want to take it this month",
+                "I tried but could not take it",
+                "The swab test kit arrived both damaged and with parts missing",
+                "The swab test kit arrived damaged",
+                "The swab test kit arrived with parts missing",
+                None,
+            ],
+        ),
+        "swab_sample_barcode_correct": _("choice", items=yes_no_none_choice),
+        "swab_sample_barcode_user_entered": _("random.custom_code", mask="SWT########", digit="#"),
+        "swab_taken_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_date_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "swab_taken_time_hour": _("custom_random.random_integer", lower=0, upper=12, null_percent=15),
+        "swab_taken_time_minute": _("choice", items=[0, 15, 30, 45]),
+        "swab_taken_am_pm": _("choice", items=["AM", "PM"]),
+        "swab_returned": _("choice", items=yes_no_none_choice),
+        "swab_return_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_date_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "swab_return_future_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_date_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "blood_taken": _("choice", items=yes_no_none_choice),
+        "blood_not_taken_reason": _(
+            "choice",
+            items=[
+                "I couldn't get enough blood into the pot",
+                "The pot spilled",
+                "There were issues with the kit",
+                "I had bruising or pain",
+                "I felt unwell",
+                "Other please specify",
+                None,
+            ],
+        ),
+        "blood_not_taken_could_not_other": _("text.sentence"),
+        "blood_sample_barcode_correct": _("choice", items=yes_no_none_choice),
+        "blood_sample_barcode_user_entered": _("random.custom_code", mask="BLT########", digit="#"),
+        "blood_taken_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_date_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "blood_taken_time_hour": _("custom_random.random_integer", lower=0, upper=12, null_percent=15),
+        "blood_taken_time_minute": _("choice", items=[0, 15, 30, 45]),
+        "blood_taken_am_pm": _("choice", items=["AM", "PM"]),
+        "blood_returned": _("choice", items=yes_no_none_choice),
+        "blood_return_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_date_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "blood_return_future_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_date_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "questionnaire_started_no_incentive": _("choice", items=yes_no_none_choice),
+        "test_kit_info_end_of_survey": _("choice", items=["Continue", None]),
+        "aged_16_or_over": _("choice", items=yes_no_none_choice),
+        "work_status_digital": _(
+            "choice",
+            items=[
+                "Employed",
+                "In education",
+                "Not in paid work. This includes being unemployed or retired or doing voluntary work",
+                "Self-employed",
+                None,
+            ],
+        ),
+        "work_status_employment": _(
+            "choice",
+            items=[
+                "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",  # noqa: E501
+                "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
+                None,
+            ],
+        ),
+        "work_status_unemployment": _(
+            "choice",
+            items=[
+                "Looking for paid work and able to start",
+                "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",  # noqa: E501
+                "Retired",
+                None,
+            ],
+        ),
+        "work_status_education": _(
+            "choice",
+            items=[
+                "A child aged 4 or over at home-school",
+                "A child aged 4 or over at school",
+                "A child below school age and attending a nursery or pre-school or childminder",
+                "A child below school age and not attending a nursery or pre-school or childminder",
+                "Attending a college or other further education provider including apprenticeships",
+                "Attending university",
+                None,
+            ],
+        ),
+        "work_in_additional_paid_employment": _("choice", items=yes_no_prefer_not_to_say),
+        "work_main_job_changed": _("choice", items=yes_no_none_choice),
+        "work_main_job_title": _("text.sentence"),
+        "work_main_job_role": _("text.sentence"),
+        "work_sector": _(
+            "choice",
+            items=[
+                "Armed forces",
+                "Arts or entertainment or recreation",
+                "Civil Service or Local Government",
+                "Financial services.This includes insurance",
+                "Food production and agriculture. This includes farming",
+                "Healthcare",
+                "Hospitality - for example hotels or restaurants or cafe",
+                "Information technology and communication",
+                "Manufacturing or construction",
+                "Personal Services - for example hairdressers or tattooists",
+                "Retail sector. This includes wholesale",
+                "Social Care",
+                "Teaching and education",
+                "Transport. This includes storage and logistics",
+                "Other employment sector please specify",
+                None,
+            ],
+        ),
+        "work_sector_other": _("text.sentence"),
+        "work_health_care_area": _(
+            "choice",
+            items=[
+                "Another type of healthcare - for example mental health services",
+                "Primary care - for example in a GP or dentist",
+                "Secondary care - for example in a hospital",
+                None,
+            ],
+        ),
+        "work_direct_contact_patients_or_clients": _("choice", items=yes_no_prefer_not_to_say),
+        "work_location": _(
+            "choice",
+            items=[
+                "Both from home and somewhere else",
+                "From home meaning in the same grounds or building as your home",
+                "Somewhere else meaning not at your home",
+                None,
+            ],
+        ),
+        "work_not_from_home_days_per_week": _(
+            "choice",
+            items=[None, "0", "1", "2", "3", "4", "5", "6", "7"],
+        ),
+        "education_in_person_days_per_week": _(
+            "choice",
+            items=[None, "0", "1", "2", "3", "4", "5", "6", "7"],
+        ),
+        "transport_to_work_or_education": _(
+            "choice",
+            items=[
+                "Bicycle",
+                "Bus or minibus or coach",
+                "Car or van",
+                "Motorbike or scooter or moped",
+                "On foot",
+                "Taxi or minicab",
+                "Train",
+                "Underound or Metro or Light Rail or Tram",
+                "Other method",
+                None,
+            ],
+        ),
+        "ability_to_socially_distance_at_work_or_education": _(
+            "choice",
+            items=[
+                "Difficult to maintain 2 metres apart. But you can usually be at least 1 metre away from other people",
+                "Easy to maintain 2 metres apart. It is not a problem to stay this far away from other people",
+                "Relatively easy to maintain 2 metres apart. Most of the time you can be 2 meters away from other people",  # noqa: E501
+                "Very difficult to be more than 1 metre away. Your work means you are in close contact with others on a regular basis",  # noqa: E501
+                None,
+            ],
+        ),
+        "think_have_covid_any_symptom_list_1": _("choice", items=symptoms_list_1),
+        "think_have_covid_any_symptom_list_2": _("choice", items=symptoms_list_2),
+        "think_have_symptoms_new_or_worse_list_1": _("choice", items=symptoms_list_1),
+        "think_have_symptoms_new_or_worse_none_list_1": _("choice", items=symptoms_list_1),
+        "think_have_symptoms_new_or_worse_list_2": _("choice", items=symptoms_list_2),
+        "think_have_symptoms_new_or_worse_none_list_2": _("choice", items=symptoms_list_2),
+        "think_have_covid_onset_date": _(
+            "discrete_distribution",
+            population=[
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=phm_date_format),
+                None,
+            ],
+            weights=[0.5, 0.5],
+        ),
+        "illness_lasting_over_12_months": _("choice", items=yes_no_prefer_not_to_say),
+        "illness_reduces_activity_or_ability": _(
+            "choice",
+            items=[
+                "Yes a lot",
+                "Yes a little",
+                "Not at all",
+                None,
+            ],
+        ),
+        "ever_smoked_regularly": _("choice", items=yes_no_prefer_not_to_say),
+        "currently_smokes_or_vapes": _("choice", items=yes_no_prefer_not_to_say),
+        "currently_smokes_or_vapes_description": _(
+            "choice",
+            items=[
+                "Cigarettes",
+                "Cigars",
+                "Hookah or shisha pipes",
+                "Pipe",
+                "Vape or E-cigarettes",
+            ],
+        ),  # TODO Checkbox list so multiple items can be selected in combination
+        "cis_covid_vaccine_received": _("choice", items=yes_no_none_choice),
+        "cis_covid_vaccine_type": _("choice", items=type_of_vaccination),
+        "cis_covid_vaccine_type_other": _("text.quote"),
+        "cis_covid_vaccine_number_of_doses": _(
+            "choice",
+            items=[
+                "1 dose",
+                "2 doses",
+                "3 doses",
+                "4 doses",
+                "5 doses",
+                "6 doses",
+                "7 doses",
+                "8 doses or more",
+                None,
+            ],
+        ),
+        "cis_covid_vaccine_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_date_format,
+                ),
+                None,
+            ],
+            weights=[0.5, 0.5],
+        ),
+        "flu_vaccine_received": _("choice", items=yes_no_prefer_not_to_say),
+        "flu_vaccine_received_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_date_format,
+                ),
+                None,
+            ],
+            weights=[0.5, 0.5],
+        ),
+        "been_outside_uk": _("choice", items=yes_no_none_choice),
+        "been_outside_uk_last_country": _("choice", items=countries),
+        "been_outside_uk_last_return_date": _(
+            "discrete_distribution",
+            population=[
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=phm_date_format),
+                None,
+            ],
+            weights=[0.5, 0.5],
+        ),
+        "phm_think_had_respiratory_infection": _("choice", items=yes_no_none_choice),
+        "phm_think_had_respiratory_infection_type": _("choice", items=infections),
+        "think_had_covid_onset_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_date_format,
+                ),
+                None,
+            ],
+            weights=[0.5, 0.5],
+        ),
+        "think_had_covid_symptom_list_1": _("choice", items=symptoms_list_1),
+        "think_had_covid_symptom_list_2": _("choice", items=symptoms_list_2),
+        "phm_think_had_flu_onset_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_date_format,
+                ),
+                None,
+            ],
+            weights=[0.5, 0.5],
+        ),
+        "think_had_flu_symptom_list_1": _("choice", items=symptoms_list_1),
+        "think_had_flu_symptom_list_2": _("choice", items=symptoms_list_2),
+        "phm_think_had_other_infection_onset_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_date_format,
+                ),
+                None,
+            ],
+            weights=[0.5, 0.5],
+        ),
+        "think_had_other_infection_symptom_list_1": _("choice", items=symptoms_list_1),
+        "think_had_other_infection_symptom_list_2": _("choice", items=symptoms_list_2),
+        "other_covid_infection_test": _("choice", items=yes_no_none_choice),
+        "other_covid_infection_test_results": _(
+            "choice",
+            items=[
+                "All tests failed",
+                "One or more tests were negative and none were positive",
+                "One or more tests were positive",
+                "Waiting for all results",
+                None,
+            ],
+        ),
+        "other_covid_infection_test_positive_date": _(
+            "discrete_distribution",
+            population=[
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=phm_date_format),
+                None,
+            ],
+            weights=[0.5, 0.5],
+        ),
+        "test_type_positive_result": _(
+            "choice",
+            items=[
+                "A lateral flow test. That is the test you can do yourself and you do not have to send it to a laboratory because the result shows in the device in about 30 minutes.",
+                "PCR test. That is the test that is sent off to a laboratory",
+                "Do not know",
+            ],
+        ),
+        "other_covid_infection_test_negative_date": _(
+            "discrete_distribution",
+            population=[
+                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=phm_date_format),
+                None,
+            ],
+            weights=[0.5, 0.5],
+        ),
+        "last_28_days_unable_usual_activities": _("custom_random.random_integer", lower=0, upper=28, null_percent=15),
+        "last_28_days_unable_usual_activities_due_to_respiratory_infection": _(
+            "custom_random.random_integer", lower=0, upper=28, null_percent=15
+        ),
+        "last_28_days_off_work_education_due_to_health": _(
+            "custom_random.random_integer", lower=0, upper=28, null_percent=15
+        ),
+        "last_28_days_off_work_education_due_to_health_respiratory_infection": _(
+            "custom_random.random_integer", lower=0, upper=28, null_percent=15
+        ),
+        "last_28_days_GP_appointment_health_reasons": _(
+            "custom_random.random_integer", lower=0, upper=28, null_percent=15
+        ),
+        "last_28_days_GP_appointment_health_reasons_respiratory_infection": _(
+            "custom_random.random_integer", lower=0, upper=28, null_percent=15
+        ),
+        "last_28_days_pharmacist_111": _("custom_random.random_integer", lower=0, upper=28, null_percent=15),
+        "last_28_days_pharmacist_111_respiratory_infection": _(
+            "custom_random.random_integer", lower=0, upper=28, null_percent=15
+        ),
+        "last_28_days_urgent_care": _("custom_random.random_integer", lower=0, upper=28, null_percent=15),
+        "last_28_days_urgent_care_respiratory_infection": _(
+            "custom_random.random_integer", lower=0, upper=28, null_percent=15
+        ),
+        "last_28_days_admitted_to_hospital": _("custom_random.random_integer", lower=0, upper=28, null_percent=15),
+        "last_28_days_admitted_to_hospital_respiratory_infection": _(
+            "custom_random.random_integer", lower=0, upper=28, null_percent=15
+        ),
+        "think_have_long_covid": _("choice", items=yes_no_none_choice),
+        "think_have_long_covid_symptom_reduced_ability": _(
+            "choice",
+            items=[
+                "Not at all",
+                "Yes a little",
+                "Yes a lot",
+                None,
+            ],
+        ),
+        "think_have_long_covid_symptom_list_1": _("choice", items=symptoms_list_1),
+        "think_have_long_covid_symptom_list_2": _("choice", items=symptoms_list_2),
+        "think_have_long_covid_symptom_list_3": _("choice", items=symptoms_list_1),
+        "think_have_long_covid_symptom_worse_after_effort": _("choice", items=yes_no_unknown_choice),
+        "hospital_last_28_days": _("choice", items=yes_no_none_choice),
+        "care_home_last_28_days": _("choice", items=yes_no_none_choice),
+        "face_covering_other_enclosed_places": _(
+            "choice",
+            items=[
+                "I am not going to other enclosed public spaces or using public transport",
+                "I cover my face for other reasons - for example for religious or cultural reasons",
+                "Never",
+                "Prefer not to say",
+                "Yes always",
+                "Yes sometimes",
+                None,
+            ],
+        ),
+        "physical_contact_under_18_years": _("choice", items=people_count),
+        "physical_contact_18_to_69_years": _("choice", items=people_count),
+        "physical_contact_over_70_years": _("choice", items=people_count),
+        "social_distance_contact_under_18_years": _("choice", items=people_count),
+        "social_distance_contact_18_to_69_years": _("choice", items=people_count),
+        "social_distance_contact_over_70_years": _("choice", items=people_count),
+        "times_hour_or_longer_another_home_last_7_days": _("choice", items=times_count),
+        "times_hour_or_longer_another_person_your_home_last_7_days": _("choice", items=times_count),
+        "times_shopping_last_7_days": _("choice", items=times_count),
+        "times_socialising_last_7_days": _("choice", items=times_count),
+        "times_indoor_exercise_last_28_days": _(
+            "choice",
+            items=[
+                None,
+                "1 to 5",
+                "6 to 10",
+                "11 to 20",
+                "21 or more",
+            ],
+        ),
+        "times_large_events_last_28_days": _("choice", items=yes_no_unknown_choice),
+        "times_medium_events_last_28_days": _("choice", items=yes_no_unknown_choice),
+        "transport_shared_outside_household_last_28_days": _(
+            "choice",
+            items=[
+                "Bus or minibus or coach",
+                "Car or van",
+                "Taxi or minicab",
+                "Train",
+                "Underound or Metro or Light Rail or Tram",
+                "Plane",
+                "Other method",
+            ],
+        ),
+        "transport_shared_outside_household_last_28_days_none": _(
+            "choice",
+            items=[
+                "Bus or minibus or coach",
+                "Car or van",
+                "Taxi or minicab",
+                "Train",
+                "Underound or Metro or Light Rail or Tram",
+                "Plane",
+                "Other method",
+            ],
+        ),
+        "face_covering_work_or_education": _(
+            "choice",
+            items=[
+                "I am not going to my place of work or education",
+                "I cover my face for other reasons - for example for religious or cultural reasons",
+                "Never",
+                "Prefer not to say",
+                "Yes always",
+                "Yes sometimes",
+                None,
+            ],
+        ),
     }
