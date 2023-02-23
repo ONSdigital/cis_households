@@ -1,8 +1,9 @@
 # from typing import List
 # from typing import Optional
-import pyspark.sql.functions as F
+# import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
+from cishouseholds.derive import assign_default_date_flag
 from cishouseholds.derive import assign_max_doses
 from cishouseholds.derive import assign_pos_1_2
 from cishouseholds.derive import group_participant_within_date_range
@@ -18,9 +19,7 @@ def vaccine_transformations(df: DataFrame):
 
 def preprocesing(df: DataFrame):
     """"""
-    df = df.withColumn(
-        "default_vaccine_date", F.when(F.dayofmonth("cis_covid_vaccine_date").isin([1, 15]), 1).otherwise(0)
-    )
+    df = assign_default_date_flag(df, "cis_covid_vaccine_date", default_days=[1, 15])
     df = group_participant_within_date_range(
         df=df,
         column_name_to_assign="i_dose",

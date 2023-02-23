@@ -2535,3 +2535,12 @@ def get_matches(old_sample_df: DataFrame, new_sample_df: DataFrame, selection_co
     for col in selection_columns:
         joined_df = joined_df.withColumn(f"MATCHED_{col}", F.when(F.col(col) == F.col(f"{col}_OLD"), 1).otherwise(None))
     return joined_df
+
+
+def assign_default_date_flag(df: DataFrame, date_col: str, default_days: List[int]):
+    """
+    Assigns a flag to the dataset that indicates whether the day value for a given date col is
+    one of the default days
+    """
+    df = df.withColumn(f"default_{date_col}", F.when(F.dayofmonth(date_col).isin(default_days), 1).otherwise(0))
+    return df
