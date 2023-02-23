@@ -1174,6 +1174,13 @@ category_maps = {
             "Arrived at Lab": 4,
             "Results Returned": 5,
         },
+        # derive_merge_type
+        "digital_merge_type": {
+            "Matched": 0,
+            "Temporary Orphan Status": 1,
+            "Potential Orphan": 2,
+            "Permanent Orphan": 3,
+        },
         # "sample_kit_not_dispatched_code": {},  # TODO Need categories to map
         "survey_completion_status": {
             "New": 1,

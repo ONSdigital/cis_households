@@ -1550,6 +1550,64 @@ def assign_date_difference(
         raise TypeError(f"{format} format not supported")
 
 
+def derive_digital_merge_type(
+    df: DataFrame,
+    column_name_to_assign: str,
+) -> DataFrame:
+    """
+    Derive the digital merge type
+    From households_aggregate_processes.xlsx, derivation number 27.
+
+    Parameters
+    ----------
+    df
+    survey_completion_status
+        Variable with survey completion status.
+    form_start_datetime
+        First date column name.
+    participant_completion_window_end_datetime
+        Final date column name.
+    file_date
+        The date the file was created
+
+    Return
+    ------
+    pyspark.sql.DataFrame
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col("Survey_completion_status").isin(["Submitted", "Completed"])),
+            "Matched",
+        )
+        .when(
+            (~F.col("form_start_datetime").isNull())
+            & (F.to_date(F.col("participant_completion_window_end_datetime")) > F.to_date(F.col("file_date")))
+            & (F.col("survey_completion_status").isin(["Partially Completed", "New"])),
+            "Temporary Orphan",
+        )
+        .when(
+            (F.col("form_start_datetime").isNull())
+            & (F.to_date(F.col("participant_completion_window_end_datetime")) > F.to_date(F.col("file_date")))
+            & (F.col("survey_completion_status") == "New"),
+            "Potential Orphan",
+        )
+        .when(
+            (~F.col("form_start_datetime").isNull())
+            & (F.to_date(F.col("participant_completion_window_end_datetime")) <= F.to_date(F.col("file_date")))
+            & (F.col("survey_completion_status").isin(["Partially Completed", "New"])),
+            "Matched",
+        )
+        .when(
+            (F.col("form_start_datetime").isNull())
+            & (F.to_date(F.col("participant_completion_window_end_datetime")) <= F.to_date(F.col("file_date")))
+            & (F.col("survey_completion_status") == "New"),
+            "Permanent Orphan",
+        ),
+    )
+    return df
+
+
 def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, uniform_value) -> DataFrame:
     """
     Assign a column with a uniform value.

@@ -21,6 +21,7 @@ from cishouseholds.pipeline.input_file_stages import blood_results_parameters
 from cishouseholds.pipeline.input_file_stages import cis_digital_parameters
 from cishouseholds.pipeline.input_file_stages import generate_input_processing_function
 from cishouseholds.pipeline.input_file_stages import participant_extract_digital_parameters
+from cishouseholds.pipeline.input_file_stages import phm_parameters
 from cishouseholds.pipeline.input_file_stages import survey_responses_v0_parameters
 from cishouseholds.pipeline.input_file_stages import survey_responses_v1_parameters
 from cishouseholds.pipeline.input_file_stages import survey_responses_v2_parameters
@@ -31,6 +32,7 @@ from dummy_data_generation.helpers_weight import Distribution
 from dummy_data_generation.schemas import get_blood_validation_schema
 from dummy_data_generation.schemas import get_glasgow_lab_data_description
 from dummy_data_generation.schemas import get_participant_extract_digital_data_description
+from dummy_data_generation.schemas import get_phm_survey_responses_data_description
 from dummy_data_generation.schemas import get_survey_responses_digital_data_description
 from dummy_data_generation.schemas import get_voyager_0_data_description
 from dummy_data_generation.schemas import get_voyager_1_data_description
@@ -187,6 +189,21 @@ def responses_digital_ETL_output(pandas_df_to_temporary_csv, blood_barcodes, swa
     pandas_df = pd.DataFrame(schema.create(iterations=10))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
     processing_function = generate_input_processing_function(**cis_digital_parameters, include_hadoop_read_write=False)
+    processed_df = processing_function(resource_path=csv_file_path)
+    return processed_df
+
+
+@pytest.fixture(scope="session")
+def responses_phm_ETL_output(pandas_df_to_temporary_csv, blood_barcodes, swab_barcodes):
+    """
+    Generate dummy survey responses for phm.
+    """
+    schema = Schema(
+        schema=get_phm_survey_responses_data_description(create_mimesis_field(), blood_barcodes, swab_barcodes)
+    )
+    pandas_df = pd.DataFrame(schema.create(iterations=10))
+    csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
+    processing_function = generate_input_processing_function(**phm_parameters, include_hadoop_read_write=False)
     processed_df = processing_function(resource_path=csv_file_path)
     return processed_df
 
