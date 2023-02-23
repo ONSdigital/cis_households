@@ -5,28 +5,60 @@ from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
+
 def filter_single_dose(
-    df:DataFrame,
-    participant_id_column:str,
-    visit_datetime_column:str,
-    order_column:str,
-    i_dose_column:str,
-    poss_1_2_column:str,
-    default_date_column:str,
-    vaccine_type_column:str,
-    allowed_vaccine_types:List[str],
+    df: DataFrame,
+    participant_id_column: str,
+    visit_datetime_column: str,
+    order_column: str,
+    i_dose_column: str,
+    poss_1_2_column: str,
+    default_date_column: str,
+    vaccine_type_column: str,
+    allowed_vaccine_types: List[str],
 ):
     """
     Filter to a single dose per participant per idose using a series of prescribed filters.
     """
-    window = Window.partitionBy(participant_id_column,i_dose_column)
+    window = Window.partitionBy(participant_id_column, i_dose_column)
     disambiguation_window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
     df = df.filter(F.col(order_column) == F.min(order_column).over(window))
     df = df.filter(~((F.col(poss_1_2_column) == "Yes") & (F.col(vaccine_type_column).isin(allowed_vaccine_types))))
     df = df.filter(F.col(default_date_column) != 1)
-    df = df.withColumn("ROW",F.row_number().over(disambiguation_window))
+    df = df.withColumn("ROW", F.row_number().over(disambiguation_window))
     df = df.filter(F.col("ROW") == 1)
     return df.drop("ROW")
+
+
+def filter_invalid_vaccines(
+    df: DataFrame,
+    num_doses_column: str,
+    participant_id_column: str,
+    visit_datetime_column: str,
+    vaccine_date_column: str,
+):
+    """Filter out rows where the vaccine count is inconsistent and there is a difference of more than 331 days betweeen the visit date an the test date"""
+    window = (
+        Window.partitionBy(participant_id_column)
+        .orderBy(visit_datetime_column)
+        .rowsBetween(Window.currentRow, Window.unboundedFollowing)
+    )
+    df = df.withColumn(
+        "TEST",
+        F.when((F.col(num_doses_column) >= 3) & (F.min(F.col(num_doses_column)).over(window) < 3), True).otherwise(
+            False
+        ),
+    )
+    df = df.withColumn(
+        "TEST",
+        F.when(
+            (F.abs(F.datediff(F.col(visit_datetime_column), F.col(vaccine_date_column))) > 331)
+            & (F.col("TEST") == True),  # noqa: E712
+            True,
+        ).otherwise(False),
+    )
+    df = df.filter(F.col("TEST") == False).drop("TEST")  # noqa: E712
+    return df
 
 
 def filter_all_not_null(df: DataFrame, reference_columns: List[str]) -> DataFrame:
