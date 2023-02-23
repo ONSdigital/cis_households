@@ -3,6 +3,7 @@
 # import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
+from cishouseholds.derive import assign_default_date_flag
 from cishouseholds.derive import assign_max_doses
 from cishouseholds.derive import assign_order_number
 from cishouseholds.derive import assign_pos_1_2
@@ -20,6 +21,7 @@ def vaccine_transformations(df: DataFrame):
 
 def preprocesing(df: DataFrame):
     """"""
+    df = assign_default_date_flag(df, "cis_covid_vaccine_date", default_days=[1, 15])
     df = update_column_values_from_map(
         df,
         "cis_covid_vaccine_number_of_doses",

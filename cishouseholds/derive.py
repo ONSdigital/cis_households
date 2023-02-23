@@ -2547,6 +2547,14 @@ def get_matches(old_sample_df: DataFrame, new_sample_df: DataFrame, selection_co
     return joined_df
 
 
+def assign_default_date_flag(df: DataFrame, date_col: str, default_days: List[int]):
+    """
+    Assigns a flag to the dataset that indicates whether the day value for a given date col is
+    one of the default days
+    """
+    df = df.withColumn(f"default_{date_col}", F.when(F.dayofmonth(date_col).isin(default_days), 1).otherwise(0))
+
+
 def assign_order_number(
     df: DataFrame,
     column_name_to_assign: str,
