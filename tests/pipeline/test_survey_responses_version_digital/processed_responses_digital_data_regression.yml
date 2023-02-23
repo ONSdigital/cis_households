@@ -57,7 +57,7 @@
   cis_covid_vaccine_date_4: null
   cis_covid_vaccine_date_5: null
   cis_covid_vaccine_date_6: '2022-01-02 00:00:00.000000'
-  cis_covid_vaccine_number_of_doses: '1'
+  cis_covid_vaccine_number_of_doses: 1 dose
   cis_covid_vaccine_number_of_doses_raw: 1 dose
   cis_covid_vaccine_received: null
   cis_covid_vaccine_type: Other / specify
@@ -489,7 +489,7 @@
   cis_covid_vaccine_date_4: '2022-01-02 00:00:00.000000'
   cis_covid_vaccine_date_5: null
   cis_covid_vaccine_date_6: '2022-01-01 00:00:00.000000'
-  cis_covid_vaccine_number_of_doses: '1'
+  cis_covid_vaccine_number_of_doses: 1 dose
   cis_covid_vaccine_number_of_doses_raw: 1 dose
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: Don't know type
@@ -923,7 +923,7 @@
   cis_covid_vaccine_date_4: null
   cis_covid_vaccine_date_5: null
   cis_covid_vaccine_date_6: null
-  cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_number_of_doses: 3 doses
   cis_covid_vaccine_number_of_doses_raw: 3 doses
   cis_covid_vaccine_received: null
   cis_covid_vaccine_type: Other / specify
@@ -1778,7 +1778,7 @@
   cis_covid_vaccine_date_4: '2022-01-04 00:00:00.000000'
   cis_covid_vaccine_date_5: null
   cis_covid_vaccine_date_6: '2022-01-06 00:00:00.000000'
-  cis_covid_vaccine_number_of_doses: '2'
+  cis_covid_vaccine_number_of_doses: 2 doses
   cis_covid_vaccine_number_of_doses_raw: 2 doses
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: Novavax
@@ -2208,7 +2208,7 @@
   cis_covid_vaccine_date_4: '2022-01-03 00:00:00.000000'
   cis_covid_vaccine_date_5: '2022-01-04 00:00:00.000000'
   cis_covid_vaccine_date_6: null
-  cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_number_of_doses: 5 doses
   cis_covid_vaccine_number_of_doses_raw: 5 doses
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: Janssen/Johnson&Johnson
@@ -2639,7 +2639,7 @@
   cis_covid_vaccine_date_4: null
   cis_covid_vaccine_date_5: null
   cis_covid_vaccine_date_6: null
-  cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_number_of_doses: 4 doses
   cis_covid_vaccine_number_of_doses_raw: 4 doses
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: Pfizer/BioNTech
@@ -3070,7 +3070,7 @@
   cis_covid_vaccine_date_4: '2022-01-01 00:00:00.000000'
   cis_covid_vaccine_date_5: '2022-01-06 00:00:00.000000'
   cis_covid_vaccine_date_6: null
-  cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_number_of_doses: 4 doses
   cis_covid_vaccine_number_of_doses_raw: 4 doses
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: Sputnik
@@ -3508,7 +3508,7 @@
   cis_covid_vaccine_date_4: '2022-01-01 00:00:00.000000'
   cis_covid_vaccine_date_5: '2022-01-08 00:00:00.000000'
   cis_covid_vaccine_date_6: null
-  cis_covid_vaccine_number_of_doses: 3 or more
+  cis_covid_vaccine_number_of_doses: 3 doses
   cis_covid_vaccine_number_of_doses_raw: 3 doses
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: null
