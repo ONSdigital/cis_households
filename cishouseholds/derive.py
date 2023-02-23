@@ -24,6 +24,7 @@ from cishouseholds.expressions import any_column_matches_regex
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import any_column_null
 from cishouseholds.merge import null_safe_join
+from cishouseholds.pipeline.mapping import _vaccine_type_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
@@ -2552,4 +2553,62 @@ def assign_default_date_flag(df: DataFrame, date_col: str, default_days: List[in
     one of the default days
     """
     df = df.withColumn(f"default_{date_col}", F.when(F.dayofmonth(date_col).isin(default_days), 1).otherwise(0))
+    return df
+
+def assign_order_number(
+    df: DataFrame,
+    column_name_to_assign: str,
+    covid_vaccine_type_column: str,
+    max_doses_column: str,
+    pos_1_2_column: str,
+):
+    """
+    Assigns an incrementing value based on input column conditions where the corresponding vaccine_type
+    value matches one from the vaccine_type_map
+    """
+    moderna_vaccine_types = [i for i in _vaccine_type_map.keys() if "Moderna" in i and "valent" not in i]
+    pfizer_vaccine_types = [i for i in _vaccine_type_map.keys() if "Pfizer" in i and "valent" not in i]
+    astrazeneca_vaccine_types = [i for i in _vaccine_type_map.keys() if "AstraZeneca" in i and "valent" not in i]
+    bivalent_vaccine_types = [i for i in _vaccine_type_map.keys() if "valent" in i]
+    df = df.withColumn(
+        column_name_to_assign,
+        # condition 1
+        F.when(
+            F.col(covid_vaccine_type_column).isin(moderna_vaccine_types + pfizer_vaccine_types)
+            & ((F.col(pos_1_2_column) == "No") | (F.col(max_doses_column) == "Yes")),
+            1,
+        )
+        # condition 2
+        .when(
+            F.col(covid_vaccine_type_column).isin(
+                moderna_vaccine_types + pfizer_vaccine_types + astrazeneca_vaccine_types
+            )
+            & ((F.col(pos_1_2_column) == "Yes") | (F.col(max_doses_column) == "No")),
+            1,
+        )
+        # condition 3
+        .when(F.col(covid_vaccine_type_column).isin(bivalent_vaccine_types) & (F.col(pos_1_2_column) == "No"), 2)
+        # condition 4
+        .when(
+            F.col(covid_vaccine_type_column).isin(astrazeneca_vaccine_types)
+            & ((F.col(pos_1_2_column) == "Yes") & (F.col(max_doses_column) == "Yes")),
+            2,
+        )
+        # condition 5
+        .when(F.col(covid_vaccine_type_column).isin(astrazeneca_vaccine_types) & (F.col(pos_1_2_column) == "No"), 3)
+        # condition 6
+        .when(
+            F.col(covid_vaccine_type_column).isin(bivalent_vaccine_types)
+            & ((F.col(pos_1_2_column) == "Yes") & (F.col(max_doses_column) == "Yes")),
+            3,
+        )
+        # condition 7
+        .when(
+            ~F.col(covid_vaccine_type_column).isin(["Don't know type", "From a research study/trial"])
+            & ((F.col(pos_1_2_column) == "Yes") & (F.col(max_doses_column) == "Yes")),
+            4,
+        )
+        # condition 8
+        .otherwise(5),
+    )
     return df
