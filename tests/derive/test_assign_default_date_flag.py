@@ -4,7 +4,7 @@ from pyspark.sql import functions as F
 from cishouseholds.derive import assign_default_date_flag
 
 
-def test_assign_default_vaccine_date(spark_session):
+def test_assign_default_date_flag(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[(1, "2020-02-15", 1), (2, "2019-12-12", 0), (3, "2020-01-11", 0), (4, "2020-01-01", 1)],
         schema="id integer, cis_covid_vaccine_date string, default_cis_covid_vaccine_date integer",

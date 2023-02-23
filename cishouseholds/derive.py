@@ -2555,10 +2555,12 @@ def assign_default_date_flag(df: DataFrame, date_col: str, default_days: List[in
     df = df.withColumn(f"default_{date_col}", F.when(F.dayofmonth(date_col).isin(default_days), 1).otherwise(0))
     return df
 
+
 def assign_order_number(
     df: DataFrame,
     column_name_to_assign: str,
     covid_vaccine_type_column: str,
+    num_doses_column: str,
     max_doses_column: str,
     pos_1_2_column: str,
 ):
@@ -2575,7 +2577,7 @@ def assign_order_number(
         # condition 1
         F.when(
             F.col(covid_vaccine_type_column).isin(moderna_vaccine_types + pfizer_vaccine_types)
-            & ((F.col(pos_1_2_column) == "No") | (F.col(max_doses_column) == "Yes")),
+            & (((F.col(pos_1_2_column) == "No") | (F.col(max_doses_column) == "Yes")) & (F.col(num_doses_column) == 3)),
             1,
         )
         # condition 2
@@ -2583,28 +2585,39 @@ def assign_order_number(
             F.col(covid_vaccine_type_column).isin(
                 moderna_vaccine_types + pfizer_vaccine_types + astrazeneca_vaccine_types
             )
-            & ((F.col(pos_1_2_column) == "Yes") | (F.col(max_doses_column) == "No")),
+            & (((F.col(pos_1_2_column) == "Yes") | (F.col(max_doses_column) == "No")) & (F.col(num_doses_column) < 3)),
             1,
         )
         # condition 3
-        .when(F.col(covid_vaccine_type_column).isin(bivalent_vaccine_types) & (F.col(pos_1_2_column) == "No"), 2)
+        .when(
+            F.col(covid_vaccine_type_column).isin(bivalent_vaccine_types) & (F.col(pos_1_2_column) == "No"),
+            2,
+        )
         # condition 4
         .when(
             F.col(covid_vaccine_type_column).isin(astrazeneca_vaccine_types)
-            & ((F.col(pos_1_2_column) == "Yes") & (F.col(max_doses_column) == "Yes")),
+            & (
+                ((F.col(pos_1_2_column) == "Yes") & (F.col(max_doses_column) == "Yes")) & (F.col(num_doses_column) == 3)
+            ),
             2,
         )
         # condition 5
-        .when(F.col(covid_vaccine_type_column).isin(astrazeneca_vaccine_types) & (F.col(pos_1_2_column) == "No"), 3)
+        .when(
+            F.col(covid_vaccine_type_column).isin(astrazeneca_vaccine_types) & (F.col(pos_1_2_column) == "No"),
+            3,
+        )
         # condition 6
         .when(
             F.col(covid_vaccine_type_column).isin(bivalent_vaccine_types)
-            & ((F.col(pos_1_2_column) == "Yes") & (F.col(max_doses_column) == "Yes")),
+            & (
+                ((F.col(pos_1_2_column) == "Yes") & (F.col(max_doses_column) == "Yes")) & (F.col(num_doses_column) == 3)
+            ),
             3,
         )
         # condition 7
         .when(
-            ~F.col(covid_vaccine_type_column).isin(["Don't know type", "From a research study/trial"])
+            ~F.col(covid_vaccine_type_column).isNull()
+            & ~F.col(covid_vaccine_type_column).isin(["Don't know type", "From a research study/trial"])
             & ((F.col(pos_1_2_column) == "Yes") & (F.col(max_doses_column) == "Yes")),
             4,
         )
