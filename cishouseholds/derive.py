@@ -45,10 +45,19 @@ def group_participant_within_date_range(
 
 
 def assign_max_doses(
-    df: DataFrame, column_name_to_assign: str, i_dose_column: str, num_doses_column: str, participant_id_column: str
+    df: DataFrame,
+    column_name_to_assign: str,
+    i_dose_column: str,
+    num_doses_column: str,
+    participant_id_column: str,
+    visit_datetime_column: str,
 ):
     """Assign a variable true or false depending on whether a participant has had their max number of vaccine doses."""
-    window = Window.partitionBy(participant_id_column, i_dose_column)
+    window = (
+        Window.partitionBy(participant_id_column, i_dose_column)
+        .orderBy(visit_datetime_column)
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
 
     df = df.withColumn(
         column_name_to_assign, F.when(F.max(F.col(num_doses_column)).over(window) >= 3, "Yes").otherwise("No")
