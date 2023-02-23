@@ -1468,6 +1468,7 @@ validation_schemas = {
         # "cohort": string_dict,
         # "participant_under_16": string_dict,
         # "digital_type_preference": string_dict,
+        "participant_completion_window_id": string_dict,
         "participant_first_name_confirmation": string_dict,
         "participant_first_name_on_behalf": string_dict,
         "problem_with_survey_access_helpline": string_dict,

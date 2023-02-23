@@ -192,6 +192,21 @@ def responses_digital_ETL_output(pandas_df_to_temporary_csv, blood_barcodes, swa
 
 
 @pytest.fixture(scope="session")
+def responses_phm_ETL_output(pandas_df_to_temporary_csv, blood_barcodes, swab_barcodes):
+    """
+    Generate dummy survey responses for phm.
+    """
+    schema = Schema(
+        schema=get_phm_survey_responses_data_description(create_mimesis_field(), blood_barcodes, swab_barcodes)
+    )
+    pandas_df = pd.DataFrame(schema.create(iterations=10))
+    csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
+    processing_function = generate_input_processing_function(**cis_phm_parameters, include_hadoop_read_write=False)
+    processed_df = processing_function(resource_path=csv_file_path)
+    return processed_df
+
+
+@pytest.fixture(scope="session")
 def participants_digital_ETL_output(pandas_df_to_temporary_csv, blood_barcodes, swab_barcodes):
     """
     Generate dummy survey responses digital.
