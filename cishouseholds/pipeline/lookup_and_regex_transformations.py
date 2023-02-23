@@ -42,8 +42,8 @@ from cishouseholds.derive import regex_match_result
 from cishouseholds.edit import rename_column_names
 from cishouseholds.expressions import array_contains_any
 from cishouseholds.merge import null_safe_join
-from cishouseholds.phm.phm import match_type_blood
-from cishouseholds.phm.phm import match_type_swab
+from cishouseholds.pipeline.lab_transformations import match_type_blood
+from cishouseholds.pipeline.lab_transformations import match_type_swab
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.regex.healthcare_regex import healthcare_classification
