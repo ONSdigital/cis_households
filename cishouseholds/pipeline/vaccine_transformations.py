@@ -47,6 +47,7 @@ def preprocesing(df: DataFrame):
         i_dose_column="i_dose",
         participant_id_column="participant_id",
         num_doses_column="cis_covid_vaccine_number_of_doses",
+        visit_datetime_column="visit_datetime",
     )
     df = assign_pos_1_2(
         df=df,
