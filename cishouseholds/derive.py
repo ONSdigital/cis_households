@@ -28,6 +28,40 @@ from cishouseholds.pipeline.mapping import _vaccine_type_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def assign_datetime_from_combined_columns(
+    df: DataFrame,
+    column_name_to_assign: str,
+    date_column: str,
+    hour_column: str,
+    minute_column: str,
+    second_column: str,
+    am_pm_column: str,
+):
+    """Create a formatted pyspark date column from a series of components."""
+    hour = F.when((F.col(am_pm_column) == "pm") & (F.col(hour_column) != 12), F.col(hour_column) + 12).otherwise(
+        F.col(hour_column)
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.concat_ws(
+            " ",
+            *[
+                F.col(date_column),
+                F.concat_ws(
+                    ":",
+                    hour,
+                    *[
+                        F.when(F.col(col) == 0, "00").otherwise(F.col(col).cast("string"))
+                        for col in [minute_column, second_column]
+                    ],
+                ),
+            ],
+        ),
+    )
+    df = df.withColumn(column_name_to_assign, F.to_timestamp(column_name_to_assign))
+    return df
+
+
 def group_participant_within_date_range(
     df: DataFrame, column_name_to_assign: str, participant_id_column: str, date_column: str, date_range: int
 ):
