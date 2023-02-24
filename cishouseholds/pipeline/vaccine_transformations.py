@@ -10,17 +10,20 @@ from cishouseholds.derive import assign_order_number
 from cishouseholds.derive import assign_pos_1_2
 from cishouseholds.derive import group_participant_within_date_range
 from cishouseholds.edit import update_column_values_from_map
+from cishouseholds.filter import filter_invalid_vaccines
 
 # from pyspark.sql import Window
 
 
 def vaccine_transformations(df: DataFrame):
     """"""
-    df = preprocesing(df)
+    df = mapping(df)
+    df = preprocessing(df)
+    df = deduplication(df)
     return df
 
 
-def preprocesing(df: DataFrame):
+def mapping(df: DataFrame):
     """"""
     df = assign_default_date_flag(df, "cis_covid_vaccine_date", default_days=[1, 15])
     df = update_column_values_from_map(
@@ -38,6 +41,10 @@ def preprocesing(df: DataFrame):
             "6 doses or more": 3,
         },
     )
+    return df
+
+
+def preprocessing(df: DataFrame):
     df = group_participant_within_date_range(
         df=df,
         column_name_to_assign="i_dose",
@@ -75,5 +82,17 @@ def preprocesing(df: DataFrame):
             ["Don't know type", [[4, 5], 1, "No"]],
         ],
         column_names=["order", "poss_1_2", "max_doses"],
+    )
+    return df
+
+
+def deduplication(df: DataFrame):
+    """"""
+    df = filter_invalid_vaccines(
+        df=df,
+        participant_id_column="participant_id",
+        vaccine_date_column="cis_covid_vaccine_date",
+        num_doses_column="cis_covid_vaccine_num_doses",
+        visit_datetime_column="visit_datetime",
     )
     return df
