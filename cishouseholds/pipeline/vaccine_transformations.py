@@ -80,7 +80,7 @@ def preprocessing(df: DataFrame):
         df=df,
         column_name_to_assign="cis_covid_vaccine_type",
         value_to_condition_map=[
-            ["Don't know type", [[4, 5], 1, "No"]],
+            ["Don't know type", [[4, 5], "Yes", "No"]],
         ],
         column_names=["order", "poss_1_2", "max_doses"],
         override_original=False,
@@ -106,6 +106,11 @@ def deduplication(df: DataFrame):
         poss_1_2_column="poss_1_2",
         default_date_column="default_date",
         vaccine_type_column="cis_covid_vaccine_type",
-        allowed_vaccine_types=["AZ", "Pfizer", "Moderna"],
+        allowed_vaccine_types=[
+            "Oxford/AstraZeneca",
+            "Pfizer/BioNTech",
+            "Moderna",
+            "Oxford / AstraZeneca / Vaxzevria / Covishield",
+        ],
     )
     return df

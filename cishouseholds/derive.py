@@ -75,7 +75,10 @@ def assign_pos_1_2(
     )
 
     df = df.withColumn(
-        column_name_to_assign, F.when(F.max(F.col(num_doses_column)).over(window) < 3, "Yes").otherwise("No")
+        column_name_to_assign,
+        F.when((F.max(F.col(num_doses_column)).over(window) < 3) & (F.col(num_doses_column).isNull()), "Yes").otherwise(
+            "No"
+        ),
     )
     return df
 
