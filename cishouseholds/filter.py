@@ -22,12 +22,13 @@ def filter_single_dose(
     """
     window = Window.partitionBy(participant_id_column, i_dose_column)
     disambiguation_window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
-    df = df.filter(F.col(order_column) == F.min(order_column).over(window))
-    df = df.filter(~((F.col(poss_1_2_column) == "Yes") & (F.col(vaccine_type_column).isin(allowed_vaccine_types))))
+    df = df.withColumn("MIN", F.min(F.col(order_column)).over(window))
+    df = df.filter(F.col(order_column) == F.col("MIN"))
+    df = df.filter(((F.col(poss_1_2_column) == "Yes") & (F.col(vaccine_type_column).isin(allowed_vaccine_types))))
     df = df.filter(F.col(default_date_column) != 1)
     df = df.withColumn("ROW", F.row_number().over(disambiguation_window))
     df = df.filter(F.col("ROW") == 1)
-    return df.drop("ROW")
+    return df.drop("ROW", "MIN")
 
 
 def filter_invalid_vaccines(
