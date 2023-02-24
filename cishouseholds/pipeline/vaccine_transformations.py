@@ -85,17 +85,6 @@ def preprocessing(df: DataFrame):
         column_names=["order", "poss_1_2", "max_doses"],
         override_original=False,
     )
-    df = filter_single_dose(
-        df=df,
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
-        order_column="order_number",
-        i_dose_column="i_dose",
-        poss_1_2_column="poss_1_2",
-        default_date_column="default_date",
-        vaccine_type_column="cis_covid_vaccine_type",
-        allowed_vaccine_types=["AZ", "Pfizer", "Moderna"],
-    )
     return df
 
 
@@ -107,5 +96,16 @@ def deduplication(df: DataFrame):
         vaccine_date_column="cis_covid_vaccine_date",
         num_doses_column="cis_covid_vaccine_num_doses",
         visit_datetime_column="visit_datetime",
+    )
+    df = filter_single_dose(
+        df=df,
+        participant_id_column="participant_id",
+        visit_datetime_column="visit_datetime",
+        order_column="order_number",
+        i_dose_column="i_dose",
+        poss_1_2_column="poss_1_2",
+        default_date_column="default_date",
+        vaccine_type_column="cis_covid_vaccine_type",
+        allowed_vaccine_types=["AZ", "Pfizer", "Moderna"],
     )
     return df
