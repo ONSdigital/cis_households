@@ -138,6 +138,7 @@ brants_bridge_parameters = {
     "sep": ",",
     "cast_to_double_list": [],
     "source_file_column": "brants_bridge_source_file",
+    "write_mode": "append",
 }
 swab_results_parameters = {
     "stage_name": "swab_results_ETL",
@@ -150,6 +151,7 @@ swab_results_parameters = {
     "sep": ",",
     "cast_to_double_list": [],
     "source_file_column": "swab_results_source_file",
+    "write_mode": "append",
 }
 
 blood_results_parameters = {
@@ -176,6 +178,7 @@ historical_blood_results_parameters = {
     "sep": "|",
     "cast_to_double_list": [],
     "source_file_column": "historical_blood_results_source_file",
+    "write_mode": "append",
 }
 
 for parameters in [
