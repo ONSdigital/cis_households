@@ -1643,5 +1643,7 @@ validation_schemas = {
         "transport_shared_outside_household_last_28_days": string_dict,
         "transport_shared_outside_household_last_28_days_none": string_dict,
         "face_covering_work_or_education": string_dict,
+        "end_screen_questionnaire": string_dict,
+        # "end_screen_sample": string_dict, to be added when bio samples begin
     },
 }

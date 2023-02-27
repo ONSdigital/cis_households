@@ -5,6 +5,8 @@
 # import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
+from cishouseholds.derive import assign_column_uniform_value
+from cishouseholds.derive import assign_date_from_filename
 from cishouseholds.derive import assign_datetime_from_combined_columns
 
 # from pyspark.sql import Window
@@ -34,4 +36,6 @@ def preprocessing(df: DataFrame):
         minute_column="blood_taken_time_minute",
         am_pm_column="blood_taken_am_pm",
     )
+    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 4)
+    df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
     return df
