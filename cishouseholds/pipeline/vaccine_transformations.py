@@ -10,6 +10,7 @@ from cishouseholds.derive import assign_order_number
 from cishouseholds.derive import assign_poss_1_2
 from cishouseholds.derive import group_participant_within_date_range
 from cishouseholds.edit import update_column_values_from_map
+from cishouseholds.filter import filter_invalid_vaccines
 from cishouseholds.filter import filter_single_dose
 
 # from pyspark.sql import Window
@@ -17,11 +18,13 @@ from cishouseholds.filter import filter_single_dose
 
 def vaccine_transformations(df: DataFrame):
     """"""
-    df = preprocesing(df)
+    df = mapping(df)
+    df = preprocessing(df)
+    df = deduplication(df)
     return df
 
 
-def preprocesing(df: DataFrame):
+def mapping(df: DataFrame):
     """"""
     df = assign_default_date_flag(df, "cis_covid_vaccine_date", default_days=[1, 15])
     df = update_column_values_from_map(
@@ -39,6 +42,10 @@ def preprocesing(df: DataFrame):
             "6 doses or more": 3,
         },
     )
+    return df
+
+
+def preprocessing(df: DataFrame):
     df = group_participant_within_date_range(
         df=df,
         column_name_to_assign="i_dose",
@@ -59,6 +66,7 @@ def preprocesing(df: DataFrame):
         column_name_to_assign="pos_1_2",
         participant_id_column="participant_id",
         num_doses_column="cis_covid_vaccine_number_of_doses",
+        visit_datetime_column="visit_datetime",
     )
     df = assign_order_number(
         df=df,
@@ -72,10 +80,22 @@ def preprocesing(df: DataFrame):
         df=df,
         column_name_to_assign="cis_covid_vaccine_type",
         value_to_condition_map=[
-            ["Don't know type", [[4, 5], 1, "No"]],
+            ["Don't know type", [[4, 5], "Yes", "No"]],
         ],
         column_names=["order", "poss_1_2", "max_doses"],
         override_original=False,
+    )
+    return df
+
+
+def deduplication(df: DataFrame):
+    """"""
+    df = filter_invalid_vaccines(
+        df=df,
+        participant_id_column="participant_id",
+        vaccine_date_column="cis_covid_vaccine_date",
+        num_doses_column="cis_covid_vaccine_num_doses",
+        visit_datetime_column="visit_datetime",
     )
     df = filter_single_dose(
         df=df,
@@ -86,6 +106,11 @@ def preprocesing(df: DataFrame):
         poss_1_2_column="poss_1_2",
         default_date_column="default_date",
         vaccine_type_column="cis_covid_vaccine_type",
-        allowed_vaccine_types=["AZ", "Pfizer", "Moderna"],
+        allowed_vaccine_types=[
+            "Oxford/AstraZeneca",
+            "Pfizer/BioNTech",
+            "Moderna",
+            "Oxford / AstraZeneca / Vaxzevria / Covishield",
+        ],
     )
     return df
