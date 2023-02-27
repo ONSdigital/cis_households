@@ -1606,17 +1606,17 @@ def assign_completion_status(
             "Submitted",
         )
         .when(
-            (F.col("survey_completion_status_flushed" == "TRUE"))
+            (F.col("survey_completion_status_flushed") == "TRUE")
             & (F.col("file_date") <= F.col("participant_completion_window_end_date")),
             "In progress",
         )
         .when(
-            (F.col("survey_completion_status_flushed" == "TRUE"))
+            (F.col("survey_completion_status_flushed") == "TRUE")
             & (F.col("file_date") > F.col("participant_completion_window_end_date")),
             "Completed",
         )
         .when(
-            (F.col("survey_completion_status_flushed" == "FALSE"))
+            (F.col("survey_completion_status_flushed") == "FALSE")
             & (F.col("file_date") > F.col("participant_completion_window_start_date"))
             & (F.col("file_date") <= F.col("participant_completion_window_end_date")),
             "New",
