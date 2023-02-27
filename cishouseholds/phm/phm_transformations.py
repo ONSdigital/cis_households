@@ -22,7 +22,6 @@ def preprocessing(df: DataFrame):
         date_column="blood_taken_date",
         hour_column="blood_taken_time_hour",
         minute_column="blood_taken_time_minute",
-        second_column="blood_taken_time_second",
         am_pm_column="blood_taken_am_pm",
     )
     df = assign_datetime_from_combined_columns(
@@ -31,7 +30,6 @@ def preprocessing(df: DataFrame):
         date_column="blood_taken_date",
         hour_column="blood_taken_time_hour",
         minute_column="blood_taken_time_minute",
-        second_column="blood_taken_time_second",
         am_pm_column="blood_taken_am_pm",
     )
     return df
