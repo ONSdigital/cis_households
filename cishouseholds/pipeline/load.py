@@ -50,7 +50,7 @@ def delete_tables(
             else:
                 print(f"dropping table: {storage_config['database']}.{table_name}")  # functional
                 processed_file_log = extract_from_table("processed_file_log", break_lineage=True)
-                processed_file_log = processed_file_log.filter((F.col("table_name") != table_name))
+                processed_file_log = processed_file_log.filter((~F.lit(table_name).contains(F.col("dataset_name"))))
                 update_table(processed_file_log, "processed_file_log", "overwrite")
                 spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
 
@@ -140,7 +140,7 @@ def add_error_file_log_entry(file_path: str, error_text: str):
     """
     run_id = get_run_id()
     file_log_entry = _create_error_file_log_entry(run_id, file_path, error_text)
-    file_log_entry.write.mode("append").saveAsTable(get_full_table_name("error_file_log"))  # Always append
+    update_table(file_log_entry, "error_file_log", "append")
 
 
 def add_table_log_entry(table_name: str, survey_table: bool, write_mode: str):
@@ -162,7 +162,7 @@ def add_run_log_entry(run_datetime: datetime):
     run_id = get_run_id()
 
     run_log_entry = _create_run_log_entry(run_datetime, run_id, pipeline_version, pipeline_name)
-    run_log_entry.write.mode("append").saveAsTable(get_full_table_name("run_log"))  # Always append
+    update_table(run_log_entry, "run_log", "append")
     return run_id
 
 
