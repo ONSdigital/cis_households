@@ -1,4 +1,3 @@
-import pytest
 from chispa import assert_df_equality
 
 from cishouseholds.pipeline.lab_transformations import match_type_blood
