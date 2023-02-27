@@ -49,9 +49,11 @@ def delete_tables(
                 print(f"{storage_config['database']}.{table_name} will not be dropped as it is protected")  # functional
             else:
                 print(f"dropping table: {storage_config['database']}.{table_name}")  # functional
-                processed_file_log = extract_from_table("processed_file_log", break_lineage=True)
-                processed_file_log = processed_file_log.filter((~F.lit(table_name).contains(F.col("dataset_name"))))
-                update_table(processed_file_log, "processed_file_log", "overwrite")
+                processed_filenames_log = extract_from_table("processed_filenames", break_lineage=True)
+                processed_filenames_log = processed_filenames_log.filter(
+                    (~F.lit(table_name).contains(F.col("dataset_name")))
+                )
+                update_table(processed_filenames_log, "processed_filenames", "overwrite")
                 spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
 
     protected_tables = [f"{table_prefix}{table_name}" for table_name in protected_tables]
