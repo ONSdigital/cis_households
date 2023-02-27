@@ -12,9 +12,9 @@ from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import clean_postcode
 from cishouseholds.derive import derive_country_code
-from cishouseholds.edit import fill_nulls
 from cishouseholds.edit import join_on_existing
 from cishouseholds.edit import recode_column_values
+from cishouseholds.expressions import fill_nulls
 from cishouseholds.merge import union_multiple_tables
 
 

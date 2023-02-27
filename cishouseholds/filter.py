@@ -6,6 +6,21 @@ from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 
+def filter_before_date_or_null(df: DataFrame, date_column: str, min_date: str):
+    """
+    Filter rows which have a date before a given `min_date`.
+
+    Parameters
+    ----------
+    df
+    date_column
+        a column containing a formatted date
+    min_date
+        a  minimum date within the 'date_column' for which to retain rows
+    """
+    return df.filter(F.when((F.col(date_column) >= min_date) | (F.col(date_column).isNull())))
+
+
 def filter_invalid_vaccines(
     df: DataFrame,
     num_doses_column: str,
