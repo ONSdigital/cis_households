@@ -7,7 +7,7 @@ from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_default_date_flag
 from cishouseholds.derive import assign_max_doses
 from cishouseholds.derive import assign_order_number
-from cishouseholds.derive import assign_pos_1_2
+from cishouseholds.derive import assign_poss_1_2
 from cishouseholds.derive import group_participant_within_date_range
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.filter import filter_single_dose
@@ -54,10 +54,9 @@ def preprocesing(df: DataFrame):
         num_doses_column="cis_covid_vaccine_number_of_doses",
         visit_datetime_column="visit_datetime",
     )
-    df = assign_pos_1_2(
+    df = assign_poss_1_2(
         df=df,
         column_name_to_assign="pos_1_2",
-        i_dose_column="i_dose",
         participant_id_column="participant_id",
         num_doses_column="cis_covid_vaccine_number_of_doses",
     )

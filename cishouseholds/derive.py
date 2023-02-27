@@ -66,16 +66,12 @@ def assign_max_doses(
     return df
 
 
-def assign_pos_1_2(
-    df: DataFrame, column_name_to_assign: str, i_dose_column: str, num_doses_column: str, participant_id_column: str
-):
+def assign_poss_1_2(df: DataFrame, column_name_to_assign: str, num_doses_column: str, participant_id_column: str):
     """Assign a variable true or false depending on whether a participant has had their max number of vaccine doses."""
-    window = Window.partitionBy(participant_id_column, i_dose_column).rowsBetween(
-        Window.unboundedPreceding, Window.currentRow
-    )
+    window = Window.partitionBy(participant_id_column).rowsBetween(Window.currentRow, Window.unboundedFollowing)
 
     df = df.withColumn(
-        column_name_to_assign, F.when(F.max(F.col(num_doses_column)).over(window) < 3, "Yes").otherwise("No")
+        column_name_to_assign, F.when(F.min(F.col(num_doses_column)).over(window) < 3, "Yes").otherwise("No")
     )
     return df
 
