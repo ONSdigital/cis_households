@@ -53,7 +53,7 @@ def delete_tables(
                 processed_filenames_log = processed_filenames_log.filter(
                     (~F.lit(table_name).contains(F.col("dataset_name")))
                 )
-                update_table(processed_filenames_log, "processed_filenames", "overwrite")
+                update_table(processed_filenames_log, "processed_filenames", "overwrite", archive=True)
                 spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
 
     protected_tables = [f"{table_prefix}{table_name}" for table_name in protected_tables]
