@@ -38,6 +38,5 @@ def preprocessing(df: DataFrame):
         am_pm_column="blood_taken_am_pm",
     )
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 4)
-    df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
     df = assign_completion_status(df=df, column_name_to_assign="survey_completion_status")
     return df
