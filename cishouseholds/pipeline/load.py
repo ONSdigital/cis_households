@@ -140,7 +140,7 @@ def add_error_file_log_entry(file_path: str, error_text: str):
     """
     run_id = get_run_id()
     file_log_entry = _create_error_file_log_entry(run_id, file_path, error_text)
-    update_table(file_log_entry, "error_file_log", "append")
+    file_log_entry.write.mode("append").saveAsTable(get_full_table_name("error_file_log"))  # Always append
 
 
 def add_table_log_entry(table_name: str, survey_table: bool, write_mode: str):
@@ -149,7 +149,7 @@ def add_table_log_entry(table_name: str, survey_table: bool, write_mode: str):
     """
     run_id = get_run_id()
     file_log_entry = _create_table_log_entry(run_id, table_name, survey_table, write_mode)
-    update_table(file_log_entry, "table_log", "append")
+    file_log_entry.write.mode("append").saveAsTable(get_full_table_name("table_log"))  # Always append
 
 
 def add_run_log_entry(run_datetime: datetime):
@@ -162,7 +162,7 @@ def add_run_log_entry(run_datetime: datetime):
     run_id = get_run_id()
 
     run_log_entry = _create_run_log_entry(run_datetime, run_id, pipeline_version, pipeline_name)
-    update_table(run_log_entry, "run_log", "append")
+    run_log_entry.write.mode("append").saveAsTable(get_full_table_name("run_log"))  # Always append
     return run_id
 
 
@@ -264,12 +264,13 @@ def update_table_and_log_source_files(
     dataset_name: str,
     override_mode: str = None,
     survey_table: bool = False,
+    archive: bool = False,
 ):
     """
     Update a table with the specified dataframe and log the source files that have been processed.
     Used to record which files have been processed for each input file type.
     """
-    update_table(df, table_name, override_mode, survey_table=survey_table)
+    update_table(df, table_name, override_mode, survey_table=survey_table, archive=archive)
     update_processed_file_log(df, filename_column, dataset_name, table_name)
 
 

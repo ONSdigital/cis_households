@@ -10,8 +10,10 @@ from cishouseholds.derive import assign_order_number
 from cishouseholds.derive import assign_poss_1_2
 from cishouseholds.derive import group_participant_within_date_range
 from cishouseholds.edit import update_column_values_from_map
+from cishouseholds.filter import filter_before_date_or_null
 from cishouseholds.filter import filter_invalid_vaccines
 from cishouseholds.filter import filter_single_dose
+
 
 # from pyspark.sql import Window
 
@@ -26,6 +28,10 @@ def vaccine_transformations(df: DataFrame):
 
 def mapping(df: DataFrame):
     """"""
+    df = filter_before_date_or_null(df, "cis_covid_vaccine_date", "2020-12-01")
+    df = update_column_values_from_map(
+        df, map={None: "don't know type", "Other / specify": "don't know type"}, column="cis_covid_vaccine_date"
+    )
     df = assign_default_date_flag(df, "cis_covid_vaccine_date", default_days=[1, 15])
     df = update_column_values_from_map(
         df,
