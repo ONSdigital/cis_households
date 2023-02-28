@@ -230,6 +230,6 @@ def generic_processing(df: DataFrame):
         df=df,
         column="smokes_nothing_now",
         map={"Yes": "No", "No": "Yes"},
-        condition_column="currently_smokes_or_vapes",
+        reference_column="currently_smokes_or_vapes",
     )
     return df

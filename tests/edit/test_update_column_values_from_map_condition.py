@@ -48,6 +48,6 @@ def test_update_column_values_from_map_condition(spark_session):
     )
 
     output_df = update_column_values_from_map(
-        df=input_df, condition_column="condition_column", column="column_to_map", map=dict_map["column_to_map"]
+        df=input_df, reference_column="condition_column", column="column_to_map", map=dict_map["column_to_map"]
     )
     assert_df_equality(expected_df, output_df, ignore_nullable=True, ignore_column_order=True, ignore_row_order=True)
