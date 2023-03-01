@@ -6,6 +6,77 @@ from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 
+def filter_single_dose(
+    df: DataFrame,
+    participant_id_column: str,
+    visit_datetime_column: str,
+    order_column: str,
+    i_dose_column: str,
+    poss_1_2_column: str,
+    default_date_column: str,
+    vaccine_type_column: str,
+    allowed_vaccine_types: List[str],
+):
+    """
+    Filter to a single dose per participant per idose using a series of prescribed filters.
+    """
+    window = Window.partitionBy(participant_id_column, i_dose_column)
+    disambiguation_window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
+    df = df.withColumn("MIN", F.min(F.col(order_column)).over(window))
+    df = df.filter(F.col(order_column) == F.col("MIN"))
+    df = df.filter(((F.col(poss_1_2_column) == "Yes") & (F.col(vaccine_type_column).isin(allowed_vaccine_types))))
+    df = df.filter(F.col(default_date_column) != 1)
+    df = df.withColumn("ROW", F.row_number().over(disambiguation_window))
+    df = df.filter(F.col("ROW") == 1)
+    return df.drop("ROW", "MIN")
+
+
+def filter_before_date_or_null(df: DataFrame, date_column: str, min_date: str):
+    """
+    Filter rows which have a date before a given `min_date`.
+
+    Parameters
+    ----------
+    df
+    date_column
+        a column containing a formatted date
+    min_date
+        a  minimum date within the 'date_column' for which to retain rows
+    """
+    return df.filter(F.when((F.col(date_column) >= min_date) | (F.col(date_column).isNull())))
+
+
+def filter_invalid_vaccines(
+    df: DataFrame,
+    num_doses_column: str,
+    participant_id_column: str,
+    visit_datetime_column: str,
+    vaccine_date_column: str,
+):
+    """Filter out rows where the vaccine count is inconsistent and there is a difference of more than 331 days betweeen the visit date an the test date"""
+    window = (
+        Window.partitionBy(participant_id_column)
+        .orderBy(visit_datetime_column)
+        .rowsBetween(Window.currentRow, Window.unboundedFollowing)
+    )
+    df = df.withColumn(
+        "TEST",
+        F.when((F.col(num_doses_column) >= 3) & (F.min(F.col(num_doses_column)).over(window) < 3), True).otherwise(
+            False
+        ),
+    )
+    df = df.withColumn(
+        "TEST",
+        F.when(
+            (F.abs(F.datediff(F.col(visit_datetime_column), F.col(vaccine_date_column))) > 331)
+            & (F.col("TEST") == True),  # noqa: E712
+            True,
+        ).otherwise(False),
+    )
+    df = df.filter(F.col("TEST") == False).drop("TEST")  # noqa: E712
+    return df
+
+
 def filter_all_not_null(df: DataFrame, reference_columns: List[str]) -> DataFrame:
     """
     Filter rows which have NULL values in all the specified columns.

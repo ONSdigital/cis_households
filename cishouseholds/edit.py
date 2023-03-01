@@ -797,9 +797,10 @@ def update_column_values_from_map(
     df: DataFrame,
     column: str,
     map: dict,
-    condition_column: str = None,
+    reference_column: str = None,
     error_if_value_not_found: Optional[bool] = False,
     default_value: Union[str, bool, int] = None,
+    condition_expression: Any = None,
 ) -> DataFrame:
     """
     Given a map (dictionary) of Key-Value pairs, Replace column values that match the Keys
@@ -824,13 +825,19 @@ def update_column_values_from_map(
     default_value
         Default value to use when values in column `column` cannot be matched with keys in `map`
     """
-    if condition_column is None:
-        condition_column = column
+    if reference_column is None:
+        reference_column = column
 
     if default_value is None:
         default_value = F.col(column)
 
-    mapping_expr = F.create_map([F.lit(x) for x in chain(*map.items())])  # type: ignore
+    if condition_expression is None:
+        condition_expression = F.col(column) == F.col(column)
+
+    # remove mapped null value
+    _map = {k: v for k, v in map.items() if k is not None}
+
+    mapping_expr = F.create_map([F.lit(x) for x in chain(*_map.items())])  # type: ignore
     if error_if_value_not_found:
         temp_df = df.distinct()
         values_set = set(temp_df.select(column).toPandas()[column].tolist())
@@ -838,13 +845,19 @@ def update_column_values_from_map(
         if map_set != values_set:
             missing = set(temp_df.select(column).toPandas()[column].tolist()) - set(map.keys())
             raise LookupError(f"Insufficient mapping values: contents of:{missing} remains unmapped")
-        df = df.withColumn(column, mapping_expr[df[column]])
+        df = df.withColumn(column, F.when(F.col(column).isNull(), map.get(None)).otherwise(mapping_expr[df[column]]))
     else:
         df = df.withColumn(
             column,
-            F.when(F.col(condition_column).isin(*list(map.keys())), mapping_expr[df[condition_column]]).otherwise(
-                default_value
-            ),
+            F.when(
+                condition_expression,
+                F.when(
+                    (F.col(reference_column).isin(*list(map.keys()))) | (F.col(reference_column).isNull()),
+                    F.when(F.col(reference_column).isNull(), map.get(None)).otherwise(
+                        mapping_expr[df[reference_column]]
+                    ),
+                ).otherwise(default_value),
+            ).otherwise(F.col(column)),
         )
     return df
 
@@ -1189,13 +1202,6 @@ def join_on_existing(df: DataFrame, df_to_join: DataFrame, on: List):
     return df
 
 
-def fill_nulls(column_name_to_update, fill_value: int = 0):
-    """Fill Null and NaN values with a constant integer."""
-    return F.when((column_name_to_update.isNull()) | (F.isnan(column_name_to_update)), fill_value).otherwise(
-        column_name_to_update
-    )
-
-
 def recode_column_values(df: DataFrame, lookup: dict):
     """wrapper to loop over multiple value maps for different columns"""
     for column_name, map in lookup.items():
@@ -1342,7 +1348,7 @@ def conditionally_set_column_values(df: DataFrame, condition: Any, cols_to_set_t
     Creates a temporary column based on the input condition, then reads in the cols_to_set_to_value dict
     building a column list for each col_prefix in the dict.
 
-    For each col in in the column list where the temporary condition_col is true, replace the value for that column
+    For each col in the column list where the temporary condition_col is true, replace the value for that column
     based on the cols_to_set_to_value dictionary entry.
 
     Return the df while dropping the temporary column.

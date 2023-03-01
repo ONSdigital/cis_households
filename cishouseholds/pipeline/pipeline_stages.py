@@ -45,6 +45,7 @@ from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
 from cishouseholds.pipeline.job_transformations import job_transformations
+from cishouseholds.pipeline.lab_transformations import lab_transformations
 from cishouseholds.pipeline.load import add_error_file_log_entry
 from cishouseholds.pipeline.load import check_table_exists
 from cishouseholds.pipeline.load import delete_tables
@@ -55,9 +56,6 @@ from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.lookup_and_regex_transformations import blood_past_positive_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import design_weights_lookup_transformations
-from cishouseholds.pipeline.lookup_and_regex_transformations import lab_lookup_transformations
-from cishouseholds.pipeline.lookup_and_regex_transformations import lab_post_join_transformations
-from cishouseholds.pipeline.lookup_and_regex_transformations import lab_pre_join_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import nims_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import ordered_household_id_tranformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import process_vaccine_regex
@@ -83,6 +81,7 @@ from cishouseholds.validate import normalise_schema
 from dummy_data_generation.generate_data import generate_cis_soc_data
 from dummy_data_generation.generate_data import generate_digital_data
 from dummy_data_generation.generate_data import generate_nims_table
+from dummy_data_generation.generate_data import generate_phm_survey_data
 from dummy_data_generation.generate_data import generate_survey_v0_data
 from dummy_data_generation.generate_data import generate_survey_v1_data
 from dummy_data_generation.generate_data import generate_survey_v2_data
@@ -256,6 +255,7 @@ def generate_dummy_data(output_directory):
     blood_dir = raw_dir / "blood"
     survey_dir = raw_dir / "survey"
     digital_survey_dir = raw_dir / "responses_digital"
+    phm_survey_dir = raw_dir / "responses_phm"
     northern_ireland_dir = raw_dir / "northern_ireland_sample"
     sample_direct_dir = raw_dir / "england_wales_sample"
     unprocessed_bloods_dir = raw_dir / "unprocessed_blood"
@@ -269,6 +269,7 @@ def generate_dummy_data(output_directory):
         blood_dir,
         survey_dir,
         digital_survey_dir,
+        phm_survey_dir,
         northern_ireland_dir,
         sample_direct_dir,
         unprocessed_bloods_dir,
@@ -290,6 +291,14 @@ def generate_dummy_data(output_directory):
     )
     generate_digital_data(
         directory=digital_survey_dir,
+        file_date=file_date,
+        records=50,
+        swab_barcodes=[],
+        blood_barcodes=[],
+    )
+
+    generate_phm_survey_data(
+        directory=phm_survey_dir,
         file_date=file_date,
         records=50,
         swab_barcodes=[],
@@ -416,6 +425,7 @@ def generate_input_processing_function(
         include_invalid=False,
         source_file_column=source_file_column,
         write_mode=write_mode,
+        archive=False,
     ):
         """
         Extracts data from csv file to a HIVE table. Parameters control
@@ -481,7 +491,7 @@ def generate_input_processing_function(
         )
         if include_hadoop_read_write:
             update_table_and_log_source_files(
-                df, f"transformed_{dataset_name}", source_file_column, dataset_name, write_mode
+                df, f"transformed_{dataset_name}", source_file_column, dataset_name, write_mode, archive
             )
             return {"status": "updated"}
         return df
@@ -620,12 +630,27 @@ def execute_covid_transformations(
     return {"output_survey_table": output_survey_table}
 
 
+@register_pipeline_stage("lab_transformations")
+def execute_lab_transformations(
+    input_survey_table: str,
+    blood_results_table: str,
+    swab_results_table: str,
+    output_survey_table: str,
+):
+    """"""
+    df = extract_from_table(input_survey_table)
+    blood_lookup_df = extract_from_table(blood_results_table)
+    swab_lookup_df = extract_from_table(swab_results_table)
+    df = lab_transformations(df, blood_lookup_df=blood_lookup_df, swab_lookup_df=swab_lookup_df)
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
+    return {"output_survey_table": output_survey_table}
+
+
 @register_pipeline_stage("join_lookup_table")
 def join_lookup_table(
     input_survey_table: str,
     output_survey_table: str,
     lookup_table_name: str,
-    join_type: str = "left",
     unjoinable_values: Dict[str, Union[str, int]] = {},
     join_on_columns: List[str] = ["work_main_job_title", "work_main_job_role"],
     lookup_transformations: List[str] = [],
@@ -658,9 +683,6 @@ def join_lookup_table(
         "blood_past_positive": blood_past_positive_transformations,
         "design_weights_lookup": design_weights_lookup_transformations,
         "ordered_household_id": ordered_household_id_tranformations,
-        "lab_pre_join": lab_pre_join_transformations,
-        "lab_lookup": lab_lookup_transformations,
-        "lab_post_join": lab_post_join_transformations,
     }
 
     lookup_df = extract_from_table(lookup_table_name)
@@ -676,12 +698,7 @@ def join_lookup_table(
         unjoinable_df = unjoinable_df.withColumn(col, F.lit(val))
 
     df = df.filter(any_column_not_null(join_on_columns))
-
-    if join_type == "left":
-        df = left_join_keep_right(df, lookup_df, join_on_columns)
-    if join_type == "fullouter":
-        df = df.join(df, lookup_df, how="fullouter", on=join_on_columns)
-
+    df = left_join_keep_right(df, lookup_df, join_on_columns)
     df = union_multiple_tables([df, unjoinable_df])
 
     for transformation in post_join_transformations:
@@ -997,7 +1014,7 @@ def tables_to_csv(
     sep="|",
     extension=".txt",
     dry_run=False,
-    accept_missing=True,
+    accept_missing=False,
 ):
     """
     Writes data from an existing HIVE table to csv output, including mapping of column names and values.

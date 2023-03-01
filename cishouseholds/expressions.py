@@ -8,6 +8,13 @@ from typing import List
 import pyspark.sql.functions as F
 
 
+def fill_nulls(column_name_to_update, fill_value: Any = 0):
+    """Fill Null and NaN values with a constant integer."""
+    return F.when((column_name_to_update.isNull()) | (F.isnan(column_name_to_update)), fill_value).otherwise(
+        column_name_to_update
+    )
+
+
 def set_date_component(date_column: str, date_component: str, set_to: Any):
     regex_lookup = {"year": r"^\d{4,4}(?=-)", "month": r"(?<=-)\d{2,2}(?=-)", "day": r"(?<=-)\d{2,2}$"}
     datetime = F.date_format(date_column, "yyyy-MM-dd HH:mm:ss")
@@ -43,6 +50,10 @@ def all_columns_values_in_list(column_list: List[str], values):
     if not isinstance(values, list):
         values = [values]
     return reduce(and_, [F.col(column).isin(values) for column in column_list])
+
+
+def all_null_over_window(window, column_name):
+    return F.sum(F.when(F.col(column_name).isNull(), 0).otherwise(1)).over(window) == 0
 
 
 def any_column_null(column_list: List[str]):

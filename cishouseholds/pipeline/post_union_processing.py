@@ -32,6 +32,7 @@ def raw_copies(df: DataFrame):
         "work_health_care_area",
         "work_main_job_title",
         "work_main_job_role",
+        "work_status_v0",
         "work_status_v1",
         "work_status_v2",
         "work_not_from_home_days_per_week",
@@ -229,6 +230,6 @@ def generic_processing(df: DataFrame):
         df=df,
         column="smokes_nothing_now",
         map={"Yes": "No", "No": "Yes"},
-        condition_column="currently_smokes_or_vapes",
+        reference_column="currently_smokes_or_vapes",
     )
     return df

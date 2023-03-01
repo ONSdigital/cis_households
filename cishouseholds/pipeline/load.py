@@ -5,7 +5,7 @@ from typing import List
 
 import pkg_resources
 import pyspark.sql.functions as F
-from pyspark.sql.dataframe import DataFrame
+from pyspark.sql import DataFrame
 
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -49,6 +49,9 @@ def delete_tables(
                 print(f"{storage_config['database']}.{table_name} will not be dropped as it is protected")  # functional
             else:
                 print(f"dropping table: {storage_config['database']}.{table_name}")  # functional
+                processed_file_log = extract_from_table("processed_file_log", break_lineage=True)
+                processed_file_log = processed_file_log.filter((F.col("table_name") != table_name))
+                update_table(processed_file_log, "processed_file_log", "overwrite")
                 spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
 
     protected_tables = [f"{table_prefix}{table_name}" for table_name in protected_tables]
@@ -97,7 +100,24 @@ def extract_from_table(table_name: str, break_lineage: bool = False, alternate_p
     return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix)}")
 
 
-def update_table(df: DataFrame, table_name, write_mode, archive=False, survey_table=False):
+def update_table(
+    df: DataFrame, table_name, write_mode, archive=False, survey_table=False, error_if_cols_differ: bool = True
+):
+    from cishouseholds.merge import union_multiple_tables
+
+    if write_mode == "append":
+        if check_table_exists(table_name):
+            check = extract_from_table(table_name, break_lineage=True)
+            if check.columns != df.columns:
+                msg = f"Trying to append to {table_name} but columns differ"  # functional
+                if error_if_cols_differ:
+                    raise ValueError(msg)
+                    return
+                else:
+                    print(f"    - {msg}")  # functional
+                    df = union_multiple_tables([check, df])
+                    df = df.distinct()
+                    write_mode = "overwrite"
     df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
     add_table_log_entry(table_name, survey_table, write_mode)
     if archive:
@@ -232,10 +252,9 @@ def add_run_status(
     run_status_entry = [[run_id, datetime.now(), run_status, error_stage, run_error]]
 
     spark_session = get_or_create_spark_session()
-    run_status_table = get_full_table_name("run_status")
 
     df = spark_session.createDataFrame(run_status_entry, schema)
-    df.write.mode("append").saveAsTable(run_status_table)  # Always append
+    update_table(df, "run_status", "append")
 
 
 def update_table_and_log_source_files(
@@ -245,16 +264,17 @@ def update_table_and_log_source_files(
     dataset_name: str,
     override_mode: str = None,
     survey_table: bool = False,
+    archive: bool = False,
 ):
     """
     Update a table with the specified dataframe and log the source files that have been processed.
     Used to record which files have been processed for each input file type.
     """
-    update_table(df, table_name, override_mode, survey_table=survey_table)
-    update_processed_file_log(df, filename_column, dataset_name)
+    update_table(df, table_name, override_mode, survey_table=survey_table, archive=archive)
+    update_processed_file_log(df, filename_column, dataset_name, table_name)
 
 
-def update_processed_file_log(df: DataFrame, filename_column: str, dataset_name: str):
+def update_processed_file_log(df: DataFrame, filename_column: str, dataset_name: str, table_name: str):
     """Collects a list of unique filenames that have been processed and writes them to the specified table."""
     spark_session = get_or_create_spark_session()
     newly_processed_files = df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
@@ -262,15 +282,15 @@ def update_processed_file_log(df: DataFrame, filename_column: str, dataset_name:
     schema = """
         run_id integer,
         dataset_name string,
+        table_name string,
         processed_filename string,
         processed_datetime timestamp,
         file_row_count integer
     """
     run_id = get_run_id()
     entry = [
-        [run_id, dataset_name, filename, datetime.now(), row_count]
+        [run_id, dataset_name, table_name, filename, datetime.now(), row_count]
         for filename, row_count in zip(newly_processed_files, file_lengths)
     ]
     df = spark_session.createDataFrame(entry, schema)
-    table_name = get_full_table_name("processed_filenames")
-    df.write.mode("append").saveAsTable(table_name)  # Always append
+    update_table(df, "processed_filenames", "append", error_if_cols_differ=False)

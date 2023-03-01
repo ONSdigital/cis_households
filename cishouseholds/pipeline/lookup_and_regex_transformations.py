@@ -1,8 +1,6 @@
 # flake8: noqa
 from typing import List
-from typing import Optional
 
-from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
@@ -42,12 +40,11 @@ from cishouseholds.derive import flag_records_for_work_location_null
 from cishouseholds.derive import flag_records_for_work_location_student
 from cishouseholds.derive import regex_match_result
 from cishouseholds.edit import rename_column_names
-from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import array_contains_any
 from cishouseholds.merge import null_safe_join
+from cishouseholds.pipeline.lab_transformations import match_type_blood
+from cishouseholds.pipeline.lab_transformations import match_type_swab
 from cishouseholds.pipeline.mapping import column_name_maps
-from cishouseholds.pipeline.phm import match_type_blood
-from cishouseholds.pipeline.phm import match_type_swab
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.regex.healthcare_regex import healthcare_classification
 from cishouseholds.regex.healthcare_regex import patient_facing_classification
@@ -69,22 +66,25 @@ from cishouseholds.regex.vaccine_regex import vaccine_regex_priority_map
 
 
 def transform_cis_soc_data(
-    soc_lookup_df: DataFrame, inconsistences_resolution_df: DataFrame, join_on_columns: List[str]
+    soc_lookup_df: DataFrame, inconsistencies_resolution_df: DataFrame, join_on_columns: List[str]
 ) -> DataFrame:
     """
     transform and process cis soc data
     """
+    for col in join_on_columns:
+        inconsistencies_resolution_df = inconsistencies_resolution_df.withColumn(col, F.upper(F.col(col)))
+        soc_lookup_df = soc_lookup_df.withColumn(col, F.upper(F.col(col)))
 
     drop_null_title_df = soc_lookup_df.filter(F.col("work_main_job_title").isNull()).withColumn(
         "drop_reason", F.lit("null job title")
     )
 
-    # cleanup soc lookup df and resolve inconsistences
+    # cleanup soc lookup df and resolve inconsistencies
     soc_lookup_df = soc_lookup_df.filter(F.col("work_main_job_title").isNotNull())
 
     # allow nullsafe join on title as soc is sometimes assigned without job role
     soc_lookup_df = null_safe_join(
-        soc_lookup_df, inconsistences_resolution_df, null_safe_on=join_on_columns, how="left"
+        soc_lookup_df, inconsistencies_resolution_df, null_safe_on=join_on_columns, how="left"
     )
 
     soc_lookup_df = soc_lookup_df.drop_duplicates(["standard_occupational_classification_code", *join_on_columns])
@@ -210,44 +210,6 @@ def ordered_household_id_tranformations(df: DataFrame, **kwargs: dict) -> DataFr
     """Read in a survey responses table and join it onto the participants extract to ensure matching ordered household ids"""
     join_on_columns = ["ons_household_id", "ordered_household_id"]
     df = df.select(join_on_columns).distinct()
-    return df
-
-
-def lab_pre_join_transformations(df: DataFrame, test_type: str, **kwargs: dict) -> DataFrame:
-    df = df.withColumn(f"{test_type}_sample_barcode_survey_missing_lab", F.col(f"{test_type}_sample_barcode").isNull())
-    return df
-
-
-def lab_lookup_transformations(df: DataFrame, test_type: str, **kwargs: dict) -> DataFrame:
-    df = df.withColumn(f"{test_type}_sample_barcode_lab_missing_survey", F.col(f"{test_type}_sample_barcode").isNull())
-    return df
-
-
-def lab_post_join_transformations(df: DataFrame, test_type: str, lookup_df: DataFrame, **kwargs: dict) -> DataFrame:
-    if test_type == "blood":
-        joinable = F.when(
-            (
-                (F.col("blood_taken").isNotNull())
-                & (
-                    (F.col("household_completion_window_status") == "Closed")
-                    | (
-                        (F.col("survey_completed_datetime").isNotNull())
-                        | (F.col("survey_completion_status") == "Submitted")
-                    )
-                )
-            )
-            & (F.col(f"blood_taken_datetime") < F.col("blood_sample_arrayed_date"))
-            & (
-                (F.col("participant_completion_window_start_datetime"))
-                <= (F.col("") == F.col("blood_sample_arrayed_date"))
-            )
-            & (F.col("match_type_blood").isNull())
-        )
-        df = match_type_blood(df)
-        for col in lookup_df.columns:  # set cols to none if not joinable
-            df = df.withColumn(F.when(joinable, F.col(col)))
-    else:
-        df = match_type_swab(df)
     return df
 
 

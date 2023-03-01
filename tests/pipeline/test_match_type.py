@@ -1,7 +1,6 @@
-import pytest
 from chispa import assert_df_equality
 
-from cishouseholds.pipeline.phm import match_type_blood
+from cishouseholds.pipeline.lab_transformations import match_type_blood
 
 
 def test_match_type(spark_session):

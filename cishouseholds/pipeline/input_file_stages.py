@@ -7,6 +7,7 @@ from cishouseholds.pipeline.timestamp_map import blood_datetime_map
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 from cishouseholds.pipeline.timestamp_map import historical_blood_datetime_map
 from cishouseholds.pipeline.timestamp_map import lab_results_glasgow_datetime_map
+from cishouseholds.pipeline.timestamp_map import phm_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v0_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v1_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v2_datetime_map
@@ -46,6 +47,18 @@ participant_extract_digital_parameters = {
     "sep": "|",
     "cast_to_double_list": survey_response_cisd_cast_to_double,
     "source_file_column": "participant_extract_source_file",
+}
+
+phm_parameters = {
+    "stage_name": "survey_responses_version_phm_ETL",
+    "dataset_name": "survey_responses_phm",
+    "id_column": "participant_completion_window_id",
+    "validation_schema": validation_schemas["phm_survey_validation_schema"],
+    "datetime_column_map": phm_datetime_map,
+    "transformation_functions": [],
+    "sep": "|",
+    "cast_to_double_list": [],
+    "source_file_column": "survey_response_source_file",
 }
 
 cis_digital_parameters = {
@@ -126,8 +139,8 @@ brants_bridge_parameters = {
     "sep": ",",
     "cast_to_double_list": [],
     "source_file_column": "brants_bridge_source_file",
+    "write_mode": "append",
 }
-
 swab_results_parameters = {
     "stage_name": "swab_results_ETL",
     "dataset_name": "swab_results",
@@ -139,19 +152,7 @@ swab_results_parameters = {
     "sep": ",",
     "cast_to_double_list": [],
     "source_file_column": "swab_results_source_file",
-}
-
-brants_bridge_parameters = {
-    "stage_name": "brants_bridge_ETL",
-    "dataset_name": "brants_bridge",
-    "id_column": "swab_sample_barcode",
-    "validation_schema": validation_schemas["brants_bridge_schema"],
-    "datetime_column_map": None,
-    "column_name_map": column_name_maps["brants_bridge_variable_name_map"],
-    "transformation_functions": [],
-    "sep": ",",
-    "cast_to_double_list": [],
-    "source_file_column": "brants_bridge_source_file",
+    "write_mode": "append",
 }
 
 blood_results_parameters = {
@@ -178,6 +179,7 @@ historical_blood_results_parameters = {
     "sep": "|",
     "cast_to_double_list": [],
     "source_file_column": "historical_blood_results_source_file",
+    "write_mode": "append",
 }
 
 json_test_parameters = {
@@ -202,5 +204,6 @@ for parameters in [
     blood_results_parameters,
     historical_blood_results_parameters,
     json_test_parameters,
+    brants_bridge_parameters,
 ]:
     generate_input_processing_function(**parameters)  # type:ignore

@@ -20,11 +20,116 @@ from pyspark.sql import Window
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
+from cishouseholds.expressions import all_null_over_window
 from cishouseholds.expressions import any_column_matches_regex
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import any_column_null
 from cishouseholds.merge import null_safe_join
+from cishouseholds.pipeline.mapping import _vaccine_type_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
+
+
+def assign_datetime_from_combined_columns(
+    df: DataFrame,
+    column_name_to_assign: str,
+    date_column: str,
+    am_pm_column: str,
+    hour_column: str = None,
+    minute_column: str = None,
+    second_column: str = None,
+):
+    """Create a formatted pyspark date column from a series of components."""
+    for col_name, temp_col_name in zip([hour_column, minute_column, second_column], ["hour", "min", "sec"]):
+        if col_name is None:
+            df = df.withColumn(temp_col_name, 0)
+
+    hour = F.when((F.col(am_pm_column) == "pm") & (F.col(hour_column) != 12), F.col(hour_column) + 12).otherwise(
+        F.col(hour_column)
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.concat_ws(
+            " ",
+            *[
+                F.col(date_column),
+                F.concat_ws(
+                    ":",
+                    hour,
+                    *[
+                        F.when(F.col(col) == 0, "00").otherwise(F.col(col).cast("string"))
+                        for col in [minute_column, second_column]
+                    ],
+                ),
+            ],
+        ),
+    )
+    df = df.withColumn(column_name_to_assign, F.to_timestamp(column_name_to_assign))
+    return df.drop(hour_column, minute_column, second_column, "hour", "min", "sec")
+
+
+def group_participant_within_date_range(
+    df: DataFrame, column_name_to_assign: str, participant_id_column: str, date_column: str, date_range: int
+):
+    """For each participant id group by a date variable within a given range."""
+    window = Window.partitionBy(participant_id_column).orderBy(date_column)
+
+    df = df.withColumn(
+        column_name_to_assign,
+        (F.datediff(F.col(date_column), F.first(date_column).over(window)) / date_range).cast("integer"),
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.dense_rank().over(Window.partitionBy(participant_id_column).orderBy(column_name_to_assign)),
+    )
+    return df
+
+
+def assign_max_doses(
+    df: DataFrame,
+    column_name_to_assign: str,
+    i_dose_column: str,
+    num_doses_column: str,
+    participant_id_column: str,
+    visit_datetime_column: str,
+):
+    """Assign a variable true or false depending on whether a participant has had their max number of vaccine doses."""
+    window = (
+        Window.partitionBy(participant_id_column, i_dose_column)
+        .orderBy(visit_datetime_column)
+        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    )
+
+    df = df.withColumn(
+        column_name_to_assign, F.when(F.max(F.col(num_doses_column)).over(window) >= 3, "Yes").otherwise("No")
+    )
+    return df
+
+
+def assign_poss_1_2(
+    df: DataFrame,
+    column_name_to_assign: str,
+    num_doses_column: str,
+    participant_id_column: str,
+    visit_datetime_column: str,
+):
+    """Assign a variable true or false depending on whether a participant has had their max number of vaccine doses."""
+    window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
+    rear_window = window.rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    front_window = window.rowsBetween(Window.currentRow, Window.unboundedFollowing)
+
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.min(F.col(num_doses_column)).over(front_window) < 3, "Yes").otherwise("No"),
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.max(F.col(num_doses_column)).over(rear_window) < 3, "Yes").otherwise(F.col(column_name_to_assign)),
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(all_null_over_window(window, num_doses_column), "Yes").otherwise(F.col(column_name_to_assign)),
+    )
+    return df
 
 
 def assign_regex_from_map_additional_rules(
@@ -1497,6 +1602,101 @@ def assign_date_difference(
         raise TypeError(f"{format} format not supported")
 
 
+def assign_completion_status(
+    df: DataFrame,
+    column_name_to_assign: str,
+) -> DataFrame:
+
+    """
+    Function to assign a completion status equivalent for PHM
+    questionnaire responses from pre-defined variables
+    """
+
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            ((F.col("end_screen_questionnaire") == "Continue") & (~F.col("survey_completed_datetime").isNull()))
+            | ((F.col("end_screen_sample") == "Continue") & (~F.col("survey_completed_datetime").isNull())),
+            "Submitted",
+        )
+        .when(
+            (F.col("survey_completion_status_flushed") == "TRUE")
+            & (F.col("file_date") <= F.col("participant_completion_window_end_date")),
+            "In progress",
+        )
+        .when(
+            (F.col("survey_completion_status_flushed") == "TRUE")
+            & (F.col("file_date") > F.col("participant_completion_window_end_date")),
+            "Completed",
+        )
+        .when(
+            (F.col("survey_completion_status_flushed") == "FALSE")
+            & (F.col("file_date") > F.col("participant_completion_window_start_date"))
+            & (F.col("file_date") <= F.col("participant_completion_window_end_date")),
+            "New",
+        ),
+    )
+    return df
+
+
+def derive_digital_merge_type(
+    df: DataFrame,
+    column_name_to_assign: str,
+) -> DataFrame:
+    """
+    Derive the digital merge type
+    From households_aggregate_processes.xlsx, derivation number 27.
+
+    Parameters
+    ----------
+    df
+    survey_completion_status
+        Variable with survey completion status.
+    form_start_datetime
+        First date column name.
+    participant_completion_window_end_datetime
+        Final date column name.
+    file_date
+        The date the file was created
+
+    Return
+    ------
+    pyspark.sql.DataFrame
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col("Survey_completion_status").isin(["Submitted", "Completed"])),
+            "Matched",
+        )
+        .when(
+            (~F.col("form_start_datetime").isNull())
+            & (F.to_date(F.col("participant_completion_window_end_datetime")) > F.to_date(F.col("file_date")))
+            & (F.col("survey_completion_status").isin(["Partially Completed", "New"])),
+            "Temporary Orphan",
+        )
+        .when(
+            (F.col("form_start_datetime").isNull())
+            & (F.to_date(F.col("participant_completion_window_end_datetime")) > F.to_date(F.col("file_date")))
+            & (F.col("survey_completion_status") == "New"),
+            "Potential Orphan",
+        )
+        .when(
+            (~F.col("form_start_datetime").isNull())
+            & (F.to_date(F.col("participant_completion_window_end_datetime")) <= F.to_date(F.col("file_date")))
+            & (F.col("survey_completion_status").isin(["Partially Completed", "New"])),
+            "Matched",
+        )
+        .when(
+            (F.col("form_start_datetime").isNull())
+            & (F.to_date(F.col("participant_completion_window_end_datetime")) <= F.to_date(F.col("file_date")))
+            & (F.col("survey_completion_status") == "New"),
+            "Permanent Orphan",
+        ),
+    )
+    return df
+
+
 def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, uniform_value) -> DataFrame:
     """
     Assign a column with a uniform value.
@@ -2492,3 +2692,83 @@ def get_matches(old_sample_df: DataFrame, new_sample_df: DataFrame, selection_co
     for col in selection_columns:
         joined_df = joined_df.withColumn(f"MATCHED_{col}", F.when(F.col(col) == F.col(f"{col}_OLD"), 1).otherwise(None))
     return joined_df
+
+
+def assign_default_date_flag(df: DataFrame, date_col: str, default_days: List[int]):
+    """
+    Assigns a flag to the dataset that indicates whether the day value for a given date col is
+    one of the default days
+    """
+    df = df.withColumn(f"default_{date_col}", F.when(F.dayofmonth(date_col).isin(default_days), 1).otherwise(0))
+    return df
+
+
+def assign_order_number(
+    df: DataFrame,
+    column_name_to_assign: str,
+    covid_vaccine_type_column: str,
+    num_doses_column: str,
+    max_doses_column: str,
+    pos_1_2_column: str,
+):
+    """
+    Assigns an incrementing value based on input column conditions where the corresponding vaccine_type
+    value matches one from the vaccine_type_map
+    """
+    moderna_vaccine_types = [i for i in _vaccine_type_map.keys() if "Moderna" in i and "valent" not in i]
+    pfizer_vaccine_types = [i for i in _vaccine_type_map.keys() if "Pfizer" in i and "valent" not in i]
+    astrazeneca_vaccine_types = [i for i in _vaccine_type_map.keys() if "AstraZeneca" in i and "valent" not in i]
+    bivalent_vaccine_types = [i for i in _vaccine_type_map.keys() if "valent" in i]
+    df = df.withColumn(
+        column_name_to_assign,
+        # condition 1
+        F.when(
+            F.col(covid_vaccine_type_column).isin(moderna_vaccine_types + pfizer_vaccine_types)
+            & ((F.col(pos_1_2_column) == "No") | ((F.col(max_doses_column) == "Yes") & (F.col(num_doses_column) == 3))),
+            1,
+        )
+        # condition 2
+        .when(
+            F.col(covid_vaccine_type_column).isin(
+                moderna_vaccine_types + pfizer_vaccine_types + astrazeneca_vaccine_types
+            )
+            & (((F.col(pos_1_2_column) == "Yes") | (F.col(max_doses_column) == "No")) & (F.col(num_doses_column) < 3)),
+            1,
+        )
+        # condition 3
+        .when(
+            F.col(covid_vaccine_type_column).isin(bivalent_vaccine_types) & (F.col(pos_1_2_column) == "No"),
+            2,
+        )
+        # condition 4
+        .when(
+            F.col(covid_vaccine_type_column).isin(astrazeneca_vaccine_types)
+            & (
+                ((F.col(pos_1_2_column) == "Yes") & (F.col(max_doses_column) == "Yes")) & (F.col(num_doses_column) == 3)
+            ),
+            2,
+        )
+        # condition 5
+        .when(
+            F.col(covid_vaccine_type_column).isin(astrazeneca_vaccine_types) & (F.col(pos_1_2_column) == "No"),
+            3,
+        )
+        # condition 6
+        .when(
+            F.col(covid_vaccine_type_column).isin(bivalent_vaccine_types)
+            & (
+                ((F.col(pos_1_2_column) == "Yes") & (F.col(max_doses_column) == "Yes")) & (F.col(num_doses_column) == 3)
+            ),
+            3,
+        )
+        # condition 7
+        .when(
+            ~F.col(covid_vaccine_type_column).isNull()
+            & ~F.col(covid_vaccine_type_column).isin(["Don't know type", "From a research study/trial"])
+            & ((F.col(pos_1_2_column) == "Yes") & (F.col(max_doses_column) == "Yes")),
+            4,
+        )
+        # condition 8
+        .otherwise(5),
+    )
+    return df
