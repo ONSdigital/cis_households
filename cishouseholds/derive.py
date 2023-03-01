@@ -112,19 +112,39 @@ def assign_poss_1_2(
     visit_datetime_column: str,
 ):
     """Assign a variable true or false depending on whether a participant has had their max number of vaccine doses."""
-    window = (
-        Window.partitionBy(participant_id_column)
-        .orderBy(visit_datetime_column)
-        .rowsBetween(Window.currentRow, Window.unboundedFollowing)
-    )
+    window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
+    rear_window = window.rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    front_window = window.rowsBetween(Window.currentRow, Window.unboundedFollowing)
 
     df = df.withColumn(
         column_name_to_assign,
-        F.when(
-            F.col(num_doses_column).isNull(),
-            F.when(F.min(F.col(num_doses_column)).over(window) < 3, "Yes").otherwise("No"),
-        ).otherwise(F.when(F.col(num_doses_column) < 3, "Yes").otherwise("No")),
+        F.when(F.min(F.col(num_doses_column)).over(front_window) < 3, "Yes").otherwise("No"),
     )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            F.sum(
+                F.when((F.col(column_name_to_assign) == "No") & (F.col(num_doses_column).isNotNull()), 1).otherwise(0)
+            ).over(rear_window)
+            == 0,
+            "Yes",
+        ).otherwise(F.col(column_name_to_assign)),
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.sum(F.when(F.col(num_doses_column) == 1, 1).otherwise(0)).over(rear_window) == 0)
+            | (F.sum(F.when(F.col(num_doses_column) == 2, 1).otherwise(0)).over(rear_window) == 0),
+            "Yes",
+        ).otherwise(F.col(column_name_to_assign)),
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            F.col(num_doses_column).isNotNull(), F.when((F.col(num_doses_column) < 3), "Yes").otherwise("No")
+        ).otherwise(F.col(column_name_to_assign)),
+    )
+
     return df
 
 
