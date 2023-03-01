@@ -800,7 +800,7 @@ def update_column_values_from_map(
     reference_column: str = None,
     error_if_value_not_found: Optional[bool] = False,
     default_value: Union[str, bool, int] = None,
-    condition_expression: bool = True,
+    condition_expression: Any = None,
 ) -> DataFrame:
     """
     Given a map (dictionary) of Key-Value pairs, Replace column values that match the Keys
@@ -830,6 +830,9 @@ def update_column_values_from_map(
 
     if default_value is None:
         default_value = F.col(column)
+
+    if condition_expression is None:
+        condition_expression = F.col(column) == F.col(column)
 
     # remove mapped null value
     _map = {k: v for k, v in map.items() if k is not None}
