@@ -49,12 +49,8 @@ def delete_tables(
                 print(f"{storage_config['database']}.{table_name} will not be dropped as it is protected")  # functional
             else:
                 print(f"dropping table: {storage_config['database']}.{table_name}")  # functional
-                processed_filenames_log = extract_from_table("processed_filenames", break_lineage=True)
-                processed_filenames_log = processed_filenames_log.filter(
-                    (~F.lit(table_name).contains(F.col("dataset_name")))
-                )
-                update_table(processed_filenames_log, "processed_filenames", "overwrite", archive=True)
                 spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
+                update_processed_file_log(dataset_name=table_name, currently_processed=False)
 
     protected_tables = [f"{table_prefix}{table_name}" for table_name in protected_tables]
 
@@ -267,16 +263,19 @@ def update_table_and_log_source_files(
     override_mode: str = None,
     survey_table: bool = False,
     archive: bool = False,
+    include_processed: bool = False,
 ):
     """
     Update a table with the specified dataframe and log the source files that have been processed.
     Used to record which files have been processed for each input file type.
     """
     update_table(df, table_name, override_mode, survey_table=survey_table, archive=archive)
-    update_processed_file_log(df, filename_column, dataset_name, table_name)
+    create_processed_file_log_entry(df, filename_column, dataset_name, table_name, include_processed)
 
 
-def update_processed_file_log(df: DataFrame, filename_column: str, dataset_name: str, table_name: str):
+def create_processed_file_log_entry(
+    df: DataFrame, filename_column: str, dataset_name: str, table_name: str, include_processed: bool = False
+):
     """Collects a list of unique filenames that have been processed and writes them to the specified table."""
     spark_session = get_or_create_spark_session()
     newly_processed_files = df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
@@ -287,12 +286,27 @@ def update_processed_file_log(df: DataFrame, filename_column: str, dataset_name:
         table_name string,
         processed_filename string,
         processed_datetime timestamp,
-        file_row_count integer
+        file_row_count integer,
+        currently_processed boolean
     """
     run_id = get_run_id()
     entry = [
-        [run_id, dataset_name, table_name, filename, datetime.now(), row_count]
+        [run_id, dataset_name, table_name, filename, datetime.now(), row_count, True]
         for filename, row_count in zip(newly_processed_files, file_lengths)
     ]
     df = spark_session.createDataFrame(entry, schema)
     update_table(df, "processed_filenames", "append", error_if_cols_differ=False)
+    if include_processed:
+        update_processed_file_log(dataset_name, currently_processed=include_processed)
+
+
+def update_processed_file_log(dataset_name: str, currently_processed: bool):
+    """Updates the currently_processed column in the processed file log"""
+    df = extract_from_table("processed_filenames", break_lineage=True)
+    df = df.withColumn(
+        "currently_processed",
+        F.when(F.lit(dataset_name).contains(F.col("dataset_name")), currently_processed).otherwise(
+            F.col("currently_processed")
+        ),
+    )
+    update_table(df, "processed_filenames", "overwrite", error_if_cols_differ=False)
