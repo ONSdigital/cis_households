@@ -1588,6 +1588,43 @@ def assign_date_difference(
         raise TypeError(f"{format} format not supported")
 
 
+def assign_completion_status(
+    df: DataFrame,
+    column_name_to_assign: str,
+) -> DataFrame:
+
+    """
+    Function to assign a completion status equivalent for PHM
+    questionnaire responses from pre-defined variables
+    """
+
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            ((F.col("end_screen_questionnaire") == "Continue") & (~F.col("survey_completed_datetime").isNull()))
+            | ((F.col("end_screen_sample") == "Continue") & (~F.col("survey_completed_datetime").isNull())),
+            "Submitted",
+        )
+        .when(
+            (F.col("survey_completion_status_flushed") == "TRUE")
+            & (F.col("file_date") <= F.col("participant_completion_window_end_date")),
+            "In progress",
+        )
+        .when(
+            (F.col("survey_completion_status_flushed") == "TRUE")
+            & (F.col("file_date") > F.col("participant_completion_window_end_date")),
+            "Completed",
+        )
+        .when(
+            (F.col("survey_completion_status_flushed") == "FALSE")
+            & (F.col("file_date") > F.col("participant_completion_window_start_date"))
+            & (F.col("file_date") <= F.col("participant_completion_window_end_date")),
+            "New",
+        ),
+    )
+    return df
+
+
 def derive_digital_merge_type(
     df: DataFrame,
     column_name_to_assign: str,

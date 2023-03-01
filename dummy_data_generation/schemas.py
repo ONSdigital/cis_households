@@ -3862,4 +3862,6 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
+        "end_screen_questionnaire": _("choice", items=["Continue", None]),
+        # "end_screen_sample": _("choice", items=["Continue", None]), #to be added when bio samples begin
     }
