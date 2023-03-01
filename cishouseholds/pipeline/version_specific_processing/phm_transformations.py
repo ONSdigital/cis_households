@@ -446,6 +446,7 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
             "I had bruising or pain": "blood_not_taken_could_not_reason_had_bruising",
             "I felt unwell": "blood_not_taken_could_not_reason_unwell",
             "Other please specify": "blood_not_taken_could_not_reason_other",
+            "There were issues with the kit": "blood_not_taken_could_not_reason_issues_with_kit",
         },
         ";",
     )
@@ -601,6 +602,7 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         "1 to 5": "1-5",
         "6 to 10": "6-10",
         "11 to 20": "11-20",
+        "21 or more": "21 or more",
         "Don't know": None,
         "Prefer not to say": None,
     }
@@ -813,4 +815,41 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         "multiple errors sample retained",
         ",",
     )
+    df = df.withColumn("cis_covid_vaccine_number_of_doses", F.col("phm_covid_vaccine_number_of_doses"))
+
+    df = update_column_values_from_map(
+        df,
+        "phm_covid_vaccine_number_of_doses",
+        {
+            "1 dose": 1,
+            "1": 1,
+            "2 doses": 2,
+            "2": 2,
+            "3 doses": 3,
+            "3 or more": 3,
+            "4 doses": 4,
+            "5 doses": 5,
+            "6 doses or more": 6,
+            "6 doses": 6,
+            "7 doses": 7,
+            "8 doses or more": 8,
+        },
+    )
     return df
+
+    df = map_options_to_bool_columns(
+        df,
+        "transport_shared_outside_household_last_28_days",
+        {
+            "Underground or metro or light rail or tram": "transport_shared_outside_household_last_28_days_underground_metro",
+            "Train": "transport_shared_outside_household_last_28_days_train",
+            "Bus or minibus or coach": "transport_shared_outside_household_last_28_days_bus_coach",
+            "Car or van": "transport_shared_outside_household_last_28_days_car_van",
+            "Taxi or minicab": "transport_shared_outside_household_last_28_days_taxi",
+            "Plane": "transport_shared_outside_household_last_28_days_plane",
+            "Ferry or boat": "transport_shared_outside_household_last_28_days_ferry_boat",
+            "Other method": "transport_shared_outside_household_last_28_days_other",
+            "I have not used transport shared with people outside of my home for reasons other than travel to work or education": "transport_shared_outside_household_last_28_days_none",
+        },
+        ";",
+    )

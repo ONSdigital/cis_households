@@ -320,11 +320,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: type_preference
+  name: digital_survey_mode_preference
   nullable: true
   type: string
 - metadata: {}
-  name: communication_preference
+  name: digital_communication_preference
   nullable: true
   type: string
 - metadata: {}
@@ -340,7 +340,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: voucher_preference
+  name: voucher_type_preference
   nullable: true
   type: string
 - metadata: {}
