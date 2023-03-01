@@ -49,10 +49,8 @@ def delete_tables(
                 print(f"{storage_config['database']}.{table_name} will not be dropped as it is protected")  # functional
             else:
                 print(f"dropping table: {storage_config['database']}.{table_name}")  # functional
-                processed_file_log = extract_from_table("processed_file_log", break_lineage=True)
-                processed_file_log = processed_file_log.filter((F.col("table_name") != table_name))
-                update_table(processed_file_log, "processed_file_log", "overwrite")
                 spark_session.sql(f"DROP TABLE IF EXISTS {storage_config['database']}.{table_name}")
+                update_processed_file_log(dataset_name=table_name, currently_processed=False)
 
     protected_tables = [f"{table_prefix}{table_name}" for table_name in protected_tables]
 
@@ -140,7 +138,7 @@ def add_error_file_log_entry(file_path: str, error_text: str):
     """
     run_id = get_run_id()
     file_log_entry = _create_error_file_log_entry(run_id, file_path, error_text)
-    file_log_entry.write.mode("append").saveAsTable(get_full_table_name("error_file_log"))  # Always append
+    update_table(file_log_entry, "error_file_log", "append")
 
 
 def add_table_log_entry(table_name: str, survey_table: bool, write_mode: str):
@@ -162,7 +160,7 @@ def add_run_log_entry(run_datetime: datetime):
     run_id = get_run_id()
 
     run_log_entry = _create_run_log_entry(run_datetime, run_id, pipeline_version, pipeline_name)
-    run_log_entry.write.mode("append").saveAsTable(get_full_table_name("run_log"))  # Always append
+    update_table(run_log_entry, "run_log", "append")
     return run_id
 
 
@@ -271,10 +269,10 @@ def update_table_and_log_source_files(
     Used to record which files have been processed for each input file type.
     """
     update_table(df, table_name, override_mode, survey_table=survey_table, archive=archive)
-    update_processed_file_log(df, filename_column, dataset_name, table_name)
+    create_processed_file_log_entry(df, filename_column, dataset_name, table_name)
 
 
-def update_processed_file_log(df: DataFrame, filename_column: str, dataset_name: str, table_name: str):
+def create_processed_file_log_entry(df: DataFrame, filename_column: str, dataset_name: str, table_name: str):
     """Collects a list of unique filenames that have been processed and writes them to the specified table."""
     spark_session = get_or_create_spark_session()
     newly_processed_files = df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
@@ -285,12 +283,25 @@ def update_processed_file_log(df: DataFrame, filename_column: str, dataset_name:
         table_name string,
         processed_filename string,
         processed_datetime timestamp,
-        file_row_count integer
+        file_row_count integer,
+        currently_processed boolean
     """
     run_id = get_run_id()
     entry = [
-        [run_id, dataset_name, table_name, filename, datetime.now(), row_count]
+        [run_id, dataset_name, table_name, filename, datetime.now(), row_count, True]
         for filename, row_count in zip(newly_processed_files, file_lengths)
     ]
     df = spark_session.createDataFrame(entry, schema)
     update_table(df, "processed_filenames", "append", error_if_cols_differ=False)
+
+
+def update_processed_file_log(dataset_name: str, currently_processed: bool):
+    """Updates the currently_processed column in the processed file log"""
+    df = extract_from_table("processed_filenames", break_lineage=True)
+    df = df.withColumn(
+        "currently_processed",
+        F.when(F.lit(dataset_name).contains(F.col("dataset_name")), currently_processed).otherwise(
+            F.col("currently_processed")
+        ),
+    )
+    update_table(df, "processed_filenames", "overwrite", error_if_cols_differ=False)
