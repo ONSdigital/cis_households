@@ -1021,7 +1021,7 @@ def tables_to_csv(
     sep="|",
     extension=".txt",
     dry_run=False,
-    accept_missing=True,
+    accept_missing=False,
 ):
     """
     Writes data from an existing HIVE table to csv output, including mapping of column names and values.

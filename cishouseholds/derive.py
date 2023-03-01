@@ -20,6 +20,7 @@ from pyspark.sql import Window
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
+from cishouseholds.expressions import all_null_over_window
 from cishouseholds.expressions import any_column_matches_regex
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import any_column_null
@@ -104,16 +105,29 @@ def assign_max_doses(
     return df
 
 
-def assign_pos_1_2(
-    df: DataFrame, column_name_to_assign: str, i_dose_column: str, num_doses_column: str, participant_id_column: str
+def assign_poss_1_2(
+    df: DataFrame,
+    column_name_to_assign: str,
+    num_doses_column: str,
+    participant_id_column: str,
+    visit_datetime_column: str,
 ):
     """Assign a variable true or false depending on whether a participant has had their max number of vaccine doses."""
-    window = Window.partitionBy(participant_id_column, i_dose_column).rowsBetween(
-        Window.unboundedPreceding, Window.currentRow
-    )
+    window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
+    rear_window = window.rowsBetween(Window.unboundedPreceding, Window.currentRow)
+    front_window = window.rowsBetween(Window.currentRow, Window.unboundedFollowing)
 
     df = df.withColumn(
-        column_name_to_assign, F.when(F.max(F.col(num_doses_column)).over(window) < 3, "Yes").otherwise("No")
+        column_name_to_assign,
+        F.when(F.min(F.col(num_doses_column)).over(front_window) < 3, "Yes").otherwise("No"),
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.max(F.col(num_doses_column)).over(rear_window) < 3, "Yes").otherwise(F.col(column_name_to_assign)),
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(all_null_over_window(window, num_doses_column), "Yes").otherwise(F.col(column_name_to_assign)),
     )
     return df
 
@@ -1588,6 +1602,43 @@ def assign_date_difference(
         raise TypeError(f"{format} format not supported")
 
 
+def assign_completion_status(
+    df: DataFrame,
+    column_name_to_assign: str,
+) -> DataFrame:
+
+    """
+    Function to assign a completion status equivalent for PHM
+    questionnaire responses from pre-defined variables
+    """
+
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            ((F.col("end_screen_questionnaire") == "Continue") & (~F.col("survey_completed_datetime").isNull()))
+            | ((F.col("end_screen_sample") == "Continue") & (~F.col("survey_completed_datetime").isNull())),
+            "Submitted",
+        )
+        .when(
+            (F.col("survey_completion_status_flushed") == "TRUE")
+            & (F.col("file_date") <= F.col("participant_completion_window_end_date")),
+            "In progress",
+        )
+        .when(
+            (F.col("survey_completion_status_flushed") == "TRUE")
+            & (F.col("file_date") > F.col("participant_completion_window_end_date")),
+            "Completed",
+        )
+        .when(
+            (F.col("survey_completion_status_flushed") == "FALSE")
+            & (F.col("file_date") > F.col("participant_completion_window_start_date"))
+            & (F.col("file_date") <= F.col("participant_completion_window_end_date")),
+            "New",
+        ),
+    )
+    return df
+
+
 def derive_digital_merge_type(
     df: DataFrame,
     column_name_to_assign: str,
@@ -2649,12 +2700,14 @@ def assign_default_date_flag(df: DataFrame, date_col: str, default_days: List[in
     one of the default days
     """
     df = df.withColumn(f"default_{date_col}", F.when(F.dayofmonth(date_col).isin(default_days), 1).otherwise(0))
+    return df
 
 
 def assign_order_number(
     df: DataFrame,
     column_name_to_assign: str,
     covid_vaccine_type_column: str,
+    num_doses_column: str,
     max_doses_column: str,
     pos_1_2_column: str,
 ):
@@ -2671,7 +2724,7 @@ def assign_order_number(
         # condition 1
         F.when(
             F.col(covid_vaccine_type_column).isin(moderna_vaccine_types + pfizer_vaccine_types)
-            & ((F.col(pos_1_2_column) == "No") | (F.col(max_doses_column) == "Yes")),
+            & ((F.col(pos_1_2_column) == "No") | ((F.col(max_doses_column) == "Yes") & (F.col(num_doses_column) == 3))),
             1,
         )
         # condition 2
@@ -2679,28 +2732,39 @@ def assign_order_number(
             F.col(covid_vaccine_type_column).isin(
                 moderna_vaccine_types + pfizer_vaccine_types + astrazeneca_vaccine_types
             )
-            & ((F.col(pos_1_2_column) == "Yes") | (F.col(max_doses_column) == "No")),
+            & (((F.col(pos_1_2_column) == "Yes") | (F.col(max_doses_column) == "No")) & (F.col(num_doses_column) < 3)),
             1,
         )
         # condition 3
-        .when(F.col(covid_vaccine_type_column).isin(bivalent_vaccine_types) & (F.col(pos_1_2_column) == "No"), 2)
+        .when(
+            F.col(covid_vaccine_type_column).isin(bivalent_vaccine_types) & (F.col(pos_1_2_column) == "No"),
+            2,
+        )
         # condition 4
         .when(
             F.col(covid_vaccine_type_column).isin(astrazeneca_vaccine_types)
-            & ((F.col(pos_1_2_column) == "Yes") & (F.col(max_doses_column) == "Yes")),
+            & (
+                ((F.col(pos_1_2_column) == "Yes") & (F.col(max_doses_column) == "Yes")) & (F.col(num_doses_column) == 3)
+            ),
             2,
         )
         # condition 5
-        .when(F.col(covid_vaccine_type_column).isin(astrazeneca_vaccine_types) & (F.col(pos_1_2_column) == "No"), 3)
+        .when(
+            F.col(covid_vaccine_type_column).isin(astrazeneca_vaccine_types) & (F.col(pos_1_2_column) == "No"),
+            3,
+        )
         # condition 6
         .when(
             F.col(covid_vaccine_type_column).isin(bivalent_vaccine_types)
-            & ((F.col(pos_1_2_column) == "Yes") & (F.col(max_doses_column) == "Yes")),
+            & (
+                ((F.col(pos_1_2_column) == "Yes") & (F.col(max_doses_column) == "Yes")) & (F.col(num_doses_column) == 3)
+            ),
             3,
         )
         # condition 7
         .when(
-            ~F.col(covid_vaccine_type_column).isin(["Don't know type", "From a research study/trial"])
+            ~F.col(covid_vaccine_type_column).isNull()
+            & ~F.col(covid_vaccine_type_column).isin(["Don't know type", "From a research study/trial"])
             & ((F.col(pos_1_2_column) == "Yes") & (F.col(max_doses_column) == "Yes")),
             4,
         )

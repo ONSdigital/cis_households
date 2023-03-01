@@ -496,6 +496,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: end_screen_questionnaire
+  nullable: true
+  type: string
+- metadata: {}
   name: survey_response_source_file
   nullable: false
   type: string

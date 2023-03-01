@@ -1,17 +1,19 @@
 - any_household_members_over_2_years_and_not_present: 'Yes'
   city: Erlang is known for its designs that are well suited for systems.
-  communication_preference: Erlang is known for its designs that are well suited for
-    systems.
   consent_blood_samples_if_positive_yn: 'Yes'
   consent_contact_extra_research_yn: 'Yes'
   consent_use_of_surplus_blood_samples_yn: null
   country: Erlang is a general-purpose, concurrent, functional programming language.
   date_of_birth: '2020-02-01 00:00:00.000000'
   date_of_birth_string: 01feb2020
+  digital_communication_preference: Erlang is known for its designs that are well
+    suited for systems.
   digital_entry_pack_sent_datetime: '2020-09-20 00:00:00.000000'
   digital_entry_pack_sent_datetime_string: 20sep2020
   digital_entry_pack_status: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
+  digital_survey_mode_preference: The sequential subset of Erlang supports eager evaluation,
+    single assignment, and dynamic typing.
   email: Type classes first appeared in the Haskell programming language.
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Any other Mixed background
@@ -103,23 +105,23 @@
   survey_opt_in_date: '2022-01-09T00:42:38Z'
   survey_opt_in_invitation_sent: 'No'
   title: Prof.
-  type_preference: The sequential subset of Erlang supports eager evaluation, single
-    assignment, and dynamic typing.
-  voucher_preference: '"Messages can be sent to and received from ports, but these
-    messages must obey the so-called ""port protocol."""'
+  voucher_type_preference: '"Messages can be sent to and received from ports, but
+    these messages must obey the so-called ""port protocol."""'
 - any_household_members_over_2_years_and_not_present: 'Yes'
   city: Haskell features a type system with type inference and lazy evaluation.
-  communication_preference: I don't even care.
   consent_blood_samples_if_positive_yn: 'No'
   consent_contact_extra_research_yn: 'Yes'
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   country: Erlang is known for its designs that are well suited for systems.
   date_of_birth: '2014-12-23 00:00:00.000000'
   date_of_birth_string: 23dec2014
+  digital_communication_preference: I don't even care.
   digital_entry_pack_sent_datetime: '2022-04-19 00:00:00.000000'
   digital_entry_pack_sent_datetime_string: 19apr2022
   digital_entry_pack_status: She spent her earliest years reading classic literature,
     and writing poetry.
+  digital_survey_mode_preference: Erlang is a general-purpose, concurrent, functional
+    programming language.
   email: Erlang is a general-purpose, concurrent, functional programming language.
   ethnic_group: White
   ethnicity: Other ethnic group-Arab
@@ -215,24 +217,25 @@
   survey_opt_in_date: '2022-01-08T03:47:40Z'
   survey_opt_in_invitation_sent: 'No'
   title: null
-  type_preference: Erlang is a general-purpose, concurrent, functional programming
-    language.
-  voucher_preference: Atoms are used within a program to denote distinguished values.
+  voucher_type_preference: Atoms are used within a program to denote distinguished
+    values.
 - any_household_members_over_2_years_and_not_present: 'Yes'
   city: They are written as strings of consecutive alphanumeric characters, the first
     character being lowercase.
-  communication_preference: Tuples are containers for a fixed number of Erlang data
-    types.
   consent_blood_samples_if_positive_yn: null
   consent_contact_extra_research_yn: null
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   country: Type classes first appeared in the Haskell programming language.
   date_of_birth: '1997-08-21 00:00:00.000000'
   date_of_birth_string: 21aug1997
+  digital_communication_preference: Tuples are containers for a fixed number of Erlang
+    data types.
   digital_entry_pack_sent_datetime: '2020-08-13 00:00:00.000000'
   digital_entry_pack_sent_datetime_string: 13aug2020
   digital_entry_pack_status: Haskell features a type system with type inference and
     lazy evaluation.
+  digital_survey_mode_preference: Tuples are containers for a fixed number of Erlang
+    data types.
   email: It is also a garbage-collected runtime system.
   ethnic_group: White
   ethnicity: Asian or Asian British-Chinese
@@ -328,20 +331,22 @@
   survey_opt_in_date: null
   survey_opt_in_invitation_sent: 'Yes'
   title: Dr.
-  type_preference: Tuples are containers for a fixed number of Erlang data types.
-  voucher_preference: He looked inquisitively at his keyboard and wrote another sentence.
+  voucher_type_preference: He looked inquisitively at his keyboard and wrote another
+    sentence.
 - any_household_members_over_2_years_and_not_present: 'No'
   city: Erlang is a general-purpose, concurrent, functional programming language.
-  communication_preference: Do you come here often?
   consent_blood_samples_if_positive_yn: 'Yes'
   consent_contact_extra_research_yn: 'Yes'
   consent_use_of_surplus_blood_samples_yn: 'No'
   country: Ports are created with the built-in function open_port.
   date_of_birth: '2007-10-03 00:00:00.000000'
   date_of_birth_string: 03oct2007
+  digital_communication_preference: Do you come here often?
   digital_entry_pack_sent_datetime: '2020-05-14 00:00:00.000000'
   digital_entry_pack_sent_datetime_string: 14may2020
   digital_entry_pack_status: Do you have any idea why this is not working?
+  digital_survey_mode_preference: The arguments can be primitive data types or compound
+    data types.
   email: I don't even care.
   ethnic_group: Other Ethnic Group
   ethnicity: Black,Caribbean,Afro-Caribbean
@@ -437,12 +442,9 @@
   survey_opt_in_date: '2022-01-01T17:18:14Z'
   survey_opt_in_invitation_sent: null
   title: Prof.
-  type_preference: The arguments can be primitive data types or compound data types.
-  voucher_preference: Do you come here often?
+  voucher_type_preference: Do you come here often?
 - any_household_members_over_2_years_and_not_present: null
   city: Where are my pants?
-  communication_preference: Haskell is a standardized, general-purpose purely functional
-    programming language, with non-strict semantics and strong static typing.
   consent_blood_samples_if_positive_yn: 'No'
   consent_contact_extra_research_yn: 'No'
   consent_use_of_surplus_blood_samples_yn: null
@@ -450,9 +452,12 @@
     first character being lowercase.
   date_of_birth: '2003-05-08 00:00:00.000000'
   date_of_birth_string: 08may2003
+  digital_communication_preference: Haskell is a standardized, general-purpose purely
+    functional programming language, with non-strict semantics and strong static typing.
   digital_entry_pack_sent_datetime: '2021-09-28 00:00:00.000000'
   digital_entry_pack_sent_datetime_string: 28sep2021
   digital_entry_pack_status: It is also a garbage-collected runtime system.
+  digital_survey_mode_preference: Ports are created with the built-in function open_port.
   email: In 1989 the building was heavily damaged by fire, but it has since been restored.
   ethnic_group: Asian or Asian British
   ethnicity: Caribbean or Black British
@@ -547,24 +552,25 @@
   survey_opt_in_date: '2022-01-06T05:49:19Z'
   survey_opt_in_invitation_sent: 'Yes'
   title: Ms.
-  type_preference: Ports are created with the built-in function open_port.
-  voucher_preference: Haskell is a standardized, general-purpose purely functional
+  voucher_type_preference: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
 - any_household_members_over_2_years_and_not_present: 'Yes'
   city: '"Messages can be sent to and received from ports, but these messages must
     obey the so-called ""port protocol."""'
-  communication_preference: In 1989 the building was heavily damaged by fire, but
-    it has since been restored.
   consent_blood_samples_if_positive_yn: null
   consent_contact_extra_research_yn: 'No'
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   country: Make me a sandwich.
   date_of_birth: '2015-04-22 00:00:00.000000'
   date_of_birth_string: 22apr2015
+  digital_communication_preference: In 1989 the building was heavily damaged by fire,
+    but it has since been restored.
   digital_entry_pack_sent_datetime: '2020-11-16 00:00:00.000000'
   digital_entry_pack_sent_datetime_string: 16nov2020
   digital_entry_pack_status: Type classes first appeared in the Haskell programming
     language.
+  digital_survey_mode_preference: She spent her earliest years reading classic literature,
+    and writing poetry.
   email: Atoms can contain any character if they are enclosed within single quotes
     and an escape convention exists which allows any character to be used within an
     atom.
@@ -657,23 +663,23 @@
   survey_opt_in_date: null
   survey_opt_in_invitation_sent: null
   title: Prof.
-  type_preference: She spent her earliest years reading classic literature, and writing
-    poetry.
-  voucher_preference: She spent her earliest years reading classic literature, and
-    writing poetry.
+  voucher_type_preference: She spent her earliest years reading classic literature,
+    and writing poetry.
 - any_household_members_over_2_years_and_not_present: 'No'
   city: I don't even care.
-  communication_preference: Any element of a tuple can be accessed in constant time.
   consent_blood_samples_if_positive_yn: 'Yes'
   consent_contact_extra_research_yn: 'Yes'
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   country: Make me a sandwich.
   date_of_birth: '1996-09-25 00:00:00.000000'
   date_of_birth_string: 25sep1996
+  digital_communication_preference: Any element of a tuple can be accessed in constant
+    time.
   digital_entry_pack_sent_datetime: '2022-01-20 00:00:00.000000'
   digital_entry_pack_sent_datetime_string: 20jan2022
   digital_entry_pack_status: Atoms are used within a program to denote distinguished
     values.
+  digital_survey_mode_preference: It is also a garbage-collected runtime system.
   email: The arguments can be primitive data types or compound data types.
   ethnic_group: White
   ethnicity: Any other Black
@@ -770,21 +776,23 @@
   survey_opt_in_date: '2022-01-09T21:14:32Z'
   survey_opt_in_invitation_sent: null
   title: Miss.
-  type_preference: It is also a garbage-collected runtime system.
-  voucher_preference: Atoms are used within a program to denote distinguished values.
+  voucher_type_preference: Atoms are used within a program to denote distinguished
+    values.
 - any_household_members_over_2_years_and_not_present: 'Yes'
   city: Erlang is known for its designs that are well suited for systems.
-  communication_preference: Erlang is a general-purpose, concurrent, functional programming
-    language.
   consent_blood_samples_if_positive_yn: null
   consent_contact_extra_research_yn: null
   consent_use_of_surplus_blood_samples_yn: null
   country: Any element of a tuple can be accessed in constant time.
   date_of_birth: '2021-12-18 00:00:00.000000'
   date_of_birth_string: 18dec2021
+  digital_communication_preference: Erlang is a general-purpose, concurrent, functional
+    programming language.
   digital_entry_pack_sent_datetime: '2020-06-28 00:00:00.000000'
   digital_entry_pack_sent_datetime_string: 28jun2020
   digital_entry_pack_status: Where are my pants?
+  digital_survey_mode_preference: Atoms are used within a program to denote distinguished
+    values.
   email: Atoms can contain any character if they are enclosed within single quotes
     and an escape convention exists which allows any character to be used within an
     atom.
@@ -885,23 +893,24 @@
   survey_opt_in_date: '2022-01-03T01:13:33Z'
   survey_opt_in_invitation_sent: 'No'
   title: Ms.
-  type_preference: Atoms are used within a program to denote distinguished values.
-  voucher_preference: Its main implementation is the Glasgow Haskell Compiler.
+  voucher_type_preference: Its main implementation is the Glasgow Haskell Compiler.
 - any_household_members_over_2_years_and_not_present: 'Yes'
   city: The sequential subset of Erlang supports eager evaluation, single assignment,
     and dynamic typing.
-  communication_preference: Make me a sandwich.
   consent_blood_samples_if_positive_yn: 'No'
   consent_contact_extra_research_yn: 'Yes'
   consent_use_of_surplus_blood_samples_yn: null
   country: Do you have any idea why this is not working?
   date_of_birth: '2009-03-09 00:00:00.000000'
   date_of_birth_string: 09mar2009
+  digital_communication_preference: Make me a sandwich.
   digital_entry_pack_sent_datetime: '2020-02-05 00:00:00.000000'
   digital_entry_pack_sent_datetime_string: 05feb2020
   digital_entry_pack_status: Atoms can contain any character if they are enclosed
     within single quotes and an escape convention exists which allows any character
     to be used within an atom.
+  digital_survey_mode_preference: Erlang is known for its designs that are well suited
+    for systems.
   email: Erlang is a general-purpose, concurrent, functional programming language.
   ethnic_group: Mixed/Multiple Ethnic Groups
   ethnicity: Caribbean or Black British
@@ -997,20 +1006,20 @@
   survey_opt_in_date: null
   survey_opt_in_invitation_sent: 'No'
   title: Mrs.
-  type_preference: Erlang is known for its designs that are well suited for systems.
-  voucher_preference: Make me a sandwich.
+  voucher_type_preference: Make me a sandwich.
 - any_household_members_over_2_years_and_not_present: 'No'
   city: Do you come here often?
-  communication_preference: Do you come here often?
   consent_blood_samples_if_positive_yn: 'No'
   consent_contact_extra_research_yn: 'Yes'
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   country: Atoms are used within a program to denote distinguished values.
   date_of_birth: '1982-12-15 00:00:00.000000'
   date_of_birth_string: 15dec1982
+  digital_communication_preference: Do you come here often?
   digital_entry_pack_sent_datetime: '2020-05-03 00:00:00.000000'
   digital_entry_pack_sent_datetime_string: 03may2020
   digital_entry_pack_status: Its main implementation is the Glasgow Haskell Compiler.
+  digital_survey_mode_preference: Where are my pants?
   email: She spent her earliest years reading classic literature, and writing poetry.
   ethnic_group: Black or African or Caribbean or Black British
   ethnicity: Asian or Asian British-Bangladeshi
@@ -1107,6 +1116,5 @@
   survey_opt_in_date: '2022-01-03T05:16:17Z'
   survey_opt_in_invitation_sent: 'Yes'
   title: Mr.
-  type_preference: Where are my pants?
-  voucher_preference: The sequential subset of Erlang supports eager evaluation, single
-    assignment, and dynamic typing.
+  voucher_type_preference: The sequential subset of Erlang supports eager evaluation,
+    single assignment, and dynamic typing.
