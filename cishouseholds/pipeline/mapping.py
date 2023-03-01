@@ -70,7 +70,6 @@ category_maps = {
     "iqvia_raw_category_map": {
         "blood_taken_am_pm": {"AM": 0, "PM": 1},
         "swab_taken_am_pm": {"AM": 0, "PM": 1},
-        
         "aged_16_or_over": _yes_no_categories,
         "think_respiratory_infection": _yes_no_categories,
         "agreed_to_additional_consent_visit": _yes_no_categories,
