@@ -60,8 +60,12 @@ def mapping(df: DataFrame):
             "4 doses": 3,
             "5 doses": 3,
             "6 doses or more": 3,
+            "6 doses": 3,
+            "7 doses": 3,
+            "8 doses or more": 3,
         },
     )
+
     df = group_participant_within_date_range(
         df=df,
         column_name_to_assign="i_dose",
