@@ -815,6 +815,26 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         "multiple errors sample retained",
         ",",
     )
+    df = df.withColumn("cis_covid_vaccine_number_of_doses", F.col("phm_covid_vaccine_number_of_doses"))
+
+    df = update_column_values_from_map(
+        df,
+        "phm_covid_vaccine_number_of_doses",
+        {
+            "1 dose": 1,
+            "1": 1,
+            "2 doses": 2,
+            "2": 2,
+            "3 doses": 3,
+            "3 or more": 3,
+            "4 doses": 4,
+            "5 doses": 5,
+            "6 doses or more": 6,
+            "6 doses": 6,
+            "7 doses": 7,
+            "8 doses or more": 8,
+        },
+    )
     return df
 
     df = map_options_to_bool_columns(

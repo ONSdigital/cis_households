@@ -123,4 +123,4 @@ def deduplication(df: DataFrame):
             "Oxford / AstraZeneca / Vaxzevria / Covishield",
         ],
     )
-    return df
+    return
