@@ -6,6 +6,31 @@ from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 
+def filter_single_dose(
+    df: DataFrame,
+    participant_id_column: str,
+    visit_datetime_column: str,
+    order_column: str,
+    i_dose_column: str,
+    poss_1_2_column: str,
+    default_date_column: str,
+    vaccine_type_column: str,
+    allowed_vaccine_types: List[str],
+):
+    """
+    Filter to a single dose per participant per idose using a series of prescribed filters.
+    """
+    window = Window.partitionBy(participant_id_column, i_dose_column)
+    disambiguation_window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
+    df = df.withColumn("MIN", F.min(F.col(order_column)).over(window))
+    df = df.filter(F.col(order_column) == F.col("MIN"))
+    df = df.filter(((F.col(poss_1_2_column) == "Yes") & (F.col(vaccine_type_column).isin(allowed_vaccine_types))))
+    df = df.filter(F.col(default_date_column) != 1)
+    df = df.withColumn("ROW", F.row_number().over(disambiguation_window))
+    df = df.filter(F.col("ROW") == 1)
+    return df.drop("ROW", "MIN")
+
+
 def filter_before_date_or_null(df: DataFrame, date_column: str, min_date: str):
     """
     Filter rows which have a date before a given `min_date`.
