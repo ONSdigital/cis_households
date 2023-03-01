@@ -3406,6 +3406,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 "I had bruising or pain",
                 "I felt unwell",
                 "Other please specify",
+                "There were issues with the kit",
                 None,
             ],
         ),
