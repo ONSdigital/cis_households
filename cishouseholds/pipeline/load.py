@@ -263,19 +263,16 @@ def update_table_and_log_source_files(
     override_mode: str = None,
     survey_table: bool = False,
     archive: bool = False,
-    include_processed: bool = False,
 ):
     """
     Update a table with the specified dataframe and log the source files that have been processed.
     Used to record which files have been processed for each input file type.
     """
     update_table(df, table_name, override_mode, survey_table=survey_table, archive=archive)
-    create_processed_file_log_entry(df, filename_column, dataset_name, table_name, include_processed)
+    create_processed_file_log_entry(df, filename_column, dataset_name, table_name)
 
 
-def create_processed_file_log_entry(
-    df: DataFrame, filename_column: str, dataset_name: str, table_name: str, include_processed: bool = False
-):
+def create_processed_file_log_entry(df: DataFrame, filename_column: str, dataset_name: str, table_name: str):
     """Collects a list of unique filenames that have been processed and writes them to the specified table."""
     spark_session = get_or_create_spark_session()
     newly_processed_files = df.select(filename_column).distinct().rdd.flatMap(lambda x: x).collect()
@@ -296,8 +293,6 @@ def create_processed_file_log_entry(
     ]
     df = spark_session.createDataFrame(entry, schema)
     update_table(df, "processed_filenames", "append", error_if_cols_differ=False)
-    if include_processed:
-        update_processed_file_log(dataset_name, currently_processed=include_processed)
 
 
 def update_processed_file_log(dataset_name: str, currently_processed: bool):

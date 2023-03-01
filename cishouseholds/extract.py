@@ -151,7 +151,7 @@ def get_files_to_be_processed(
         file_paths = filter_list_items_in_table_when_condition(
             item_list=file_paths,
             table_name="processed_filenames",
-            item_column="file_path",
+            item_column="processed_filename",
             condition_column="currently_processed",
             condition_value=True,
         )
