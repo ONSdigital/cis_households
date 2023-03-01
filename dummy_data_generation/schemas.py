@@ -3412,7 +3412,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         ),
         "blood_not_taken_could_not_other": _("text.sentence"),
         "blood_sample_barcode_correct": _("choice", items=yes_no_none_choice),
-        "blood_barcode_user_entered": _("random.custom_code", mask="BLT########", digit="#"),
+        "blood_sample_barcode_user_entered": _("random.custom_code", mask="BLT########", digit="#"),
         "blood_taken_date": _(
             "discrete_distribution",
             population=[
@@ -3615,7 +3615,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         "cis_covid_vaccine_received": _("choice", items=yes_no_none_choice),
         "cis_covid_vaccine_type": _("choice", items=type_of_vaccination),
         "cis_covid_vaccine_type_other": _("text.quote"),
-        "cis_covid_vaccine_number_of_doses": _(
+        "phm_covid_vaccine_number_of_doses": _(
             "choice",
             items=[
                 "1 dose",
@@ -3681,8 +3681,8 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
             weights=[0.5, 0.5],
         ),
-        "think_had_covid_symptom_list_1": _("choice", items=symptoms_list_1),
-        "think_had_covid_symptom_list_2": _("choice", items=symptoms_list_2),
+        "think_had_covid_any_symptom_list_1": _("choice", items=symptoms_list_1),
+        "think_had_covid_any_symptom_list_2": _("choice", items=symptoms_list_2),
         "phm_think_had_flu_onset_date": _(
             "discrete_distribution",
             population=[
@@ -3813,7 +3813,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         "times_hour_or_longer_another_home_last_7_days": _("choice", items=times_count),
         "times_hour_or_longer_another_person_your_home_last_7_days": _("choice", items=times_count),
         "times_shopping_last_7_days": _("choice", items=times_count),
-        "times_socialise_last_7_days": _("choice", items=times_count),
+        "times_socialising_last_7_days": _("choice", items=times_count),
         "times_indoor_exercise_last_28_days": _(
             "choice",
             items=[
