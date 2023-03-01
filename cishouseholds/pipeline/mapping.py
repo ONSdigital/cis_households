@@ -238,6 +238,7 @@ category_maps = {
             "Household did not attend": 9,
             "Locked": 10,
         },
+        "times_indoor_exercise_last_28_days": {"None": 0, "1-5": 1, "6-10": 2, "11-20": 3, "21 or more": 4},
         "survey_response_type": {"First Visit": 0, "Follow-up Visit": 1},
         "sex": {"Male": 1, "Female": 2},
         "ethnicity": {
