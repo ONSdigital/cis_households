@@ -9,6 +9,7 @@ from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_completion_status
 from cishouseholds.derive import assign_date_from_filename
 from cishouseholds.derive import assign_datetime_from_combined_columns
+from cishouseholds.edit import add_prefix
 
 # from pyspark.sql import Window
 
@@ -39,4 +40,6 @@ def preprocessing(df: DataFrame):
     )
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 4)
     df = assign_completion_status(df=df, column_name_to_assign="survey_completion_status")
+    df = add_prefix(df, column_name_to_update="blood_sample_barcode_user_entered", prefix="BLT")
+    df = add_prefix(df, column_name_to_update="swab_sample_barcode_user_entered", prefix="BLT")
     return df
