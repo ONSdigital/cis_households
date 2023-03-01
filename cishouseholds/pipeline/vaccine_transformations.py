@@ -2,6 +2,7 @@
 # from typing import Optional
 # import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
+from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_default_date_flag
@@ -30,7 +31,10 @@ def mapping(df: DataFrame):
     """"""
     df = filter_before_date_or_null(df, "cis_covid_vaccine_date", "2020-12-01")
     df = update_column_values_from_map(
-        df, map={None: "don't know type", "Other / specify": "don't know type"}, column="cis_covid_vaccine_date"
+        df,
+        map={None: "don't know type", "Other / specify": "don't know type"},
+        column="cis_covid_vaccine_type",
+        condition_expression=(F.col("cis_covid_vaccine_date").isNotNull()),
     )
     df = assign_default_date_flag(df, "cis_covid_vaccine_date", default_days=[1, 15])
     df = update_column_values_from_map(

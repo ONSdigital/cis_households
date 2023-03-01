@@ -2703,7 +2703,7 @@ def assign_order_number(
         # condition 1
         F.when(
             F.col(covid_vaccine_type_column).isin(moderna_vaccine_types + pfizer_vaccine_types)
-            & (((F.col(pos_1_2_column) == "No") | (F.col(max_doses_column) == "Yes")) & (F.col(num_doses_column) == 3)),
+            & ((F.col(pos_1_2_column) == "No") | ((F.col(max_doses_column) == "Yes") & (F.col(num_doses_column) == 3))),
             1,
         )
         # condition 2
