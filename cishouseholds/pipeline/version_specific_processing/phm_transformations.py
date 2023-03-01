@@ -446,6 +446,7 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
             "I had bruising or pain": "blood_not_taken_could_not_reason_had_bruising",
             "I felt unwell": "blood_not_taken_could_not_reason_unwell",
             "Other please specify": "blood_not_taken_could_not_reason_other",
+            "There were issues with the kit": "blood_not_taken_could_not_reason_issues_with_kit",
         },
         ";",
     )
