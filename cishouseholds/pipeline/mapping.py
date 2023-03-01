@@ -68,6 +68,7 @@ _vaccine_type_map = {
 
 category_maps = {
     "iqvia_raw_category_map": {
+        "aged_16_or_over": _yes_no_categories,
         "think_respiratory_infection": _yes_no_categories,
         "agreed_to_additional_consent_visit": _yes_no_categories,
         "consent_blood_samples_if_positive_yn": _yes_no_categories,
