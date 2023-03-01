@@ -602,6 +602,7 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         "1 to 5": "1-5",
         "6 to 10": "6-10",
         "11 to 20": "11-20",
+        "21 or more": "21 or more",
         "Don't know": None,
         "Prefer not to say": None,
     }
