@@ -20,6 +20,7 @@ from pyspark.sql import Window
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
+from cishouseholds.expressions import all_null_over_window
 from cishouseholds.expressions import any_column_matches_regex
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import any_column_null
@@ -122,29 +123,12 @@ def assign_poss_1_2(
     )
     df = df.withColumn(
         column_name_to_assign,
-        F.when(
-            F.sum(
-                F.when((F.col(column_name_to_assign) == "No") & (F.col(num_doses_column).isNotNull()), 1).otherwise(0)
-            ).over(rear_window)
-            == 0,
-            "Yes",
-        ).otherwise(F.col(column_name_to_assign)),
+        F.when(F.max(F.col(num_doses_column)).over(rear_window) < 3, "Yes").otherwise(F.col(column_name_to_assign)),
     )
     df = df.withColumn(
         column_name_to_assign,
-        F.when(
-            (F.sum(F.when(F.col(num_doses_column) == 1, 1).otherwise(0)).over(rear_window) == 0)
-            | (F.sum(F.when(F.col(num_doses_column) == 2, 1).otherwise(0)).over(rear_window) == 0),
-            "Yes",
-        ).otherwise(F.col(column_name_to_assign)),
+        F.when(all_null_over_window(window, num_doses_column), "Yes").otherwise(F.col(column_name_to_assign)),
     )
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when(
-            F.col(num_doses_column).isNotNull(), F.when((F.col(num_doses_column) < 3), "Yes").otherwise("No")
-        ).otherwise(F.col(column_name_to_assign)),
-    )
-
     return df
 
 
