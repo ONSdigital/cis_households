@@ -10,8 +10,8 @@ def test_filter_single_dose(spark_session):  # test function
     input_df = spark_session.createDataFrame(
         data=[
             (1, "2021-07-19", 1, 1, "Yes", 2, "A"),
-            (1, "2021-07-20", 2, 1, "Yes", 2, "A"),
-            (2, "2021-07-20", 2, 1, "Yes", 2, "A"),
+            (1, "2021-07-20", 0, 1, "Yes", 2, "A"),
+            (2, "2021-07-20", 0, 1, "Yes", 2, "A"),
             (2, "2021-07-21", 1, 1, "Yes", 2, "A"),
             (3, "2021-07-21", 1, 1, "Yes", 2, "B"),  # disallowed type
         ],
@@ -19,8 +19,8 @@ def test_filter_single_dose(spark_session):  # test function
     )
     expected_df = spark_session.createDataFrame(
         data=[
-            (1, "2021-07-20", 2, 1, "Yes", 2, "A"),
-            (2, "2021-07-20", 2, 1, "Yes", 2, "A"),
+            (1, "2021-07-20", 0, 1, "Yes", 2, "A"),
+            (2, "2021-07-20", 0, 1, "Yes", 2, "A"),
         ],
         schema=schema,
     )
