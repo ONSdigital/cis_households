@@ -3836,18 +3836,13 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 "Underound or Metro or Light Rail or Tram",
                 "Plane",
                 "Other method",
+                "I have not used transport shared with people outside of my home for reasons other than travel to work or education",
             ],
         ),
         "transport_shared_outside_household_last_28_days_none": _(
             "choice",
             items=[
-                "Bus or minibus or coach",
-                "Car or van",
-                "Taxi or minicab",
-                "Train",
-                "Underound or Metro or Light Rail or Tram",
-                "Plane",
-                "Other method",
+                "I have not used transport shared with people outside of my home for reasons other than travel to work or education",
             ],
         ),
         "face_covering_work_or_education": _(
