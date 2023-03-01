@@ -814,3 +814,20 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         ",",
     )
     return df
+
+    df = map_options_to_bool_columns(
+        df,
+        "transport_shared_outside_household_last_28_days",
+        {
+            "Underground or metro or light rail or tram": "transport_shared_outside_household_last_28_days_underground_metro",
+            "Train": "transport_shared_outside_household_last_28_days_train",
+            "Bus or minibus or coach": "transport_shared_outside_household_last_28_days_bus_coach",
+            "Car or van": "transport_shared_outside_household_last_28_days_car_van",
+            "Taxi or minicab": "transport_shared_outside_household_last_28_days_taxi",
+            "Plane": "transport_shared_outside_household_last_28_days_plane",
+            "Ferry or boat": "transport_shared_outside_household_last_28_days_ferry_boat",
+            "Other method": "transport_shared_outside_household_last_28_days_other",
+            "I have not used transport shared with people outside of my home for reasons other than travel to work or education": "transport_shared_outside_household_last_28_days_none",
+        },
+        ";",
+    )
