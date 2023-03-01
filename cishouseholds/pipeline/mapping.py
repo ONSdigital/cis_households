@@ -516,6 +516,7 @@ category_maps = {
         "times_hour_or_longer_another_person_your_home_last_7_days": _times_in_last_7_day_categories,
         "voucher_type_preference": {"email_address": 1, "Paper": 2},
         "participant_testing_group": {"Swab Only": 0, "Blood and Swab": 1, "Fingerprick and Swab": 2},
+        "study_cohort": {"Swab Only": 0, "Blood and Swab": 1, "Fingerprick and Swab": 2},
         "household_fingerprick_status": {
             "Accepted": 0,
             "Declined": 1,
@@ -1313,6 +1314,8 @@ category_maps = {
             "Swab Only": 1,
             "Blood and Swab": 2,
         },
+        "household_members_under_2_years": _yes_no_categories,
+        "any_household_members_over_2_years_and_not_present": _yes_no_categories,
     }
 }
 
@@ -2216,12 +2219,12 @@ column_name_maps = {
         "person9_reason_for_not_consenting": "person_9_reason_for_not_consenting",
         "count_of_non_consenting": "person_non_consenting_count",
         "email": "email",
-        "participant_digital_type_preference": "type_preference",
-        "participant_digital_communication_preference": "communication_preference",
+        "participant_digital_type_preference": "digital_survey_mode_preference",
+        "participant_digital_communication_preference": "digital_communication_preference",
         "participant_digital_sample_return_preference": "sample_return_preference",
         "participant_digital_language_preference": "language_preference",
         "participant_digital_study_cohort": "study_cohort",
-        "participant_digital_voucher_preference": "voucher_preference",
+        "participant_digital_voucher_preference": "voucher_type_preference",
     },
 }
 

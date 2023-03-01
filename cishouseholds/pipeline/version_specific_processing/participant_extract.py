@@ -20,6 +20,10 @@ def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
     transform and process participant extract data received from cis digital
     """
     col_val_map = {
+        "voucher_type_preference": {
+            "Letter": "Paper",
+            "Email": "email_address",
+        },
         "participant_withdrawal_reason": {
             "Moving Location": "Moving location",
             "Bad experience with tester / survey": "Bad experience with interviewer/survey",
