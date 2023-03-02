@@ -79,6 +79,7 @@ def create_formatted_datetime_string_columns(df) -> DataFrame:
         "other_covid_infection_test_negative_date",  # tempvar
         "other_antibody_test_positive_date",  # tempvar
         "other_antibody_test_negative_date",  # tempvar
+        "nhs_share_opt_out_date",
     ]
     date_format_string_list = [
         col for col in date_format_string_list if col not in cis_digital_datetime_map["yyyy-MM-dd"]
