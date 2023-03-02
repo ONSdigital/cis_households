@@ -4,6 +4,7 @@ from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
+from cishouseholds.derive import assign_columns_from_array
 from cishouseholds.derive import assign_date_from_filename
 from cishouseholds.derive import assign_datetime_from_coalesced_columns_and_log_source
 from cishouseholds.derive import assign_raw_copies
@@ -838,19 +839,34 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
     )
     return df
 
-    df = map_options_to_bool_columns(
-        df,
+
+def split_array_columns(df: DataFrame):
+    """"""
+    array_cols = [
+        "currently_smokes_or_vapes_description",
+        "blood_not_taken_could_not_reason",
+        "think_have_covid_any_symptom_list_1",
+        "think_have_covid_any_symptom_list_2",
+        "think_have_symptoms_new_or_worse_list_1",
+        "think_have_symptoms_new_or_worse_list_2",
+        "phm_think_had_respiratory_infection_type",
+        "think_had_covid_symptom_list_1",
+        "think_had_covid_symptom_list_2",
+        "think_had_flu_symptom_list_1",
+        "think_had_flu_symptom_list_2",
+        "think_had_other_infection_symptom_list_1",
+        "think_had_other_infection_symptom_list_2",
+        "think_have_long_covid_symptom_none_list_1",
+        "think_have_long_covid_symptom_none_list_2",
+        "think_have_long_covid_symptom_none_list_3",
         "transport_shared_outside_household_last_28_days",
-        {
-            "Underground or metro or light rail or tram": "transport_shared_outside_household_last_28_days_underground_metro",
-            "Train": "transport_shared_outside_household_last_28_days_train",
-            "Bus or minibus or coach": "transport_shared_outside_household_last_28_days_bus_coach",
-            "Car or van": "transport_shared_outside_household_last_28_days_car_van",
-            "Taxi or minicab": "transport_shared_outside_household_last_28_days_taxi",
-            "Plane": "transport_shared_outside_household_last_28_days_plane",
-            "Ferry or boat": "transport_shared_outside_household_last_28_days_ferry_boat",
-            "Other method": "transport_shared_outside_household_last_28_days_other",
-            "I have not used transport shared with people outside of my home for reasons other than travel to work or education": "transport_shared_outside_household_last_28_days_none",
-        },
-        ";",
-    )
+    ]
+    for col in array_cols:
+        df = assign_columns_from_array(
+            df=df,
+            id_column_name="visit_id",
+            array_column_name=col,
+            prefix=col.split("_list")[0],
+            true_false_values=["Yes", "No"],
+        )
+    return df

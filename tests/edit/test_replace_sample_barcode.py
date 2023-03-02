@@ -5,85 +5,14 @@ from cishouseholds.edit import replace_sample_barcode
 
 def test_replace_sample_barcode(spark_session):
     input_df = spark_session.createDataFrame(
+        # fmt: off
         data=[
-            (
-                1,
-                "2022-12-01 00:00:00",
-                "A",
-                "B",
-                3,
-                "Yes",
-                "Yes",
-                None,
-                None,
-                "C",
-                "D",
-            ),  # Tests to preserve preassigned A and B in new col
-            (
-                2,
-                "2022-12-01 00:00:00",
-                "A",
-                "B",
-                3,
-                "No",
-                "No",
-                None,
-                None,
-                "C",
-                "D",
-            ),  # Tests to replace A and B with C and D in new col
-            (
-                3,
-                "2022-12-01 00:00:00",
-                "A",
-                "B",
-                3,
-                "Yes",
-                "Yes",
-                None,
-                None,
-                None,
-                None,
-            ),  # Tests to preserve preassigned A and B in new col
-            (
-                4,
-                "2022-12-01 00:00:00",
-                "A",
-                "B",
-                2,
-                "Yes",
-                "Yes",
-                "",
-                "",
-                "C",
-                "D",
-            ),  # Tests to preserve values due to business logic
-            (
-                5,
-                "2022-12-01 00:00:00",
-                "A",
-                "",
-                3,
-                "No",
-                "",
-                "E",
-                "",
-                "B",
-                "",
-            ),  # swab barcode not correct and iqvia corrected
-            (
-                6,
-                "2022-10-01 00:00:00",
-                "A",
-                None,
-                3,
-                "No",
-                None,
-                "F",
-                None,
-                "B",
-                None,
-            ),  # iqvia corrected
+            (1,"2022-12-01 00:00:00","A","B",3,"Yes","Yes",None,None,"C","D"),  # Tests to preserve preassigned A and B in new col
+            (2,"2022-12-01 00:00:00","A","B",3,"No","No",None,None,"C","D"),  # Tests to replace A and B with C and D in new col
+            (3,"2022-12-01 00:00:00","A","B",3,"Yes","Yes",None,None,None, None),  # Tests to preserve preassigned A and B in new col
+            (4,"2022-12-01 00:00:00","A","B",2,"Yes","Yes","","","C","D"),  # Tests to preserve values due to business logic
+            (5,"2022-12-01 00:00:00","A","",3,"No","","E","","B",""),  # swab barcode not correct and iqvia corrected
+            (6,"2022-10-01 00:00:00","A",None,3,"No",None,"F",None,"B",None),  # iqvia corrected
         ],
         schema="""
         id integer,
