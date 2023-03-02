@@ -545,8 +545,9 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         },
         ";",
     )
+
     df = df.withColumn(
-        "think_had_covid_symptoms",
+        "think_had_covid_any_symptoms",
         F.when(
             (F.col("think_had_covid_symptom_none_list_1") != "None of these symptoms")
             or (F.col("think_had_covid_symptom_none_list_2") != "None of these symptoms"),
