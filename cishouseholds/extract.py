@@ -1,10 +1,12 @@
 import subprocess
 from datetime import datetime
+from typing import Any
 from typing import List
 from typing import Optional
 from typing import Union
 
 import pandas as pd
+import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 from cishouseholds.pipeline.load import extract_from_table
@@ -110,6 +112,19 @@ def remove_list_items_in_table(item_list: list, table_name: str, item_column: st
     return item_list
 
 
+def filter_list_items_in_table_when_condition(
+    item_list: list, table_name: str, item_column: str, condition_column: str, condition_value: Any
+):
+    """"""
+    table_item_column = (
+        extract_from_table(table_name).filter(F.col(condition_column) == condition_value).select(item_column).distinct()
+    )
+    table_items = column_to_list(table_item_column, item_column)
+
+    item_list = [i for i in item_list if i not in table_items]
+    return item_list
+
+
 def get_files_to_be_processed(
     resource_path,
     latest_only=False,
@@ -133,6 +148,12 @@ def get_files_to_be_processed(
         file_paths = [file_paths[-1]]
     if check_table_exists("processed_filenames") and not include_processed:
         # After latest_only as we don't want to process earlier files if the latest has already been processed
-        file_paths = remove_list_items_in_table(file_paths, "processed_filenames", "processed_filename")
+        file_paths = filter_list_items_in_table_when_condition(
+            item_list=file_paths,
+            table_name="processed_filenames",
+            item_column="processed_filename",
+            condition_column="currently_processed",
+            condition_value=True,
+        )
 
     return file_paths

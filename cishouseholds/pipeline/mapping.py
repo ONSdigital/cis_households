@@ -239,6 +239,7 @@ category_maps = {
             "Household did not attend": 9,
             "Locked": 10,
         },
+        "times_indoor_exercise_last_28_days": {"None": 0, "1-5": 1, "6-10": 2, "11-20": 3, "21 or more": 4},
         "survey_response_type": {"First Visit": 0, "Follow-up Visit": 1},
         "sex": {"Male": 1, "Female": 2},
         "ethnicity": {
@@ -585,6 +586,7 @@ category_maps = {
         "cis_covid_vaccine_type_5": _vaccine_type_map,
         "cis_covid_vaccine_type_6": _vaccine_type_map,
         "cis_covid_vaccine_number_of_doses": {"1": 1, "2": 2, "3 or more": 3},
+        "phm_covid_vaccine_number_of_doses": {"1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8},
         "visit_date_type": {
             "actual_visit_date": 0,
             "latest_checkin_date": 1,
