@@ -50,7 +50,7 @@ def assign_columns_from_array(
     """
     df = df.withColumn("exploded", F.explode(array_column_name))
     if prefix:
-        df = df.withColumn("exploded", F.concat_ws("_", F.lit(prefix), F.col("exploded")))
+        df = df.withColumn("exploded", F.concat_ws("_", F.lit(prefix), F.regexp_replace(F.col("exploded"), " ", "_")))
     df = df.withColumn("value", F.lit(true_false_values[0]))
     df = df.groupby(id_column_name).pivot("exploded").agg(F.first("value")).fillna(False)
     return df
