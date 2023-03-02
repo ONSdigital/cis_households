@@ -556,6 +556,52 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         ).otherwise("No"),
     )
 
+    df = map_options_to_bool_columns(
+        df,
+        "think_had_flu_symptom_list_1",
+        {
+            "Runny nose or sneezing": "think_had_flu_symptom_runny_nose_or_sneezing",
+            "Loss of smell": "think_had_flu_symptom_loss_of_smell",
+            "Loss of taste": "think_had_flu_symptom_loss_of_taste",
+            "Sore throat": "think_had_flu_symptom_sore_throat",
+            "Cough": "think_had_flu_symptom_cough",
+            "Shortness of breath": "think_had_flu_symptom_shortness_of_breath",
+            "Noisy breathing or wheezing": "think_had_flu_symptom_noisy_breathing",
+            "Abdominal pain": "think_had_flu_symptom_abdominal_pain",
+            "Nausea or vomiting": "think_had_flu_symptom_nausea_or_vomiting",
+            "Diarrhoea": "think_had_flu_symptom_diarrhoea",
+            "Loss of appetite or eating less than usual": "think_had_flu_symptom_loss_of_appetite",
+            "None of these symptoms": "think_had_flu_symptom_none_list_1",
+        },
+        ";",
+    )
+    df = map_options_to_bool_columns(
+        df,
+        "think_had_flu_symptom_list_2",
+        {
+            "Headache": "think_had_flu_symptom_headache",
+            "Muscle ache": "think_had_flu_symptom_muscle_ache",
+            "Weakness or tiredness": "think_had_flu_symptom_fatigue",
+            "Fever including high temperature": "think_had_flu_symptom_fever",
+            "More trouble sleeping than usual": "think_had_flu_symptom_more_trouble_sleeping",
+            "Memory loss or confusion": "think_had_flu_symptom_memory_loss_or_confusion",
+            "Difficulty concentrating": "think_had_flu_symptom_difficulty_concentrating",
+            "Worry or anxiety": "think_had_flu_symptom_anxiety",
+            "Low mood or not enjoying anything": "think_had_flu_symptom_low_mood",
+            "None of these symptoms": "think_had_flu_symptom_none_list_2",
+        },
+        ";",
+    )
+
+    df = df.withColumn(
+        "think_had_flu_symptom_any",
+        F.when(
+            (F.col("think_had_flu_symptom_none_list_1") != "None of these symptoms")
+            or (F.col("think_had_flu_symptom_none_list_2") != "None of these symptoms"),
+            "Yes",
+        ).otherwise("No"),
+    )
+
     df = df.withColumn("times_outside_shopping_or_socialising_last_7_days", F.lit(None))
     raw_copy_list = [
         "participant_survey_status",
