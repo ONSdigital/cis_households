@@ -609,6 +609,18 @@ def execute_visit_transformations(
     return {"output_survey_table": output_survey_table}
 
 
+@register_pipeline_stage("vaccine_transformations")
+def execute_vaccine_transformations(
+    input_survey_table: str,
+    output_survey_table: str,
+):
+    """"""
+    df = extract_from_table(input_survey_table)
+    df = visit_transformations(df)
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
+    return {"output_survey_table": output_survey_table}
+
+
 @register_pipeline_stage("job_transformations")
 def execute_job_transformations(
     input_survey_table: str, output_survey_table: str, soc_lookup_table: str, job_lookup_table: str
