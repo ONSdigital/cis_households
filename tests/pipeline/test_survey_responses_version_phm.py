@@ -8,7 +8,7 @@ def test_responses_phm_df(responses_phm_ETL_output, regression_test_df):
     regression_test_df(
         responses_phm_ETL_output.drop("survey_response_source_file"),
         "participant_completion_window_id",
-        "processed_responses_digital",  # Check
+        "processed_responses_phm",  # Check
     )  # remove source file column, as it varies for our temp dummy data
 
 
