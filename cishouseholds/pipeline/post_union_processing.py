@@ -160,6 +160,7 @@ def generic_processing(df: DataFrame):
         "Don&#39;t know": None,
         "Do not know": None,
         "Don&amp;#39;t Know": None,
+        "I do not know the type": "Don't know type",
     }
     df = apply_value_map_multiple_columns(
         df,
