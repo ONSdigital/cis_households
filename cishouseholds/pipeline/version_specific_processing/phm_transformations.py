@@ -546,8 +546,9 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         },
         ";",
     )
+
     df = df.withColumn(
-        "think_had_covid_symptoms",
+        "think_had_covid_any_symptoms",
         F.when(
             (F.col("think_had_covid_symptom_none_list_1") != "None of these symptoms")
             or (F.col("think_had_covid_symptom_none_list_2") != "None of these symptoms"),
@@ -603,6 +604,7 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         "1 to 5": "1-5",
         "6 to 10": "6-10",
         "11 to 20": "11-20",
+        "21 or more": "21 or more",
         "Don't know": None,
         "Prefer not to say": None,
     }
@@ -814,6 +816,26 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         "multiple errors sample discarded",
         "multiple errors sample retained",
         ",",
+    )
+    df = df.withColumn("cis_covid_vaccine_number_of_doses", F.col("phm_covid_vaccine_number_of_doses"))
+
+    df = update_column_values_from_map(
+        df,
+        "phm_covid_vaccine_number_of_doses",
+        {
+            "1 dose": 1,
+            "1": 1,
+            "2 doses": 2,
+            "2": 2,
+            "3 doses": 3,
+            "3 or more": 3,
+            "4 doses": 4,
+            "5 doses": 5,
+            "6 doses or more": 6,
+            "6 doses": 6,
+            "7 doses": 7,
+            "8 doses or more": 8,
+        },
     )
     return df
 
