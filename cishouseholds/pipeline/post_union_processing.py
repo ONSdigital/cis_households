@@ -148,6 +148,7 @@ def generic_processing(df: DataFrame):
         "face_covering_work_or_education",
         "face_covering_other_enclosed_places",
         "cis_covid_vaccine_type",
+        "flu_vaccine_received",
     ]
     df = assign_raw_copies(df, dont_know_columns)
     dont_know_mapping_dict = {
