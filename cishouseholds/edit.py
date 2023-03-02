@@ -22,6 +22,11 @@ from cishouseholds.expressions import set_date_component
 from cishouseholds.expressions import sum_within_row
 
 
+def add_prefix(df: DataFrame, column_name_to_update: str, prefix: str, sep: str = ""):
+    """Add a prefix to a column"""
+    return df.withColumn(column_name_to_update, F.concat_ws(sep, F.lit(prefix), F.col(column_name_to_update)))
+
+
 def update_work_main_job_changed(
     df: DataFrame,
     column_name_to_update: str,
@@ -797,9 +802,10 @@ def update_column_values_from_map(
     df: DataFrame,
     column: str,
     map: dict,
-    condition_column: str = None,
+    reference_column: str = None,
     error_if_value_not_found: Optional[bool] = False,
     default_value: Union[str, bool, int] = None,
+    condition_expression: Any = None,
 ) -> DataFrame:
     """
     Given a map (dictionary) of Key-Value pairs, Replace column values that match the Keys
@@ -824,11 +830,14 @@ def update_column_values_from_map(
     default_value
         Default value to use when values in column `column` cannot be matched with keys in `map`
     """
-    if condition_column is None:
-        condition_column = column
+    if reference_column is None:
+        reference_column = column
 
     if default_value is None:
         default_value = F.col(column)
+
+    if condition_expression is None:
+        condition_expression = F.col(column) == F.col(column)
 
     # remove mapped null value
     _map = {k: v for k, v in map.items() if k is not None}
@@ -846,9 +855,14 @@ def update_column_values_from_map(
         df = df.withColumn(
             column,
             F.when(
-                (F.col(condition_column).isin(*list(map.keys()))) | (F.col(condition_column).isNull()),
-                F.when(F.col(condition_column).isNull(), map.get(None)).otherwise(mapping_expr[df[condition_column]]),
-            ).otherwise(default_value),
+                condition_expression,
+                F.when(
+                    (F.col(reference_column).isin(*list(map.keys()))) | (F.col(reference_column).isNull()),
+                    F.when(F.col(reference_column).isNull(), map.get(None)).otherwise(
+                        mapping_expr[df[reference_column]]
+                    ),
+                ).otherwise(default_value),
+            ).otherwise(F.col(column)),
         )
     return df
 

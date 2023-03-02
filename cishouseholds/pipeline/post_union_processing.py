@@ -164,6 +164,7 @@ def generic_processing(df: DataFrame):
         "Don&#39;t know": None,
         "Do not know": None,
         "Don&amp;#39;t Know": None,
+        "I do not know the type": "Don't know type",
     }
     df = apply_value_map_multiple_columns(
         df,
@@ -235,6 +236,6 @@ def generic_processing(df: DataFrame):
         df=df,
         column="smokes_nothing_now",
         map={"Yes": "No", "No": "Yes"},
-        condition_column="currently_smokes_or_vapes",
+        reference_column="currently_smokes_or_vapes",
     )
     return df

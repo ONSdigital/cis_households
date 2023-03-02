@@ -4,6 +4,7 @@ from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
+from cishouseholds.derive import assign_columns_from_array
 from cishouseholds.derive import assign_date_from_filename
 from cishouseholds.derive import assign_datetime_from_coalesced_columns_and_log_source
 from cishouseholds.derive import assign_raw_copies
@@ -446,6 +447,7 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
             "I had bruising or pain": "blood_not_taken_could_not_reason_had_bruising",
             "I felt unwell": "blood_not_taken_could_not_reason_unwell",
             "Other please specify": "blood_not_taken_could_not_reason_other",
+            "There were issues with the kit": "blood_not_taken_could_not_reason_issues_with_kit",
         },
         ";",
     )
@@ -463,6 +465,97 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         },
         ";",
     )
+    df = map_options_to_bool_columns(
+        df,
+        "think_have_covid_any_symptom_list_1",
+        {
+            "Runny nose or sneezing": "think_have_covid_symptom_runny_nose_or_sneezing",
+            "Loss of smell": "think_have_covid_symptom_loss_of_smell",
+            "Loss of taste": "think_have_covid_symptom_loss_of_taste",
+            "Sore throat": "think_have_covid_symptom_sore_throat",
+            "Cough": "think_have_covid_symptom_cough",
+            "Shortness of breath": "think_have_covid_symptom_shortness_of_breath",
+            "Noisy breathing or wheezing": "think_have_covid_symptom_noisy_breathing",
+            "Abdominal pain": "think_have_covid_symptom_abdominal_pain",
+            "Nausea or vomiting": "think_have_covid_symptom_nausea_or_vomiting",
+            "Diarrhoea": "think_have_covid_symptom_diarrhoea",
+            "Loss of appetite or eating less than usual": "think_have_covid_symptom_loss_of_appetite",
+            "None of these symptoms": "think_have_covid_symptom_none_list_1",
+        },
+        ";",
+    )
+    df = map_options_to_bool_columns(
+        df,
+        "think_have_covid_any_symptom_list_2",
+        {
+            "Headache": "think_have_covid_symptom_headache",
+            "Muscle ache": "think_have_covid_symptom_muscle_ache",
+            "Weakness or tiredness": "think_have_covid_symptom_fatigue",
+            "Fever including high temperature": "think_have_covid_symptom_fever",
+            "More trouble sleeping than usual": "think_have_covid_symptom_more_trouble_sleeping",
+            "Memory loss or confusion": "think_have_covid_symptom_memory_loss_or_confusion",
+            "Difficulty concentrating": "think_have_covid_symptom_difficulty_concentrating",
+            "Worry or anxiety": "think_have_covid_symptom_anxiety",
+            "Low mood or not enjoying anything": "think_have_covid_symptom_low_mood",
+            "None of these symptoms": "think_have_covid_symptom_none_list_2",
+        },
+        ";",
+    )
+    df = df.withColumn(
+        "think_have_covid_symptoms",
+        F.when(
+            (F.col("think_have_covid_symptom_none_list_1") != "None of these symptoms")
+            or (F.col("think_have_covid_symptom_none_list_2") != "None of these symptoms"),
+            "Yes",
+        ).otherwise("No"),
+    )
+
+    df = map_options_to_bool_columns(
+        df,
+        "think_had_covid_any_symptom_list_1",
+        {
+            "Runny nose or sneezing": "think_had_covid_symptom_runny_nose_or_sneezing",
+            "Loss of smell": "think_had_covid_symptom_loss_of_smell",
+            "Loss of taste": "think_had_covid_symptom_loss_of_taste",
+            "Sore throat": "think_had_covid_symptom_sore_throat",
+            "Cough": "think_had_covid_symptom_cough",
+            "Shortness of breath": "think_had_covid_symptom_shortness_of_breath",
+            "Noisy breathing or wheezing": "think_had_covid_symptom_noisy_breathing",
+            "Abdominal pain": "think_had_covid_symptom_abdominal_pain",
+            "Nausea or vomiting": "think_had_covid_symptom_nausea_or_vomiting",
+            "Diarrhoea": "think_had_covid_symptom_diarrhoea",
+            "Loss of appetite or eating less than usual": "think_had_covid_symptom_loss_of_appetite",
+            "None of these symptoms": "think_had_covid_symptom_none_list_1",
+        },
+        ";",
+    )
+    df = map_options_to_bool_columns(
+        df,
+        "think_had_covid_any_symptom_list_2",
+        {
+            "Headache": "think_had_covid_symptom_headache",
+            "Muscle ache": "think_had_covid_symptom_muscle_ache",
+            "Weakness or tiredness": "think_had_covid_symptom_fatigue",
+            "Fever including high temperature": "think_had_covid_symptom_fever",
+            "More trouble sleeping than usual": "think_had_covid_symptom_more_trouble_sleeping",
+            "Memory loss or confusion": "think_had_covid_symptom_memory_loss_or_confusion",
+            "Difficulty concentrating": "think_had_covid_symptom_difficulty_concentrating",
+            "Worry or anxiety": "think_had_covid_symptom_anxiety",
+            "Low mood or not enjoying anything": "think_had_covid_symptom_low_mood",
+            "None of these symptoms": "think_had_covid_symptom_none_list_2",
+        },
+        ";",
+    )
+
+    df = df.withColumn(
+        "think_had_covid_any_symptoms",
+        F.when(
+            (F.col("think_had_covid_symptom_none_list_1") != "None of these symptoms")
+            or (F.col("think_had_covid_symptom_none_list_2") != "None of these symptoms"),
+            "Yes",
+        ).otherwise("No"),
+    )
+
     df = df.withColumn("times_outside_shopping_or_socialising_last_7_days", F.lit(None))
     raw_copy_list = [
         "participant_survey_status",
@@ -511,6 +604,7 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         "1 to 5": "1-5",
         "6 to 10": "6-10",
         "11 to 20": "11-20",
+        "21 or more": "21 or more",
         "Don't know": None,
         "Prefer not to say": None,
     }
@@ -723,4 +817,56 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         "multiple errors sample retained",
         ",",
     )
+    df = df.withColumn("cis_covid_vaccine_number_of_doses", F.col("phm_covid_vaccine_number_of_doses"))
+
+    df = update_column_values_from_map(
+        df,
+        "phm_covid_vaccine_number_of_doses",
+        {
+            "1 dose": 1,
+            "1": 1,
+            "2 doses": 2,
+            "2": 2,
+            "3 doses": 3,
+            "3 or more": 3,
+            "4 doses": 4,
+            "5 doses": 5,
+            "6 doses or more": 6,
+            "6 doses": 6,
+            "7 doses": 7,
+            "8 doses or more": 8,
+        },
+    )
+    return df
+
+
+def split_array_columns(df: DataFrame):
+    """"""
+    array_cols = [
+        "currently_smokes_or_vapes_description",
+        "blood_not_taken_could_not_reason",
+        "think_have_covid_any_symptom_list_1",
+        "think_have_covid_any_symptom_list_2",
+        "think_have_symptoms_new_or_worse_list_1",
+        "think_have_symptoms_new_or_worse_list_2",
+        "phm_think_had_respiratory_infection_type",
+        "think_had_covid_symptom_list_1",
+        "think_had_covid_symptom_list_2",
+        "think_had_flu_symptom_list_1",
+        "think_had_flu_symptom_list_2",
+        "think_had_other_infection_symptom_list_1",
+        "think_had_other_infection_symptom_list_2",
+        "think_have_long_covid_symptom_none_list_1",
+        "think_have_long_covid_symptom_none_list_2",
+        "think_have_long_covid_symptom_none_list_3",
+        "transport_shared_outside_household_last_28_days",
+    ]
+    for col in array_cols:
+        df = assign_columns_from_array(
+            df=df,
+            id_column_name="visit_id",
+            array_column_name=col,
+            prefix=col.split("_list")[0],
+            true_false_values=["Yes", "No"],
+        )
     return df

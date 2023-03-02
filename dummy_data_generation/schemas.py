@@ -627,7 +627,6 @@ def get_participant_extract_digital_data_description(_, blood_barcodes, swab_bar
         "person_9_not_consenting_age": _("custom_random.random_integer", lower=16, upper=100, null_percent=0.9),
         "person9_reason_for_not_consenting": _("text.sentence"),
         "count_of_non_consenting": _("custom_random.random_integer", lower=1, upper=9, null_percent=0.9),
-        "email": _("text.sentence"),
         "participant_digital_type_preference": _("text.sentence"),
         "participant_digital_communication_preference": _("text.sentence"),
         "participant_digital_sample_return_preference": _("text.sentence"),
@@ -3406,6 +3405,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 "I had bruising or pain",
                 "I felt unwell",
                 "Other please specify",
+                "There were issues with the kit",
                 None,
             ],
         ),
@@ -3835,18 +3835,13 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 "Underound or Metro or Light Rail or Tram",
                 "Plane",
                 "Other method",
+                "I have not used transport shared with people outside of my home for reasons other than travel to work or education",
             ],
         ),
         "transport_shared_outside_household_last_28_days_none": _(
             "choice",
             items=[
-                "Bus or minibus or coach",
-                "Car or van",
-                "Taxi or minicab",
-                "Train",
-                "Underound or Metro or Light Rail or Tram",
-                "Plane",
-                "Other method",
+                "I have not used transport shared with people outside of my home for reasons other than travel to work or education",
             ],
         ),
         "face_covering_work_or_education": _(
@@ -3861,4 +3856,6 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
+        "end_screen_questionnaire": _("choice", items=["Continue", None]),
+        # "end_screen_sample": _("choice", items=["Continue", None]), #to be added when bio samples begin
     }

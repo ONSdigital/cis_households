@@ -100,6 +100,7 @@ def join_swab_lookup_df(df: DataFrame, swab_lookup_df: DataFrame) -> DataFrame:
 
     Reference columns:
     - blood_sample_barcode
+
     - blood_taken
     - blood_taken_datetime
     - household_completion_window_status

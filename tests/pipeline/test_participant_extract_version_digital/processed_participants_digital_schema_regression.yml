@@ -170,7 +170,7 @@ fields:
 - metadata: {}
   name: household_members_under_2_years
   nullable: true
-  type: integer
+  type: string
 - metadata: {}
   name: infant_age_months_1
   nullable: true
@@ -314,17 +314,13 @@ fields:
 - metadata: {}
   name: person_non_consenting_count
   nullable: true
-  type: integer
+  type: string
 - metadata: {}
-  name: email
+  name: digital_survey_mode_preference
   nullable: true
   type: string
 - metadata: {}
-  name: type_preference
-  nullable: true
-  type: string
-- metadata: {}
-  name: communication_preference
+  name: digital_communication_preference
   nullable: true
   type: string
 - metadata: {}
@@ -340,7 +336,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: voucher_preference
+  name: voucher_type_preference
   nullable: true
   type: string
 - metadata: {}
@@ -349,6 +345,10 @@ fields:
   type: string
 - metadata: {}
   name: ethnicity_group
+  nullable: true
+  type: string
+- metadata: {}
+  name: nhs_share_opt_out_date_string
   nullable: true
   type: string
 - metadata: {}

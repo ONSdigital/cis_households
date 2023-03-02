@@ -52,6 +52,10 @@ def all_columns_values_in_list(column_list: List[str], values):
     return reduce(and_, [F.col(column).isin(values) for column in column_list])
 
 
+def all_null_over_window(window, column_name):
+    return F.sum(F.when(F.col(column_name).isNull(), 0).otherwise(1)).over(window) == 0
+
+
 def any_column_null(column_list: List[str]):
     "Expression that evaluates true if any column is null."
     return reduce(or_, [F.col(column).isNull() for column in column_list])

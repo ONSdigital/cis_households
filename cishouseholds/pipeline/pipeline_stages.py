@@ -423,6 +423,7 @@ def generate_input_processing_function(
         include_invalid=False,
         source_file_column=source_file_column,
         write_mode=write_mode,
+        archive=False,
     ):
         """
         Extracts data from csv file to a HIVE table. Parameters control
@@ -492,7 +493,12 @@ def generate_input_processing_function(
         )
         if include_hadoop_read_write:
             update_table_and_log_source_files(
-                df, f"transformed_{dataset_name}", source_file_column, dataset_name, write_mode
+                df,
+                f"transformed_{dataset_name}",
+                source_file_column,
+                dataset_name,
+                write_mode,
+                archive,
             )
             return {"status": "updated"}
         return df
@@ -1015,7 +1021,7 @@ def tables_to_csv(
     sep="|",
     extension=".txt",
     dry_run=False,
-    accept_missing=True,
+    accept_missing=False,
 ):
     """
     Writes data from an existing HIVE table to csv output, including mapping of column names and values.

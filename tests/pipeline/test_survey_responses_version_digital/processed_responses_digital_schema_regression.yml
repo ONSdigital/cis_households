@@ -1278,11 +1278,11 @@ fields:
 - metadata: {}
   name: time_off_respiratory_infection
   nullable: true
-  type: integer
+  type: string
 - metadata: {}
   name: time_off_health_reasons
   nullable: true
-  type: integer
+  type: string
 - metadata: {}
   name: survey_response_source_file
   nullable: false
