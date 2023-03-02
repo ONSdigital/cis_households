@@ -493,7 +493,12 @@ def generate_input_processing_function(
         )
         if include_hadoop_read_write:
             update_table_and_log_source_files(
-                df, f"transformed_{dataset_name}", source_file_column, dataset_name, write_mode, archive
+                df,
+                f"transformed_{dataset_name}",
+                source_file_column,
+                dataset_name,
+                write_mode,
+                archive,
             )
             return {"status": "updated"}
         return df
