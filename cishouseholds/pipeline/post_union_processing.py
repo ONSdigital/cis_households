@@ -148,6 +148,10 @@ def generic_processing(df: DataFrame):
         "face_covering_work_or_education",
         "face_covering_other_enclosed_places",
         "cis_covid_vaccine_type",
+        "times_large_events_last_28_days",
+        "times_medium_events_last_28_days",
+        "flu_vaccine_received",
+        "test_type_positive_result",
         "think_have_long_covid_symptom_worse_after_effort",
     ]
     df = assign_raw_copies(df, dont_know_columns)
