@@ -104,7 +104,7 @@ def deduplication(df: DataFrame):
         df=df,
         participant_id_column="participant_id",
         vaccine_date_column="cis_covid_vaccine_date",
-        num_doses_column="cis_covid_vaccine_num_doses",
+        num_doses_column="cis_covid_vaccine_number_of_doses",
         visit_datetime_column="visit_datetime",
     )
     df = filter_single_dose(
@@ -114,7 +114,7 @@ def deduplication(df: DataFrame):
         order_column="order_number",
         i_dose_column="i_dose",
         poss_1_2_column="poss_1_2",
-        default_date_column="default_date",
+        default_date_column="default_cis_covid_vaccine_date",
         vaccine_type_column="cis_covid_vaccine_type",
         allowed_vaccine_types=[
             "Oxford/AstraZeneca",
@@ -123,4 +123,4 @@ def deduplication(df: DataFrame):
             "Oxford / AstraZeneca / Vaxzevria / Covishield",
         ],
     )
-    return
+    return df
