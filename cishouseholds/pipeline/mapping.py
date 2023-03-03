@@ -605,6 +605,7 @@ category_maps = {
             "swab_sample_received_consolidation_point_datetime": 8,
             "participant_completion_window_start_datetime": 9,
         },
+        "flu_vaccine_received": _yes_no_categories,
         "country_name_12": {"England": 0, "Wales": 1, "Northern Ireland": 2, "Scotland": 3},
         "local_authority_unity_authority_code": {
             "E06000001": 1,
