@@ -68,7 +68,12 @@ _vaccine_type_map = {
 
 category_maps = {
     "iqvia_raw_category_map": {
-        "aged_16_or_over": _yes_no_categories,
+        "blood_taken_am_pm": {"AM": 1, "PM": 2},
+        "swab_taken_am_pm": {"AM": 1, "PM": 2},
+        "test_type_positive_result": {
+            "A lateral flow test. That is the test you can do yourself and you do not have to send it to a laboratory because the result shows in the device in about 30 minutes.": 1,
+            "PCR test. That is the test that is sent off to a laboratory.": 2,
+        },
         "think_respiratory_infection": _yes_no_categories,
         "agreed_to_additional_consent_visit": _yes_no_categories,
         "consent_blood_samples_if_positive_yn": _yes_no_categories,

@@ -1503,7 +1503,6 @@ validation_schemas = {
         "person_9_not_consenting_age": string_dict,
         "person9_reason_for_not_consenting": string_dict,
         "count_of_non_consenting": string_dict,
-        "email": string_dict,
         "participant_digital_type_preference": string_dict,
         "participant_digital_communication_preference": string_dict,
         "participant_digital_sample_return_preference": string_dict,

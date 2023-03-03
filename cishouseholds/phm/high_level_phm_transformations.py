@@ -3,17 +3,19 @@
 # from typing import List
 # from typing import Optional
 # import pyspark.sql.functions as F
+from cishousehold.post_union_processing import generic_processing
 from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_completion_status
 from cishouseholds.derive import assign_date_from_filename
 from cishouseholds.derive import assign_datetime_from_combined_columns
+from cishouseholds.edit import add_prefix
 
 # from pyspark.sql import Window
 
 
-def phm_transformations(df: DataFrame):
+def high_level_phm_transformations(df: DataFrame):
     """"""
     df = preprocessing(df)
     return df
@@ -38,5 +40,8 @@ def preprocessing(df: DataFrame):
         am_pm_column="blood_taken_am_pm",
     )
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 4)
+    df = generic_processing(df)
     df = assign_completion_status(df=df, column_name_to_assign="survey_completion_status")
+    df = add_prefix(df, column_name_to_update="blood_sample_barcode_user_entered", prefix="BLT")
+    df = add_prefix(df, column_name_to_update="swab_sample_barcode_user_entered", prefix="SWT")
     return df

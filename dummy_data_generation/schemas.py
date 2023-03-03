@@ -627,7 +627,6 @@ def get_participant_extract_digital_data_description(_, blood_barcodes, swab_bar
         "person_9_not_consenting_age": _("custom_random.random_integer", lower=16, upper=100, null_percent=0.9),
         "person9_reason_for_not_consenting": _("text.sentence"),
         "count_of_non_consenting": _("custom_random.random_integer", lower=1, upper=9, null_percent=0.9),
-        "email": _("text.sentence"),
         "participant_digital_type_preference": _("text.sentence"),
         "participant_digital_communication_preference": _("text.sentence"),
         "participant_digital_sample_return_preference": _("text.sentence"),

@@ -4,6 +4,7 @@ from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
+from cishouseholds.derive import assign_columns_from_array
 from cishouseholds.derive import assign_date_from_filename
 from cishouseholds.derive import assign_datetime_from_coalesced_columns_and_log_source
 from cishouseholds.derive import assign_raw_copies
@@ -454,8 +455,9 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         },
         ";",
     )
+
     df = df.withColumn(
-        "think_had_covid_symptoms",
+        "think_had_covid_any_symptoms",
         F.when(
             (F.col("think_had_covid_symptom_none_list_1") != "None of these symptoms")
             | (F.col("think_had_covid_symptom_none_list_2") != "None of these symptoms"),
@@ -796,4 +798,36 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
             "8 doses or more": 8,
         },
     )
+    return df
+
+
+def split_array_columns(df: DataFrame):
+    """"""
+    array_cols = [
+        "currently_smokes_or_vapes_description",
+        "blood_not_taken_could_not_reason",
+        "think_have_covid_any_symptom_list_1",
+        "think_have_covid_any_symptom_list_2",
+        "think_have_symptoms_new_or_worse_list_1",
+        "think_have_symptoms_new_or_worse_list_2",
+        "phm_think_had_respiratory_infection_type",
+        "think_had_covid_symptom_list_1",
+        "think_had_covid_symptom_list_2",
+        "think_had_flu_symptom_list_1",
+        "think_had_flu_symptom_list_2",
+        "think_had_other_infection_symptom_list_1",
+        "think_had_other_infection_symptom_list_2",
+        "think_have_long_covid_symptom_none_list_1",
+        "think_have_long_covid_symptom_none_list_2",
+        "think_have_long_covid_symptom_none_list_3",
+        "transport_shared_outside_household_last_28_days",
+    ]
+    for col in array_cols:
+        df = assign_columns_from_array(
+            df=df,
+            id_column_name="visit_id",
+            array_column_name=col,
+            prefix=col.split("_list")[0],
+            true_false_values=["Yes", "No"],
+        )
     return df
