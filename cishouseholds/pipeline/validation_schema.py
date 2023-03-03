@@ -11,6 +11,8 @@ long_dict = {"type": "long"}
 
 float_dict = {"type": "double"}
 
+array_dict = {"type": {"containsNull": True, "elementType": "string", "type": "array"}}
+
 swab_allowed_pcr_results = ["Inconclusive", "Negative", "Positive", "Rejected"]
 
 projections_column_map = {
@@ -1567,12 +1569,10 @@ validation_schemas = {
         "education_in_person_days_per_week": string_dict,
         "transport_to_work_or_education": string_dict,
         "ability_to_socially_distance_at_work_or_education": string_dict,
-        "think_have_covid_any_symptom_list_1": string_dict,
-        "think_have_covid_any_symptom_list_2": string_dict,
-        "think_have_symptoms_new_or_worse_list_1": string_dict,
-        "think_have_symptoms_new_or_worse_none_list_1": string_dict,
-        "think_have_symptoms_new_or_worse_list_2": string_dict,
-        "think_have_symptoms_new_or_worse_none_list_2": string_dict,
+        "think_have_covid_any_symptom_list_1": array_dict,
+        "think_have_covid_any_symptom_list_2": array_dict,
+        "think_have_symptoms_new_or_worse_list_1": array_dict,
+        "think_have_symptoms_new_or_worse_list_2": array_dict,
         "think_have_covid_onset_date": string_dict,
         "illness_lasting_over_12_months": string_dict,
         "illness_reduces_activity_or_ability": string_dict,
@@ -1592,14 +1592,14 @@ validation_schemas = {
         "phm_think_had_respiratory_infection": string_dict,
         "phm_think_had_respiratory_infection_type": string_dict,
         "think_had_covid_onset_date": string_dict,
-        "think_had_covid_any_symptom_list_1": string_dict,
-        "think_had_covid_any_symptom_list_2": string_dict,
+        "think_had_covid_any_symptom_list_1": array_dict,
+        "think_had_covid_any_symptom_list_2": array_dict,
         "phm_think_had_flu_onset_date": string_dict,
-        "think_had_flu_symptom_list_1": string_dict,
-        "think_had_flu_symptom_list_2": string_dict,
+        "think_had_flu_symptom_list_1": array_dict,
+        "think_had_flu_symptom_list_2": array_dict,
         "phm_think_had_other_infection_onset_date": string_dict,
-        "think_had_other_infection_symptom_list_1": string_dict,
-        "think_had_other_infection_symptom_list_2": string_dict,
+        "think_had_other_infection_symptom_list_1": array_dict,
+        "think_had_other_infection_symptom_list_2": array_dict,
         "other_covid_infection_test": string_dict,
         "other_covid_infection_test_results": string_dict,
         "other_covid_infection_test_positive_date": string_dict,
@@ -1619,9 +1619,9 @@ validation_schemas = {
         "last_28_days_admitted_to_hospital_respiratory_infection": string_dict,
         "think_have_long_covid": string_dict,
         "think_have_long_covid_symptom_reduced_ability": string_dict,
-        "think_have_long_covid_symptom_list_1": string_dict,
-        "think_have_long_covid_symptom_list_2": string_dict,
-        "think_have_long_covid_symptom_list_3": string_dict,
+        "think_have_long_covid_symptom_list_1": array_dict,
+        "think_have_long_covid_symptom_list_2": array_dict,
+        "think_have_long_covid_symptom_list_3": array_dict,
         "think_have_long_covid_symptom_worse_after_effort": string_dict,
         "hospital_last_28_days": string_dict,
         "care_home_last_28_days": string_dict,
