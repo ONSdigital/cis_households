@@ -547,11 +547,36 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         ";",
     )
 
+    df = map_options_to_bool_columns(
+        df,
+        "transport_shared_outside_household_last_28_days",
+        {
+            "Underground or metro or light rail or tram": "underground_tram_shared_transport_28_days",
+            "Train": "train_shared_transport_28_days",
+            "Bus or minibus or coach": "bus_or_coach_shared_transport_28_days",
+            "Car or van": "car_or_van_shared_transport_28_days",
+            "Taxi or minicab": "taxi_shared_transport_28_days",
+            "Plane": "plane_shared_transport_28_days",
+            "Ferry or boat": "ferry_or_boat_shared_transport_28_days",
+            "Other method": "other_shared_transport_28_days",
+            "I have not used transport shared with people outside of my home for reasons other than travel to work or education": "no_shared_transport_28_days",
+        },
+        ";",
+    )
+
     df = df.withColumn(
         "think_had_covid_any_symptoms",
         F.when(
             (F.col("think_had_covid_symptom_none_list_1") != "None of these symptoms")
             or (F.col("think_had_covid_symptom_none_list_2") != "None of these symptoms"),
+            "Yes",
+        ).otherwise("No"),
+    )
+
+    df = df.withColumn(
+        "think_have_symptoms_new_or_worse_none",
+        F.when(
+            (F.col("") != "Yes") or (F.col("think_have_covid_symptom_none_list_2") != "Yes"),
             "Yes",
         ).otherwise("No"),
     )
@@ -847,8 +872,6 @@ def split_array_columns(df: DataFrame):
         "blood_not_taken_could_not_reason",
         "think_have_covid_any_symptom_list_1",
         "think_have_covid_any_symptom_list_2",
-        "think_have_symptoms_new_or_worse_list_1",
-        "think_have_symptoms_new_or_worse_list_2",
         "phm_think_had_respiratory_infection_type",
         "think_had_covid_symptom_list_1",
         "think_had_covid_symptom_list_2",
@@ -859,7 +882,6 @@ def split_array_columns(df: DataFrame):
         "think_have_long_covid_symptom_none_list_1",
         "think_have_long_covid_symptom_none_list_2",
         "think_have_long_covid_symptom_none_list_3",
-        "transport_shared_outside_household_last_28_days",
     ]
     for col in array_cols:
         df = assign_columns_from_array(
@@ -869,4 +891,5 @@ def split_array_columns(df: DataFrame):
             prefix=col.split("_list")[0],
             true_false_values=["Yes", "No"],
         )
+
     return df
