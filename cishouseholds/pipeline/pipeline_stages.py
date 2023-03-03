@@ -70,6 +70,7 @@ from cishouseholds.pipeline.reporting import count_variable_option
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import generate_lab_report
 from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
+from cishouseholds.pipeline.vaccine_transformations import vaccine_transformations
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
@@ -616,7 +617,7 @@ def execute_vaccine_transformations(
 ):
     """"""
     df = extract_from_table(input_survey_table)
-    df = visit_transformations(df)
+    df = vaccine_transformations(df)
     update_table(df, output_survey_table, "overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
