@@ -73,7 +73,7 @@ def preprocessing(df: DataFrame):
     )
     df = assign_poss_1_2(
         df=df,
-        column_name_to_assign="pos_1_2",
+        column_name_to_assign="poss_1_2",
         participant_id_column="participant_id",
         num_doses_column="cis_covid_vaccine_number_of_doses",
         visit_datetime_column="visit_datetime",
@@ -84,7 +84,7 @@ def preprocessing(df: DataFrame):
         covid_vaccine_type_column="cis_covid_vaccine_type",
         num_doses_column="cis_covid_vaccine_number_of_doses",
         max_doses_column="max_doses",
-        pos_1_2_column="pos_1_2",
+        pos_1_2_column="poss_1_2",
     )
     df = assign_column_value_from_multiple_column_map(
         df=df,
@@ -92,7 +92,7 @@ def preprocessing(df: DataFrame):
         value_to_condition_map=[
             ["Don't know type", [[4, 5], "Yes", "No"]],
         ],
-        column_names=["order", "poss_1_2", "max_doses"],
+        column_names=["order_number", "poss_1_2", "max_doses"],
         override_original=False,
     )
     return df
