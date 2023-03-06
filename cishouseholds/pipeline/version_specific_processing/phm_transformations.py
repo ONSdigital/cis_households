@@ -1,4 +1,7 @@
 # flake8: noqa
+from typing import Any
+from typing import Dict
+
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
@@ -20,6 +23,7 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_strings_to_sentence_case
 from cishouseholds.edit import update_value_if_multiple_and_ref_in_list
 from cishouseholds.expressions import all_columns_values_in_list
+from cishouseholds.pipeline.mapping import transformation_maps
 
 # THIS IS A DIRECT COPY OF A DIGITAL VERSION-SPECIFIC TRANSFORMATIONS - NEEDS TO BE UPDATED WITH THE PHM-SPECIFIC TRANSFORMATIONS AND THEN THEN THE REDUNDANT PROCESSES CLEANED UP
 # DOUBLE CHECK IF REDUNDANT BITS REMOVED BEFORE MERGING ON
@@ -360,157 +364,56 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
     )
     df = clean_barcode_simple(df, "swab_sample_barcode_user_entered")
     df = clean_barcode_simple(df, "blood_sample_barcode_user_entered")
+    map_to_bool_columns_dict = {
+        "currently_smokes_or_vapes_description": None,
+        "blood_not_taken_could_not_reason": None,
+        "transport_shared_outside_household_last_28_days": None,
+        "think_have_covid_any_symptom_list_1": "think_have_covid",
+        "think_have_covid_any_symptom_list_2": "think_have_covid",
+        "think_have_symptoms_new_or_worse_list_1": "think_have_symptoms",
+        "think_have_symptoms_new_or_worse_list_2": "think_have_symptoms",
+        "think_have_long_covid_symptom_list_1": "think_have_long_covid",
+        "think_have_long_covid_symptom_list_2": "think_have_long_covid",
+        "think_have_long_covid_symptom_list_3": "think_have_long_covid",
+        "think_had_covid_any_symptom_list_1": "think_had_covid",
+        "think_had_covid_any_symptom_list_2": "think_had_covid",
+        "think_had_other_infection_symptom_list_1": "think_had_other",
+        "think_had_other_infection_symptom_list_2": "think_had_other",
+        "think_had_flu_symptom_list_1": "think_had_flu",
+        "think_had_flu_symptom_list_2": "think_had_flu",
+    }
 
-    df = map_options_to_bool_columns(
-        df,
-        "currently_smokes_or_vapes_description",
-        {
-            "Cigarettes": "smoke_cigarettes",
-            "Cigars": "smokes_cigar",
-            "Pipe": "smokes_pipe",
-            "Vape or E-cigarettes": "smokes_vape_e_cigarettes",
-            "Hookah or shisha pipes": "smokes_hookah_shisha_pipes",
-        },
-        ";",
-    )
+    for col_to_map, prefix in map_to_bool_columns_dict.items():
+        if ("symptom" in col_to_map) & ("list_" in col_to_map):
+            transformation_maps: Dict[str, Dict[Any, Any]]
+            value_column_map = {
+                key: prefix + value for key, value in transformation_maps[f"symptoms_list_{col_to_map[-1:]}"].items()
+            }
+        else:
+            value_column_map = transformation_maps[col_to_map]
+        df = map_options_to_bool_columns(df, col_to_map, value_column_map, ";")
 
-    df = map_options_to_bool_columns(
-        df,
-        "think_have_covid_any_symptom_list_1",
-        {
-            "Runny nose or sneezing": "think_have_covid_symptom_runny_nose_or_sneezing",
-            "Loss of smell": "think_have_covid_symptom_loss_of_smell",
-            "Loss of taste": "think_have_covid_symptom_loss_of_taste",
-            "Sore throat": "think_have_covid_symptom_sore_throat",
-            "Cough": "think_have_covid_symptom_cough",
-            "Shortness of breath": "think_have_covid_symptom_shortness_of_breath",
-            "Noisy breathing or wheezing": "think_have_covid_symptom_noisy_breathing",
-            "Abdominal pain": "think_have_covid_symptom_abdominal_pain",
-            "Nausea or vomiting": "think_have_covid_symptom_nausea_or_vomiting",
-            "Diarrhoea": "think_have_covid_symptom_diarrhoea",
-            "Loss of appetite or eating less than usual": "think_have_covid_symptom_loss_of_appetite",
-            "None of these symptoms": "think_have_covid_symptom_none_list_1",
-        },
-        ";",
-    )
-    df = map_options_to_bool_columns(
-        df,
-        "think_have_covid_any_symptom_list_2",
-        {
-            "Headache": "think_have_covid_symptom_headache",
-            "Muscle ache": "think_have_covid_symptom_muscle_ache",
-            "Weakness or tiredness": "think_have_covid_symptom_fatigue",
-            "Fever including high temperature": "think_have_covid_symptom_fever",
-            "More trouble sleeping than usual": "think_have_covid_symptom_more_trouble_sleeping",
-            "Memory loss or confusion": "think_have_covid_symptom_memory_loss_or_confusion",
-            "Difficulty concentrating": "think_have_covid_symptom_difficulty_concentrating",
-            "Worry or anxiety": "think_have_covid_symptom_anxiety",
-            "Low mood or not enjoying anything": "think_have_covid_symptom_low_mood",
-            "None of these symptoms": "think_have_covid_symptom_none_list_2",
-        },
-        ";",
-    )
     df = df.withColumn(
-        "think_have_covid_symptoms",
+        "think_have_covid_any_symptoms",
         F.when(
-            (F.col("think_have_covid_symptom_none_list_1") != "None of these symptoms")
-            | (F.col("think_have_covid_symptom_none_list_2") != "None of these symptoms"),
+            (F.col("think_have_covid_any_symptom_list_1") != "None of these symptoms")
+            | (F.col("think_have_covid_any_symptom_list_2") != "None of these symptoms"),
             "Yes",
         ).otherwise("No"),
     )
-
-    df = map_options_to_bool_columns(
-        df,
-        "think_had_covid_any_symptom_list_1",
-        {
-            "Runny nose or sneezing": "think_had_covid_symptom_runny_nose_or_sneezing",
-            "Loss of smell": "think_had_covid_symptom_loss_of_smell",
-            "Loss of taste": "think_had_covid_symptom_loss_of_taste",
-            "Sore throat": "think_had_covid_symptom_sore_throat",
-            "Cough": "think_had_covid_symptom_cough",
-            "Shortness of breath": "think_had_covid_symptom_shortness_of_breath",
-            "Noisy breathing or wheezing": "think_had_covid_symptom_noisy_breathing",
-            "Abdominal pain": "think_had_covid_symptom_abdominal_pain",
-            "Nausea or vomiting": "think_had_covid_symptom_nausea_or_vomiting",
-            "Diarrhoea": "think_had_covid_symptom_diarrhoea",
-            "Loss of appetite or eating less than usual": "think_had_covid_symptom_loss_of_appetite",
-            "None of these symptoms": "think_had_covid_symptom_none_list_1",
-        },
-        ";",
-    )
-    df = map_options_to_bool_columns(
-        df,
-        "think_had_covid_any_symptom_list_2",
-        {
-            "Headache": "think_had_covid_symptom_headache",
-            "Muscle ache": "think_had_covid_symptom_muscle_ache",
-            "Weakness or tiredness": "think_had_covid_symptom_fatigue",
-            "Fever including high temperature": "think_had_covid_symptom_fever",
-            "More trouble sleeping than usual": "think_had_covid_symptom_more_trouble_sleeping",
-            "Memory loss or confusion": "think_had_covid_symptom_memory_loss_or_confusion",
-            "Difficulty concentrating": "think_had_covid_symptom_difficulty_concentrating",
-            "Worry or anxiety": "think_had_covid_symptom_anxiety",
-            "Low mood or not enjoying anything": "think_had_covid_symptom_low_mood",
-            "None of these symptoms": "think_had_covid_symptom_none_list_2",
-        },
-        ";",
-    )
-
     df = df.withColumn(
         "think_had_covid_any_symptoms",
         F.when(
-            (F.col("think_had_covid_symptom_none_list_1") != "None of these symptoms")
-            | (F.col("think_had_covid_symptom_none_list_2") != "None of these symptoms"),
+            (F.col("think_had_covid_any_symptom_list_1") != "None of these symptoms")
+            | (F.col("think_had_covid_any_symptom_list_2") != "None of these symptoms"),
             "Yes",
         ).otherwise("No"),
     )
-
-    df = map_options_to_bool_columns(
-        df,
-        "think_had_other_infection_symptom_list_1",
-        {
-            "Runny nose or sneezing": "think_had_other_infection_symptom_runny_nose_or_sneezing",
-            "Loss of smell": "think_had_other_infection_symptom_loss_of_smell",
-            "Loss of taste": "think_had_other_infection_symptom_loss_of_taste",
-            "Sore throat": "think_had_other_infection_symptom_sore_throat",
-            "Cough": "think_had_other_infection_symptom_cough",
-            "Shortness of breath": "think_had_other_infection_symptom_shortness_of_breath",
-            "Noisy breathing or wheezing": "think_had_other_infection_symptom_noisy_breathing",
-            "Abdominal pain": "think_had_other_infection_symptom_abdominal_pain",
-            "Nausea or vomiting": "think_had_other_infection_symptom_nausea_or_vomiting",
-            "Diarrhoea": "think_had_other_infection_symptom_diarrhoea",
-            "Loss of appetite or eating less than usual": "think_had_other_infection_symptom_loss_of_appetite",
-            "None of these symptoms": "think_had_other_infection_symptom_none_list_1",
-        },
-        ";",
-    )
-    df = map_options_to_bool_columns(
-        df,
-        "think_had_other_infection_symptom_list_2",
-        {
-            "Headache": "think_had_other_infection_symptom_headache",
-            "Muscle ache": "think_had_other_infection_symptom_muscle_ache",
-            "Weakness or tiredness": "think_had_other_infection_symptom_fatigue",
-            "Fever including high temperature": "think_had_other_infection_symptom_fever",
-            "More trouble sleeping than usual": "think_had_other_infection_symptom_more_trouble_sleeping",
-            "Memory loss or confusion": "think_had_other_infection_symptom_memory_loss_or_confusion",
-            "Difficulty concentrating": "think_had_other_infection_symptom_difficulty_concentrating",
-            "Worry or anxiety": "think_had_other_infection_symptom_anxiety",
-            "Low mood or not enjoying anything": "think_had_other_infection_symptom_low_mood",
-            "None of these symptoms": "think_had_other_infection_symptom_none_list_2",
-        },
-        ";",
-    )
-
-    other_infection_no_symptom_cols = [
-        "think_had_other_infection_symptom_none_list_1",
-        "think_had_other_infection_symptom_none_list_2",
-    ]
-
     df = df.withColumn(
         "think_had_other_infection_any_symptoms",
         F.when(
-            (all_columns_values_in_list(other_infection_no_symptom_cols, ["Yes"])),
+            (F.col("think_had_other_infection_symptom_list_1") != "None of these symptoms")
+            | (F.col("think_had_other_infection_symptom_list_2") != "None of these symptoms"),
             "Yes",
         ).otherwise("No"),
     )
@@ -798,36 +701,4 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
             "8 doses or more": 8,
         },
     )
-    return df
-
-
-def split_array_columns(df: DataFrame):
-    """"""
-    array_cols = [
-        "currently_smokes_or_vapes_description",
-        "blood_not_taken_could_not_reason",
-        "think_have_covid_any_symptom_list_1",
-        "think_have_covid_any_symptom_list_2",
-        "think_have_symptoms_new_or_worse_list_1",
-        "think_have_symptoms_new_or_worse_list_2",
-        "phm_think_had_respiratory_infection_type",
-        "think_had_covid_symptom_list_1",
-        "think_had_covid_symptom_list_2",
-        "think_had_flu_symptom_list_1",
-        "think_had_flu_symptom_list_2",
-        "think_had_other_infection_symptom_list_1",
-        "think_had_other_infection_symptom_list_2",
-        "think_have_long_covid_symptom_none_list_1",
-        "think_have_long_covid_symptom_none_list_2",
-        "think_have_long_covid_symptom_none_list_3",
-        "transport_shared_outside_household_last_28_days",
-    ]
-    for col in array_cols:
-        df = assign_columns_from_array(
-            df=df,
-            id_column_name="visit_id",
-            array_column_name=col,
-            prefix=col.split("_list")[0],
-            true_false_values=["Yes", "No"],
-        )
     return df
