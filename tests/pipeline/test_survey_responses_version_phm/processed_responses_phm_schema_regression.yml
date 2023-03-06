@@ -208,15 +208,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_symptoms_new_or_worse_none_list_1
-  nullable: true
-  type: string
-- metadata: {}
   name: think_have_symptoms_new_or_worse_list_2
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_have_symptoms_new_or_worse_none_list_2
   nullable: true
   type: string
 - metadata: {}
@@ -489,7 +481,7 @@ fields:
   type: string
 - metadata: {}
   name: transport_shared_outside_household_last_28_days_none
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: face_covering_work_or_education
@@ -516,296 +508,616 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: smoke_cigarettes
-  nullable: true
+  name: smokes_cigarettes
+  nullable: false
   type: string
 - metadata: {}
   name: smokes_cigar
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: smokes_pipe
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: smokes_vape_e_cigarettes
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: smokes_hookah_shisha_pipes
-  nullable: true
+  nullable: false
+  type: string
+- metadata: {}
+  name: blood_not_taken_could_not_reason_not_enough_blood
+  nullable: false
+  type: string
+- metadata: {}
+  name: blood_not_taken_could_not_reason_pot_spilled
+  nullable: false
+  type: string
+- metadata: {}
+  name: blood_not_taken_could_not_reason_had_bruising
+  nullable: false
+  type: string
+- metadata: {}
+  name: blood_not_taken_could_not_reason_unwell
+  nullable: false
+  type: string
+- metadata: {}
+  name: blood_not_taken_could_not_reason_other
+  nullable: false
+  type: string
+- metadata: {}
+  name: blood_not_taken_could_not_reason_issues_with_kit
+  nullable: false
+  type: string
+- metadata: {}
+  name: transport_shared_outside_household_last_28_days_underground_metro
+  nullable: false
+  type: string
+- metadata: {}
+  name: transport_shared_outside_household_last_28_days_train
+  nullable: false
+  type: string
+- metadata: {}
+  name: transport_shared_outside_household_last_28_days_bus_coach
+  nullable: false
+  type: string
+- metadata: {}
+  name: transport_shared_outside_household_last_28_days_car_van
+  nullable: false
+  type: string
+- metadata: {}
+  name: transport_shared_outside_household_last_28_days_taxi
+  nullable: false
+  type: string
+- metadata: {}
+  name: transport_shared_outside_household_last_28_days_plane
+  nullable: false
+  type: string
+- metadata: {}
+  name: transport_shared_outside_household_last_28_days_ferry_boat
+  nullable: false
+  type: string
+- metadata: {}
+  name: transport_shared_outside_household_last_28_days_other
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_runny_nose_or_sneezing
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_loss_of_smell
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_loss_of_taste
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_sore_throat
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_cough
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_shortness_of_breath
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_noisy_breathing
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_abdominal_pain
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_nausea_or_vomiting
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_diarrhoea
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_loss_of_appetite
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_none_list_1
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_headache
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_muscle_ache
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_fatigue
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_fever
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_more_trouble_sleeping
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_memory_loss_or_confusion
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_difficulty_concentrating
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_anxiety
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_low_mood
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: think_have_covid_symptom_none_list_2
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
-  name: think_have_covid_symptoms
+  name: think_have_symptoms_symptom_runny_nose_or_sneezing
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_loss_of_smell
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_loss_of_taste
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_sore_throat
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_cough
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_shortness_of_breath
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_noisy_breathing
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_abdominal_pain
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_nausea_or_vomiting
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_diarrhoea
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_loss_of_appetite
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_none_list_1
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_headache
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_muscle_ache
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_fatigue
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_fever
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_more_trouble_sleeping
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_memory_loss_or_confusion
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_difficulty_concentrating
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_anxiety
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_low_mood
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_symptom_none_list_2
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_runny_nose_or_sneezing
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_loss_of_smell
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_loss_of_taste
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_sore_throat
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_cough
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_shortness_of_breath
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_noisy_breathing
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_abdominal_pain
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_nausea_or_vomiting
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_diarrhoea
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_loss_of_appetite
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_none_list_1
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_headache
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_muscle_ache
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_fatigue
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_fever
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_more_trouble_sleeping
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_memory_loss_or_confusion
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_difficulty_concentrating
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_anxiety
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_low_mood
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_none_list_2
   nullable: false
   type: string
 - metadata: {}
   name: think_had_covid_symptom_runny_nose_or_sneezing
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_loss_of_smell
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_loss_of_taste
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_sore_throat
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_cough
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_shortness_of_breath
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_noisy_breathing
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_abdominal_pain
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_nausea_or_vomiting
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_diarrhoea
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_loss_of_appetite
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_none_list_1
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_headache
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_muscle_ache
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_fatigue
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_fever
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_more_trouble_sleeping
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_memory_loss_or_confusion
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_difficulty_concentrating
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_anxiety
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_low_mood
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptom_none_list_2
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_covid_symptoms
   nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_runny_nose_or_sneezing
-  nullable: true
+  name: think_had_covid_symptom_loss_of_smell
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_loss_of_smell
-  nullable: true
+  name: think_had_covid_symptom_loss_of_taste
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_loss_of_taste
-  nullable: true
+  name: think_had_covid_symptom_sore_throat
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_sore_throat
-  nullable: true
+  name: think_had_covid_symptom_cough
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_cough
-  nullable: true
+  name: think_had_covid_symptom_shortness_of_breath
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_shortness_of_breath
-  nullable: true
+  name: think_had_covid_symptom_noisy_breathing
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_noisy_breathing
-  nullable: true
+  name: think_had_covid_symptom_abdominal_pain
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_abdominal_pain
-  nullable: true
+  name: think_had_covid_symptom_nausea_or_vomiting
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_nausea_or_vomiting
-  nullable: true
+  name: think_had_covid_symptom_diarrhoea
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_diarrhoea
-  nullable: true
+  name: think_had_covid_symptom_loss_of_appetite
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_loss_of_appetite
-  nullable: true
+  name: think_had_covid_symptom_none_list_1
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_none_list_1
-  nullable: true
+  name: think_had_covid_symptom_headache
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_headache
-  nullable: true
+  name: think_had_covid_symptom_muscle_ache
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_muscle_ache
-  nullable: true
+  name: think_had_covid_symptom_fatigue
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_fatigue
-  nullable: true
+  name: think_had_covid_symptom_fever
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_fever
-  nullable: true
+  name: think_had_covid_symptom_more_trouble_sleeping
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_more_trouble_sleeping
-  nullable: true
+  name: think_had_covid_symptom_memory_loss_or_confusion
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_memory_loss_or_confusion
-  nullable: true
+  name: think_had_covid_symptom_difficulty_concentrating
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_difficulty_concentrating
-  nullable: true
+  name: think_had_covid_symptom_anxiety
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_anxiety
-  nullable: true
+  name: think_had_covid_symptom_low_mood
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_low_mood
-  nullable: true
+  name: think_had_covid_symptom_none_list_2
+  nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_none_list_2
-  nullable: true
+  name: think_had_other_symptom_runny_nose_or_sneezing
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_loss_of_smell
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_loss_of_taste
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_sore_throat
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_cough
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_shortness_of_breath
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_noisy_breathing
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_abdominal_pain
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_nausea_or_vomiting
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_diarrhoea
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_loss_of_appetite
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_none_list_1
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_headache
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_muscle_ache
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_fatigue
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_fever
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_more_trouble_sleeping
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_memory_loss_or_confusion
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_difficulty_concentrating
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_anxiety
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_low_mood
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_symptom_none_list_2
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_runny_nose_or_sneezing
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_loss_of_smell
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_loss_of_taste
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_sore_throat
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_cough
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_shortness_of_breath
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_noisy_breathing
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_abdominal_pain
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_nausea_or_vomiting
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_diarrhoea
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_loss_of_appetite
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_none_list_1
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_headache
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_muscle_ache
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_fatigue
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_fever
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_more_trouble_sleeping
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_memory_loss_or_confusion
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_difficulty_concentrating
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_anxiety
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_low_mood
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_none_list_2
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_covid_any_symptoms
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_covid_any_symptoms
+  nullable: false
   type: string
 - metadata: {}
   name: think_had_other_infection_any_symptoms
