@@ -3664,7 +3664,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             weights=[0.5, 0.5],
         ),
         "phm_think_had_respiratory_infection": _("choice", items=yes_no_none_choice),
-        "phm_think_had_respiratory_infection_type": _("choice", items=infections),
+        "phm_think_had_respiratory_infection_type": _("random.choices", population=infections, k=1),
         "think_had_covid_onset_date": _(
             "discrete_distribution",
             population=[

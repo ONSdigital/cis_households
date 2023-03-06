@@ -719,6 +719,7 @@ def split_array_columns(df: DataFrame):
         "think_had_covid_any_symptom_list",
         "think_had_flu_symptom_list",
         "think_had_other_infection_symptom_list",
+        "phm_think_had_respiratory_infection_type",
     ]
     for prefix in array_column_prefixes:
         df = combine_like_array_columns(df, prefix)
@@ -744,7 +745,6 @@ def split_array_columns(df: DataFrame):
     for col in array_column_prefixes:
         df = assign_columns_from_array(
             df=df,
-            id_column_name="participant_completion_window_id",
             array_column_name=col,
             prefix=col.split("_list")[0],
             true_false_values=["Yes", "No"],

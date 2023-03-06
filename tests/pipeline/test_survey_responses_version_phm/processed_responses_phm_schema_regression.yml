@@ -486,14 +486,6 @@ fields:
     elementType: string
     type: array
 - metadata: {}
-  name: exploded
-  nullable: false
-  type: string
-- metadata: {}
-  name: value
-  nullable: false
-  type: string
-- metadata: {}
   name: think_have_covid_any_symptom_cough
   nullable: false
   type: string

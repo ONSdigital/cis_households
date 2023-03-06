@@ -75,7 +75,7 @@ def assign_columns_from_array(
         .agg(F.first("value"))
         .fillna(true_false_values[1])
     )
-    return df.drop("exploded", "value", array_column_name)
+    return df.drop("exploded", "value")
 
 
 def assign_datetime_from_combined_columns(
