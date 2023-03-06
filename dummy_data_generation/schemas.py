@@ -3578,9 +3578,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         "think_have_covid_any_symptom_list_1": _("choice", items=symptoms_list_1),
         "think_have_covid_any_symptom_list_2": _("choice", items=symptoms_list_2),
         "think_have_symptoms_new_or_worse_list_1": _("choice", items=symptoms_list_1),
-        "think_have_symptoms_new_or_worse_none_list_1": _("choice", items=symptoms_list_1),
         "think_have_symptoms_new_or_worse_list_2": _("choice", items=symptoms_list_2),
-        "think_have_symptoms_new_or_worse_none_list_2": _("choice", items=symptoms_list_2),
         "think_have_covid_onset_date": _(
             "discrete_distribution",
             population=[
