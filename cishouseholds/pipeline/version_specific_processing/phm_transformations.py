@@ -8,6 +8,7 @@ from cishouseholds.derive import assign_columns_from_array
 from cishouseholds.derive import assign_date_from_filename
 from cishouseholds.derive import assign_datetime_from_coalesced_columns_and_log_source
 from cishouseholds.derive import assign_raw_copies
+from cishouseholds.derive import combine_like_array_columns
 from cishouseholds.derive import concat_fields_if_true
 from cishouseholds.derive import derive_had_symptom_last_7days_from_digital
 from cishouseholds.derive import map_options_to_bool_columns
@@ -27,6 +28,7 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
     """
     Call functions to process digital specific variable transformations.
     """
+    df = split_array_columns(df)
     column_list = ["work_status_digital", "work_status_employment", "work_status_unemployment", "work_status_education"]
     df = assign_column_value_from_multiple_column_map(
         df,
@@ -581,9 +583,7 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
     )
 
     df = df.withColumn("face_covering_outside_of_home", F.lit(None).cast("string"))
-    df = concat_fields_if_true(df, "think_had_covid_which_symptoms", "think_had_covid_which_symptom_", "Yes", ";")
-    df = concat_fields_if_true(df, "which_symptoms_last_7_days", "think_have_covid_symptom_", "Yes", ";")
-    df = concat_fields_if_true(df, "long_covid_symptoms", "think_have_long_covid_symptom_", "Yes", ";")
+
     # df = survey_edit_auto_complete(
     #     df,
     #     "survey_completion_status",
@@ -657,63 +657,72 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
             "8 doses or more": 8,
         },
     )
-    df = split_array_columns(df)
+
     df = df.withColumn(
         "think_have_covid_any_symptoms",
         F.when(
-            (F.col("think_have_covid_symptom_list_1") != "None of these symptoms")
-            | (F.col("think_have_covid_symptom_list_2") != "None of these symptoms"),
+            ~F.array_contains("think_have_covid_any_symptom_list", "None of these symptoms"),
             "Yes",
         ).otherwise("No"),
     )
     df = df.withColumn(
         "think_have_any_symptoms_new_or_worse",
         F.when(
-            (F.col("think_have_symptoms_new_or_worse_list_1") != "None of these symptoms")
-            | (F.col("think_have_symptoms_new_or_worse_list_2") != "None of these symptoms"),
+            ~F.array_contains("think_have_symptoms_new_or_worse_list", "None of these symptoms"),
             "Yes",
         ).otherwise("No"),
     )
     df = df.withColumn(
         "think_have_long_covid_any_symptoms",
         F.when(
-            (F.col("think_have_long_covid_symptom_list_1") != "None of these symptoms")
-            | (F.col("think_have_long_covid_symptom_list_2") != "None of these symptoms")
-            | (F.col("think_have_long_covid_symptom_list_3") != "None of these symptoms"),
+            ~F.array_contains("think_have_long_covid_symptom_list", "None of these symptoms"),
             "Yes",
         ).otherwise("No"),
     )
     df = df.withColumn(
         "think_had_covid_any_symptoms",
         F.when(
-            (F.col("think_had_covid_symptom_list_1") != "None of these symptoms")
-            | (F.col("think_had_covid_symptom_list_2") != "None of these symptoms"),
+            ~F.array_contains("think_had_covid_any_symptom_list", "None of these symptoms"),
             "Yes",
         ).otherwise("No"),
     )
     df = df.withColumn(
         "think_had_flu_any_symptoms",
         F.when(
-            (F.col("think_had_flu_symptom_list_1") != "None of these symptoms")
-            | (F.col("think_had_flu_symptom_list_2") != "None of these symptoms"),
+            ~F.array_contains("think_had_flu_symptom_list", "None of these symptoms"),
             "Yes",
         ).otherwise("No"),
     )
     df = df.withColumn(
         "think_had_other_infection_any_symptoms",
         F.when(
-            (F.col("think_had_other_infection_symptom_list_1") != "None of these symptoms")
-            | (F.col("think_had_other_infection_symptom_list_2") != "None of these symptoms"),
+            ~F.array_contains("think_had_other_infection_symptom_list", "None of these symptoms"),
             "Yes",
         ).otherwise("No"),
     )
     cols = [col for col in df.columns if "none_of_these" in col]
     df = df.drop(*cols)
+
+    df = concat_fields_if_true(df, "think_had_covid_which_symptoms", "think_had_covid_which_symptom_", "Yes", ";")
+    df = concat_fields_if_true(df, "which_symptoms_last_7_days", "think_have_covid_symptom_", "Yes", ";")
+    # df = concat_fields_if_true(df, "long_covid_symptoms", "think_have_long_covid_symptom_", "Yes", ";")
+
     return df
 
 
 def split_array_columns(df: DataFrame):
     """"""
+    array_column_prefixes = [
+        "think_have_covid_any_symptom_list",
+        "think_have_symptoms_new_or_worse_list",
+        "think_have_long_covid_symptom_list",
+        "think_had_covid_any_symptom_list",
+        "think_had_flu_symptom_list",
+        "think_had_other_infection_symptom_list",
+    ]
+    for prefix in array_column_prefixes:
+        df = combine_like_array_columns(df, prefix)
+
     array_cols = [
         "think_have_covid_any_symptom_list_1",
         "think_have_covid_any_symptom_list_2",
@@ -722,20 +731,20 @@ def split_array_columns(df: DataFrame):
         "think_have_long_covid_symptom_list_1",
         "think_have_long_covid_symptom_list_2",
         "think_have_long_covid_symptom_list_3",
-        "think_had_covid_symptom_list_1",
-        "think_had_covid_symptom_list_2",
+        "think_had_covid_any_symptom_list_1",
+        "think_had_covid_any_symptom_list_2",
         "think_had_flu_symptom_list_1",
         "think_had_flu_symptom_list_2",
         "think_had_other_infection_symptom_list_1",
         "think_had_other_infection_symptom_list_2",
-        "phm_think_had_respiratory_infection_type",
-        "currently_smokes_or_vapes_description",
-        "blood_not_taken_could_not_reason",
+        # "phm_think_had_respiratory_infection_type",
+        # "currently_smokes_or_vapes_description",
+        # "blood_not_taken_could_not_reason",
     ]
-    for col in array_cols:
+    for col in array_column_prefixes:
         df = assign_columns_from_array(
             df=df,
-            id_column_name="visit_id",
+            id_column_name="participant_completion_window_id",
             array_column_name=col,
             prefix=col.split("_list")[0],
             true_false_values=["Yes", "No"],

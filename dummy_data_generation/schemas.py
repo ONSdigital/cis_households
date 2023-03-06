@@ -3575,10 +3575,10 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "think_have_covid_any_symptom_list_1": _("choices", population=symptoms_list_1, k=1),
-        "think_have_covid_any_symptom_list_2": _("choices", population=symptoms_list_2, k=1),
-        "think_have_symptoms_new_or_worse_list_1": _("choices", population=symptoms_list_1, k=1),
-        "think_have_symptoms_new_or_worse_list_2": _("choices", population=symptoms_list_2, k=1),
+        "think_have_covid_any_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_have_covid_any_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
+        "think_have_symptoms_new_or_worse_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_have_symptoms_new_or_worse_list_2": _("random.choices", population=symptoms_list_2, k=1),
         "think_have_covid_onset_date": _(
             "discrete_distribution",
             population=[
@@ -3678,8 +3678,8 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
             weights=[0.5, 0.5],
         ),
-        "think_had_covid_any_symptom_list_1": _("choices", population=symptoms_list_1, k=1),
-        "think_had_covid_any_symptom_list_2": _("choices", population=symptoms_list_2, k=1),
+        "think_had_covid_any_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_had_covid_any_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
         "phm_think_had_flu_onset_date": _(
             "discrete_distribution",
             population=[
@@ -3693,8 +3693,8 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
             weights=[0.5, 0.5],
         ),
-        "think_had_flu_symptom_list_1": _("choices", population=symptoms_list_1, k=1),
-        "think_had_flu_symptom_list_2": _("choices", population=symptoms_list_2, k=1),
+        "think_had_flu_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_had_flu_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
         "phm_think_had_other_infection_onset_date": _(
             "discrete_distribution",
             population=[
@@ -3708,8 +3708,8 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
             weights=[0.5, 0.5],
         ),
-        "think_had_other_infection_symptom_list_1": _("choices", population=symptoms_list_1, k=1),
-        "think_had_other_infection_symptom_list_2": _("choices", population=symptoms_list_2, k=1),
+        "think_had_other_infection_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_had_other_infection_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
         "other_covid_infection_test": _("choice", items=yes_no_none_choice),
         "other_covid_infection_test_results": _(
             "choice",
@@ -3783,9 +3783,9 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "think_have_long_covid_symptom_list_1": _("choices", population=symptoms_list_1, k=1),
-        "think_have_long_covid_symptom_list_2": _("choices", population=symptoms_list_2, k=1),
-        "think_have_long_covid_symptom_list_3": _("choices", population=symptoms_list_1, k=1),
+        "think_have_long_covid_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_have_long_covid_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
+        "think_have_long_covid_symptom_list_3": _("random.choices", population=symptoms_list_1, k=1),
         "think_have_long_covid_symptom_worse_after_effort": _("choice", items=yes_no_unknown_choice),
         "hospital_last_28_days": _("choice", items=yes_no_none_choice),
         "care_home_last_28_days": _("choice", items=yes_no_none_choice),

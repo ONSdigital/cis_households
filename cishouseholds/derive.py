@@ -29,6 +29,12 @@ from cishouseholds.pipeline.mapping import _vaccine_type_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def combine_like_array_columns(df: DataFrame, column_prefix: str):
+    """"""
+    cols = [col for col in df.columns if col.startswith(column_prefix)]
+    return df.withColumn(column_prefix, F.concat(*[F.col(col) for col in cols])).drop(*cols)
+
+
 def assign_columns_from_array(
     df: DataFrame, id_column_name: str, array_column_name: str, true_false_values: List[Any], prefix: Any = None
 ):
@@ -47,14 +53,15 @@ def assign_columns_from_array(
         an optional prefix to apply to each name in the array
     true_false_values
         [<true value>,<false value>]
-    """
+    #"""
     df = df.withColumn("exploded", F.explode(array_column_name))
     if prefix:
         df = df.withColumn(
-            "exploded", F.concat_ws("_", F.lit(prefix), F.regexp_replace(F.col("exploded"), r"[^a-zA-Z0-9]{1,}", "_"))
+            "exploded",
+            F.lower(F.concat_ws("_", F.lit(prefix), F.regexp_replace(F.col("exploded"), r"[^a-zA-Z0-9]{1,}", "_"))),
         )
     df = df.withColumn("value", F.lit(true_false_values[0]))
-    df = df.groupby(id_column_name).pivot("exploded").agg(F.first("value")).fillna(False)
+    df = df.groupby(*df.columns).pivot("exploded").agg(F.first("value")).fillna(true_false_values[1])
     return df
 
 
