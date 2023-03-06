@@ -3600,14 +3600,15 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         "ever_smoked_regularly": _("choice", items=yes_no_prefer_not_to_say),
         "currently_smokes_or_vapes": _("choice", items=yes_no_prefer_not_to_say),
         "currently_smokes_or_vapes_description": _(
-            "choice",
-            items=[
+            "random.choices",
+            population=[
                 "Cigarettes",
                 "Cigars",
                 "Hookah or shisha pipes",
                 "Pipe",
                 "Vape or E-cigarettes",
             ],
+            k=1,
         ),  # TODO Checkbox list so multiple items can be selected in combination
         "cis_covid_vaccine_received": _("choice", items=yes_no_none_choice),
         "cis_covid_vaccine_type": _("choice", items=type_of_vaccination),

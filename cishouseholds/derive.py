@@ -32,7 +32,9 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 def combine_like_array_columns(df: DataFrame, column_prefix: str):
     """"""
     cols = [col for col in df.columns if col.startswith(column_prefix)]
-    return df.withColumn(column_prefix, F.concat(*[F.col(col) for col in cols])).drop(*cols)
+    return df.withColumn(column_prefix, F.concat(*[F.col(col) for col in cols])).drop(
+        *[col for col in cols if col != column_prefix]
+    )
 
 
 def assign_columns_from_array(
@@ -63,10 +65,9 @@ def assign_columns_from_array(
         df = update_column_values_from_map(df, "exploded", column_name_map)
 
     if prefix:
-        df = df.withColumn(
-            "exploded",
-            F.lower(F.concat_ws("_", F.lit(prefix), F.regexp_replace(F.col("exploded"), r"[^a-zA-Z0-9]{1,}", "_"))),
-        )
+        df = df.withColumn("exploded", F.concat_ws("_", F.lit(prefix), F.col("exploded")))
+
+    df = df.withColumn("exploded", F.lower(F.regexp_replace(F.col("exploded"), r"[^a-zA-Z0-9]{1,}", "_")))
 
     df = df.withColumn("value", F.lit(true_false_values[0]))
     df = (

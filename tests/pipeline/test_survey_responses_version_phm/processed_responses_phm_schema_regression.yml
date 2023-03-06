@@ -217,8 +217,11 @@ fields:
   type: string
 - metadata: {}
   name: currently_smokes_or_vapes_description
-  nullable: false
-  type: string
+  nullable: true
+  type:
+    containsNull: true
+    elementType: string
+    type: array
 - metadata: {}
   name: cis_covid_vaccine_received
   nullable: false
@@ -265,8 +268,11 @@ fields:
   type: string
 - metadata: {}
   name: phm_think_had_respiratory_infection_type
-  nullable: false
-  type: string
+  nullable: true
+  type:
+    containsNull: true
+    elementType: string
+    type: array
 - metadata: {}
   name: think_had_covid_onset_date
   nullable: true
@@ -444,6 +450,30 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: think_have_covid_any_symptoms
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_any_symptoms_new_or_worse
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_any_symptoms
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_covid_any_symptoms
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_any_symptoms
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_infection_any_symptoms
+  nullable: false
+  type: string
+- metadata: {}
   name: think_have_covid_any_symptom_list
   nullable: true
   type:
@@ -486,7 +516,11 @@ fields:
     elementType: string
     type: array
 - metadata: {}
-  name: think_have_covid_any_symptom_cough
+  name: think_have_covid_any_symptom_abdominal_pain
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_covid_any_symptom_diarrhoea
   nullable: false
   type: string
 - metadata: {}
@@ -498,15 +532,7 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: think_have_covid_any_symptom_loss_of_appetite_or_eating_less_than_usual
-  nullable: false
-  type: string
-- metadata: {}
   name: think_have_covid_any_symptom_loss_of_smell
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_have_covid_any_symptom_low_mood_or_not_enjoying_anything
   nullable: false
   type: string
 - metadata: {}
@@ -530,7 +556,7 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: think_have_covid_any_symptom_shortness_of_breath
+  name: think_have_covid_any_symptom_runny_nose_or_sneezing
   nullable: false
   type: string
 - metadata: {}
@@ -542,23 +568,19 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: think_have_covid_any_symptom_worry_or_anxiety
-  nullable: false
-  type: string
-- metadata: {}
   name: think_have_symptoms_new_or_worse_diarrhoea
   nullable: false
   type: string
 - metadata: {}
-  name: think_have_symptoms_new_or_worse_headache
+  name: think_have_symptoms_new_or_worse_difficulty_concentrating
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_new_or_worse_fever_including_high_temperature
   nullable: false
   type: string
 - metadata: {}
   name: think_have_symptoms_new_or_worse_loss_of_appetite_or_eating_less_than_usual
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_have_symptoms_new_or_worse_loss_of_smell
   nullable: false
   type: string
 - metadata: {}
@@ -574,7 +596,15 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: think_have_symptoms_new_or_worse_more_trouble_sleeping_than_usual
+  nullable: false
+  type: string
+- metadata: {}
   name: think_have_symptoms_new_or_worse_muscle_ache
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_symptoms_new_or_worse_nausea_or_vomiting
   nullable: false
   type: string
 - metadata: {}
@@ -582,15 +612,11 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: think_have_symptoms_new_or_worse_shortness_of_breath
+  name: think_have_symptoms_new_or_worse_runny_nose_or_sneezing
   nullable: false
   type: string
 - metadata: {}
   name: think_have_symptoms_new_or_worse_sore_throat
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_have_symptoms_new_or_worse_weakness_or_tiredness
   nullable: false
   type: string
 - metadata: {}
@@ -606,15 +632,15 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_diarrhoea
-  nullable: false
-  type: string
-- metadata: {}
   name: think_have_long_covid_symptom_difficulty_concentrating
   nullable: false
   type: string
 - metadata: {}
   name: think_have_long_covid_symptom_fever_including_high_temperature
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_headache
   nullable: false
   type: string
 - metadata: {}
@@ -634,11 +660,19 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: think_have_long_covid_symptom_memory_loss_or_confusion
+  nullable: false
+  type: string
+- metadata: {}
   name: think_have_long_covid_symptom_more_trouble_sleeping_than_usual
   nullable: false
   type: string
 - metadata: {}
   name: think_have_long_covid_symptom_nausea_or_vomiting
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_have_long_covid_symptom_noisy_breathing_or_wheezing
   nullable: false
   type: string
 - metadata: {}
@@ -650,6 +684,10 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: think_have_long_covid_symptom_sore_throat
+  nullable: false
+  type: string
+- metadata: {}
   name: think_have_long_covid_symptom_weakness_or_tiredness
   nullable: false
   type: string
@@ -658,15 +696,15 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: think_had_covid_any_symptom_cough
+  name: think_had_covid_any_symptom_abdominal_pain
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_covid_any_symptom_diarrhoea
   nullable: false
   type: string
 - metadata: {}
   name: think_had_covid_any_symptom_difficulty_concentrating
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_had_covid_any_symptom_fever_including_high_temperature
   nullable: false
   type: string
 - metadata: {}
@@ -682,19 +720,23 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: think_had_covid_any_symptom_loss_of_taste
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_covid_any_symptom_low_mood_or_not_enjoying_anything
+  nullable: false
+  type: string
+- metadata: {}
   name: think_had_covid_any_symptom_memory_loss_or_confusion
   nullable: false
   type: string
 - metadata: {}
-  name: think_had_covid_any_symptom_muscle_ache
+  name: think_had_covid_any_symptom_more_trouble_sleeping_than_usual
   nullable: false
   type: string
 - metadata: {}
-  name: think_had_covid_any_symptom_nausea_or_vomiting
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_had_covid_any_symptom_shortness_of_breath
+  name: think_had_covid_any_symptom_runny_nose_or_sneezing
   nullable: false
   type: string
 - metadata: {}
@@ -710,7 +752,7 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: think_had_flu_symptom_cough
+  name: think_had_flu_symptom_abdominal_pain
   nullable: false
   type: string
 - metadata: {}
@@ -718,15 +760,11 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: think_had_flu_symptom_difficulty_concentrating
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_fever_including_high_temperature
-  nullable: false
-  type: string
-- metadata: {}
   name: think_had_flu_symptom_headache
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_loss_of_appetite_or_eating_less_than_usual
   nullable: false
   type: string
 - metadata: {}
@@ -738,11 +776,11 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: think_had_flu_symptom_low_mood_or_not_enjoying_anything
+  name: think_had_flu_symptom_memory_loss_or_confusion
   nullable: false
   type: string
 - metadata: {}
-  name: think_had_flu_symptom_memory_loss_or_confusion
+  name: think_had_flu_symptom_more_trouble_sleeping_than_usual
   nullable: false
   type: string
 - metadata: {}
@@ -754,11 +792,7 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: think_had_flu_symptom_runny_nose_or_sneezing
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_sore_throat
+  name: think_had_flu_symptom_noisy_breathing_or_wheezing
   nullable: false
   type: string
 - metadata: {}
@@ -766,7 +800,11 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_abdominal_pain
+  name: think_had_flu_symptom_worry_or_anxiety
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_infection_symptom_cough
   nullable: false
   type: string
 - metadata: {}
@@ -774,7 +812,15 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: think_had_other_infection_symptom_difficulty_concentrating
+  nullable: false
+  type: string
+- metadata: {}
   name: think_had_other_infection_symptom_fever_including_high_temperature
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_infection_symptom_headache
   nullable: false
   type: string
 - metadata: {}
@@ -782,7 +828,23 @@ fields:
   nullable: false
   type: string
 - metadata: {}
+  name: think_had_other_infection_symptom_loss_of_smell
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_infection_symptom_loss_of_taste
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_infection_symptom_low_mood_or_not_enjoying_anything
+  nullable: false
+  type: string
+- metadata: {}
   name: think_had_other_infection_symptom_memory_loss_or_confusion
+  nullable: false
+  type: string
+- metadata: {}
+  name: think_had_other_infection_symptom_muscle_ache
   nullable: false
   type: string
 - metadata: {}
@@ -802,7 +864,27 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: think_had_other_infection_symptom_worry_or_anxiety
+  name: smokes_cigarettes
+  nullable: false
+  type: string
+- metadata: {}
+  name: smokes_cigars
+  nullable: false
+  type: string
+- metadata: {}
+  name: smokes_vape_or_e_cigarettes
+  nullable: false
+  type: string
+- metadata: {}
+  name: phm_think_had_respiratory_infection_type_covid_19
+  nullable: false
+  type: string
+- metadata: {}
+  name: phm_think_had_respiratory_infection_type_do_not_know_the_type
+  nullable: false
+  type: string
+- metadata: {}
+  name: phm_think_had_respiratory_infection_type_flu
   nullable: false
   type: string
 - metadata: {}
@@ -887,38 +969,6 @@ fields:
   type: string
 - metadata: {}
   name: cis_covid_vaccine_number_of_doses
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_have_covid_any_symptoms
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_have_any_symptoms_new_or_worse
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_have_long_covid_any_symptoms
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_had_covid_any_symptoms
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_had_flu_any_symptoms
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_had_other_infection_any_symptoms
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_had_covid_which_symptoms
-  nullable: false
-  type: string
-- metadata: {}
-  name: which_symptoms_last_7_days
   nullable: false
   type: string
 type: struct
