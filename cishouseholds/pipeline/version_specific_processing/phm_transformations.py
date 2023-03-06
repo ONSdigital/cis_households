@@ -368,6 +368,7 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         "currently_smokes_or_vapes_description": None,
         "blood_not_taken_could_not_reason": None,
         "transport_shared_outside_household_last_28_days": None,
+        "phm_think_had_respiratory_infection_type": None,
         "think_have_covid_any_symptom_list_1": "think_have_covid",
         "think_have_covid_any_symptom_list_2": "think_have_covid",
         "think_have_symptoms_new_or_worse_list_1": "think_have_symptoms",
@@ -382,10 +383,9 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         "think_had_flu_symptom_list_1": "think_had_flu",
         "think_had_flu_symptom_list_2": "think_had_flu",
     }
-
+    transformation_maps: Dict[str, Dict[Any, Any]]
     for col_to_map, prefix in map_to_bool_columns_dict.items():
         if ("symptom" in col_to_map) & ("list_" in col_to_map):
-            transformation_maps: Dict[str, Dict[Any, Any]]
             value_column_map = {
                 key: prefix + value for key, value in transformation_maps[f"symptoms_list_{col_to_map[-1:]}"].items()
             }

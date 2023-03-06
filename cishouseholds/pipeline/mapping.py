@@ -68,7 +68,7 @@ _vaccine_type_map = {
 
 transformation_maps = {
     "currently_smokes_or_vapes_description": {
-        "Cigarettes": "smokes_cigarettes",
+        "Cigarettes": "smoke_cigarettes",
         "Cigars": "smokes_cigar",
         "Pipe": "smokes_pipe",
         "Vape or E-cigarettes": "smokes_vape_e_cigarettes",
@@ -92,6 +92,12 @@ transformation_maps = {
         "Ferry or boat": "transport_shared_outside_household_last_28_days_ferry_boat",
         "Other method": "transport_shared_outside_household_last_28_days_other",
         "I have not used transport shared with people outside of my home for reasons other than travel to work or education": "transport_shared_outside_household_last_28_days_none",
+    },
+    "phm_think_had_respiratory_infection_type": {
+        "COVID-19": "phm_think_had_covid",
+        "Flu": "phm_think_had_flu",
+        "Another type of respiratory infection of illness": "phm_think_had_other_infection",
+        "Do not know the type": "phm_think_had_unknown",
     },
     "symptoms_list_1": {
         "Runny nose or sneezing": "_symptom_runny_nose_or_sneezing",
