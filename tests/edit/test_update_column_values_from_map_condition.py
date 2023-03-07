@@ -41,7 +41,7 @@ def test_update_column_values_from_map_condition(spark_session):
             (2,     'condition_met_1',          'result_1'),
             (3,     'condition_met_2',          'result_2'),
             (4,     'condition_not_met',        'something_else'),
-            (5,      None,                      'filled'),
+            (5,      None,                      None),
             # fmt: on
         ],
         schema=schema,
@@ -50,4 +50,4 @@ def test_update_column_values_from_map_condition(spark_session):
     output_df = update_column_values_from_map(
         df=input_df, reference_column="condition_column", column="column_to_map", map=dict_map["column_to_map"]
     )
-    assert_df_equality(expected_df, output_df, ignore_nullable=True, ignore_column_order=True, ignore_row_order=True)
+    assert_df_equality(expected_df, output_df, ignore_nullable=True, ignore_column_order=False, ignore_row_order=False)
