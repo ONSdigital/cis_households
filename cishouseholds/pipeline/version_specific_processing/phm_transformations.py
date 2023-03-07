@@ -36,7 +36,10 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
                 "Employed and currently working",
                 [
                     "Employed",
-                    "Currently working. This includes if you are on sick or other leave for less than 4 weeks",
+                    [
+                        "Currently not working due to sickness lasting 4 weeks or more",
+                        "Currently not working for other reasons such as maternity or paternity lasting 4 weeks or more",
+                    ],
                     None,
                     None,
                 ],
@@ -92,7 +95,10 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
                 [
                     "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
-                    "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",
+                    [
+                        "Not looking for paid work due to long-term sickness or disability",
+                        "Not looking for paid work for reasons such as looking after the home or family or not wanting a job",
+                    ],
                     # noqa: E501
                     None,
                 ],
@@ -171,7 +177,10 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
                 "Employed and currently not working",
                 [
                     "Employed",
-                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",
+                    [
+                        "Currently not working due to sickness lasting 4 weeks or more",
+                        "Currently not working for other reasons such as maternity or paternity lasting 4 weeks or more",
+                    ],
                     # noqa: E501
                     None,
                     None,
@@ -209,7 +218,10 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
                 [
                     "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
-                    "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",
+                    [
+                        "Not looking for paid work due to long-term sickness or disability",
+                        "Not looking for paid work for reasons such as looking after the home or family or not wanting a job",
+                    ],
                     None,
                 ],
             ],
@@ -274,7 +286,10 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
                 "Not working (unemployed, retired, long-term sick etc.)",
                 [
                     "Employed",
-                    "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks",
+                    [
+                        "Currently not working due to sickness lasting 4 weeks or more",
+                        "Currently not working for other reasons such as maternity or paternity lasting 4 weeks or more",
+                    ],
                     # noqa: E501
                     None,
                     None,
@@ -315,7 +330,10 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
                 [
                     "Not in paid work. This includes being unemployed or retired or doing voluntary work",
                     None,
-                    "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled",
+                    [
+                        "Not looking for paid work due to long-term sickness or disability",
+                        "Not looking for paid work for reasons such as looking after the home or family or not wanting a job",
+                    ],
                     # noqa: E501
                     None,
                 ],
