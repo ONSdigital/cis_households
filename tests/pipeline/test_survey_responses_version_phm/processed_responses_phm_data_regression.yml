@@ -47,18 +47,18 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Yes, a lot
   illness_reduces_activity_or_ability_raw: Yes a lot
-  last_28_days_GP_appointment_health_reasons: 'No'
-  last_28_days_GP_appointment_health_reasons_respiratory_infection: 'No'
-  last_28_days_admitted_to_hospital: 'No'
-  last_28_days_admitted_to_hospital_respiratory_infection: 'No'
-  last_28_days_off_work_education_due_to_health: 'No'
-  last_28_days_off_work_education_due_to_health_respiratory_infection: 'No'
-  last_28_days_pharmacist_111: 'No'
-  last_28_days_pharmacist_111_respiratory_infection: 'No'
-  last_28_days_unable_usual_activities: 'No'
-  last_28_days_unable_usual_activities_due_to_respiratory_infection: 'No'
-  last_28_days_urgent_care: 'No'
-  last_28_days_urgent_care_respiratory_infection: 'No'
+  last_28_days_GP_appointment_health_reasons: null
+  last_28_days_GP_appointment_health_reasons_respiratory_infection: null
+  last_28_days_admitted_to_hospital: null
+  last_28_days_admitted_to_hospital_respiratory_infection: null
+  last_28_days_off_work_education_due_to_health: null
+  last_28_days_off_work_education_due_to_health_respiratory_infection: null
+  last_28_days_pharmacist_111: null
+  last_28_days_pharmacist_111_respiratory_infection: null
+  last_28_days_unable_usual_activities: null
+  last_28_days_unable_usual_activities_due_to_respiratory_infection: null
+  last_28_days_urgent_care: null
+  last_28_days_urgent_care_respiratory_infection: null
   other_covid_infection_test: 'No'
   other_covid_infection_test_negative_date: 06/01/2022
   other_covid_infection_test_positive_date: null
@@ -312,18 +312,18 @@
   illness_lasting_over_12_months: Prefer not to say
   illness_reduces_activity_or_ability: 'No'
   illness_reduces_activity_or_ability_raw: 'No'
-  last_28_days_GP_appointment_health_reasons: 'No'
-  last_28_days_GP_appointment_health_reasons_respiratory_infection: 'No'
-  last_28_days_admitted_to_hospital: 'No'
-  last_28_days_admitted_to_hospital_respiratory_infection: 'No'
-  last_28_days_off_work_education_due_to_health: 'No'
-  last_28_days_off_work_education_due_to_health_respiratory_infection: 'No'
-  last_28_days_pharmacist_111: 'No'
-  last_28_days_pharmacist_111_respiratory_infection: 'No'
-  last_28_days_unable_usual_activities: 'No'
-  last_28_days_unable_usual_activities_due_to_respiratory_infection: 'No'
-  last_28_days_urgent_care: 'No'
-  last_28_days_urgent_care_respiratory_infection: 'No'
+  last_28_days_GP_appointment_health_reasons: null
+  last_28_days_GP_appointment_health_reasons_respiratory_infection: null
+  last_28_days_admitted_to_hospital: null
+  last_28_days_admitted_to_hospital_respiratory_infection: null
+  last_28_days_off_work_education_due_to_health: null
+  last_28_days_off_work_education_due_to_health_respiratory_infection: null
+  last_28_days_pharmacist_111: null
+  last_28_days_pharmacist_111_respiratory_infection: null
+  last_28_days_unable_usual_activities: null
+  last_28_days_unable_usual_activities_due_to_respiratory_infection: null
+  last_28_days_urgent_care: null
+  last_28_days_urgent_care_respiratory_infection: null
   other_covid_infection_test: 'No'
   other_covid_infection_test_negative_date: 'No'
   other_covid_infection_test_positive_date: null
@@ -572,18 +572,18 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Not at all
   illness_reduces_activity_or_ability_raw: Not at all
-  last_28_days_GP_appointment_health_reasons: 'No'
-  last_28_days_GP_appointment_health_reasons_respiratory_infection: 'No'
-  last_28_days_admitted_to_hospital: 'No'
-  last_28_days_admitted_to_hospital_respiratory_infection: 'No'
-  last_28_days_off_work_education_due_to_health: 'No'
-  last_28_days_off_work_education_due_to_health_respiratory_infection: 'No'
-  last_28_days_pharmacist_111: 'No'
-  last_28_days_pharmacist_111_respiratory_infection: 'No'
-  last_28_days_unable_usual_activities: 'No'
-  last_28_days_unable_usual_activities_due_to_respiratory_infection: 'No'
-  last_28_days_urgent_care: 'No'
-  last_28_days_urgent_care_respiratory_infection: 'No'
+  last_28_days_GP_appointment_health_reasons: null
+  last_28_days_GP_appointment_health_reasons_respiratory_infection: null
+  last_28_days_admitted_to_hospital: null
+  last_28_days_admitted_to_hospital_respiratory_infection: null
+  last_28_days_off_work_education_due_to_health: null
+  last_28_days_off_work_education_due_to_health_respiratory_infection: null
+  last_28_days_pharmacist_111: null
+  last_28_days_pharmacist_111_respiratory_infection: null
+  last_28_days_unable_usual_activities: null
+  last_28_days_unable_usual_activities_due_to_respiratory_infection: null
+  last_28_days_urgent_care: null
+  last_28_days_urgent_care_respiratory_infection: null
   other_covid_infection_test: 'No'
   other_covid_infection_test_negative_date: 06/01/2022
   other_covid_infection_test_positive_date: null
@@ -834,18 +834,18 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Yes, a lot
   illness_reduces_activity_or_ability_raw: Yes a lot
-  last_28_days_GP_appointment_health_reasons: 'No'
-  last_28_days_GP_appointment_health_reasons_respiratory_infection: 'No'
-  last_28_days_admitted_to_hospital: 'No'
-  last_28_days_admitted_to_hospital_respiratory_infection: 'No'
-  last_28_days_off_work_education_due_to_health: 'No'
-  last_28_days_off_work_education_due_to_health_respiratory_infection: 'No'
-  last_28_days_pharmacist_111: 'No'
-  last_28_days_pharmacist_111_respiratory_infection: 'No'
-  last_28_days_unable_usual_activities: 'No'
-  last_28_days_unable_usual_activities_due_to_respiratory_infection: 'No'
-  last_28_days_urgent_care: 'No'
-  last_28_days_urgent_care_respiratory_infection: 'No'
+  last_28_days_GP_appointment_health_reasons: null
+  last_28_days_GP_appointment_health_reasons_respiratory_infection: null
+  last_28_days_admitted_to_hospital: null
+  last_28_days_admitted_to_hospital_respiratory_infection: null
+  last_28_days_off_work_education_due_to_health: null
+  last_28_days_off_work_education_due_to_health_respiratory_infection: null
+  last_28_days_pharmacist_111: null
+  last_28_days_pharmacist_111_respiratory_infection: null
+  last_28_days_unable_usual_activities: null
+  last_28_days_unable_usual_activities_due_to_respiratory_infection: null
+  last_28_days_urgent_care: null
+  last_28_days_urgent_care_respiratory_infection: null
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_negative_date: 'No'
   other_covid_infection_test_positive_date: null
@@ -1094,18 +1094,18 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: 'No'
   illness_reduces_activity_or_ability_raw: 'No'
-  last_28_days_GP_appointment_health_reasons: 'No'
-  last_28_days_GP_appointment_health_reasons_respiratory_infection: 'No'
-  last_28_days_admitted_to_hospital: 'No'
-  last_28_days_admitted_to_hospital_respiratory_infection: 'No'
-  last_28_days_off_work_education_due_to_health: 'No'
-  last_28_days_off_work_education_due_to_health_respiratory_infection: 'No'
-  last_28_days_pharmacist_111: 'No'
-  last_28_days_pharmacist_111_respiratory_infection: 'No'
-  last_28_days_unable_usual_activities: 'No'
-  last_28_days_unable_usual_activities_due_to_respiratory_infection: 'No'
-  last_28_days_urgent_care: 'No'
-  last_28_days_urgent_care_respiratory_infection: 'No'
+  last_28_days_GP_appointment_health_reasons: null
+  last_28_days_GP_appointment_health_reasons_respiratory_infection: null
+  last_28_days_admitted_to_hospital: null
+  last_28_days_admitted_to_hospital_respiratory_infection: null
+  last_28_days_off_work_education_due_to_health: null
+  last_28_days_off_work_education_due_to_health_respiratory_infection: null
+  last_28_days_pharmacist_111: null
+  last_28_days_pharmacist_111_respiratory_infection: null
+  last_28_days_unable_usual_activities: null
+  last_28_days_unable_usual_activities_due_to_respiratory_infection: null
+  last_28_days_urgent_care: null
+  last_28_days_urgent_care_respiratory_infection: null
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_negative_date: 03/01/2022
   other_covid_infection_test_positive_date: null
@@ -1352,18 +1352,18 @@
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Yes, a lot
   illness_reduces_activity_or_ability_raw: Yes a lot
-  last_28_days_GP_appointment_health_reasons: 'No'
-  last_28_days_GP_appointment_health_reasons_respiratory_infection: 'No'
-  last_28_days_admitted_to_hospital: 'No'
-  last_28_days_admitted_to_hospital_respiratory_infection: 'No'
-  last_28_days_off_work_education_due_to_health: 'No'
-  last_28_days_off_work_education_due_to_health_respiratory_infection: 'No'
-  last_28_days_pharmacist_111: 'No'
-  last_28_days_pharmacist_111_respiratory_infection: 'No'
-  last_28_days_unable_usual_activities: 'No'
-  last_28_days_unable_usual_activities_due_to_respiratory_infection: 'No'
-  last_28_days_urgent_care: 'No'
-  last_28_days_urgent_care_respiratory_infection: 'No'
+  last_28_days_GP_appointment_health_reasons: null
+  last_28_days_GP_appointment_health_reasons_respiratory_infection: null
+  last_28_days_admitted_to_hospital: null
+  last_28_days_admitted_to_hospital_respiratory_infection: null
+  last_28_days_off_work_education_due_to_health: null
+  last_28_days_off_work_education_due_to_health_respiratory_infection: null
+  last_28_days_pharmacist_111: null
+  last_28_days_pharmacist_111_respiratory_infection: null
+  last_28_days_unable_usual_activities: null
+  last_28_days_unable_usual_activities_due_to_respiratory_infection: null
+  last_28_days_urgent_care: null
+  last_28_days_urgent_care_respiratory_infection: null
   other_covid_infection_test: 'No'
   other_covid_infection_test_negative_date: 02/01/2022
   other_covid_infection_test_positive_date: '2022-01-05 00:00:00.000000'
@@ -1612,18 +1612,18 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Yes, a lot
   illness_reduces_activity_or_ability_raw: Yes a lot
-  last_28_days_GP_appointment_health_reasons: 'No'
-  last_28_days_GP_appointment_health_reasons_respiratory_infection: 'No'
-  last_28_days_admitted_to_hospital: 'No'
-  last_28_days_admitted_to_hospital_respiratory_infection: 'No'
-  last_28_days_off_work_education_due_to_health: 'No'
-  last_28_days_off_work_education_due_to_health_respiratory_infection: 'No'
-  last_28_days_pharmacist_111: 'No'
-  last_28_days_pharmacist_111_respiratory_infection: 'No'
-  last_28_days_unable_usual_activities: 'No'
-  last_28_days_unable_usual_activities_due_to_respiratory_infection: 'No'
-  last_28_days_urgent_care: 'No'
-  last_28_days_urgent_care_respiratory_infection: 'No'
+  last_28_days_GP_appointment_health_reasons: null
+  last_28_days_GP_appointment_health_reasons_respiratory_infection: null
+  last_28_days_admitted_to_hospital: null
+  last_28_days_admitted_to_hospital_respiratory_infection: null
+  last_28_days_off_work_education_due_to_health: null
+  last_28_days_off_work_education_due_to_health_respiratory_infection: null
+  last_28_days_pharmacist_111: null
+  last_28_days_pharmacist_111_respiratory_infection: null
+  last_28_days_unable_usual_activities: null
+  last_28_days_unable_usual_activities_due_to_respiratory_infection: null
+  last_28_days_urgent_care: null
+  last_28_days_urgent_care_respiratory_infection: null
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_negative_date: 05/01/2022
   other_covid_infection_test_positive_date: '2022-01-07 00:00:00.000000'
@@ -1876,18 +1876,18 @@
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Yes, a lot
   illness_reduces_activity_or_ability_raw: Yes a lot
-  last_28_days_GP_appointment_health_reasons: 'No'
-  last_28_days_GP_appointment_health_reasons_respiratory_infection: 'No'
-  last_28_days_admitted_to_hospital: 'No'
-  last_28_days_admitted_to_hospital_respiratory_infection: 'No'
-  last_28_days_off_work_education_due_to_health: 'No'
-  last_28_days_off_work_education_due_to_health_respiratory_infection: 'No'
-  last_28_days_pharmacist_111: 'No'
-  last_28_days_pharmacist_111_respiratory_infection: 'No'
-  last_28_days_unable_usual_activities: 'No'
-  last_28_days_unable_usual_activities_due_to_respiratory_infection: 'No'
-  last_28_days_urgent_care: 'No'
-  last_28_days_urgent_care_respiratory_infection: 'No'
+  last_28_days_GP_appointment_health_reasons: null
+  last_28_days_GP_appointment_health_reasons_respiratory_infection: null
+  last_28_days_admitted_to_hospital: null
+  last_28_days_admitted_to_hospital_respiratory_infection: null
+  last_28_days_off_work_education_due_to_health: null
+  last_28_days_off_work_education_due_to_health_respiratory_infection: null
+  last_28_days_pharmacist_111: null
+  last_28_days_pharmacist_111_respiratory_infection: null
+  last_28_days_unable_usual_activities: null
+  last_28_days_unable_usual_activities_due_to_respiratory_infection: null
+  last_28_days_urgent_care: null
+  last_28_days_urgent_care_respiratory_infection: null
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_negative_date: 'No'
   other_covid_infection_test_positive_date: null
@@ -2141,18 +2141,18 @@
   illness_lasting_over_12_months: Prefer not to say
   illness_reduces_activity_or_ability: Yes, a little
   illness_reduces_activity_or_ability_raw: Yes a little
-  last_28_days_GP_appointment_health_reasons: 'No'
-  last_28_days_GP_appointment_health_reasons_respiratory_infection: 'No'
-  last_28_days_admitted_to_hospital: 'No'
-  last_28_days_admitted_to_hospital_respiratory_infection: 'No'
-  last_28_days_off_work_education_due_to_health: 'No'
-  last_28_days_off_work_education_due_to_health_respiratory_infection: 'No'
-  last_28_days_pharmacist_111: 'No'
-  last_28_days_pharmacist_111_respiratory_infection: 'No'
-  last_28_days_unable_usual_activities: 'No'
-  last_28_days_unable_usual_activities_due_to_respiratory_infection: 'No'
-  last_28_days_urgent_care: 'No'
-  last_28_days_urgent_care_respiratory_infection: 'No'
+  last_28_days_GP_appointment_health_reasons: null
+  last_28_days_GP_appointment_health_reasons_respiratory_infection: null
+  last_28_days_admitted_to_hospital: null
+  last_28_days_admitted_to_hospital_respiratory_infection: null
+  last_28_days_off_work_education_due_to_health: null
+  last_28_days_off_work_education_due_to_health_respiratory_infection: null
+  last_28_days_pharmacist_111: null
+  last_28_days_pharmacist_111_respiratory_infection: null
+  last_28_days_unable_usual_activities: null
+  last_28_days_unable_usual_activities_due_to_respiratory_infection: null
+  last_28_days_urgent_care: null
+  last_28_days_urgent_care_respiratory_infection: null
   other_covid_infection_test: 'No'
   other_covid_infection_test_negative_date: 'No'
   other_covid_infection_test_positive_date: '2022-01-04 00:00:00.000000'
@@ -2400,18 +2400,18 @@
   illness_lasting_over_12_months: Prefer not to say
   illness_reduces_activity_or_ability: Yes, a lot
   illness_reduces_activity_or_ability_raw: Yes a lot
-  last_28_days_GP_appointment_health_reasons: 'No'
-  last_28_days_GP_appointment_health_reasons_respiratory_infection: 'No'
-  last_28_days_admitted_to_hospital: 'No'
-  last_28_days_admitted_to_hospital_respiratory_infection: 'No'
-  last_28_days_off_work_education_due_to_health: 'No'
-  last_28_days_off_work_education_due_to_health_respiratory_infection: 'No'
-  last_28_days_pharmacist_111: 'No'
-  last_28_days_pharmacist_111_respiratory_infection: 'No'
-  last_28_days_unable_usual_activities: 'No'
-  last_28_days_unable_usual_activities_due_to_respiratory_infection: 'No'
-  last_28_days_urgent_care: 'No'
-  last_28_days_urgent_care_respiratory_infection: 'No'
+  last_28_days_GP_appointment_health_reasons: null
+  last_28_days_GP_appointment_health_reasons_respiratory_infection: null
+  last_28_days_admitted_to_hospital: null
+  last_28_days_admitted_to_hospital_respiratory_infection: null
+  last_28_days_off_work_education_due_to_health: null
+  last_28_days_off_work_education_due_to_health_respiratory_infection: null
+  last_28_days_pharmacist_111: null
+  last_28_days_pharmacist_111_respiratory_infection: null
+  last_28_days_unable_usual_activities: null
+  last_28_days_unable_usual_activities_due_to_respiratory_infection: null
+  last_28_days_urgent_care: null
+  last_28_days_urgent_care_respiratory_infection: null
   other_covid_infection_test: 'No'
   other_covid_infection_test_negative_date: 05/01/2022
   other_covid_infection_test_positive_date: '2022-01-01 00:00:00.000000'

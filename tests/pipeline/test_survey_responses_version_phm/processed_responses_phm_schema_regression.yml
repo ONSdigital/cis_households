@@ -307,52 +307,52 @@ fields:
   type: string
 - metadata: {}
   name: last_28_days_unable_usual_activities
-  nullable: false
-  type: string
+  nullable: true
+  type: integer
 - metadata: {}
   name: last_28_days_unable_usual_activities_due_to_respiratory_infection
-  nullable: false
-  type: string
+  nullable: true
+  type: integer
 - metadata: {}
   name: last_28_days_off_work_education_due_to_health
-  nullable: false
-  type: string
+  nullable: true
+  type: integer
 - metadata: {}
   name: last_28_days_off_work_education_due_to_health_respiratory_infection
-  nullable: false
-  type: string
+  nullable: true
+  type: integer
 - metadata: {}
   name: last_28_days_GP_appointment_health_reasons
-  nullable: false
-  type: string
+  nullable: true
+  type: integer
 - metadata: {}
   name: last_28_days_GP_appointment_health_reasons_respiratory_infection
-  nullable: false
-  type: string
+  nullable: true
+  type: integer
 - metadata: {}
   name: last_28_days_pharmacist_111
-  nullable: false
-  type: string
+  nullable: true
+  type: integer
 - metadata: {}
   name: last_28_days_pharmacist_111_respiratory_infection
-  nullable: false
-  type: string
+  nullable: true
+  type: integer
 - metadata: {}
   name: last_28_days_urgent_care
-  nullable: false
-  type: string
+  nullable: true
+  type: integer
 - metadata: {}
   name: last_28_days_urgent_care_respiratory_infection
-  nullable: false
-  type: string
+  nullable: true
+  type: integer
 - metadata: {}
   name: last_28_days_admitted_to_hospital
-  nullable: false
-  type: string
+  nullable: true
+  type: integer
 - metadata: {}
   name: last_28_days_admitted_to_hospital_respiratory_infection
-  nullable: false
-  type: string
+  nullable: true
+  type: integer
 - metadata: {}
   name: think_have_long_covid
   nullable: false
