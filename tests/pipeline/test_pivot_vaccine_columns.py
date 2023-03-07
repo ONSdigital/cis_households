@@ -27,7 +27,7 @@ def test_pivot_vaccine_columns(spark_session):
             (5, 1, None, None),
             (5, 2, None, None),
         ],
-        schema="id integer, vaccine_number integer, a integer, b integer",
+        schema="id integer, row integer, a integer, b integer",
     )
-    output_df = pivot_vaccine_columns(df=input_df, vaccine_number_column="vaccine_number", prefixes=["a", "b"])
+    output_df = pivot_vaccine_columns(df=input_df, row_number_column="row", prefixes=["a", "b"])
     assert_df_equality(expected_df, output_df, ignore_nullable=True, ignore_column_order=True, ignore_row_order=True)
