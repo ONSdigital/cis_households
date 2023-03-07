@@ -1,4 +1,7 @@
-csv_datetime_maps = {"imputed_value_lookup": {"yyyy-MM-dd": ["date_of_birth"]}}
+csv_datetime_maps = {
+    "imputed_value_lookup": {"yyyy-MM-dd": ["date_of_birth"]},
+    "vaccine_capture_lookup": {"dd-MM-yyyy": ["cis_covid_vaccine_date_1", "cis_covid_vaccine_date_2"]},
+}
 
 lab_results_glasgow_datetime_map = {"yyyy-MM-dd HH:mm:ss 'UTC'": ["pcr_result_recorded_datetime"]}
 historical_blood_datetime_map = {"yyyy/MM/dd": ["received_date"]}
