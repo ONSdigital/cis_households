@@ -724,7 +724,8 @@ def join_lookup_table(
     for transformation in post_join_transformations:
         df = transformations_dict[transformation](df, **kwargs)
 
-    update_table(df, output_survey_table, "overwrite", survey_table=True)
+    survey_table = True if output_survey_table == "output_survey_table" else False
+    update_table(df, output_survey_table, "overwrite", survey_table=survey_table)
     return {output_table_name_key: output_survey_table}
 
 
