@@ -2736,7 +2736,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         ),
         "blood_not_taken_damage_description": _("text.sentence"),
         "blood_not_taken_missing_parts": _(
-            "words",
+            "choice",
             items=[
                 "Small sample test tube. This is the tube that is used to collect the blood.",
                 "Large sample carrier tube with barcode on. This is the tube that you put the small sample test tube in to after collecting blood.",  # noqa: E501

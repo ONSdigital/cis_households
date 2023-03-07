@@ -1333,115 +1333,115 @@ fields:
   type: string
 - metadata: {}
   name: smoke_cigarettes
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: smokes_cigar
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: smokes_pipe
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: smokes_vape_e_cigarettes
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: smokes_hookah_shisha_pipes
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_small_sample_tube
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_large_sample_carrier
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_biohazard_bag
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_blood_barcode
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_lancets
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_plasters
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_alcohol_wipes
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_cleansing_wipe
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_sample_box
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_sample_return_bag
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_other
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: blood_not_taken_could_not_reason_not_enough_blood
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: blood_not_taken_could_not_reason_pot_spilled
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: blood_not_taken_could_not_reason_had_bruising
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: blood_not_taken_could_not_reason_unwell
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: blood_not_taken_could_not_reason_other
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: swab_not_taken_missing_parts_sample_pot
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: swab_not_taken_missing_parts_swab_stick
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: swab_not_taken_missing_parts_biohazard_bag
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: swab_not_taken_missing_parts_swab_barcode
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: swab_not_taken_missing_parts_sample_box
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: swab_not_taken_missing_parts_return_bag
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: swab_not_taken_missing_parts_other
-  nullable: true
+  nullable: false
   type: string
 - metadata: {}
   name: times_outside_shopping_or_socialising_last_7_days
