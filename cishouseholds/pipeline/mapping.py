@@ -66,7 +66,7 @@ _vaccine_type_map = {
     "Pfizer/BioNTech / Comirnaty (including bivalent)": 18,
 }
 
-transformation_maps = {
+transformation_maps: Dict[str, Dict[str, str]] = {
     "currently_smokes_or_vapes_description": {
         "Cigarettes": "smoke_cigarettes",
         "Cigars": "smokes_cigar",

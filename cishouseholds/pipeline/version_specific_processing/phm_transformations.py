@@ -365,10 +365,10 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
     df = clean_barcode_simple(df, "swab_sample_barcode_user_entered")
     df = clean_barcode_simple(df, "blood_sample_barcode_user_entered")
     map_to_bool_columns_dict = {
-        "currently_smokes_or_vapes_description": None,
-        "blood_not_taken_could_not_reason": None,
-        "transport_shared_outside_household_last_28_days": None,
-        "phm_think_had_respiratory_infection_type": None,
+        "currently_smokes_or_vapes_description": "",
+        "blood_not_taken_could_not_reason": "",
+        "transport_shared_outside_household_last_28_days": "",
+        "phm_think_had_respiratory_infection_type": "",
         "think_have_covid_any_symptom_list_1": "think_have_covid",
         "think_have_covid_any_symptom_list_2": "think_have_covid",
         "think_have_symptoms_new_or_worse_list_1": "think_have_symptoms",
@@ -383,7 +383,7 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         "think_had_flu_symptom_list_1": "think_had_flu",
         "think_had_flu_symptom_list_2": "think_had_flu",
     }
-    transformation_maps: Dict[str, Dict[Any, Any]]
+
     for col_to_map, prefix in map_to_bool_columns_dict.items():
         if ("symptom" in col_to_map) & ("list_" in col_to_map):
             value_column_map = {

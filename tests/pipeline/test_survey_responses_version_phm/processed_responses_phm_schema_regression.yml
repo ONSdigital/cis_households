@@ -342,51 +342,51 @@ fields:
 - metadata: {}
   name: last_28_days_unable_usual_activities
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
   name: last_28_days_unable_usual_activities_due_to_respiratory_infection
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
   name: last_28_days_off_work_education_due_to_health
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
   name: last_28_days_off_work_education_due_to_health_respiratory_infection
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
   name: last_28_days_GP_appointment_health_reasons
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
   name: last_28_days_GP_appointment_health_reasons_respiratory_infection
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
   name: last_28_days_pharmacist_111
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
   name: last_28_days_pharmacist_111_respiratory_infection
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
   name: last_28_days_urgent_care
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
   name: last_28_days_urgent_care_respiratory_infection
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
   name: last_28_days_admitted_to_hospital
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
   name: last_28_days_admitted_to_hospital_respiratory_infection
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
   name: think_have_long_covid
   nullable: true
@@ -477,10 +477,6 @@ fields:
   type: string
 - metadata: {}
   name: transport_shared_outside_household_last_28_days
-  nullable: true
-  type: string
-- metadata: {}
-  name: transport_shared_outside_household_last_28_days_none
   nullable: true
   type: string
 - metadata: {}
@@ -581,6 +577,10 @@ fields:
   type: string
 - metadata: {}
   name: transport_shared_outside_household_last_28_days_other
+  nullable: true
+  type: string
+- metadata: {}
+  name: transport_shared_outside_household_last_28_days_none
   nullable: true
   type: string
 - metadata: {}
