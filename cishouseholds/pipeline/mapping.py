@@ -74,6 +74,8 @@ category_maps = {
             "A lateral flow test. That is the test you can do yourself and you do not have to send it to a laboratory because the result shows in the device in about 30 minutes.": 1,
             "PCR test. That is the test that is sent off to a laboratory.": 2,
         },
+        "contact_known_or_suspected": _yes_no_categories,
+        "contact_known_or_suspected_covid_type": {"Living in your own home": 1, "Outside your home": 2},
         "think_respiratory_infection": _yes_no_categories,
         "agreed_to_additional_consent_visit": _yes_no_categories,
         "consent_blood_samples_if_positive_yn": _yes_no_categories,
