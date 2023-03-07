@@ -43,7 +43,7 @@ def filter_before_date_or_null(df: DataFrame, date_column: str, min_date: str):
     min_date
         a  minimum date within the 'date_column' for which to retain rows
     """
-    return df.filter(F.when((F.col(date_column) >= min_date) | (F.col(date_column).isNull())))
+    return df.filter((F.col(date_column) >= min_date) | (F.col(date_column).isNull()))
 
 
 def filter_invalid_vaccines(
