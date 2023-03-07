@@ -74,6 +74,8 @@ category_maps = {
             "A lateral flow test. That is the test you can do yourself and you do not have to send it to a laboratory because the result shows in the device in about 30 minutes.": 1,
             "PCR test. That is the test that is sent off to a laboratory.": 2,
         },
+        "contact_known_or_suspected": _yes_no_categories,
+        "contact_known_or_suspected_covid_type": {"Living in your own home": 1, "Outside your home": 2},
         "think_respiratory_infection": _yes_no_categories,
         "agreed_to_additional_consent_visit": _yes_no_categories,
         "consent_blood_samples_if_positive_yn": _yes_no_categories,
@@ -1337,6 +1339,16 @@ category_maps = {
 
 column_name_maps: Dict[str, Dict[str, str]]
 column_name_maps = {
+    "vaccine_capture_column_name_map": {
+        "participant_id": "participant_id",
+        "ons_household_id": "ons_household_id",
+        "covid_vaccine_date_1": "cis_covid_vaccine_date_1",
+        "covid_vaccine_type_1": "cis_covid_vaccine_type_1",
+        "covid_vaccine_type_other_1": "cis_covid_vaccine_type_other_1",
+        "covid_vaccine_date_2": "cis_covid_vaccine_date_2",
+        "covid_vaccine_type_2": "cis_covid_vaccine_type_2",
+        "covid_vaccine_type_other_2": "cis_covid_vaccine_type_other_2",
+    },
     "soc_resolution_name_map": {
         "job_title": "work_main_job_title",
         "main_job_responsibilities": "work_main_job_role",
