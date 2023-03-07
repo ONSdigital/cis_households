@@ -141,6 +141,7 @@ phm_datetime_map = {
         "swab_taken_date",
         "swab_return_date",
         "swab_return_future_date",
+        "blood_taken_date",
         "blood_return_date",
         "blood_return_future_date",
         "think_had_covid_onset_date",
