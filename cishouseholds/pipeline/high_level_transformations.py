@@ -1,10 +1,33 @@
 # flake8: noqa
+from typing import List
+
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.derive import assign_column_to_date_string
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
+
+
+def pivot_vaccine_columns(df: DataFrame, vaccine_number_column: str, prefixes: List[str]):
+    """"""
+    dfs = []
+    original_columns = df.columns
+    drop_columns = []
+    window = Window.partitionBy(*df.columns).orderBy(F.lit(1))
+    for prefix in prefixes:
+        cols = [col for col in df.columns if col.startswith(prefix)]
+        drop_columns.extend(cols)
+        dfs.append(
+            df.withColumn(prefix, F.explode(F.array(cols))).withColumn(
+                vaccine_number_column, F.row_number().over(window)
+            )
+        )
+
+    df = dfs[0]
+    for _df in dfs[1:]:
+        df = df.join(_df, on=[*original_columns, vaccine_number_column], how="left")
+    return df.drop(*drop_columns)
 
 
 def fill_forwards(df: DataFrame) -> DataFrame:

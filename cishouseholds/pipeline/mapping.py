@@ -1335,6 +1335,16 @@ category_maps = {
 
 column_name_maps: Dict[str, Dict[str, str]]
 column_name_maps = {
+    "vaccine_capture_column_name_map": {
+        "participant_id": "participant_id",
+        "ons_household_id": "ons_household_id",
+        "covid_vaccine_date_1": "cis_covid_vaccine_date_1",
+        "covid_vaccine_type_1": "cis_covid_vaccine_type_1",
+        "covid_vaccine_type_other_1": "cis_covid_vaccine_type_other_1",
+        "covid_vaccine_date_2": "cis_covid_vaccine_date_2",
+        "covid_vaccine_type_2": "cis_covid_vaccine_type_2",
+        "covid_vaccine_type_other_2": "cis_covid_vaccine_type_other_2",
+    },
     "soc_resolution_name_map": {
         "job_title": "work_main_job_title",
         "main_job_responsibilities": "work_main_job_role",
