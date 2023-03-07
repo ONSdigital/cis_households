@@ -4,7 +4,6 @@ csv_datetime_maps = {
         "dd-MM-yyyy": [
             "cis_covid_vaccine_date_1",
             "cis_covid_vaccine_date_2",
-            "contact_known_or_suspected_covid_latest_date",
         ]
     },
 }
