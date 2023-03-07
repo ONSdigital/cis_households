@@ -29,6 +29,33 @@ from cishouseholds.pipeline.mapping import _vaccine_type_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def assign_columns_from_array(
+    df: DataFrame, id_column_name: str, array_column_name: str, true_false_values: List[Any], prefix: Any = None
+):
+    """
+    Convert an array column into a series of columns, optionally apply a prefix to the value in the array
+    before generating the column name.
+
+    Parameters
+    ----------
+    df
+    id_column_name
+        the name of a column containing unique (1:1) values for each row
+    array_column_name
+        the name of the array column to split
+    prefix
+        an optional prefix to apply to each name in the array
+    true_false_values
+        [<true value>,<false value>]
+    """
+    df = df.withColumn("exploded", F.explode(array_column_name))
+    if prefix:
+        df = df.withColumn("exploded", F.concat_ws("_", F.lit(prefix), F.col("exploded")))
+    df = df.withColumn("value", F.lit(true_false_values[0]))
+    df = df.groupby(id_column_name).pivot("exploded").agg(F.first("value")).fillna(False)
+    return df
+
+
 def assign_datetime_from_combined_columns(
     df: DataFrame,
     column_name_to_assign: str,

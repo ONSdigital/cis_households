@@ -627,7 +627,6 @@ def get_participant_extract_digital_data_description(_, blood_barcodes, swab_bar
         "person_9_not_consenting_age": _("custom_random.random_integer", lower=16, upper=100, null_percent=0.9),
         "person9_reason_for_not_consenting": _("text.sentence"),
         "count_of_non_consenting": _("custom_random.random_integer", lower=1, upper=9, null_percent=0.9),
-        "email": _("text.sentence"),
         "participant_digital_type_preference": _("text.sentence"),
         "participant_digital_communication_preference": _("text.sentence"),
         "participant_digital_sample_return_preference": _("text.sentence"),
@@ -3412,7 +3411,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         ),
         "blood_not_taken_could_not_other": _("text.sentence"),
         "blood_sample_barcode_correct": _("choice", items=yes_no_none_choice),
-        "blood_barcode_user_entered": _("random.custom_code", mask="BLT########", digit="#"),
+        "blood_sample_barcode_user_entered": _("random.custom_code", mask="BLT########", digit="#"),
         "blood_taken_date": _(
             "discrete_distribution",
             population=[
@@ -3615,7 +3614,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         "cis_covid_vaccine_received": _("choice", items=yes_no_none_choice),
         "cis_covid_vaccine_type": _("choice", items=type_of_vaccination),
         "cis_covid_vaccine_type_other": _("text.quote"),
-        "cis_covid_vaccine_number_of_doses": _(
+        "phm_covid_vaccine_number_of_doses": _(
             "choice",
             items=[
                 "1 dose",
@@ -3681,8 +3680,8 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
             weights=[0.5, 0.5],
         ),
-        "think_had_covid_symptom_list_1": _("choice", items=symptoms_list_1),
-        "think_had_covid_symptom_list_2": _("choice", items=symptoms_list_2),
+        "think_had_covid_any_symptom_list_1": _("choice", items=symptoms_list_1),
+        "think_had_covid_any_symptom_list_2": _("choice", items=symptoms_list_2),
         "phm_think_had_flu_onset_date": _(
             "discrete_distribution",
             population=[
@@ -3813,7 +3812,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         "times_hour_or_longer_another_home_last_7_days": _("choice", items=times_count),
         "times_hour_or_longer_another_person_your_home_last_7_days": _("choice", items=times_count),
         "times_shopping_last_7_days": _("choice", items=times_count),
-        "times_socialise_last_7_days": _("choice", items=times_count),
+        "times_socialising_last_7_days": _("choice", items=times_count),
         "times_indoor_exercise_last_28_days": _(
             "choice",
             items=[
@@ -3836,18 +3835,13 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 "Underound or Metro or Light Rail or Tram",
                 "Plane",
                 "Other method",
+                "I have not used transport shared with people outside of my home for reasons other than travel to work or education",
             ],
         ),
         "transport_shared_outside_household_last_28_days_none": _(
             "choice",
             items=[
-                "Bus or minibus or coach",
-                "Car or van",
-                "Taxi or minicab",
-                "Train",
-                "Underound or Metro or Light Rail or Tram",
-                "Plane",
-                "Other method",
+                "I have not used transport shared with people outside of my home for reasons other than travel to work or education",
             ],
         ),
         "face_covering_work_or_education": _(
