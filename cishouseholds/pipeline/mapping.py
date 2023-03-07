@@ -1239,12 +1239,16 @@ category_maps = {
         "work_status_employment": {
             "Currently working. This includes if you are on sick or other leave for less than 4 weeks": 1,
             "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks": 2,  # noqa: E501
+            "Currently not working due to sickness lasting 4 weeks or more": 3,
+            "Currently not working for other reasons such as maternity or paternity lasting 4 weeks or more": 4,
         },
         "work_status_unemployment": {
             "Looking for paid work and able to start": 1,
             "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled": 2,  # noqa: E501
             "Retired": 3,
             "Or retired?": 3,
+            "Not looking for paid work due to long-term sickness or disability": 4,
+            "Not looking for paid work for reasons such as looking after the home or family or not wanting a job": 5,
         },
         "work_status_education": {
             "A child aged 4 or over at home-school": 1,
