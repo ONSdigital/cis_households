@@ -13,12 +13,12 @@ def test_assign_columns_from_array(spark_session):
     )
     expected_df = spark_session.createDataFrame(
         data=[
-            (1, True, True, True),
-            (2, True, False, True),
+            (1, ["a", "b", "c"], True, True, True),
+            (2, ["a", "c"], True, False, True),
         ],
-        schema=["id", "test_a", "test_b", "test_c"],
+        schema=["id", "arr", "test_a", "test_b", "test_c"],
     )
     output_df = assign_columns_from_array(
         df=input_df, array_column_name="arr", prefix="test", true_false_values=[True, False]
     )
-    assert_df_equality(output_df, expected_df, ignore_nullable=True, ignore_column_order=True, ignore_row_order=True)
+    assert_df_equality(output_df, expected_df, ignore_nullable=True)
