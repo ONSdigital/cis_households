@@ -18,6 +18,7 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.validation_schema import validation_schemas
+from cishouseholds.pyspark_utils import convert_array_strings_to_array
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
@@ -161,7 +162,7 @@ def extract_input_data(
     spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
     file_paths = [file_paths] if type(file_paths) == str else file_paths
     if all(Path(path).suffix in [".txt", ".csv"] for path in file_paths):
-        return spark_session.read.csv(
+        df = spark_session.read.csv(
             file_paths,
             header=True,
             schema=spark_schema,
@@ -169,6 +170,9 @@ def extract_input_data(
             ignoreTrailingWhiteSpace=True,
             sep=sep,
         )
+        df = convert_array_strings_to_array(df, validation_schema)  # type: ignore
+        return df
+
     elif all(Path(path).suffix in [".xlsx"] for path in file_paths):
         spark = get_or_create_spark_session()
         dfs = [
