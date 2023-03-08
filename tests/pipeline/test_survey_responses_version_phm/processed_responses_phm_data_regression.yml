@@ -38,7 +38,7 @@
   education_in_person_days_per_week: '7'
   end_screen_questionnaire: 'No'
   ever_smoked_regularly: 'No'
-  face_covering_other_enclosed_places: null
+  face_covering_other_enclosed_places: 'No'
   face_covering_outside_of_home: null
   face_covering_work_or_education: Never
   face_covering_work_or_education_raw: Never
@@ -79,7 +79,7 @@
   phm_think_had_respiratory_infection_type_flu: 'No'
   physical_contact_18_to_69_years: 6-10
   physical_contact_18_to_69_years_raw: 6 to 10
-  physical_contact_over_70_years: null
+  physical_contact_over_70_years: 'No'
   physical_contact_over_70_years_raw: Don't know
   physical_contact_under_18_years: '0'
   physical_contact_under_18_years_raw: '0'
@@ -92,7 +92,7 @@
   social_distance_contact_18_to_69_years_raw: 11 to 20
   social_distance_contact_over_70_years: 21 or more
   social_distance_contact_over_70_years_raw: 21 or more
-  social_distance_contact_under_18_years: null
+  social_distance_contact_under_18_years: 'No'
   social_distance_contact_under_18_years_raw: Prefer not to say
   swab_not_taken_reason: The swab test kit arrived both damaged and with parts missing
   swab_return_date: '2022-01-07 00:00:00.000000'
@@ -229,7 +229,7 @@
   times_indoor_exercise_last_28_days: 11 to 20
   times_large_events_last_28_days: 'No'
   times_medium_events_last_28_days: 'No'
-  times_outside_shopping_or_socialising_last_7_days: 7.0
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: '7'
   times_shopping_last_7_days_raw: 7 times or more
   times_socialising_last_7_days: '1'
@@ -339,16 +339,16 @@
   physical_contact_18_to_69_years_raw: 21 or more
   physical_contact_over_70_years: 6-10
   physical_contact_over_70_years_raw: 6 to 10
-  physical_contact_under_18_years: null
+  physical_contact_under_18_years: 'No'
   physical_contact_under_18_years_raw: Prefer not to say
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'No'
   smokes_cigarettes: 'No'
   smokes_cigars: 'Yes'
   smokes_vape_or_e_cigarettes: 'No'
-  social_distance_contact_18_to_69_years: null
+  social_distance_contact_18_to_69_years: 'No'
   social_distance_contact_18_to_69_years_raw: Prefer not to say
-  social_distance_contact_over_70_years: null
+  social_distance_contact_over_70_years: 'No'
   social_distance_contact_over_70_years_raw: Prefer not to say
   social_distance_contact_under_18_years: 11-20
   social_distance_contact_under_18_years_raw: 11 to 20
@@ -487,10 +487,10 @@
   times_indoor_exercise_last_28_days: 6 to 10
   times_large_events_last_28_days: 'No'
   times_medium_events_last_28_days: 'Yes'
-  times_outside_shopping_or_socialising_last_7_days: null
-  times_shopping_last_7_days: null
+  times_outside_shopping_or_socialising_last_7_days: 0
+  times_shopping_last_7_days: 'No'
   times_shopping_last_7_days_raw: Prefer not to say
-  times_socialising_last_7_days: null
+  times_socialising_last_7_days: 'No'
   times_socialising_last_7_days_raw: Prefer not to say
   transport_shared_outside_household_last_28_days: Underground or Metro or Light Rail
     or Tram
@@ -608,7 +608,7 @@
   social_distance_contact_18_to_69_years_raw: '0'
   social_distance_contact_over_70_years: 11-20
   social_distance_contact_over_70_years_raw: 11 to 20
-  social_distance_contact_under_18_years: null
+  social_distance_contact_under_18_years: 'No'
   social_distance_contact_under_18_years_raw: Don't know
   swab_not_taken_reason: 'No'
   swab_return_date: '2022-01-09 00:00:00.000000'
@@ -740,12 +740,12 @@
   think_have_symptoms_new_or_worse_runny_nose_or_sneezing: 'No'
   think_have_symptoms_new_or_worse_sore_throat: 'No'
   think_have_symptoms_new_or_worse_worry_or_anxiety: 'No'
-  times_hour_or_longer_another_home_last_7_days: null
+  times_hour_or_longer_another_home_last_7_days: 'No'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
   times_indoor_exercise_last_28_days: 'No'
   times_large_events_last_28_days: 'No'
   times_medium_events_last_28_days: 'Yes'
-  times_outside_shopping_or_socialising_last_7_days: 3.0
+  times_outside_shopping_or_socialising_last_7_days: 3
   times_shopping_last_7_days: '1'
   times_shopping_last_7_days_raw: '1'
   times_socialising_last_7_days: '2'
@@ -1002,7 +1002,7 @@
   times_indoor_exercise_last_28_days: 'No'
   times_large_events_last_28_days: 'Yes'
   times_medium_events_last_28_days: 'No'
-  times_outside_shopping_or_socialising_last_7_days: 7.0
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: '3'
   times_shopping_last_7_days_raw: '3'
   times_socialising_last_7_days: '5'
@@ -1109,9 +1109,9 @@
   phm_think_had_respiratory_infection_type_flu: 'No'
   physical_contact_18_to_69_years: 1-5
   physical_contact_18_to_69_years_raw: 1 to 5
-  physical_contact_over_70_years: null
+  physical_contact_over_70_years: 'No'
   physical_contact_over_70_years_raw: Prefer not to say
-  physical_contact_under_18_years: null
+  physical_contact_under_18_years: 'No'
   physical_contact_under_18_years_raw: Prefer not to say
   problem_with_survey_access_helpline: 'No'
   questionnaire_started_no_incentive: 'Yes'
@@ -1122,7 +1122,7 @@
   social_distance_contact_18_to_69_years_raw: 'No'
   social_distance_contact_over_70_years: 21 or more
   social_distance_contact_over_70_years_raw: 21 or more
-  social_distance_contact_under_18_years: null
+  social_distance_contact_under_18_years: 'No'
   social_distance_contact_under_18_years_raw: Prefer not to say
   swab_not_taken_reason: The swab test kit arrived with parts missing
   swab_return_date: '2022-01-07 00:00:00.000000'
@@ -1259,7 +1259,7 @@
   times_indoor_exercise_last_28_days: 21 or more
   times_large_events_last_28_days: Don't know
   times_medium_events_last_28_days: Don't know
-  times_outside_shopping_or_socialising_last_7_days: 2.0
+  times_outside_shopping_or_socialising_last_7_days: 2
   times_shopping_last_7_days: 'No'
   times_shopping_last_7_days_raw: 'No'
   times_socialising_last_7_days: '2'
@@ -1365,7 +1365,7 @@
   physical_contact_18_to_69_years_raw: 11 to 20
   physical_contact_over_70_years: 1-5
   physical_contact_over_70_years_raw: 1 to 5
-  physical_contact_under_18_years: null
+  physical_contact_under_18_years: 'No'
   physical_contact_under_18_years_raw: Don't know
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'No'
@@ -1515,7 +1515,7 @@
   times_indoor_exercise_last_28_days: 6 to 10
   times_large_events_last_28_days: 'No'
   times_medium_events_last_28_days: Don't know
-  times_outside_shopping_or_socialising_last_7_days: 7.0
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: '2'
   times_shopping_last_7_days_raw: '2'
   times_socialising_last_7_days: '7'
@@ -1622,7 +1622,7 @@
   physical_contact_18_to_69_years_raw: '0'
   physical_contact_over_70_years: 6-10
   physical_contact_over_70_years_raw: 6 to 10
-  physical_contact_under_18_years: null
+  physical_contact_under_18_years: 'No'
   physical_contact_under_18_years_raw: Prefer not to say
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'No'
@@ -1631,9 +1631,9 @@
   smokes_vape_or_e_cigarettes: 'Yes'
   social_distance_contact_18_to_69_years: '0'
   social_distance_contact_18_to_69_years_raw: '0'
-  social_distance_contact_over_70_years: null
+  social_distance_contact_over_70_years: 'No'
   social_distance_contact_over_70_years_raw: Prefer not to say
-  social_distance_contact_under_18_years: null
+  social_distance_contact_under_18_years: 'No'
   social_distance_contact_under_18_years_raw: Prefer not to say
   swab_not_taken_reason: The swab test kit arrived both damaged and with parts missing
   swab_return_date: '2022-01-01 00:00:00.000000'
@@ -1768,11 +1768,11 @@
   think_have_symptoms_new_or_worse_sore_throat: 'No'
   think_have_symptoms_new_or_worse_worry_or_anxiety: 'Yes'
   times_hour_or_longer_another_home_last_7_days: '5'
-  times_hour_or_longer_another_person_your_home_last_7_days: null
+  times_hour_or_longer_another_person_your_home_last_7_days: 'No'
   times_indoor_exercise_last_28_days: 21 or more
   times_large_events_last_28_days: 'No'
   times_medium_events_last_28_days: 'No'
-  times_outside_shopping_or_socialising_last_7_days: 7.0
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: '5'
   times_shopping_last_7_days_raw: '5'
   times_socialising_last_7_days: '7'
@@ -1880,7 +1880,7 @@
   physical_contact_18_to_69_years_raw: 'No'
   physical_contact_over_70_years: 6-10
   physical_contact_over_70_years_raw: 6 to 10
-  physical_contact_under_18_years: null
+  physical_contact_under_18_years: 'No'
   physical_contact_under_18_years_raw: Prefer not to say
   problem_with_survey_access_helpline: 'No'
   questionnaire_started_no_incentive: 'No'
@@ -2030,7 +2030,7 @@
   times_indoor_exercise_last_28_days: 11 to 20
   times_large_events_last_28_days: 'No'
   times_medium_events_last_28_days: Don't know
-  times_outside_shopping_or_socialising_last_7_days: 5.0
+  times_outside_shopping_or_socialising_last_7_days: 5
   times_shopping_last_7_days: '5'
   times_shopping_last_7_days_raw: '5'
   times_socialising_last_7_days: '0'
@@ -2142,7 +2142,7 @@
   physical_contact_18_to_69_years_raw: '0'
   physical_contact_over_70_years: 1-5
   physical_contact_over_70_years_raw: 1 to 5
-  physical_contact_under_18_years: null
+  physical_contact_under_18_years: 'No'
   physical_contact_under_18_years_raw: Prefer not to say
   problem_with_survey_access_helpline: 'No'
   questionnaire_started_no_incentive: 'No'
@@ -2153,7 +2153,7 @@
   social_distance_contact_18_to_69_years_raw: 6 to 10
   social_distance_contact_over_70_years: 'No'
   social_distance_contact_over_70_years_raw: 'No'
-  social_distance_contact_under_18_years: null
+  social_distance_contact_under_18_years: 'No'
   social_distance_contact_under_18_years_raw: Prefer not to say
   swab_not_taken_reason: I am near the end of my testing window and my swab test kit
     has not arrived
@@ -2291,7 +2291,7 @@
   times_indoor_exercise_last_28_days: 6 to 10
   times_large_events_last_28_days: 'No'
   times_medium_events_last_28_days: 'No'
-  times_outside_shopping_or_socialising_last_7_days: 7.0
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: '5'
   times_shopping_last_7_days_raw: '5'
   times_socialising_last_7_days: '7'
@@ -2397,7 +2397,7 @@
   phm_think_had_respiratory_infection_type_flu: 'No'
   physical_contact_18_to_69_years: '0'
   physical_contact_18_to_69_years_raw: '0'
-  physical_contact_over_70_years: null
+  physical_contact_over_70_years: 'No'
   physical_contact_over_70_years_raw: Don't know
   physical_contact_under_18_years: 1-5
   physical_contact_under_18_years_raw: 1 to 5
@@ -2406,11 +2406,11 @@
   smokes_cigarettes: 'No'
   smokes_cigars: 'Yes'
   smokes_vape_or_e_cigarettes: 'No'
-  social_distance_contact_18_to_69_years: null
+  social_distance_contact_18_to_69_years: 'No'
   social_distance_contact_18_to_69_years_raw: Don't know
   social_distance_contact_over_70_years: 1-5
   social_distance_contact_over_70_years_raw: 1 to 5
-  social_distance_contact_under_18_years: null
+  social_distance_contact_under_18_years: 'No'
   social_distance_contact_under_18_years_raw: Prefer not to say
   swab_not_taken_reason: I am near the end of my testing window and my swab test kit
     has not arrived
@@ -2550,7 +2550,7 @@
   times_indoor_exercise_last_28_days: 11 to 20
   times_large_events_last_28_days: 'No'
   times_medium_events_last_28_days: 'Yes'
-  times_outside_shopping_or_socialising_last_7_days: 7.0
+  times_outside_shopping_or_socialising_last_7_days: 7
   times_shopping_last_7_days: '6'
   times_shopping_last_7_days_raw: '6'
   times_socialising_last_7_days: '1'
