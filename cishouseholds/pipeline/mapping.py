@@ -136,6 +136,8 @@ category_maps = {
             "A lateral flow test. That is the test you can do yourself and you do not have to send it to a laboratory because the result shows in the device in about 30 minutes.": 1,
             "PCR test. That is the test that is sent off to a laboratory.": 2,
         },
+        "contact_known_or_suspected": _yes_no_categories,
+        "contact_known_or_suspected_covid_type": {"Living in your own home": 1, "Outside your home": 2},
         "think_respiratory_infection": _yes_no_categories,
         "agreed_to_additional_consent_visit": _yes_no_categories,
         "consent_blood_samples_if_positive_yn": _yes_no_categories,
@@ -1299,12 +1301,16 @@ category_maps = {
         "work_status_employment": {
             "Currently working. This includes if you are on sick or other leave for less than 4 weeks": 1,
             "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks": 2,  # noqa: E501
+            "Currently not working due to sickness lasting 4 weeks or more": 3,
+            "Currently not working for other reasons such as maternity or paternity lasting 4 weeks or more": 4,
         },
         "work_status_unemployment": {
             "Looking for paid work and able to start": 1,
             "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled": 2,  # noqa: E501
             "Retired": 3,
             "Or retired?": 3,
+            "Not looking for paid work due to long-term sickness or disability": 4,
+            "Not looking for paid work for reasons such as looking after the home or family or not wanting a job": 5,
         },
         "work_status_education": {
             "A child aged 4 or over at home-school": 1,
@@ -1395,6 +1401,16 @@ category_maps = {
 
 column_name_maps: Dict[str, Dict[str, str]]
 column_name_maps = {
+    "vaccine_capture_column_name_map": {
+        "participant_id": "participant_id",
+        "ons_household_id": "ons_household_id",
+        "covid_vaccine_date_1": "cis_covid_vaccine_date_1",
+        "covid_vaccine_type_1": "cis_covid_vaccine_type_1",
+        "covid_vaccine_type_other_1": "cis_covid_vaccine_type_other_1",
+        "covid_vaccine_date_2": "cis_covid_vaccine_date_2",
+        "covid_vaccine_type_2": "cis_covid_vaccine_type_2",
+        "covid_vaccine_type_other_2": "cis_covid_vaccine_type_other_2",
+    },
     "soc_resolution_name_map": {
         "job_title": "work_main_job_title",
         "main_job_responsibilities": "work_main_job_role",
