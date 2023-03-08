@@ -1,4 +1,7 @@
 # flake8: noqa
+from typing import Any
+from typing import Dict
+
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
@@ -21,6 +24,7 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_strings_to_sentence_case
 from cishouseholds.edit import update_value_if_multiple_and_ref_in_list
 from cishouseholds.expressions import all_columns_values_in_list
+from cishouseholds.pipeline.mapping import transformation_maps
 
 # THIS IS A DIRECT COPY OF A DIGITAL VERSION-SPECIFIC TRANSFORMATIONS - NEEDS TO BE UPDATED WITH THE PHM-SPECIFIC TRANSFORMATIONS AND THEN THEN THE REDUNDANT PROCESSES CLEANED UP
 # DOUBLE CHECK IF REDUNDANT BITS REMOVED BEFORE MERGING ON
@@ -381,19 +385,25 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
     )
     df = clean_barcode_simple(df, "swab_sample_barcode_user_entered")
     df = clean_barcode_simple(df, "blood_sample_barcode_user_entered")
-
-    # df = map_options_to_bool_columns(
-    #     df,
-    #     "currently_smokes_or_vapes_description",
-    #     {
-    #         "Cigarettes": "smoke_cigarettes",
-    #         "Cigars": "smokes_cigar",
-    #         "Pipe": "smokes_pipe",
-    #         "Vape or E-cigarettes": "smokes_vape_e_cigarettes",
-    #         "Hookah or shisha pipes": "smokes_hookah_shisha_pipes",
-    #     },
-    #     ";",
-    # )
+    map_to_bool_columns_dict = {
+        "currently_smokes_or_vapes_description": "",
+        "blood_not_taken_could_not_reason": "",
+        "transport_shared_outside_household_last_28_days": "",
+        "phm_think_had_respiratory_infection_type": "",
+        "think_have_covid_any_symptom_list_1": "think_have_covid",
+        "think_have_covid_any_symptom_list_2": "think_have_covid",
+        "think_have_symptoms_new_or_worse_list_1": "think_have_symptoms",
+        "think_have_symptoms_new_or_worse_list_2": "think_have_symptoms",
+        "think_have_long_covid_symptom_list_1": "think_have_long_covid",
+        "think_have_long_covid_symptom_list_2": "think_have_long_covid",
+        "think_have_long_covid_symptom_list_3": "think_have_long_covid",
+        "think_had_covid_any_symptom_list_1": "think_had_covid",
+        "think_had_covid_any_symptom_list_2": "think_had_covid",
+        "think_had_other_infection_symptom_list_1": "think_had_other",
+        "think_had_other_infection_symptom_list_2": "think_had_other",
+        "think_had_flu_symptom_list_1": "think_had_flu",
+        "think_had_flu_symptom_list_2": "think_had_flu",
+    }
 
     df = df.withColumn("times_outside_shopping_or_socialising_last_7_days", F.lit(None))
     raw_copy_list = [
@@ -759,7 +769,7 @@ def split_array_columns(df: DataFrame):
 
     for prefix in array_column_prefixes:
         df = combine_like_array_columns(df, prefix)
-
+    df.cache()
     for col in array_columns:
         df = assign_columns_from_array(
             df=df,
@@ -767,6 +777,7 @@ def split_array_columns(df: DataFrame):
             prefix=prefixes.get(col, col.split("_list")[0]),
             true_false_values=["Yes", "No"],
         )
+    df.unpersist()
 
     # remove any columns generated above that refer to the absence of a symptom
     cols = [col for col in df.columns if "none_of_these" in col]

@@ -434,10 +434,6 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: transport_shared_outside_household_last_28_days_none
-  nullable: false
-  type: string
-- metadata: {}
   name: face_covering_work_or_education
   nullable: true
   type: string
