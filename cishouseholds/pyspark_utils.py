@@ -1,9 +1,12 @@
 import os
 from typing import Any
+from typing import Dict
 from typing import Mapping
 
+import pyspark.sql.functions as F
 from pandas.core.frame import DataFrame
 from pyspark.context import SparkContext
+from pyspark.sql import DataFrame as DF
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType
 
@@ -69,12 +72,26 @@ def convert_cerberus_schema_to_pyspark(schema: Mapping[str, Any]) -> StructType:
     * `metadata` is an empty dict by default
     * `name` is the name of the field
     """
+    normalised_schema = {}
+    for k, v in schema.items():
+        if "array" in list(v.values())[0]:
+            normalised_schema[k] = {"type": "string"}
+        else:
+            normalised_schema[k] = v
     fields = [
         {"metadata": {}, "name": name, "nullable": True, **values}
-        for name, values in schema.items()
+        for name, values in normalised_schema.items()
         if isinstance(values, dict)
     ]
     return StructType.fromJson({"fields": fields, "type": "struct"})
+
+
+def convert_array_strings_to_array(df: DF, schema: Dict[str, Any]):
+    """Converts a dataframe containing array columns represented as strings to a arrays given a schema."""
+    array_schema = {k: v["type"] for k, v in schema.items() if "array" in list(v.values())[0]}
+    for k, v in array_schema.items():
+        df = df.withColumn(k, F.from_json(F.col(k), v))
+    return df
 
 
 def get_or_create_spark_session() -> SparkSession:

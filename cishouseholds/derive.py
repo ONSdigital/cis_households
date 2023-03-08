@@ -29,8 +29,20 @@ from cishouseholds.pipeline.mapping import _vaccine_type_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def combine_like_array_columns(df: DataFrame, column_prefix: str):
+    """"""
+    cols = [col for col in df.columns if col.startswith(column_prefix)]
+    return df.withColumn(column_prefix, F.concat(*[F.col(col) for col in cols])).drop(
+        *[col for col in cols if col != column_prefix]
+    )
+
+
 def assign_columns_from_array(
-    df: DataFrame, id_column_name: str, array_column_name: str, true_false_values: List[Any], prefix: Any = None
+    df: DataFrame,
+    array_column_name: str,
+    true_false_values: List[Any],
+    prefix: Any = None,
+    column_name_map: Dict[str, str] = None,
 ):
     """
     Convert an array column into a series of columns, optionally apply a prefix to the value in the array
@@ -39,8 +51,6 @@ def assign_columns_from_array(
     Parameters
     ----------
     df
-    id_column_name
-        the name of a column containing unique (1:1) values for each row
     array_column_name
         the name of the array column to split
     prefix
@@ -48,12 +58,25 @@ def assign_columns_from_array(
     true_false_values
         [<true value>,<false value>]
     """
+    # array values become rows
     df = df.withColumn("exploded", F.explode(array_column_name))
+
+    if column_name_map:
+        df = update_column_values_from_map(df, "exploded", column_name_map)
+
     if prefix:
         df = df.withColumn("exploded", F.concat_ws("_", F.lit(prefix), F.col("exploded")))
+
+    df = df.withColumn("exploded", F.lower(F.regexp_replace(F.col("exploded"), r"[^a-zA-Z0-9]{1,}", "_")))
+
     df = df.withColumn("value", F.lit(true_false_values[0]))
-    df = df.groupby(id_column_name).pivot("exploded").agg(F.first("value")).fillna(False)
-    return df
+    df = (
+        df.groupby(*[col for col in df.columns if col not in ["exploded", "value"]])
+        .pivot("exploded")
+        .agg(F.first("value"))
+        .fillna(true_false_values[1])
+    )
+    return df.drop("exploded", "value")
 
 
 def assign_datetime_from_combined_columns(
@@ -407,7 +430,13 @@ def translate_column_regex_replace(df: DataFrame, reference_column: str, multipl
     return df
 
 
-def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_column_name_map: dict, sep: str):
+def map_options_to_bool_columns(
+    df: DataFrame,
+    reference_column: str,
+    value_column_name_map: dict,
+    sep: str,
+    true_false_values: List[Any] = ["Yes", "No"],
+):
     """
     map column containing multiple value options to new columns containing true/false based on if their
     value is chosen as the option.
@@ -422,7 +451,9 @@ def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_colu
     """
     df = df.withColumn(reference_column, F.split(F.col(reference_column), sep))
     for val, col in value_column_name_map.items():
-        df = df.withColumn(col, F.when(F.array_contains(reference_column, val), "Yes"))
+        df = df.withColumn(
+            col, F.when(F.array_contains(reference_column, val), true_false_values[0]).otherwise(true_false_values[1])
+        )
     return df.withColumn(reference_column, F.array_join(reference_column, sep))
 
 

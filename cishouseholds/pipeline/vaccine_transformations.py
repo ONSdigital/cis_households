@@ -14,7 +14,7 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.filter import filter_before_date_or_null
 from cishouseholds.filter import filter_invalid_vaccines
 from cishouseholds.filter import filter_single_dose
-
+from cishouseholds.pipeline.high_level_transformations import pivot_vaccine_columns
 
 # from pyspark.sql import Window
 
@@ -56,6 +56,11 @@ def mapping(df: DataFrame):
 
 
 def preprocessing(df: DataFrame):
+    df = pivot_vaccine_columns(
+        df,
+        prefixes=["covid_vaccine_date", "covid_vaccine_type", "covid_vaccine_type_other"],
+        row_number_column="vaccine_number",
+    )
     df = group_participant_within_date_range(
         df=df,
         column_name_to_assign="i_dose",

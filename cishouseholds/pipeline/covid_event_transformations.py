@@ -783,7 +783,7 @@ def derive_contact_any_covid_covid_variables(df: DataFrame) -> DataFrame:
         df=df,
         contact_known_covid_type_column="last_covid_contact_type",
         contact_suspect_covid_type_column="last_suspected_covid_contact_type",
-        contact_any_covid_type_column="contact_known_or_suspected_covid",
+        contact_any_covid_type_column="contact_known_or_suspected_covid_type",
         contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
         contact_known_covid_date_column="last_covid_contact_date",
         contact_suspect_covid_date_column="last_suspected_covid_contact_date",
