@@ -201,6 +201,16 @@ soc_schema = {
     "standard_occupational_classification_code": string_dict,
 }
 validation_schemas = {
+    "vaccine_capture_schema": {
+        "participant_id": string_dict,
+        "ons_household_id": string_dict,
+        "covid_vaccine_date_1": string_dict,
+        "covid_vaccine_type_1": string_dict,
+        "covid_vaccine_type_other_1": string_dict,
+        "covid_vaccine_date_2": string_dict,
+        "covid_vaccine_type_2": string_dict,
+        "covid_vaccine_type_other_2": string_dict,
+    },
     "cohort_schema": {"participant_id": string_dict, "old_cohort": string_dict, "new_cohort": string_dict},
     "soc_resolution_schema": {
         "job_title": string_dict,
