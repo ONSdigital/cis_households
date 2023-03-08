@@ -769,7 +769,7 @@ def split_array_columns(df: DataFrame):
 
     for prefix in array_column_prefixes:
         df = combine_like_array_columns(df, prefix)
-
+    df.cache()
     for col in array_columns:
         df = assign_columns_from_array(
             df=df,
@@ -777,6 +777,7 @@ def split_array_columns(df: DataFrame):
             prefix=prefixes.get(col, col.split("_list")[0]),
             true_false_values=["Yes", "No"],
         )
+    df.unpersist()
 
     # remove any columns generated above that refer to the absence of a symptom
     cols = [col for col in df.columns if "none_of_these" in col]
