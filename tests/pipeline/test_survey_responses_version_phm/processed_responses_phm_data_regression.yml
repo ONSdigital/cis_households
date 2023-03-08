@@ -16,7 +16,7 @@
   blood_sample_barcode_user_entered: BLT21442294
   blood_taken: 'No'
   blood_taken_am_pm: PM
-  blood_taken_date: 03/01/2022
+  blood_taken_date: '2022-01-03 00:00:00.000000'
   blood_taken_time_hour: 'No'
   blood_taken_time_minute: '15'
   care_home_last_28_days: 'Yes'
@@ -281,7 +281,7 @@
   blood_sample_barcode_user_entered: BLT57055819
   blood_taken: 'No'
   blood_taken_am_pm: AM
-  blood_taken_date: 04/01/2022
+  blood_taken_date: '2022-01-04 00:00:00.000000'
   blood_taken_time_hour: 'No'
   blood_taken_time_minute: '30'
   care_home_last_28_days: 'No'
@@ -542,7 +542,7 @@
   blood_sample_barcode_user_entered: BLT58329500
   blood_taken: 'Yes'
   blood_taken_am_pm: AM
-  blood_taken_date: 'No'
+  blood_taken_date: null
   blood_taken_time_hour: 'No'
   blood_taken_time_minute: '15'
   care_home_last_28_days: 'No'
@@ -804,7 +804,7 @@
   blood_sample_barcode_user_entered: BLT45123522
   blood_taken: 'Yes'
   blood_taken_am_pm: AM
-  blood_taken_date: 07/01/2022
+  blood_taken_date: '2022-01-07 00:00:00.000000'
   blood_taken_time_hour: 'No'
   blood_taken_time_minute: '15'
   care_home_last_28_days: 'No'
@@ -1066,7 +1066,7 @@
   blood_sample_barcode_user_entered: BLT26332296
   blood_taken: 'No'
   blood_taken_am_pm: AM
-  blood_taken_date: 09/01/2022
+  blood_taken_date: '2022-01-09 00:00:00.000000'
   blood_taken_time_hour: 'No'
   blood_taken_time_minute: '0'
   care_home_last_28_days: 'No'
@@ -1324,7 +1324,7 @@
   blood_sample_barcode_user_entered: BLT01652580
   blood_taken: 'No'
   blood_taken_am_pm: AM
-  blood_taken_date: 07/01/2022
+  blood_taken_date: '2022-01-07 00:00:00.000000'
   blood_taken_time_hour: 'No'
   blood_taken_time_minute: '15'
   care_home_last_28_days: 'No'
@@ -1582,7 +1582,7 @@
   blood_sample_barcode_user_entered: BLT66175750
   blood_taken: 'No'
   blood_taken_am_pm: AM
-  blood_taken_date: 06/01/2022
+  blood_taken_date: '2022-01-06 00:00:00.000000'
   blood_taken_time_hour: 'No'
   blood_taken_time_minute: '0'
   care_home_last_28_days: 'No'
@@ -1846,7 +1846,7 @@
   blood_sample_barcode_user_entered: BLT22988318
   blood_taken: 'Yes'
   blood_taken_am_pm: AM
-  blood_taken_date: 01/01/2022
+  blood_taken_date: '2022-01-01 00:00:00.000000'
   blood_taken_time_hour: 'No'
   blood_taken_time_minute: '30'
   care_home_last_28_days: 'No'
@@ -2111,7 +2111,7 @@
   blood_sample_barcode_user_entered: BLT62754008
   blood_taken: 'No'
   blood_taken_am_pm: PM
-  blood_taken_date: 09/01/2022
+  blood_taken_date: '2022-01-09 00:00:00.000000'
   blood_taken_time_hour: 'No'
   blood_taken_time_minute: '0'
   care_home_last_28_days: 'No'
@@ -2372,7 +2372,7 @@
   blood_sample_barcode_user_entered: BLT98882718
   blood_taken: 'No'
   blood_taken_am_pm: AM
-  blood_taken_date: 07/01/2022
+  blood_taken_date: '2022-01-07 00:00:00.000000'
   blood_taken_time_hour: 'No'
   blood_taken_time_minute: '0'
   care_home_last_28_days: 'No'

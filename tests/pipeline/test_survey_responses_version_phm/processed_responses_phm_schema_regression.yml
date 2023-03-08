@@ -89,8 +89,8 @@ fields:
   type: string
 - metadata: {}
   name: blood_taken_date
-  nullable: false
-  type: string
+  nullable: true
+  type: timestamp
 - metadata: {}
   name: blood_taken_time_hour
   nullable: false
