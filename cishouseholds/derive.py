@@ -132,6 +132,19 @@ def assign_max_doses(
     return df
 
 
+def assign_first_dose(
+    df: DataFrame,
+    column_name_to_assign: str,
+    participant_id_column: str,
+    visit_datetime: str,
+):
+    """Assign the date of the first dose reported and order by visit_datetime."""
+    window = Window.partitionBy(participant_id_column).orderBy(visit_datetime)
+    df = df.withColumn("row", F.row_number().over(window))
+    df = df.withColumn(column_name_to_assign, F.when(F.col("row") == 1, "Yes").otherwise("No"))
+    return df.drop("row")
+
+
 def assign_poss_1_2(
     df: DataFrame,
     column_name_to_assign: str,
