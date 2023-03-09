@@ -66,6 +66,68 @@ _vaccine_type_map = {
     "Pfizer/BioNTech / Comirnaty (including bivalent)": 18,
 }
 
+transformation_maps: Dict[str, Dict[str, str]] = {
+    "currently_smokes_or_vapes_description": {
+        "Cigarettes": "smoke_cigarettes",
+        "Cigars": "smokes_cigar",
+        "Pipe": "smokes_pipe",
+        "Vape or E-cigarettes": "smokes_vape_e_cigarettes",
+        "Hookah or shisha pipes": "smokes_hookah_shisha_pipes",
+    },
+    "blood_not_taken_could_not_reason": {
+        "I couldn't get enough blood into the pot": "blood_not_taken_could_not_reason_not_enough_blood",
+        "The pot spilled": "blood_not_taken_could_not_reason_pot_spilled",
+        "I had bruising or pain": "blood_not_taken_could_not_reason_had_bruising",
+        "I felt unwell": "blood_not_taken_could_not_reason_unwell",
+        "Other please specify": "blood_not_taken_could_not_reason_other",
+        "There were issues with the kit": "blood_not_taken_could_not_reason_issues_with_kit",
+    },
+    "transport_shared_outside_household_last_28_days": {
+        "Underground or metro or light rail or tram": "transport_shared_outside_household_last_28_days_underground_metro",
+        "Train": "transport_shared_outside_household_last_28_days_train",
+        "Bus or minibus or coach": "transport_shared_outside_household_last_28_days_bus_coach",
+        "Car or van": "transport_shared_outside_household_last_28_days_car_van",
+        "Taxi or minicab": "transport_shared_outside_household_last_28_days_taxi",
+        "Plane": "transport_shared_outside_household_last_28_days_plane",
+        "Ferry or boat": "transport_shared_outside_household_last_28_days_ferry_boat",
+        "Other method": "transport_shared_outside_household_last_28_days_other",
+        "I have not used transport shared with people outside of my home for reasons other than travel to work or education": "transport_shared_outside_household_last_28_days_none",
+    },
+    "phm_think_had_respiratory_infection_type": {
+        "COVID-19": "phm_think_had_covid",
+        "Flu": "phm_think_had_flu",
+        "Another type of respiratory infection of illness": "phm_think_had_other_infection",
+        "Do not know the type": "phm_think_had_unknown",
+    },
+    "symptoms_list_1": {
+        "Runny nose or sneezing": "_symptom_runny_nose_or_sneezing",
+        "Loss of smell": "_symptom_loss_of_smell",
+        "Loss of taste": "_symptom_loss_of_taste",
+        "Sore throat": "_symptom_sore_throat",
+        "Cough": "_symptom_cough",
+        "Shortness of breath": "_symptom_shortness_of_breath",
+        "Noisy breathing or wheezing": "_symptom_noisy_breathing",
+        "Abdominal pain": "_symptom_abdominal_pain",
+        "Nausea or vomiting": "_symptom_nausea_or_vomiting",
+        "Diarrhoea": "_symptom_diarrhoea",
+        "Loss of appetite or eating less than usual": "_symptom_loss_of_appetite",
+        "None of these symptoms": "_symptom_none_list_1",
+    },
+    "symptoms_list_2": {
+        "Headache": "_symptom_headache",
+        "Muscle ache": "_symptom_muscle_ache",
+        "Weakness or tiredness": "_symptom_fatigue",
+        "Fever including high temperature": "_symptom_fever",
+        "More trouble sleeping than usual": "_symptom_more_trouble_sleeping",
+        "Memory loss or confusion": "_symptom_memory_loss_or_confusion",
+        "Difficulty concentrating": "_symptom_difficulty_concentrating",
+        "Worry or anxiety": "_symptom_anxiety",
+        "Low mood or not enjoying anything": "_symptom_low_mood",
+        "None of these symptoms": "_symptom_none_list_2",
+    },
+    "symptoms_list_3": {},
+}
+
 category_maps = {
     "iqvia_raw_category_map": {
         "blood_taken_am_pm": {"AM": 1, "PM": 2},
@@ -74,6 +136,8 @@ category_maps = {
             "A lateral flow test. That is the test you can do yourself and you do not have to send it to a laboratory because the result shows in the device in about 30 minutes.": 1,
             "PCR test. That is the test that is sent off to a laboratory.": 2,
         },
+        "contact_known_or_suspected": _yes_no_categories,
+        "contact_known_or_suspected_covid_type": {"Living in your own home": 1, "Outside your home": 2},
         "think_respiratory_infection": _yes_no_categories,
         "agreed_to_additional_consent_visit": _yes_no_categories,
         "consent_blood_samples_if_positive_yn": _yes_no_categories,
@@ -1237,12 +1301,16 @@ category_maps = {
         "work_status_employment": {
             "Currently working. This includes if you are on sick or other leave for less than 4 weeks": 1,
             "Currently not working -  for example on sick or other leave such as maternity or paternity for longer than 4 weeks": 2,  # noqa: E501
+            "Currently not working due to sickness lasting 4 weeks or more": 3,
+            "Currently not working for other reasons such as maternity or paternity lasting 4 weeks or more": 4,
         },
         "work_status_unemployment": {
             "Looking for paid work and able to start": 1,
             "Not looking for paid work. This includes looking after the home or family or not wanting a job or being long-term sick or disabled": 2,  # noqa: E501
             "Retired": 3,
             "Or retired?": 3,
+            "Not looking for paid work due to long-term sickness or disability": 4,
+            "Not looking for paid work for reasons such as looking after the home or family or not wanting a job": 5,
         },
         "work_status_education": {
             "A child aged 4 or over at home-school": 1,
@@ -1333,6 +1401,16 @@ category_maps = {
 
 column_name_maps: Dict[str, Dict[str, str]]
 column_name_maps = {
+    "vaccine_capture_column_name_map": {
+        "participant_id": "participant_id",
+        "ons_household_id": "ons_household_id",
+        "covid_vaccine_date_1": "cis_covid_vaccine_date_1",
+        "covid_vaccine_type_1": "cis_covid_vaccine_type_1",
+        "covid_vaccine_type_other_1": "cis_covid_vaccine_type_other_1",
+        "covid_vaccine_date_2": "cis_covid_vaccine_date_2",
+        "covid_vaccine_type_2": "cis_covid_vaccine_type_2",
+        "covid_vaccine_type_other_2": "cis_covid_vaccine_type_other_2",
+    },
     "soc_resolution_name_map": {
         "job_title": "work_main_job_title",
         "main_job_responsibilities": "work_main_job_role",
