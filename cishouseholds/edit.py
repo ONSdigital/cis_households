@@ -1034,7 +1034,7 @@ def rename_column_names(df: DataFrame, variable_name_map: dict) -> DataFrame:
     variable_name_map
         map of current column names to new names
     """
-    cleaned_columns = [variable_name_map[old_column_name] for old_column_name in df.columns]
+    cleaned_columns = [variable_name_map.get(old_column_name, old_column_name) for old_column_name in df.columns]
     return df.toDF(*cleaned_columns)
 
 

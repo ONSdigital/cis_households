@@ -51,6 +51,20 @@ participant_extract_digital_parameters = {
     "source_file_column": "participant_extract_source_file",
 }
 
+phm_participant_parameters = {
+    "stage_name": "phm_participant_extract_ETL",
+    "dataset_name": "phm_participant_extract",
+    "id_column": "participant_id",
+    "validation_schema": validation_schemas["phm_survey_validation_schema"],
+    "datetime_column_map": phm_datetime_map,
+    "transformation_functions": [
+        transform_survey_responses_version_phm_delta,
+    ],
+    "sep": "|",
+    "cast_to_double_list": [],
+    "source_file_column": "survey_response_source_file",
+}
+
 phm_parameters = {
     "stage_name": "survey_responses_version_phm_ETL",
     "dataset_name": "survey_responses_phm",

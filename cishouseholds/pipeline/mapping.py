@@ -1401,6 +1401,29 @@ category_maps = {
 
 column_name_maps: Dict[str, Dict[str, str]]
 column_name_maps = {
+    "phm_participant_column_name_map": {
+        "StudyCohort": "study_cohort",
+        "Region": "region",
+        "Prefer_Receive_Vouchers": "voucher_type_preference",
+        "Coms_preference": "participant_communication_preference",
+        "Email": "email",
+        "Street": "street",
+        "City": "city",
+        "Country": "country",
+        "Postcode": "postcode",
+        "Phone": "phone",
+        "Status": "status",
+        "Warehouse_ID": "consolidation_warehouse_id",
+        "Void_reason": "consolidation_warehouse_void_reason_sample",
+        # "Arrival_Timestamp": "consolidation_warehouse_sample_received_timestamp",
+        "Void_Reason_Timestamp": "Void_Reason_Timestamp",
+        "Lab_Dispatch_Timestamp": "consolidation_warehouse_sample_dispatch_datetime",
+        "Target_Dispatch_Date": "sample_kit_target_dispatch_datetime",
+        "Kit_Build_Timestamp": "sample_kit_build_datetime",
+        "Kit_Dispatch_Timestamp": "sample_kit_dispatch_datetime",
+        "Lab_ID": "lab_sample_ID",
+        "Arrival_Timestamp": "lab_sample_sample_received_timestamp",
+    },
     "vaccine_capture_column_name_map": {
         "participant_id": "participant_id",
         "ons_household_id": "ons_household_id",
