@@ -14,9 +14,10 @@ from cishouseholds.edit import add_prefix
 # from pyspark.sql import Window
 
 
-def high_level_phm_transformations(df: DataFrame, participant_data_df: DataFrame):
+def high_level_phm_transformations(df: DataFrame, participant_data_df: DataFrame = None):
     """"""
-    df = df.join(participant_data_df, on="participant_id", how="left")
+    if participant_data_df:
+        df = df.join(participant_data_df, on="participant_id", how="left")
     df = preprocessing(df)
     return df
 
