@@ -3575,12 +3575,10 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "think_have_covid_any_symptom_list_1": _("choice", items=symptoms_list_1),
-        "think_have_covid_any_symptom_list_2": _("choice", items=symptoms_list_2),
-        "think_have_symptoms_new_or_worse_list_1": _("choice", items=symptoms_list_1),
-        "think_have_symptoms_new_or_worse_none_list_1": _("choice", items=symptoms_list_1),
-        "think_have_symptoms_new_or_worse_list_2": _("choice", items=symptoms_list_2),
-        "think_have_symptoms_new_or_worse_none_list_2": _("choice", items=symptoms_list_2),
+        "think_have_covid_any_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_have_covid_any_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
+        "think_have_symptoms_new_or_worse_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_have_symptoms_new_or_worse_list_2": _("random.choices", population=symptoms_list_2, k=1),
         "think_have_covid_onset_date": _(
             "discrete_distribution",
             population=[
@@ -3602,14 +3600,15 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         "ever_smoked_regularly": _("choice", items=yes_no_prefer_not_to_say),
         "currently_smokes_or_vapes": _("choice", items=yes_no_prefer_not_to_say),
         "currently_smokes_or_vapes_description": _(
-            "choice",
-            items=[
+            "random.choices",
+            population=[
                 "Cigarettes",
                 "Cigars",
                 "Hookah or shisha pipes",
                 "Pipe",
                 "Vape or E-cigarettes",
             ],
+            k=1,
         ),  # TODO Checkbox list so multiple items can be selected in combination
         "cis_covid_vaccine_received": _("choice", items=yes_no_none_choice),
         "cis_covid_vaccine_type": _("choice", items=type_of_vaccination),
@@ -3666,7 +3665,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             weights=[0.5, 0.5],
         ),
         "phm_think_had_respiratory_infection": _("choice", items=yes_no_none_choice),
-        "phm_think_had_respiratory_infection_type": _("choice", items=infections),
+        "phm_think_had_respiratory_infection_type": _("random.choices", population=infections, k=1),
         "think_had_covid_onset_date": _(
             "discrete_distribution",
             population=[
@@ -3680,8 +3679,8 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
             weights=[0.5, 0.5],
         ),
-        "think_had_covid_any_symptom_list_1": _("choice", items=symptoms_list_1),
-        "think_had_covid_any_symptom_list_2": _("choice", items=symptoms_list_2),
+        "think_had_covid_any_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_had_covid_any_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
         "phm_think_had_flu_onset_date": _(
             "discrete_distribution",
             population=[
@@ -3695,8 +3694,8 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
             weights=[0.5, 0.5],
         ),
-        "think_had_flu_symptom_list_1": _("choice", items=symptoms_list_1),
-        "think_had_flu_symptom_list_2": _("choice", items=symptoms_list_2),
+        "think_had_flu_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_had_flu_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
         "phm_think_had_other_infection_onset_date": _(
             "discrete_distribution",
             population=[
@@ -3710,8 +3709,8 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
             weights=[0.5, 0.5],
         ),
-        "think_had_other_infection_symptom_list_1": _("choice", items=symptoms_list_1),
-        "think_had_other_infection_symptom_list_2": _("choice", items=symptoms_list_2),
+        "think_had_other_infection_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_had_other_infection_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
         "other_covid_infection_test": _("choice", items=yes_no_none_choice),
         "other_covid_infection_test_results": _(
             "choice",
@@ -3785,9 +3784,9 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "think_have_long_covid_symptom_list_1": _("choice", items=symptoms_list_1),
-        "think_have_long_covid_symptom_list_2": _("choice", items=symptoms_list_2),
-        "think_have_long_covid_symptom_list_3": _("choice", items=symptoms_list_1),
+        "think_have_long_covid_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_have_long_covid_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
+        "think_have_long_covid_symptom_list_3": _("random.choices", population=symptoms_list_1, k=1),
         "think_have_long_covid_symptom_worse_after_effort": _("choice", items=yes_no_unknown_choice),
         "hospital_last_28_days": _("choice", items=yes_no_none_choice),
         "care_home_last_28_days": _("choice", items=yes_no_none_choice),
@@ -3832,15 +3831,9 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 "Car or van",
                 "Taxi or minicab",
                 "Train",
-                "Underound or Metro or Light Rail or Tram",
+                "Underground or Metro or Light Rail or Tram",
                 "Plane",
                 "Other method",
-                "I have not used transport shared with people outside of my home for reasons other than travel to work or education",
-            ],
-        ),
-        "transport_shared_outside_household_last_28_days_none": _(
-            "choice",
-            items=[
                 "I have not used transport shared with people outside of my home for reasons other than travel to work or education",
             ],
         ),
