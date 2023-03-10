@@ -456,6 +456,14 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: swab_barcode_corrected_datetime
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: blood_barcode_corrected_datetime
+  nullable: true
+  type: timestamp
+- metadata: {}
   name: allocated_swab_barcode_not_used_reason
   nullable: true
   type: string
@@ -1281,6 +1289,14 @@ fields:
   type: string
 - metadata: {}
   name: time_off_health_reasons
+  nullable: true
+  type: string
+- metadata: {}
+  name: survey_name
+  nullable: true
+  type: string
+- metadata: {}
+  name: form_name
   nullable: true
   type: string
 - metadata: {}
