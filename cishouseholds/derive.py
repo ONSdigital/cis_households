@@ -475,7 +475,7 @@ def translate_column_regex_replace(df: DataFrame, reference_column: str, multipl
     return df
 
 
-def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_column_name_map: dict, sep: str):
+def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_column_name_map: dict, sep: str = ";"):
     """
     map column containing multiple value options to new columns containing true/false based on if their
     value is chosen as the option.
@@ -488,9 +488,13 @@ def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_colu
     value_column_name_map
         mapping expression of column names to assign and options within reference column
     """
-    df = df.withColumn(reference_column, F.split(F.col(reference_column), sep))
+    array_exists = "array" in dict(df.dtypes)[reference_column]
+    if not array_exists:
+        df = df.withColumn(reference_column, F.split(F.col(reference_column), sep))
     for val, col in value_column_name_map.items():
         df = df.withColumn(col, F.when(F.array_contains(reference_column, val), "Yes"))
+    if array_exists:
+        return df
     return df.withColumn(reference_column, F.array_join(reference_column, sep))
 
 
