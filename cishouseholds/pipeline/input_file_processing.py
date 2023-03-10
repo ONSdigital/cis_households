@@ -14,6 +14,7 @@ from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.hdfs_utils import read_file_to_string
 from cishouseholds.merge import union_multiple_tables
+from cishouseholds.phm.json_decode import decode_phm_json
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.load import update_table
@@ -144,7 +145,7 @@ def extract_validate_transform_input_data(
 def extract_input_data(
     file_paths: Union[List[str], str],
     validation_schema: Union[dict, None],
-    sep: str,
+    sep: str = ",",
     source_file_column: str = "",
 ) -> DataFrame:
     """
@@ -161,24 +162,48 @@ def extract_input_data(
     spark_session = get_or_create_spark_session()
     spark_schema = convert_cerberus_schema_to_pyspark(validation_schema) if validation_schema is not None else None
     file_paths = [file_paths] if type(file_paths) == str else file_paths
-    if all(Path(path).suffix in [".txt", ".csv"] for path in file_paths):
+    csv_file_paths = [p for p in file_paths if Path(p).suffix in [".txt", ".csv"]]
+    xl_file_paths = [p for p in file_paths if Path(p).suffix == ".xlsx"]
+    json_file_paths = [p for p in file_paths if Path(p).suffix == ".json"]
+    df = None
+    if csv_file_paths:
+        if validation_schema:
+            csv_file_paths = validate_files(csv_file_paths, validation_schema, sep=sep)
+        if not csv_file_paths:
+            print(f"        - No valid files found in: {csv_file_paths}.")  # functional
+            return {"status": "Error"}
         df = spark_session.read.csv(
-            file_paths,
+            csv_file_paths,
             header=True,
             schema=spark_schema,
             ignoreLeadingWhiteSpace=True,
             ignoreTrailingWhiteSpace=True,
             sep=sep,
         )
-        df = convert_array_strings_to_array(df, validation_schema)  # type: ignore
-        return df
-
-    elif all(Path(path).suffix in [".xlsx"] for path in file_paths):
+        if validation_schema:
+            df = convert_array_strings_to_array(df, validation_schema)  # type: ignore
+    if xl_file_paths:
         spark = get_or_create_spark_session()
         dfs = [
             spark.createDataFrame(
                 data=pd.read_excel(read_file_to_string(file, True), engine="openpyxl"), schema=spark_schema
             ).withColumn(source_file_column, (F.regexp_replace(F.lit(file), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", "")))
-            for file in file_paths
+            for file in xl_file_paths
         ]
-        return union_multiple_tables(dfs)
+        if df is None:
+            df = union_multiple_tables(dfs)
+        else:
+            df = union_multiple_tables([df, *dfs])
+        if validation_schema:
+            df = convert_array_strings_to_array(df, validation_schema)  # type: ignore
+    if json_file_paths:
+        dfs = []
+        data_strings = [read_file_to_string(file, True) for file in json_file_paths]
+        for data_string in data_strings:
+            data = decode_phm_json(data_string)
+            dfs.append(spark_session.createDataFrame(data=data, schema=spark_schema))
+        if df is None:
+            df = union_multiple_tables(dfs)
+        else:
+            df = union_multiple_tables([df, *dfs])
+    return df

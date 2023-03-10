@@ -22,7 +22,7 @@ from cishouseholds.pipeline.version_specific_processing.participant_extract impo
     translate_welsh_survey_responses_version_digital,
 )
 from cishouseholds.pipeline.version_specific_processing.phm_transformations import (
-    transform_survey_responses_version_phm_delta,
+    phm_transformations,
 )
 from cishouseholds.pipeline.version_specific_processing.v0_transformations import (
     transform_survey_responses_version_0_delta,
@@ -51,6 +51,18 @@ participant_extract_digital_parameters = {
     "source_file_column": "participant_extract_source_file",
 }
 
+phm_participant_parameters = {
+    "stage_name": "phm_participant_extract_ETL",
+    "dataset_name": "phm_participant_extract",
+    "id_column": "participant_id",
+    "validation_schema": validation_schemas["phm_participant_extract_validation_schema"],
+    "datetime_column_map": phm_datetime_map,
+    "transformation_functions": [],
+    "sep": "|",
+    "cast_to_double_list": [],
+    "source_file_column": "phm_participant_extract_gsource_file",
+}
+
 phm_parameters = {
     "stage_name": "survey_responses_version_phm_ETL",
     "dataset_name": "survey_responses_phm",
@@ -58,7 +70,7 @@ phm_parameters = {
     "validation_schema": validation_schemas["phm_survey_validation_schema"],
     "datetime_column_map": phm_datetime_map,
     "transformation_functions": [
-        transform_survey_responses_version_phm_delta,
+        phm_transformations,
     ],
     "sep": "|",
     "cast_to_double_list": [],

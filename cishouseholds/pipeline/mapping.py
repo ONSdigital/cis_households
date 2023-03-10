@@ -66,6 +66,68 @@ _vaccine_type_map = {
     "Pfizer/BioNTech / Comirnaty (including bivalent)": 18,
 }
 
+transformation_maps: Dict[str, Dict[str, str]] = {
+    "currently_smokes_or_vapes_description": {
+        "Cigarettes": "smoke_cigarettes",
+        "Cigars": "smokes_cigar",
+        "Pipe": "smokes_pipe",
+        "Vape or E-cigarettes": "smokes_vape_e_cigarettes",
+        "Hookah or shisha pipes": "smokes_hookah_shisha_pipes",
+    },
+    "blood_not_taken_could_not_reason": {
+        "I couldn't get enough blood into the pot": "blood_not_taken_could_not_reason_not_enough_blood",
+        "The pot spilled": "blood_not_taken_could_not_reason_pot_spilled",
+        "I had bruising or pain": "blood_not_taken_could_not_reason_had_bruising",
+        "I felt unwell": "blood_not_taken_could_not_reason_unwell",
+        "Other please specify": "blood_not_taken_could_not_reason_other",
+        "There were issues with the kit": "blood_not_taken_could_not_reason_issues_with_kit",
+    },
+    "transport_shared_outside_household_last_28_days": {
+        "Underground or metro or light rail or tram": "transport_shared_outside_household_last_28_days_underground_metro",
+        "Train": "transport_shared_outside_household_last_28_days_train",
+        "Bus or minibus or coach": "transport_shared_outside_household_last_28_days_bus_coach",
+        "Car or van": "transport_shared_outside_household_last_28_days_car_van",
+        "Taxi or minicab": "transport_shared_outside_household_last_28_days_taxi",
+        "Plane": "transport_shared_outside_household_last_28_days_plane",
+        "Ferry or boat": "transport_shared_outside_household_last_28_days_ferry_boat",
+        "Other method": "transport_shared_outside_household_last_28_days_other",
+        "I have not used transport shared with people outside of my home for reasons other than travel to work or education": "transport_shared_outside_household_last_28_days_none",
+    },
+    "phm_think_had_respiratory_infection_type": {
+        "COVID-19": "phm_think_had_covid",
+        "Flu": "phm_think_had_flu",
+        "Another type of respiratory infection of illness": "phm_think_had_other_infection",
+        "Do not know the type": "phm_think_had_unknown",
+    },
+    "symptoms_list_1": {
+        "Runny nose or sneezing": "_symptom_runny_nose_or_sneezing",
+        "Loss of smell": "_symptom_loss_of_smell",
+        "Loss of taste": "_symptom_loss_of_taste",
+        "Sore throat": "_symptom_sore_throat",
+        "Cough": "_symptom_cough",
+        "Shortness of breath": "_symptom_shortness_of_breath",
+        "Noisy breathing or wheezing": "_symptom_noisy_breathing",
+        "Abdominal pain": "_symptom_abdominal_pain",
+        "Nausea or vomiting": "_symptom_nausea_or_vomiting",
+        "Diarrhoea": "_symptom_diarrhoea",
+        "Loss of appetite or eating less than usual": "_symptom_loss_of_appetite",
+        "None of these symptoms": "_symptom_none_list_1",
+    },
+    "symptoms_list_2": {
+        "Headache": "_symptom_headache",
+        "Muscle ache": "_symptom_muscle_ache",
+        "Weakness or tiredness": "_symptom_fatigue",
+        "Fever including high temperature": "_symptom_fever",
+        "More trouble sleeping than usual": "_symptom_more_trouble_sleeping",
+        "Memory loss or confusion": "_symptom_memory_loss_or_confusion",
+        "Difficulty concentrating": "_symptom_difficulty_concentrating",
+        "Worry or anxiety": "_symptom_anxiety",
+        "Low mood or not enjoying anything": "_symptom_low_mood",
+        "None of these symptoms": "_symptom_none_list_2",
+    },
+    "symptoms_list_3": {},
+}
+
 category_maps = {
     "iqvia_raw_category_map": {
         "blood_taken_am_pm": {"AM": 1, "PM": 2},
@@ -1339,6 +1401,29 @@ category_maps = {
 
 column_name_maps: Dict[str, Dict[str, str]]
 column_name_maps = {
+    "phm_participant_column_name_map": {
+        "StudyCohort": "study_cohort",
+        "Region": "region",
+        "Prefer_Receive_Vouchers": "voucher_type_preference",
+        "Coms_preference": "participant_communication_preference",
+        "Email": "email",
+        "Street": "street",
+        "City": "city",
+        "Country": "country",
+        "Postcode": "postcode",
+        "Phone": "phone",
+        "Status": "status",
+        "Warehouse_ID": "consolidation_warehouse_id",
+        "Void_reason": "consolidation_warehouse_void_reason_sample",
+        # "Arrival_Timestamp": "consolidation_warehouse_sample_received_timestamp",
+        "Void_Reason_Timestamp": "Void_Reason_Timestamp",
+        "Lab_Dispatch_Timestamp": "consolidation_warehouse_sample_dispatch_datetime",
+        "Target_Dispatch_Date": "sample_kit_target_dispatch_datetime",
+        "Kit_Build_Timestamp": "sample_kit_build_datetime",
+        "Kit_Dispatch_Timestamp": "sample_kit_dispatch_datetime",
+        "Lab_ID": "lab_sample_ID",
+        "Arrival_Timestamp": "lab_sample_sample_received_timestamp",
+    },
     "vaccine_capture_column_name_map": {
         "participant_id": "participant_id",
         "ons_household_id": "ons_household_id",
@@ -2171,6 +2256,7 @@ column_name_maps = {
         "withdrawn_reason": "participant_withdrawal_reason",
         "withdrawn_type": "participant_withdrawal_type",
         "participant_id": "participant_id",
+        "participant_id_numeric": "participant_id_numeric",
         "title": "title",
         "first_name": "first_name",
         "middle_name": "middle_name",

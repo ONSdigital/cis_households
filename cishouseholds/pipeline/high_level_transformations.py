@@ -67,6 +67,8 @@ def create_formatted_datetime_string_columns(df) -> DataFrame:
     datetime_format_dict = {
         "visit_datetime_string": "visit_datetime",
         "samples_taken_datetime_string": "samples_taken_datetime",
+        "swab_barcode_corrected_datetime_string": "swab_barcode_corrected_datetime",
+        "blood_barcode_corrected_datetime_string": "blood_barcode_corrected_datetime",
     }
     date_format_string_list = [
         "date_of_birth",

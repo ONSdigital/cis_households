@@ -1,4 +1,7 @@
 # flake8: noqa
+from typing import Any
+from typing import Dict
+
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
@@ -21,15 +24,242 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_strings_to_sentence_case
 from cishouseholds.edit import update_value_if_multiple_and_ref_in_list
 from cishouseholds.expressions import all_columns_values_in_list
+from cishouseholds.pipeline.mapping import transformation_maps
 
 # THIS IS A DIRECT COPY OF A DIGITAL VERSION-SPECIFIC TRANSFORMATIONS - NEEDS TO BE UPDATED WITH THE PHM-SPECIFIC TRANSFORMATIONS AND THEN THEN THE REDUNDANT PROCESSES CLEANED UP
 # DOUBLE CHECK IF REDUNDANT BITS REMOVED BEFORE MERGING ON
-def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
+def phm_transformations(df: DataFrame) -> DataFrame:
+    """"""
+    df = pre_processing(df)
+    df = derive_additional_columns(df)
+    return df
+
+
+def pre_processing(df: DataFrame) -> DataFrame:
     """
-    Call functions to process digital specific variable transformations.
+    Sets categories to map for digital specific variables to Voyager 0/1/2 equivalent
+    """
+    raw_copy_list = [
+        "work_sector",
+        "illness_reduces_activity_or_ability",
+        "ability_to_socially_distance_at_work_or_education",
+        "physical_contact_under_18_years",
+        "physical_contact_18_to_69_years",
+        "physical_contact_over_70_years",
+        "social_distance_contact_under_18_years",
+        "social_distance_contact_18_to_69_years",
+        "social_distance_contact_over_70_years",
+        "times_shopping_last_7_days",
+        "times_socialising_last_7_days",
+        "face_covering_work_or_education",
+        "other_covid_infection_test_results",
+        "cis_covid_vaccine_type",
+        "cis_covid_vaccine_type_other",
+        "cis_covid_vaccine_number_of_doses",
+    ]
+    df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
+
+    contact_people_value_map = {
+        "1 to 5": "1-5",
+        "6 to 10": "6-10",
+        "11 to 20": "11-20",
+        "21 or more": "21 or more",
+        "Don't know": None,
+        "Prefer not to say": None,
+    }
+    times_value_map = {
+        "1": 1,
+        "2": 2,
+        "3": 3,
+        "4": 4,
+        "5": 5,
+        "6": 6,
+        "7 times or more": 7,
+        "Don't know": None,
+        "None": 0,
+        "Prefer not to say": None,
+    }
+    vaccine_type_map = {
+        "Pfizer / BioNTech": "Pfizer/BioNTech",
+        "Oxford / AstraZeneca": "Oxford/AstraZeneca",
+        "Janssen / Johnson&Johnson": "Janssen/Johnson&Johnson",
+        "Another vaccine please specify": "Other / specify",
+        "I don't know the type": "Don't know type",
+        "Or Another vaccine please specify": "Other / specify",  # changed from "Other /specify"
+        "I do not know the type": "Don't know type",
+        "Or do you not know which one you had?": "Don't know type",
+        "I don&#39;t know the type": "Don't know type",
+        "I don&amp;#39;t know the type": "Don't know type",
+        "I dont know the type": "Don't know type",
+        "Janssen / Johnson&amp;Johnson": "Janssen/Johnson&Johnson",
+        "Janssen / Johnson&amp;amp;Johnson": "Janssen/Johnson&Johnson",
+        "Oxford also known as AstraZeneca": "Oxford/AstraZeneca",
+        "Pfizer also known as BioNTech": "Pfizer/BioNTech",
+    }
+    column_editing_map = {
+        "work_status_employment": {
+            "Currently working - this includes if you are on sick leave or other leave for less than 4 weeks": "Currently working. This includes if you are on sick or other leave for less than 4 weeks"
+        },
+        "work_sector": {
+            "Social Care": "Social care",
+            "Transport. This includes storage and logistics": "Transport (incl. storage, logistic)",
+            "Retail sector. This includes wholesale": "Retail sector (incl. wholesale)",
+            "Hospitality - for example hotels or restaurants or cafe": "Hospitality (e.g. hotel, restaurant)",
+            "Food production and agriculture. This includes farming": "Food production, agriculture, farming",
+            "Personal Services - for example hairdressers or tattooists": "Personal services (e.g. hairdressers)",
+            "Information technology and communication": "Information technology and communication",
+            "Financial services. This includes insurance": "Financial services incl. insurance",
+            "Civil Service or Local Government": "Civil service or Local Government",
+            "Arts or entertainment or recreation": "Arts,Entertainment or Recreation",
+            "Other employment sector please specify": "Other occupation sector",
+        },
+        "work_health_care_area": {
+            "Secondary care for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services?": "Other",
+            "Primary care - for example in a GP or dentist": "Primary",
+            "Yes, in primary care, e.g. GP, dentist": "Primary",
+            "Secondary care - for example in a hospital": "Secondary",
+            "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
+        },
+        "illness_reduces_activity_or_ability": {
+            "Yes a little": "Yes, a little",
+            "Yes a lot": "Yes, a lot",
+        },
+        "work_location": {
+            "From home meaning in the same grounds or building as your home": "Working from home",
+            "Somewhere else meaning not at your home": "Working somewhere else (not your home)",
+            "Both from home and work somewhere else": "Both (from home and somewhere else)",
+        },
+        "transport_to_work_or_education": {
+            "Bus or minibus or coach": "Bus, minibus, coach",
+            "Motorbike or scooter or moped": "Motorbike, scooter or moped",
+            "Taxi or minicab": "Taxi/minicab",
+            "Underground or Metro or Light Rail or Tram": "Underground, metro, light rail, tram",
+        },
+        "ability_to_socially_distance_at_work_or_education": {
+            "Difficult to maintain 2 metres apart. But you can usually be at least 1 metre away from other people": "Difficult to maintain 2m, but can be 1m",
+            # noqa: E501
+            "Easy to maintain 2 metres apart. It is not a problem to stay this far away from other people": "Easy to maintain 2m",
+            # noqa: E501
+            "Relatively easy to maintain 2 metres apart. Most of the time you can be 2 meters away from other people": "Relatively easy to maintain 2m",
+            # noqa: E501
+            "Very difficult to be more than 1 metre away. Your work means you are in close contact with others on a regular basis": "Very difficult to be more than 1m away",
+        },
+        "physical_contact_under_18_years": contact_people_value_map,
+        "physical_contact_18_to_69_years": contact_people_value_map,
+        "physical_contact_over_70_years": contact_people_value_map,
+        "social_distance_contact_under_18_years": contact_people_value_map,
+        "social_distance_contact_18_to_69_years": contact_people_value_map,
+        "social_distance_contact_over_70_years": contact_people_value_map,
+        "times_hour_or_longer_another_home_last_7_days": times_value_map,
+        "times_hour_or_longer_another_person_your_home_last_7_days": times_value_map,
+        "times_shopping_last_7_days": times_value_map,
+        "times_socialising_last_7_days": times_value_map,
+        "face_covering_work_or_education": {
+            "Prefer not to say": None,
+            "Yes sometimes": "Yes, sometimes",
+            "Yes always": "Yes, always",
+            "I am not going to my place of work or education": "Not going to place of work or education",
+            "I cover my face for other reasons - for example for religious or cultural reasons": "My face is already covered",
+            # noqa: E501
+        },
+        "face_covering_other_enclosed_places": {
+            "Prefer not to say": None,
+            "Yes sometimes": "Yes, sometimes",
+            "Yes always": "Yes, always",
+            "I am not going to other enclosed public spaces or using public transport": "Not going to other enclosed public spaces or using public transport",
+            # noqa: E501
+            "I cover my face for other reasons - for example for religious or cultural reasons": "My face is already covered",
+            # noqa: E501
+        },
+        "other_covid_infection_test_results": {
+            "All tests failed": "All Tests failed",
+            "One or more tests were negative and none were positive": "Any tests negative, but none positive",
+            "One or more tests were positive": "One or more positive test(s)",
+        },
+        "cis_covid_vaccine_type": vaccine_type_map,
+    }
+    df = apply_value_map_multiple_columns(df, column_editing_map)
+    return df
+
+
+def derive_additional_columns(df: DataFrame) -> DataFrame:
+    """
+    New columns:
+    - think_have_covid_any_symptoms
+    - think_have_any_symptoms_new_or_worse
+    - think_have_long_covid_any_symptoms
+    - think_had_covid_any_symptoms
+    - think_had_flu_any_symptoms
+    - think_had_other_infection_any_symptoms
+    - think_have_covid_any_symptom_list
+    - think_have_symptoms_new_or_worse_list
+    - think_have_long_covid_symptom_list
+    - think_had_covid_any_symptom_list
+    - think_had_other_infection_symptom_list
+    - think_had_flu_symptom_list
+    - work_status_v2
+    - work_status_v1
+    - work_status_v0
+    - swab_sample_barcode_user_entered
+    - blood_sample_barcode_user_entered
+    - times_outside_shopping_or_socialising_last_7_days
+    - face_covering_outside_of_home
+    - cis_covid_vaccine_number_of_doses
+
+    Reference columns:
+    - currently_smokes_or_vapes_description
+    - blood_not_taken_could_not_reason
+    - transport_shared_outside_household_last_28_days
+    - phm_think_had_respiratory_infection_type
+    - think_have_covid_any_symptom_list_1
+    - think_have_covid_any_symptom_list_2
+    - think_have_symptoms_new_or_worse_list_1
+    - think_have_symptoms_new_or_worse_list_2
+    - think_have_long_covid_symptom_list_1
+    - think_have_long_covid_symptom_list_2
+    - think_have_long_covid_symptom_list_3
+    - think_had_covid_any_symptom_list_1
+    - think_had_covid_any_symptom_list_2
+    - think_had_other_infection_symptom_list_1
+    - think_had_other_infection_symptom_list_2
+    - think_had_flu_symptom_list_1
+    - think_had_flu_symptom_list_2
+
+    Edited columns:
+    - work_not_from_home_days_per_week
+    - phm_covid_vaccine_number_of_doses
     """
     df = assign_any_symptoms(df)
     df = split_array_columns(df)
+    # map_to_bool_columns_dict = {
+    #     "currently_smokes_or_vapes_description": "",
+    #     "blood_not_taken_could_not_reason": "",
+    #     "transport_shared_outside_household_last_28_days": "",
+    #     "phm_think_had_respiratory_infection_type": "",
+    #     "think_have_covid_any_symptom_list_1": "think_have_covid",
+    #     "think_have_covid_any_symptom_list_2": "think_have_covid",
+    #     "think_have_symptoms_new_or_worse_list_1": "think_have_symptoms",
+    #     "think_have_symptoms_new_or_worse_list_2": "think_have_symptoms",
+    #     "think_have_long_covid_symptom_list_1": "think_have_long_covid",
+    #     "think_have_long_covid_symptom_list_2": "think_have_long_covid",
+    #     "think_have_long_covid_symptom_list_3": "think_have_long_covid",
+    #     "think_had_covid_any_symptom_list_1": "think_had_covid",
+    #     "think_had_covid_any_symptom_list_2": "think_had_covid",
+    #     "think_had_other_infection_symptom_list_1": "think_had_other",
+    #     "think_had_other_infection_symptom_list_2": "think_had_other",
+    #     "think_had_flu_symptom_list_1": "think_had_flu",
+    #     "think_had_flu_symptom_list_2": "think_had_flu",
+    # }
+    # for col_to_map, prefix in map_to_bool_columns_dict.items():
+    #     if ("symptom" in col_to_map) & ("list_" in col_to_map):
+    #         value_column_map = {
+    #             key: prefix + value for key, value in transformation_maps[f"symptoms_list_{col_to_map[-1:]}"].items()
+    #         }
+    #     else:
+    #         value_column_map = transformation_maps[col_to_map]
+    #     df = map_options_to_bool_columns(df, col_to_map, value_column_map, ";")
+
     column_list = ["work_status_digital", "work_status_employment", "work_status_unemployment", "work_status_education"]
     df = assign_column_value_from_multiple_column_map(
         df,
@@ -382,211 +612,7 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
     df = clean_barcode_simple(df, "swab_sample_barcode_user_entered")
     df = clean_barcode_simple(df, "blood_sample_barcode_user_entered")
 
-    # df = map_options_to_bool_columns(
-    #     df,
-    #     "currently_smokes_or_vapes_description",
-    #     {
-    #         "Cigarettes": "smoke_cigarettes",
-    #         "Cigars": "smokes_cigar",
-    #         "Pipe": "smokes_pipe",
-    #         "Vape or E-cigarettes": "smokes_vape_e_cigarettes",
-    #         "Hookah or shisha pipes": "smokes_hookah_shisha_pipes",
-    #     },
-    #     ";",
-    # )
-
     df = df.withColumn("times_outside_shopping_or_socialising_last_7_days", F.lit(None))
-    raw_copy_list = [
-        # "participant_survey_status",
-        # "participant_withdrawal_type",
-        # "survey_response_type",
-        "work_sector",
-        "illness_reduces_activity_or_ability",
-        "ability_to_socially_distance_at_work_or_education",
-        # "last_covid_contact_type",
-        # "last_suspected_covid_contact_type",
-        "physical_contact_under_18_years",
-        "physical_contact_18_to_69_years",
-        "physical_contact_over_70_years",
-        "social_distance_contact_under_18_years",
-        "social_distance_contact_18_to_69_years",
-        "social_distance_contact_over_70_years",
-        # "times_hour_or_longer_another_home_last_7_days",
-        # "times_hour_or_longer_another_person_your_home_last_7_days",
-        "times_shopping_last_7_days",
-        "times_socialising_last_7_days",
-        "face_covering_work_or_education",
-        # "face_covering_other_enclosed_places",
-        "other_covid_infection_test_results",
-        # "other_antibody_test_results",
-        "cis_covid_vaccine_type",
-        "cis_covid_vaccine_type_other",
-        "cis_covid_vaccine_number_of_doses",
-        # "cis_covid_vaccine_type_1",
-        # "cis_covid_vaccine_type_2",
-        # "cis_covid_vaccine_type_3",
-        # "cis_covid_vaccine_type_4",
-        # "cis_covid_vaccine_type_5",
-        # "cis_covid_vaccine_type_6",
-        # "cis_covid_vaccine_type_other_1",
-        # "cis_covid_vaccine_type_other_2",
-        # "cis_covid_vaccine_type_other_3",
-        # "cis_covid_vaccine_type_other_4",
-        # "cis_covid_vaccine_type_other_5",
-        # "cis_covid_vaccine_type_other_6",
-    ]
-    df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
-
-    """
-    Sets categories to map for digital specific variables to Voyager 0/1/2 equivalent
-    """
-
-    contact_people_value_map = {
-        "1 to 5": "1-5",
-        "6 to 10": "6-10",
-        "11 to 20": "11-20",
-        "21 or more": "21 or more",
-        "Don't know": None,
-        "Prefer not to say": None,
-    }
-    times_value_map = {
-        "1": 1,
-        "2": 2,
-        "3": 3,
-        "4": 4,
-        "5": 5,
-        "6": 6,
-        "7 times or more": 7,
-        "Don't know": None,
-        "None": 0,
-        "Prefer not to say": None,
-    }
-    vaccine_type_map = {
-        "Pfizer / BioNTech": "Pfizer/BioNTech",
-        "Oxford / AstraZeneca": "Oxford/AstraZeneca",
-        "Janssen / Johnson&Johnson": "Janssen/Johnson&Johnson",
-        "Another vaccine please specify": "Other / specify",
-        "I don't know the type": "Don't know type",
-        "Or Another vaccine please specify": "Other / specify",  # changed from "Other /specify"
-        "I do not know the type": "Don't know type",
-        "Or do you not know which one you had?": "Don't know type",
-        "I don&#39;t know the type": "Don't know type",
-        "I don&amp;#39;t know the type": "Don't know type",
-        "I dont know the type": "Don't know type",
-        "Janssen / Johnson&amp;Johnson": "Janssen/Johnson&Johnson",
-        "Janssen / Johnson&amp;amp;Johnson": "Janssen/Johnson&Johnson",
-        "Oxford also known as AstraZeneca": "Oxford/AstraZeneca",
-        "Pfizer also known as BioNTech": "Pfizer/BioNTech",
-    }
-    column_editing_map = {
-        # "participant_survey_status": {"Complete": "Completed"},
-        # "participant_withdrawal_type": {
-        #    "Withdrawn - no future linkage": "Withdrawn_no_future_linkage",
-        #    "Withdrawn - no future linkage or use of samples": "Withdrawn_no_future_linkage_or_use_of_samples",
-        # },
-        # "survey_response_type": {"First Survey": "First Visit", "Follow-up Survey": "Follow-up Visit"},
-        # "voucher_type_preference": {"Letter": "Paper", "Email": "email_address"},
-        "work_sector": {
-            "Social Care": "Social care",
-            "Transport. This includes storage and logistics": "Transport (incl. storage, logistic)",
-            "Retail sector. This includes wholesale": "Retail sector (incl. wholesale)",
-            "Hospitality - for example hotels or restaurants or cafe": "Hospitality (e.g. hotel, restaurant)",
-            "Food production and agriculture. This includes farming": "Food production, agriculture, farming",
-            "Personal Services - for example hairdressers or tattooists": "Personal services (e.g. hairdressers)",
-            "Information technology and communication": "Information technology and communication",
-            "Financial services. This includes insurance": "Financial services incl. insurance",
-            "Civil Service or Local Government": "Civil service or Local Government",
-            "Arts or entertainment or recreation": "Arts,Entertainment or Recreation",
-            "Other employment sector please specify": "Other occupation sector",
-        },
-        "work_health_care_area": {
-            "Secondary care for example in a hospital": "Secondary",
-            "Another type of healthcare - for example mental health services?": "Other",
-            "Primary care - for example in a GP or dentist": "Primary",
-            "Yes, in primary care, e.g. GP, dentist": "Primary",
-            "Secondary care - for example in a hospital": "Secondary",
-            "Another type of healthcare - for example mental health services": "Other",  # noqa: E501
-        },
-        "illness_reduces_activity_or_ability": {
-            "Yes a little": "Yes, a little",
-            "Yes a lot": "Yes, a lot",
-        },
-        "work_location": {
-            "From home meaning in the same grounds or building as your home": "Working from home",
-            "Somewhere else meaning not at your home": "Working somewhere else (not your home)",
-            "Both from home and work somewhere else": "Both (from home and somewhere else)",
-        },
-        "transport_to_work_or_education": {
-            "Bus or minibus or coach": "Bus, minibus, coach",
-            "Motorbike or scooter or moped": "Motorbike, scooter or moped",
-            "Taxi or minicab": "Taxi/minicab",
-            "Underground or Metro or Light Rail or Tram": "Underground, metro, light rail, tram",
-        },
-        "ability_to_socially_distance_at_work_or_education": {
-            "Difficult to maintain 2 metres apart. But you can usually be at least 1 metre away from other people": "Difficult to maintain 2m, but can be 1m",
-            # noqa: E501
-            "Easy to maintain 2 metres apart. It is not a problem to stay this far away from other people": "Easy to maintain 2m",
-            # noqa: E501
-            "Relatively easy to maintain 2 metres apart. Most of the time you can be 2 meters away from other people": "Relatively easy to maintain 2m",
-            # noqa: E501
-            "Very difficult to be more than 1 metre away. Your work means you are in close contact with others on a regular basis": "Very difficult to be more than 1m away",
-        },
-        # "last_covid_contact_type": {
-        #     "Someone I live with": "Living in your own home",
-        #     "Someone I do not live with": "Outside your home",
-        # },
-        # "last_suspected_covid_contact_type": {
-        #     "Someone I live with": "Living in your own home",
-        #     "Someone I do not live with": "Outside your home",
-        # },
-        "physical_contact_under_18_years": contact_people_value_map,
-        "physical_contact_18_to_69_years": contact_people_value_map,
-        "physical_contact_over_70_years": contact_people_value_map,
-        "social_distance_contact_under_18_years": contact_people_value_map,
-        "social_distance_contact_18_to_69_years": contact_people_value_map,
-        "social_distance_contact_over_70_years": contact_people_value_map,
-        "times_hour_or_longer_another_home_last_7_days": times_value_map,
-        "times_hour_or_longer_another_person_your_home_last_7_days": times_value_map,
-        "times_shopping_last_7_days": times_value_map,
-        "times_socialising_last_7_days": times_value_map,
-        "face_covering_work_or_education": {
-            "Prefer not to say": None,
-            "Yes sometimes": "Yes, sometimes",
-            "Yes always": "Yes, always",
-            "I am not going to my place of work or education": "Not going to place of work or education",
-            "I cover my face for other reasons - for example for religious or cultural reasons": "My face is already covered",
-            # noqa: E501
-        },
-        "face_covering_other_enclosed_places": {
-            "Prefer not to say": None,
-            "Yes sometimes": "Yes, sometimes",
-            "Yes always": "Yes, always",
-            "I am not going to other enclosed public spaces or using public transport": "Not going to other enclosed public spaces or using public transport",
-            # noqa: E501
-            "I cover my face for other reasons - for example for religious or cultural reasons": "My face is already covered",
-            # noqa: E501
-        },
-        "other_covid_infection_test_results": {
-            "All tests failed": "All Tests failed",
-            "One or more tests were negative and none were positive": "Any tests negative, but none positive",
-            "One or more tests were positive": "One or more positive test(s)",
-        },
-        # "other_antibody_test_results": {
-        #     "All tests failed": "All Tests failed",
-        #     "One or more tests were negative for antibodies and none were positive": "Any tests negative, but none positive",
-        #     # noqa: E501
-        #     "One or more tests were positive for antibodies": "One or more positive test(s)",
-        # },
-        "cis_covid_vaccine_type": vaccine_type_map,
-        # "cis_covid_vaccine_type_1": vaccine_type_map,
-        # "cis_covid_vaccine_type_2": vaccine_type_map,
-        # "cis_covid_vaccine_type_3": vaccine_type_map,
-        # "cis_covid_vaccine_type_4": vaccine_type_map,
-        # "cis_covid_vaccine_type_5": vaccine_type_map,
-        # "cis_covid_vaccine_type_6": vaccine_type_map,
-    }
-    df = apply_value_map_multiple_columns(df, column_editing_map)
-
     df = edit_to_sum_or_max_value(
         df=df,
         column_name_to_assign="times_outside_shopping_or_socialising_last_7_days",
@@ -603,59 +629,6 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
 
     df = df.withColumn("face_covering_outside_of_home", F.lit(None).cast("string"))
 
-    # df = survey_edit_auto_complete(
-    #     df,
-    #     "survey_completion_status",
-    #     "participant_completion_window_end_datetime",
-    #     "face_covering_other_enclosed_places",
-    #     "file_date",
-    # )
-    # df = update_column_values_from_map(
-    #     df,
-    #     "survey_completion_status",
-    #     {
-    #         "In progress": "Partially Completed",
-    #         "Submitted": "Completed",
-    #     },
-    # )
-
-    # df = derive_had_symptom_last_7days_from_digital(
-    #     df,
-    #     "think_have_covid_symptom_any",
-    #     "think_have_covid_symptom_",
-    #     [
-    #         "fever",
-    #         "muscle_ache",
-    #         "fatigue",
-    #         "sore_throat",
-    #         "cough",
-    #         "shortness_of_breath",
-    #         "headache",
-    #         "nausea_or_vomiting",
-    #         "abdominal_pain",
-    #         "diarrhoea",
-    #         "loss_of_taste",
-    #         "loss_of_smell",
-    #     ],
-    # )
-
-    # df = update_value_if_multiple_and_ref_in_list(
-    #     df,
-    #     "swab_consolidation_point_error",
-    #     ["sample_leaked", "sample_uncompleted"],
-    #     "multiple errors sample discarded",
-    #     "multiple errors sample retained",
-    #     ",",
-    # )
-
-    # df = update_value_if_multiple_and_ref_in_list(
-    #     df,
-    #     "blood_consolidation_point_error",
-    #     ["sample_leaked", "sample_uncompleted"],
-    #     "multiple errors sample discarded",
-    #     "multiple errors sample retained",
-    #     ",",
-    # )
     df = df.withColumn("cis_covid_vaccine_number_of_doses", F.col("phm_covid_vaccine_number_of_doses"))
 
     df = update_column_values_from_map(
@@ -677,15 +650,16 @@ def transform_survey_responses_version_phm_delta(df: DataFrame) -> DataFrame:
         },
     )
 
-    # df = concat_fields_if_true(df, "think_had_covid_which_symptoms", "think_had_covid_which_symptom_", "Yes", ";")
-    # df = concat_fields_if_true(df, "which_symptoms_last_7_days", "think_have_covid_symptom_", "Yes", ";")
-    # df = concat_fields_if_true(df, "long_covid_symptoms", "think_have_long_covid_symptom_", "Yes", ";")
-
     return df
 
 
 def assign_any_symptoms(df: DataFrame):
-    """"""
+    """
+    Reference columns:
+
+    New columns:
+
+    """
     df = df.withColumn(
         "think_have_covid_any_symptoms",
         F.when(
@@ -759,7 +733,7 @@ def split_array_columns(df: DataFrame):
 
     for prefix in array_column_prefixes:
         df = combine_like_array_columns(df, prefix)
-
+    df.cache()
     for col in array_columns:
         df = assign_columns_from_array(
             df=df,
@@ -767,6 +741,7 @@ def split_array_columns(df: DataFrame):
             prefix=prefixes.get(col, col.split("_list")[0]),
             true_false_values=["Yes", "No"],
         )
+    df.unpersist()
 
     # remove any columns generated above that refer to the absence of a symptom
     cols = [col for col in df.columns if "none_of_these" in col]
