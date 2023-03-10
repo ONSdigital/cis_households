@@ -168,8 +168,8 @@ def extract_input_data(
     df = None
     if csv_file_paths:
         if validation_schema:
-            valid_file_paths = validate_files(csv_file_paths, validation_schema, sep=sep)
-        if not valid_file_paths:
+            csv_file_paths = validate_files(csv_file_paths, validation_schema, sep=sep)
+        if not csv_file_paths:
             print(f"        - No valid files found in: {csv_file_paths}.")  # functional
             return {"status": "Error"}
         df = spark_session.read.csv(
