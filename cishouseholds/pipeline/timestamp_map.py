@@ -99,6 +99,8 @@ cis_digital_datetime_map = {
         "swab_sample_received_lab_datetime",
         "blood_sample_received_lab_datetime",
         "form_start_datetime",
+        "swab_barcode_corrected_datetime",
+        "blood_barcode_corrected_datetime",
     ],
     "yyyy-MM-dd": [
         "date_of_birth",

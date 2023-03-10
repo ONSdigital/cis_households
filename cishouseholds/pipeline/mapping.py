@@ -2233,6 +2233,7 @@ column_name_maps = {
         "withdrawn_reason": "participant_withdrawal_reason",
         "withdrawn_type": "participant_withdrawal_type",
         "participant_id": "participant_id",
+        "participant_id_numeric": "participant_id_numeric",
         "title": "title",
         "first_name": "first_name",
         "middle_name": "middle_name",
