@@ -1227,6 +1227,8 @@ validation_schemas = {
         "blood_sample_barcode_user_entered": string_dict,
         "swab_barcode_corrected": string_dict,  # entered by iqvia quality team
         "blood_barcode_corrected": string_dict,  # entered by iqvia quality team
+        "swab_barcode_corrected_datetime": string_dict,
+        "blood_barcode_corrected_datetime": string_dict,
         "allocated_swab_barcode_not_used_reason": string_dict,  # Previously Swab_Barcode_Status_Error
         "allocated_blood_barcode_not_used_reason": string_dict,  # Previously Blood_Barcode_Status_Error
         "swab_sample_received_consolidation_point_datetime": string_dict,
@@ -1434,6 +1436,8 @@ validation_schemas = {
         "think_respiratory_infection": string_dict,
         "time_off_respiratory_infection": string_dict,
         "time_off_health_reasons": string_dict,
+        "survey_name": string_dict,
+        "form_name": string_dict,
     },
     "participant_extract_digital_validation_schema": {
         "ons_household_id": string_dict,
@@ -1441,6 +1445,7 @@ validation_schemas = {
         "withdrawn_reason": string_dict,
         "withdrawn_type": string_dict,
         "participant_id": string_dict,
+        "participant_id_numeric": string_dict,
         "title": string_dict,
         "first_name": string_dict,
         "middle_name": string_dict,

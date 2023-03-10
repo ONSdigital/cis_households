@@ -20,6 +20,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: participant_id_numeric
+  nullable: true
+  type: string
+- metadata: {}
   name: title
   nullable: true
   type: string
