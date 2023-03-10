@@ -20,6 +20,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: participant_id_numeric
+  nullable: true
+  type: string
+- metadata: {}
   name: title
   nullable: true
   type: string
@@ -316,10 +320,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: email
-  nullable: true
-  type: string
-- metadata: {}
   name: digital_survey_mode_preference
   nullable: true
   type: string
@@ -349,6 +349,10 @@ fields:
   type: string
 - metadata: {}
   name: ethnicity_group
+  nullable: true
+  type: string
+- metadata: {}
+  name: nhs_share_opt_out_date_string
   nullable: true
   type: string
 - metadata: {}

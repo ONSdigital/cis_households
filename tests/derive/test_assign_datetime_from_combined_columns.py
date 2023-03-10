@@ -20,8 +20,7 @@ def test_assign_datetime_from_combined_columns(spark_session, expected_data):
 
     input_df = expected_df.drop("datetime")
 
-    expected_df = expected_df.withColumn("datetime", F.to_timestamp("datetime"))
-
+    expected_df = expected_df.withColumn("datetime", F.to_timestamp("datetime")).drop("hour", "minute", "second")
     output_df = assign_datetime_from_combined_columns(
         df=input_df,
         column_name_to_assign="datetime",

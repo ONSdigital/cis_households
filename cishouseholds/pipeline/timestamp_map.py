@@ -1,4 +1,12 @@
-csv_datetime_maps = {"imputed_value_lookup": {"yyyy-MM-dd": ["date_of_birth"]}}
+csv_datetime_maps = {
+    "imputed_value_lookup": {"yyyy-MM-dd": ["date_of_birth"]},
+    "vaccine_capture_lookup": {
+        "dd-MM-yyyy": [
+            "cis_covid_vaccine_date_1",
+            "cis_covid_vaccine_date_2",
+        ]
+    },
+}
 
 lab_results_glasgow_datetime_map = {"yyyy-MM-dd HH:mm:ss 'UTC'": ["pcr_result_recorded_datetime"]}
 historical_blood_datetime_map = {"yyyy/MM/dd": ["received_date"]}
@@ -91,6 +99,8 @@ cis_digital_datetime_map = {
         "swab_sample_received_lab_datetime",
         "blood_sample_received_lab_datetime",
         "form_start_datetime",
+        "swab_barcode_corrected_datetime",
+        "blood_barcode_corrected_datetime",
     ],
     "yyyy-MM-dd": [
         "date_of_birth",
@@ -138,6 +148,7 @@ phm_datetime_map = {
         "swab_taken_date",
         "swab_return_date",
         "swab_return_future_date",
+        "blood_taken_date",
         "blood_return_date",
         "blood_return_future_date",
         "think_had_covid_onset_date",

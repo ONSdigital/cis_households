@@ -1,4 +1,3 @@
-from cishouseholds.phm.lookup import phm_validation_schema
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import survey_response_cast_to_double
 from cishouseholds.pipeline.mapping import survey_response_cisd_cast_to_double
@@ -21,6 +20,9 @@ from cishouseholds.pipeline.version_specific_processing.mult_version import deri
 from cishouseholds.pipeline.version_specific_processing.participant_extract import transform_participant_extract_digital
 from cishouseholds.pipeline.version_specific_processing.participant_extract import (
     translate_welsh_survey_responses_version_digital,
+)
+from cishouseholds.pipeline.version_specific_processing.phm_transformations import (
+    transform_survey_responses_version_phm_delta,
 )
 from cishouseholds.pipeline.version_specific_processing.v0_transformations import (
     transform_survey_responses_version_0_delta,
@@ -55,7 +57,9 @@ phm_parameters = {
     "id_column": "participant_completion_window_id",
     "validation_schema": validation_schemas["phm_survey_validation_schema"],
     "datetime_column_map": phm_datetime_map,
-    "transformation_functions": [],
+    "transformation_functions": [
+        transform_survey_responses_version_phm_delta,
+    ],
     "sep": "|",
     "cast_to_double_list": [],
     "source_file_column": "survey_response_source_file",
@@ -182,18 +186,6 @@ historical_blood_results_parameters = {
     "write_mode": "append",
 }
 
-json_test_parameters = {
-    "stage_name": "json_test",
-    "dataset_name": "json_test",
-    "id_column": "survey_id",
-    "validation_schema": phm_validation_schema,
-    "datetime_column_map": {},
-    "transformation_functions": [],
-    "cast_to_double_list": [],
-    "source_file_column": "json_test_file",
-    "date_from_filename": False,
-}
-
 for parameters in [
     participant_extract_digital_parameters,
     cis_digital_parameters,
@@ -203,7 +195,6 @@ for parameters in [
     swab_results_parameters,
     blood_results_parameters,
     historical_blood_results_parameters,
-    json_test_parameters,
     brants_bridge_parameters,
 ]:
     generate_input_processing_function(**parameters)  # type:ignore
