@@ -456,6 +456,14 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: swab_barcode_corrected_datetime
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: blood_barcode_corrected_datetime
+  nullable: true
+  type: timestamp
+- metadata: {}
   name: allocated_swab_barcode_not_used_reason
   nullable: true
   type: string
@@ -1284,6 +1292,14 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: survey_name
+  nullable: true
+  type: string
+- metadata: {}
+  name: form_name
+  nullable: true
+  type: string
+- metadata: {}
   name: survey_response_source_file
   nullable: false
   type: string
@@ -1333,115 +1349,115 @@ fields:
   type: string
 - metadata: {}
   name: smoke_cigarettes
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: smokes_cigar
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: smokes_pipe
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: smokes_vape_e_cigarettes
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: smokes_hookah_shisha_pipes
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_small_sample_tube
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_large_sample_carrier
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_biohazard_bag
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_blood_barcode
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_lancets
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_plasters
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_alcohol_wipes
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_cleansing_wipe
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_sample_box
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_sample_return_bag
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: blood_not_taken_missing_parts_other
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: blood_not_taken_could_not_reason_not_enough_blood
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: blood_not_taken_could_not_reason_pot_spilled
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: blood_not_taken_could_not_reason_had_bruising
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: blood_not_taken_could_not_reason_unwell
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: blood_not_taken_could_not_reason_other
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: swab_not_taken_missing_parts_sample_pot
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: swab_not_taken_missing_parts_swab_stick
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: swab_not_taken_missing_parts_biohazard_bag
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: swab_not_taken_missing_parts_swab_barcode
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: swab_not_taken_missing_parts_sample_box
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: swab_not_taken_missing_parts_return_bag
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: swab_not_taken_missing_parts_other
-  nullable: false
+  nullable: true
   type: string
 - metadata: {}
   name: times_outside_shopping_or_socialising_last_7_days
