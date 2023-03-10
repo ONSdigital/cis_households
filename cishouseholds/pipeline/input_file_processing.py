@@ -170,7 +170,8 @@ def extract_input_data(
             ignoreTrailingWhiteSpace=True,
             sep=sep,
         )
-        df = convert_array_strings_to_array(df, validation_schema)  # type: ignore
+        if validation_schema:
+            df = convert_array_strings_to_array(df, validation_schema)  # type: ignore
         return df
 
     elif all(Path(path).suffix in [".xlsx"] for path in file_paths):
