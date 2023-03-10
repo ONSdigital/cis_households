@@ -29,6 +29,51 @@ from cishouseholds.pipeline.mapping import _vaccine_type_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def assign_survey_not_completed_reason_code(
+    df: DataFrame,
+    column_name_to_assign: str,
+    cohort_type_column: str,
+    survey_filled_column: str,
+    swab_barcode_column: str,
+    blood_barcode_column: str,
+):
+    """"""
+    survey_filled = F.col(survey_filled_column).isNotNull()
+    swab = F.col(swab_barcode_column).isNotNull()
+    blood = F.col(blood_barcode_column).isNotNull()
+
+    questionnaire_only = F.col(cohort_type_column) == "Do this questionnaire only"
+    questionnaire_and_swab = F.col(cohort_type_column) == "Do this questionnaire and take a swab sample"
+    questionnaire_and_swab_and_blood = (
+        F.col(cohort_type_column) == "Do this questionnaire and take a swab sample and a blood sample"
+    )
+
+    filled_and_swab = survey_filled & swab
+    filled_and_swab_and_blood = filled_and_swab & blood
+    not_filled_and_swab = ~survey_filled & swab
+    not_filled_and_swab_and_blood = not_filled_and_swab & blood
+    filled_and_not_swab = survey_filled & ~swab
+    filled_and_not_swab_and_blood = survey_filled & ~swab & ~blood
+
+    fnr_logic_1 = questionnaire_only & ~survey_filled
+    fnr_logic_2 = questionnaire_and_swab & ~filled_and_swab
+    fnr_logic_3 = questionnaire_and_swab_and_blood & ~filled_and_swab_and_blood
+
+    qnr_logic_1 = questionnaire_and_swab & not_filled_and_swab
+    qnr_logic_2 = questionnaire_and_swab_and_blood & not_filled_and_swab_and_blood
+
+    tnr_logic_1 = questionnaire_and_swab & filled_and_not_swab
+    tnr_logic_2 = questionnaire_and_swab_and_blood & filled_and_not_swab_and_blood
+
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(tnr_logic_1 | tnr_logic_2, "TNR")
+        .when(qnr_logic_1 | qnr_logic_2, "QNR")
+        .when(fnr_logic_1 | fnr_logic_2 | fnr_logic_3, "FNR"),
+    )
+    return df
+
+
 def combine_like_array_columns(df: DataFrame, column_prefix: str):
     """"""
     cols = [col for col in df.columns if col.startswith(column_prefix)]
