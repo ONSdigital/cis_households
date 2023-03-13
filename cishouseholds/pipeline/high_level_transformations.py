@@ -6,24 +6,9 @@ from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.derive import assign_column_to_date_string
+from cishouseholds.derive import assign_columns_from_array
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 
-def create_completion_table(
-    df: DataFrame,
-    participant_id_column:str,
-    window_start_column:str,
-    window_status_column:str
-):
-    """"""
-    window = Window.partitionBy(window_start_column)
-    df = df.dropDuplicates([participant_id_column])
-    df = df.withColumn("daily_full_completion_rate",F.sum(
-        F.when(F.col(window_status_column)=="Submitted",1).otherwise(0)).over(window)/F.count(participant_id_column).over(window)
-    )
-    df = df.withColumn("daily_partial_completion_rate",F.sum(
-        F.when(F.col(window_status_column)=="Completed",1).otherwise(0)).over(window)/F.count(participant_id_column).over(window)
-    )
-    return df.select(window_start_column,"daily_full_completion_rate","daily_partial_completion_rate").distinct()
 
 def pivot_vaccine_columns(df: DataFrame, row_number_column: str, prefixes: List[str]):
     """"""
