@@ -3339,7 +3339,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
         ),
         "swab_sample_barcode_correct": _("choice", items=yes_no_none_choice),
-        "swab_sample_barcode_user_entered": _("random.custom_code", mask="SWT########", digit="#"),
+        "swab_sample_barcode_user_entered": _("random.custom_code", mask="########", digit="#"),
         "swab_taken_date": _(
             "discrete_distribution",
             population=[
@@ -3411,7 +3411,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         ),
         "blood_not_taken_could_not_other": _("text.sentence"),
         "blood_sample_barcode_correct": _("choice", items=yes_no_none_choice),
-        "blood_sample_barcode_user_entered": _("random.custom_code", mask="BLT########", digit="#"),
+        "blood_sample_barcode_user_entered": _("random.custom_code", mask="########", digit="#"),
         "blood_taken_date": _(
             "discrete_distribution",
             population=[
