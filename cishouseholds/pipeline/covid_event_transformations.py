@@ -115,12 +115,12 @@ def edit_existing_columns(df: DataFrame) -> DataFrame:
     for contact_date, contact_type, contact in zip(contact_dates, contact_types, covid_contacts):
         # correct covid contact based on date and type
         df = df.withColumn(
-            F.col(contact), F.when(all_columns_null([contact_type, contact_date]), None).otherwise(F.col(contact))
+            contact, F.when(all_columns_null([contact_type, contact_date]), None).otherwise(F.col(contact))
         )
 
         # correct covid type based on date and contact
         df = df.withColumn(
-            F.col(contact_type), F.when(all_columns_null([contact, contact_date]), None).otherwise(F.col(contact_type))
+            contact_type, F.when(all_columns_null([contact, contact_date]), None).otherwise(F.col(contact_type))
         )
 
     df = df.withColumn(
