@@ -51,8 +51,8 @@ def demographic_transformations(
     df = replace_design_weights_transformations(
         df=df, geography_lookup_df=geography_lookup_df, design_weights_lookup_df=design_weights_lookup_df
     ).custom_checkpoint()
-    df = ethnicity_transformations(df).custom_checkpoint()
     df = fill_forwards_and_backwards(df).custom_checkpoint()
+    df = ethnicity_transformations(df).custom_checkpoint()
     df = derive_people_in_household_count(df).custom_checkpoint()
 
     imputed_demographic_columns_df = impute_key_columns(df, imputed_value_lookup_df, log_directory).custom_checkpoint()
@@ -177,15 +177,15 @@ def ethnicity_transformations(df: DataFrame):
         "Any other white": "Any other white background",
     }
     df = update_column_values_from_map(df, "ethnicity", ethnicity_value_map)
+    df = df.withColumn(
+        "ethnicity",
+        F.when(F.col("ethnicity").isNull(), "Any other ethnic group").otherwise(F.col("ethnicity")),
+    )
     df = assign_column_from_mapped_list_key(
         df=df, column_name_to_assign="ethnicity_group", reference_column="ethnicity", map=ethnic_group_map
     )
     df = assign_ethnicity_white(
         df, column_name_to_assign="ethnicity_white", ethnicity_group_column_name="ethnicity_group"
-    )
-    df = df.withColumn(
-        "ethnicity",
-        F.when(F.col("ethnicity").isNull(), "Any other ethnic group").otherwise(F.col("ethnicity")),
     )
     return df
 

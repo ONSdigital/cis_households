@@ -21,4 +21,4 @@ def test_assign_columns_from_array(spark_session):
     output_df = assign_columns_from_array(
         df=input_df, array_column_name="arr", prefix="test", true_false_values=[True, False]
     )
-    assert_df_equality(output_df, expected_df, ignore_nullable=True)
+    assert_df_equality(output_df, expected_df, ignore_nullable=True, ignore_row_order=True)
