@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0ae30bb2-f234-4a82-b0da-3b8dcc89ac0b" name="Changes" comment="" />
+    <list default="true" id="beab6065-61fb-41d3-a26d-74fb8084a415" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cishouseholds/edit.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/edit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/edit/test_update_valid_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/edit/test_update_valid_order.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

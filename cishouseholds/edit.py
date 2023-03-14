@@ -27,10 +27,11 @@ def update_valid_order(
     column_name_to_update: str,
     participant_id_column: str,
     vaccine_type_column: str,
-    vaccine_date_column_prefix: str,
+    vaccine_date_column: str,
+    first_dose_column: str,
 ):
     """"""
-    window = Window.partitionBy(participant_id_column).orderBy(vaccine_date_column_prefix)
+    window = Window.partitionBy(participant_id_column).orderBy(F.col(first_dose_column).desc())
 
     def get_logic(date):
         logic_1 = F.col(vaccine_type_column).isin(
@@ -46,11 +47,11 @@ def update_valid_order(
 
     df = df.withColumn(
         column_name_to_update,
-        F.when(
-            get_logic(F.first(F.col(vaccine_date_column_prefix + "_1"), True).over(window)),
+        F.when(get_logic(F.col(vaccine_date_column)), F.col(column_name_to_update) + 0.25)
+        .when(
+            get_logic(F.first(F.col(vaccine_date_column), True).over(window)),
             F.col(column_name_to_update) + 0.5,
         )
-        .when(get_logic(F.col(vaccine_date_column_prefix)), F.col(column_name_to_update) + 0.25)
         .otherwise(F.col(column_name_to_update)),
     )
     return df
