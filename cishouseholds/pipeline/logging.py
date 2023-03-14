@@ -13,9 +13,9 @@ def check_survey_table_lengths():
     table_lengths_string = "\n".join(
         f"- {table_name}: {table_length}" for table_name, table_length in zip(table_names, lengths)
     )
-    if len(lengths) == 0:
+    if len(set(lengths)) == 0:
         print("No survey tables found")  # functional
-    elif len(lengths) > 1:
+    elif len(set(lengths)) > 1:
         table_lengths_error = f"All survey tables post union should be the same length,\ninstead here are their lengths:\n{table_lengths_string}"
         print(table_lengths_error)  # functional
         raise ValueError(table_lengths_error)
