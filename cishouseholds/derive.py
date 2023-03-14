@@ -29,6 +29,56 @@ from cishouseholds.pipeline.mapping import _vaccine_type_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def assign_valid_order(
+    df: DataFrame,
+    column_name_to_assign: str,
+    participant_id_column: str,
+    vaccine_date_column: str,
+    vaccine_type_column: str,
+    first_dose_column: str,
+):
+    """"""
+    window = Window.partitionBy(participant_id_column).orderBy(F.col(first_dose_column).desc())
+    # [min days before, max days before, min days after, max days after, allowed_type, allowed_first_type]
+    orders = reversed(
+        [
+            [1, 0, -21, 0, 91, "Pfizer/AZ/Moderna", "Pfizer/AZ/Moderna"],
+            [2, 0, -21, 0, 91, "Pfizer/AZ/Moderna", "Don't know type"],
+            [2, 0, -21, 0, 91, "Don't know type", "Pfizer/AZ/Moderna"],
+            [3, 0, 0, 17, 35, "Pfizer", "Pfizer"],
+            [4, 0, 0, 17, 35, "Pfizer", "Don't know type"],
+            [4, 0, 0, 17, 35, "Don't know type", "Pfizer"],
+            [5, 0, 0, 28, 149, "Pfizer/AZ/Moderna", "Pfizer/AZ/Moderna"],
+            [6, 0, 0, 28, 149, "Pfizer/AZ/Moderna", "Don't know type"],
+            [6, 0, 0, 28, 149, "Don't know type", "Pfizer/AZ/Moderna"],
+        ]
+    )
+    diff = F.datediff(F.col(vaccine_date_column), F.first(F.col(vaccine_date_column)).over(window))
+    df = df.withColumn(column_name_to_assign, F.lit(None))
+    for check in orders:
+        neg_range = (diff > check[2]) & (diff < check[1])
+        pos_range = (diff > check[3]) & (diff < check[4])
+        df = df.withColumn(
+            column_name_to_assign,
+            F.when(
+                (neg_range | pos_range)
+                & (
+                    (F.col(vaccine_type_column) == check[5])
+                    & (F.first(F.col(vaccine_type_column)).over(window) == check[6])
+                ),
+                check[0],
+            ).otherwise(F.col(column_name_to_assign)),
+        )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            F.col(column_name_to_assign).isNull(),
+            F.when((diff > 28) & (diff < 149), 7).when(diff > 149, 8).otherwise(9),
+        ).otherwise(F.col(column_name_to_assign)),
+    )
+    return df
+
+
 def assign_survey_not_completed_reason_code(
     df: DataFrame,
     column_name_to_assign: str,
