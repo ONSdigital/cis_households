@@ -97,8 +97,8 @@ def test_create_completion_table_month(spark_session, input_df):
         # fmt: on
         schema=schema
     )
-
-    partial_df, full_df = Report.create_completion_table_set_range(
+    report = Report()
+    partial_df, full_df = report.create_completion_table_set_range(
         df=input_df,
         participant_id_column="id",
         window_start_column="start",
@@ -159,7 +159,8 @@ def test_create_completion_table_day(spark_session, input_df):
         expected_full_df = expected_full_df.withColumn(col, F.to_timestamp(col))
         expected_partial_df = expected_partial_df.withColumn(col, F.to_timestamp(col))
 
-    partial_df, full_df = Report.create_completion_table_days(
+    report = Report()
+    partial_df, full_df = report.create_completion_table_days(
         df=input_df,
         participant_id_column="id",
         window_start_column="start",
