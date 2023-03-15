@@ -44,7 +44,7 @@ def raw_copies(df: DataFrame):
         "think_had_covid",
         "think_have_covid_onset_date",
         "other_covid_infection_test",
-        "other_covid_infection_test_result",
+        "other_covid_infection_test_results",
         "think_had_covid_admitted_to_hospital",
         "think_had_covid_contacted_nhs",
         "last_covid_contact_date",

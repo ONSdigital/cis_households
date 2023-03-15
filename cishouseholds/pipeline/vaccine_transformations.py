@@ -6,6 +6,7 @@ from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_default_date_flag
+from cishouseholds.derive import assign_first_dose
 from cishouseholds.derive import assign_max_doses
 from cishouseholds.derive import assign_order_number
 from cishouseholds.derive import assign_poss_1_2
@@ -24,6 +25,7 @@ def vaccine_transformations(df: DataFrame):
     df = mapping(df)
     df = preprocessing(df)
     df = deduplication(df)
+    df = first_second_doses(df)
     return df
 
 
@@ -128,4 +130,16 @@ def deduplication(df: DataFrame):
             "Oxford / AstraZeneca / Vaxzevria / Covishield",
         ],
     )
+    return df
+
+
+def first_second_doses(df: DataFrame):
+
+    df = assign_first_dose(
+        df=df,
+        column_name_to_assign="first_dose",
+        participant_id_column="participant_id",
+        visit_datetime="visit_datetime",
+    )
+
     return df
