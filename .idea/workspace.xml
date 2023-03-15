@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="beab6065-61fb-41d3-a26d-74fb8084a415" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/tests/derive/test_assign_valid_order.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cishouseholds/derive.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/derive.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/vaccine_transformations.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/vaccine_transformations.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/derive/test_assign_first_dose.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/derive/test_assign_nth_dose.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/derive/test_assign_valid_order.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/derive/test_assign_valid_order.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,11 +25,11 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "last_opened_file_path": "C:/code/cis_households/tests/derive"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;last_opened_file_path&quot;: &quot;C:/code/cis_households/tests/derive&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\code\cis_households\tests\derive" />

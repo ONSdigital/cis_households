@@ -29,16 +29,55 @@ from cishouseholds.pipeline.mapping import _vaccine_type_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def assign_valid_order_2(
+    df: DataFrame,
+    column_name_to_assign: str,
+    participant_id_column: str,
+    vaccine_date_column: str,
+    vaccine_type_column: str,
+    valid_order_column: str,
+    first_dose_column: str,
+    second_dose_column: str,
+):
+    """"""
+    window = Window.partitionBy(participant_id_column).orderBy(valid_order_column)
+    first_window = Window.partitionBy(participant_id_column).orderBy(F.col(first_dose_column).desc())
+    second_window = Window.partitionBy(participant_id_column).orderBy(F.col(second_dose_column).desc())
+    df = assign_valid_order(
+        df=df,
+        column_name_to_assign="TEMP",
+        participant_id_column=participant_id_column,
+        vaccine_type_column=vaccine_type_column,
+        vaccine_date_column=vaccine_date_column,
+        dose_column=second_dose_column,
+    )
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.first(valid_order_column).over(window) >= 7)
+            & (
+                F.datediff(
+                    F.first(F.col(vaccine_date_column)).over(second_window),
+                    F.first(F.col(vaccine_date_column)).over(first_window),
+                )
+                <= 60
+            ),
+            F.col("TEMP"),
+        ),
+    ).drop("TEMP")
+    return df
+
+
 def assign_valid_order(
     df: DataFrame,
     column_name_to_assign: str,
     participant_id_column: str,
     vaccine_date_column: str,
     vaccine_type_column: str,
-    first_dose_column: str,
+    dose_column: str,
 ):
     """"""
-    window = Window.partitionBy(participant_id_column).orderBy(F.col(first_dose_column).desc())
+    window = Window.partitionBy(participant_id_column).orderBy(F.col(dose_column).desc())
     # [min days before, max days before, min days after, max days after, allowed_type, allowed_first_type]
     orders = reversed(
         [
@@ -250,16 +289,13 @@ def assign_max_doses(
     return df
 
 
-def assign_first_dose(
-    df: DataFrame,
-    column_name_to_assign: str,
-    participant_id_column: str,
-    visit_datetime: str,
+def assign_nth_dose(
+    df: DataFrame, column_name_to_assign: str, participant_id_column: str, visit_datetime: str, dose_number: int = 1
 ):
     """Assign the date of the first dose reported and order by visit_datetime."""
     window = Window.partitionBy(participant_id_column).orderBy(visit_datetime)
     df = df.withColumn("row", F.row_number().over(window))
-    df = df.withColumn(column_name_to_assign, F.when(F.col("row") == 1, "Yes").otherwise("No"))
+    df = df.withColumn(column_name_to_assign, F.when(F.col("row") == dose_number, "Yes").otherwise("No"))
     return df.drop("row")
 
 

@@ -1,6 +1,8 @@
+import pyspark.sql.functions as F
 from chispa import assert_df_equality
 
 from cishouseholds.derive import assign_valid_order
+from cishouseholds.derive import assign_valid_order_2
 
 
 def test_assign_valid_order(spark_session):
@@ -19,6 +21,34 @@ def test_assign_valid_order(spark_session):
         participant_id_column="id",
         vaccine_date_column="vaccine_date",
         vaccine_type_column="vaccine_type",
+        dose_column="first",
+    )
+    assert_df_equality(output_df, expected_df, ignore_nullable=True, ignore_row_order=True, ignore_column_order=True)
+
+
+def test_assign_valid_order_2(spark_session):
+    expected_df = spark_session.createDataFrame(
+        data=[
+            (1, "2021-01-01", "Pfizer", "Yes", "No", 9, None),
+            (1, "2021-01-30", "Pfizer", "No", "Yes", 3, None),  #
+            (1, "2021-02-28", "Pfizer", "No", "No", 3, None),  #
+            (2, "2021-01-01", "Pfizer/AZ/Moderna", "Yes", "No", 9, None),
+            (2, "2021-01-30", "Pfizer/AZ/Moderna", "No", "Yes", 1, None),
+            (2, "2021-02-28", "Pfizer/AZ/Moderna", "No", " No", 1, None),
+            (3, "2021-01-01", "Other", "Yes", "No", 7, 9),
+            (3, "2021-01-30", "Other", "No", "Yes", 7, 9),
+            (3, "2021-02-28", "Other", "No", "No", 7, 7),
+        ],
+        schema="id integer, vaccine_date string, vaccine_type string, first string, second string, order integer, order_2 integer",
+    )
+    output_df = assign_valid_order_2(
+        df=expected_df.drop("order_2"),
+        column_name_to_assign="order_2",
+        participant_id_column="id",
+        valid_order_column="order",
+        vaccine_date_column="vaccine_date",
+        vaccine_type_column="vaccine_type",
         first_dose_column="first",
+        second_dose_column="second",
     )
     assert_df_equality(output_df, expected_df, ignore_nullable=True, ignore_row_order=True, ignore_column_order=True)

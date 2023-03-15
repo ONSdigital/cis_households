@@ -6,8 +6,8 @@ from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_default_date_flag
-from cishouseholds.derive import assign_first_dose
 from cishouseholds.derive import assign_max_doses
+from cishouseholds.derive import assign_nth_dose
 from cishouseholds.derive import assign_order_number
 from cishouseholds.derive import assign_poss_1_2
 from cishouseholds.derive import group_participant_within_date_range
@@ -135,7 +135,7 @@ def deduplication(df: DataFrame):
 
 def first_second_doses(df: DataFrame):
 
-    df = assign_first_dose(
+    df = assign_nth_dose(
         df=df,
         column_name_to_assign="first_dose",
         participant_id_column="participant_id",
