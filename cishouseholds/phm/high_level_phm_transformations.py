@@ -35,10 +35,10 @@ def preprocessing(df: DataFrame):
     df = assign_datetime_from_combined_columns(
         df=df,
         column_name_to_assign="swab_taken_datetime",
-        date_column="blood_taken_date",
-        hour_column="blood_taken_time_hour",
-        minute_column="blood_taken_time_minute",
-        am_pm_column="blood_taken_am_pm",
+        date_column="swab_taken_date",
+        hour_column="swab_taken_time_hour",
+        minute_column="swab_taken_time_minute",
+        am_pm_column="swab_taken_am_pm",
     )
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 4)
     # df = generic_processing(df)
