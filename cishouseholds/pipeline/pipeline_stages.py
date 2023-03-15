@@ -31,6 +31,7 @@ from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.merge import left_join_keep_right
 from cishouseholds.merge import union_multiple_tables
+from cishouseholds.phm.reporting_class import Report
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.covid_event_transformations import covid_event_transformations
@@ -1012,6 +1013,47 @@ def report(
 
     write_string_to_file(
         output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
+    )
+
+
+@register_pipeline_stage("phm_report")
+def phm_report(
+    input_survey_table: str,
+    output_directory: str,
+) -> DataFrame:
+    """"""
+    df = extract_from_table(input_survey_table)
+    report = Report()
+    daily_table_dfs, daily_table_names = report.create_completion_table_days(
+        df=df,
+        participant_id_column="participant_id",
+        window_start_column="participant_completion_window_start_datetime",
+        window_end_column="participant_completion_window_end_datetime",
+        window_status_column="participant_completion_window_status",
+        reference_date_column="visit_datetime",
+        window_range=15,
+    )
+    range_table_dfs, range_table_names = report.create_completion_table_set_range(
+        df=df,
+        participant_id_column="participant_id",
+        window_start_column="participant_completion_window_start_datetime",
+        window_end_column="participant_completion_window_end_datetime",
+        window_status_column="participant_completion_window_status",
+        reference_date_column="visit_datetime",
+        window_range=15,
+    )
+    datasets = [*daily_table_dfs, *range_table_dfs]
+    sheet_names = [*daily_table_names, *range_table_names]
+
+    output = BytesIO()
+    with pd.ExcelWriter(output) as writer:
+        for i in range(0, len(datasets)):
+            dataset = datasets[i]
+            sheet_name = sheet_names[i]
+            dataset.toPandas().to_excel(writer, sheet_name=sheet_name, index=False)
+
+    write_string_to_file(
+        output.getbuffer(), f"{output_directory}/phm_report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
     )
 
 

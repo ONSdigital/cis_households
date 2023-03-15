@@ -1,31 +1,11 @@
-from _datetime import datetime
-from io import BytesIO
-
-import pandas as pd
 from pyspark.sql import functions as F
 from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
-
-from cishouseholds.hdfs_utils import write_string_to_file
 
 
 class Report:
     def __int__(self):
         """"""
-        self.sheets = []
-        self.output = BytesIO()
-
-    def add_sheet(self, df, sheet_name):
-        """"""
-        with pd.ExcelWriter(self.output) as writer:
-            df.toPandas().to_excel(writer, sheet_name=sheet_name, index=False)
-
-    def write_excel_output(self, output_directory):
-
-        write_string_to_file(
-            self.output.getbuffer(),
-            f"{output_directory}/phm_report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx",
-        )
 
     @staticmethod
     def add_start_end_delta_columns(
@@ -183,13 +163,9 @@ class Report:
             partial_column_name="partial_completion_rate",
             window_range=window_range,
         )
+        sheet_names = ["daily_count_partial", "daily_count_full", "daily_rate_partial", "daily_rate_full"]
 
-        self.add_sheet(partial_df_count, "Partial completion counts")
-        self.add_sheet(full_df_count, "Full completion counts")
-        self.add_sheet(partial_df_rate, "Partial completion rates")
-        self.add_sheet(full_df_rate, "Full completion rates")
-
-        return partial_df_rate, full_df_rate
+        return [partial_df_count, full_df_count, partial_df_rate, full_df_rate], sheet_names
 
     def create_completion_table_set_range(
         self,
@@ -210,7 +186,7 @@ class Report:
             start_reference_date_column=window_start_column,
             reference_date_column=reference_date_column,
         )
-        partial_df, full_df = self.create_completion_table_days(
+        reporting_dfs, sheet_names = self.create_completion_table_days(
             df=df,
             participant_id_column=participant_id_column,
             window_start_column="START",
@@ -219,6 +195,14 @@ class Report:
             reference_date_column=reference_date_column,
             window_range=window_range,
         )
-        partial_df = partial_df.withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
-        full_df = full_df.withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
-        return partial_df, full_df
+        partial_df_count = (
+            reporting_dfs[0].withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
+        )
+        full_df_count = reporting_dfs[1].withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
+        partial_df_rate = (
+            reporting_dfs[2].withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
+        )
+        full_df_rate = reporting_dfs[3].withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
+        sheet_names = ["range_count_partial", "range_count_full", "range_rate_partial", "range_rate_full"]
+
+        return [partial_df_count, full_df_count, partial_df_rate, full_df_rate], sheet_names
