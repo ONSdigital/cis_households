@@ -29,45 +29,6 @@ from cishouseholds.pipeline.mapping import _vaccine_type_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def assign_valid_order_2(
-    df: DataFrame,
-    column_name_to_assign: str,
-    participant_id_column: str,
-    vaccine_date_column: str,
-    vaccine_type_column: str,
-    valid_order_column: str,
-    first_dose_column: str,
-    second_dose_column: str,
-):
-    """"""
-    window = Window.partitionBy(participant_id_column).orderBy(valid_order_column)
-    first_window = Window.partitionBy(participant_id_column).orderBy(F.col(first_dose_column).desc())
-    second_window = Window.partitionBy(participant_id_column).orderBy(F.col(second_dose_column).desc())
-    df = assign_valid_order(
-        df=df,
-        column_name_to_assign="TEMP",
-        participant_id_column=participant_id_column,
-        vaccine_type_column=vaccine_type_column,
-        vaccine_date_column=vaccine_date_column,
-        dose_column=second_dose_column,
-    )
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when(
-            (F.first(valid_order_column).over(window) >= 7)
-            & (
-                F.datediff(
-                    F.first(F.col(vaccine_date_column)).over(second_window),
-                    F.first(F.col(vaccine_date_column)).over(first_window),
-                )
-                <= 60
-            ),
-            F.col("TEMP"),
-        ),
-    ).drop("TEMP")
-    return df
-
-
 def assign_valid_order(
     df: DataFrame,
     column_name_to_assign: str,

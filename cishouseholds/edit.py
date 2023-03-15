@@ -14,12 +14,57 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import Window
 
+from cishouseholds.derive import assign_valid_order
 from cishouseholds.expressions import all_columns_null
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import any_column_null
 from cishouseholds.expressions import count_occurrence_in_row
 from cishouseholds.expressions import set_date_component
 from cishouseholds.expressions import sum_within_row
+
+
+def update_valid_order_2(
+    df: DataFrame,
+    participant_id_column: str,
+    vaccine_date_column: str,
+    vaccine_type_column: str,
+    valid_order_column: str,
+    first_dose_column: str,
+    second_dose_column: str,
+):
+    """"""
+    window = Window.partitionBy(participant_id_column).orderBy(valid_order_column)
+    first_window = Window.partitionBy(participant_id_column).orderBy(F.col(first_dose_column).desc())
+    second_window = Window.partitionBy(participant_id_column).orderBy(F.col(second_dose_column).desc())
+    df = assign_valid_order(
+        df=df,
+        column_name_to_assign="TEMP",
+        participant_id_column=participant_id_column,
+        vaccine_type_column=vaccine_type_column,
+        vaccine_date_column=vaccine_date_column,
+        dose_column=second_dose_column,
+    )
+    df = df.withColumn(
+        "TEMP",
+        F.when(
+            (F.first(valid_order_column).over(window) >= 7)
+            & (
+                F.datediff(
+                    F.first(F.col(vaccine_date_column)).over(second_window),
+                    F.first(F.col(vaccine_date_column)).over(first_window),
+                )
+                <= 60
+            ),
+            F.col("TEMP"),
+        ),
+    )
+    df = df.withColumn(
+        valid_order_column,
+        F.when(F.col("TEMP").isNotNull() & (F.col("TEMP") < F.col(valid_order_column)), F.col("TEMP")).otherwise(
+            F.col(valid_order_column)
+        ),
+    ).drop("TEMP")
+    return df
 
 
 def add_prefix(df: DataFrame, column_name_to_update: str, prefix: str, sep: str = ""):
