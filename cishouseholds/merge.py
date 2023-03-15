@@ -39,8 +39,15 @@ def left_join_keep_right(left_df: DataFrame, right_df: DataFrame, join_on_column
     """
     Performs a left join on 2 dataframes and removes the additional in the right dataframe from the left
     """
-    left_df = left_df.select(*[col for col in left_df.columns if col not in right_df.columns or col in join_on_columns])
-    return left_df.join(right_df, on=join_on_columns, how="left")
+    for col in right_df.columns:
+        if col not in join_on_columns:
+            right_df = right_df.withColumnRenamed(col, col + "_right")
+
+    df = left_df.join(right_df, on=join_on_columns, how="left")
+    for col in df.columns:
+        if col not in join_on_columns:
+            df = df.withColumn(col, F.coalesce(col + "_right", col)).drop(col + "_right")
+    return df
 
 
 def null_safe_join(
