@@ -3,23 +3,29 @@
   ability_to_socially_distance_at_work_or_education_raw: Very difficult to be more
     than 1 metre away. Your work means you are in close contact with others on a regular
     basis
-  aged_16_or_over: 'No'
+  aged_16_or_over: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Tajikistan
   been_outside_uk_last_return_date: '2022-01-04 00:00:00.000000'
   blood_not_taken_could_not_other: He looked inquisitively at his keyboard and wrote
     another sentence.
   blood_not_taken_could_not_reason: I couldn't get enough blood into the pot
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_issues_with_kit: null
+  blood_not_taken_could_not_reason_not_enough_blood: 'Yes'
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: null
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_reason: The blood test kit arrived both damaged and with parts missing
   blood_return_date: '2022-01-06 00:00:00.000000'
   blood_return_future_date: '2022-01-04 00:00:00.000000'
-  blood_returned: 'No'
+  blood_returned: null
   blood_sample_barcode_correct: 'Yes'
   blood_sample_barcode_user_entered: BLT21442294
   blood_taken: 'No'
   blood_taken_am_pm: AM
   blood_taken_date: '2022-01-03 00:00:00.000000'
-  blood_taken_time_hour: 'No'
+  blood_taken_time_hour: null
   blood_taken_time_minute: '30'
   care_home_last_28_days: 'Yes'
   cis_covid_vaccine_date: '2022-01-02 00:00:00.000000'
@@ -36,9 +42,9 @@
   currently_smokes_or_vapes_description:
   - Vape or E-cigarettes
   education_in_person_days_per_week: '7'
-  end_screen_questionnaire: 'No'
+  end_screen_questionnaire: null
   ever_smoked_regularly: 'No'
-  face_covering_other_enclosed_places: 'No'
+  face_covering_other_enclosed_places: null
   face_covering_outside_of_home: null
   face_covering_work_or_education: Never
   face_covering_work_or_education_raw: Never
@@ -63,179 +69,243 @@
   other_covid_infection_test: 'No'
   other_covid_infection_test_negative_date: 06/01/2022
   other_covid_infection_test_positive_date: null
-  other_covid_infection_test_results: 'No'
-  other_covid_infection_test_results_raw: 'No'
+  other_covid_infection_test_results: null
+  other_covid_infection_test_results_raw: null
   participant_completion_window_id: '1044'
-  participant_first_name_confirmation: 'No'
+  participant_first_name_confirmation: null
   participant_first_name_on_behalf: 'No'
   phm_covid_vaccine_number_of_doses: '4'
+  phm_think_had_covid: null
+  phm_think_had_flu: null
   phm_think_had_flu_onset_date: null
+  phm_think_had_other_infection: null
   phm_think_had_other_infection_onset_date: null
   phm_think_had_respiratory_infection: 'Yes'
   phm_think_had_respiratory_infection_type:
   - Do not know the type
-  phm_think_had_respiratory_infection_type_covid_19: 'No'
-  phm_think_had_respiratory_infection_type_do_not_know_the_type: 'Yes'
-  phm_think_had_respiratory_infection_type_flu: 'No'
+  phm_think_had_unknown: 'Yes'
   physical_contact_18_to_69_years: 6-10
   physical_contact_18_to_69_years_raw: 6 to 10
-  physical_contact_over_70_years: 'No'
+  physical_contact_over_70_years: null
   physical_contact_over_70_years_raw: Don't know
   physical_contact_under_18_years: '0'
   physical_contact_under_18_years_raw: '0'
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'No'
-  smokes_cigarettes: 'No'
-  smokes_cigars: 'No'
-  smokes_vape_or_e_cigarettes: 'Yes'
+  smoke_cigarettes: null
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: 'Yes'
   social_distance_contact_18_to_69_years: 11-20
   social_distance_contact_18_to_69_years_raw: 11 to 20
   social_distance_contact_over_70_years: 21 or more
   social_distance_contact_over_70_years_raw: 21 or more
-  social_distance_contact_under_18_years: 'No'
+  social_distance_contact_under_18_years: null
   social_distance_contact_under_18_years_raw: Prefer not to say
   swab_not_taken_reason: The swab test kit arrived both damaged and with parts missing
   swab_return_date: '2022-01-07 00:00:00.000000'
   swab_return_future_date: '2022-01-02 00:00:00.000000'
-  swab_returned: 'No'
+  swab_returned: null
   swab_sample_barcode_correct: 'No'
   swab_sample_barcode_user_entered: SWT47690438
-  swab_taken: 'No'
+  swab_taken: null
   swab_taken_am_pm: AM
   swab_taken_date: '2022-01-02 00:00:00.000000'
-  swab_taken_time_hour: 'No'
+  swab_taken_time_hour: null
   swab_taken_time_minute: '0'
   test_kit_info_end_of_survey: Continue
   test_type_positive_result: PCR test. That is the test that is sent off to a laboratory
-  think_had_covid_any_symptom_abdominal_pain: 'No'
-  think_had_covid_any_symptom_diarrhoea: 'No'
-  think_had_covid_any_symptom_difficulty_concentrating: 'No'
-  think_had_covid_any_symptom_headache: 'No'
-  think_had_covid_any_symptom_list:
+  think_had_covid_any_symptom_list_1:
   - Loss of appetite or eating less than usual
+  think_had_covid_any_symptom_list_2:
   - Worry or anxiety
-  think_had_covid_any_symptom_loss_of_appetite_or_eating_less_than_usual: 'Yes'
-  think_had_covid_any_symptom_loss_of_smell: 'No'
-  think_had_covid_any_symptom_loss_of_taste: 'No'
-  think_had_covid_any_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_covid_any_symptom_memory_loss_or_confusion: 'No'
-  think_had_covid_any_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_had_covid_any_symptom_runny_nose_or_sneezing: 'No'
-  think_had_covid_any_symptom_sore_throat: 'No'
-  think_had_covid_any_symptom_weakness_or_tiredness: 'No'
-  think_had_covid_any_symptom_worry_or_anxiety: 'Yes'
   think_had_covid_any_symptoms: 'Yes'
   think_had_covid_onset_date: '2022-01-06 00:00:00.000000'
+  think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_anxiety: 'Yes'
+  think_had_covid_symptom_cough: null
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_difficulty_concentrating: null
+  think_had_covid_symptom_fatigue: null
+  think_had_covid_symptom_fever: null
+  think_had_covid_symptom_headache: null
+  think_had_covid_symptom_loss_of_appetite: 'Yes'
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: null
+  think_had_covid_symptom_low_mood: null
+  think_had_covid_symptom_memory_loss_or_confusion: null
+  think_had_covid_symptom_more_trouble_sleeping: null
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: null
+  think_had_covid_symptom_noisy_breathing: null
+  think_had_covid_symptom_none_list_1: null
+  think_had_covid_symptom_none_list_2: null
+  think_had_covid_symptom_runny_nose_or_sneezing: null
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptoms: 'Yes'
-  think_had_flu_symptom_abdominal_pain: 'No'
-  think_had_flu_symptom_diarrhoea: 'No'
-  think_had_flu_symptom_headache: 'No'
-  think_had_flu_symptom_list:
+  think_had_flu_symptom_abdominal_pain: null
+  think_had_flu_symptom_anxiety: null
+  think_had_flu_symptom_cough: null
+  think_had_flu_symptom_diarrhoea: null
+  think_had_flu_symptom_difficulty_concentrating: null
+  think_had_flu_symptom_fatigue: null
+  think_had_flu_symptom_fever: null
+  think_had_flu_symptom_headache: null
+  think_had_flu_symptom_list_1:
   - Loss of smell
+  think_had_flu_symptom_list_2:
   - More trouble sleeping than usual
-  think_had_flu_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
+  think_had_flu_symptom_loss_of_appetite: null
   think_had_flu_symptom_loss_of_smell: 'Yes'
-  think_had_flu_symptom_loss_of_taste: 'No'
-  think_had_flu_symptom_memory_loss_or_confusion: 'No'
-  think_had_flu_symptom_more_trouble_sleeping_than_usual: 'Yes'
-  think_had_flu_symptom_muscle_ache: 'No'
-  think_had_flu_symptom_nausea_or_vomiting: 'No'
-  think_had_flu_symptom_noisy_breathing_or_wheezing: 'No'
-  think_had_flu_symptom_weakness_or_tiredness: 'No'
-  think_had_flu_symptom_worry_or_anxiety: 'No'
+  think_had_flu_symptom_loss_of_taste: null
+  think_had_flu_symptom_low_mood: null
+  think_had_flu_symptom_memory_loss_or_confusion: null
+  think_had_flu_symptom_more_trouble_sleeping: 'Yes'
+  think_had_flu_symptom_muscle_ache: null
+  think_had_flu_symptom_nausea_or_vomiting: null
+  think_had_flu_symptom_noisy_breathing: null
+  think_had_flu_symptom_none_list_1: null
+  think_had_flu_symptom_none_list_2: null
+  think_had_flu_symptom_runny_nose_or_sneezing: null
+  think_had_flu_symptom_shortness_of_breath: null
+  think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptoms: 'Yes'
-  think_had_other_infection_symptom_cough: 'No'
-  think_had_other_infection_symptom_diarrhoea: 'No'
-  think_had_other_infection_symptom_difficulty_concentrating: 'No'
-  think_had_other_infection_symptom_fever_including_high_temperature: 'Yes'
-  think_had_other_infection_symptom_headache: 'No'
-  think_had_other_infection_symptom_list:
+  think_had_other_infection_symptom_list_1:
   - Loss of taste
+  think_had_other_infection_symptom_list_2:
   - Fever, including high temperature
-  think_had_other_infection_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_other_infection_symptom_loss_of_smell: 'No'
-  think_had_other_infection_symptom_loss_of_taste: 'Yes'
-  think_had_other_infection_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_other_infection_symptom_memory_loss_or_confusion: 'No'
-  think_had_other_infection_symptom_muscle_ache: 'No'
-  think_had_other_infection_symptom_nausea_or_vomiting: 'No'
-  think_had_other_infection_symptom_runny_nose_or_sneezing: 'No'
-  think_had_other_infection_symptom_shortness_of_breath: 'No'
-  think_had_other_infection_symptom_weakness_or_tiredness: 'No'
+  think_had_other_symptom_abdominal_pain: null
+  think_had_other_symptom_anxiety: null
+  think_had_other_symptom_cough: null
+  think_had_other_symptom_diarrhoea: null
+  think_had_other_symptom_difficulty_concentrating: null
+  think_had_other_symptom_fatigue: null
+  think_had_other_symptom_fever: null
+  think_had_other_symptom_headache: null
+  think_had_other_symptom_loss_of_appetite: null
+  think_had_other_symptom_loss_of_smell: null
+  think_had_other_symptom_loss_of_taste: 'Yes'
+  think_had_other_symptom_low_mood: null
+  think_had_other_symptom_memory_loss_or_confusion: null
+  think_had_other_symptom_more_trouble_sleeping: null
+  think_had_other_symptom_muscle_ache: null
+  think_had_other_symptom_nausea_or_vomiting: null
+  think_had_other_symptom_noisy_breathing: null
+  think_had_other_symptom_none_list_1: null
+  think_had_other_symptom_none_list_2: null
+  think_had_other_symptom_runny_nose_or_sneezing: null
+  think_had_other_symptom_shortness_of_breath: null
+  think_had_other_symptom_sore_throat: null
   think_have_any_symptoms_new_or_worse: 'Yes'
-  think_have_covid_any_symptom_abdominal_pain: 'No'
-  think_have_covid_any_symptom_diarrhoea: 'Yes'
-  think_have_covid_any_symptom_difficulty_concentrating: 'No'
-  think_have_covid_any_symptom_headache: 'No'
-  think_have_covid_any_symptom_list:
+  think_have_covid_any_symptom_list_1:
   - Diarrhoea
+  think_have_covid_any_symptom_list_2:
   - More trouble sleeping than usual
-  think_have_covid_any_symptom_loss_of_smell: 'No'
-  think_have_covid_any_symptom_memory_loss_or_confusion: 'No'
-  think_have_covid_any_symptom_more_trouble_sleeping_than_usual: 'Yes'
-  think_have_covid_any_symptom_muscle_ache: 'No'
-  think_have_covid_any_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_any_symptom_noisy_breathing_or_wheezing: 'No'
-  think_have_covid_any_symptom_runny_nose_or_sneezing: 'No'
-  think_have_covid_any_symptom_sore_throat: 'No'
-  think_have_covid_any_symptom_weakness_or_tiredness: 'No'
   think_have_covid_any_symptoms: 'Yes'
   think_have_covid_onset_date: null
-  think_have_long_covid: 'No'
+  think_have_covid_symptom_abdominal_pain: null
+  think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_cough: null
+  think_have_covid_symptom_diarrhoea: 'Yes'
+  think_have_covid_symptom_difficulty_concentrating: null
+  think_have_covid_symptom_fatigue: null
+  think_have_covid_symptom_fever: null
+  think_have_covid_symptom_headache: null
+  think_have_covid_symptom_loss_of_appetite: null
+  think_have_covid_symptom_loss_of_smell: null
+  think_have_covid_symptom_loss_of_taste: null
+  think_have_covid_symptom_low_mood: null
+  think_have_covid_symptom_memory_loss_or_confusion: null
+  think_have_covid_symptom_more_trouble_sleeping: 'Yes'
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: null
+  think_have_covid_symptom_noisy_breathing: null
+  think_have_covid_symptom_none_list_1: null
+  think_have_covid_symptom_none_list_2: null
+  think_have_covid_symptom_runny_nose_or_sneezing: null
+  think_have_covid_symptom_shortness_of_breath: null
+  think_have_covid_symptom_sore_throat: null
+  think_have_long_covid: null
   think_have_long_covid_any_symptoms: 'Yes'
-  think_have_long_covid_symptom_abdominal_pain: 'No'
-  think_have_long_covid_symptom_cough: 'No'
-  think_have_long_covid_symptom_difficulty_concentrating: 'No'
-  think_have_long_covid_symptom_fever_including_high_temperature: 'Yes'
-  think_have_long_covid_symptom_headache: 'No'
-  think_have_long_covid_symptom_list:
+  think_have_long_covid_symptom_abdominal_pain: null
+  think_have_long_covid_symptom_anxiety: null
+  think_have_long_covid_symptom_cough: null
+  think_have_long_covid_symptom_diarrhoea: null
+  think_have_long_covid_symptom_difficulty_concentrating: null
+  think_have_long_covid_symptom_fatigue: null
+  think_have_long_covid_symptom_fever: null
+  think_have_long_covid_symptom_headache: null
+  think_have_long_covid_symptom_list_1:
   - Runny nose or sneezing
+  think_have_long_covid_symptom_list_2:
   - Fever, including high temperature
+  think_have_long_covid_symptom_list_3:
   - Loss of appetite or eating less than usual
-  think_have_long_covid_symptom_loss_of_appetite_or_eating_less_than_usual: 'Yes'
-  think_have_long_covid_symptom_loss_of_smell: 'No'
-  think_have_long_covid_symptom_loss_of_taste: 'No'
-  think_have_long_covid_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
-  think_have_long_covid_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_have_long_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_long_covid_symptom_noisy_breathing_or_wheezing: 'No'
+  think_have_long_covid_symptom_loss_of_appetite: null
+  think_have_long_covid_symptom_loss_of_smell: null
+  think_have_long_covid_symptom_loss_of_taste: null
+  think_have_long_covid_symptom_low_mood: null
+  think_have_long_covid_symptom_memory_loss_or_confusion: null
+  think_have_long_covid_symptom_more_trouble_sleeping: null
+  think_have_long_covid_symptom_muscle_ache: null
+  think_have_long_covid_symptom_nausea_or_vomiting: null
+  think_have_long_covid_symptom_noisy_breathing: null
+  think_have_long_covid_symptom_none_list_1: null
+  think_have_long_covid_symptom_none_list_2: null
   think_have_long_covid_symptom_reduced_ability: Yes a little
   think_have_long_covid_symptom_runny_nose_or_sneezing: 'Yes'
-  think_have_long_covid_symptom_shortness_of_breath: 'No'
-  think_have_long_covid_symptom_sore_throat: 'No'
-  think_have_long_covid_symptom_weakness_or_tiredness: 'No'
-  think_have_long_covid_symptom_worry_or_anxiety: 'No'
+  think_have_long_covid_symptom_shortness_of_breath: null
+  think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_worse_after_effort: 'No'
-  think_have_symptoms_new_or_worse_diarrhoea: 'No'
-  think_have_symptoms_new_or_worse_difficulty_concentrating: 'No'
-  think_have_symptoms_new_or_worse_fever_including_high_temperature: 'No'
-  think_have_symptoms_new_or_worse_list:
+  think_have_symptoms_new_or_worse_list_1:
   - Runny nose or sneezing
+  think_have_symptoms_new_or_worse_list_2:
   - Low mood or not enjoying anything
-  think_have_symptoms_new_or_worse_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_have_symptoms_new_or_worse_loss_of_taste: 'No'
-  think_have_symptoms_new_or_worse_low_mood_or_not_enjoying_anything: 'Yes'
-  think_have_symptoms_new_or_worse_memory_loss_or_confusion: 'No'
-  think_have_symptoms_new_or_worse_more_trouble_sleeping_than_usual: 'No'
-  think_have_symptoms_new_or_worse_muscle_ache: 'No'
-  think_have_symptoms_new_or_worse_nausea_or_vomiting: 'No'
-  think_have_symptoms_new_or_worse_noisy_breathing_or_wheezing: 'No'
-  think_have_symptoms_new_or_worse_runny_nose_or_sneezing: 'Yes'
-  think_have_symptoms_new_or_worse_sore_throat: 'No'
-  think_have_symptoms_new_or_worse_worry_or_anxiety: 'No'
+  think_have_symptoms_symptom_abdominal_pain: null
+  think_have_symptoms_symptom_anxiety: null
+  think_have_symptoms_symptom_cough: null
+  think_have_symptoms_symptom_diarrhoea: null
+  think_have_symptoms_symptom_difficulty_concentrating: null
+  think_have_symptoms_symptom_fatigue: null
+  think_have_symptoms_symptom_fever: null
+  think_have_symptoms_symptom_headache: null
+  think_have_symptoms_symptom_loss_of_appetite: null
+  think_have_symptoms_symptom_loss_of_smell: null
+  think_have_symptoms_symptom_loss_of_taste: null
+  think_have_symptoms_symptom_low_mood: 'Yes'
+  think_have_symptoms_symptom_memory_loss_or_confusion: null
+  think_have_symptoms_symptom_more_trouble_sleeping: null
+  think_have_symptoms_symptom_muscle_ache: null
+  think_have_symptoms_symptom_nausea_or_vomiting: null
+  think_have_symptoms_symptom_noisy_breathing: null
+  think_have_symptoms_symptom_none_list_1: null
+  think_have_symptoms_symptom_none_list_2: null
+  think_have_symptoms_symptom_runny_nose_or_sneezing: 'Yes'
+  think_have_symptoms_symptom_shortness_of_breath: null
+  think_have_symptoms_symptom_sore_throat: null
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
   times_indoor_exercise_last_28_days: 11 to 20
   times_large_events_last_28_days: 'No'
   times_medium_events_last_28_days: 'No'
-  times_outside_shopping_or_socialising_last_7_days: 7
+  times_outside_shopping_or_socialising_last_7_days: 7.0
   times_shopping_last_7_days: '7'
   times_shopping_last_7_days_raw: 7 times or more
   times_socialising_last_7_days: '1'
   times_socialising_last_7_days_raw: '1'
   transport_shared_outside_household_last_28_days: I have not used transport shared
     with people outside of my home for reasons other than travel to work or education
+  transport_shared_outside_household_last_28_days_bus_coach: null
+  transport_shared_outside_household_last_28_days_car_van: null
+  transport_shared_outside_household_last_28_days_ferry_boat: null
+  transport_shared_outside_household_last_28_days_none: 'Yes'
+  transport_shared_outside_household_last_28_days_other: null
+  transport_shared_outside_household_last_28_days_plane: null
+  transport_shared_outside_household_last_28_days_taxi: null
+  transport_shared_outside_household_last_28_days_train: null
+  transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: Car or van
   work_direct_contact_patients_or_clients: Prefer not to say
   work_health_care_area: Primary
@@ -252,8 +322,8 @@
   work_status_digital: Self-employed
   work_status_education: Attending a college or other further education provider including
     apprenticeships
-  work_status_employment: 'No'
-  work_status_unemployment: 'No'
+  work_status_employment: null
+  work_status_unemployment: null
   work_status_v0: null
   work_status_v1: null
   work_status_v2: null
@@ -261,28 +331,34 @@
     can be 1m
   ability_to_socially_distance_at_work_or_education_raw: Difficult to maintain 2 metres
     apart. But you can usually be at least 1 metre away from other people
-  aged_16_or_over: 'No'
+  aged_16_or_over: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Tajikistan
   been_outside_uk_last_return_date: '2022-01-04 00:00:00.000000'
   blood_not_taken_could_not_other: Erlang is known for its designs that are well suited
     for systems.
   blood_not_taken_could_not_reason: There were issues with the kit
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_issues_with_kit: 'Yes'
+  blood_not_taken_could_not_reason_not_enough_blood: null
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: null
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_reason: The blood test kit arrived with parts missing
   blood_return_date: '2022-01-07 00:00:00.000000'
   blood_return_future_date: '2022-01-07 00:00:00.000000'
   blood_returned: 'Yes'
-  blood_sample_barcode_correct: 'No'
+  blood_sample_barcode_correct: null
   blood_sample_barcode_user_entered: BLT57055819
-  blood_taken: 'No'
+  blood_taken: null
   blood_taken_am_pm: AM
   blood_taken_date: '2022-01-04 00:00:00.000000'
-  blood_taken_time_hour: 'No'
+  blood_taken_time_hour: null
   blood_taken_time_minute: '30'
   care_home_last_28_days: 'No'
   cis_covid_vaccine_date: '2022-01-01 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: 6 doses
-  cis_covid_vaccine_received: 'No'
+  cis_covid_vaccine_received: null
   cis_covid_vaccine_type: Sputnik
   cis_covid_vaccine_type_other: '"You''ve got to ask yourself one question: ""Do I
     feel lucky?"" Well, do ya? Punk!"'
@@ -302,10 +378,10 @@
   face_covering_work_or_education_raw: Never
   flu_vaccine_received: 'No'
   flu_vaccine_received_date: 04/01/2022
-  hospital_last_28_days: 'No'
+  hospital_last_28_days: null
   illness_lasting_over_12_months: Prefer not to say
-  illness_reduces_activity_or_ability: 'No'
-  illness_reduces_activity_or_ability_raw: 'No'
+  illness_reduces_activity_or_ability: null
+  illness_reduces_activity_or_ability_raw: null
   last_28_days_GP_appointment_health_reasons: null
   last_28_days_GP_appointment_health_reasons_respiratory_infection: null
   last_28_days_admitted_to_hospital: null
@@ -318,8 +394,8 @@
   last_28_days_unable_usual_activities_due_to_respiratory_infection: null
   last_28_days_urgent_care: null
   last_28_days_urgent_care_respiratory_infection: null
-  other_covid_infection_test: 'No'
-  other_covid_infection_test_negative_date: 'No'
+  other_covid_infection_test: null
+  other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
   other_covid_infection_test_results_raw: One or more tests were positive
@@ -327,28 +403,31 @@
   participant_first_name_confirmation: 'Yes'
   participant_first_name_on_behalf: 'Yes'
   phm_covid_vaccine_number_of_doses: '6'
+  phm_think_had_covid: 'Yes'
+  phm_think_had_flu: null
   phm_think_had_flu_onset_date: null
+  phm_think_had_other_infection: null
   phm_think_had_other_infection_onset_date: '2022-01-02 00:00:00.000000'
   phm_think_had_respiratory_infection: 'No'
   phm_think_had_respiratory_infection_type:
   - COVID-19
-  phm_think_had_respiratory_infection_type_covid_19: 'Yes'
-  phm_think_had_respiratory_infection_type_do_not_know_the_type: 'No'
-  phm_think_had_respiratory_infection_type_flu: 'No'
+  phm_think_had_unknown: null
   physical_contact_18_to_69_years: 21 or more
   physical_contact_18_to_69_years_raw: 21 or more
   physical_contact_over_70_years: 6-10
   physical_contact_over_70_years_raw: 6 to 10
-  physical_contact_under_18_years: 'No'
+  physical_contact_under_18_years: null
   physical_contact_under_18_years_raw: Prefer not to say
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'No'
-  smokes_cigarettes: 'No'
-  smokes_cigars: 'Yes'
-  smokes_vape_or_e_cigarettes: 'No'
-  social_distance_contact_18_to_69_years: 'No'
+  smoke_cigarettes: null
+  smokes_cigar: 'Yes'
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
+  social_distance_contact_18_to_69_years: null
   social_distance_contact_18_to_69_years_raw: Prefer not to say
-  social_distance_contact_over_70_years: 'No'
+  social_distance_contact_over_70_years: null
   social_distance_contact_over_70_years_raw: Prefer not to say
   social_distance_contact_under_18_years: 11-20
   social_distance_contact_under_18_years_raw: 11 to 20
@@ -361,142 +440,203 @@
   swab_taken: 'No'
   swab_taken_am_pm: PM
   swab_taken_date: '2022-01-08 00:00:00.000000'
-  swab_taken_time_hour: 'No'
+  swab_taken_time_hour: null
   swab_taken_time_minute: '0'
   test_kit_info_end_of_survey: Continue
   test_type_positive_result: Do not know
-  think_had_covid_any_symptom_abdominal_pain: 'No'
-  think_had_covid_any_symptom_diarrhoea: 'Yes'
-  think_had_covid_any_symptom_difficulty_concentrating: 'No'
-  think_had_covid_any_symptom_headache: 'No'
-  think_had_covid_any_symptom_list:
+  think_had_covid_any_symptom_list_1:
   - Diarrhoea
+  think_had_covid_any_symptom_list_2:
   - Weakness or tiredness
-  think_had_covid_any_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_covid_any_symptom_loss_of_smell: 'No'
-  think_had_covid_any_symptom_loss_of_taste: 'No'
-  think_had_covid_any_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_covid_any_symptom_memory_loss_or_confusion: 'No'
-  think_had_covid_any_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_had_covid_any_symptom_runny_nose_or_sneezing: 'No'
-  think_had_covid_any_symptom_sore_throat: 'No'
-  think_had_covid_any_symptom_weakness_or_tiredness: 'Yes'
-  think_had_covid_any_symptom_worry_or_anxiety: 'No'
   think_had_covid_any_symptoms: 'Yes'
   think_had_covid_onset_date: '2022-01-08 00:00:00.000000'
+  think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_anxiety: null
+  think_had_covid_symptom_cough: null
+  think_had_covid_symptom_diarrhoea: 'Yes'
+  think_had_covid_symptom_difficulty_concentrating: null
+  think_had_covid_symptom_fatigue: 'Yes'
+  think_had_covid_symptom_fever: null
+  think_had_covid_symptom_headache: null
+  think_had_covid_symptom_loss_of_appetite: null
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: null
+  think_had_covid_symptom_low_mood: null
+  think_had_covid_symptom_memory_loss_or_confusion: null
+  think_had_covid_symptom_more_trouble_sleeping: null
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: null
+  think_had_covid_symptom_noisy_breathing: null
+  think_had_covid_symptom_none_list_1: null
+  think_had_covid_symptom_none_list_2: null
+  think_had_covid_symptom_runny_nose_or_sneezing: null
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptoms: 'Yes'
-  think_had_flu_symptom_abdominal_pain: 'No'
-  think_had_flu_symptom_diarrhoea: 'No'
-  think_had_flu_symptom_headache: 'No'
-  think_had_flu_symptom_list:
+  think_had_flu_symptom_abdominal_pain: null
+  think_had_flu_symptom_anxiety: null
+  think_had_flu_symptom_cough: null
+  think_had_flu_symptom_diarrhoea: null
+  think_had_flu_symptom_difficulty_concentrating: null
+  think_had_flu_symptom_fatigue: null
+  think_had_flu_symptom_fever: null
+  think_had_flu_symptom_headache: null
+  think_had_flu_symptom_list_1:
   - Noisy breathing or wheezing
+  think_had_flu_symptom_list_2:
   - Memory loss or confusion
-  think_had_flu_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_flu_symptom_loss_of_smell: 'No'
-  think_had_flu_symptom_loss_of_taste: 'No'
+  think_had_flu_symptom_loss_of_appetite: null
+  think_had_flu_symptom_loss_of_smell: null
+  think_had_flu_symptom_loss_of_taste: null
+  think_had_flu_symptom_low_mood: null
   think_had_flu_symptom_memory_loss_or_confusion: 'Yes'
-  think_had_flu_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_had_flu_symptom_muscle_ache: 'No'
-  think_had_flu_symptom_nausea_or_vomiting: 'No'
-  think_had_flu_symptom_noisy_breathing_or_wheezing: 'Yes'
-  think_had_flu_symptom_weakness_or_tiredness: 'No'
-  think_had_flu_symptom_worry_or_anxiety: 'No'
+  think_had_flu_symptom_more_trouble_sleeping: null
+  think_had_flu_symptom_muscle_ache: null
+  think_had_flu_symptom_nausea_or_vomiting: null
+  think_had_flu_symptom_noisy_breathing: 'Yes'
+  think_had_flu_symptom_none_list_1: null
+  think_had_flu_symptom_none_list_2: null
+  think_had_flu_symptom_runny_nose_or_sneezing: null
+  think_had_flu_symptom_shortness_of_breath: null
+  think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptoms: 'Yes'
-  think_had_other_infection_symptom_cough: 'Yes'
-  think_had_other_infection_symptom_diarrhoea: 'No'
-  think_had_other_infection_symptom_difficulty_concentrating: 'No'
-  think_had_other_infection_symptom_fever_including_high_temperature: 'No'
-  think_had_other_infection_symptom_headache: 'No'
-  think_had_other_infection_symptom_list:
+  think_had_other_infection_symptom_list_1:
   - Cough
+  think_had_other_infection_symptom_list_2:
   - Memory loss or confusion
-  think_had_other_infection_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_other_infection_symptom_loss_of_smell: 'No'
-  think_had_other_infection_symptom_loss_of_taste: 'No'
-  think_had_other_infection_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_other_infection_symptom_memory_loss_or_confusion: 'Yes'
-  think_had_other_infection_symptom_muscle_ache: 'No'
-  think_had_other_infection_symptom_nausea_or_vomiting: 'No'
-  think_had_other_infection_symptom_runny_nose_or_sneezing: 'No'
-  think_had_other_infection_symptom_shortness_of_breath: 'No'
-  think_had_other_infection_symptom_weakness_or_tiredness: 'No'
+  think_had_other_symptom_abdominal_pain: null
+  think_had_other_symptom_anxiety: null
+  think_had_other_symptom_cough: 'Yes'
+  think_had_other_symptom_diarrhoea: null
+  think_had_other_symptom_difficulty_concentrating: null
+  think_had_other_symptom_fatigue: null
+  think_had_other_symptom_fever: null
+  think_had_other_symptom_headache: null
+  think_had_other_symptom_loss_of_appetite: null
+  think_had_other_symptom_loss_of_smell: null
+  think_had_other_symptom_loss_of_taste: null
+  think_had_other_symptom_low_mood: null
+  think_had_other_symptom_memory_loss_or_confusion: 'Yes'
+  think_had_other_symptom_more_trouble_sleeping: null
+  think_had_other_symptom_muscle_ache: null
+  think_had_other_symptom_nausea_or_vomiting: null
+  think_had_other_symptom_noisy_breathing: null
+  think_had_other_symptom_none_list_1: null
+  think_had_other_symptom_none_list_2: null
+  think_had_other_symptom_runny_nose_or_sneezing: null
+  think_had_other_symptom_shortness_of_breath: null
+  think_had_other_symptom_sore_throat: null
   think_have_any_symptoms_new_or_worse: 'Yes'
-  think_have_covid_any_symptom_abdominal_pain: 'No'
-  think_have_covid_any_symptom_diarrhoea: 'No'
-  think_have_covid_any_symptom_difficulty_concentrating: 'No'
-  think_have_covid_any_symptom_headache: 'No'
-  think_have_covid_any_symptom_list:
+  think_have_covid_any_symptom_list_1:
   - Runny nose or sneezing
+  think_have_covid_any_symptom_list_2:
   - Muscle ache
-  think_have_covid_any_symptom_loss_of_smell: 'No'
-  think_have_covid_any_symptom_memory_loss_or_confusion: 'No'
-  think_have_covid_any_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_have_covid_any_symptom_muscle_ache: 'Yes'
-  think_have_covid_any_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_any_symptom_noisy_breathing_or_wheezing: 'No'
-  think_have_covid_any_symptom_runny_nose_or_sneezing: 'Yes'
-  think_have_covid_any_symptom_sore_throat: 'No'
-  think_have_covid_any_symptom_weakness_or_tiredness: 'No'
   think_have_covid_any_symptoms: 'Yes'
   think_have_covid_onset_date: null
+  think_have_covid_symptom_abdominal_pain: null
+  think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_cough: null
+  think_have_covid_symptom_diarrhoea: null
+  think_have_covid_symptom_difficulty_concentrating: null
+  think_have_covid_symptom_fatigue: null
+  think_have_covid_symptom_fever: null
+  think_have_covid_symptom_headache: null
+  think_have_covid_symptom_loss_of_appetite: null
+  think_have_covid_symptom_loss_of_smell: null
+  think_have_covid_symptom_loss_of_taste: null
+  think_have_covid_symptom_low_mood: null
+  think_have_covid_symptom_memory_loss_or_confusion: null
+  think_have_covid_symptom_more_trouble_sleeping: null
+  think_have_covid_symptom_muscle_ache: 'Yes'
+  think_have_covid_symptom_nausea_or_vomiting: null
+  think_have_covid_symptom_noisy_breathing: null
+  think_have_covid_symptom_none_list_1: null
+  think_have_covid_symptom_none_list_2: null
+  think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
+  think_have_covid_symptom_shortness_of_breath: null
+  think_have_covid_symptom_sore_throat: null
   think_have_long_covid: 'Yes'
   think_have_long_covid_any_symptoms: 'Yes'
-  think_have_long_covid_symptom_abdominal_pain: 'No'
-  think_have_long_covid_symptom_cough: 'No'
-  think_have_long_covid_symptom_difficulty_concentrating: 'No'
-  think_have_long_covid_symptom_fever_including_high_temperature: 'No'
-  think_have_long_covid_symptom_headache: 'No'
-  think_have_long_covid_symptom_list:
+  think_have_long_covid_symptom_abdominal_pain: null
+  think_have_long_covid_symptom_anxiety: null
+  think_have_long_covid_symptom_cough: null
+  think_have_long_covid_symptom_diarrhoea: null
+  think_have_long_covid_symptom_difficulty_concentrating: null
+  think_have_long_covid_symptom_fatigue: null
+  think_have_long_covid_symptom_fever: null
+  think_have_long_covid_symptom_headache: null
+  think_have_long_covid_symptom_list_1:
   - Shortness of breath
+  think_have_long_covid_symptom_list_2:
   - Low mood or not enjoying anything
+  think_have_long_covid_symptom_list_3:
   - Loss of taste
-  think_have_long_covid_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_have_long_covid_symptom_loss_of_smell: 'No'
-  think_have_long_covid_symptom_loss_of_taste: 'Yes'
-  think_have_long_covid_symptom_low_mood_or_not_enjoying_anything: 'Yes'
-  think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
-  think_have_long_covid_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_have_long_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_long_covid_symptom_noisy_breathing_or_wheezing: 'No'
+  think_have_long_covid_symptom_loss_of_appetite: null
+  think_have_long_covid_symptom_loss_of_smell: null
+  think_have_long_covid_symptom_loss_of_taste: null
+  think_have_long_covid_symptom_low_mood: 'Yes'
+  think_have_long_covid_symptom_memory_loss_or_confusion: null
+  think_have_long_covid_symptom_more_trouble_sleeping: null
+  think_have_long_covid_symptom_muscle_ache: null
+  think_have_long_covid_symptom_nausea_or_vomiting: null
+  think_have_long_covid_symptom_noisy_breathing: null
+  think_have_long_covid_symptom_none_list_1: null
+  think_have_long_covid_symptom_none_list_2: null
   think_have_long_covid_symptom_reduced_ability: Yes a lot
-  think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
+  think_have_long_covid_symptom_runny_nose_or_sneezing: null
   think_have_long_covid_symptom_shortness_of_breath: 'Yes'
-  think_have_long_covid_symptom_sore_throat: 'No'
-  think_have_long_covid_symptom_weakness_or_tiredness: 'No'
-  think_have_long_covid_symptom_worry_or_anxiety: 'No'
+  think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_worse_after_effort: Don't know
-  think_have_symptoms_new_or_worse_diarrhoea: 'No'
-  think_have_symptoms_new_or_worse_difficulty_concentrating: 'Yes'
-  think_have_symptoms_new_or_worse_fever_including_high_temperature: 'No'
-  think_have_symptoms_new_or_worse_list:
+  think_have_symptoms_new_or_worse_list_1:
   - Noisy breathing or wheezing
+  think_have_symptoms_new_or_worse_list_2:
   - Difficulty concentrating
-  think_have_symptoms_new_or_worse_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_have_symptoms_new_or_worse_loss_of_taste: 'No'
-  think_have_symptoms_new_or_worse_low_mood_or_not_enjoying_anything: 'No'
-  think_have_symptoms_new_or_worse_memory_loss_or_confusion: 'No'
-  think_have_symptoms_new_or_worse_more_trouble_sleeping_than_usual: 'No'
-  think_have_symptoms_new_or_worse_muscle_ache: 'No'
-  think_have_symptoms_new_or_worse_nausea_or_vomiting: 'No'
-  think_have_symptoms_new_or_worse_noisy_breathing_or_wheezing: 'Yes'
-  think_have_symptoms_new_or_worse_runny_nose_or_sneezing: 'No'
-  think_have_symptoms_new_or_worse_sore_throat: 'No'
-  think_have_symptoms_new_or_worse_worry_or_anxiety: 'No'
-  times_hour_or_longer_another_home_last_7_days: 'No'
+  think_have_symptoms_symptom_abdominal_pain: null
+  think_have_symptoms_symptom_anxiety: null
+  think_have_symptoms_symptom_cough: null
+  think_have_symptoms_symptom_diarrhoea: null
+  think_have_symptoms_symptom_difficulty_concentrating: 'Yes'
+  think_have_symptoms_symptom_fatigue: null
+  think_have_symptoms_symptom_fever: null
+  think_have_symptoms_symptom_headache: null
+  think_have_symptoms_symptom_loss_of_appetite: null
+  think_have_symptoms_symptom_loss_of_smell: null
+  think_have_symptoms_symptom_loss_of_taste: null
+  think_have_symptoms_symptom_low_mood: null
+  think_have_symptoms_symptom_memory_loss_or_confusion: null
+  think_have_symptoms_symptom_more_trouble_sleeping: null
+  think_have_symptoms_symptom_muscle_ache: null
+  think_have_symptoms_symptom_nausea_or_vomiting: null
+  think_have_symptoms_symptom_noisy_breathing: 'Yes'
+  think_have_symptoms_symptom_none_list_1: null
+  think_have_symptoms_symptom_none_list_2: null
+  think_have_symptoms_symptom_runny_nose_or_sneezing: null
+  think_have_symptoms_symptom_shortness_of_breath: null
+  think_have_symptoms_symptom_sore_throat: null
+  times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: '3'
   times_indoor_exercise_last_28_days: 6 to 10
-  times_large_events_last_28_days: 'No'
+  times_large_events_last_28_days: null
   times_medium_events_last_28_days: 'Yes'
-  times_outside_shopping_or_socialising_last_7_days: 0
-  times_shopping_last_7_days: 'No'
+  times_outside_shopping_or_socialising_last_7_days: null
+  times_shopping_last_7_days: null
   times_shopping_last_7_days_raw: Prefer not to say
-  times_socialising_last_7_days: 'No'
+  times_socialising_last_7_days: null
   times_socialising_last_7_days_raw: Prefer not to say
   transport_shared_outside_household_last_28_days: Underground or Metro or Light Rail
     or Tram
+  transport_shared_outside_household_last_28_days_bus_coach: null
+  transport_shared_outside_household_last_28_days_car_van: null
+  transport_shared_outside_household_last_28_days_ferry_boat: null
+  transport_shared_outside_household_last_28_days_none: null
+  transport_shared_outside_household_last_28_days_other: null
+  transport_shared_outside_household_last_28_days_plane: null
+  transport_shared_outside_household_last_28_days_taxi: null
+  transport_shared_outside_household_last_28_days_train: null
+  transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: On foot
   work_direct_contact_patients_or_clients: Prefer not to say
-  work_health_care_area: 'No'
+  work_health_care_area: null
   work_in_additional_paid_employment: 'No'
   work_location: Both from home and somewhere else
   work_main_job_changed: 'No'
@@ -520,21 +660,27 @@
   ability_to_socially_distance_at_work_or_education_raw: Easy to maintain 2 metres
     apart. It is not a problem to stay this far away from other people
   aged_16_or_over: 'Yes'
-  been_outside_uk: 'No'
+  been_outside_uk: null
   been_outside_uk_last_country: Tonga
   been_outside_uk_last_return_date: '2022-01-03 00:00:00.000000'
   blood_not_taken_could_not_other: I don't even care.
   blood_not_taken_could_not_reason: The pot spilled
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_issues_with_kit: null
+  blood_not_taken_could_not_reason_not_enough_blood: null
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: 'Yes'
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_reason: I tried but could not take it
   blood_return_date: null
   blood_return_future_date: '2022-01-07 00:00:00.000000'
-  blood_returned: 'No'
+  blood_returned: null
   blood_sample_barcode_correct: 'No'
   blood_sample_barcode_user_entered: BLT58329500
-  blood_taken: 'No'
+  blood_taken: null
   blood_taken_am_pm: AM
   blood_taken_date: null
-  blood_taken_time_hour: 'No'
+  blood_taken_time_hour: null
   blood_taken_time_minute: '15'
   care_home_last_28_days: 'No'
   cis_covid_vaccine_date: '2022-01-01 00:00:00.000000'
@@ -551,19 +697,19 @@
   currently_smokes_or_vapes_description:
   - Cigarettes
   education_in_person_days_per_week: '7'
-  end_screen_questionnaire: 'No'
+  end_screen_questionnaire: null
   ever_smoked_regularly: Prefer not to say
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
   face_covering_outside_of_home: null
-  face_covering_work_or_education: 'No'
-  face_covering_work_or_education_raw: 'No'
+  face_covering_work_or_education: null
+  face_covering_work_or_education_raw: null
   flu_vaccine_received: Prefer not to say
-  flu_vaccine_received_date: 'No'
-  hospital_last_28_days: 'No'
+  flu_vaccine_received_date: null
+  hospital_last_28_days: null
   illness_lasting_over_12_months: Prefer not to say
-  illness_reduces_activity_or_ability: 'No'
-  illness_reduces_activity_or_ability_raw: 'No'
+  illness_reduces_activity_or_ability: null
+  illness_reduces_activity_or_ability_raw: null
   last_28_days_GP_appointment_health_reasons: null
   last_28_days_GP_appointment_health_reasons_respiratory_infection: null
   last_28_days_admitted_to_hospital: null
@@ -576,7 +722,7 @@
   last_28_days_unable_usual_activities_due_to_respiratory_infection: null
   last_28_days_urgent_care: null
   last_28_days_urgent_care_respiratory_infection: null
-  other_covid_infection_test: 'No'
+  other_covid_infection_test: null
   other_covid_infection_test_negative_date: 06/01/2022
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
@@ -585,14 +731,15 @@
   participant_first_name_confirmation: 'Yes'
   participant_first_name_on_behalf: 'No'
   phm_covid_vaccine_number_of_doses: '4'
+  phm_think_had_covid: null
+  phm_think_had_flu: 'Yes'
   phm_think_had_flu_onset_date: '2022-01-09 00:00:00.000000'
+  phm_think_had_other_infection: null
   phm_think_had_other_infection_onset_date: '2022-01-08 00:00:00.000000'
   phm_think_had_respiratory_infection: 'Yes'
   phm_think_had_respiratory_infection_type:
   - Flu
-  phm_think_had_respiratory_infection_type_covid_19: 'No'
-  phm_think_had_respiratory_infection_type_do_not_know_the_type: 'No'
-  phm_think_had_respiratory_infection_type_flu: 'Yes'
+  phm_think_had_unknown: null
   physical_contact_18_to_69_years: 11-20
   physical_contact_18_to_69_years_raw: 11 to 20
   physical_contact_over_70_years: 1-5
@@ -601,161 +748,224 @@
   physical_contact_under_18_years_raw: 11 to 20
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'No'
-  smokes_cigarettes: 'Yes'
-  smokes_cigars: 'No'
-  smokes_vape_or_e_cigarettes: 'No'
+  smoke_cigarettes: 'Yes'
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: '0'
   social_distance_contact_18_to_69_years_raw: '0'
   social_distance_contact_over_70_years: 11-20
   social_distance_contact_over_70_years_raw: 11 to 20
-  social_distance_contact_under_18_years: 'No'
+  social_distance_contact_under_18_years: null
   social_distance_contact_under_18_years_raw: Don't know
-  swab_not_taken_reason: 'No'
+  swab_not_taken_reason: null
   swab_return_date: '2022-01-09 00:00:00.000000'
   swab_return_future_date: '2022-01-06 00:00:00.000000'
-  swab_returned: 'No'
+  swab_returned: null
   swab_sample_barcode_correct: 'Yes'
   swab_sample_barcode_user_entered: SWT63942252
-  swab_taken: 'No'
+  swab_taken: null
   swab_taken_am_pm: PM
   swab_taken_date: '2022-01-02 00:00:00.000000'
-  swab_taken_time_hour: 'No'
+  swab_taken_time_hour: null
   swab_taken_time_minute: '0'
-  test_kit_info_end_of_survey: 'No'
+  test_kit_info_end_of_survey: null
   test_type_positive_result: PCR test. That is the test that is sent off to a laboratory
-  think_had_covid_any_symptom_abdominal_pain: 'No'
-  think_had_covid_any_symptom_diarrhoea: 'No'
-  think_had_covid_any_symptom_difficulty_concentrating: 'No'
-  think_had_covid_any_symptom_headache: 'No'
-  think_had_covid_any_symptom_list:
+  think_had_covid_any_symptom_list_1:
   - Loss of appetite or eating less than usual
+  think_had_covid_any_symptom_list_2:
   - More trouble sleeping than usual
-  think_had_covid_any_symptom_loss_of_appetite_or_eating_less_than_usual: 'Yes'
-  think_had_covid_any_symptom_loss_of_smell: 'No'
-  think_had_covid_any_symptom_loss_of_taste: 'No'
-  think_had_covid_any_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_covid_any_symptom_memory_loss_or_confusion: 'No'
-  think_had_covid_any_symptom_more_trouble_sleeping_than_usual: 'Yes'
-  think_had_covid_any_symptom_runny_nose_or_sneezing: 'No'
-  think_had_covid_any_symptom_sore_throat: 'No'
-  think_had_covid_any_symptom_weakness_or_tiredness: 'No'
-  think_had_covid_any_symptom_worry_or_anxiety: 'No'
   think_had_covid_any_symptoms: 'Yes'
   think_had_covid_onset_date: '2022-01-02 00:00:00.000000'
+  think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_anxiety: null
+  think_had_covid_symptom_cough: null
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_difficulty_concentrating: null
+  think_had_covid_symptom_fatigue: null
+  think_had_covid_symptom_fever: null
+  think_had_covid_symptom_headache: null
+  think_had_covid_symptom_loss_of_appetite: 'Yes'
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: null
+  think_had_covid_symptom_low_mood: null
+  think_had_covid_symptom_memory_loss_or_confusion: null
+  think_had_covid_symptom_more_trouble_sleeping: 'Yes'
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: null
+  think_had_covid_symptom_noisy_breathing: null
+  think_had_covid_symptom_none_list_1: null
+  think_had_covid_symptom_none_list_2: null
+  think_had_covid_symptom_runny_nose_or_sneezing: null
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptoms: 'Yes'
-  think_had_flu_symptom_abdominal_pain: 'No'
-  think_had_flu_symptom_diarrhoea: 'No'
-  think_had_flu_symptom_headache: 'No'
-  think_had_flu_symptom_list:
+  think_had_flu_symptom_abdominal_pain: null
+  think_had_flu_symptom_anxiety: 'Yes'
+  think_had_flu_symptom_cough: null
+  think_had_flu_symptom_diarrhoea: null
+  think_had_flu_symptom_difficulty_concentrating: null
+  think_had_flu_symptom_fatigue: null
+  think_had_flu_symptom_fever: null
+  think_had_flu_symptom_headache: null
+  think_had_flu_symptom_list_1:
   - Loss of appetite or eating less than usual
+  think_had_flu_symptom_list_2:
   - Worry or anxiety
-  think_had_flu_symptom_loss_of_appetite_or_eating_less_than_usual: 'Yes'
-  think_had_flu_symptom_loss_of_smell: 'No'
-  think_had_flu_symptom_loss_of_taste: 'No'
-  think_had_flu_symptom_memory_loss_or_confusion: 'No'
-  think_had_flu_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_had_flu_symptom_muscle_ache: 'No'
-  think_had_flu_symptom_nausea_or_vomiting: 'No'
-  think_had_flu_symptom_noisy_breathing_or_wheezing: 'No'
-  think_had_flu_symptom_weakness_or_tiredness: 'No'
-  think_had_flu_symptom_worry_or_anxiety: 'Yes'
+  think_had_flu_symptom_loss_of_appetite: 'Yes'
+  think_had_flu_symptom_loss_of_smell: null
+  think_had_flu_symptom_loss_of_taste: null
+  think_had_flu_symptom_low_mood: null
+  think_had_flu_symptom_memory_loss_or_confusion: null
+  think_had_flu_symptom_more_trouble_sleeping: null
+  think_had_flu_symptom_muscle_ache: null
+  think_had_flu_symptom_nausea_or_vomiting: null
+  think_had_flu_symptom_noisy_breathing: null
+  think_had_flu_symptom_none_list_1: null
+  think_had_flu_symptom_none_list_2: null
+  think_had_flu_symptom_runny_nose_or_sneezing: null
+  think_had_flu_symptom_shortness_of_breath: null
+  think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptoms: 'Yes'
-  think_had_other_infection_symptom_cough: 'No'
-  think_had_other_infection_symptom_diarrhoea: 'No'
-  think_had_other_infection_symptom_difficulty_concentrating: 'Yes'
-  think_had_other_infection_symptom_fever_including_high_temperature: 'No'
-  think_had_other_infection_symptom_headache: 'No'
-  think_had_other_infection_symptom_list:
+  think_had_other_infection_symptom_list_1:
   - Runny nose or sneezing
+  think_had_other_infection_symptom_list_2:
   - Difficulty concentrating
-  think_had_other_infection_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_other_infection_symptom_loss_of_smell: 'No'
-  think_had_other_infection_symptom_loss_of_taste: 'No'
-  think_had_other_infection_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_other_infection_symptom_memory_loss_or_confusion: 'No'
-  think_had_other_infection_symptom_muscle_ache: 'No'
-  think_had_other_infection_symptom_nausea_or_vomiting: 'No'
-  think_had_other_infection_symptom_runny_nose_or_sneezing: 'Yes'
-  think_had_other_infection_symptom_shortness_of_breath: 'No'
-  think_had_other_infection_symptom_weakness_or_tiredness: 'No'
+  think_had_other_symptom_abdominal_pain: null
+  think_had_other_symptom_anxiety: null
+  think_had_other_symptom_cough: null
+  think_had_other_symptom_diarrhoea: null
+  think_had_other_symptom_difficulty_concentrating: 'Yes'
+  think_had_other_symptom_fatigue: null
+  think_had_other_symptom_fever: null
+  think_had_other_symptom_headache: null
+  think_had_other_symptom_loss_of_appetite: null
+  think_had_other_symptom_loss_of_smell: null
+  think_had_other_symptom_loss_of_taste: null
+  think_had_other_symptom_low_mood: null
+  think_had_other_symptom_memory_loss_or_confusion: null
+  think_had_other_symptom_more_trouble_sleeping: null
+  think_had_other_symptom_muscle_ache: null
+  think_had_other_symptom_nausea_or_vomiting: null
+  think_had_other_symptom_noisy_breathing: null
+  think_had_other_symptom_none_list_1: null
+  think_had_other_symptom_none_list_2: null
+  think_had_other_symptom_runny_nose_or_sneezing: 'Yes'
+  think_had_other_symptom_shortness_of_breath: null
+  think_had_other_symptom_sore_throat: null
   think_have_any_symptoms_new_or_worse: 'Yes'
-  think_have_covid_any_symptom_abdominal_pain: 'No'
-  think_have_covid_any_symptom_diarrhoea: 'No'
-  think_have_covid_any_symptom_difficulty_concentrating: 'No'
-  think_have_covid_any_symptom_headache: 'No'
-  think_have_covid_any_symptom_list:
+  think_have_covid_any_symptom_list_1:
   - Loss of smell
+  think_have_covid_any_symptom_list_2:
   - Memory loss or confusion
-  think_have_covid_any_symptom_loss_of_smell: 'Yes'
-  think_have_covid_any_symptom_memory_loss_or_confusion: 'Yes'
-  think_have_covid_any_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_have_covid_any_symptom_muscle_ache: 'No'
-  think_have_covid_any_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_any_symptom_noisy_breathing_or_wheezing: 'No'
-  think_have_covid_any_symptom_runny_nose_or_sneezing: 'No'
-  think_have_covid_any_symptom_sore_throat: 'No'
-  think_have_covid_any_symptom_weakness_or_tiredness: 'No'
   think_have_covid_any_symptoms: 'Yes'
   think_have_covid_onset_date: '2022-01-03 00:00:00.000000'
-  think_have_long_covid: 'No'
+  think_have_covid_symptom_abdominal_pain: null
+  think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_cough: null
+  think_have_covid_symptom_diarrhoea: null
+  think_have_covid_symptom_difficulty_concentrating: null
+  think_have_covid_symptom_fatigue: null
+  think_have_covid_symptom_fever: null
+  think_have_covid_symptom_headache: null
+  think_have_covid_symptom_loss_of_appetite: null
+  think_have_covid_symptom_loss_of_smell: 'Yes'
+  think_have_covid_symptom_loss_of_taste: null
+  think_have_covid_symptom_low_mood: null
+  think_have_covid_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_covid_symptom_more_trouble_sleeping: null
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: null
+  think_have_covid_symptom_noisy_breathing: null
+  think_have_covid_symptom_none_list_1: null
+  think_have_covid_symptom_none_list_2: null
+  think_have_covid_symptom_runny_nose_or_sneezing: null
+  think_have_covid_symptom_shortness_of_breath: null
+  think_have_covid_symptom_sore_throat: null
+  think_have_long_covid: null
   think_have_long_covid_any_symptoms: 'Yes'
   think_have_long_covid_symptom_abdominal_pain: 'Yes'
-  think_have_long_covid_symptom_cough: 'No'
-  think_have_long_covid_symptom_difficulty_concentrating: 'No'
-  think_have_long_covid_symptom_fever_including_high_temperature: 'No'
-  think_have_long_covid_symptom_headache: 'No'
-  think_have_long_covid_symptom_list:
+  think_have_long_covid_symptom_anxiety: null
+  think_have_long_covid_symptom_cough: null
+  think_have_long_covid_symptom_diarrhoea: null
+  think_have_long_covid_symptom_difficulty_concentrating: null
+  think_have_long_covid_symptom_fatigue: null
+  think_have_long_covid_symptom_fever: null
+  think_have_long_covid_symptom_headache: null
+  think_have_long_covid_symptom_list_1:
   - Abdominal pain
+  think_have_long_covid_symptom_list_2:
   - More trouble sleeping than usual
+  think_have_long_covid_symptom_list_3:
   - Loss of taste
-  think_have_long_covid_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_have_long_covid_symptom_loss_of_smell: 'No'
-  think_have_long_covid_symptom_loss_of_taste: 'Yes'
-  think_have_long_covid_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
-  think_have_long_covid_symptom_more_trouble_sleeping_than_usual: 'Yes'
-  think_have_long_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_long_covid_symptom_noisy_breathing_or_wheezing: 'No'
+  think_have_long_covid_symptom_loss_of_appetite: null
+  think_have_long_covid_symptom_loss_of_smell: null
+  think_have_long_covid_symptom_loss_of_taste: null
+  think_have_long_covid_symptom_low_mood: null
+  think_have_long_covid_symptom_memory_loss_or_confusion: null
+  think_have_long_covid_symptom_more_trouble_sleeping: 'Yes'
+  think_have_long_covid_symptom_muscle_ache: null
+  think_have_long_covid_symptom_nausea_or_vomiting: null
+  think_have_long_covid_symptom_noisy_breathing: null
+  think_have_long_covid_symptom_none_list_1: null
+  think_have_long_covid_symptom_none_list_2: null
   think_have_long_covid_symptom_reduced_ability: Yes a lot
-  think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
-  think_have_long_covid_symptom_shortness_of_breath: 'No'
-  think_have_long_covid_symptom_sore_throat: 'No'
-  think_have_long_covid_symptom_weakness_or_tiredness: 'No'
-  think_have_long_covid_symptom_worry_or_anxiety: 'No'
-  think_have_long_covid_symptom_worse_after_effort: 'No'
-  think_have_symptoms_new_or_worse_diarrhoea: 'No'
-  think_have_symptoms_new_or_worse_difficulty_concentrating: 'No'
-  think_have_symptoms_new_or_worse_fever_including_high_temperature: 'Yes'
-  think_have_symptoms_new_or_worse_list:
+  think_have_long_covid_symptom_runny_nose_or_sneezing: null
+  think_have_long_covid_symptom_shortness_of_breath: null
+  think_have_long_covid_symptom_sore_throat: null
+  think_have_long_covid_symptom_worse_after_effort: null
+  think_have_symptoms_new_or_worse_list_1:
   - Nausea or vomiting
+  think_have_symptoms_new_or_worse_list_2:
   - Fever, including high temperature
-  think_have_symptoms_new_or_worse_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_have_symptoms_new_or_worse_loss_of_taste: 'No'
-  think_have_symptoms_new_or_worse_low_mood_or_not_enjoying_anything: 'No'
-  think_have_symptoms_new_or_worse_memory_loss_or_confusion: 'No'
-  think_have_symptoms_new_or_worse_more_trouble_sleeping_than_usual: 'No'
-  think_have_symptoms_new_or_worse_muscle_ache: 'No'
-  think_have_symptoms_new_or_worse_nausea_or_vomiting: 'Yes'
-  think_have_symptoms_new_or_worse_noisy_breathing_or_wheezing: 'No'
-  think_have_symptoms_new_or_worse_runny_nose_or_sneezing: 'No'
-  think_have_symptoms_new_or_worse_sore_throat: 'No'
-  think_have_symptoms_new_or_worse_worry_or_anxiety: 'No'
-  times_hour_or_longer_another_home_last_7_days: 'No'
+  think_have_symptoms_symptom_abdominal_pain: null
+  think_have_symptoms_symptom_anxiety: null
+  think_have_symptoms_symptom_cough: null
+  think_have_symptoms_symptom_diarrhoea: null
+  think_have_symptoms_symptom_difficulty_concentrating: null
+  think_have_symptoms_symptom_fatigue: null
+  think_have_symptoms_symptom_fever: null
+  think_have_symptoms_symptom_headache: null
+  think_have_symptoms_symptom_loss_of_appetite: null
+  think_have_symptoms_symptom_loss_of_smell: null
+  think_have_symptoms_symptom_loss_of_taste: null
+  think_have_symptoms_symptom_low_mood: null
+  think_have_symptoms_symptom_memory_loss_or_confusion: null
+  think_have_symptoms_symptom_more_trouble_sleeping: null
+  think_have_symptoms_symptom_muscle_ache: null
+  think_have_symptoms_symptom_nausea_or_vomiting: 'Yes'
+  think_have_symptoms_symptom_noisy_breathing: null
+  think_have_symptoms_symptom_none_list_1: null
+  think_have_symptoms_symptom_none_list_2: null
+  think_have_symptoms_symptom_runny_nose_or_sneezing: null
+  think_have_symptoms_symptom_shortness_of_breath: null
+  think_have_symptoms_symptom_sore_throat: null
+  times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
-  times_indoor_exercise_last_28_days: 'No'
+  times_indoor_exercise_last_28_days: null
   times_large_events_last_28_days: 'No'
   times_medium_events_last_28_days: 'Yes'
-  times_outside_shopping_or_socialising_last_7_days: 3
+  times_outside_shopping_or_socialising_last_7_days: 3.0
   times_shopping_last_7_days: '1'
   times_shopping_last_7_days_raw: '1'
   times_socialising_last_7_days: '2'
   times_socialising_last_7_days_raw: '2'
   transport_shared_outside_household_last_28_days: Bus or minibus or coach
+  transport_shared_outside_household_last_28_days_bus_coach: 'Yes'
+  transport_shared_outside_household_last_28_days_car_van: null
+  transport_shared_outside_household_last_28_days_ferry_boat: null
+  transport_shared_outside_household_last_28_days_none: null
+  transport_shared_outside_household_last_28_days_other: null
+  transport_shared_outside_household_last_28_days_plane: null
+  transport_shared_outside_household_last_28_days_taxi: null
+  transport_shared_outside_household_last_28_days_train: null
+  transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: Car or van
   work_direct_contact_patients_or_clients: Prefer not to say
   work_health_care_area: Other
   work_in_additional_paid_employment: 'Yes'
-  work_location: 'No'
+  work_location: null
   work_main_job_changed: 'Yes'
   work_main_job_role: '"Messages can be sent to and received from ports, but these
     messages must obey the so-called ""port protocol."""'
@@ -776,21 +986,27 @@
   ability_to_socially_distance_at_work_or_education_raw: Easy to maintain 2 metres
     apart. It is not a problem to stay this far away from other people
   aged_16_or_over: 'Yes'
-  been_outside_uk: 'No'
+  been_outside_uk: null
   been_outside_uk_last_country: Burkina Faso
   been_outside_uk_last_return_date: null
   blood_not_taken_could_not_other: Ports are created with the built-in function open_port.
-  blood_not_taken_could_not_reason: 'No'
+  blood_not_taken_could_not_reason: null
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_issues_with_kit: null
+  blood_not_taken_could_not_reason_not_enough_blood: null
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: null
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_reason: I asked not to receive a blood test kit this month
   blood_return_date: '2022-01-08 00:00:00.000000'
   blood_return_future_date: '2022-01-05 00:00:00.000000'
-  blood_returned: 'No'
+  blood_returned: null
   blood_sample_barcode_correct: 'Yes'
   blood_sample_barcode_user_entered: BLT45123522
-  blood_taken: 'No'
+  blood_taken: null
   blood_taken_am_pm: AM
   blood_taken_date: '2022-01-07 00:00:00.000000'
-  blood_taken_time_hour: 'No'
+  blood_taken_time_hour: null
   blood_taken_time_minute: '0'
   care_home_last_28_days: 'Yes'
   cis_covid_vaccine_date: null
@@ -831,35 +1047,38 @@
   last_28_days_unable_usual_activities_due_to_respiratory_infection: null
   last_28_days_urgent_care: null
   last_28_days_urgent_care_respiratory_infection: null
-  other_covid_infection_test: 'No'
-  other_covid_infection_test_negative_date: 'No'
+  other_covid_infection_test: null
+  other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Any tests negative, but none positive
   other_covid_infection_test_results_raw: One or more tests were negative and none
     were positive
   participant_completion_window_id: '4528'
   participant_first_name_confirmation: 'Yes'
-  participant_first_name_on_behalf: 'No'
+  participant_first_name_on_behalf: null
   phm_covid_vaccine_number_of_doses: '8'
+  phm_think_had_covid: 'Yes'
+  phm_think_had_flu: null
   phm_think_had_flu_onset_date: '2022-01-08 00:00:00.000000'
+  phm_think_had_other_infection: null
   phm_think_had_other_infection_onset_date: '2022-01-03 00:00:00.000000'
   phm_think_had_respiratory_infection: 'Yes'
   phm_think_had_respiratory_infection_type:
   - COVID-19
-  phm_think_had_respiratory_infection_type_covid_19: 'Yes'
-  phm_think_had_respiratory_infection_type_do_not_know_the_type: 'No'
-  phm_think_had_respiratory_infection_type_flu: 'No'
+  phm_think_had_unknown: null
   physical_contact_18_to_69_years: 6-10
   physical_contact_18_to_69_years_raw: 6 to 10
-  physical_contact_over_70_years: 'No'
-  physical_contact_over_70_years_raw: 'No'
+  physical_contact_over_70_years: null
+  physical_contact_over_70_years_raw: null
   physical_contact_under_18_years: 21 or more
   physical_contact_under_18_years_raw: 21 or more
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'Yes'
-  smokes_cigarettes: 'No'
-  smokes_cigars: 'No'
-  smokes_vape_or_e_cigarettes: 'Yes'
+  smoke_cigarettes: null
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: 'Yes'
   social_distance_contact_18_to_69_years: '0'
   social_distance_contact_18_to_69_years_raw: '0'
   social_distance_contact_over_70_years: 21 or more
@@ -871,144 +1090,205 @@
   swab_return_date: '2022-01-06 00:00:00.000000'
   swab_return_future_date: '2022-01-02 00:00:00.000000'
   swab_returned: 'Yes'
-  swab_sample_barcode_correct: 'No'
+  swab_sample_barcode_correct: null
   swab_sample_barcode_user_entered: SWT42572396
   swab_taken: 'Yes'
   swab_taken_am_pm: AM
   swab_taken_date: '2022-01-03 00:00:00.000000'
-  swab_taken_time_hour: 'No'
+  swab_taken_time_hour: null
   swab_taken_time_minute: '45'
-  test_kit_info_end_of_survey: 'No'
+  test_kit_info_end_of_survey: null
   test_type_positive_result: Do not know
-  think_had_covid_any_symptom_abdominal_pain: 'No'
-  think_had_covid_any_symptom_diarrhoea: 'No'
-  think_had_covid_any_symptom_difficulty_concentrating: 'Yes'
-  think_had_covid_any_symptom_headache: 'No'
-  think_had_covid_any_symptom_list:
+  think_had_covid_any_symptom_list_1:
   - Loss of taste
+  think_had_covid_any_symptom_list_2:
   - Difficulty concentrating
-  think_had_covid_any_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_covid_any_symptom_loss_of_smell: 'No'
-  think_had_covid_any_symptom_loss_of_taste: 'Yes'
-  think_had_covid_any_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_covid_any_symptom_memory_loss_or_confusion: 'No'
-  think_had_covid_any_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_had_covid_any_symptom_runny_nose_or_sneezing: 'No'
-  think_had_covid_any_symptom_sore_throat: 'No'
-  think_had_covid_any_symptom_weakness_or_tiredness: 'No'
-  think_had_covid_any_symptom_worry_or_anxiety: 'No'
   think_had_covid_any_symptoms: 'Yes'
   think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_anxiety: null
+  think_had_covid_symptom_cough: null
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_difficulty_concentrating: 'Yes'
+  think_had_covid_symptom_fatigue: null
+  think_had_covid_symptom_fever: null
+  think_had_covid_symptom_headache: null
+  think_had_covid_symptom_loss_of_appetite: null
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: 'Yes'
+  think_had_covid_symptom_low_mood: null
+  think_had_covid_symptom_memory_loss_or_confusion: null
+  think_had_covid_symptom_more_trouble_sleeping: null
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: null
+  think_had_covid_symptom_noisy_breathing: null
+  think_had_covid_symptom_none_list_1: null
+  think_had_covid_symptom_none_list_2: null
+  think_had_covid_symptom_runny_nose_or_sneezing: null
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptoms: 'Yes'
-  think_had_flu_symptom_abdominal_pain: 'No'
-  think_had_flu_symptom_diarrhoea: 'No'
-  think_had_flu_symptom_headache: 'No'
-  think_had_flu_symptom_list:
+  think_had_flu_symptom_abdominal_pain: null
+  think_had_flu_symptom_anxiety: null
+  think_had_flu_symptom_cough: null
+  think_had_flu_symptom_diarrhoea: null
+  think_had_flu_symptom_difficulty_concentrating: null
+  think_had_flu_symptom_fatigue: null
+  think_had_flu_symptom_fever: null
+  think_had_flu_symptom_headache: null
+  think_had_flu_symptom_list_1:
   - Loss of taste
+  think_had_flu_symptom_list_2:
   - Muscle ache
-  think_had_flu_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_flu_symptom_loss_of_smell: 'No'
+  think_had_flu_symptom_loss_of_appetite: null
+  think_had_flu_symptom_loss_of_smell: null
   think_had_flu_symptom_loss_of_taste: 'Yes'
-  think_had_flu_symptom_memory_loss_or_confusion: 'No'
-  think_had_flu_symptom_more_trouble_sleeping_than_usual: 'No'
+  think_had_flu_symptom_low_mood: null
+  think_had_flu_symptom_memory_loss_or_confusion: null
+  think_had_flu_symptom_more_trouble_sleeping: null
   think_had_flu_symptom_muscle_ache: 'Yes'
-  think_had_flu_symptom_nausea_or_vomiting: 'No'
-  think_had_flu_symptom_noisy_breathing_or_wheezing: 'No'
-  think_had_flu_symptom_weakness_or_tiredness: 'No'
-  think_had_flu_symptom_worry_or_anxiety: 'No'
+  think_had_flu_symptom_nausea_or_vomiting: null
+  think_had_flu_symptom_noisy_breathing: null
+  think_had_flu_symptom_none_list_1: null
+  think_had_flu_symptom_none_list_2: null
+  think_had_flu_symptom_runny_nose_or_sneezing: null
+  think_had_flu_symptom_shortness_of_breath: null
+  think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptoms: 'Yes'
-  think_had_other_infection_symptom_cough: 'No'
-  think_had_other_infection_symptom_diarrhoea: 'No'
-  think_had_other_infection_symptom_difficulty_concentrating: 'No'
-  think_had_other_infection_symptom_fever_including_high_temperature: 'No'
-  think_had_other_infection_symptom_headache: 'No'
-  think_had_other_infection_symptom_list:
+  think_had_other_infection_symptom_list_1:
   - Loss of appetite or eating less than usual
+  think_had_other_infection_symptom_list_2:
   - Memory loss or confusion
-  think_had_other_infection_symptom_loss_of_appetite_or_eating_less_than_usual: 'Yes'
-  think_had_other_infection_symptom_loss_of_smell: 'No'
-  think_had_other_infection_symptom_loss_of_taste: 'No'
-  think_had_other_infection_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_other_infection_symptom_memory_loss_or_confusion: 'Yes'
-  think_had_other_infection_symptom_muscle_ache: 'No'
-  think_had_other_infection_symptom_nausea_or_vomiting: 'No'
-  think_had_other_infection_symptom_runny_nose_or_sneezing: 'No'
-  think_had_other_infection_symptom_shortness_of_breath: 'No'
-  think_had_other_infection_symptom_weakness_or_tiredness: 'No'
+  think_had_other_symptom_abdominal_pain: null
+  think_had_other_symptom_anxiety: null
+  think_had_other_symptom_cough: null
+  think_had_other_symptom_diarrhoea: null
+  think_had_other_symptom_difficulty_concentrating: null
+  think_had_other_symptom_fatigue: null
+  think_had_other_symptom_fever: null
+  think_had_other_symptom_headache: null
+  think_had_other_symptom_loss_of_appetite: 'Yes'
+  think_had_other_symptom_loss_of_smell: null
+  think_had_other_symptom_loss_of_taste: null
+  think_had_other_symptom_low_mood: null
+  think_had_other_symptom_memory_loss_or_confusion: 'Yes'
+  think_had_other_symptom_more_trouble_sleeping: null
+  think_had_other_symptom_muscle_ache: null
+  think_had_other_symptom_nausea_or_vomiting: null
+  think_had_other_symptom_noisy_breathing: null
+  think_had_other_symptom_none_list_1: null
+  think_had_other_symptom_none_list_2: null
+  think_had_other_symptom_runny_nose_or_sneezing: null
+  think_had_other_symptom_shortness_of_breath: null
+  think_had_other_symptom_sore_throat: null
   think_have_any_symptoms_new_or_worse: 'Yes'
-  think_have_covid_any_symptom_abdominal_pain: 'No'
-  think_have_covid_any_symptom_diarrhoea: 'No'
-  think_have_covid_any_symptom_difficulty_concentrating: 'No'
-  think_have_covid_any_symptom_headache: 'No'
-  think_have_covid_any_symptom_list:
+  think_have_covid_any_symptom_list_1:
   - Runny nose or sneezing
+  think_have_covid_any_symptom_list_2:
   - Memory loss or confusion
-  think_have_covid_any_symptom_loss_of_smell: 'No'
-  think_have_covid_any_symptom_memory_loss_or_confusion: 'Yes'
-  think_have_covid_any_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_have_covid_any_symptom_muscle_ache: 'No'
-  think_have_covid_any_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_any_symptom_noisy_breathing_or_wheezing: 'No'
-  think_have_covid_any_symptom_runny_nose_or_sneezing: 'Yes'
-  think_have_covid_any_symptom_sore_throat: 'No'
-  think_have_covid_any_symptom_weakness_or_tiredness: 'No'
   think_have_covid_any_symptoms: 'Yes'
   think_have_covid_onset_date: '2022-01-01 00:00:00.000000'
+  think_have_covid_symptom_abdominal_pain: null
+  think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_cough: null
+  think_have_covid_symptom_diarrhoea: null
+  think_have_covid_symptom_difficulty_concentrating: null
+  think_have_covid_symptom_fatigue: null
+  think_have_covid_symptom_fever: null
+  think_have_covid_symptom_headache: null
+  think_have_covid_symptom_loss_of_appetite: null
+  think_have_covid_symptom_loss_of_smell: null
+  think_have_covid_symptom_loss_of_taste: null
+  think_have_covid_symptom_low_mood: null
+  think_have_covid_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_covid_symptom_more_trouble_sleeping: null
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: null
+  think_have_covid_symptom_noisy_breathing: null
+  think_have_covid_symptom_none_list_1: null
+  think_have_covid_symptom_none_list_2: null
+  think_have_covid_symptom_runny_nose_or_sneezing: 'Yes'
+  think_have_covid_symptom_shortness_of_breath: null
+  think_have_covid_symptom_sore_throat: null
   think_have_long_covid: 'No'
   think_have_long_covid_any_symptoms: 'Yes'
-  think_have_long_covid_symptom_abdominal_pain: 'No'
-  think_have_long_covid_symptom_cough: 'No'
-  think_have_long_covid_symptom_difficulty_concentrating: 'No'
-  think_have_long_covid_symptom_fever_including_high_temperature: 'No'
-  think_have_long_covid_symptom_headache: 'No'
-  think_have_long_covid_symptom_list:
+  think_have_long_covid_symptom_abdominal_pain: null
+  think_have_long_covid_symptom_anxiety: 'Yes'
+  think_have_long_covid_symptom_cough: null
+  think_have_long_covid_symptom_diarrhoea: null
+  think_have_long_covid_symptom_difficulty_concentrating: null
+  think_have_long_covid_symptom_fatigue: null
+  think_have_long_covid_symptom_fever: null
+  think_have_long_covid_symptom_headache: null
+  think_have_long_covid_symptom_list_1:
   - Shortness of breath
+  think_have_long_covid_symptom_list_2:
   - Worry or anxiety
+  think_have_long_covid_symptom_list_3:
   - Nausea or vomiting
-  think_have_long_covid_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_have_long_covid_symptom_loss_of_smell: 'No'
-  think_have_long_covid_symptom_loss_of_taste: 'No'
-  think_have_long_covid_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
-  think_have_long_covid_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_have_long_covid_symptom_nausea_or_vomiting: 'Yes'
-  think_have_long_covid_symptom_noisy_breathing_or_wheezing: 'No'
+  think_have_long_covid_symptom_loss_of_appetite: null
+  think_have_long_covid_symptom_loss_of_smell: null
+  think_have_long_covid_symptom_loss_of_taste: null
+  think_have_long_covid_symptom_low_mood: null
+  think_have_long_covid_symptom_memory_loss_or_confusion: null
+  think_have_long_covid_symptom_more_trouble_sleeping: null
+  think_have_long_covid_symptom_muscle_ache: null
+  think_have_long_covid_symptom_nausea_or_vomiting: null
+  think_have_long_covid_symptom_noisy_breathing: null
+  think_have_long_covid_symptom_none_list_1: null
+  think_have_long_covid_symptom_none_list_2: null
   think_have_long_covid_symptom_reduced_ability: Yes a little
-  think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
+  think_have_long_covid_symptom_runny_nose_or_sneezing: null
   think_have_long_covid_symptom_shortness_of_breath: 'Yes'
-  think_have_long_covid_symptom_sore_throat: 'No'
-  think_have_long_covid_symptom_weakness_or_tiredness: 'No'
-  think_have_long_covid_symptom_worry_or_anxiety: 'Yes'
+  think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_worse_after_effort: Don't know
-  think_have_symptoms_new_or_worse_diarrhoea: 'No'
-  think_have_symptoms_new_or_worse_difficulty_concentrating: 'No'
-  think_have_symptoms_new_or_worse_fever_including_high_temperature: 'No'
-  think_have_symptoms_new_or_worse_list:
+  think_have_symptoms_new_or_worse_list_1:
   - Loss of taste
+  think_have_symptoms_new_or_worse_list_2:
   - Low mood or not enjoying anything
-  think_have_symptoms_new_or_worse_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_have_symptoms_new_or_worse_loss_of_taste: 'Yes'
-  think_have_symptoms_new_or_worse_low_mood_or_not_enjoying_anything: 'Yes'
-  think_have_symptoms_new_or_worse_memory_loss_or_confusion: 'No'
-  think_have_symptoms_new_or_worse_more_trouble_sleeping_than_usual: 'No'
-  think_have_symptoms_new_or_worse_muscle_ache: 'No'
-  think_have_symptoms_new_or_worse_nausea_or_vomiting: 'No'
-  think_have_symptoms_new_or_worse_noisy_breathing_or_wheezing: 'No'
-  think_have_symptoms_new_or_worse_runny_nose_or_sneezing: 'No'
-  think_have_symptoms_new_or_worse_sore_throat: 'No'
-  think_have_symptoms_new_or_worse_worry_or_anxiety: 'No'
-  times_hour_or_longer_another_home_last_7_days: 'No'
+  think_have_symptoms_symptom_abdominal_pain: null
+  think_have_symptoms_symptom_anxiety: null
+  think_have_symptoms_symptom_cough: null
+  think_have_symptoms_symptom_diarrhoea: null
+  think_have_symptoms_symptom_difficulty_concentrating: null
+  think_have_symptoms_symptom_fatigue: null
+  think_have_symptoms_symptom_fever: null
+  think_have_symptoms_symptom_headache: null
+  think_have_symptoms_symptom_loss_of_appetite: null
+  think_have_symptoms_symptom_loss_of_smell: null
+  think_have_symptoms_symptom_loss_of_taste: 'Yes'
+  think_have_symptoms_symptom_low_mood: 'Yes'
+  think_have_symptoms_symptom_memory_loss_or_confusion: null
+  think_have_symptoms_symptom_more_trouble_sleeping: null
+  think_have_symptoms_symptom_muscle_ache: null
+  think_have_symptoms_symptom_nausea_or_vomiting: null
+  think_have_symptoms_symptom_noisy_breathing: null
+  think_have_symptoms_symptom_none_list_1: null
+  think_have_symptoms_symptom_none_list_2: null
+  think_have_symptoms_symptom_runny_nose_or_sneezing: null
+  think_have_symptoms_symptom_shortness_of_breath: null
+  think_have_symptoms_symptom_sore_throat: null
+  times_hour_or_longer_another_home_last_7_days: null
   times_hour_or_longer_another_person_your_home_last_7_days: '2'
-  times_indoor_exercise_last_28_days: 'No'
+  times_indoor_exercise_last_28_days: null
   times_large_events_last_28_days: 'Yes'
   times_medium_events_last_28_days: 'No'
-  times_outside_shopping_or_socialising_last_7_days: 7
+  times_outside_shopping_or_socialising_last_7_days: 7.0
   times_shopping_last_7_days: '3'
   times_shopping_last_7_days_raw: '3'
   times_socialising_last_7_days: '5'
   times_socialising_last_7_days_raw: '5'
   transport_shared_outside_household_last_28_days: Underground or Metro or Light Rail
     or Tram
+  transport_shared_outside_household_last_28_days_bus_coach: null
+  transport_shared_outside_household_last_28_days_car_van: null
+  transport_shared_outside_household_last_28_days_ferry_boat: null
+  transport_shared_outside_household_last_28_days_none: null
+  transport_shared_outside_household_last_28_days_other: null
+  transport_shared_outside_household_last_28_days_plane: null
+  transport_shared_outside_household_last_28_days_taxi: null
+  transport_shared_outside_household_last_28_days_train: null
+  transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: Train
   work_direct_contact_patients_or_clients: 'Yes'
   work_health_care_area: Secondary
@@ -1023,7 +1303,7 @@
   work_sector_other: '"Messages can be sent to and received from ports, but these
     messages must obey the so-called ""port protocol."""'
   work_sector_raw: Retail sector. This includes wholesale
-  work_status_digital: 'No'
+  work_status_digital: null
   work_status_education: Attending a college or other further education provider including
     apprenticeships
   work_status_employment: Currently not working -  for example on sick or other leave
@@ -1042,21 +1322,27 @@
   blood_not_taken_could_not_other: Erlang is known for its designs that are well suited
     for systems.
   blood_not_taken_could_not_reason: There were issues with the kit
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_issues_with_kit: 'Yes'
+  blood_not_taken_could_not_reason_not_enough_blood: null
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: null
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_reason: The blood test kit arrived both damaged and with parts missing
   blood_return_date: '2022-01-05 00:00:00.000000'
   blood_return_future_date: '2022-01-08 00:00:00.000000'
   blood_returned: 'Yes'
-  blood_sample_barcode_correct: 'No'
+  blood_sample_barcode_correct: null
   blood_sample_barcode_user_entered: BLT26332296
   blood_taken: 'No'
   blood_taken_am_pm: PM
   blood_taken_date: '2022-01-09 00:00:00.000000'
-  blood_taken_time_hour: 'No'
+  blood_taken_time_hour: null
   blood_taken_time_minute: '15'
-  care_home_last_28_days: 'No'
+  care_home_last_28_days: null
   cis_covid_vaccine_date: '2022-01-08 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: 7 doses
-  cis_covid_vaccine_received: 'No'
+  cis_covid_vaccine_received: null
   cis_covid_vaccine_type: Sinopharm
   cis_covid_vaccine_type_other: Here's looking at you, kid.
   cis_covid_vaccine_type_other_raw: Here's looking at you, kid.
@@ -1066,7 +1352,7 @@
   currently_smokes_or_vapes_description:
   - Cigars
   education_in_person_days_per_week: '6'
-  end_screen_questionnaire: 'No'
+  end_screen_questionnaire: null
   ever_smoked_regularly: Prefer not to say
   face_covering_other_enclosed_places: My face is already covered
   face_covering_outside_of_home: null
@@ -1093,36 +1379,39 @@
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_negative_date: 03/01/2022
   other_covid_infection_test_positive_date: null
-  other_covid_infection_test_results: 'No'
-  other_covid_infection_test_results_raw: 'No'
+  other_covid_infection_test_results: null
+  other_covid_infection_test_results_raw: null
   participant_completion_window_id: '5868'
   participant_first_name_confirmation: 'Yes'
-  participant_first_name_on_behalf: 'No'
+  participant_first_name_on_behalf: null
   phm_covid_vaccine_number_of_doses: '7'
+  phm_think_had_covid: null
+  phm_think_had_flu: null
   phm_think_had_flu_onset_date: '2022-01-03 00:00:00.000000'
+  phm_think_had_other_infection: null
   phm_think_had_other_infection_onset_date: null
   phm_think_had_respiratory_infection: 'Yes'
   phm_think_had_respiratory_infection_type:
   - Do not know the type
-  phm_think_had_respiratory_infection_type_covid_19: 'No'
-  phm_think_had_respiratory_infection_type_do_not_know_the_type: 'Yes'
-  phm_think_had_respiratory_infection_type_flu: 'No'
+  phm_think_had_unknown: 'Yes'
   physical_contact_18_to_69_years: 1-5
   physical_contact_18_to_69_years_raw: 1 to 5
-  physical_contact_over_70_years: 'No'
+  physical_contact_over_70_years: null
   physical_contact_over_70_years_raw: Prefer not to say
-  physical_contact_under_18_years: 'No'
+  physical_contact_under_18_years: null
   physical_contact_under_18_years_raw: Prefer not to say
-  problem_with_survey_access_helpline: 'No'
+  problem_with_survey_access_helpline: null
   questionnaire_started_no_incentive: 'Yes'
-  smokes_cigarettes: 'No'
-  smokes_cigars: 'Yes'
-  smokes_vape_or_e_cigarettes: 'No'
-  social_distance_contact_18_to_69_years: 'No'
-  social_distance_contact_18_to_69_years_raw: 'No'
+  smoke_cigarettes: null
+  smokes_cigar: 'Yes'
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
+  social_distance_contact_18_to_69_years: null
+  social_distance_contact_18_to_69_years_raw: null
   social_distance_contact_over_70_years: 21 or more
   social_distance_contact_over_70_years_raw: 21 or more
-  social_distance_contact_under_18_years: 'No'
+  social_distance_contact_under_18_years: null
   social_distance_contact_under_18_years_raw: Prefer not to say
   swab_not_taken_reason: The swab test kit arrived with parts missing
   swab_return_date: '2022-01-07 00:00:00.000000'
@@ -1130,147 +1419,208 @@
   swab_returned: 'No'
   swab_sample_barcode_correct: 'Yes'
   swab_sample_barcode_user_entered: SWT57022021
-  swab_taken: 'No'
+  swab_taken: null
   swab_taken_am_pm: AM
   swab_taken_date: '2022-01-06 00:00:00.000000'
-  swab_taken_time_hour: 'No'
+  swab_taken_time_hour: null
   swab_taken_time_minute: '15'
   test_kit_info_end_of_survey: Continue
   test_type_positive_result: PCR test. That is the test that is sent off to a laboratory
-  think_had_covid_any_symptom_abdominal_pain: 'Yes'
-  think_had_covid_any_symptom_diarrhoea: 'No'
-  think_had_covid_any_symptom_difficulty_concentrating: 'No'
-  think_had_covid_any_symptom_headache: 'No'
-  think_had_covid_any_symptom_list:
+  think_had_covid_any_symptom_list_1:
   - Abdominal pain
+  think_had_covid_any_symptom_list_2:
   - Memory loss or confusion
-  think_had_covid_any_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_covid_any_symptom_loss_of_smell: 'No'
-  think_had_covid_any_symptom_loss_of_taste: 'No'
-  think_had_covid_any_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_covid_any_symptom_memory_loss_or_confusion: 'Yes'
-  think_had_covid_any_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_had_covid_any_symptom_runny_nose_or_sneezing: 'No'
-  think_had_covid_any_symptom_sore_throat: 'No'
-  think_had_covid_any_symptom_weakness_or_tiredness: 'No'
-  think_had_covid_any_symptom_worry_or_anxiety: 'No'
   think_had_covid_any_symptoms: 'Yes'
   think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: 'Yes'
+  think_had_covid_symptom_anxiety: null
+  think_had_covid_symptom_cough: null
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_difficulty_concentrating: null
+  think_had_covid_symptom_fatigue: null
+  think_had_covid_symptom_fever: null
+  think_had_covid_symptom_headache: null
+  think_had_covid_symptom_loss_of_appetite: null
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: null
+  think_had_covid_symptom_low_mood: null
+  think_had_covid_symptom_memory_loss_or_confusion: 'Yes'
+  think_had_covid_symptom_more_trouble_sleeping: null
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: null
+  think_had_covid_symptom_noisy_breathing: null
+  think_had_covid_symptom_none_list_1: null
+  think_had_covid_symptom_none_list_2: null
+  think_had_covid_symptom_runny_nose_or_sneezing: null
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptoms: 'Yes'
   think_had_flu_symptom_abdominal_pain: 'Yes'
-  think_had_flu_symptom_diarrhoea: 'No'
-  think_had_flu_symptom_headache: 'No'
-  think_had_flu_symptom_list:
+  think_had_flu_symptom_anxiety: 'Yes'
+  think_had_flu_symptom_cough: null
+  think_had_flu_symptom_diarrhoea: null
+  think_had_flu_symptom_difficulty_concentrating: null
+  think_had_flu_symptom_fatigue: null
+  think_had_flu_symptom_fever: null
+  think_had_flu_symptom_headache: null
+  think_had_flu_symptom_list_1:
   - Abdominal pain
+  think_had_flu_symptom_list_2:
   - Worry or anxiety
-  think_had_flu_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_flu_symptom_loss_of_smell: 'No'
-  think_had_flu_symptom_loss_of_taste: 'No'
-  think_had_flu_symptom_memory_loss_or_confusion: 'No'
-  think_had_flu_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_had_flu_symptom_muscle_ache: 'No'
-  think_had_flu_symptom_nausea_or_vomiting: 'No'
-  think_had_flu_symptom_noisy_breathing_or_wheezing: 'No'
-  think_had_flu_symptom_weakness_or_tiredness: 'No'
-  think_had_flu_symptom_worry_or_anxiety: 'Yes'
+  think_had_flu_symptom_loss_of_appetite: null
+  think_had_flu_symptom_loss_of_smell: null
+  think_had_flu_symptom_loss_of_taste: null
+  think_had_flu_symptom_low_mood: null
+  think_had_flu_symptom_memory_loss_or_confusion: null
+  think_had_flu_symptom_more_trouble_sleeping: null
+  think_had_flu_symptom_muscle_ache: null
+  think_had_flu_symptom_nausea_or_vomiting: null
+  think_had_flu_symptom_noisy_breathing: null
+  think_had_flu_symptom_none_list_1: null
+  think_had_flu_symptom_none_list_2: null
+  think_had_flu_symptom_runny_nose_or_sneezing: null
+  think_had_flu_symptom_shortness_of_breath: null
+  think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptoms: 'Yes'
-  think_had_other_infection_symptom_cough: 'No'
-  think_had_other_infection_symptom_diarrhoea: 'No'
-  think_had_other_infection_symptom_difficulty_concentrating: 'No'
-  think_had_other_infection_symptom_fever_including_high_temperature: 'No'
-  think_had_other_infection_symptom_headache: 'No'
-  think_had_other_infection_symptom_list:
+  think_had_other_infection_symptom_list_1:
   - Nausea or vomiting
+  think_had_other_infection_symptom_list_2:
   - Weakness or tiredness
-  think_had_other_infection_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_other_infection_symptom_loss_of_smell: 'No'
-  think_had_other_infection_symptom_loss_of_taste: 'No'
-  think_had_other_infection_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_other_infection_symptom_memory_loss_or_confusion: 'No'
-  think_had_other_infection_symptom_muscle_ache: 'No'
-  think_had_other_infection_symptom_nausea_or_vomiting: 'Yes'
-  think_had_other_infection_symptom_runny_nose_or_sneezing: 'No'
-  think_had_other_infection_symptom_shortness_of_breath: 'No'
-  think_had_other_infection_symptom_weakness_or_tiredness: 'Yes'
+  think_had_other_symptom_abdominal_pain: null
+  think_had_other_symptom_anxiety: null
+  think_had_other_symptom_cough: null
+  think_had_other_symptom_diarrhoea: null
+  think_had_other_symptom_difficulty_concentrating: null
+  think_had_other_symptom_fatigue: 'Yes'
+  think_had_other_symptom_fever: null
+  think_had_other_symptom_headache: null
+  think_had_other_symptom_loss_of_appetite: null
+  think_had_other_symptom_loss_of_smell: null
+  think_had_other_symptom_loss_of_taste: null
+  think_had_other_symptom_low_mood: null
+  think_had_other_symptom_memory_loss_or_confusion: null
+  think_had_other_symptom_more_trouble_sleeping: null
+  think_had_other_symptom_muscle_ache: null
+  think_had_other_symptom_nausea_or_vomiting: 'Yes'
+  think_had_other_symptom_noisy_breathing: null
+  think_had_other_symptom_none_list_1: null
+  think_had_other_symptom_none_list_2: null
+  think_had_other_symptom_runny_nose_or_sneezing: null
+  think_had_other_symptom_shortness_of_breath: null
+  think_had_other_symptom_sore_throat: null
   think_have_any_symptoms_new_or_worse: 'Yes'
-  think_have_covid_any_symptom_abdominal_pain: 'No'
-  think_have_covid_any_symptom_diarrhoea: 'No'
-  think_have_covid_any_symptom_difficulty_concentrating: 'No'
-  think_have_covid_any_symptom_headache: 'No'
-  think_have_covid_any_symptom_list:
+  think_have_covid_any_symptom_list_1:
   - Noisy breathing or wheezing
+  think_have_covid_any_symptom_list_2:
   - Muscle ache
-  think_have_covid_any_symptom_loss_of_smell: 'No'
-  think_have_covid_any_symptom_memory_loss_or_confusion: 'No'
-  think_have_covid_any_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_have_covid_any_symptom_muscle_ache: 'Yes'
-  think_have_covid_any_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_any_symptom_noisy_breathing_or_wheezing: 'Yes'
-  think_have_covid_any_symptom_runny_nose_or_sneezing: 'No'
-  think_have_covid_any_symptom_sore_throat: 'No'
-  think_have_covid_any_symptom_weakness_or_tiredness: 'No'
   think_have_covid_any_symptoms: 'Yes'
   think_have_covid_onset_date: '2022-01-06 00:00:00.000000'
+  think_have_covid_symptom_abdominal_pain: null
+  think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_cough: null
+  think_have_covid_symptom_diarrhoea: null
+  think_have_covid_symptom_difficulty_concentrating: null
+  think_have_covid_symptom_fatigue: null
+  think_have_covid_symptom_fever: null
+  think_have_covid_symptom_headache: null
+  think_have_covid_symptom_loss_of_appetite: null
+  think_have_covid_symptom_loss_of_smell: null
+  think_have_covid_symptom_loss_of_taste: null
+  think_have_covid_symptom_low_mood: null
+  think_have_covid_symptom_memory_loss_or_confusion: null
+  think_have_covid_symptom_more_trouble_sleeping: null
+  think_have_covid_symptom_muscle_ache: 'Yes'
+  think_have_covid_symptom_nausea_or_vomiting: null
+  think_have_covid_symptom_noisy_breathing: 'Yes'
+  think_have_covid_symptom_none_list_1: null
+  think_have_covid_symptom_none_list_2: null
+  think_have_covid_symptom_runny_nose_or_sneezing: null
+  think_have_covid_symptom_shortness_of_breath: null
+  think_have_covid_symptom_sore_throat: null
   think_have_long_covid: 'Yes'
   think_have_long_covid_any_symptoms: 'Yes'
-  think_have_long_covid_symptom_abdominal_pain: 'No'
-  think_have_long_covid_symptom_cough: 'No'
-  think_have_long_covid_symptom_difficulty_concentrating: 'No'
-  think_have_long_covid_symptom_fever_including_high_temperature: 'No'
-  think_have_long_covid_symptom_headache: 'No'
-  think_have_long_covid_symptom_list:
+  think_have_long_covid_symptom_abdominal_pain: null
+  think_have_long_covid_symptom_anxiety: null
+  think_have_long_covid_symptom_cough: null
+  think_have_long_covid_symptom_diarrhoea: null
+  think_have_long_covid_symptom_difficulty_concentrating: null
+  think_have_long_covid_symptom_fatigue: 'Yes'
+  think_have_long_covid_symptom_fever: null
+  think_have_long_covid_symptom_headache: null
+  think_have_long_covid_symptom_list_1:
   - Runny nose or sneezing
+  think_have_long_covid_symptom_list_2:
   - Weakness or tiredness
+  think_have_long_covid_symptom_list_3:
   - Loss of taste
-  think_have_long_covid_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_have_long_covid_symptom_loss_of_smell: 'No'
-  think_have_long_covid_symptom_loss_of_taste: 'Yes'
-  think_have_long_covid_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
-  think_have_long_covid_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_have_long_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_long_covid_symptom_noisy_breathing_or_wheezing: 'No'
+  think_have_long_covid_symptom_loss_of_appetite: null
+  think_have_long_covid_symptom_loss_of_smell: null
+  think_have_long_covid_symptom_loss_of_taste: null
+  think_have_long_covid_symptom_low_mood: null
+  think_have_long_covid_symptom_memory_loss_or_confusion: null
+  think_have_long_covid_symptom_more_trouble_sleeping: null
+  think_have_long_covid_symptom_muscle_ache: null
+  think_have_long_covid_symptom_nausea_or_vomiting: null
+  think_have_long_covid_symptom_noisy_breathing: null
+  think_have_long_covid_symptom_none_list_1: null
+  think_have_long_covid_symptom_none_list_2: null
   think_have_long_covid_symptom_reduced_ability: Not at all
   think_have_long_covid_symptom_runny_nose_or_sneezing: 'Yes'
-  think_have_long_covid_symptom_shortness_of_breath: 'No'
-  think_have_long_covid_symptom_sore_throat: 'No'
-  think_have_long_covid_symptom_weakness_or_tiredness: 'Yes'
-  think_have_long_covid_symptom_worry_or_anxiety: 'No'
+  think_have_long_covid_symptom_shortness_of_breath: null
+  think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_worse_after_effort: 'Yes'
-  think_have_symptoms_new_or_worse_diarrhoea: 'No'
-  think_have_symptoms_new_or_worse_difficulty_concentrating: 'No'
-  think_have_symptoms_new_or_worse_fever_including_high_temperature: 'No'
-  think_have_symptoms_new_or_worse_list:
+  think_have_symptoms_new_or_worse_list_1:
   - Nausea or vomiting
+  think_have_symptoms_new_or_worse_list_2:
   - Muscle ache
-  think_have_symptoms_new_or_worse_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_have_symptoms_new_or_worse_loss_of_taste: 'No'
-  think_have_symptoms_new_or_worse_low_mood_or_not_enjoying_anything: 'No'
-  think_have_symptoms_new_or_worse_memory_loss_or_confusion: 'No'
-  think_have_symptoms_new_or_worse_more_trouble_sleeping_than_usual: 'No'
-  think_have_symptoms_new_or_worse_muscle_ache: 'Yes'
-  think_have_symptoms_new_or_worse_nausea_or_vomiting: 'Yes'
-  think_have_symptoms_new_or_worse_noisy_breathing_or_wheezing: 'No'
-  think_have_symptoms_new_or_worse_runny_nose_or_sneezing: 'No'
-  think_have_symptoms_new_or_worse_sore_throat: 'No'
-  think_have_symptoms_new_or_worse_worry_or_anxiety: 'No'
+  think_have_symptoms_symptom_abdominal_pain: null
+  think_have_symptoms_symptom_anxiety: null
+  think_have_symptoms_symptom_cough: null
+  think_have_symptoms_symptom_diarrhoea: null
+  think_have_symptoms_symptom_difficulty_concentrating: null
+  think_have_symptoms_symptom_fatigue: null
+  think_have_symptoms_symptom_fever: null
+  think_have_symptoms_symptom_headache: null
+  think_have_symptoms_symptom_loss_of_appetite: null
+  think_have_symptoms_symptom_loss_of_smell: null
+  think_have_symptoms_symptom_loss_of_taste: null
+  think_have_symptoms_symptom_low_mood: null
+  think_have_symptoms_symptom_memory_loss_or_confusion: null
+  think_have_symptoms_symptom_more_trouble_sleeping: null
+  think_have_symptoms_symptom_muscle_ache: 'Yes'
+  think_have_symptoms_symptom_nausea_or_vomiting: 'Yes'
+  think_have_symptoms_symptom_noisy_breathing: null
+  think_have_symptoms_symptom_none_list_1: null
+  think_have_symptoms_symptom_none_list_2: null
+  think_have_symptoms_symptom_runny_nose_or_sneezing: null
+  think_have_symptoms_symptom_shortness_of_breath: null
+  think_have_symptoms_symptom_sore_throat: null
   times_hour_or_longer_another_home_last_7_days: '0'
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
   times_indoor_exercise_last_28_days: 21 or more
   times_large_events_last_28_days: Don't know
   times_medium_events_last_28_days: Don't know
-  times_outside_shopping_or_socialising_last_7_days: 2
-  times_shopping_last_7_days: 'No'
-  times_shopping_last_7_days_raw: 'No'
+  times_outside_shopping_or_socialising_last_7_days: 2.0
+  times_shopping_last_7_days: null
+  times_shopping_last_7_days_raw: null
   times_socialising_last_7_days: '2'
   times_socialising_last_7_days_raw: '2'
   transport_shared_outside_household_last_28_days: Car or van
+  transport_shared_outside_household_last_28_days_bus_coach: null
+  transport_shared_outside_household_last_28_days_car_van: 'Yes'
+  transport_shared_outside_household_last_28_days_ferry_boat: null
+  transport_shared_outside_household_last_28_days_none: null
+  transport_shared_outside_household_last_28_days_other: null
+  transport_shared_outside_household_last_28_days_plane: null
+  transport_shared_outside_household_last_28_days_taxi: null
+  transport_shared_outside_household_last_28_days_train: null
+  transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: Car or van
   work_direct_contact_patients_or_clients: Prefer not to say
   work_health_care_area: Primary
   work_in_additional_paid_employment: Prefer not to say
-  work_location: 'No'
-  work_main_job_changed: 'No'
+  work_location: null
+  work_main_job_changed: null
   work_main_job_role: Erlang is a general-purpose, concurrent, functional programming
     language.
   work_main_job_title: Erlang is known for its designs that are well suited for systems.
@@ -1289,25 +1639,31 @@
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   ability_to_socially_distance_at_work_or_education_raw: Easy to maintain 2 metres
     apart. It is not a problem to stay this far away from other people
-  aged_16_or_over: 'No'
+  aged_16_or_over: null
   been_outside_uk: 'No'
   been_outside_uk_last_country: Bahrain
   been_outside_uk_last_return_date: null
   blood_not_taken_could_not_other: Where are my pants?
   blood_not_taken_could_not_reason: I couldn't get enough blood into the pot
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_issues_with_kit: null
+  blood_not_taken_could_not_reason_not_enough_blood: 'Yes'
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: null
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_reason: I am near the end of my testing window and my swab test
     kit has not arrived
   blood_return_date: '2022-01-09 00:00:00.000000'
   blood_return_future_date: '2022-01-01 00:00:00.000000'
-  blood_returned: 'No'
+  blood_returned: null
   blood_sample_barcode_correct: 'Yes'
   blood_sample_barcode_user_entered: BLT01652580
   blood_taken: 'No'
   blood_taken_am_pm: AM
   blood_taken_date: '2022-01-07 00:00:00.000000'
-  blood_taken_time_hour: 'No'
+  blood_taken_time_hour: null
   blood_taken_time_minute: '15'
-  care_home_last_28_days: 'No'
+  care_home_last_28_days: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_number_of_doses: 6 doses
   cis_covid_vaccine_received: 'Yes'
@@ -1320,15 +1676,15 @@
   currently_smokes_or_vapes_description:
   - Vape or E-cigarettes
   education_in_person_days_per_week: '3'
-  end_screen_questionnaire: 'No'
+  end_screen_questionnaire: null
   ever_smoked_regularly: 'Yes'
-  face_covering_other_enclosed_places: 'No'
+  face_covering_other_enclosed_places: null
   face_covering_outside_of_home: null
   face_covering_work_or_education: Never
   face_covering_work_or_education_raw: Never
   flu_vaccine_received: Prefer not to say
-  flu_vaccine_received_date: 'No'
-  hospital_last_28_days: 'No'
+  flu_vaccine_received_date: null
+  hospital_last_28_days: null
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Yes, a lot
   illness_reduces_activity_or_ability_raw: Yes a lot
@@ -1347,31 +1703,34 @@
   other_covid_infection_test: 'No'
   other_covid_infection_test_negative_date: 02/01/2022
   other_covid_infection_test_positive_date: '2022-01-05 00:00:00.000000'
-  other_covid_infection_test_results: 'No'
-  other_covid_infection_test_results_raw: 'No'
+  other_covid_infection_test_results: null
+  other_covid_infection_test_results_raw: null
   participant_completion_window_id: '6022'
-  participant_first_name_confirmation: 'No'
+  participant_first_name_confirmation: null
   participant_first_name_on_behalf: 'Yes'
   phm_covid_vaccine_number_of_doses: '6'
+  phm_think_had_covid: null
+  phm_think_had_flu: 'Yes'
   phm_think_had_flu_onset_date: null
+  phm_think_had_other_infection: null
   phm_think_had_other_infection_onset_date: null
-  phm_think_had_respiratory_infection: 'No'
+  phm_think_had_respiratory_infection: null
   phm_think_had_respiratory_infection_type:
   - Flu
-  phm_think_had_respiratory_infection_type_covid_19: 'No'
-  phm_think_had_respiratory_infection_type_do_not_know_the_type: 'No'
-  phm_think_had_respiratory_infection_type_flu: 'Yes'
+  phm_think_had_unknown: null
   physical_contact_18_to_69_years: 11-20
   physical_contact_18_to_69_years_raw: 11 to 20
   physical_contact_over_70_years: 1-5
   physical_contact_over_70_years_raw: 1 to 5
-  physical_contact_under_18_years: 'No'
+  physical_contact_under_18_years: null
   physical_contact_under_18_years_raw: Don't know
   problem_with_survey_access_helpline: Continue
-  questionnaire_started_no_incentive: 'No'
-  smokes_cigarettes: 'No'
-  smokes_cigars: 'No'
-  smokes_vape_or_e_cigarettes: 'Yes'
+  questionnaire_started_no_incentive: null
+  smoke_cigarettes: null
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: 'Yes'
   social_distance_contact_18_to_69_years: 11-20
   social_distance_contact_18_to_69_years_raw: 11 to 20
   social_distance_contact_over_70_years: 21 or more
@@ -1381,152 +1740,213 @@
   swab_not_taken_reason: I did not want to take it this month
   swab_return_date: null
   swab_return_future_date: '2022-01-03 00:00:00.000000'
-  swab_returned: 'No'
+  swab_returned: null
   swab_sample_barcode_correct: 'Yes'
   swab_sample_barcode_user_entered: SWT76804025
   swab_taken: 'Yes'
   swab_taken_am_pm: AM
   swab_taken_date: '2022-01-06 00:00:00.000000'
-  swab_taken_time_hour: 'No'
+  swab_taken_time_hour: null
   swab_taken_time_minute: '0'
   test_kit_info_end_of_survey: Continue
   test_type_positive_result: A lateral flow test. That is the test you can do yourself
     and you do not have to send it to a laboratory because the result shows in the
     device in about 30 minutes.
-  think_had_covid_any_symptom_abdominal_pain: 'No'
-  think_had_covid_any_symptom_diarrhoea: 'No'
-  think_had_covid_any_symptom_difficulty_concentrating: 'No'
-  think_had_covid_any_symptom_headache: 'Yes'
-  think_had_covid_any_symptom_list:
+  think_had_covid_any_symptom_list_1:
   - Loss of smell
+  think_had_covid_any_symptom_list_2:
   - Headache
-  think_had_covid_any_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_covid_any_symptom_loss_of_smell: 'Yes'
-  think_had_covid_any_symptom_loss_of_taste: 'No'
-  think_had_covid_any_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_covid_any_symptom_memory_loss_or_confusion: 'No'
-  think_had_covid_any_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_had_covid_any_symptom_runny_nose_or_sneezing: 'No'
-  think_had_covid_any_symptom_sore_throat: 'No'
-  think_had_covid_any_symptom_weakness_or_tiredness: 'No'
-  think_had_covid_any_symptom_worry_or_anxiety: 'No'
   think_had_covid_any_symptoms: 'Yes'
   think_had_covid_onset_date: '2022-01-01 00:00:00.000000'
+  think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_anxiety: null
+  think_had_covid_symptom_cough: null
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_difficulty_concentrating: null
+  think_had_covid_symptom_fatigue: null
+  think_had_covid_symptom_fever: null
+  think_had_covid_symptom_headache: 'Yes'
+  think_had_covid_symptom_loss_of_appetite: null
+  think_had_covid_symptom_loss_of_smell: 'Yes'
+  think_had_covid_symptom_loss_of_taste: null
+  think_had_covid_symptom_low_mood: null
+  think_had_covid_symptom_memory_loss_or_confusion: null
+  think_had_covid_symptom_more_trouble_sleeping: null
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: null
+  think_had_covid_symptom_noisy_breathing: null
+  think_had_covid_symptom_none_list_1: null
+  think_had_covid_symptom_none_list_2: null
+  think_had_covid_symptom_runny_nose_or_sneezing: null
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptoms: 'Yes'
-  think_had_flu_symptom_abdominal_pain: 'No'
+  think_had_flu_symptom_abdominal_pain: null
+  think_had_flu_symptom_anxiety: null
+  think_had_flu_symptom_cough: null
   think_had_flu_symptom_diarrhoea: 'Yes'
-  think_had_flu_symptom_headache: 'No'
-  think_had_flu_symptom_list:
+  think_had_flu_symptom_difficulty_concentrating: null
+  think_had_flu_symptom_fatigue: null
+  think_had_flu_symptom_fever: null
+  think_had_flu_symptom_headache: null
+  think_had_flu_symptom_list_1:
   - Diarrhoea
+  think_had_flu_symptom_list_2:
   - Memory loss or confusion
-  think_had_flu_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_flu_symptom_loss_of_smell: 'No'
-  think_had_flu_symptom_loss_of_taste: 'No'
+  think_had_flu_symptom_loss_of_appetite: null
+  think_had_flu_symptom_loss_of_smell: null
+  think_had_flu_symptom_loss_of_taste: null
+  think_had_flu_symptom_low_mood: null
   think_had_flu_symptom_memory_loss_or_confusion: 'Yes'
-  think_had_flu_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_had_flu_symptom_muscle_ache: 'No'
-  think_had_flu_symptom_nausea_or_vomiting: 'No'
-  think_had_flu_symptom_noisy_breathing_or_wheezing: 'No'
-  think_had_flu_symptom_weakness_or_tiredness: 'No'
-  think_had_flu_symptom_worry_or_anxiety: 'No'
+  think_had_flu_symptom_more_trouble_sleeping: null
+  think_had_flu_symptom_muscle_ache: null
+  think_had_flu_symptom_nausea_or_vomiting: null
+  think_had_flu_symptom_noisy_breathing: null
+  think_had_flu_symptom_none_list_1: null
+  think_had_flu_symptom_none_list_2: null
+  think_had_flu_symptom_runny_nose_or_sneezing: null
+  think_had_flu_symptom_shortness_of_breath: null
+  think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptoms: 'Yes'
-  think_had_other_infection_symptom_cough: 'No'
-  think_had_other_infection_symptom_diarrhoea: 'No'
-  think_had_other_infection_symptom_difficulty_concentrating: 'Yes'
-  think_had_other_infection_symptom_fever_including_high_temperature: 'No'
-  think_had_other_infection_symptom_headache: 'No'
-  think_had_other_infection_symptom_list:
+  think_had_other_infection_symptom_list_1:
   - Nausea or vomiting
+  think_had_other_infection_symptom_list_2:
   - Difficulty concentrating
-  think_had_other_infection_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_other_infection_symptom_loss_of_smell: 'No'
-  think_had_other_infection_symptom_loss_of_taste: 'No'
-  think_had_other_infection_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_other_infection_symptom_memory_loss_or_confusion: 'No'
-  think_had_other_infection_symptom_muscle_ache: 'No'
-  think_had_other_infection_symptom_nausea_or_vomiting: 'Yes'
-  think_had_other_infection_symptom_runny_nose_or_sneezing: 'No'
-  think_had_other_infection_symptom_shortness_of_breath: 'No'
-  think_had_other_infection_symptom_weakness_or_tiredness: 'No'
+  think_had_other_symptom_abdominal_pain: null
+  think_had_other_symptom_anxiety: null
+  think_had_other_symptom_cough: null
+  think_had_other_symptom_diarrhoea: null
+  think_had_other_symptom_difficulty_concentrating: 'Yes'
+  think_had_other_symptom_fatigue: null
+  think_had_other_symptom_fever: null
+  think_had_other_symptom_headache: null
+  think_had_other_symptom_loss_of_appetite: null
+  think_had_other_symptom_loss_of_smell: null
+  think_had_other_symptom_loss_of_taste: null
+  think_had_other_symptom_low_mood: null
+  think_had_other_symptom_memory_loss_or_confusion: null
+  think_had_other_symptom_more_trouble_sleeping: null
+  think_had_other_symptom_muscle_ache: null
+  think_had_other_symptom_nausea_or_vomiting: 'Yes'
+  think_had_other_symptom_noisy_breathing: null
+  think_had_other_symptom_none_list_1: null
+  think_had_other_symptom_none_list_2: null
+  think_had_other_symptom_runny_nose_or_sneezing: null
+  think_had_other_symptom_shortness_of_breath: null
+  think_had_other_symptom_sore_throat: null
   think_have_any_symptoms_new_or_worse: 'Yes'
-  think_have_covid_any_symptom_abdominal_pain: 'No'
-  think_have_covid_any_symptom_diarrhoea: 'No'
-  think_have_covid_any_symptom_difficulty_concentrating: 'Yes'
-  think_have_covid_any_symptom_headache: 'No'
-  think_have_covid_any_symptom_list:
+  think_have_covid_any_symptom_list_1:
   - Nausea or vomiting
+  think_have_covid_any_symptom_list_2:
   - Difficulty concentrating
-  think_have_covid_any_symptom_loss_of_smell: 'No'
-  think_have_covid_any_symptom_memory_loss_or_confusion: 'No'
-  think_have_covid_any_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_have_covid_any_symptom_muscle_ache: 'No'
-  think_have_covid_any_symptom_nausea_or_vomiting: 'Yes'
-  think_have_covid_any_symptom_noisy_breathing_or_wheezing: 'No'
-  think_have_covid_any_symptom_runny_nose_or_sneezing: 'No'
-  think_have_covid_any_symptom_sore_throat: 'No'
-  think_have_covid_any_symptom_weakness_or_tiredness: 'No'
   think_have_covid_any_symptoms: 'Yes'
   think_have_covid_onset_date: '2022-01-04 00:00:00.000000'
+  think_have_covid_symptom_abdominal_pain: null
+  think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_cough: null
+  think_have_covid_symptom_diarrhoea: null
+  think_have_covid_symptom_difficulty_concentrating: 'Yes'
+  think_have_covid_symptom_fatigue: null
+  think_have_covid_symptom_fever: null
+  think_have_covid_symptom_headache: null
+  think_have_covid_symptom_loss_of_appetite: null
+  think_have_covid_symptom_loss_of_smell: null
+  think_have_covid_symptom_loss_of_taste: null
+  think_have_covid_symptom_low_mood: null
+  think_have_covid_symptom_memory_loss_or_confusion: null
+  think_have_covid_symptom_more_trouble_sleeping: null
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: 'Yes'
+  think_have_covid_symptom_noisy_breathing: null
+  think_have_covid_symptom_none_list_1: null
+  think_have_covid_symptom_none_list_2: null
+  think_have_covid_symptom_runny_nose_or_sneezing: null
+  think_have_covid_symptom_shortness_of_breath: null
+  think_have_covid_symptom_sore_throat: null
   think_have_long_covid: 'No'
   think_have_long_covid_any_symptoms: 'Yes'
-  think_have_long_covid_symptom_abdominal_pain: 'No'
-  think_have_long_covid_symptom_cough: 'Yes'
-  think_have_long_covid_symptom_difficulty_concentrating: 'No'
-  think_have_long_covid_symptom_fever_including_high_temperature: 'No'
-  think_have_long_covid_symptom_headache: 'No'
-  think_have_long_covid_symptom_list:
+  think_have_long_covid_symptom_abdominal_pain: null
+  think_have_long_covid_symptom_anxiety: null
+  think_have_long_covid_symptom_cough: null
+  think_have_long_covid_symptom_diarrhoea: null
+  think_have_long_covid_symptom_difficulty_concentrating: null
+  think_have_long_covid_symptom_fatigue: null
+  think_have_long_covid_symptom_fever: null
+  think_have_long_covid_symptom_headache: null
+  think_have_long_covid_symptom_list_1:
   - Shortness of breath
+  think_have_long_covid_symptom_list_2:
   - Low mood or not enjoying anything
+  think_have_long_covid_symptom_list_3:
   - Cough
-  think_have_long_covid_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_have_long_covid_symptom_loss_of_smell: 'No'
-  think_have_long_covid_symptom_loss_of_taste: 'No'
-  think_have_long_covid_symptom_low_mood_or_not_enjoying_anything: 'Yes'
-  think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
-  think_have_long_covid_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_have_long_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_long_covid_symptom_noisy_breathing_or_wheezing: 'No'
+  think_have_long_covid_symptom_loss_of_appetite: null
+  think_have_long_covid_symptom_loss_of_smell: null
+  think_have_long_covid_symptom_loss_of_taste: null
+  think_have_long_covid_symptom_low_mood: 'Yes'
+  think_have_long_covid_symptom_memory_loss_or_confusion: null
+  think_have_long_covid_symptom_more_trouble_sleeping: null
+  think_have_long_covid_symptom_muscle_ache: null
+  think_have_long_covid_symptom_nausea_or_vomiting: null
+  think_have_long_covid_symptom_noisy_breathing: null
+  think_have_long_covid_symptom_none_list_1: null
+  think_have_long_covid_symptom_none_list_2: null
   think_have_long_covid_symptom_reduced_ability: Not at all
-  think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
+  think_have_long_covid_symptom_runny_nose_or_sneezing: null
   think_have_long_covid_symptom_shortness_of_breath: 'Yes'
-  think_have_long_covid_symptom_sore_throat: 'No'
-  think_have_long_covid_symptom_weakness_or_tiredness: 'No'
-  think_have_long_covid_symptom_worry_or_anxiety: 'No'
+  think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_worse_after_effort: Don't know
-  think_have_symptoms_new_or_worse_diarrhoea: 'No'
-  think_have_symptoms_new_or_worse_difficulty_concentrating: 'No'
-  think_have_symptoms_new_or_worse_fever_including_high_temperature: 'No'
-  think_have_symptoms_new_or_worse_list:
+  think_have_symptoms_new_or_worse_list_1:
   - Sore throat
+  think_have_symptoms_new_or_worse_list_2:
   - Muscle ache
-  think_have_symptoms_new_or_worse_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_have_symptoms_new_or_worse_loss_of_taste: 'No'
-  think_have_symptoms_new_or_worse_low_mood_or_not_enjoying_anything: 'No'
-  think_have_symptoms_new_or_worse_memory_loss_or_confusion: 'No'
-  think_have_symptoms_new_or_worse_more_trouble_sleeping_than_usual: 'No'
-  think_have_symptoms_new_or_worse_muscle_ache: 'Yes'
-  think_have_symptoms_new_or_worse_nausea_or_vomiting: 'No'
-  think_have_symptoms_new_or_worse_noisy_breathing_or_wheezing: 'No'
-  think_have_symptoms_new_or_worse_runny_nose_or_sneezing: 'No'
-  think_have_symptoms_new_or_worse_sore_throat: 'Yes'
-  think_have_symptoms_new_or_worse_worry_or_anxiety: 'No'
+  think_have_symptoms_symptom_abdominal_pain: null
+  think_have_symptoms_symptom_anxiety: null
+  think_have_symptoms_symptom_cough: null
+  think_have_symptoms_symptom_diarrhoea: null
+  think_have_symptoms_symptom_difficulty_concentrating: null
+  think_have_symptoms_symptom_fatigue: null
+  think_have_symptoms_symptom_fever: null
+  think_have_symptoms_symptom_headache: null
+  think_have_symptoms_symptom_loss_of_appetite: null
+  think_have_symptoms_symptom_loss_of_smell: null
+  think_have_symptoms_symptom_loss_of_taste: null
+  think_have_symptoms_symptom_low_mood: null
+  think_have_symptoms_symptom_memory_loss_or_confusion: null
+  think_have_symptoms_symptom_more_trouble_sleeping: null
+  think_have_symptoms_symptom_muscle_ache: 'Yes'
+  think_have_symptoms_symptom_nausea_or_vomiting: null
+  think_have_symptoms_symptom_noisy_breathing: null
+  think_have_symptoms_symptom_none_list_1: null
+  think_have_symptoms_symptom_none_list_2: null
+  think_have_symptoms_symptom_runny_nose_or_sneezing: null
+  think_have_symptoms_symptom_shortness_of_breath: null
+  think_have_symptoms_symptom_sore_throat: 'Yes'
   times_hour_or_longer_another_home_last_7_days: '2'
   times_hour_or_longer_another_person_your_home_last_7_days: '4'
   times_indoor_exercise_last_28_days: 6 to 10
-  times_large_events_last_28_days: 'No'
+  times_large_events_last_28_days: null
   times_medium_events_last_28_days: Don't know
-  times_outside_shopping_or_socialising_last_7_days: 7
+  times_outside_shopping_or_socialising_last_7_days: 7.0
   times_shopping_last_7_days: '2'
   times_shopping_last_7_days_raw: '2'
   times_socialising_last_7_days: '7'
   times_socialising_last_7_days_raw: 7 times or more
   transport_shared_outside_household_last_28_days: Taxi or minicab
+  transport_shared_outside_household_last_28_days_bus_coach: null
+  transport_shared_outside_household_last_28_days_car_van: null
+  transport_shared_outside_household_last_28_days_ferry_boat: null
+  transport_shared_outside_household_last_28_days_none: null
+  transport_shared_outside_household_last_28_days_other: null
+  transport_shared_outside_household_last_28_days_plane: null
+  transport_shared_outside_household_last_28_days_taxi: 'Yes'
+  transport_shared_outside_household_last_28_days_train: null
+  transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: Car or van
   work_direct_contact_patients_or_clients: 'Yes'
   work_health_care_area: Other
   work_in_additional_paid_employment: 'No'
-  work_location: 'No'
-  work_main_job_changed: 'No'
+  work_location: null
+  work_main_job_changed: null
   work_main_job_role: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
   work_main_job_title: Its main implementation is the Glasgow Haskell Compiler.
@@ -1536,11 +1956,11 @@
   work_sector_raw: Manufacturing or construction
   work_status_digital: In education
   work_status_education: A child aged 4 or over at school
-  work_status_employment: 'No'
-  work_status_unemployment: 'No'
-  work_status_v0: null
-  work_status_v1: null
-  work_status_v2: null
+  work_status_employment: null
+  work_status_unemployment: null
+  work_status_v0: Student
+  work_status_v1: 5y and older in full-time education
+  work_status_v2: 4-5y and older at school/home-school
 - ability_to_socially_distance_at_work_or_education: Easy to maintain 2m
   ability_to_socially_distance_at_work_or_education_raw: Easy to maintain 2 metres
     apart. It is not a problem to stay this far away from other people
@@ -1551,6 +1971,12 @@
   blood_not_taken_could_not_other: Haskell features a type system with type inference
     and lazy evaluation.
   blood_not_taken_could_not_reason: The pot spilled
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_issues_with_kit: null
+  blood_not_taken_could_not_reason_not_enough_blood: null
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: 'Yes'
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_reason: The blood test kit arrived with parts missing
   blood_return_date: '2022-01-04 00:00:00.000000'
   blood_return_future_date: null
@@ -1560,7 +1986,7 @@
   blood_taken: 'No'
   blood_taken_am_pm: PM
   blood_taken_date: '2022-01-06 00:00:00.000000'
-  blood_taken_time_hour: 'No'
+  blood_taken_time_hour: null
   blood_taken_time_minute: '0'
   care_home_last_28_days: 'No'
   cis_covid_vaccine_date: null
@@ -1584,7 +2010,7 @@
   face_covering_work_or_education: Never
   face_covering_work_or_education_raw: Never
   flu_vaccine_received: Prefer not to say
-  flu_vaccine_received_date: 'No'
+  flu_vaccine_received_date: null
   hospital_last_28_days: 'No'
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Yes, a little
@@ -1601,39 +2027,42 @@
   last_28_days_unable_usual_activities_due_to_respiratory_infection: null
   last_28_days_urgent_care: null
   last_28_days_urgent_care_respiratory_infection: null
-  other_covid_infection_test: 'No'
+  other_covid_infection_test: null
   other_covid_infection_test_negative_date: 05/01/2022
   other_covid_infection_test_positive_date: '2022-01-07 00:00:00.000000'
   other_covid_infection_test_results: All Tests failed
   other_covid_infection_test_results_raw: All tests failed
   participant_completion_window_id: '6144'
   participant_first_name_confirmation: 'Yes'
-  participant_first_name_on_behalf: 'No'
+  participant_first_name_on_behalf: null
   phm_covid_vaccine_number_of_doses: '8'
+  phm_think_had_covid: null
+  phm_think_had_flu: 'Yes'
   phm_think_had_flu_onset_date: '2022-01-01 00:00:00.000000'
+  phm_think_had_other_infection: null
   phm_think_had_other_infection_onset_date: '2022-01-07 00:00:00.000000'
-  phm_think_had_respiratory_infection: 'No'
+  phm_think_had_respiratory_infection: null
   phm_think_had_respiratory_infection_type:
   - Flu
-  phm_think_had_respiratory_infection_type_covid_19: 'No'
-  phm_think_had_respiratory_infection_type_do_not_know_the_type: 'No'
-  phm_think_had_respiratory_infection_type_flu: 'Yes'
+  phm_think_had_unknown: null
   physical_contact_18_to_69_years: '0'
   physical_contact_18_to_69_years_raw: '0'
   physical_contact_over_70_years: 6-10
   physical_contact_over_70_years_raw: 6 to 10
-  physical_contact_under_18_years: 'No'
+  physical_contact_under_18_years: null
   physical_contact_under_18_years_raw: Prefer not to say
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'No'
-  smokes_cigarettes: 'No'
-  smokes_cigars: 'No'
-  smokes_vape_or_e_cigarettes: 'Yes'
+  smoke_cigarettes: null
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: 'Yes'
   social_distance_contact_18_to_69_years: '0'
   social_distance_contact_18_to_69_years_raw: '0'
-  social_distance_contact_over_70_years: 'No'
+  social_distance_contact_over_70_years: null
   social_distance_contact_over_70_years_raw: Prefer not to say
-  social_distance_contact_under_18_years: 'No'
+  social_distance_contact_under_18_years: null
   social_distance_contact_under_18_years_raw: Prefer not to say
   swab_not_taken_reason: The swab test kit arrived both damaged and with parts missing
   swab_return_date: '2022-01-01 00:00:00.000000'
@@ -1641,149 +2070,210 @@
   swab_returned: 'Yes'
   swab_sample_barcode_correct: 'Yes'
   swab_sample_barcode_user_entered: SWT98251982
-  swab_taken: 'No'
+  swab_taken: null
   swab_taken_am_pm: PM
   swab_taken_date: '2022-01-05 00:00:00.000000'
-  swab_taken_time_hour: 'No'
+  swab_taken_time_hour: null
   swab_taken_time_minute: '15'
-  test_kit_info_end_of_survey: 'No'
+  test_kit_info_end_of_survey: null
   test_type_positive_result: A lateral flow test. That is the test you can do yourself
     and you do not have to send it to a laboratory because the result shows in the
     device in about 30 minutes.
-  think_had_covid_any_symptom_abdominal_pain: 'No'
-  think_had_covid_any_symptom_diarrhoea: 'No'
-  think_had_covid_any_symptom_difficulty_concentrating: 'No'
-  think_had_covid_any_symptom_headache: 'No'
-  think_had_covid_any_symptom_list:
+  think_had_covid_any_symptom_list_1:
   - Runny nose or sneezing
+  think_had_covid_any_symptom_list_2:
   - Worry or anxiety
-  think_had_covid_any_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_covid_any_symptom_loss_of_smell: 'No'
-  think_had_covid_any_symptom_loss_of_taste: 'No'
-  think_had_covid_any_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_covid_any_symptom_memory_loss_or_confusion: 'No'
-  think_had_covid_any_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_had_covid_any_symptom_runny_nose_or_sneezing: 'Yes'
-  think_had_covid_any_symptom_sore_throat: 'No'
-  think_had_covid_any_symptom_weakness_or_tiredness: 'No'
-  think_had_covid_any_symptom_worry_or_anxiety: 'Yes'
   think_had_covid_any_symptoms: 'Yes'
   think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_anxiety: 'Yes'
+  think_had_covid_symptom_cough: null
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_difficulty_concentrating: null
+  think_had_covid_symptom_fatigue: null
+  think_had_covid_symptom_fever: null
+  think_had_covid_symptom_headache: null
+  think_had_covid_symptom_loss_of_appetite: null
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: null
+  think_had_covid_symptom_low_mood: null
+  think_had_covid_symptom_memory_loss_or_confusion: null
+  think_had_covid_symptom_more_trouble_sleeping: null
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: null
+  think_had_covid_symptom_noisy_breathing: null
+  think_had_covid_symptom_none_list_1: null
+  think_had_covid_symptom_none_list_2: null
+  think_had_covid_symptom_runny_nose_or_sneezing: 'Yes'
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptoms: 'Yes'
-  think_had_flu_symptom_abdominal_pain: 'No'
-  think_had_flu_symptom_diarrhoea: 'No'
+  think_had_flu_symptom_abdominal_pain: null
+  think_had_flu_symptom_anxiety: null
+  think_had_flu_symptom_cough: null
+  think_had_flu_symptom_diarrhoea: null
+  think_had_flu_symptom_difficulty_concentrating: null
+  think_had_flu_symptom_fatigue: null
+  think_had_flu_symptom_fever: null
   think_had_flu_symptom_headache: 'Yes'
-  think_had_flu_symptom_list:
+  think_had_flu_symptom_list_1:
   - Loss of appetite or eating less than usual
+  think_had_flu_symptom_list_2:
   - Headache
-  think_had_flu_symptom_loss_of_appetite_or_eating_less_than_usual: 'Yes'
-  think_had_flu_symptom_loss_of_smell: 'No'
-  think_had_flu_symptom_loss_of_taste: 'No'
-  think_had_flu_symptom_memory_loss_or_confusion: 'No'
-  think_had_flu_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_had_flu_symptom_muscle_ache: 'No'
-  think_had_flu_symptom_nausea_or_vomiting: 'No'
-  think_had_flu_symptom_noisy_breathing_or_wheezing: 'No'
-  think_had_flu_symptom_weakness_or_tiredness: 'No'
-  think_had_flu_symptom_worry_or_anxiety: 'No'
+  think_had_flu_symptom_loss_of_appetite: 'Yes'
+  think_had_flu_symptom_loss_of_smell: null
+  think_had_flu_symptom_loss_of_taste: null
+  think_had_flu_symptom_low_mood: null
+  think_had_flu_symptom_memory_loss_or_confusion: null
+  think_had_flu_symptom_more_trouble_sleeping: null
+  think_had_flu_symptom_muscle_ache: null
+  think_had_flu_symptom_nausea_or_vomiting: null
+  think_had_flu_symptom_noisy_breathing: null
+  think_had_flu_symptom_none_list_1: null
+  think_had_flu_symptom_none_list_2: null
+  think_had_flu_symptom_runny_nose_or_sneezing: null
+  think_had_flu_symptom_shortness_of_breath: null
+  think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptoms: 'Yes'
-  think_had_other_infection_symptom_cough: 'No'
-  think_had_other_infection_symptom_diarrhoea: 'No'
-  think_had_other_infection_symptom_difficulty_concentrating: 'No'
-  think_had_other_infection_symptom_fever_including_high_temperature: 'No'
-  think_had_other_infection_symptom_headache: 'Yes'
-  think_had_other_infection_symptom_list:
+  think_had_other_infection_symptom_list_1:
   - Shortness of breath
+  think_had_other_infection_symptom_list_2:
   - Headache
-  think_had_other_infection_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_other_infection_symptom_loss_of_smell: 'No'
-  think_had_other_infection_symptom_loss_of_taste: 'No'
-  think_had_other_infection_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_other_infection_symptom_memory_loss_or_confusion: 'No'
-  think_had_other_infection_symptom_muscle_ache: 'No'
-  think_had_other_infection_symptom_nausea_or_vomiting: 'No'
-  think_had_other_infection_symptom_runny_nose_or_sneezing: 'No'
-  think_had_other_infection_symptom_shortness_of_breath: 'Yes'
-  think_had_other_infection_symptom_weakness_or_tiredness: 'No'
+  think_had_other_symptom_abdominal_pain: null
+  think_had_other_symptom_anxiety: null
+  think_had_other_symptom_cough: null
+  think_had_other_symptom_diarrhoea: null
+  think_had_other_symptom_difficulty_concentrating: null
+  think_had_other_symptom_fatigue: null
+  think_had_other_symptom_fever: null
+  think_had_other_symptom_headache: 'Yes'
+  think_had_other_symptom_loss_of_appetite: null
+  think_had_other_symptom_loss_of_smell: null
+  think_had_other_symptom_loss_of_taste: null
+  think_had_other_symptom_low_mood: null
+  think_had_other_symptom_memory_loss_or_confusion: null
+  think_had_other_symptom_more_trouble_sleeping: null
+  think_had_other_symptom_muscle_ache: null
+  think_had_other_symptom_nausea_or_vomiting: null
+  think_had_other_symptom_noisy_breathing: null
+  think_had_other_symptom_none_list_1: null
+  think_had_other_symptom_none_list_2: null
+  think_had_other_symptom_runny_nose_or_sneezing: null
+  think_had_other_symptom_shortness_of_breath: 'Yes'
+  think_had_other_symptom_sore_throat: null
   think_have_any_symptoms_new_or_worse: 'Yes'
-  think_have_covid_any_symptom_abdominal_pain: 'No'
-  think_have_covid_any_symptom_diarrhoea: 'No'
-  think_have_covid_any_symptom_difficulty_concentrating: 'No'
-  think_have_covid_any_symptom_headache: 'Yes'
-  think_have_covid_any_symptom_list:
+  think_have_covid_any_symptom_list_1:
   - Sore throat
+  think_have_covid_any_symptom_list_2:
   - Headache
-  think_have_covid_any_symptom_loss_of_smell: 'No'
-  think_have_covid_any_symptom_memory_loss_or_confusion: 'No'
-  think_have_covid_any_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_have_covid_any_symptom_muscle_ache: 'No'
-  think_have_covid_any_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_any_symptom_noisy_breathing_or_wheezing: 'No'
-  think_have_covid_any_symptom_runny_nose_or_sneezing: 'No'
-  think_have_covid_any_symptom_sore_throat: 'Yes'
-  think_have_covid_any_symptom_weakness_or_tiredness: 'No'
   think_have_covid_any_symptoms: 'Yes'
   think_have_covid_onset_date: null
+  think_have_covid_symptom_abdominal_pain: null
+  think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_cough: null
+  think_have_covid_symptom_diarrhoea: null
+  think_have_covid_symptom_difficulty_concentrating: null
+  think_have_covid_symptom_fatigue: null
+  think_have_covid_symptom_fever: null
+  think_have_covid_symptom_headache: 'Yes'
+  think_have_covid_symptom_loss_of_appetite: null
+  think_have_covid_symptom_loss_of_smell: null
+  think_have_covid_symptom_loss_of_taste: null
+  think_have_covid_symptom_low_mood: null
+  think_have_covid_symptom_memory_loss_or_confusion: null
+  think_have_covid_symptom_more_trouble_sleeping: null
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: null
+  think_have_covid_symptom_noisy_breathing: null
+  think_have_covid_symptom_none_list_1: null
+  think_have_covid_symptom_none_list_2: null
+  think_have_covid_symptom_runny_nose_or_sneezing: null
+  think_have_covid_symptom_shortness_of_breath: null
+  think_have_covid_symptom_sore_throat: 'Yes'
   think_have_long_covid: 'Yes'
   think_have_long_covid_any_symptoms: 'Yes'
-  think_have_long_covid_symptom_abdominal_pain: 'No'
-  think_have_long_covid_symptom_cough: 'No'
+  think_have_long_covid_symptom_abdominal_pain: null
+  think_have_long_covid_symptom_anxiety: null
+  think_have_long_covid_symptom_cough: null
+  think_have_long_covid_symptom_diarrhoea: null
   think_have_long_covid_symptom_difficulty_concentrating: 'Yes'
-  think_have_long_covid_symptom_fever_including_high_temperature: 'No'
-  think_have_long_covid_symptom_headache: 'No'
-  think_have_long_covid_symptom_list:
+  think_have_long_covid_symptom_fatigue: null
+  think_have_long_covid_symptom_fever: null
+  think_have_long_covid_symptom_headache: null
+  think_have_long_covid_symptom_list_1:
   - Nausea or vomiting
+  think_have_long_covid_symptom_list_2:
   - Difficulty concentrating
+  think_have_long_covid_symptom_list_3:
   - Loss of smell
-  think_have_long_covid_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_have_long_covid_symptom_loss_of_smell: 'Yes'
-  think_have_long_covid_symptom_loss_of_taste: 'No'
-  think_have_long_covid_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
-  think_have_long_covid_symptom_more_trouble_sleeping_than_usual: 'No'
+  think_have_long_covid_symptom_loss_of_appetite: null
+  think_have_long_covid_symptom_loss_of_smell: null
+  think_have_long_covid_symptom_loss_of_taste: null
+  think_have_long_covid_symptom_low_mood: null
+  think_have_long_covid_symptom_memory_loss_or_confusion: null
+  think_have_long_covid_symptom_more_trouble_sleeping: null
+  think_have_long_covid_symptom_muscle_ache: null
   think_have_long_covid_symptom_nausea_or_vomiting: 'Yes'
-  think_have_long_covid_symptom_noisy_breathing_or_wheezing: 'No'
+  think_have_long_covid_symptom_noisy_breathing: null
+  think_have_long_covid_symptom_none_list_1: null
+  think_have_long_covid_symptom_none_list_2: null
   think_have_long_covid_symptom_reduced_ability: Yes a little
-  think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
-  think_have_long_covid_symptom_shortness_of_breath: 'No'
-  think_have_long_covid_symptom_sore_throat: 'No'
-  think_have_long_covid_symptom_weakness_or_tiredness: 'No'
-  think_have_long_covid_symptom_worry_or_anxiety: 'No'
-  think_have_long_covid_symptom_worse_after_effort: 'No'
-  think_have_symptoms_new_or_worse_diarrhoea: 'No'
-  think_have_symptoms_new_or_worse_difficulty_concentrating: 'No'
-  think_have_symptoms_new_or_worse_fever_including_high_temperature: 'No'
-  think_have_symptoms_new_or_worse_list:
+  think_have_long_covid_symptom_runny_nose_or_sneezing: null
+  think_have_long_covid_symptom_shortness_of_breath: null
+  think_have_long_covid_symptom_sore_throat: null
+  think_have_long_covid_symptom_worse_after_effort: null
+  think_have_symptoms_new_or_worse_list_1:
   - Loss of appetite or eating less than usual
+  think_have_symptoms_new_or_worse_list_2:
   - Worry or anxiety
-  think_have_symptoms_new_or_worse_loss_of_appetite_or_eating_less_than_usual: 'Yes'
-  think_have_symptoms_new_or_worse_loss_of_taste: 'No'
-  think_have_symptoms_new_or_worse_low_mood_or_not_enjoying_anything: 'No'
-  think_have_symptoms_new_or_worse_memory_loss_or_confusion: 'No'
-  think_have_symptoms_new_or_worse_more_trouble_sleeping_than_usual: 'No'
-  think_have_symptoms_new_or_worse_muscle_ache: 'No'
-  think_have_symptoms_new_or_worse_nausea_or_vomiting: 'No'
-  think_have_symptoms_new_or_worse_noisy_breathing_or_wheezing: 'No'
-  think_have_symptoms_new_or_worse_runny_nose_or_sneezing: 'No'
-  think_have_symptoms_new_or_worse_sore_throat: 'No'
-  think_have_symptoms_new_or_worse_worry_or_anxiety: 'Yes'
+  think_have_symptoms_symptom_abdominal_pain: null
+  think_have_symptoms_symptom_anxiety: 'Yes'
+  think_have_symptoms_symptom_cough: null
+  think_have_symptoms_symptom_diarrhoea: null
+  think_have_symptoms_symptom_difficulty_concentrating: null
+  think_have_symptoms_symptom_fatigue: null
+  think_have_symptoms_symptom_fever: null
+  think_have_symptoms_symptom_headache: null
+  think_have_symptoms_symptom_loss_of_appetite: 'Yes'
+  think_have_symptoms_symptom_loss_of_smell: null
+  think_have_symptoms_symptom_loss_of_taste: null
+  think_have_symptoms_symptom_low_mood: null
+  think_have_symptoms_symptom_memory_loss_or_confusion: null
+  think_have_symptoms_symptom_more_trouble_sleeping: null
+  think_have_symptoms_symptom_muscle_ache: null
+  think_have_symptoms_symptom_nausea_or_vomiting: null
+  think_have_symptoms_symptom_noisy_breathing: null
+  think_have_symptoms_symptom_none_list_1: null
+  think_have_symptoms_symptom_none_list_2: null
+  think_have_symptoms_symptom_runny_nose_or_sneezing: null
+  think_have_symptoms_symptom_shortness_of_breath: null
+  think_have_symptoms_symptom_sore_throat: null
   times_hour_or_longer_another_home_last_7_days: '5'
-  times_hour_or_longer_another_person_your_home_last_7_days: 'No'
+  times_hour_or_longer_another_person_your_home_last_7_days: null
   times_indoor_exercise_last_28_days: 21 or more
-  times_large_events_last_28_days: 'No'
+  times_large_events_last_28_days: null
   times_medium_events_last_28_days: 'No'
-  times_outside_shopping_or_socialising_last_7_days: 7
+  times_outside_shopping_or_socialising_last_7_days: 7.0
   times_shopping_last_7_days: '5'
   times_shopping_last_7_days_raw: '5'
   times_socialising_last_7_days: '7'
   times_socialising_last_7_days_raw: 7 times or more
   transport_shared_outside_household_last_28_days: Train
+  transport_shared_outside_household_last_28_days_bus_coach: null
+  transport_shared_outside_household_last_28_days_car_van: null
+  transport_shared_outside_household_last_28_days_ferry_boat: null
+  transport_shared_outside_household_last_28_days_none: null
+  transport_shared_outside_household_last_28_days_other: null
+  transport_shared_outside_household_last_28_days_plane: null
+  transport_shared_outside_household_last_28_days_taxi: null
+  transport_shared_outside_household_last_28_days_train: 'Yes'
+  transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: Underound or Metro or Light Rail or Tram
   work_direct_contact_patients_or_clients: 'Yes'
   work_health_care_area: Other
   work_in_additional_paid_employment: 'No'
   work_location: Working from home
-  work_main_job_changed: 'No'
+  work_main_job_changed: null
   work_main_job_role: Type classes first appeared in the Haskell programming language.
   work_main_job_title: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
@@ -1794,7 +2284,7 @@
   work_sector_raw: Retail sector. This includes wholesale
   work_status_digital: Employed
   work_status_education: A child aged 4 or over at home-school
-  work_status_employment: 'No'
+  work_status_employment: null
   work_status_unemployment: Looking for paid work and able to start
   work_status_v0: null
   work_status_v1: null
@@ -1809,20 +2299,26 @@
   blood_not_taken_could_not_other: In 1989 the building was heavily damaged by fire,
     but it has since been restored.
   blood_not_taken_could_not_reason: I had bruising or pain
+  blood_not_taken_could_not_reason_had_bruising: 'Yes'
+  blood_not_taken_could_not_reason_issues_with_kit: null
+  blood_not_taken_could_not_reason_not_enough_blood: null
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: null
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_reason: I asked not to receive a blood test kit this month
   blood_return_date: '2022-01-09 00:00:00.000000'
   blood_return_future_date: '2022-01-03 00:00:00.000000'
   blood_returned: 'Yes'
-  blood_sample_barcode_correct: 'No'
+  blood_sample_barcode_correct: null
   blood_sample_barcode_user_entered: BLT22988318
   blood_taken: 'Yes'
   blood_taken_am_pm: AM
   blood_taken_date: '2022-01-01 00:00:00.000000'
-  blood_taken_time_hour: 'No'
+  blood_taken_time_hour: null
   blood_taken_time_minute: '30'
-  care_home_last_28_days: 'No'
+  care_home_last_28_days: null
   cis_covid_vaccine_date: null
-  cis_covid_vaccine_number_of_doses: 'No'
+  cis_covid_vaccine_number_of_doses: null
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: Sinovac
   cis_covid_vaccine_type_other: Those who refuse to learn from history are condemned
@@ -1835,15 +2331,15 @@
   currently_smokes_or_vapes_description:
   - Cigarettes
   education_in_person_days_per_week: '6'
-  end_screen_questionnaire: 'No'
+  end_screen_questionnaire: null
   ever_smoked_regularly: 'Yes'
   face_covering_other_enclosed_places: Yes, always
   face_covering_outside_of_home: null
   face_covering_work_or_education: Not going to place of work or education
   face_covering_work_or_education_raw: I am not going to my place of work or education
   flu_vaccine_received: 'No'
-  flu_vaccine_received_date: 'No'
-  hospital_last_28_days: 'No'
+  flu_vaccine_received_date: null
+  hospital_last_28_days: null
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Yes, a lot
   illness_reduces_activity_or_ability_raw: Yes a lot
@@ -1860,186 +2356,250 @@
   last_28_days_urgent_care: null
   last_28_days_urgent_care_respiratory_infection: null
   other_covid_infection_test: 'Yes'
-  other_covid_infection_test_negative_date: 'No'
+  other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
   participant_completion_window_id: '7236'
   participant_first_name_confirmation: 'No'
-  participant_first_name_on_behalf: 'No'
-  phm_covid_vaccine_number_of_doses: 'No'
+  participant_first_name_on_behalf: null
+  phm_covid_vaccine_number_of_doses: null
+  phm_think_had_covid: null
+  phm_think_had_flu: null
   phm_think_had_flu_onset_date: null
+  phm_think_had_other_infection: null
   phm_think_had_other_infection_onset_date: '2022-01-07 00:00:00.000000'
   phm_think_had_respiratory_infection: 'Yes'
   phm_think_had_respiratory_infection_type:
   - Do not know the type
-  phm_think_had_respiratory_infection_type_covid_19: 'No'
-  phm_think_had_respiratory_infection_type_do_not_know_the_type: 'Yes'
-  phm_think_had_respiratory_infection_type_flu: 'No'
-  physical_contact_18_to_69_years: 'No'
-  physical_contact_18_to_69_years_raw: 'No'
+  phm_think_had_unknown: 'Yes'
+  physical_contact_18_to_69_years: null
+  physical_contact_18_to_69_years_raw: null
   physical_contact_over_70_years: 6-10
   physical_contact_over_70_years_raw: 6 to 10
-  physical_contact_under_18_years: 'No'
+  physical_contact_under_18_years: null
   physical_contact_under_18_years_raw: Prefer not to say
-  problem_with_survey_access_helpline: 'No'
-  questionnaire_started_no_incentive: 'No'
-  smokes_cigarettes: 'Yes'
-  smokes_cigars: 'No'
-  smokes_vape_or_e_cigarettes: 'No'
-  social_distance_contact_18_to_69_years: 'No'
-  social_distance_contact_18_to_69_years_raw: 'No'
+  problem_with_survey_access_helpline: null
+  questionnaire_started_no_incentive: null
+  smoke_cigarettes: 'Yes'
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
+  social_distance_contact_18_to_69_years: null
+  social_distance_contact_18_to_69_years_raw: null
   social_distance_contact_over_70_years: 21 or more
   social_distance_contact_over_70_years_raw: 21 or more
-  social_distance_contact_under_18_years: 'No'
-  social_distance_contact_under_18_years_raw: 'No'
+  social_distance_contact_under_18_years: null
+  social_distance_contact_under_18_years_raw: null
   swab_not_taken_reason: The swab test kit arrived both damaged and with parts missing
   swab_return_date: '2022-01-02 00:00:00.000000'
   swab_return_future_date: '2022-01-04 00:00:00.000000'
-  swab_returned: 'No'
-  swab_sample_barcode_correct: 'No'
+  swab_returned: null
+  swab_sample_barcode_correct: null
   swab_sample_barcode_user_entered: SWT23704990
   swab_taken: 'No'
   swab_taken_am_pm: PM
   swab_taken_date: '2022-01-02 00:00:00.000000'
-  swab_taken_time_hour: 'No'
+  swab_taken_time_hour: null
   swab_taken_time_minute: '15'
-  test_kit_info_end_of_survey: 'No'
+  test_kit_info_end_of_survey: null
   test_type_positive_result: A lateral flow test. That is the test you can do yourself
     and you do not have to send it to a laboratory because the result shows in the
     device in about 30 minutes.
-  think_had_covid_any_symptom_abdominal_pain: 'No'
-  think_had_covid_any_symptom_diarrhoea: 'No'
-  think_had_covid_any_symptom_difficulty_concentrating: 'No'
-  think_had_covid_any_symptom_headache: 'No'
-  think_had_covid_any_symptom_list:
+  think_had_covid_any_symptom_list_1:
   - Sore throat
+  think_had_covid_any_symptom_list_2:
   - Memory loss or confusion
-  think_had_covid_any_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_covid_any_symptom_loss_of_smell: 'No'
-  think_had_covid_any_symptom_loss_of_taste: 'No'
-  think_had_covid_any_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_covid_any_symptom_memory_loss_or_confusion: 'Yes'
-  think_had_covid_any_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_had_covid_any_symptom_runny_nose_or_sneezing: 'No'
-  think_had_covid_any_symptom_sore_throat: 'Yes'
-  think_had_covid_any_symptom_weakness_or_tiredness: 'No'
-  think_had_covid_any_symptom_worry_or_anxiety: 'No'
   think_had_covid_any_symptoms: 'Yes'
   think_had_covid_onset_date: null
+  think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_anxiety: null
+  think_had_covid_symptom_cough: null
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_difficulty_concentrating: null
+  think_had_covid_symptom_fatigue: null
+  think_had_covid_symptom_fever: null
+  think_had_covid_symptom_headache: null
+  think_had_covid_symptom_loss_of_appetite: null
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: null
+  think_had_covid_symptom_low_mood: null
+  think_had_covid_symptom_memory_loss_or_confusion: 'Yes'
+  think_had_covid_symptom_more_trouble_sleeping: null
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: null
+  think_had_covid_symptom_noisy_breathing: null
+  think_had_covid_symptom_none_list_1: null
+  think_had_covid_symptom_none_list_2: null
+  think_had_covid_symptom_runny_nose_or_sneezing: null
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: 'Yes'
   think_had_flu_any_symptoms: 'Yes'
-  think_had_flu_symptom_abdominal_pain: 'No'
-  think_had_flu_symptom_diarrhoea: 'No'
-  think_had_flu_symptom_headache: 'No'
-  think_had_flu_symptom_list:
+  think_had_flu_symptom_abdominal_pain: null
+  think_had_flu_symptom_anxiety: null
+  think_had_flu_symptom_cough: null
+  think_had_flu_symptom_diarrhoea: null
+  think_had_flu_symptom_difficulty_concentrating: null
+  think_had_flu_symptom_fatigue: null
+  think_had_flu_symptom_fever: null
+  think_had_flu_symptom_headache: null
+  think_had_flu_symptom_list_1:
   - Loss of appetite or eating less than usual
+  think_had_flu_symptom_list_2:
   - Muscle ache
-  think_had_flu_symptom_loss_of_appetite_or_eating_less_than_usual: 'Yes'
-  think_had_flu_symptom_loss_of_smell: 'No'
-  think_had_flu_symptom_loss_of_taste: 'No'
-  think_had_flu_symptom_memory_loss_or_confusion: 'No'
-  think_had_flu_symptom_more_trouble_sleeping_than_usual: 'No'
+  think_had_flu_symptom_loss_of_appetite: 'Yes'
+  think_had_flu_symptom_loss_of_smell: null
+  think_had_flu_symptom_loss_of_taste: null
+  think_had_flu_symptom_low_mood: null
+  think_had_flu_symptom_memory_loss_or_confusion: null
+  think_had_flu_symptom_more_trouble_sleeping: null
   think_had_flu_symptom_muscle_ache: 'Yes'
-  think_had_flu_symptom_nausea_or_vomiting: 'No'
-  think_had_flu_symptom_noisy_breathing_or_wheezing: 'No'
-  think_had_flu_symptom_weakness_or_tiredness: 'No'
-  think_had_flu_symptom_worry_or_anxiety: 'No'
+  think_had_flu_symptom_nausea_or_vomiting: null
+  think_had_flu_symptom_noisy_breathing: null
+  think_had_flu_symptom_none_list_1: null
+  think_had_flu_symptom_none_list_2: null
+  think_had_flu_symptom_runny_nose_or_sneezing: null
+  think_had_flu_symptom_shortness_of_breath: null
+  think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptoms: 'Yes'
-  think_had_other_infection_symptom_cough: 'No'
-  think_had_other_infection_symptom_diarrhoea: 'No'
-  think_had_other_infection_symptom_difficulty_concentrating: 'No'
-  think_had_other_infection_symptom_fever_including_high_temperature: 'No'
-  think_had_other_infection_symptom_headache: 'Yes'
-  think_had_other_infection_symptom_list:
+  think_had_other_infection_symptom_list_1:
   - Loss of smell
+  think_had_other_infection_symptom_list_2:
   - Headache
-  think_had_other_infection_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_other_infection_symptom_loss_of_smell: 'Yes'
-  think_had_other_infection_symptom_loss_of_taste: 'No'
-  think_had_other_infection_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_other_infection_symptom_memory_loss_or_confusion: 'No'
-  think_had_other_infection_symptom_muscle_ache: 'No'
-  think_had_other_infection_symptom_nausea_or_vomiting: 'No'
-  think_had_other_infection_symptom_runny_nose_or_sneezing: 'No'
-  think_had_other_infection_symptom_shortness_of_breath: 'No'
-  think_had_other_infection_symptom_weakness_or_tiredness: 'No'
+  think_had_other_symptom_abdominal_pain: null
+  think_had_other_symptom_anxiety: null
+  think_had_other_symptom_cough: null
+  think_had_other_symptom_diarrhoea: null
+  think_had_other_symptom_difficulty_concentrating: null
+  think_had_other_symptom_fatigue: null
+  think_had_other_symptom_fever: null
+  think_had_other_symptom_headache: 'Yes'
+  think_had_other_symptom_loss_of_appetite: null
+  think_had_other_symptom_loss_of_smell: 'Yes'
+  think_had_other_symptom_loss_of_taste: null
+  think_had_other_symptom_low_mood: null
+  think_had_other_symptom_memory_loss_or_confusion: null
+  think_had_other_symptom_more_trouble_sleeping: null
+  think_had_other_symptom_muscle_ache: null
+  think_had_other_symptom_nausea_or_vomiting: null
+  think_had_other_symptom_noisy_breathing: null
+  think_had_other_symptom_none_list_1: null
+  think_had_other_symptom_none_list_2: null
+  think_had_other_symptom_runny_nose_or_sneezing: null
+  think_had_other_symptom_shortness_of_breath: null
+  think_had_other_symptom_sore_throat: null
   think_have_any_symptoms_new_or_worse: 'Yes'
-  think_have_covid_any_symptom_abdominal_pain: 'Yes'
-  think_have_covid_any_symptom_diarrhoea: 'No'
-  think_have_covid_any_symptom_difficulty_concentrating: 'No'
-  think_have_covid_any_symptom_headache: 'No'
-  think_have_covid_any_symptom_list:
+  think_have_covid_any_symptom_list_1:
   - Abdominal pain
+  think_have_covid_any_symptom_list_2:
   - Memory loss or confusion
-  think_have_covid_any_symptom_loss_of_smell: 'No'
-  think_have_covid_any_symptom_memory_loss_or_confusion: 'Yes'
-  think_have_covid_any_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_have_covid_any_symptom_muscle_ache: 'No'
-  think_have_covid_any_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_any_symptom_noisy_breathing_or_wheezing: 'No'
-  think_have_covid_any_symptom_runny_nose_or_sneezing: 'No'
-  think_have_covid_any_symptom_sore_throat: 'No'
-  think_have_covid_any_symptom_weakness_or_tiredness: 'No'
   think_have_covid_any_symptoms: 'Yes'
   think_have_covid_onset_date: '2022-01-08 00:00:00.000000'
+  think_have_covid_symptom_abdominal_pain: 'Yes'
+  think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_cough: null
+  think_have_covid_symptom_diarrhoea: null
+  think_have_covid_symptom_difficulty_concentrating: null
+  think_have_covid_symptom_fatigue: null
+  think_have_covid_symptom_fever: null
+  think_have_covid_symptom_headache: null
+  think_have_covid_symptom_loss_of_appetite: null
+  think_have_covid_symptom_loss_of_smell: null
+  think_have_covid_symptom_loss_of_taste: null
+  think_have_covid_symptom_low_mood: null
+  think_have_covid_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_covid_symptom_more_trouble_sleeping: null
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: null
+  think_have_covid_symptom_noisy_breathing: null
+  think_have_covid_symptom_none_list_1: null
+  think_have_covid_symptom_none_list_2: null
+  think_have_covid_symptom_runny_nose_or_sneezing: null
+  think_have_covid_symptom_shortness_of_breath: null
+  think_have_covid_symptom_sore_throat: null
   think_have_long_covid: 'No'
   think_have_long_covid_any_symptoms: 'Yes'
-  think_have_long_covid_symptom_abdominal_pain: 'No'
-  think_have_long_covid_symptom_cough: 'No'
-  think_have_long_covid_symptom_difficulty_concentrating: 'No'
-  think_have_long_covid_symptom_fever_including_high_temperature: 'No'
-  think_have_long_covid_symptom_headache: 'No'
-  think_have_long_covid_symptom_list:
+  think_have_long_covid_symptom_abdominal_pain: null
+  think_have_long_covid_symptom_anxiety: null
+  think_have_long_covid_symptom_cough: null
+  think_have_long_covid_symptom_diarrhoea: null
+  think_have_long_covid_symptom_difficulty_concentrating: null
+  think_have_long_covid_symptom_fatigue: 'Yes'
+  think_have_long_covid_symptom_fever: null
+  think_have_long_covid_symptom_headache: null
+  think_have_long_covid_symptom_list_1:
   - Noisy breathing or wheezing
+  think_have_long_covid_symptom_list_2:
   - Weakness or tiredness
+  think_have_long_covid_symptom_list_3:
   - Noisy breathing or wheezing
-  think_have_long_covid_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_have_long_covid_symptom_loss_of_smell: 'No'
-  think_have_long_covid_symptom_loss_of_taste: 'No'
-  think_have_long_covid_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
-  think_have_long_covid_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_have_long_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_long_covid_symptom_noisy_breathing_or_wheezing: 'Yes'
+  think_have_long_covid_symptom_loss_of_appetite: null
+  think_have_long_covid_symptom_loss_of_smell: null
+  think_have_long_covid_symptom_loss_of_taste: null
+  think_have_long_covid_symptom_low_mood: null
+  think_have_long_covid_symptom_memory_loss_or_confusion: null
+  think_have_long_covid_symptom_more_trouble_sleeping: null
+  think_have_long_covid_symptom_muscle_ache: null
+  think_have_long_covid_symptom_nausea_or_vomiting: null
+  think_have_long_covid_symptom_noisy_breathing: 'Yes'
+  think_have_long_covid_symptom_none_list_1: null
+  think_have_long_covid_symptom_none_list_2: null
   think_have_long_covid_symptom_reduced_ability: Yes a lot
-  think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
-  think_have_long_covid_symptom_shortness_of_breath: 'No'
-  think_have_long_covid_symptom_sore_throat: 'No'
-  think_have_long_covid_symptom_weakness_or_tiredness: 'Yes'
-  think_have_long_covid_symptom_worry_or_anxiety: 'No'
-  think_have_long_covid_symptom_worse_after_effort: 'No'
-  think_have_symptoms_new_or_worse_diarrhoea: 'No'
-  think_have_symptoms_new_or_worse_difficulty_concentrating: 'No'
-  think_have_symptoms_new_or_worse_fever_including_high_temperature: 'No'
-  think_have_symptoms_new_or_worse_list:
+  think_have_long_covid_symptom_runny_nose_or_sneezing: null
+  think_have_long_covid_symptom_shortness_of_breath: null
+  think_have_long_covid_symptom_sore_throat: null
+  think_have_long_covid_symptom_worse_after_effort: null
+  think_have_symptoms_new_or_worse_list_1:
   - Loss of appetite or eating less than usual
+  think_have_symptoms_new_or_worse_list_2:
   - Memory loss or confusion
-  think_have_symptoms_new_or_worse_loss_of_appetite_or_eating_less_than_usual: 'Yes'
-  think_have_symptoms_new_or_worse_loss_of_taste: 'No'
-  think_have_symptoms_new_or_worse_low_mood_or_not_enjoying_anything: 'No'
-  think_have_symptoms_new_or_worse_memory_loss_or_confusion: 'Yes'
-  think_have_symptoms_new_or_worse_more_trouble_sleeping_than_usual: 'No'
-  think_have_symptoms_new_or_worse_muscle_ache: 'No'
-  think_have_symptoms_new_or_worse_nausea_or_vomiting: 'No'
-  think_have_symptoms_new_or_worse_noisy_breathing_or_wheezing: 'No'
-  think_have_symptoms_new_or_worse_runny_nose_or_sneezing: 'No'
-  think_have_symptoms_new_or_worse_sore_throat: 'No'
-  think_have_symptoms_new_or_worse_worry_or_anxiety: 'No'
+  think_have_symptoms_symptom_abdominal_pain: null
+  think_have_symptoms_symptom_anxiety: null
+  think_have_symptoms_symptom_cough: null
+  think_have_symptoms_symptom_diarrhoea: null
+  think_have_symptoms_symptom_difficulty_concentrating: null
+  think_have_symptoms_symptom_fatigue: null
+  think_have_symptoms_symptom_fever: null
+  think_have_symptoms_symptom_headache: null
+  think_have_symptoms_symptom_loss_of_appetite: 'Yes'
+  think_have_symptoms_symptom_loss_of_smell: null
+  think_have_symptoms_symptom_loss_of_taste: null
+  think_have_symptoms_symptom_low_mood: null
+  think_have_symptoms_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_symptoms_symptom_more_trouble_sleeping: null
+  think_have_symptoms_symptom_muscle_ache: null
+  think_have_symptoms_symptom_nausea_or_vomiting: null
+  think_have_symptoms_symptom_noisy_breathing: null
+  think_have_symptoms_symptom_none_list_1: null
+  think_have_symptoms_symptom_none_list_2: null
+  think_have_symptoms_symptom_runny_nose_or_sneezing: null
+  think_have_symptoms_symptom_shortness_of_breath: null
+  think_have_symptoms_symptom_sore_throat: null
   times_hour_or_longer_another_home_last_7_days: '4'
-  times_hour_or_longer_another_person_your_home_last_7_days: 'No'
+  times_hour_or_longer_another_person_your_home_last_7_days: null
   times_indoor_exercise_last_28_days: 11 to 20
   times_large_events_last_28_days: 'No'
   times_medium_events_last_28_days: Don't know
-  times_outside_shopping_or_socialising_last_7_days: 5
+  times_outside_shopping_or_socialising_last_7_days: 5.0
   times_shopping_last_7_days: '5'
   times_shopping_last_7_days_raw: '5'
   times_socialising_last_7_days: '0'
   times_socialising_last_7_days_raw: None
   transport_shared_outside_household_last_28_days: I have not used transport shared
     with people outside of my home for reasons other than travel to work or education
+  transport_shared_outside_household_last_28_days_bus_coach: null
+  transport_shared_outside_household_last_28_days_car_van: null
+  transport_shared_outside_household_last_28_days_ferry_boat: null
+  transport_shared_outside_household_last_28_days_none: 'Yes'
+  transport_shared_outside_household_last_28_days_other: null
+  transport_shared_outside_household_last_28_days_plane: null
+  transport_shared_outside_household_last_28_days_taxi: null
+  transport_shared_outside_household_last_28_days_train: null
+  transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: Train
   work_direct_contact_patients_or_clients: 'No'
-  work_health_care_area: 'No'
+  work_health_care_area: null
   work_in_additional_paid_employment: 'Yes'
   work_location: Working from home
   work_main_job_changed: 'No'
@@ -2071,18 +2631,24 @@
     within single quotes and an escape convention exists which allows any character
     to be used within an atom.
   blood_not_taken_could_not_reason: There were issues with the kit
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_issues_with_kit: 'Yes'
+  blood_not_taken_could_not_reason_not_enough_blood: null
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: null
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_reason: I decided not to take it this month
   blood_return_date: '2022-01-06 00:00:00.000000'
   blood_return_future_date: '2022-01-06 00:00:00.000000'
   blood_returned: 'No'
   blood_sample_barcode_correct: 'Yes'
   blood_sample_barcode_user_entered: BLT62754008
-  blood_taken: 'No'
+  blood_taken: null
   blood_taken_am_pm: PM
   blood_taken_date: '2022-01-09 00:00:00.000000'
-  blood_taken_time_hour: 'No'
+  blood_taken_time_hour: null
   blood_taken_time_minute: '0'
-  care_home_last_28_days: 'No'
+  care_home_last_28_days: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_number_of_doses: 8 doses or more
   cis_covid_vaccine_received: 'No'
@@ -2096,7 +2662,7 @@
   currently_smokes_or_vapes_description:
   - Cigarettes
   education_in_person_days_per_week: '3'
-  end_screen_questionnaire: 'No'
+  end_screen_questionnaire: null
   ever_smoked_regularly: 'No'
   face_covering_other_enclosed_places: Not going to other enclosed public spaces or
     using public transport
@@ -2105,7 +2671,7 @@
   face_covering_work_or_education_raw: Never
   flu_vaccine_received: 'Yes'
   flu_vaccine_received_date: 05/01/2022
-  hospital_last_28_days: 'No'
+  hospital_last_28_days: null
   illness_lasting_over_12_months: Prefer not to say
   illness_reduces_activity_or_ability: Yes, a little
   illness_reduces_activity_or_ability_raw: Yes a little
@@ -2121,8 +2687,8 @@
   last_28_days_unable_usual_activities_due_to_respiratory_infection: null
   last_28_days_urgent_care: null
   last_28_days_urgent_care_respiratory_infection: null
-  other_covid_infection_test: 'No'
-  other_covid_infection_test_negative_date: 'No'
+  other_covid_infection_test: null
+  other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: '2022-01-04 00:00:00.000000'
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
@@ -2130,30 +2696,33 @@
   participant_first_name_confirmation: 'Yes'
   participant_first_name_on_behalf: 'No'
   phm_covid_vaccine_number_of_doses: '8'
+  phm_think_had_covid: 'Yes'
+  phm_think_had_flu: null
   phm_think_had_flu_onset_date: '2022-01-07 00:00:00.000000'
+  phm_think_had_other_infection: null
   phm_think_had_other_infection_onset_date: '2022-01-03 00:00:00.000000'
-  phm_think_had_respiratory_infection: 'No'
+  phm_think_had_respiratory_infection: null
   phm_think_had_respiratory_infection_type:
   - COVID-19
-  phm_think_had_respiratory_infection_type_covid_19: 'Yes'
-  phm_think_had_respiratory_infection_type_do_not_know_the_type: 'No'
-  phm_think_had_respiratory_infection_type_flu: 'No'
+  phm_think_had_unknown: null
   physical_contact_18_to_69_years: '0'
   physical_contact_18_to_69_years_raw: '0'
   physical_contact_over_70_years: 1-5
   physical_contact_over_70_years_raw: 1 to 5
-  physical_contact_under_18_years: 'No'
+  physical_contact_under_18_years: null
   physical_contact_under_18_years_raw: Prefer not to say
-  problem_with_survey_access_helpline: 'No'
+  problem_with_survey_access_helpline: null
   questionnaire_started_no_incentive: 'No'
-  smokes_cigarettes: 'Yes'
-  smokes_cigars: 'No'
-  smokes_vape_or_e_cigarettes: 'No'
+  smoke_cigarettes: 'Yes'
+  smokes_cigar: null
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
   social_distance_contact_18_to_69_years: 6-10
   social_distance_contact_18_to_69_years_raw: 6 to 10
-  social_distance_contact_over_70_years: 'No'
-  social_distance_contact_over_70_years_raw: 'No'
-  social_distance_contact_under_18_years: 'No'
+  social_distance_contact_over_70_years: null
+  social_distance_contact_over_70_years_raw: null
+  social_distance_contact_under_18_years: null
   social_distance_contact_under_18_years_raw: Prefer not to say
   swab_not_taken_reason: I am near the end of my testing window and my swab test kit
     has not arrived
@@ -2162,147 +2731,208 @@
   swab_returned: 'No'
   swab_sample_barcode_correct: 'Yes'
   swab_sample_barcode_user_entered: SWT49804207
-  swab_taken: 'No'
+  swab_taken: null
   swab_taken_am_pm: AM
   swab_taken_date: '2022-01-06 00:00:00.000000'
-  swab_taken_time_hour: 'No'
+  swab_taken_time_hour: null
   swab_taken_time_minute: '15'
-  test_kit_info_end_of_survey: 'No'
+  test_kit_info_end_of_survey: null
   test_type_positive_result: Do not know
-  think_had_covid_any_symptom_abdominal_pain: 'No'
-  think_had_covid_any_symptom_diarrhoea: 'No'
-  think_had_covid_any_symptom_difficulty_concentrating: 'No'
-  think_had_covid_any_symptom_headache: 'No'
-  think_had_covid_any_symptom_list:
+  think_had_covid_any_symptom_list_1:
   - Sore throat
+  think_had_covid_any_symptom_list_2:
   - Low mood or not enjoying anything
-  think_had_covid_any_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_covid_any_symptom_loss_of_smell: 'No'
-  think_had_covid_any_symptom_loss_of_taste: 'No'
-  think_had_covid_any_symptom_low_mood_or_not_enjoying_anything: 'Yes'
-  think_had_covid_any_symptom_memory_loss_or_confusion: 'No'
-  think_had_covid_any_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_had_covid_any_symptom_runny_nose_or_sneezing: 'No'
-  think_had_covid_any_symptom_sore_throat: 'Yes'
-  think_had_covid_any_symptom_weakness_or_tiredness: 'No'
-  think_had_covid_any_symptom_worry_or_anxiety: 'No'
   think_had_covid_any_symptoms: 'Yes'
   think_had_covid_onset_date: '2022-01-02 00:00:00.000000'
+  think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_anxiety: null
+  think_had_covid_symptom_cough: null
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_difficulty_concentrating: null
+  think_had_covid_symptom_fatigue: null
+  think_had_covid_symptom_fever: null
+  think_had_covid_symptom_headache: null
+  think_had_covid_symptom_loss_of_appetite: null
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: null
+  think_had_covid_symptom_low_mood: 'Yes'
+  think_had_covid_symptom_memory_loss_or_confusion: null
+  think_had_covid_symptom_more_trouble_sleeping: null
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: null
+  think_had_covid_symptom_noisy_breathing: null
+  think_had_covid_symptom_none_list_1: null
+  think_had_covid_symptom_none_list_2: null
+  think_had_covid_symptom_runny_nose_or_sneezing: null
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: 'Yes'
   think_had_flu_any_symptoms: 'Yes'
-  think_had_flu_symptom_abdominal_pain: 'No'
-  think_had_flu_symptom_diarrhoea: 'No'
-  think_had_flu_symptom_headache: 'No'
-  think_had_flu_symptom_list:
+  think_had_flu_symptom_abdominal_pain: null
+  think_had_flu_symptom_anxiety: 'Yes'
+  think_had_flu_symptom_cough: null
+  think_had_flu_symptom_diarrhoea: null
+  think_had_flu_symptom_difficulty_concentrating: null
+  think_had_flu_symptom_fatigue: null
+  think_had_flu_symptom_fever: null
+  think_had_flu_symptom_headache: null
+  think_had_flu_symptom_list_1:
   - Nausea or vomiting
+  think_had_flu_symptom_list_2:
   - Worry or anxiety
-  think_had_flu_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_flu_symptom_loss_of_smell: 'No'
-  think_had_flu_symptom_loss_of_taste: 'No'
-  think_had_flu_symptom_memory_loss_or_confusion: 'No'
-  think_had_flu_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_had_flu_symptom_muscle_ache: 'No'
+  think_had_flu_symptom_loss_of_appetite: null
+  think_had_flu_symptom_loss_of_smell: null
+  think_had_flu_symptom_loss_of_taste: null
+  think_had_flu_symptom_low_mood: null
+  think_had_flu_symptom_memory_loss_or_confusion: null
+  think_had_flu_symptom_more_trouble_sleeping: null
+  think_had_flu_symptom_muscle_ache: null
   think_had_flu_symptom_nausea_or_vomiting: 'Yes'
-  think_had_flu_symptom_noisy_breathing_or_wheezing: 'No'
-  think_had_flu_symptom_weakness_or_tiredness: 'No'
-  think_had_flu_symptom_worry_or_anxiety: 'Yes'
+  think_had_flu_symptom_noisy_breathing: null
+  think_had_flu_symptom_none_list_1: null
+  think_had_flu_symptom_none_list_2: null
+  think_had_flu_symptom_runny_nose_or_sneezing: null
+  think_had_flu_symptom_shortness_of_breath: null
+  think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptoms: 'Yes'
-  think_had_other_infection_symptom_cough: 'No'
-  think_had_other_infection_symptom_diarrhoea: 'Yes'
-  think_had_other_infection_symptom_difficulty_concentrating: 'No'
-  think_had_other_infection_symptom_fever_including_high_temperature: 'No'
-  think_had_other_infection_symptom_headache: 'No'
-  think_had_other_infection_symptom_list:
+  think_had_other_infection_symptom_list_1:
   - Diarrhoea
+  think_had_other_infection_symptom_list_2:
   - Muscle ache
-  think_had_other_infection_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_other_infection_symptom_loss_of_smell: 'No'
-  think_had_other_infection_symptom_loss_of_taste: 'No'
-  think_had_other_infection_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_other_infection_symptom_memory_loss_or_confusion: 'No'
-  think_had_other_infection_symptom_muscle_ache: 'Yes'
-  think_had_other_infection_symptom_nausea_or_vomiting: 'No'
-  think_had_other_infection_symptom_runny_nose_or_sneezing: 'No'
-  think_had_other_infection_symptom_shortness_of_breath: 'No'
-  think_had_other_infection_symptom_weakness_or_tiredness: 'No'
+  think_had_other_symptom_abdominal_pain: null
+  think_had_other_symptom_anxiety: null
+  think_had_other_symptom_cough: null
+  think_had_other_symptom_diarrhoea: 'Yes'
+  think_had_other_symptom_difficulty_concentrating: null
+  think_had_other_symptom_fatigue: null
+  think_had_other_symptom_fever: null
+  think_had_other_symptom_headache: null
+  think_had_other_symptom_loss_of_appetite: null
+  think_had_other_symptom_loss_of_smell: null
+  think_had_other_symptom_loss_of_taste: null
+  think_had_other_symptom_low_mood: null
+  think_had_other_symptom_memory_loss_or_confusion: null
+  think_had_other_symptom_more_trouble_sleeping: null
+  think_had_other_symptom_muscle_ache: 'Yes'
+  think_had_other_symptom_nausea_or_vomiting: null
+  think_had_other_symptom_noisy_breathing: null
+  think_had_other_symptom_none_list_1: null
+  think_had_other_symptom_none_list_2: null
+  think_had_other_symptom_runny_nose_or_sneezing: null
+  think_had_other_symptom_shortness_of_breath: null
+  think_had_other_symptom_sore_throat: null
   think_have_any_symptoms_new_or_worse: 'Yes'
-  think_have_covid_any_symptom_abdominal_pain: 'No'
-  think_have_covid_any_symptom_diarrhoea: 'Yes'
-  think_have_covid_any_symptom_difficulty_concentrating: 'No'
-  think_have_covid_any_symptom_headache: 'No'
-  think_have_covid_any_symptom_list:
+  think_have_covid_any_symptom_list_1:
   - Diarrhoea
+  think_have_covid_any_symptom_list_2:
   - More trouble sleeping than usual
-  think_have_covid_any_symptom_loss_of_smell: 'No'
-  think_have_covid_any_symptom_memory_loss_or_confusion: 'No'
-  think_have_covid_any_symptom_more_trouble_sleeping_than_usual: 'Yes'
-  think_have_covid_any_symptom_muscle_ache: 'No'
-  think_have_covid_any_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_any_symptom_noisy_breathing_or_wheezing: 'No'
-  think_have_covid_any_symptom_runny_nose_or_sneezing: 'No'
-  think_have_covid_any_symptom_sore_throat: 'No'
-  think_have_covid_any_symptom_weakness_or_tiredness: 'No'
   think_have_covid_any_symptoms: 'Yes'
   think_have_covid_onset_date: null
+  think_have_covid_symptom_abdominal_pain: null
+  think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_cough: null
+  think_have_covid_symptom_diarrhoea: 'Yes'
+  think_have_covid_symptom_difficulty_concentrating: null
+  think_have_covid_symptom_fatigue: null
+  think_have_covid_symptom_fever: null
+  think_have_covid_symptom_headache: null
+  think_have_covid_symptom_loss_of_appetite: null
+  think_have_covid_symptom_loss_of_smell: null
+  think_have_covid_symptom_loss_of_taste: null
+  think_have_covid_symptom_low_mood: null
+  think_have_covid_symptom_memory_loss_or_confusion: null
+  think_have_covid_symptom_more_trouble_sleeping: 'Yes'
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: null
+  think_have_covid_symptom_noisy_breathing: null
+  think_have_covid_symptom_none_list_1: null
+  think_have_covid_symptom_none_list_2: null
+  think_have_covid_symptom_runny_nose_or_sneezing: null
+  think_have_covid_symptom_shortness_of_breath: null
+  think_have_covid_symptom_sore_throat: null
   think_have_long_covid: 'Yes'
   think_have_long_covid_any_symptoms: 'Yes'
-  think_have_long_covid_symptom_abdominal_pain: 'No'
-  think_have_long_covid_symptom_cough: 'No'
-  think_have_long_covid_symptom_difficulty_concentrating: 'No'
-  think_have_long_covid_symptom_fever_including_high_temperature: 'No'
+  think_have_long_covid_symptom_abdominal_pain: null
+  think_have_long_covid_symptom_anxiety: null
+  think_have_long_covid_symptom_cough: null
+  think_have_long_covid_symptom_diarrhoea: null
+  think_have_long_covid_symptom_difficulty_concentrating: null
+  think_have_long_covid_symptom_fatigue: null
+  think_have_long_covid_symptom_fever: null
   think_have_long_covid_symptom_headache: 'Yes'
-  think_have_long_covid_symptom_list:
+  think_have_long_covid_symptom_list_1:
   - Loss of taste
+  think_have_long_covid_symptom_list_2:
   - Headache
+  think_have_long_covid_symptom_list_3:
   - Nausea or vomiting
-  think_have_long_covid_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_have_long_covid_symptom_loss_of_smell: 'No'
+  think_have_long_covid_symptom_loss_of_appetite: null
+  think_have_long_covid_symptom_loss_of_smell: null
   think_have_long_covid_symptom_loss_of_taste: 'Yes'
-  think_have_long_covid_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_have_long_covid_symptom_memory_loss_or_confusion: 'No'
-  think_have_long_covid_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_have_long_covid_symptom_nausea_or_vomiting: 'Yes'
-  think_have_long_covid_symptom_noisy_breathing_or_wheezing: 'No'
-  think_have_long_covid_symptom_reduced_ability: 'No'
-  think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
-  think_have_long_covid_symptom_shortness_of_breath: 'No'
-  think_have_long_covid_symptom_sore_throat: 'No'
-  think_have_long_covid_symptom_weakness_or_tiredness: 'No'
-  think_have_long_covid_symptom_worry_or_anxiety: 'No'
+  think_have_long_covid_symptom_low_mood: null
+  think_have_long_covid_symptom_memory_loss_or_confusion: null
+  think_have_long_covid_symptom_more_trouble_sleeping: null
+  think_have_long_covid_symptom_muscle_ache: null
+  think_have_long_covid_symptom_nausea_or_vomiting: null
+  think_have_long_covid_symptom_noisy_breathing: null
+  think_have_long_covid_symptom_none_list_1: null
+  think_have_long_covid_symptom_none_list_2: null
+  think_have_long_covid_symptom_reduced_ability: null
+  think_have_long_covid_symptom_runny_nose_or_sneezing: null
+  think_have_long_covid_symptom_shortness_of_breath: null
+  think_have_long_covid_symptom_sore_throat: null
   think_have_long_covid_symptom_worse_after_effort: 'No'
-  think_have_symptoms_new_or_worse_diarrhoea: 'Yes'
-  think_have_symptoms_new_or_worse_difficulty_concentrating: 'No'
-  think_have_symptoms_new_or_worse_fever_including_high_temperature: 'No'
-  think_have_symptoms_new_or_worse_list:
+  think_have_symptoms_new_or_worse_list_1:
   - Diarrhoea
+  think_have_symptoms_new_or_worse_list_2:
   - Memory loss or confusion
-  think_have_symptoms_new_or_worse_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_have_symptoms_new_or_worse_loss_of_taste: 'No'
-  think_have_symptoms_new_or_worse_low_mood_or_not_enjoying_anything: 'No'
-  think_have_symptoms_new_or_worse_memory_loss_or_confusion: 'Yes'
-  think_have_symptoms_new_or_worse_more_trouble_sleeping_than_usual: 'No'
-  think_have_symptoms_new_or_worse_muscle_ache: 'No'
-  think_have_symptoms_new_or_worse_nausea_or_vomiting: 'No'
-  think_have_symptoms_new_or_worse_noisy_breathing_or_wheezing: 'No'
-  think_have_symptoms_new_or_worse_runny_nose_or_sneezing: 'No'
-  think_have_symptoms_new_or_worse_sore_throat: 'No'
-  think_have_symptoms_new_or_worse_worry_or_anxiety: 'No'
+  think_have_symptoms_symptom_abdominal_pain: null
+  think_have_symptoms_symptom_anxiety: null
+  think_have_symptoms_symptom_cough: null
+  think_have_symptoms_symptom_diarrhoea: 'Yes'
+  think_have_symptoms_symptom_difficulty_concentrating: null
+  think_have_symptoms_symptom_fatigue: null
+  think_have_symptoms_symptom_fever: null
+  think_have_symptoms_symptom_headache: null
+  think_have_symptoms_symptom_loss_of_appetite: null
+  think_have_symptoms_symptom_loss_of_smell: null
+  think_have_symptoms_symptom_loss_of_taste: null
+  think_have_symptoms_symptom_low_mood: null
+  think_have_symptoms_symptom_memory_loss_or_confusion: 'Yes'
+  think_have_symptoms_symptom_more_trouble_sleeping: null
+  think_have_symptoms_symptom_muscle_ache: null
+  think_have_symptoms_symptom_nausea_or_vomiting: null
+  think_have_symptoms_symptom_noisy_breathing: null
+  think_have_symptoms_symptom_none_list_1: null
+  think_have_symptoms_symptom_none_list_2: null
+  think_have_symptoms_symptom_runny_nose_or_sneezing: null
+  think_have_symptoms_symptom_shortness_of_breath: null
+  think_have_symptoms_symptom_sore_throat: null
   times_hour_or_longer_another_home_last_7_days: '3'
   times_hour_or_longer_another_person_your_home_last_7_days: '1'
   times_indoor_exercise_last_28_days: 6 to 10
   times_large_events_last_28_days: 'No'
-  times_medium_events_last_28_days: 'No'
-  times_outside_shopping_or_socialising_last_7_days: 7
+  times_medium_events_last_28_days: null
+  times_outside_shopping_or_socialising_last_7_days: 7.0
   times_shopping_last_7_days: '5'
   times_shopping_last_7_days_raw: '5'
   times_socialising_last_7_days: '7'
   times_socialising_last_7_days_raw: 7 times or more
   transport_shared_outside_household_last_28_days: Plane
+  transport_shared_outside_household_last_28_days_bus_coach: null
+  transport_shared_outside_household_last_28_days_car_van: null
+  transport_shared_outside_household_last_28_days_ferry_boat: null
+  transport_shared_outside_household_last_28_days_none: null
+  transport_shared_outside_household_last_28_days_other: null
+  transport_shared_outside_household_last_28_days_plane: 'Yes'
+  transport_shared_outside_household_last_28_days_taxi: null
+  transport_shared_outside_household_last_28_days_train: null
+  transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: Train
   work_direct_contact_patients_or_clients: 'No'
-  work_health_care_area: 'No'
+  work_health_care_area: null
   work_in_additional_paid_employment: Prefer not to say
   work_location: Both from home and somewhere else
-  work_main_job_changed: 'No'
+  work_main_job_changed: null
   work_main_job_role: Erlang is a general-purpose, concurrent, functional programming
     language.
   work_main_job_title: Atoms are used within a program to denote distinguished values.
@@ -2316,29 +2946,35 @@
     or childminder
   work_status_employment: Currently not working -  for example on sick or other leave
     such as maternity or paternity for longer than 4 weeks
-  work_status_unemployment: 'No'
+  work_status_unemployment: null
   work_status_v0: null
   work_status_v1: null
   work_status_v2: null
-- ability_to_socially_distance_at_work_or_education: 'No'
-  ability_to_socially_distance_at_work_or_education_raw: 'No'
-  aged_16_or_over: 'No'
-  been_outside_uk: 'No'
+- ability_to_socially_distance_at_work_or_education: null
+  ability_to_socially_distance_at_work_or_education_raw: null
+  aged_16_or_over: null
+  been_outside_uk: null
   been_outside_uk_last_country: Liberia
   been_outside_uk_last_return_date: '2022-01-06 00:00:00.000000'
   blood_not_taken_could_not_other: Its main implementation is the Glasgow Haskell
     Compiler.
-  blood_not_taken_could_not_reason: 'No'
+  blood_not_taken_could_not_reason: null
+  blood_not_taken_could_not_reason_had_bruising: null
+  blood_not_taken_could_not_reason_issues_with_kit: null
+  blood_not_taken_could_not_reason_not_enough_blood: null
+  blood_not_taken_could_not_reason_other: null
+  blood_not_taken_could_not_reason_pot_spilled: null
+  blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_reason: I asked not to receive a blood test kit this month
   blood_return_date: null
   blood_return_future_date: null
   blood_returned: 'Yes'
-  blood_sample_barcode_correct: 'No'
+  blood_sample_barcode_correct: null
   blood_sample_barcode_user_entered: BLT98882718
-  blood_taken: 'No'
+  blood_taken: null
   blood_taken_am_pm: AM
   blood_taken_date: '2022-01-07 00:00:00.000000'
-  blood_taken_time_hour: 'No'
+  blood_taken_time_hour: null
   blood_taken_time_minute: '0'
   care_home_last_28_days: 'No'
   cis_covid_vaccine_date: '2022-01-08 00:00:00.000000'
@@ -2353,15 +2989,15 @@
   currently_smokes_or_vapes_description:
   - Cigars
   education_in_person_days_per_week: '1'
-  end_screen_questionnaire: 'No'
+  end_screen_questionnaire: null
   ever_smoked_regularly: 'Yes'
-  face_covering_other_enclosed_places: 'No'
+  face_covering_other_enclosed_places: null
   face_covering_outside_of_home: null
   face_covering_work_or_education: Never
   face_covering_work_or_education_raw: Never
   flu_vaccine_received: Prefer not to say
   flu_vaccine_received_date: 03/01/2022
-  hospital_last_28_days: 'No'
+  hospital_last_28_days: null
   illness_lasting_over_12_months: Prefer not to say
   illness_reduces_activity_or_ability: Yes, a lot
   illness_reduces_activity_or_ability_raw: Yes a lot
@@ -2377,7 +3013,7 @@
   last_28_days_unable_usual_activities_due_to_respiratory_infection: null
   last_28_days_urgent_care: null
   last_28_days_urgent_care_respiratory_infection: null
-  other_covid_infection_test: 'No'
+  other_covid_infection_test: null
   other_covid_infection_test_negative_date: 05/01/2022
   other_covid_infection_test_positive_date: '2022-01-01 00:00:00.000000'
   other_covid_infection_test_results: Any tests negative, but none positive
@@ -2387,178 +3023,242 @@
   participant_first_name_confirmation: 'No'
   participant_first_name_on_behalf: 'No'
   phm_covid_vaccine_number_of_doses: '5'
+  phm_think_had_covid: null
+  phm_think_had_flu: null
   phm_think_had_flu_onset_date: null
+  phm_think_had_other_infection: null
   phm_think_had_other_infection_onset_date: null
   phm_think_had_respiratory_infection: 'No'
   phm_think_had_respiratory_infection_type:
   - Do not know the type
-  phm_think_had_respiratory_infection_type_covid_19: 'No'
-  phm_think_had_respiratory_infection_type_do_not_know_the_type: 'Yes'
-  phm_think_had_respiratory_infection_type_flu: 'No'
+  phm_think_had_unknown: 'Yes'
   physical_contact_18_to_69_years: '0'
   physical_contact_18_to_69_years_raw: '0'
-  physical_contact_over_70_years: 'No'
+  physical_contact_over_70_years: null
   physical_contact_over_70_years_raw: Don't know
   physical_contact_under_18_years: 1-5
   physical_contact_under_18_years_raw: 1 to 5
-  problem_with_survey_access_helpline: 'No'
+  problem_with_survey_access_helpline: null
   questionnaire_started_no_incentive: 'Yes'
-  smokes_cigarettes: 'No'
-  smokes_cigars: 'Yes'
-  smokes_vape_or_e_cigarettes: 'No'
-  social_distance_contact_18_to_69_years: 'No'
+  smoke_cigarettes: null
+  smokes_cigar: 'Yes'
+  smokes_hookah_shisha_pipes: null
+  smokes_pipe: null
+  smokes_vape_e_cigarettes: null
+  social_distance_contact_18_to_69_years: null
   social_distance_contact_18_to_69_years_raw: Don't know
   social_distance_contact_over_70_years: 1-5
   social_distance_contact_over_70_years_raw: 1 to 5
-  social_distance_contact_under_18_years: 'No'
+  social_distance_contact_under_18_years: null
   social_distance_contact_under_18_years_raw: Prefer not to say
   swab_not_taken_reason: I am near the end of my testing window and my swab test kit
     has not arrived
   swab_return_date: '2022-01-02 00:00:00.000000'
   swab_return_future_date: '2022-01-08 00:00:00.000000'
   swab_returned: 'Yes'
-  swab_sample_barcode_correct: 'No'
+  swab_sample_barcode_correct: null
   swab_sample_barcode_user_entered: SWT98988073
   swab_taken: 'No'
   swab_taken_am_pm: PM
   swab_taken_date: '2022-01-08 00:00:00.000000'
-  swab_taken_time_hour: 'No'
+  swab_taken_time_hour: null
   swab_taken_time_minute: '0'
   test_kit_info_end_of_survey: Continue
   test_type_positive_result: A lateral flow test. That is the test you can do yourself
     and you do not have to send it to a laboratory because the result shows in the
     device in about 30 minutes.
-  think_had_covid_any_symptom_abdominal_pain: 'No'
-  think_had_covid_any_symptom_diarrhoea: 'No'
-  think_had_covid_any_symptom_difficulty_concentrating: 'No'
-  think_had_covid_any_symptom_headache: 'Yes'
-  think_had_covid_any_symptom_list:
+  think_had_covid_any_symptom_list_1:
   - Loss of taste
+  think_had_covid_any_symptom_list_2:
   - Headache
-  think_had_covid_any_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_covid_any_symptom_loss_of_smell: 'No'
-  think_had_covid_any_symptom_loss_of_taste: 'Yes'
-  think_had_covid_any_symptom_low_mood_or_not_enjoying_anything: 'No'
-  think_had_covid_any_symptom_memory_loss_or_confusion: 'No'
-  think_had_covid_any_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_had_covid_any_symptom_runny_nose_or_sneezing: 'No'
-  think_had_covid_any_symptom_sore_throat: 'No'
-  think_had_covid_any_symptom_weakness_or_tiredness: 'No'
-  think_had_covid_any_symptom_worry_or_anxiety: 'No'
   think_had_covid_any_symptoms: 'Yes'
   think_had_covid_onset_date: '2022-01-09 00:00:00.000000'
+  think_had_covid_symptom_abdominal_pain: null
+  think_had_covid_symptom_anxiety: null
+  think_had_covid_symptom_cough: null
+  think_had_covid_symptom_diarrhoea: null
+  think_had_covid_symptom_difficulty_concentrating: null
+  think_had_covid_symptom_fatigue: null
+  think_had_covid_symptom_fever: null
+  think_had_covid_symptom_headache: 'Yes'
+  think_had_covid_symptom_loss_of_appetite: null
+  think_had_covid_symptom_loss_of_smell: null
+  think_had_covid_symptom_loss_of_taste: 'Yes'
+  think_had_covid_symptom_low_mood: null
+  think_had_covid_symptom_memory_loss_or_confusion: null
+  think_had_covid_symptom_more_trouble_sleeping: null
+  think_had_covid_symptom_muscle_ache: null
+  think_had_covid_symptom_nausea_or_vomiting: null
+  think_had_covid_symptom_noisy_breathing: null
+  think_had_covid_symptom_none_list_1: null
+  think_had_covid_symptom_none_list_2: null
+  think_had_covid_symptom_runny_nose_or_sneezing: null
+  think_had_covid_symptom_shortness_of_breath: null
+  think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptoms: 'Yes'
-  think_had_flu_symptom_abdominal_pain: 'No'
-  think_had_flu_symptom_diarrhoea: 'No'
-  think_had_flu_symptom_headache: 'No'
-  think_had_flu_symptom_list:
+  think_had_flu_symptom_abdominal_pain: null
+  think_had_flu_symptom_anxiety: null
+  think_had_flu_symptom_cough: null
+  think_had_flu_symptom_diarrhoea: null
+  think_had_flu_symptom_difficulty_concentrating: null
+  think_had_flu_symptom_fatigue: 'Yes'
+  think_had_flu_symptom_fever: null
+  think_had_flu_symptom_headache: null
+  think_had_flu_symptom_list_1:
   - Loss of taste
+  think_had_flu_symptom_list_2:
   - Weakness or tiredness
-  think_had_flu_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_flu_symptom_loss_of_smell: 'No'
+  think_had_flu_symptom_loss_of_appetite: null
+  think_had_flu_symptom_loss_of_smell: null
   think_had_flu_symptom_loss_of_taste: 'Yes'
-  think_had_flu_symptom_memory_loss_or_confusion: 'No'
-  think_had_flu_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_had_flu_symptom_muscle_ache: 'No'
-  think_had_flu_symptom_nausea_or_vomiting: 'No'
-  think_had_flu_symptom_noisy_breathing_or_wheezing: 'No'
-  think_had_flu_symptom_weakness_or_tiredness: 'Yes'
-  think_had_flu_symptom_worry_or_anxiety: 'No'
+  think_had_flu_symptom_low_mood: null
+  think_had_flu_symptom_memory_loss_or_confusion: null
+  think_had_flu_symptom_more_trouble_sleeping: null
+  think_had_flu_symptom_muscle_ache: null
+  think_had_flu_symptom_nausea_or_vomiting: null
+  think_had_flu_symptom_noisy_breathing: null
+  think_had_flu_symptom_none_list_1: null
+  think_had_flu_symptom_none_list_2: null
+  think_had_flu_symptom_runny_nose_or_sneezing: null
+  think_had_flu_symptom_shortness_of_breath: null
+  think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptoms: 'Yes'
-  think_had_other_infection_symptom_cough: 'No'
-  think_had_other_infection_symptom_diarrhoea: 'Yes'
-  think_had_other_infection_symptom_difficulty_concentrating: 'No'
-  think_had_other_infection_symptom_fever_including_high_temperature: 'No'
-  think_had_other_infection_symptom_headache: 'No'
-  think_had_other_infection_symptom_list:
+  think_had_other_infection_symptom_list_1:
   - Diarrhoea
+  think_had_other_infection_symptom_list_2:
   - Low mood or not enjoying anything
-  think_had_other_infection_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_had_other_infection_symptom_loss_of_smell: 'No'
-  think_had_other_infection_symptom_loss_of_taste: 'No'
-  think_had_other_infection_symptom_low_mood_or_not_enjoying_anything: 'Yes'
-  think_had_other_infection_symptom_memory_loss_or_confusion: 'No'
-  think_had_other_infection_symptom_muscle_ache: 'No'
-  think_had_other_infection_symptom_nausea_or_vomiting: 'No'
-  think_had_other_infection_symptom_runny_nose_or_sneezing: 'No'
-  think_had_other_infection_symptom_shortness_of_breath: 'No'
-  think_had_other_infection_symptom_weakness_or_tiredness: 'No'
+  think_had_other_symptom_abdominal_pain: null
+  think_had_other_symptom_anxiety: null
+  think_had_other_symptom_cough: null
+  think_had_other_symptom_diarrhoea: 'Yes'
+  think_had_other_symptom_difficulty_concentrating: null
+  think_had_other_symptom_fatigue: null
+  think_had_other_symptom_fever: null
+  think_had_other_symptom_headache: null
+  think_had_other_symptom_loss_of_appetite: null
+  think_had_other_symptom_loss_of_smell: null
+  think_had_other_symptom_loss_of_taste: null
+  think_had_other_symptom_low_mood: 'Yes'
+  think_had_other_symptom_memory_loss_or_confusion: null
+  think_had_other_symptom_more_trouble_sleeping: null
+  think_had_other_symptom_muscle_ache: null
+  think_had_other_symptom_nausea_or_vomiting: null
+  think_had_other_symptom_noisy_breathing: null
+  think_had_other_symptom_none_list_1: null
+  think_had_other_symptom_none_list_2: null
+  think_had_other_symptom_runny_nose_or_sneezing: null
+  think_had_other_symptom_shortness_of_breath: null
+  think_had_other_symptom_sore_throat: null
   think_have_any_symptoms_new_or_worse: 'Yes'
-  think_have_covid_any_symptom_abdominal_pain: 'No'
-  think_have_covid_any_symptom_diarrhoea: 'Yes'
-  think_have_covid_any_symptom_difficulty_concentrating: 'No'
-  think_have_covid_any_symptom_headache: 'No'
-  think_have_covid_any_symptom_list:
+  think_have_covid_any_symptom_list_1:
   - Diarrhoea
+  think_have_covid_any_symptom_list_2:
   - Weakness or tiredness
-  think_have_covid_any_symptom_loss_of_smell: 'No'
-  think_have_covid_any_symptom_memory_loss_or_confusion: 'No'
-  think_have_covid_any_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_have_covid_any_symptom_muscle_ache: 'No'
-  think_have_covid_any_symptom_nausea_or_vomiting: 'No'
-  think_have_covid_any_symptom_noisy_breathing_or_wheezing: 'No'
-  think_have_covid_any_symptom_runny_nose_or_sneezing: 'No'
-  think_have_covid_any_symptom_sore_throat: 'No'
-  think_have_covid_any_symptom_weakness_or_tiredness: 'Yes'
   think_have_covid_any_symptoms: 'Yes'
   think_have_covid_onset_date: '2022-01-01 00:00:00.000000'
-  think_have_long_covid: 'No'
+  think_have_covid_symptom_abdominal_pain: null
+  think_have_covid_symptom_anxiety: null
+  think_have_covid_symptom_cough: null
+  think_have_covid_symptom_diarrhoea: 'Yes'
+  think_have_covid_symptom_difficulty_concentrating: null
+  think_have_covid_symptom_fatigue: 'Yes'
+  think_have_covid_symptom_fever: null
+  think_have_covid_symptom_headache: null
+  think_have_covid_symptom_loss_of_appetite: null
+  think_have_covid_symptom_loss_of_smell: null
+  think_have_covid_symptom_loss_of_taste: null
+  think_have_covid_symptom_low_mood: null
+  think_have_covid_symptom_memory_loss_or_confusion: null
+  think_have_covid_symptom_more_trouble_sleeping: null
+  think_have_covid_symptom_muscle_ache: null
+  think_have_covid_symptom_nausea_or_vomiting: null
+  think_have_covid_symptom_noisy_breathing: null
+  think_have_covid_symptom_none_list_1: null
+  think_have_covid_symptom_none_list_2: null
+  think_have_covid_symptom_runny_nose_or_sneezing: null
+  think_have_covid_symptom_shortness_of_breath: null
+  think_have_covid_symptom_sore_throat: null
+  think_have_long_covid: null
   think_have_long_covid_any_symptoms: 'Yes'
-  think_have_long_covid_symptom_abdominal_pain: 'No'
-  think_have_long_covid_symptom_cough: 'Yes'
-  think_have_long_covid_symptom_difficulty_concentrating: 'No'
-  think_have_long_covid_symptom_fever_including_high_temperature: 'No'
-  think_have_long_covid_symptom_headache: 'No'
-  think_have_long_covid_symptom_list:
+  think_have_long_covid_symptom_abdominal_pain: null
+  think_have_long_covid_symptom_anxiety: null
+  think_have_long_covid_symptom_cough: null
+  think_have_long_covid_symptom_diarrhoea: null
+  think_have_long_covid_symptom_difficulty_concentrating: null
+  think_have_long_covid_symptom_fatigue: null
+  think_have_long_covid_symptom_fever: null
+  think_have_long_covid_symptom_headache: null
+  think_have_long_covid_symptom_list_1:
   - Sore throat
+  think_have_long_covid_symptom_list_2:
   - Memory loss or confusion
+  think_have_long_covid_symptom_list_3:
   - Cough
-  think_have_long_covid_symptom_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_have_long_covid_symptom_loss_of_smell: 'No'
-  think_have_long_covid_symptom_loss_of_taste: 'No'
-  think_have_long_covid_symptom_low_mood_or_not_enjoying_anything: 'No'
+  think_have_long_covid_symptom_loss_of_appetite: null
+  think_have_long_covid_symptom_loss_of_smell: null
+  think_have_long_covid_symptom_loss_of_taste: null
+  think_have_long_covid_symptom_low_mood: null
   think_have_long_covid_symptom_memory_loss_or_confusion: 'Yes'
-  think_have_long_covid_symptom_more_trouble_sleeping_than_usual: 'No'
-  think_have_long_covid_symptom_nausea_or_vomiting: 'No'
-  think_have_long_covid_symptom_noisy_breathing_or_wheezing: 'No'
+  think_have_long_covid_symptom_more_trouble_sleeping: null
+  think_have_long_covid_symptom_muscle_ache: null
+  think_have_long_covid_symptom_nausea_or_vomiting: null
+  think_have_long_covid_symptom_noisy_breathing: null
+  think_have_long_covid_symptom_none_list_1: null
+  think_have_long_covid_symptom_none_list_2: null
   think_have_long_covid_symptom_reduced_ability: Yes a little
-  think_have_long_covid_symptom_runny_nose_or_sneezing: 'No'
-  think_have_long_covid_symptom_shortness_of_breath: 'No'
+  think_have_long_covid_symptom_runny_nose_or_sneezing: null
+  think_have_long_covid_symptom_shortness_of_breath: null
   think_have_long_covid_symptom_sore_throat: 'Yes'
-  think_have_long_covid_symptom_weakness_or_tiredness: 'No'
-  think_have_long_covid_symptom_worry_or_anxiety: 'No'
   think_have_long_covid_symptom_worse_after_effort: 'Yes'
-  think_have_symptoms_new_or_worse_diarrhoea: 'No'
-  think_have_symptoms_new_or_worse_difficulty_concentrating: 'No'
-  think_have_symptoms_new_or_worse_fever_including_high_temperature: 'No'
-  think_have_symptoms_new_or_worse_list:
+  think_have_symptoms_new_or_worse_list_1:
   - Nausea or vomiting
+  think_have_symptoms_new_or_worse_list_2:
   - More trouble sleeping than usual
-  think_have_symptoms_new_or_worse_loss_of_appetite_or_eating_less_than_usual: 'No'
-  think_have_symptoms_new_or_worse_loss_of_taste: 'No'
-  think_have_symptoms_new_or_worse_low_mood_or_not_enjoying_anything: 'No'
-  think_have_symptoms_new_or_worse_memory_loss_or_confusion: 'No'
-  think_have_symptoms_new_or_worse_more_trouble_sleeping_than_usual: 'Yes'
-  think_have_symptoms_new_or_worse_muscle_ache: 'No'
-  think_have_symptoms_new_or_worse_nausea_or_vomiting: 'Yes'
-  think_have_symptoms_new_or_worse_noisy_breathing_or_wheezing: 'No'
-  think_have_symptoms_new_or_worse_runny_nose_or_sneezing: 'No'
-  think_have_symptoms_new_or_worse_sore_throat: 'No'
-  think_have_symptoms_new_or_worse_worry_or_anxiety: 'No'
+  think_have_symptoms_symptom_abdominal_pain: null
+  think_have_symptoms_symptom_anxiety: null
+  think_have_symptoms_symptom_cough: null
+  think_have_symptoms_symptom_diarrhoea: null
+  think_have_symptoms_symptom_difficulty_concentrating: null
+  think_have_symptoms_symptom_fatigue: null
+  think_have_symptoms_symptom_fever: null
+  think_have_symptoms_symptom_headache: null
+  think_have_symptoms_symptom_loss_of_appetite: null
+  think_have_symptoms_symptom_loss_of_smell: null
+  think_have_symptoms_symptom_loss_of_taste: null
+  think_have_symptoms_symptom_low_mood: null
+  think_have_symptoms_symptom_memory_loss_or_confusion: null
+  think_have_symptoms_symptom_more_trouble_sleeping: 'Yes'
+  think_have_symptoms_symptom_muscle_ache: null
+  think_have_symptoms_symptom_nausea_or_vomiting: 'Yes'
+  think_have_symptoms_symptom_noisy_breathing: null
+  think_have_symptoms_symptom_none_list_1: null
+  think_have_symptoms_symptom_none_list_2: null
+  think_have_symptoms_symptom_runny_nose_or_sneezing: null
+  think_have_symptoms_symptom_shortness_of_breath: null
+  think_have_symptoms_symptom_sore_throat: null
   times_hour_or_longer_another_home_last_7_days: '0'
-  times_hour_or_longer_another_person_your_home_last_7_days: 'No'
+  times_hour_or_longer_another_person_your_home_last_7_days: null
   times_indoor_exercise_last_28_days: 11 to 20
-  times_large_events_last_28_days: 'No'
+  times_large_events_last_28_days: null
   times_medium_events_last_28_days: 'Yes'
-  times_outside_shopping_or_socialising_last_7_days: 7
+  times_outside_shopping_or_socialising_last_7_days: 7.0
   times_shopping_last_7_days: '6'
   times_shopping_last_7_days_raw: '6'
   times_socialising_last_7_days: '1'
   times_socialising_last_7_days_raw: '1'
   transport_shared_outside_household_last_28_days: Other method
-  transport_to_work_or_education: 'No'
+  transport_shared_outside_household_last_28_days_bus_coach: null
+  transport_shared_outside_household_last_28_days_car_van: null
+  transport_shared_outside_household_last_28_days_ferry_boat: null
+  transport_shared_outside_household_last_28_days_none: null
+  transport_shared_outside_household_last_28_days_other: 'Yes'
+  transport_shared_outside_household_last_28_days_plane: null
+  transport_shared_outside_household_last_28_days_taxi: null
+  transport_shared_outside_household_last_28_days_train: null
+  transport_shared_outside_household_last_28_days_underground_metro: null
+  transport_to_work_or_education: null
   work_direct_contact_patients_or_clients: Prefer not to say
-  work_health_care_area: 'No'
+  work_health_care_area: null
   work_in_additional_paid_employment: Prefer not to say
   work_location: Working somewhere else (not your home)
   work_main_job_changed: 'Yes'
