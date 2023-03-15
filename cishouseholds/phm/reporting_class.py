@@ -128,7 +128,7 @@ class Report:
 
         df = df.withColumn(
             "daily_full_completion_count",
-            F.sum(F.when(F.col(window_status_column) == "Submitted", 1).otherwise(0)).over(window_a),
+            F.sum(F.when(F.col(window_status_column) == "Completed", 1).otherwise(0)).over(window_a),
         )
         df = df.withColumn(
             "daily_full_completion_rate",
@@ -137,7 +137,7 @@ class Report:
 
         df = df.withColumn(
             "daily_partial_completion_count",
-            F.sum(F.when(F.col(window_status_column) == "Completed", 1).otherwise(0)).over(window_a),
+            F.sum(F.when(F.col(window_status_column) == "Partially Completed", 1).otherwise(0)).over(window_a),
         )
         df = df.withColumn(
             "daily_partial_completion_rate",
