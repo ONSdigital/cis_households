@@ -391,6 +391,7 @@ def get_participant_extract_digital_data_description(_, blood_barcodes, swab_bar
             ],
         ),
         "participant_id": _("random.custom_code", mask="DHR-############", digit="#"),  # Also DHRF-##########
+        "participant_id_numeric": _("custom_random.random_integer", lower=10000000, upper=99999999, null_percent=0),
         "title": _("choice", items=["Dr.", "Miss.", "Mr.", "Mrs.", "Ms.", "Prof.", None]),
         "first_name": _("person.first_name"),
         "middle_name": _("person.first_name"),
@@ -2561,6 +2562,32 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "blood_sample_barcode_user_entered": _("random.custom_code", mask="ONS########", digit="#"),
         "swab_barcode_corrected": _("random.custom_code", mask="ONS########", digit="#"),
         "blood_barcode_corrected": _("random.custom_code", mask="ONS########", digit="#"),
+        "swab_barcode_corrected_datetime": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "blood_barcode_corrected_datetime": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
         "allocated_swab_barcode_not_used_reason": _(
             "text.sentence"
         ),  # Previously Swab_Barcode_Status_Error TODO Check not pick list
@@ -3304,6 +3331,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "think_respiratory_infection": _("choice", items=yes_no_none_choice),
         "time_off_respiratory_infection": _("custom_random.random_integer", lower=0, upper=28, null_percent=15),
         "time_off_health_reasons": _("custom_random.random_integer", lower=0, upper=28, null_percent=15),
+        "survey_name": _("random.custom_code", mask="VS-########", digit="#"),
+        "form_name": _("random.custom_code", mask="F-########", digit="#"),
     }
 
 
@@ -3339,7 +3368,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
         ),
         "swab_sample_barcode_correct": _("choice", items=yes_no_none_choice),
-        "swab_sample_barcode_user_entered": _("random.custom_code", mask="SWT########", digit="#"),
+        "swab_sample_barcode_user_entered": _("random.custom_code", mask="########", digit="#"),
         "swab_taken_date": _(
             "discrete_distribution",
             population=[
@@ -3411,7 +3440,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         ),
         "blood_not_taken_could_not_other": _("text.sentence"),
         "blood_sample_barcode_correct": _("choice", items=yes_no_none_choice),
-        "blood_sample_barcode_user_entered": _("random.custom_code", mask="BLT########", digit="#"),
+        "blood_sample_barcode_user_entered": _("random.custom_code", mask="########", digit="#"),
         "blood_taken_date": _(
             "discrete_distribution",
             population=[

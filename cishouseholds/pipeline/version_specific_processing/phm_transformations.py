@@ -612,6 +612,13 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
     df = clean_barcode_simple(df, "swab_sample_barcode_user_entered")
     df = clean_barcode_simple(df, "blood_sample_barcode_user_entered")
 
+    df = df.withColumn(
+        "swab_sample_barcode_user_entered", F.concat(F.lit("SWT"), F.col("swab_sample_barcode_user_entered"))
+    )
+    df = df.withColumn(
+        "blood_sample_barcode_user_entered", F.concat(F.lit("BLT"), F.col("blood_sample_barcode_user_entered"))
+    )
+
     df = df.withColumn("times_outside_shopping_or_socialising_last_7_days", F.lit(None))
     df = edit_to_sum_or_max_value(
         df=df,
