@@ -1038,7 +1038,7 @@ def phm_report(
         participant_id_column="participant_id",
         window_start_column="participant_completion_window_start_datetime",
         window_end_column="participant_completion_window_end_datetime",
-        window_status_column="participant_completion_window_status",
+        window_status_column="survey_completion_status",
         reference_date_column="visit_datetime",
         window_range=15,
     )
