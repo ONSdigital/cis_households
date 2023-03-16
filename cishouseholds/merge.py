@@ -35,19 +35,29 @@ def union_multiple_tables(tables: List[DataFrame]) -> DataFrame:
     return merged_df
 
 
-def left_join_keep_right(left_df: DataFrame, right_df: DataFrame, join_on_columns: list = []):
+def left_join_keep_only_non_null_right(left_df: DataFrame, right_df: DataFrame, join_on_columns: list = []):
     """
-    Performs a left join on 2 dataframes and removes the additional in the right dataframe from the left
+    Performs a left join on 2 dataframes, keeping the values from right side only if they are not null,
+    otherwise it keeps the values from the left
     """
+
     for col in right_df.columns:
         if col not in join_on_columns:
             right_df = right_df.withColumnRenamed(col, col + "_right")
 
     df = left_df.join(right_df, on=join_on_columns, how="left")
-    for col in df.columns:
+    for col in right_df.columns:
         if col not in join_on_columns:
-            df = df.withColumn(col, F.coalesce(col + "_right", col)).drop(col + "_right")
+            df = df.withColumn(col.split("_right")[0], F.coalesce(col + "_right", col)).drop(col + "_right")
     return df
+
+
+def left_join_keep_right(left_df: DataFrame, right_df: DataFrame, join_on_columns: list = []):
+    """
+    Performs a left join on 2 dataframes and removes the additional in the right dataframe from the left
+    """
+    left_df = left_df.select(*[col for col in left_df.columns if col not in right_df.columns or col in join_on_columns])
+    return left_df.join(right_df, on=join_on_columns, how="left")
 
 
 def null_safe_join(

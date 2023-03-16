@@ -14,7 +14,7 @@ from pyspark.sql.window import Window
 from cishouseholds.derive import assign_random_day_in_month
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import any_column_not_null
-from cishouseholds.merge import left_join_keep_right
+from cishouseholds.merge import left_join_keep_only_non_null_right
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
@@ -353,7 +353,7 @@ def fill_forward_event(
     # use this columns to override the original dataframe
 
     if events_df is not None and events_df.count() > 0:
-        df = left_join_keep_right(df, events_df, [participant_id_column]).withColumn(
+        df = left_join_keep_only_non_null_right(df, events_df, [participant_id_column]).withColumn(
             "DROP_EVENT", (F.col(event_date_column) > F.col(visit_datetime_column))
         )
     else:
