@@ -346,8 +346,7 @@ def fill_forward_event(
         elif len(completed_sections) == 1:
             events_df = completed_sections[0]
     else:
-        events_df = extract_from_table(f"{event_indicator_column}_temp_lookup", True)
-
+        events_df = extract_from_table(f"{event_indicator_column}_temp_lookup", True).drop("LOGIC_APPLIED")
     # ~~ Construct resultant dataframe by fill forwards ~~#
 
     # use this columns to override the original dataframe

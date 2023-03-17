@@ -40,15 +40,15 @@ def left_join_keep_only_non_null_right(left_df: DataFrame, right_df: DataFrame, 
     Performs a left join on 2 dataframes, keeping the values from right side only if they are not null,
     otherwise it keeps the values from the left
     """
-
+    cols = [col for col in right_df.columns]
     for col in right_df.columns:
         if col not in join_on_columns:
             right_df = right_df.withColumnRenamed(col, col + "_right")
 
     df = left_df.join(right_df, on=join_on_columns, how="left")
-    for col in right_df.columns:
-        if col not in join_on_columns:
-            df = df.withColumn(col.split("_right")[0], F.coalesce(col + "_right", col)).drop(col + "_right")
+    for col in cols:
+        if col not in join_on_columns and col in df.columns and ((col + "_right") in df.columns):
+            df = df.withColumn(col, F.coalesce(col + "_right", col)).drop(col + "_right")
     return df
 
 
