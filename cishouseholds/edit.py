@@ -22,6 +22,11 @@ from cishouseholds.expressions import set_date_component
 from cishouseholds.expressions import sum_within_row
 
 
+def deduplicate_min_valid_order(df: DataFrame, column_name_to_update: str):
+    """"""
+    df = df.withColumn(column_name_to_update)
+
+
 def add_prefix(df: DataFrame, column_name_to_update: str, prefix: str, sep: str = ""):
     """Add a prefix to a column"""
     return df.withColumn(column_name_to_update, F.concat_ws(sep, F.lit(prefix), F.col(column_name_to_update)))
