@@ -1,4 +1,4 @@
-from _datetime import datetime
+from datetime import datetime
 from io import BytesIO
 
 import pandas as pd
@@ -218,7 +218,7 @@ class Report:
             start_reference_date_column=window_start_column,
             reference_date_column=reference_date_column,
         )
-        partial_df, full_df = self.create_completion_table_days(
+        reporting_dfs, sheet_names = self.create_completion_table_days(
             df=df,
             participant_id_column=participant_id_column,
             window_start_column="START",
@@ -228,6 +228,14 @@ class Report:
             window_range=window_range,
             sheet_name_prefix=sheet_name_prefix,
         )
-        partial_df = partial_df.withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
-        full_df = full_df.withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
-        return partial_df, full_df
+        partial_df_count = (
+            reporting_dfs[0].withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
+        )
+        full_df_count = reporting_dfs[1].withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
+        partial_df_rate = (
+            reporting_dfs[2].withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
+        )
+        full_df_rate = reporting_dfs[3].withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
+        sheet_names = ["range_count_partial", "range_count_full", "range_rate_partial", "range_rate_full"]
+
+        return [partial_df_count, full_df_count, partial_df_rate, full_df_rate], sheet_names

@@ -2,8 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="beab6065-61fb-41d3-a26d-74fb8084a415" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/tests/derive/test_assign_first_dose.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/derive/test_assign_valid_order.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/edit/test_update_valid_order.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.bumpversion.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/.bumpversion.cfg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cishouseholds/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cishouseholds/derive.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/derive.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cishouseholds/edit.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/edit.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cishouseholds/phm/reporting_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/phm/reporting_class.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/covid_event_transformations.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/covid_event_transformations.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/logging.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/logging.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/mapping.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/mapping.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/pipeline_stages.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/pipeline_stages.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/post_union_processing.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/post_union_processing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/vaccine_transformations.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/vaccine_transformations.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/version_specific_processing/digital_transformations.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/version_specific_processing/digital_transformations.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/pipeline/test_survey_responses_version_digital/processed_responses_digital_data_regression.yml" beforeDir="false" afterPath="$PROJECT_DIR$/tests/pipeline/test_survey_responses_version_digital/processed_responses_digital_data_regression.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,12 +36,12 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
