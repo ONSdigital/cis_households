@@ -6,21 +6,24 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
+from cishouseholds.expressions import all_columns_not_null
 from cishouseholds.hdfs_utils import write_string_to_file
 
 
 class Report:
-    def __int__(self):
+    def __init__(self):
         """"""
         self.sheets = []
         self.output = BytesIO()
 
     def add_sheet(self, df, sheet_name):
         """"""
-        with pd.ExcelWriter(self.output) as writer:
-            df.toPandas().to_excel(writer, sheet_name=sheet_name, index=False)
+        self.sheets.append((df, sheet_name))
 
     def write_excel_output(self, output_directory):
+        with pd.ExcelWriter(self.output) as writer:
+            for df, sheet_name in self.sheets:
+                df.toPandas().to_excel(writer, sheet_name=sheet_name, index=False)
 
         write_string_to_file(
             self.output.getbuffer(),
@@ -80,7 +83,7 @@ class Report:
             reference_date_column,
             "daily_" + full_column_name,
             "daily_" + partial_column_name,
-        ).distinct()
+        )
         df = df.withColumn("DIFF", F.datediff(F.col(reference_date_column), F.col(window_start_column)) + 1)
 
         # find the max difference
@@ -137,18 +140,21 @@ class Report:
         window_end_column: str,
         window_status_column: str,
         window_range: int = None,
+        sheet_name_prefix: str = "daily",
     ):
         """"""
+        df = df.withColumn(reference_date_column + "_date_component", F.to_date(reference_date_column))
+        reference_date_column = reference_date_column + "_date_component"
         window_a = Window.partitionBy(window_start_column, window_end_column, reference_date_column)
         window_b = Window.partitionBy(window_start_column, window_end_column)
 
         df = df.select(
             participant_id_column, window_start_column, window_end_column, reference_date_column, window_status_column
-        ).distinct()
+        ).filter(all_columns_not_null([window_status_column, window_start_column, window_end_column]))
 
         df = df.withColumn(
             "daily_full_completion_count",
-            F.sum(F.when(F.col(window_status_column) == "Submitted", 1).otherwise(0)).over(window_a),
+            F.sum(F.when(F.col(window_status_column) == "Completed", 1).otherwise(0)).over(window_a),
         )
         df = df.withColumn(
             "daily_full_completion_rate",
@@ -157,7 +163,7 @@ class Report:
 
         df = df.withColumn(
             "daily_partial_completion_count",
-            F.sum(F.when(F.col(window_status_column) == "Completed", 1).otherwise(0)).over(window_a),
+            F.sum(F.when(F.col(window_status_column) == "Partially Completed", 1).otherwise(0)).over(window_a),
         )
         df = df.withColumn(
             "daily_partial_completion_rate",
@@ -184,10 +190,10 @@ class Report:
             window_range=window_range,
         )
 
-        self.add_sheet(partial_df_count, "Partial completion counts")
-        self.add_sheet(full_df_count, "Full completion counts")
-        self.add_sheet(partial_df_rate, "Partial completion rates")
-        self.add_sheet(full_df_rate, "Full completion rates")
+        self.add_sheet(partial_df_count, f"{sheet_name_prefix} pc counts")
+        self.add_sheet(full_df_count, f"{sheet_name_prefix} fc counts")
+        self.add_sheet(partial_df_rate, f"{sheet_name_prefix} pc rates")
+        self.add_sheet(full_df_rate, f"{sheet_name_prefix} fc rates")
 
         return partial_df_rate, full_df_rate
 
@@ -200,8 +206,10 @@ class Report:
         window_end_column: str,
         window_status_column: str,
         window_range: int = 28,
+        sheet_name_prefix: str = "monthly",
     ):
         """"""
+        df = df.filter(all_columns_not_null([window_status_column, window_start_column, window_end_column]))
         df = self.add_start_end_delta_columns(
             df=df,
             start_column_name="START",
@@ -218,6 +226,7 @@ class Report:
             window_status_column=window_status_column,
             reference_date_column=reference_date_column,
             window_range=window_range,
+            sheet_name_prefix=sheet_name_prefix,
         )
         partial_df = partial_df.withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
         full_df = full_df.withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
