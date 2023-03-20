@@ -3344,7 +3344,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         # "uac": _("random.custom_code", mask="################", digit="#"),
         # "household_completion_window_id": _("random.custom_code", mask="####", digit="#"),
         # "ons_household_id": _("random.custom_code", mask="############", digit="#"),
-        # "participant_id":_("random.custom_code", mask="DHR-############", digit="#"),
+        "participant_id": _("random.custom_code", mask="DHR-############", digit="#"),  # Also DHRF-##########
         # "cohort": _("choice", items=["Swab Only", "Fingerprick and Swab", None]),
         # "participant_under_16": _("choice", items=yes_no_none_choice),
         "participant_completion_window_id": _("random.custom_code", mask="####", digit="#"),
