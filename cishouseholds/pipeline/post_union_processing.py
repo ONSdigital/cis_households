@@ -44,7 +44,7 @@ def raw_copies(df: DataFrame):
         "think_had_covid",
         "think_have_covid_onset_date",
         "other_covid_infection_test",
-        "other_covid_infection_test_result",
+        "other_covid_infection_test_results",
         "think_had_covid_admitted_to_hospital",
         "think_had_covid_contacted_nhs",
         "last_covid_contact_date",
@@ -219,6 +219,11 @@ def generic_processing(df: DataFrame):
             "Swab / blood process too distressing": "Swab/blood process too distressing",
             "Swab / blood process to distressing": "Swab/blood process too distressing",
             "Do NOT Reinstate": "Do not reinstate",
+        },
+        "other_covid_infection_test_results_raw": {
+            "All tests failed": "All Tests failed",
+            "One or more tests were negative and none were positive": "Any tests negative, but none positive",
+            "One or more tests were positive": "One or more positive test(s)",
         },
     }
     df = apply_value_map_multiple_columns(df, col_val_map)

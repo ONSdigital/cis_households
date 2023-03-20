@@ -20,7 +20,7 @@ from cishouseholds.edit import normalise_think_had_covid_columns
 from cishouseholds.edit import nullify_columns_before_date
 from cishouseholds.edit import remove_incorrect_dates
 from cishouseholds.edit import update_think_have_covid_symptom_any
-from cishouseholds.edit import update_to_value_if_any_not_null
+from cishouseholds.expressions import all_columns_null
 from cishouseholds.expressions import all_columns_values_in_list
 from cishouseholds.expressions import any_column_equal_value
 from cishouseholds.expressions import count_occurrence_in_row
@@ -113,20 +113,14 @@ def edit_existing_columns(df: DataFrame) -> DataFrame:
     covid_contacts = ["contact_suspected_positive_covid_last_28_days", "contact_known_positive_covid_last_28_days"]
     contact_types = ["last_suspected_covid_contact_type", "last_covid_contact_type"]
     for contact_date, contact_type, contact in zip(contact_dates, contact_types, covid_contacts):
-        # correct covid contact based on date
-        df = update_to_value_if_any_not_null(
-            df=df,
-            column_name_to_update=contact,
-            true_false_values=["Yes", "No"],
-            column_list=[contact_date],
+        # correct covid contact based on date and type
+        df = df.withColumn(
+            contact, F.when(all_columns_null([contact_type, contact_date]), None).otherwise(F.col(contact))
         )
 
-        # correct covid type based on date
-        df = update_to_value_if_any_not_null(
-            df=df,
-            column_name_to_update=contact_type,
-            true_false_values=[F.col(contact_type), None],
-            column_list=[contact_date],
+        # correct covid type based on date and contact
+        df = df.withColumn(
+            contact_type, F.when(all_columns_null([contact, contact_date]), None).otherwise(F.col(contact_type))
         )
 
     df = df.withColumn(

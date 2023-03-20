@@ -26,6 +26,41 @@ def deduplicate_min_valid_order(df: DataFrame, column_name_to_update: str):
     """"""
     df = df.withColumn(column_name_to_update)
 
+def update_valid_order(
+    df: DataFrame,
+    column_name_to_update: str,
+    participant_id_column: str,
+    vaccine_type_column: str,
+    vaccine_date_column: str,
+    first_dose_column: str,
+):
+    """"""
+    window = Window.partitionBy(participant_id_column).orderBy(F.col(first_dose_column).desc())
+
+    def get_logic(date):
+        logic_1 = F.col(vaccine_type_column).isin(
+            ["Don't know type", "From a research study/trial", "Pfizer/BioNTech"]
+        ) & (date < "2020-12-08")
+        logic_2 = (F.col(vaccine_type_column) == "Oxford/AstraZeneca") & (date < "2020-01-04")
+        logic_3 = ~(
+            F.col(vaccine_type_column).isin(
+                ["Don't know type", "From a research study/trial", "Pfizer/BioNTech", "Oxford/AstraZeneca"]
+            )
+        ) & (date < "2020-04-15")
+        return logic_1 | logic_2 | logic_3
+
+    df = df.withColumn(
+        column_name_to_update,
+        F.when(get_logic(F.col(vaccine_date_column)), F.col(column_name_to_update) + 0.25)
+        .when(
+            get_logic(F.first(F.col(vaccine_date_column), True).over(window)),
+            F.col(column_name_to_update) + 0.5,
+        )
+        .otherwise(F.col(column_name_to_update)),
+    )
+    return df
+
+
 
 def add_prefix(df: DataFrame, column_name_to_update: str, prefix: str, sep: str = ""):
     """Add a prefix to a column"""

@@ -527,7 +527,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "times_socialising_last_7_days",
         "face_covering_work_or_education",
         "face_covering_other_enclosed_places",
-        "other_covid_infection_test_results",
         "other_antibody_test_results",
         "cis_covid_vaccine_type",
         "cis_covid_vaccine_type_other",
@@ -642,7 +641,15 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Someone I live with": "Living in your own home",
             "Someone I do not live with": "Outside your home",
         },
+        "last_covid_contact_type_raw": {
+            "Someone I live with": "Living in your own home",
+            "Someone I do not live with": "Outside your home",
+        },
         "last_suspected_covid_contact_type": {
+            "Someone I live with": "Living in your own home",
+            "Someone I do not live with": "Outside your home",
+        },
+        "last_suspected_covid_contact_type_raw": {
             "Someone I live with": "Living in your own home",
             "Someone I do not live with": "Outside your home",
         },
@@ -657,6 +664,14 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "times_shopping_last_7_days": times_value_map,
         "times_socialising_last_7_days": times_value_map,
         "face_covering_work_or_education": {
+            "Prefer not to say": None,
+            "Yes sometimes": "Yes, sometimes",
+            "Yes always": "Yes, always",
+            "I am not going to my place of work or education": "Not going to place of work or education",
+            "I cover my face for other reasons - for example for religious or cultural reasons": "My face is already covered",
+            # noqa: E501
+        },
+        "face_covering_work_or_education_raw": {
             "Prefer not to say": None,
             "Yes sometimes": "Yes, sometimes",
             "Yes always": "Yes, always",
@@ -679,6 +694,12 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "One or more tests were positive": "One or more positive test(s)",
         },
         "other_antibody_test_results": {
+            "All tests failed": "All Tests failed",
+            "One or more tests were negative for antibodies and none were positive": "Any tests negative, but none positive",
+            # noqa: E501
+            "One or more tests were positive for antibodies": "One or more positive test(s)",
+        },
+        "other_antibody_test_results_raw": {
             "All tests failed": "All Tests failed",
             "One or more tests were negative for antibodies and none were positive": "Any tests negative, but none positive",
             # noqa: E501
