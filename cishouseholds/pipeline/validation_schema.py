@@ -1592,7 +1592,7 @@ validation_schemas = {
         # "uac": string_dict,
         # "household_completion_window_id": string_dict,
         # "ons_household_id": string_dict,
-        # "participant_id": string_dict,
+        "participant_id": string_dict,
         # "cohort": string_dict,
         # "participant_under_16": string_dict,
         # "digital_type_preference": string_dict,
