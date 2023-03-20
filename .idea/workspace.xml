@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="beab6065-61fb-41d3-a26d-74fb8084a415" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/cishouseholds/derive.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/derive.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cishouseholds/phm/json_decode.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/phm/json_decode.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cishouseholds/phm/lookup.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/phm/lookup.py" afterDir="false" />
@@ -10,6 +11,9 @@
       <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/input_file_stages.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/input_file_stages.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/mapping.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/mapping.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/validation_schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/validation_schema.py" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/cishouseholds/merge.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/merge.py" afterDir="false" />
+>>>>>>> main
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,7 +23,11 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
+<<<<<<< HEAD
         <entry key="$PROJECT_DIR$" value="main" />
+=======
+        <entry key="$PROJECT_DIR$" value="3098" />
+>>>>>>> main
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
