@@ -4,13 +4,15 @@ from typing import List
 from typing import Tuple
 from typing import Union
 
-from cishouseholds.phm.lookup import lookup
 from cishouseholds.phm.lookup import phm_validation_schema
+from cishouseholds.pipeline.mapping import column_name_maps
 
 # Open a json file into a json object
 # Note that F.read() returns the content
 # of the file as a string so we should call
 # json.loads()
+
+lookup = column_name_maps["phm_column_name_map"]
 
 
 def decode_phm_json(json_str: Union[str, bytes]) -> List[Tuple]:

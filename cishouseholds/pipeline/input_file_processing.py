@@ -194,8 +194,6 @@ def extract_input_data(
             df = union_multiple_tables(dfs)
         else:
             df = union_multiple_tables([df, *dfs])
-        if validation_schema:
-            df = convert_array_strings_to_array(df, validation_schema)  # type: ignore
     if json_file_paths:
         dfs = []
         data_strings = [read_file_to_string(file, True) for file in json_file_paths]
@@ -206,4 +204,6 @@ def extract_input_data(
             df = union_multiple_tables(dfs)
         else:
             df = union_multiple_tables([df, *dfs])
+    if validation_schema:
+        df = convert_array_strings_to_array(df, validation_schema)  # type: ignore
     return df

@@ -186,7 +186,7 @@ def assign_datetime_from_combined_columns(
     """Create a formatted pyspark date column from a series of components."""
     for col_name, temp_col_name in zip([hour_column, minute_column, second_column], ["hour", "min", "sec"]):
         if col_name is None:
-            df = df.withColumn(temp_col_name, 0)
+            df = df.withColumn(temp_col_name, F.lit(0))
 
     hour = F.when((F.col(am_pm_column) == "pm") & (F.col(hour_column) != 12), F.col(hour_column) + 12).otherwise(
         F.col(hour_column)
