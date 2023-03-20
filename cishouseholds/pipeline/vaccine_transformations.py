@@ -6,6 +6,7 @@ from pyspark.sql import functions as F
 
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_default_date_flag
+from cishouseholds.derive import assign_first_dose
 from cishouseholds.derive import assign_max_doses
 from cishouseholds.derive import assign_order_number
 from cishouseholds.derive import assign_poss_1_2
@@ -14,16 +15,19 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.filter import filter_before_date_or_null
 from cishouseholds.filter import filter_invalid_vaccines
 from cishouseholds.filter import filter_single_dose
+from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.high_level_transformations import pivot_vaccine_columns
 
 # from pyspark.sql import Window
 
 
-def vaccine_transformations(df: DataFrame):
+def vaccine_transformations(df: DataFrame, vaccine_capture_df: DataFrame):
     """"""
+    df = union_multiple_tables([df, vaccine_capture_df])  # combine with vaccine capture df
     df = mapping(df)
     df = preprocessing(df)
     df = deduplication(df)
+    df = first_second_doses(df)
     return df
 
 
@@ -128,4 +132,16 @@ def deduplication(df: DataFrame):
             "Oxford / AstraZeneca / Vaxzevria / Covishield",
         ],
     )
+    return df
+
+
+def first_second_doses(df: DataFrame):
+
+    df = assign_first_dose(
+        df=df,
+        column_name_to_assign="first_dose",
+        participant_id_column="participant_id",
+        visit_datetime="visit_datetime",
+    )
+
     return df
