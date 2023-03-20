@@ -212,5 +212,6 @@ for parameters in [
     blood_results_parameters,
     historical_blood_results_parameters,
     brants_bridge_parameters,
+    phm_parameters,
 ]:
     generate_input_processing_function(**parameters)  # type:ignore
