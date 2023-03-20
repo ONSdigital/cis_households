@@ -26,6 +26,7 @@ def deduplicate_min_valid_order(df: DataFrame, column_name_to_update: str):
     """"""
     df = df.withColumn(column_name_to_update)
 
+
 def update_valid_order(
     df: DataFrame,
     column_name_to_update: str,
@@ -59,7 +60,6 @@ def update_valid_order(
         .otherwise(F.col(column_name_to_update)),
     )
     return df
-
 
 
 def add_prefix(df: DataFrame, column_name_to_update: str, prefix: str, sep: str = ""):
