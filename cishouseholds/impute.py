@@ -14,6 +14,7 @@ from pyspark.sql.window import Window
 from cishouseholds.derive import assign_random_day_in_month
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import any_column_not_null
+from cishouseholds.merge import left_join_keep_only_non_null_right
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.load import extract_from_table
 from cishouseholds.pipeline.load import update_table
@@ -345,17 +346,14 @@ def fill_forward_event(
         elif len(completed_sections) == 1:
             events_df = completed_sections[0]
     else:
-        events_df = extract_from_table(f"{event_indicator_column}_temp_lookup", True)
-
+        events_df = extract_from_table(f"{event_indicator_column}_temp_lookup", True).drop("LOGIC_APPLIED")
     # ~~ Construct resultant dataframe by fill forwards ~~#
 
     # use this columns to override the original dataframe
 
     if events_df is not None and events_df.count() > 0:
-        df = (
-            df.drop(*event_columns)
-            .join(events_df.select(participant_id_column, *event_columns), on=participant_id_column, how="left")
-            .withColumn("DROP_EVENT", (F.col(event_date_column) > F.col(visit_datetime_column)))
+        df = left_join_keep_only_non_null_right(df, events_df, [participant_id_column]).withColumn(
+            "DROP_EVENT", (F.col(event_date_column) > F.col(visit_datetime_column))
         )
     else:
         df = df.withColumn("DROP_EVENT", F.lit(False))
@@ -365,7 +363,6 @@ def fill_forward_event(
         df = df.withColumn(col, F.when(F.col("DROP_EVENT"), None).otherwise(F.col(col)))
 
     # pick the best row to retain based upon proximity to visit date
-    df = df.withColumn(event_indicator_column, F.when(F.col(event_date_column).isNull(), "No").otherwise("Yes"))
     df = df.withColumn(
         "VISIT_DIFF",
         F.coalesce(F.abs(F.datediff(F.col(event_date_column), F.col(visit_datetime_column))), F.lit(float("inf"))),
