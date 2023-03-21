@@ -612,11 +612,13 @@ def execute_visit_transformations(
 @register_pipeline_stage("vaccine_transformations")
 def execute_vaccine_transformations(
     input_survey_table: str,
+    vaccine_capture_table: str,
     output_survey_table: str,
 ):
     """"""
     df = extract_from_table(input_survey_table)
-    df = vaccine_transformations(df)
+    vaccine_capture_df = extract_from_table(vaccine_capture_table)
+    df = vaccine_transformations(df, vaccine_capture_df)
     update_table(df, output_survey_table, "overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
