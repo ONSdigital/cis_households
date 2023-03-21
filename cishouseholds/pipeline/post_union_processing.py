@@ -87,6 +87,10 @@ def raw_copies(df: DataFrame):
 
 def date_corrections(df: DataFrame):
     """"""
+    df = df.withColumn(
+        "visit_datetime",
+        F.to_timestamp(F.when(F.col("visit_datetime") > "2023-03-13", "2023-03-13").otherwise(F.col("visit_datetime"))),
+    )
     date_cols_to_correct = [
         col
         for col in [
