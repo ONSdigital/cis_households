@@ -1,5 +1,7 @@
 from datetime import datetime
 from io import BytesIO
+from typing import List
+from typing import Tuple
 
 import pandas as pd
 from pyspark.sql import functions as F
@@ -11,16 +13,18 @@ from cishouseholds.hdfs_utils import write_string_to_file
 
 
 class Report:
-    def __init__(self):
+    def __init__(self, output_directory: str = None):
         """"""
-        self.sheets = []
+        self.output_directory = output_directory
+        self.sheets: List[Tuple[DataFrame, str]] = []
         self.output = BytesIO()
 
-    def add_sheet(self, df, sheet_name):
+    def add_sheet(self, df: DataFrame, sheet_name: str):
         """"""
         self.sheets.append((df, sheet_name))
 
-    def write_excel_output(self, output_directory):
+    def write_excel_output(self, output_directory: str = None):
+        output_directory = output_directory if output_directory else self.output_directory
         with pd.ExcelWriter(self.output) as writer:
             for df, sheet_name in self.sheets:
                 df.toPandas().to_excel(writer, sheet_name=sheet_name, index=False)

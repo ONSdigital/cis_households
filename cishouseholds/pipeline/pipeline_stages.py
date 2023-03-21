@@ -1023,8 +1023,8 @@ def phm_report(
 ) -> DataFrame:
     """"""
     df = extract_from_table(input_survey_table)
-    report = Report()
-    daily_table_dfs, daily_table_names = report.create_completion_table_days(
+    report = Report(output_directory=output_directory)
+    report.create_completion_table_days(
         df=df,
         participant_id_column="participant_id",
         window_start_column="participant_completion_window_start_datetime",
@@ -1033,7 +1033,7 @@ def phm_report(
         reference_date_column="visit_datetime",
         window_range=15,
     )
-    range_table_dfs, range_table_names = report.create_completion_table_set_range(
+    report.create_completion_table_set_range(
         df=df,
         participant_id_column="participant_id",
         window_start_column="participant_completion_window_start_datetime",
@@ -1042,19 +1042,7 @@ def phm_report(
         reference_date_column="visit_datetime",
         window_range=15,
     )
-    datasets = [*daily_table_dfs, *range_table_dfs]
-    sheet_names = [*daily_table_names, *range_table_names]
-
-    output = BytesIO()
-    with pd.ExcelWriter(output) as writer:
-        for i in range(0, len(datasets)):
-            dataset = datasets[i]
-            sheet_name = sheet_names[i]
-            dataset.toPandas().to_excel(writer, sheet_name=sheet_name, index=False)
-
-    write_string_to_file(
-        output.getbuffer(), f"{output_directory}/phm_report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
-    )
+    report.write_excel_output()
 
 
 @register_pipeline_stage("lab_report")
