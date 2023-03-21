@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="beab6065-61fb-41d3-a26d-74fb8084a415" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/mapping.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/mapping.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
