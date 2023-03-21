@@ -513,8 +513,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "work_sector",
         "illness_reduces_activity_or_ability",
         "ability_to_socially_distance_at_work_or_education",
-        "last_covid_contact_type",
-        "last_suspected_covid_contact_type",
         "physical_contact_under_18_years",
         "physical_contact_18_to_69_years",
         "physical_contact_over_70_years",
@@ -527,7 +525,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "times_socialising_last_7_days",
         "face_covering_work_or_education",
         "face_covering_other_enclosed_places",
-        "other_covid_infection_test_results",
         "other_antibody_test_results",
         "cis_covid_vaccine_type",
         "cis_covid_vaccine_type_other",
@@ -642,15 +639,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Someone I live with": "Living in your own home",
             "Someone I do not live with": "Outside your home",
         },
-        "last_covid_contact_type_raw": {
-            "Someone I live with": "Living in your own home",
-            "Someone I do not live with": "Outside your home",
-        },
         "last_suspected_covid_contact_type": {
-            "Someone I live with": "Living in your own home",
-            "Someone I do not live with": "Outside your home",
-        },
-        "last_suspected_covid_contact_type_raw": {
             "Someone I live with": "Living in your own home",
             "Someone I do not live with": "Outside your home",
         },
@@ -690,11 +679,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             # noqa: E501
         },
         "other_covid_infection_test_results": {
-            "All tests failed": "All Tests failed",
-            "One or more tests were negative and none were positive": "Any tests negative, but none positive",
-            "One or more tests were positive": "One or more positive test(s)",
-        },
-        "other_covid_infection_test_results_raw": {
             "All tests failed": "All Tests failed",
             "One or more tests were negative and none were positive": "Any tests negative, but none positive",
             "One or more tests were positive": "One or more positive test(s)",

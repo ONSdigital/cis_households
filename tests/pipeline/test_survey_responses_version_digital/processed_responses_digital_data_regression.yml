@@ -195,7 +195,6 @@
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
-  other_covid_infection_test_results_raw: One or more positive test(s)
   other_household_member_care_home_last_28_days: null
   other_household_member_hospital_last_28_days: null
   participant_completion_window_end_datetime: '2022-03-02 16:05:54.000000'
@@ -623,7 +622,6 @@
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
-  other_covid_infection_test_results_raw: One or more positive test(s)
   other_household_member_care_home_last_28_days: Don't know
   other_household_member_hospital_last_28_days: Don't know
   participant_completion_window_end_datetime: '2020-11-27 17:19:59.000000'
@@ -1054,7 +1052,6 @@
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: All Tests failed
-  other_covid_infection_test_results_raw: All Tests failed
   other_household_member_care_home_last_28_days: null
   other_household_member_hospital_last_28_days: null
   participant_completion_window_end_datetime: '2021-11-07 16:30:50.000000'
@@ -1491,7 +1488,6 @@
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Any tests negative, but none positive
-  other_covid_infection_test_results_raw: Any tests negative, but none positive
   other_household_member_care_home_last_28_days: 'No'
   other_household_member_hospital_last_28_days: Don't know
   participant_completion_window_end_datetime: '2021-01-25 05:44:27.000000'
@@ -1921,7 +1917,6 @@
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
-  other_covid_infection_test_results_raw: One or more positive test(s)
   other_household_member_care_home_last_28_days: Don't know
   other_household_member_hospital_last_28_days: Don't know
   participant_completion_window_end_datetime: '2022-12-23 06:45:19.000000'
@@ -2357,7 +2352,6 @@
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
-  other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: 'Yes'
   other_household_member_hospital_last_28_days: 'No'
   participant_completion_window_end_datetime: '2022-09-25 08:49:41.000000'
@@ -2797,7 +2791,6 @@
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
-  other_covid_infection_test_results_raw: One or more positive test(s)
   other_household_member_care_home_last_28_days: 'No'
   other_household_member_hospital_last_28_days: null
   participant_completion_window_end_datetime: '2022-04-22 03:22:49.000000'
@@ -3234,7 +3227,6 @@
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
-  other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: 'No'
   other_household_member_hospital_last_28_days: null
   participant_completion_window_end_datetime: '2020-04-07 06:34:28.000000'
@@ -3672,7 +3664,6 @@
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
-  other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: Don't know
   other_household_member_hospital_last_28_days: 'No'
   participant_completion_window_end_datetime: '2020-08-13 08:59:40.000000'
@@ -4114,7 +4105,6 @@
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: All Tests failed
-  other_covid_infection_test_results_raw: All Tests failed
   other_household_member_care_home_last_28_days: Don't know
   other_household_member_hospital_last_28_days: Don't know
   participant_completion_window_end_datetime: '2022-05-02 03:38:27.000000'
