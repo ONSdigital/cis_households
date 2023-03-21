@@ -130,6 +130,39 @@ transformation_maps: Dict[str, Dict[str, str]] = {
 
 category_maps = {
     "iqvia_raw_category_map": {
+        "work_status_v0_orig": {
+            "Employed": 1,
+            "Self-employed": 2,
+            "Furloughed (temporarily not working)": 3,
+            "Not working (unemployed, retired, long-term sick etc.)": 4,
+            "Student": 5,
+        },
+        "work_status_v1_orig": {
+            "Employed and currently working": 1,
+            "Employed and currently not working": 2,
+            "Self-employed and currently working": 3,
+            "Self-employed and currently not working": 4,
+            "Looking for paid work and able to start": 5,
+            "Not working and not looking for work": 6,
+            "Retired": 7,
+            "Child under 5y not attending child care": 8,
+            "Child under 5y attending child care": 9,
+            "5y and older in full-time education": 10,
+        },
+        "work_status_v2_orig": {
+            "Employed and currently working": 1,
+            "Employed and currently not working": 2,
+            "Self-employed and currently working": 3,
+            "Self-employed and currently not working": 4,
+            "Looking for paid work and able to start": 5,
+            "Not working and not looking for work": 6,
+            "Retired": 7,
+            "Child under 4-5y not attending child care": 8,
+            "Child under 4-5y attending child care": 9,
+            "4-5y and older at school/home-school": 10,
+            "Attending college or FE (including if temporarily absent)": 11,
+            "Attending university (including if temporarily absent)": 12,
+        },
         "blood_taken_am_pm": {"AM": 1, "PM": 2},
         "swab_taken_am_pm": {"AM": 1, "PM": 2},
         "test_type_positive_result": {
