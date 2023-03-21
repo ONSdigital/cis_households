@@ -3341,6 +3341,19 @@ phm_date_format = "%d/%m/%Y"
 
 def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
     return lambda: {  # noqa: E731
+        "survey_completed_datetime": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
         # "uac": _("random.custom_code", mask="################", digit="#"),
         # "household_completion_window_id": _("random.custom_code", mask="####", digit="#"),
         # "ons_household_id": _("random.custom_code", mask="############", digit="#"),
@@ -3879,5 +3892,6 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
         ),
         "end_screen_questionnaire": _("choice", items=["Continue", None]),
-        # "end_screen_sample": _("choice", items=["Continue", None]), #to be added when bio samples begin
+        "end_screen_sample": _("choice", items=["Continue", None]),  # to be added when bio samples begin
+        "survey_completion_status_flushed": _("choice", items=["false", "true"]),
     }
