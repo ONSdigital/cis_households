@@ -1,4 +1,3 @@
-from cishouseholds.phm.high_level_phm_transformations import high_level_phm_transformations
 from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import survey_response_cast_to_double
 from cishouseholds.pipeline.mapping import survey_response_cisd_cast_to_double
@@ -72,7 +71,7 @@ phm_parameters = {
     "datetime_column_map": phm_datetime_map,
     "date_from_filename": False,
     "transformation_functions": [
-        high_level_phm_transformations,
+        # high_level_phm_transformations,
         phm_transformations,
     ],
     "sep": "|",

@@ -10,11 +10,13 @@ from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_columns_from_array
 from cishouseholds.derive import assign_date_from_filename
 from cishouseholds.derive import assign_datetime_from_coalesced_columns_and_log_source
+from cishouseholds.derive import assign_datetime_from_combined_columns
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import combine_like_array_columns
 from cishouseholds.derive import concat_fields_if_true
 from cishouseholds.derive import derive_had_symptom_last_7days_from_digital
 from cishouseholds.derive import map_options_to_bool_columns
+from cishouseholds.edit import add_prefix
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_barcode_simple
 from cishouseholds.edit import edit_to_sum_or_max_value
@@ -180,6 +182,29 @@ def pre_processing(df: DataFrame) -> DataFrame:
         "cis_covid_vaccine_type": vaccine_type_map,
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
+    df = assign_datetime_from_combined_columns(
+        df=df,
+        column_name_to_assign="blood_taken_datetime",
+        date_column="blood_taken_date",
+        hour_column="blood_taken_time_hour",
+        minute_column="blood_taken_time_minute",
+        am_pm_column="blood_taken_am_pm",
+    )
+    df = assign_datetime_from_combined_columns(
+        df=df,
+        column_name_to_assign="swab_taken_datetime",
+        date_column="swab_taken_date",
+        hour_column="swab_taken_time_hour",
+        minute_column="swab_taken_time_minute",
+        am_pm_column="swab_taken_am_pm",
+    )
+
+    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 4)
+    # df = generic_processing(df)
+
+    # df = assign_completion_status(df=df, column_name_to_assign="survey_completion_status")
+    df = add_prefix(df, column_name_to_update="blood_sample_barcode_user_entered", prefix="BLT")
+    df = add_prefix(df, column_name_to_update="swab_sample_barcode_user_entered", prefix="SWT")
     return df
 
 

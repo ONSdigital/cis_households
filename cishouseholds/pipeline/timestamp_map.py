@@ -160,4 +160,5 @@ phm_datetime_map = {
         "cis_covid_vaccine_date",
         "think_have_covid_onset_date",
     ],
+    None: ["survey_completed_datetime"],
 }

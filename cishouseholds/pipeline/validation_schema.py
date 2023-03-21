@@ -11,6 +11,8 @@ long_dict = {"type": "long"}
 
 float_dict = {"type": "double"}
 
+bool_dict = {"type": "boolean"}
+
 array_string_dict = {"type": "array<string>"}
 
 swab_allowed_pcr_results = ["Inconclusive", "Negative", "Positive", "Rejected"]
@@ -1589,6 +1591,7 @@ validation_schemas = {
         "participant_digital_voucher_preference": string_dict,
     },
     "phm_survey_validation_schema": {
+        "survey_completed_datetime": string_dict,
         # "uac": string_dict,
         # "household_completion_window_id": string_dict,
         # "ons_household_id": string_dict,
@@ -1718,7 +1721,8 @@ validation_schemas = {
         "transport_shared_outside_household_last_28_days": string_dict,
         "face_covering_work_or_education": string_dict,
         "end_screen_questionnaire": string_dict,
-        # "end_screen_sample": string_dict, to be added when bio samples begin
+        "end_screen_sample": string_dict,
+        "survey_completion_status_flushed": bool_dict,
     },
     "phm_participant_extract_validation_schema": {
         "ons_household_id": string_dict,

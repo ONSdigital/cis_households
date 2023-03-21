@@ -1550,6 +1550,8 @@ column_name_maps = {
         "WINDOW_START_DATE": "participant_completion_window_start_date",
         "WINDOW_CLOSE_DATE": "participant_completion_window_end_date",
         "PARTICIPANT_WINDOW_ID": "participant_completion_window_id",
+        "submitted_at": "survey_completed_datetime",
+        "flushed": "survey_completion_status_flushed",
     },
     "phm_participant_column_name_map": {
         "StudyCohort": "study_cohort",
