@@ -330,7 +330,7 @@ def clean_inconsistent_event_detail_part_1(df: DataFrame) -> DataFrame:
         "other_covid_infection_test_results",
         F.when(
             (
-                (F.col("other_covid_infection_test_results") == "Negative")
+                (F.col("other_covid_infection_test_results") == "Any tests negative, but none positive")
                 & (F.col("think_had_covid_onset_date").isNull())
                 & (F.col("think_had_covid_symptom_count") == 0)
             ),
@@ -361,7 +361,7 @@ def clean_inconsistent_event_detail_part_1(df: DataFrame) -> DataFrame:
     # Reset no (0) to missing where ‘No’ overall and random ‘No’s given for other covid variables.
     flag = (
         (F.col("think_had_covid_symptom_count") == 0)
-        & (~F.col("other_covid_infection_test_results").eqNullSafe("Positive"))
+        & (~F.col("other_covid_infection_test_results").eqNullSafe("One or more positive test(s)"))
         & reduce(
             and_,
             (
@@ -397,7 +397,7 @@ def clean_inconsistent_event_detail_part_1(df: DataFrame) -> DataFrame:
                 & (~F.col("think_had_covid_contacted_nhs").eqNullSafe("Yes"))
                 & (~F.col("other_covid_infection_test").eqNullSafe("Yes"))
                 & (F.col("think_had_covid_symptom_count") == 0)
-                & (~F.col("other_covid_infection_test_results").eqNullSafe("Positive")),
+                & (~F.col("other_covid_infection_test_results").eqNullSafe("One or more positive test(s)")),
                 "No",
             ).otherwise(F.col(col)),
         )
