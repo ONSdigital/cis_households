@@ -11,6 +11,8 @@ long_dict = {"type": "long"}
 
 float_dict = {"type": "double"}
 
+bool_dict = {"type": "boolean"}
+
 array_string_dict = {"type": "array<string>"}
 
 swab_allowed_pcr_results = ["Inconclusive", "Negative", "Positive", "Rejected"]
@@ -1589,10 +1591,14 @@ validation_schemas = {
         "participant_digital_voucher_preference": string_dict,
     },
     "phm_survey_validation_schema": {
+        "portal_id": integer_dict,
+        "launch_language_code": string_dict,
+        "submission_language_code": string_dict,
+        "survey_completed_datetime": string_dict,
         # "uac": string_dict,
         # "household_completion_window_id": string_dict,
         # "ons_household_id": string_dict,
-        # "participant_id": string_dict,
+        "participant_id": string_dict,
         # "cohort": string_dict,
         # "participant_under_16": string_dict,
         # "digital_type_preference": string_dict,
@@ -1661,7 +1667,7 @@ validation_schemas = {
         "phm_covid_vaccine_number_of_doses": string_dict,
         "cis_covid_vaccine_date": string_dict,
         "flu_vaccine_received": string_dict,
-        "flu_vaccine_received_date": string_dict,
+        "flu_vaccine_date": string_dict,
         "been_outside_uk": string_dict,
         "been_outside_uk_last_country": string_dict,
         "been_outside_uk_last_return_date": string_dict,
@@ -1680,7 +1686,7 @@ validation_schemas = {
         "other_covid_infection_test_results": string_dict,
         "other_covid_infection_test_positive_date": string_dict,
         "test_type_positive_result": string_dict,
-        "other_covid_infection_test_negative_date": string_dict,
+        # "other_covid_infection_test_negative_date": string_dict,
         "last_28_days_unable_usual_activities": integer_dict,
         "last_28_days_unable_usual_activities_due_to_respiratory_infection": integer_dict,
         "last_28_days_off_work_education_due_to_health": integer_dict,
@@ -1718,7 +1724,10 @@ validation_schemas = {
         "transport_shared_outside_household_last_28_days": string_dict,
         "face_covering_work_or_education": string_dict,
         "end_screen_questionnaire": string_dict,
-        # "end_screen_sample": string_dict, to be added when bio samples begin
+        "end_screen_sample": string_dict,
+        "survey_completion_status_flushed": bool_dict,
+        "participant_completion_window_start_date": string_dict,
+        "participant_completion_window_end_date": string_dict,
     },
     "phm_participant_extract_validation_schema": {
         "ons_household_id": string_dict,
