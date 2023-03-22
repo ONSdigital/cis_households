@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="09edba87-3c9f-4414-a533-fa883b684b76" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/mapping.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/mapping.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cishouseholds/pipeline/validation_schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/cishouseholds/pipeline/validation_schema.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dummy_data_generation/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/dummy_data_generation/schemas.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

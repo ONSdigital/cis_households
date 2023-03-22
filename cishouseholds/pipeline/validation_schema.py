@@ -1593,6 +1593,7 @@ validation_schemas = {
     "phm_survey_validation_schema": {
         "portal_id": integer_dict,
         "launch_language_code": string_dict,
+        "submission_language_code": string_dict,
         "survey_completed_datetime": string_dict,
         # "uac": string_dict,
         # "household_completion_window_id": string_dict,

@@ -3343,6 +3343,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
     return lambda: {  # noqa: E731
         "portal_id": _("custom_random.random_integer", lower=1000, upper=12000, null_percent=0),
         "launch_language_code": _("choice", items=["en", "we"]),
+        "submission_language_code": _("choice", items=["en", "we"]),
         "survey_completed_datetime": _(
             "discrete_distribution",
             population=[

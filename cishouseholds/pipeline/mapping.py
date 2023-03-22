@@ -1585,6 +1585,8 @@ column_name_maps = {
         "PARTICIPANT_WINDOW_ID": "participant_completion_window_id",
         "submitted_at": "survey_completed_datetime",
         "flushed": "survey_completion_status_flushed",
+        "launch_language_code": "form_language_launch",
+        "submission_language_code": "form_language_submitted",
     },
     "phm_participant_column_name_map": {
         "StudyCohort": "study_cohort",
