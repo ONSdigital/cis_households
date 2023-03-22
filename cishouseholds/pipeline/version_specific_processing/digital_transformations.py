@@ -67,6 +67,13 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
     """
     Call functions to process digital specific variable transformations.
     """
+    df = survey_edit_auto_complete(
+        df,
+        "survey_completion_status",
+        "participant_completion_window_end_datetime",
+        "face_covering_other_enclosed_places",
+        "file_date",
+    )
     df = assign_column_value_from_multiple_column_map(
         df,
         "self_isolating_reason",
@@ -723,13 +730,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
     df = concat_fields_if_true(df, "think_had_covid_which_symptoms", "think_had_covid_which_symptom_", "Yes", ";")
     df = concat_fields_if_true(df, "which_symptoms_last_7_days", "think_have_covid_symptom_", "Yes", ";")
     df = concat_fields_if_true(df, "long_covid_symptoms", "think_have_long_covid_symptom_", "Yes", ";")
-    df = survey_edit_auto_complete(
-        df,
-        "survey_completion_status",
-        "participant_completion_window_end_datetime",
-        "face_covering_other_enclosed_places",
-        "file_date",
-    )
     df = update_column_values_from_map(
         df,
         "survey_completion_status",
