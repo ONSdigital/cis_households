@@ -520,8 +520,6 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
         "work_sector",
         "illness_reduces_activity_or_ability",
         "ability_to_socially_distance_at_work_or_education",
-        "last_covid_contact_type",
-        "last_suspected_covid_contact_type",
         "physical_contact_under_18_years",
         "physical_contact_18_to_69_years",
         "physical_contact_over_70_years",
@@ -648,15 +646,7 @@ def transform_survey_responses_version_digital_delta(df: DataFrame) -> DataFrame
             "Someone I live with": "Living in your own home",
             "Someone I do not live with": "Outside your home",
         },
-        "last_covid_contact_type_raw": {
-            "Someone I live with": "Living in your own home",
-            "Someone I do not live with": "Outside your home",
-        },
         "last_suspected_covid_contact_type": {
-            "Someone I live with": "Living in your own home",
-            "Someone I do not live with": "Outside your home",
-        },
-        "last_suspected_covid_contact_type_raw": {
             "Someone I live with": "Living in your own home",
             "Someone I do not live with": "Outside your home",
         },
