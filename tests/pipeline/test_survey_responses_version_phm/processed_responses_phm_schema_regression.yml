@@ -1,5 +1,13 @@
 fields:
 - metadata: {}
+  name: portal_id
+  nullable: true
+  type: integer
+- metadata: {}
+  name: launch_language_code
+  nullable: true
+  type: string
+- metadata: {}
   name: survey_completed_datetime
   nullable: true
   type: timestamp
@@ -267,9 +275,9 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: flu_vaccine_received_date
+  name: flu_vaccine_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: been_outside_uk
   nullable: true
@@ -361,10 +369,6 @@ fields:
   type: timestamp
 - metadata: {}
   name: test_type_positive_result
-  nullable: true
-  type: string
-- metadata: {}
-  name: other_covid_infection_test_negative_date
   nullable: true
   type: string
 - metadata: {}
@@ -533,9 +537,21 @@ fields:
   nullable: true
   type: boolean
 - metadata: {}
+  name: participant_completion_window_start_date
+  nullable: true
+  type: string
+- metadata: {}
+  name: participant_completion_window_end_date
+  nullable: true
+  type: string
+- metadata: {}
   name: survey_response_source_file
   nullable: false
   type: string
+- metadata: {}
+  name: visit_datetime
+  nullable: true
+  type: timestamp
 - metadata: {}
   name: work_sector_raw
   nullable: true
