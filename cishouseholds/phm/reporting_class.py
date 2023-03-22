@@ -95,7 +95,7 @@ class Report:
             window_range = df.select("DIFF").rdd.max()[0]
 
         # create completion rate columns
-        dff = (
+        df = (
             df.groupBy(window_start_column, window_end_column)
             .pivot("DIFF")
             .agg(
@@ -104,16 +104,16 @@ class Report:
             )
             .fillna(0)
         )
-        partial_columns = [c for c in dff.columns if c.endswith(partial_column_name)]
-        full_columns = [c for c in dff.columns if c.endswith(full_column_name)]
+        partial_columns = [c for c in df.columns if c.endswith(partial_column_name)]
+        full_columns = [c for c in df.columns if c.endswith(full_column_name)]
 
-        partial_df = dff.select(window_start_column, window_end_column, *partial_columns)
+        partial_df = df.select(window_start_column, window_end_column, *partial_columns)
         partial_df = partial_df.withColumn("total", sum([F.col(c) for c in partial_columns]))
 
         for col in partial_columns:
             partial_df = partial_df.withColumnRenamed(col, col.split("_")[0])
 
-        full_df = dff.select(window_start_column, window_end_column, *full_columns)
+        full_df = df.select(window_start_column, window_end_column, *full_columns)
         full_df = full_df.withColumn("total", sum([F.col(c) for c in full_columns]))
         for col in full_columns:
             full_df = full_df.withColumnRenamed(col, col.split("_")[0])
@@ -222,7 +222,7 @@ class Report:
             start_reference_date_column=window_start_column,
             reference_date_column=reference_date_column,
         )
-        reporting_dfs, sheet_names = self.create_completion_table_days(
+        partial_df_rate, full_df_rate = self.create_completion_table_days(
             df=df,
             participant_id_column=participant_id_column,
             window_start_column="START",
@@ -232,14 +232,9 @@ class Report:
             window_range=window_range,
             sheet_name_prefix=sheet_name_prefix,
         )
-        partial_df_count = (
-            reporting_dfs[0].withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
+        partial_df_rate = partial_df_rate.withColumn("date_range", F.concat_ws("-", "START", "END")).drop(
+            "START", "END"
         )
-        full_df_count = reporting_dfs[1].withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
-        partial_df_rate = (
-            reporting_dfs[2].withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
-        )
-        full_df_rate = reporting_dfs[3].withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
-        sheet_names = ["range_count_partial", "range_count_full", "range_rate_partial", "range_rate_full"]
+        full_df_rate = full_df_rate.withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
 
-        return [partial_df_count, full_df_count, partial_df_rate, full_df_rate], sheet_names
+        return partial_df_rate, full_df_rate
