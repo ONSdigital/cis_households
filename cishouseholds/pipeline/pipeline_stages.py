@@ -1033,7 +1033,7 @@ def phm_report(
         window_end_column="participant_completion_window_end_datetime",
         window_status_column="survey_completion_status",
         reference_date_column="visit_datetime",
-        window_range=15,
+        window_range=14,
     )
     report.create_completion_table_set_range(
         df=df,
@@ -1042,7 +1042,7 @@ def phm_report(
         window_end_column="participant_completion_window_end_datetime",
         window_status_column="survey_completion_status",
         reference_date_column="visit_datetime",
-        window_range=15,
+        window_range=28,
     )
     report.write_excel_output()
 
