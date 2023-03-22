@@ -170,11 +170,9 @@
   language_preference: null
   last_covid_contact_date: '2022-01-01 00:00:00.000000'
   last_covid_contact_type: null
-  last_covid_contact_type_raw: null
   last_name: Bolton
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Someone you do not live with
-  last_suspected_covid_contact_type_raw: Someone you do not live with
   long_covid_symptoms: think_have_long_covid_symptom_headache;think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_diarrhoea;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_low_mood
   middle_name: My
   ons_household_id: '454249568730'
@@ -597,11 +595,9 @@
   language_preference: English
   last_covid_contact_date: '2022-01-07 00:00:00.000000'
   last_covid_contact_type: Living in your own home
-  last_covid_contact_type_raw: Living in your own home
   last_name: Romero
   last_suspected_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_suspected_covid_contact_type: Someone you do not live with
-  last_suspected_covid_contact_type_raw: Someone you do not live with
   long_covid_symptoms: think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_memory_loss_or_confusion;think_have_long_covid_symptom_noisy_breathing
   middle_name: Jessika
   ons_household_id: '881968747928'
@@ -1027,11 +1023,9 @@
   language_preference: English
   last_covid_contact_date: '2022-01-02 00:00:00.000000'
   last_covid_contact_type: null
-  last_covid_contact_type_raw: null
   last_name: Waters
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Outside your home
-  last_suspected_covid_contact_type_raw: Outside your home
   long_covid_symptoms: think_have_long_covid_symptom_fatigue;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_low_mood;think_have_long_covid_symptom_difficulty_concentrating
   middle_name: Isaac
   ons_household_id: '337780069974'
@@ -1463,11 +1457,9 @@
   language_preference: null
   last_covid_contact_date: null
   last_covid_contact_type: null
-  last_covid_contact_type_raw: null
   last_name: Day
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: null
-  last_suspected_covid_contact_type_raw: null
   long_covid_symptoms: think_have_long_covid_symptom_diarrhoea;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_more_trouble_sleeping;think_have_long_covid_symptom_difficulty_concentrating
   middle_name: Hank
   ons_household_id: '602276804025'
@@ -1892,11 +1884,9 @@
   language_preference: Welsh
   last_covid_contact_date: null
   last_covid_contact_type: Outside your home
-  last_covid_contact_type_raw: Outside your home
   last_name: Cervantes
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: null
-  last_suspected_covid_contact_type_raw: null
   long_covid_symptoms: think_have_long_covid_symptom_fever;think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_nausea_or_vomiting;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_loss_of_appetite;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_low_mood;think_have_long_covid_symptom_noisy_breathing
   middle_name: Jae
   ons_household_id: '624980420762'
@@ -2327,11 +2317,9 @@
   language_preference: Welsh
   last_covid_contact_date: null
   last_covid_contact_type: null
-  last_covid_contact_type_raw: null
   last_name: Hunt
   last_suspected_covid_contact_date: '2022-01-08 00:00:00.000000'
   last_suspected_covid_contact_type: Living in your own home
-  last_suspected_covid_contact_type_raw: Living in your own home
   long_covid_symptoms: think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_noisy_breathing
   middle_name: Gale
   ons_household_id: '144229485098'
@@ -2766,11 +2754,9 @@
   language_preference: English
   last_covid_contact_date: '2022-01-02 00:00:00.000000'
   last_covid_contact_type: null
-  last_covid_contact_type_raw: null
   last_name: Mosley
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Someone you live with
-  last_suspected_covid_contact_type_raw: Someone you live with
   long_covid_symptoms: think_have_long_covid_symptom_nausea_or_vomiting;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_loss_of_appetite;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_low_mood;think_have_long_covid_symptom_more_trouble_sleeping;think_have_long_covid_symptom_runny_nose_or_sneezing;think_have_long_covid_symptom_noisy_breathing
   middle_name: Quinn
   ons_household_id: 015391767254
@@ -3202,11 +3188,9 @@
   language_preference: null
   last_covid_contact_date: null
   last_covid_contact_type: Living in your own home
-  last_covid_contact_type_raw: Living in your own home
   last_name: Gross
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Someone you do not live with
-  last_suspected_covid_contact_type_raw: Someone you do not live with
   long_covid_symptoms: think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_fatigue;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_cough;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_noisy_breathing
   middle_name: Clarence
   ons_household_id: '633873344214'
@@ -3639,11 +3623,9 @@
   language_preference: English
   last_covid_contact_date: '2022-01-08 00:00:00.000000'
   last_covid_contact_type: Living in your own home
-  last_covid_contact_type_raw: Living in your own home
   last_name: Brady
   last_suspected_covid_contact_date: '2022-01-02 00:00:00.000000'
   last_suspected_covid_contact_type: Someone you do not live with
-  last_suspected_covid_contact_type_raw: Someone you do not live with
   long_covid_symptoms: think_have_long_covid_symptom_headache;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_memory_loss_or_confusion;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_noisy_breathing
   middle_name: Argentina
   ons_household_id: 039598076526
@@ -4080,11 +4062,9 @@
   language_preference: Welsh
   last_covid_contact_date: null
   last_covid_contact_type: Living in your own home
-  last_covid_contact_type_raw: Living in your own home
   last_name: Meyers
   last_suspected_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_suspected_covid_contact_type: null
-  last_suspected_covid_contact_type_raw: null
   long_covid_symptoms: think_have_long_covid_symptom_headache;think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_nausea_or_vomiting;think_have_long_covid_symptom_loss_of_taste;think_have_long_covid_symptom_cough;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_loss_of_appetite;think_have_long_covid_symptom_memory_loss_or_confusion
   middle_name: Buck
   ons_household_id: '459654137672'
