@@ -24,7 +24,6 @@ from cishouseholds.expressions import all_columns_null
 from cishouseholds.expressions import all_columns_values_in_list
 from cishouseholds.expressions import any_column_equal_value
 from cishouseholds.expressions import count_occurrence_in_row
-from cishouseholds.impute import fill_forward_event
 from cishouseholds.pipeline.mapping import date_cols_min_date_dict
 
 # from cishouseholds.edit import fuzzy_update
@@ -34,7 +33,6 @@ def covid_event_transformations(df: DataFrame) -> DataFrame:
     """Apply all transformations related to covid event columns in order."""
     df = edit_existing_columns(df).custom_checkpoint()
     df = derive_new_columns(df).custom_checkpoint()
-    df = fill_forward(df).custom_checkpoint()
     df = clean_inconsistent_event_detail_part_1(df).custom_checkpoint()  # a25 stata logic
     df = clean_inconsistent_event_detail_part_2(df).custom_checkpoint()  # a26 stata logic
     df = data_dependent_derivations(df).custom_checkpoint()
@@ -115,10 +113,13 @@ def edit_existing_columns(df: DataFrame) -> DataFrame:
     for contact_date, contact_type, contact in zip(contact_dates, contact_types, covid_contacts):
         # correct covid contact based on date and type
         df = df.withColumn(
-            contact, F.when(all_columns_null([contact_type, contact_date]), None).otherwise(F.col(contact))
+            contact,
+            F.when(all_columns_null([contact_type, contact_date]), "No").otherwise(
+                F.col(contact)
+            ),  # should be set to "No", not none
         )
 
-        # correct covid type based on date and contact
+        # correct covid type based on date null and contact null or no
         df = df.withColumn(
             contact_type, F.when(all_columns_null([contact, contact_date]), None).otherwise(F.col(contact_type))
         )
@@ -278,32 +279,32 @@ def derive_new_columns(df: DataFrame) -> DataFrame:
     return df
 
 
-def fill_forward(df) -> DataFrame:
-    """
-    Function that contains all fill_forward_event calls required to implement STATA-based last observation carried forward logic.
-    """
-    # Derive these after fill forwards and other changes to dates
-    df = fill_forward_event(
-        df=df,
-        event_indicator_column="contact_suspected_positive_covid_last_28_days",
-        event_date_column="last_suspected_covid_contact_date",
-        event_date_tolerance=7,
-        detail_columns=["last_suspected_covid_contact_type"],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
-        visit_id_column="visit_id",
-    )
-    df = fill_forward_event(
-        df=df,
-        event_indicator_column="contact_known_positive_covid_last_28_days",
-        event_date_column="last_covid_contact_date",
-        event_date_tolerance=7,
-        detail_columns=["last_covid_contact_type"],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
-        visit_id_column="visit_id",
-    )
-    return df
+# def fill_forward(df) -> DataFrame:
+#     """
+#     Function that contains all fill_forward_event calls required to implement STATA-based last observation carried forward logic.
+#     """
+#     # Derive these after fill forwards and other changes to dates
+#     df = fill_forward_event(
+#         df=df,
+#         event_indicator_column="contact_suspected_positive_covid_last_28_days",
+#         event_date_column="last_suspected_covid_contact_date",
+#         event_date_tolerance=7,
+#         detail_columns=["last_suspected_covid_contact_type"],
+#         participant_id_column="participant_id",
+#         visit_datetime_column="visit_datetime",
+#         visit_id_column="visit_id",
+#     )
+#     df = fill_forward_event(
+#         df=df,
+#         event_indicator_column="contact_known_positive_covid_last_28_days",
+#         event_date_column="last_covid_contact_date",
+#         event_date_tolerance=7,
+#         detail_columns=["last_covid_contact_type"],
+#         participant_id_column="participant_id",
+#         visit_datetime_column="visit_datetime",
+#         visit_id_column="visit_id",
+#     )
+#     return df
 
 
 def clean_inconsistent_event_detail_part_1(df: DataFrame) -> DataFrame:
