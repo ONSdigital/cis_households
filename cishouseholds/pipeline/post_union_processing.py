@@ -87,6 +87,10 @@ def raw_copies(df: DataFrame):
 
 def date_corrections(df: DataFrame):
     """"""
+    df = df.withColumn(
+        "visit_datetime",
+        F.to_timestamp(F.when(F.col("visit_datetime") > "2023-03-13", "2023-03-13").otherwise(F.col("visit_datetime"))),
+    )
     date_cols_to_correct = [
         col
         for col in [
@@ -219,6 +223,11 @@ def generic_processing(df: DataFrame):
             "Swab / blood process too distressing": "Swab/blood process too distressing",
             "Swab / blood process to distressing": "Swab/blood process too distressing",
             "Do NOT Reinstate": "Do not reinstate",
+        },
+        "other_covid_infection_test_results_raw": {
+            "All tests failed": "All Tests failed",
+            "One or more tests were negative and none were positive": "Any tests negative, but none positive",
+            "One or more tests were positive": "One or more positive test(s)",
         },
     }
     df = apply_value_map_multiple_columns(df, col_val_map)

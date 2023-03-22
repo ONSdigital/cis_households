@@ -1544,10 +1544,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: other_covid_infection_test_results_raw
-  nullable: true
-  type: string
-- metadata: {}
   name: other_antibody_test_results_raw
   nullable: true
   type: string
