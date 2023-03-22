@@ -8,6 +8,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: submission_language_code
+  nullable: true
+  type: string
+- metadata: {}
   name: survey_completed_datetime
   nullable: true
   type: timestamp
