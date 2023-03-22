@@ -6,6 +6,7 @@ from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.derive import assign_column_to_date_string
+from cishouseholds.derive import assign_columns_from_array
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 
 
