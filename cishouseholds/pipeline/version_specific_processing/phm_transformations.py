@@ -42,6 +42,7 @@ def pre_processing(df: DataFrame) -> DataFrame:
     """
     Sets categories to map for digital specific variables to Voyager 0/1/2 equivalent
     """
+    df = df.withColumn("visit_datetime", F.col("survey_completed_datetime"))
     raw_copy_list = [
         "work_sector",
         "illness_reduces_activity_or_ability",
@@ -202,7 +203,9 @@ def pre_processing(df: DataFrame) -> DataFrame:
 
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 4)
     # df = generic_processing(df)
-    df = df.withColumn("file_date", F.col("survey_completed_datetime"))
+    df = df.withColumn(
+        "file_date", F.col("survey_completed_datetime")
+    )  # the json files dont have dates so we add it here
     # df = assign_completion_status(df=df, column_name_to_assign="survey_completion_status")
     df = add_prefix(df, column_name_to_update="blood_sample_barcode_user_entered", prefix="BLT")
     df = add_prefix(df, column_name_to_update="swab_sample_barcode_user_entered", prefix="SWT")

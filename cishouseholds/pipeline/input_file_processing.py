@@ -116,8 +116,8 @@ def extract_validate_transform_input_data(
     df = extract_input_data(resource_path, validation_schema, sep, source_file_column)
     if column_name_map is not None:
         df = rename_column_names(df, column_name_map)
-
-    df = assign_filename_column(df, source_file_column)  # Must be called before update_from_lookup_df
+    if source_file_column not in df.columns:
+        df = assign_filename_column(df, source_file_column)  # Must be called before update_from_lookup_df
     dataset_version = "" if dataset_version is None else "_" + dataset_version
     if include_hadoop_read_write:
         update_table(df, f"raw_{dataset_name}{dataset_version}", write_mode)
@@ -197,9 +197,13 @@ def extract_input_data(
     if json_file_paths:
         dfs = []
         data_strings = [read_file_to_string(file, True) for file in json_file_paths]
-        for data_string in data_strings:
+        for file_name, data_string in zip(json_file_paths, data_strings):
             data = decode_phm_json(data_string)
-            dfs.append(spark_session.createDataFrame(data=data, schema=spark_schema))
+            _df = spark_session.createDataFrame(data=data, schema=spark_schema)
+            _df.withColumn(
+                source_file_column, (F.regexp_replace(F.lit(file_name), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", ""))
+            )
+            dfs.append(_df)
         if df is None:
             df = union_multiple_tables(dfs)
         else:

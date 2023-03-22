@@ -1507,7 +1507,7 @@ column_name_maps = {
         "PHM-FUP-HST-018": "cis_covid_vaccine_number_of_doses",
         "PHM-FUP-HST-019": "cis_covid_vaccine_date",
         "PHM-FUP-HST-020": "flu_vaccination_received",
-        "PHM-FUP-HST-021": "flu_vaccination_received_date",
+        "PHM-FUP-HST-021": "flu_vaccine_date",
         "PHM-FUP-HST-022": "been_outside_uk",
         "PHM-FUP-HST-023": "been_outside_uk_last_country",
         "PHM-FUP-HST-024": "been_outside_uk_last_return_date",
