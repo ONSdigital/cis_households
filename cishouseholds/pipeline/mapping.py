@@ -544,7 +544,9 @@ category_maps = {
             "Yes, for other reasons (e.g. going into hospital, quarantining)": 3,
         },
         "last_covid_contact_type": {"Living in your own home": 1, "Outside your home": 2},
+        "last_covid_contact_type_raw": {"Living in your own home": 1, "Outside your home": 2},
         "last_suspected_covid_contact_type": {"Living in your own home": 1, "Outside your home": 2},
+        "last_suspected_covid_contact_type_raw": {"Living in your own home": 1, "Outside your home": 2},
         "household_been_hospital_last_28_days": {
             "No, no one in my household has": 0,
             "Yes, I have": 1,

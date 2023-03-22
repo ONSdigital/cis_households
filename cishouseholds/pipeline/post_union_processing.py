@@ -48,8 +48,11 @@ def raw_copies(df: DataFrame):
         "think_had_covid_admitted_to_hospital",
         "think_had_covid_contacted_nhs",
         "last_covid_contact_date",
-        "contact_suspected_positive_covid_last_28_days",
+        "last_suspected_covid_contact_date",
         "contact_known_positive_covid_last_28_days",
+        "contact_suspected_positive_covid_last_28_days",
+        "last_covid_contact_type",
+        "last_suspected_covid_contact_type",
     ]
 
     original_copy_list = [
@@ -228,6 +231,14 @@ def generic_processing(df: DataFrame):
             "All tests failed": "All Tests failed",
             "One or more tests were negative and none were positive": "Any tests negative, but none positive",
             "One or more tests were positive": "One or more positive test(s)",
+        },
+        "last_covid_contact_type_raw": {
+            "Someone I live with": "Living in your own home",
+            "Someone I do not live with": "Outside your home",
+        },
+        "last_suspected_covid_contact_type_raw": {
+            "Someone I live with": "Living in your own home",
+            "Someone I do not live with": "Outside your home",
         },
     }
     df = apply_value_map_multiple_columns(df, col_val_map)
