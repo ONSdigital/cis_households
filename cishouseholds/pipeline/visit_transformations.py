@@ -60,13 +60,16 @@ def visit_derivations(df: DataFrame):
         end_reference_column="visit_datetime",
         format="fortnight",
     )
+    df = df.withColumn("first_survey_week", F.lit("2020-04-16 00:00:00"))  # first fortnight of survey
+
     df = assign_date_difference(
         df=df,
         column_name_to_assign="fortnight_of_enrolment",
-        start_reference_column=F.lit("2020-04-16 00:00:00"),  # first fortnight of survey
+        start_reference_column="first_survey_week",
         end_reference_column="household_first_visit_datetime",
         format="fortnight",
     )
+    df = df.drop("first_survey_week")
     df = assign_date_difference(
         df=df,
         column_name_to_assign="household_weeks_since_survey_enrolment",
