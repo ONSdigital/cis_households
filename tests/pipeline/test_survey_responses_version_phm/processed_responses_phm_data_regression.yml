@@ -118,7 +118,7 @@
   swab_taken: 'Yes'
   swab_taken_am_pm: PM
   swab_taken_date: null
-  swab_taken_datetime: '2023-03-22 00:00:00.000000'
+  swab_taken_datetime: '2023-03-23 00:00:00.000000'
   test_kit_info_end_of_survey: null
   test_type_positive_result: Do not know
   think_had_covid_any_symptom_list_1:
@@ -3155,7 +3155,7 @@
   swab_taken: 'No'
   swab_taken_am_pm: PM
   swab_taken_date: null
-  swab_taken_datetime: '2023-03-22 00:00:00.000000'
+  swab_taken_datetime: '2023-03-23 00:00:00.000000'
   test_kit_info_end_of_survey: Continue
   test_type_positive_result: PCR test. That is the test that is sent off to a laboratory
   think_had_covid_any_symptom_list_1:
