@@ -69,7 +69,9 @@ phm_parameters = {
     "id_column": "participant_completion_window_id",
     "validation_schema": validation_schemas["phm_survey_validation_schema"],
     "datetime_column_map": phm_datetime_map,
+    "date_from_filename": False,
     "transformation_functions": [
+        # high_level_phm_transformations,
         phm_transformations,
     ],
     "sep": "|",
@@ -200,6 +202,7 @@ historical_blood_results_parameters = {
 
 for parameters in [
     participant_extract_digital_parameters,
+    phm_parameters,
     cis_digital_parameters,
     survey_responses_v2_parameters,
     survey_responses_v1_parameters,
@@ -208,5 +211,6 @@ for parameters in [
     blood_results_parameters,
     historical_blood_results_parameters,
     brants_bridge_parameters,
+    phm_parameters,
 ]:
     generate_input_processing_function(**parameters)  # type:ignore

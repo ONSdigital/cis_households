@@ -204,32 +204,27 @@ def assign_datetime_from_combined_columns(
     second_column: str = None,
 ):
     """Create a formatted pyspark date column from a series of components."""
-    for col_name, temp_col_name in zip([hour_column, minute_column, second_column], ["hour", "min", "sec"]):
+    for col_name, temp_col_name in zip([hour_column, minute_column, second_column], ["_hour", "_min", "_sec"]):
         if col_name is None:
-            df = df.withColumn(temp_col_name, 0)
+            df = df.withColumn(temp_col_name, F.lit(0))
+        else:
+            df = df.withColumn(temp_col_name, F.col(col_name)).drop(col_name)
 
-    hour = F.when((F.col(am_pm_column) == "pm") & (F.col(hour_column) != 12), F.col(hour_column) + 12).otherwise(
-        F.col(hour_column)
-    )
+    hour = F.when((F.col(am_pm_column) == "pm") & (F.col("_hour") != 12), F.col("_hour") + 12).otherwise(F.col("_hour"))
     df = df.withColumn(
         column_name_to_assign,
         F.concat_ws(
             " ",
-            *[
-                F.col(date_column),
-                F.concat_ws(
-                    ":",
-                    hour,
-                    *[
-                        F.when(F.col(col) == 0, "00").otherwise(F.col(col).cast("string"))
-                        for col in [minute_column, second_column]
-                    ],
-                ),
-            ],
+            F.col(date_column),
+            F.concat_ws(
+                ":",
+                hour,
+                *[F.when(F.col(col) == 0, "00").otherwise(F.col(col).cast("string")) for col in ["_min", "_sec"]],
+            ),
         ),
     )
-    df = df.withColumn(column_name_to_assign, F.to_timestamp(column_name_to_assign))
-    return df.drop(hour_column, minute_column, second_column, "hour", "min", "sec")
+    df = df.withColumn(column_name_to_assign, F.to_timestamp(column_name_to_assign)).drop("_hour", "_min", "_sec")
+    return df
 
 
 def group_participant_within_date_range(
