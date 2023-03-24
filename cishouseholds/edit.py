@@ -30,7 +30,28 @@ def update_valid_order(
     vaccine_date_column: str,
     first_dose_column: str,
 ):
-    """"""
+    """
+    Assigns a score to a participant's vaccine type and date, utilising business logic
+    based on UK government vaccination guidance at the time. This is used to de-duplicate
+    multiple reports of the same vaccine dose
+
+    Parameters
+    ----------
+    df
+        The input DataFrame to process
+    column_name_to_update
+        The name of the column that will hold the score calculated e.g. valid_order
+    participant_id_column
+        The id that groups together records for one participant
+    vaccine_type_column
+        The column containing the type of vaccine reported
+    vaccine_date_column
+        The column containing the date of vaccine reported
+    first_dose_column
+        The column identifying the first dose for that participant, from which the
+        best match for subsequent doses are decided
+
+    """
     window = Window.partitionBy(participant_id_column).orderBy(F.col(first_dose_column).desc())
 
     def get_logic(date):
@@ -58,7 +79,20 @@ def update_valid_order(
 
 
 def add_prefix(df: DataFrame, column_name_to_update: str, prefix: str, sep: str = ""):
-    """Add a prefix to a column"""
+    """Adds a prefix to all the values in a dataframe column
+
+    Parameters
+    ----------
+    df
+       The input DataFrame to process
+    column_name_to_update
+       The column containing the values the prefix is being added to
+    prefix
+       The string being fixed to the start of the column values
+    sep
+       An optional string separate between the prefix and the column value e.g. '_'
+
+    """
     return df.withColumn(column_name_to_update, F.concat_ws(sep, F.lit(prefix), F.col(column_name_to_update)))
 
 
@@ -70,7 +104,22 @@ def update_work_main_job_changed(
     change_to_not_null_columns: List[str],
 ):
     """
-    re-derive work main job changed to denote whether any of the work variables differ between rows.
+    re-derives boolean variable work_main_job_changed to denote whether any of the work variables differ between rows
+    for a participant, where the first row for the participant is treated separately
+
+    Parameters
+    ----------
+    df
+       The input DataFrame to process
+    column_name_to_update
+       The column to be updated
+    change_to_any_columns
+       list of columns where a change to from one row to the next would
+       result in column_name_to_update to be updated, as long as the current row is not null
+    change_to_not_noll_columns
+       list of columns where a change from null to not null from one row to the next
+       would result in column_name_to_update to be updated
+
     """
     if column_name_to_update not in df.columns:
         df = df.withColumn(column_name_to_update, F.lit(None))
@@ -125,6 +174,25 @@ def fuzzy_update(
     Update a column value if more than 'min_matches' values match in a series of column values 'cols_to_check'.
 
     Does not update values that already exist.
+
+    Parameters
+    ----------
+    left_df
+       dataframe to process
+    cols_to_check
+       columns that will all be checked to see how close in value they are across a window
+    update_column
+       column to be updated with final resulting value
+    min_matches
+       minimum number of times values must match in cols_to_check
+    id_column
+       specifies window over which you are calculating
+    visit_date_column
+       column containing day of visit
+    right_df
+       dataframe to join onto left, if differen from main df to process
+    filter_out_of_range
+       Defines whether cols with values greater than visit_date_column will be filtered out or not
     """
 
     window = Window.partitionBy(id_column).orderBy(id_column)
@@ -141,6 +209,7 @@ def fuzzy_update(
 
     df = left_df.join(right_df, on=id_column, how="left")
 
+    # filter for rows where update_column is before the visit
     if filter_out_of_range:
         df = df.filter(F.col(f"{update_column}_right") <= F.col(visit_date_column))
 
@@ -163,7 +232,16 @@ def fuzzy_update(
 
 def normalise_think_had_covid_columns(df: DataFrame, symptom_columns_prefix: str):
     """
-    Update symptom columns to No if any of the symptom columns are not null
+    Update symptom columns to No if any of the symptom columns in row are not null
+
+    Parameters
+    ----------
+    df
+       dataframe to process
+    symptom_columns_prefix
+       columns prefix on df which indicates all columns of symptoms.
+       This just saves writing out whole list of symptom cols if they have a consistent
+       naming convention
     """
     symptom_columns = [col for col in df.columns if symptom_columns_prefix in col]
     df = df.withColumn("CHECK", any_column_not_null(symptom_columns))
@@ -180,7 +258,21 @@ def correct_date_ranges_union_dependent(
     visit_id_column: str,
 ):
     """
-    Correct datetime columns given a range looking across all rows
+    Corrects datetime columns based on earlier/later reported values for the same datetime cols
+    across all rows for a participant
+
+    Parameters
+    ----------
+    df
+       dataframe to process
+    columns_to_edit
+       List of cols to correct
+    participant_id_column
+       id grouping together one participant
+    visit_date_column
+       column containing date of visit, used to filter away events in the 'future' comparative to the visit
+    visit_id_column
+       Used to take the datetime with the least difference in days to the visit where month and day are the same
     """
     for col in columns_to_edit:
         df = df.withColumn("MONTH", F.month(df[col])).withColumn("DAY", F.dayofmonth(df[col]))
@@ -221,7 +313,20 @@ def remove_incorrect_dates(
     df: DataFrame, columns_to_edit: List[str], visit_date_column: str, min_date: str, min_date_dict: Dict[str, str]
 ):
     """
-    removes out of range dates
+    Removes out of range dates with respect to minimum dates and visit_date
+
+    Parameters
+    ----------
+    df
+       dataframe to process
+    columns_to_edit
+       columns containing dates we want to nullify
+    visit_date_column
+       column containing date of visit. If columns_to_edit > visit_date, columns_to_edit is nullified
+    min_date:
+      a minimum date, before which columns_to_edit are nullified
+    min_date_dict:
+      a dictionary of column names to datetimes, if minimum dates vary by column
     """
     for col in columns_to_edit:
         min_date = min_date_dict.get(col, min_date)
@@ -237,7 +342,21 @@ def correct_date_ranges(
     min_date_dict: dict = {},
 ):
     """
-    Correct datetime columns given a range
+    Corrects datetime columns if incorrect, based on a minimum range and the visit_date
+
+    Parameters
+    ----------
+    df
+       Dataframe to process
+    columns_to_edit
+       Columns containing dates we want to edit/correct
+    visit_date_column
+       Column containing date of visit. If columns_to_edit is after visit_date_column function alters year or month
+       to give more feasible date for columns_to_edit, relative to visit_date
+    min_date
+       A minimum date. If columns_to_edit is before function tries to correct by altering year
+    min_date_dict
+       A dictionary of column names to datetimes, if minimum dates vary by column
     """
     for col in columns_to_edit:
         df = df.withColumn(
