@@ -37,7 +37,21 @@ def assign_valid_order(
     vaccine_type_column: str,
     first_dose_column: str,
 ):
-    """"""
+    """
+    Derive a column to denote the priority (lower value higher priority) of a given vaccination.
+    The order depends upon the type of the given vaccination, the type of first vaccination that a given
+    participant had and the date of the given vaccination falling within a specified range.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    participant_id_column
+    vaccine_date_column
+    vaccine_type_column
+    first_dose_column
+        The column containing Yes if a given dose was a participants first
+    """
     window = Window.partitionBy(participant_id_column).orderBy(F.col(first_dose_column).desc())
     # [min days before, max days before, min days after, max days after, allowed_type, allowed_first_type]
     orders = reversed(
@@ -87,7 +101,22 @@ def assign_survey_not_completed_reason_code(
     swab_barcode_column: str,
     blood_barcode_column: str,
 ):
-    """"""
+    """
+    Derive a column to represent the reason why a survey was not completed.
+    The possible values here are:
+    > TNR: the survey was filled and the participant opted to complete swabs and or bloods but no swab or blood data was provided
+    > QNR: the survey was not filled but the participant opted to complete swabs and or bloods and they did provided swab or blood data
+    > FNR: the survey was not filled and the participant opted to complete swabs and or bloods but no swab or blood data was provided
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    cohort_type_column
+    survey_filled_column
+    swab_barcode_column
+    blood_barcode_column
+    """
     survey_filled = F.col(survey_filled_column).isNotNull()
     swab = F.col(swab_barcode_column).isNotNull()
     blood = F.col(blood_barcode_column).isNotNull()
@@ -125,7 +154,15 @@ def assign_survey_not_completed_reason_code(
 
 
 def combine_like_array_columns(df: DataFrame, column_prefix: str):
-    """"""
+    """
+    Combine all columns with a given prefix into a single string column with
+    name of the 'column_prefix'. subsequently drop all the columns used to create the combined column.
+
+    Parameters
+    ----------
+    df
+    column_prefix
+    """
     cols = [col for col in df.columns if col.startswith(column_prefix)]
     return df.withColumn(column_prefix, F.concat(*[F.col(col) for col in cols])).drop(
         *[col for col in cols if col != column_prefix]
@@ -183,7 +220,25 @@ def assign_datetime_from_combined_columns(
     minute_column: str = None,
     second_column: str = None,
 ):
-    """Create a formatted pyspark date column from a series of components."""
+    """
+    Create a formatted pyspark date column from a series of components.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    date_column
+    am_pm_column
+    hour_column
+        an optional name for a column containing a 1-12 number representing the hour
+        if this column is not specified the hour will default to 0
+    minute_column
+        an optional name for a column containing a 1-12 number representing the minute
+        if this column is not specified the minute will default to 0
+    second_column
+        an optional name for a column containing a 1-12 number representing the second
+        if this column is not specified the second will default to 0
+    """
     for col_name, temp_col_name in zip([hour_column, minute_column, second_column], ["hour", "min", "sec"]):
         if col_name is None:
             df = df.withColumn(temp_col_name, 0)
@@ -215,7 +270,17 @@ def assign_datetime_from_combined_columns(
 def group_participant_within_date_range(
     df: DataFrame, column_name_to_assign: str, participant_id_column: str, date_column: str, date_range: int
 ):
-    """For each participant id group by a date variable within a given range."""
+    """
+    For each participant id group by a date variable within a given range and assign a unique uniform value for the group.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    participant_id_column
+    date_column
+    date_range
+    """
     window = Window.partitionBy(participant_id_column).orderBy(date_column)
 
     df = df.withColumn(
@@ -237,7 +302,21 @@ def assign_max_doses(
     participant_id_column: str,
     visit_datetime_column: str,
 ):
-    """Assign a variable true or false depending on whether a participant has had their max number of vaccine doses."""
+    """
+    Assign a variable true or false depending on whether a participant has had their max number of vaccine doses.
+
+    Looking backwards over time for a given participant check to see if there has been a third or higher dose, if there has
+    then the participant has had their max doses at this time.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    i_dose_column
+    num_doses_column
+    participant_id_column
+    visit_datetime_column
+    """
     window = (
         Window.partitionBy(participant_id_column, i_dose_column)
         .orderBy(visit_datetime_column)
@@ -256,7 +335,16 @@ def assign_first_dose(
     participant_id_column: str,
     visit_datetime: str,
 ):
-    """Assign the date of the first dose reported and order by visit_datetime."""
+    """
+    Derive a column to denote the date of the first dose reported and order by visit_datetime.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    participant_id_column
+    visit_datetime
+    """
     window = Window.partitionBy(participant_id_column).orderBy(visit_datetime)
     df = df.withColumn("row", F.row_number().over(window))
     df = df.withColumn(column_name_to_assign, F.when(F.col("row") == 1, "Yes").otherwise("No"))
@@ -270,7 +358,18 @@ def assign_poss_1_2(
     participant_id_column: str,
     visit_datetime_column: str,
 ):
-    """Assign a variable true or false depending on whether a participant has had their max number of vaccine doses."""
+    """
+    Assign a variable true or false depending on whether a participant has had their max number of vaccine doses.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    num_doses_column
+        the number of doses a participant has had at a given time
+    participant_id_column
+    visit_datetime_column
+    """
     window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
     rear_window = window.rowsBetween(Window.unboundedPreceding, Window.currentRow)
     front_window = window.rowsBetween(Window.currentRow, Window.unboundedFollowing)
@@ -357,6 +456,23 @@ def assign_regex_from_map_additional_rules(
 def assign_regex_from_map(
     df: DataFrame, column_name_to_assign: str, reference_columns: List[str], map: Mapping, priority_map: Mapping
 ):
+    """
+    Derive a column based ordered regex pattern matching.
+    Steps:
+    > upon checking regex patters against the combined value of a set of reference columns add the static value to an array if the pattern matches
+    > disambiguate the resultant array by using the priority map to sort the best maps
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    reference_columns
+        A list of columns that will combine to form the reference string for regex matching
+    map
+        A map of static values to regex patterns that if matching the reference column will be added to the array
+    priority_map
+        A map of static values to prioritise (higher value, higher priority)
+    """
     regex_columns = {key: [] for key in [1, *list(priority_map.values())]}  # type: ignore
     for assign, pattern in map.items():
         col = F.when(F.coalesce(F.concat(*reference_columns), F.lit("")).rlike(pattern), assign)
@@ -2265,6 +2381,13 @@ def derive_household_been_columns(
     """
     Combines a household and individual level response, to an overall household response.
     Assumes input responses are 'Yes'/'no'.
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    individual_response_column
+    household_response_column
     """
     df = df.withColumn(
         column_name_to_assign,
