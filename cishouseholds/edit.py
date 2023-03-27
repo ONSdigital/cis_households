@@ -29,32 +29,26 @@ def update_valid_order_2(
     vaccine_date_column: str,
     vaccine_type_column: str,
     valid_order_column: str,
-    first_dose_column: str,
-    second_dose_column: str,
+    visit_datetime_column: str,
+    vaccine_number_doses_column: str,
 ):
     """"""
-    window = Window.partitionBy(participant_id_column).orderBy(valid_order_column)
-    first_window = Window.partitionBy(participant_id_column).orderBy(F.col(first_dose_column).desc())
-    second_window = Window.partitionBy(participant_id_column).orderBy(F.col(second_dose_column).desc())
+
+    first_dose = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
     df = assign_valid_order(
         df=df,
         column_name_to_assign="TEMP",
         participant_id_column=participant_id_column,
         vaccine_type_column=vaccine_type_column,
         vaccine_date_column=vaccine_date_column,
-        dose_column=second_dose_column,
+        visit_date_column=visit_datetime_column,
     )
     df = df.withColumn(
         "TEMP",
         F.when(
-            (F.first(valid_order_column).over(window) >= 7)
-            & (
-                F.datediff(
-                    F.first(F.col(vaccine_date_column)).over(second_window),
-                    F.first(F.col(vaccine_date_column)).over(first_window),
-                )
-                <= 60
-            ),
+            (F.col(valid_order_column) >= 7)
+            & (F.datediff(F.first(F.lead(first_dose, 1)), F.first(first_dose)) <= 60)  # alternative second dose
+            & (F.col(vaccine_number_doses_column) < 3),
             F.col("TEMP"),
         ),
     )

@@ -35,10 +35,10 @@ def assign_valid_order(
     participant_id_column: str,
     vaccine_date_column: str,
     vaccine_type_column: str,
-    dose_column: str,
+    visit_date_column: str,
 ):
     """"""
-    window = Window.partitionBy(participant_id_column).orderBy(F.col(dose_column).desc())
+    window = Window.partitionBy(participant_id_column).orderBy(visit_date_column)
     # [min days before, max days before, min days after, max days after, allowed_type, allowed_first_type]
     orders = reversed(
         [
@@ -53,7 +53,7 @@ def assign_valid_order(
             [6, 0, 0, 28, 149, "Don't know type", "Pfizer/AZ/Moderna"],
         ]
     )
-    diff = F.datediff(F.col(vaccine_date_column), F.first(F.col(vaccine_date_column)).over(window))
+    diff = F.datediff(F.col(vaccine_date_column), F.first(F.col(vaccine_date_column), True).over(window))
     df = df.withColumn(column_name_to_assign, F.lit(None))
     for check in orders:
         neg_range = (diff > check[2]) & (diff < check[1])

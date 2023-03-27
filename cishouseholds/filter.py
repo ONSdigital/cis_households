@@ -19,6 +19,7 @@ def filter_single_dose(
 ):
     """
     Filter to a single dose per participant per idose using a series of prescribed filters.
+    Only drop on condition if count in row window is > 1. Using sum rows in window prior to performing each step of logic.
     """
     window = Window.partitionBy(participant_id_column, i_dose_column)
     disambiguation_window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)

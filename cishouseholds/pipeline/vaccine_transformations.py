@@ -10,8 +10,10 @@ from cishouseholds.derive import assign_max_doses
 from cishouseholds.derive import assign_nth_dose
 from cishouseholds.derive import assign_order_number
 from cishouseholds.derive import assign_poss_1_2
+from cishouseholds.derive import assign_valid_order
 from cishouseholds.derive import group_participant_within_date_range
 from cishouseholds.edit import update_column_values_from_map
+from cishouseholds.edit import update_valid_order_2
 from cishouseholds.filter import filter_before_date_or_null
 from cishouseholds.filter import filter_invalid_vaccines
 from cishouseholds.filter import filter_single_dose
@@ -135,11 +137,31 @@ def deduplication(df: DataFrame):
 
 def first_second_doses(df: DataFrame):
 
+    # assign first dose based on visit
     df = assign_nth_dose(
         df=df,
         column_name_to_assign="first_dose",
         participant_id_column="participant_id",
         visit_datetime="visit_datetime",
+    )
+    # score each vaccine against first_dose
+    df = assign_valid_order(
+        df=df,
+        column_name_to_assign="valid_order",
+        participant_id_column="participant_id",
+        vaccine_date_column="cis_covid_vaccine_date",
+        vaccine_type_column="cis_covid_vaccine_type",
+        visit_date_column="visit_datetime",
+    )
+    # Derive valid_order for dose_2 and then take the minimum out of this one and the one assigned previously
+    df = update_valid_order_2(
+        df=df,
+        participant_id_column="participant_id",
+        vaccine_date_column="cis_covid_vaccine_date",
+        vaccine_type_column="cis_covid_vaccine_type",
+        valid_order_column="valid_order",
+        visit_datetime_column="visit_datetime",
+        vaccine_number_doses_column="cis_covid_vaccine_number_of_doses",
     )
 
     return df
