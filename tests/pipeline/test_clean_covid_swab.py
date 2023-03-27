@@ -11,40 +11,40 @@ from cishouseholds.pipeline.covid_event_transformations import clean_inconsisten
         # missing_other_covid_infection_test
         (
             [
-                ("A",   "No",   "Positive", 0,      "No",   "No",   "No",   1),  # set other_covid_infection_test to "Yes" as other_covid_infection_test_results == "Yes"
+                ("A",   "No",   "One or more positive test(s)", 0,      "No",   "No",   "No",   1),  # set other_covid_infection_test to "Yes" as other_covid_infection_test_results == "Yes"
                 ("B",   None,   None,       None,   None,   None,   None,   1),  # think had covid set to yes as a date exists  where covid was onset
                 (None,  None,   None,       None,   None,   None,   None,   1),  # do nothing
-                ("C",   None,   "Positive", 0,      None,   None,   None,   1),  # set other_covid_infection_test to "Yes" as other_covid_infection_test_results == "Yes"
-                ("D",   "No",   "Positive", 0,      "Yes",  "Yes",  "No",   1),  # set other_covid_infection_test to "Yes" as think_had_covid_contacted_nhs =="Yes" and think_had_covid_admitted_to_hopsital == "Yes"
+                ("C",   None,   "One or more positive test(s)", 0,      None,   None,   None,   1),  # set other_covid_infection_test to "Yes" as other_covid_infection_test_results == "Yes"
+                ("D",   "No",   "One or more positive test(s)", 0,      "Yes",  "Yes",  "No",   1),  # set other_covid_infection_test to "Yes" as think_had_covid_contacted_nhs =="Yes" and think_had_covid_admitted_to_hopsital == "Yes"
             ]
         ,
             [
-                ("A",   "Yes",  "Positive", 0,      "No",   "No",   "Yes",   1),  # set other_covid_infection_test to "Yes" as other_covid_infection_test_results == "Yes"
+                ("A",   "Yes",  "One or more positive test(s)", 0,      "No",   "No",   "Yes",   1),  # set other_covid_infection_test to "Yes" as other_covid_infection_test_results == "Yes"
                 ("B",   None,   None,       None,   None,   None,   "Yes",   1),  # think had covid set to yes as a date exists  where covid was onset
                 (None,  None,   None,       None,   None,   None,   None,    1),  # do nothing
-                ("C",   "Yes",  "Positive", 0,      None,   None,   "Yes",   1),  # set other_covid_infection_test to "Yes" as other_covid_infection_test_results == "Yes"
-                ("D",   "Yes",  "Positive", 0,      "Yes",  "Yes",  "Yes",   1),  # set other_covid_infection_test to "Yes" as think_had_covid_contacted_nhs =="Yes" and think_had_covid_admitted_to_hopsital == "Yes"
+                ("C",   "Yes",  "One or more positive test(s)", 0,      None,   None,   "Yes",   1),  # set other_covid_infection_test to "Yes" as other_covid_infection_test_results == "Yes"
+                ("D",   "Yes",  "One or more positive test(s)", 0,      "Yes",  "Yes",  "Yes",   1),  # set other_covid_infection_test to "Yes" as think_had_covid_contacted_nhs =="Yes" and think_had_covid_admitted_to_hopsital == "Yes"
             ]
         ),
         # erroneous_other_covid_infection_test_results
         (
             [
-                ("E",   "No",   "Negative", 0,      "No",   "No",   "No",   0),  # do nothing as there has been a 'think_had_covid_onset_date'
-                (None,  "No",   "Negative", 1,      "No",   "Yes",  "Yes",  0),  # do nothing as there is a symptom count greater than 0
-                (None,  "No",   "Positive", 0,      "No",   "Yes",  "No",   0),  # do nothing as other_covid_infection_test_results is 'Positive'
-                (None,  "No",   "Negative", 0,      "No",   "No",   "No",   0),  # set other_covid_infection_test_results to Null as there is no think_had_covid_onset_date
+                ("E",   "No",   "Any tests negative, but none positive", 0,      "No",   "No",   "No",   0),  # do nothing as there has been a 'think_had_covid_onset_date'
+                (None,  "No",   "Any tests negative, but none positive", 1,      "No",   "Yes",  "Yes",  0),  # do nothing as there is a symptom count greater than 0
+                (None,  "No",   "One or more positive test(s)", 0,      "No",   "Yes",  "No",   0),  # do nothing as other_covid_infection_test_results is 'Positive'
+                (None,  "No",   "Any tests negative, but none positive", 0,      "No",   "No",   "No",   0),  # set other_covid_infection_test_results to Null as there is no think_had_covid_onset_date
             ]
         ,
             [
-                ("E",   "Yes",  "Negative", 0,      "No",   "No",   "Yes",  0),  # do nothing as there has been a 'think_had_covid_onset_date'
-                (None,  "Yes",  "Negative", 1,      "No",   "Yes",  "Yes",  0),  # 'other_covid_infection_test' set to true as there is evidence the participant had a covid test
-                (None,  "No",   "Positive", 0,      "No",   "Yes",  "No",   0),  # do nothing as other_covid_infection_test_results is 'Positive'
+                ("E",   "Yes",  "Any tests negative, but none positive", 0,      "No",   "No",   "Yes",  0),  # do nothing as there has been a 'think_had_covid_onset_date'
+                (None,  "Yes",  "Any tests negative, but none positive", 1,      "No",   "Yes",  "Yes",  0),  # 'other_covid_infection_test' set to true as there is evidence the participant had a covid test
+                (None,  "No",   "One or more positive test(s)", 0,      "No",   "Yes",  "No",   0),  # do nothing as other_covid_infection_test_results is 'Positive'
                 (None,  None,   None,       0,      None,   None,   "No",   0),  # set other_covid_infection_test_results to Null as there is no think_had_covid_onset_date
             ]
         ),
         (
             [
-                (None,  "No",   "Negative", 0,      "No",   "No",   "No",   1),  # set think_had_covid_contacted_nhs and think_had_covid_admitted_to_hopsital to Null as the flag passed
+                (None,  "No",   "Any tests negative, but none positive", 0,      "No",   "No",   "No",   1),  # set think_had_covid_contacted_nhs and think_had_covid_admitted_to_hopsital to Null as the flag passed
                 (None,  "No",   None,       1,      "No",   "No",   "No",   1),  # do nothing as there is a symptom count greater than 0
             ]
 
@@ -56,14 +56,14 @@ from cishouseholds.pipeline.covid_event_transformations import clean_inconsisten
         ),
         (
             [
-                (None,  "No",   "Negative", 0,      "No",   "No",   "No",   0),  # set other_covid_infection_test and other_covid_infection_test_results to Null as the flag passed and dataset is 0
-                (None,  "No",   "Negative", 1,      "No",   "No",   "No",   1),  # do nothing as dataset is not 0
+                (None,  "No",   "Any tests negative, but none positive", 0,      "No",   "No",   "No",   0),  # set other_covid_infection_test and other_covid_infection_test_results to Null as the flag passed and dataset is 0
+                (None,  "No",   "Any tests negative, but none positive", 1,      "No",   "No",   "No",   1),  # do nothing as dataset is not 0
             ]
 
         ,
             [
                 (None,  None,  None,       0,      None,   None,  "No",    0),  # set other_covid_infection_test and other_covid_infection_test_results to Null as the flag passed and dataset is 0
-                (None,  "Yes", "Negative", 1,      "No",   "No",  "Yes",   1),  # do nothing as dataset is not 0
+                (None,  "Yes", "Any tests negative, but none positive", 1,      "No",   "No",  "Yes",   1),  # do nothing as dataset is not 0
             ]
         )
     )

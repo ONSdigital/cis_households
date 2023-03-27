@@ -1488,14 +1488,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: last_covid_contact_type_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: last_suspected_covid_contact_type_raw
-  nullable: true
-  type: string
-- metadata: {}
   name: physical_contact_under_18_years_raw
   nullable: true
   type: string
@@ -1541,10 +1533,6 @@ fields:
   type: string
 - metadata: {}
   name: face_covering_other_enclosed_places_raw
-  nullable: true
-  type: string
-- metadata: {}
-  name: other_covid_infection_test_results_raw
   nullable: true
   type: string
 - metadata: {}

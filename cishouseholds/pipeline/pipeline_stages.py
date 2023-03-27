@@ -31,6 +31,7 @@ from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.merge import left_join_keep_right
 from cishouseholds.merge import union_multiple_tables
+from cishouseholds.phm.reporting_class import Report
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.covid_event_transformations import covid_event_transformations
@@ -611,11 +612,13 @@ def execute_visit_transformations(
 @register_pipeline_stage("vaccine_transformations")
 def execute_vaccine_transformations(
     input_survey_table: str,
+    vaccine_capture_table: str,
     output_survey_table: str,
 ):
     """"""
     df = extract_from_table(input_survey_table)
-    df = vaccine_transformations(df)
+    vaccine_capture_df = extract_from_table(vaccine_capture_table)
+    df = vaccine_transformations(df, vaccine_capture_df)
     update_table(df, output_survey_table, "overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
@@ -1013,6 +1016,35 @@ def report(
     write_string_to_file(
         output.getbuffer(), f"{output_directory}/report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx"
     )
+
+
+@register_pipeline_stage("phm_report")
+def phm_report(
+    input_survey_table: str,
+    output_directory: str,
+) -> DataFrame:
+    """"""
+    df = extract_from_table(input_survey_table)
+    report = Report(output_directory=output_directory)
+    report.create_completion_table_days(
+        df=df,
+        participant_id_column="participant_id",
+        window_start_column="participant_completion_window_start_datetime",
+        window_end_column="participant_completion_window_end_datetime",
+        window_status_column="survey_completion_status",
+        reference_date_column="visit_datetime",
+        window_range=14,
+    )
+    report.create_completion_table_set_range(
+        df=df,
+        participant_id_column="participant_id",
+        window_start_column="participant_completion_window_start_datetime",
+        window_end_column="participant_completion_window_end_datetime",
+        window_status_column="survey_completion_status",
+        reference_date_column="visit_datetime",
+        window_range=28,
+    )
+    report.write_excel_output()
 
 
 @register_pipeline_stage("lab_report")

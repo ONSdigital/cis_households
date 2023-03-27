@@ -6,6 +6,7 @@ from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.derive import assign_column_to_date_string
+from cishouseholds.derive import assign_columns_from_array
 from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
 
 
@@ -81,6 +82,7 @@ def create_formatted_datetime_string_columns(df) -> DataFrame:
         "cis_covid_vaccine_date_3",
         "cis_covid_vaccine_date_4",
         "last_suspected_covid_contact_date",
+        "last_suspected_covid_contact_date_raw",
         "last_covid_contact_date",
         "last_covid_contact_date_raw",
         "other_covid_infection_test_raw",

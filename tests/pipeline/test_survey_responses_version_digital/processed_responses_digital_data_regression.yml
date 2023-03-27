@@ -138,8 +138,7 @@
   face_covering_other_enclosed_places_raw: Yes sometimes
   face_covering_outside_of_home: null
   face_covering_work_or_education: My face is already covered
-  face_covering_work_or_education_raw: I cover my face for other reasons - for example
-    for religious or cultural reasons
+  face_covering_work_or_education_raw: My face is already covered
   file_date: '2022-10-03 00:00:00.000000'
   first_name: Shaun
   form_language: English
@@ -171,11 +170,9 @@
   language_preference: null
   last_covid_contact_date: '2022-01-01 00:00:00.000000'
   last_covid_contact_type: null
-  last_covid_contact_type_raw: null
   last_name: Bolton
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Someone you do not live with
-  last_suspected_covid_contact_type_raw: Someone you do not live with
   long_covid_symptoms: think_have_long_covid_symptom_headache;think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_diarrhoea;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_low_mood
   middle_name: My
   ons_household_id: '454249568730'
@@ -196,7 +193,6 @@
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
-  other_covid_infection_test_results_raw: One or more tests were positive
   other_household_member_care_home_last_28_days: null
   other_household_member_hospital_last_28_days: null
   participant_completion_window_end_datetime: '2022-03-02 16:05:54.000000'
@@ -567,7 +563,7 @@
     spaces or using public transport
   face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, always
-  face_covering_work_or_education_raw: Yes always
+  face_covering_work_or_education_raw: Yes, always
   file_date: '2022-10-03 00:00:00.000000'
   first_name: Caron
   form_language: Welsh
@@ -599,11 +595,9 @@
   language_preference: English
   last_covid_contact_date: '2022-01-07 00:00:00.000000'
   last_covid_contact_type: Living in your own home
-  last_covid_contact_type_raw: Someone I live with
   last_name: Romero
   last_suspected_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_suspected_covid_contact_type: Someone you do not live with
-  last_suspected_covid_contact_type_raw: Someone you do not live with
   long_covid_symptoms: think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_memory_loss_or_confusion;think_have_long_covid_symptom_noisy_breathing
   middle_name: Jessika
   ons_household_id: '881968747928'
@@ -617,14 +611,13 @@
   other_antibody_test_negative_date: null
   other_antibody_test_positive_date: null
   other_antibody_test_results: All Tests failed
-  other_antibody_test_results_raw: All tests failed
+  other_antibody_test_results_raw: All Tests failed
   other_covid_infection_test: 'Yes'
   other_covid_infection_test_first_positive_date: '2022-01-05 00:00:00.000000'
   other_covid_infection_test_last_negative_date: '2022-01-04 00:00:00.000000'
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
-  other_covid_infection_test_results_raw: One or more tests were positive
   other_household_member_care_home_last_28_days: Don't know
   other_household_member_hospital_last_28_days: Don't know
   participant_completion_window_end_datetime: '2020-11-27 17:19:59.000000'
@@ -998,7 +991,7 @@
   face_covering_other_enclosed_places_raw: null
   face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, sometimes
-  face_covering_work_or_education_raw: Yes sometimes
+  face_covering_work_or_education_raw: Yes, sometimes
   file_date: '2022-10-03 00:00:00.000000'
   first_name: Shawnee
   form_language: English
@@ -1030,11 +1023,9 @@
   language_preference: English
   last_covid_contact_date: '2022-01-02 00:00:00.000000'
   last_covid_contact_type: null
-  last_covid_contact_type_raw: null
   last_name: Waters
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Outside your home
-  last_suspected_covid_contact_type_raw: Someone I do not live with
   long_covid_symptoms: think_have_long_covid_symptom_fatigue;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_low_mood;think_have_long_covid_symptom_difficulty_concentrating
   middle_name: Isaac
   ons_household_id: '337780069974'
@@ -1055,7 +1046,6 @@
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: All Tests failed
-  other_covid_infection_test_results_raw: All tests failed
   other_household_member_care_home_last_28_days: null
   other_household_member_hospital_last_28_days: null
   participant_completion_window_end_datetime: '2021-11-07 16:30:50.000000'
@@ -1435,7 +1425,7 @@
     example for religious or cultural reasons
   face_covering_outside_of_home: null
   face_covering_work_or_education: Not going to place of work or education
-  face_covering_work_or_education_raw: I am not going to my place of work or education
+  face_covering_work_or_education_raw: Not going to place of work or education
   file_date: '2022-10-03 00:00:00.000000'
   first_name: Annika
   form_language: Welsh
@@ -1467,11 +1457,9 @@
   language_preference: null
   last_covid_contact_date: null
   last_covid_contact_type: null
-  last_covid_contact_type_raw: null
   last_name: Day
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: null
-  last_suspected_covid_contact_type_raw: null
   long_covid_symptoms: think_have_long_covid_symptom_diarrhoea;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_more_trouble_sleeping;think_have_long_covid_symptom_difficulty_concentrating
   middle_name: Hank
   ons_household_id: '602276804025'
@@ -1492,8 +1480,6 @@
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Any tests negative, but none positive
-  other_covid_infection_test_results_raw: One or more tests were negative and none
-    were positive
   other_household_member_care_home_last_28_days: 'No'
   other_household_member_hospital_last_28_days: Don't know
   participant_completion_window_end_datetime: '2021-01-25 05:44:27.000000'
@@ -1866,7 +1852,7 @@
   face_covering_other_enclosed_places_raw: Never
   face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, sometimes
-  face_covering_work_or_education_raw: Yes sometimes
+  face_covering_work_or_education_raw: Yes, sometimes
   file_date: '2022-10-03 00:00:00.000000'
   first_name: Remedios
   form_language: English
@@ -1898,11 +1884,9 @@
   language_preference: Welsh
   last_covid_contact_date: null
   last_covid_contact_type: Outside your home
-  last_covid_contact_type_raw: Someone I do not live with
   last_name: Cervantes
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: null
-  last_suspected_covid_contact_type_raw: null
   long_covid_symptoms: think_have_long_covid_symptom_fever;think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_nausea_or_vomiting;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_loss_of_appetite;think_have_long_covid_symptom_anxiety;think_have_long_covid_symptom_low_mood;think_have_long_covid_symptom_noisy_breathing
   middle_name: Jae
   ons_household_id: '624980420762'
@@ -1923,7 +1907,6 @@
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
-  other_covid_infection_test_results_raw: One or more tests were positive
   other_household_member_care_home_last_28_days: Don't know
   other_household_member_hospital_last_28_days: Don't know
   participant_completion_window_end_datetime: '2022-12-23 06:45:19.000000'
@@ -2302,7 +2285,7 @@
   face_covering_other_enclosed_places_raw: Yes sometimes
   face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, sometimes
-  face_covering_work_or_education_raw: Yes sometimes
+  face_covering_work_or_education_raw: Yes, sometimes
   file_date: '2022-10-03 00:00:00.000000'
   first_name: Honey
   form_language: English
@@ -2334,11 +2317,9 @@
   language_preference: Welsh
   last_covid_contact_date: null
   last_covid_contact_type: null
-  last_covid_contact_type_raw: null
   last_name: Hunt
   last_suspected_covid_contact_date: '2022-01-08 00:00:00.000000'
   last_suspected_covid_contact_type: Living in your own home
-  last_suspected_covid_contact_type_raw: Someone I live with
   long_covid_symptoms: think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_noisy_breathing
   middle_name: Gale
   ons_household_id: '144229485098'
@@ -2352,14 +2333,13 @@
   other_antibody_test_negative_date: null
   other_antibody_test_positive_date: null
   other_antibody_test_results: One or more positive test(s)
-  other_antibody_test_results_raw: One or more tests were positive for antibodies
+  other_antibody_test_results_raw: One or more positive test(s)
   other_covid_infection_test: 'No'
   other_covid_infection_test_first_positive_date: '2022-01-09 00:00:00.000000'
   other_covid_infection_test_last_negative_date: '2022-01-08 00:00:00.000000'
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
-  other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: 'Yes'
   other_household_member_hospital_last_28_days: 'No'
   participant_completion_window_end_datetime: '2022-09-25 08:49:41.000000'
@@ -2774,11 +2754,9 @@
   language_preference: English
   last_covid_contact_date: '2022-01-02 00:00:00.000000'
   last_covid_contact_type: null
-  last_covid_contact_type_raw: null
   last_name: Mosley
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Someone you live with
-  last_suspected_covid_contact_type_raw: Someone you live with
   long_covid_symptoms: think_have_long_covid_symptom_nausea_or_vomiting;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_loss_of_appetite;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_low_mood;think_have_long_covid_symptom_more_trouble_sleeping;think_have_long_covid_symptom_runny_nose_or_sneezing;think_have_long_covid_symptom_noisy_breathing
   middle_name: Quinn
   ons_household_id: 015391767254
@@ -2799,7 +2777,6 @@
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
-  other_covid_infection_test_results_raw: One or more tests were positive
   other_household_member_care_home_last_28_days: 'No'
   other_household_member_hospital_last_28_days: null
   participant_completion_window_end_datetime: '2022-04-22 03:22:49.000000'
@@ -3211,11 +3188,9 @@
   language_preference: null
   last_covid_contact_date: null
   last_covid_contact_type: Living in your own home
-  last_covid_contact_type_raw: Someone I live with
   last_name: Gross
   last_suspected_covid_contact_date: null
   last_suspected_covid_contact_type: Someone you do not live with
-  last_suspected_covid_contact_type_raw: Someone you do not live with
   long_covid_symptoms: think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_fatigue;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_sore_throat;think_have_long_covid_symptom_cough;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_chest_pain;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_noisy_breathing
   middle_name: Clarence
   ons_household_id: '633873344214'
@@ -3236,7 +3211,6 @@
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
-  other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: 'No'
   other_household_member_hospital_last_28_days: null
   participant_completion_window_end_datetime: '2020-04-07 06:34:28.000000'
@@ -3617,8 +3591,7 @@
   face_covering_other_enclosed_places_raw: Never
   face_covering_outside_of_home: null
   face_covering_work_or_education: My face is already covered
-  face_covering_work_or_education_raw: I cover my face for other reasons - for example
-    for religious or cultural reasons
+  face_covering_work_or_education_raw: My face is already covered
   file_date: '2022-10-03 00:00:00.000000'
   first_name: Reiko
   form_language: English
@@ -3650,11 +3623,9 @@
   language_preference: English
   last_covid_contact_date: '2022-01-08 00:00:00.000000'
   last_covid_contact_type: Living in your own home
-  last_covid_contact_type_raw: Someone I live with
   last_name: Brady
   last_suspected_covid_contact_date: '2022-01-02 00:00:00.000000'
   last_suspected_covid_contact_type: Someone you do not live with
-  last_suspected_covid_contact_type_raw: Someone you do not live with
   long_covid_symptoms: think_have_long_covid_symptom_headache;think_have_long_covid_symptom_abdominal_pain;think_have_long_covid_symptom_loss_of_smell;think_have_long_covid_symptom_palpitations;think_have_long_covid_symptom_vertigo_or_dizziness;think_have_long_covid_symptom_memory_loss_or_confusion;think_have_long_covid_symptom_difficulty_concentrating;think_have_long_covid_symptom_noisy_breathing
   middle_name: Argentina
   ons_household_id: 039598076526
@@ -3675,7 +3646,6 @@
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
-  other_covid_infection_test_results_raw: Waiting for all results
   other_household_member_care_home_last_28_days: Don't know
   other_household_member_hospital_last_28_days: 'No'
   participant_completion_window_end_datetime: '2020-08-13 08:59:40.000000'
@@ -4092,11 +4062,9 @@
   language_preference: Welsh
   last_covid_contact_date: null
   last_covid_contact_type: Living in your own home
-  last_covid_contact_type_raw: Someone I live with
   last_name: Meyers
   last_suspected_covid_contact_date: '2022-01-03 00:00:00.000000'
   last_suspected_covid_contact_type: null
-  last_suspected_covid_contact_type_raw: null
   long_covid_symptoms: think_have_long_covid_symptom_headache;think_have_long_covid_symptom_muscle_ache;think_have_long_covid_symptom_nausea_or_vomiting;think_have_long_covid_symptom_loss_of_taste;think_have_long_covid_symptom_cough;think_have_long_covid_symptom_shortness_of_breath;think_have_long_covid_symptom_loss_of_appetite;think_have_long_covid_symptom_memory_loss_or_confusion
   middle_name: Buck
   ons_household_id: '459654137672'
@@ -4110,15 +4078,13 @@
   other_antibody_test_negative_date: null
   other_antibody_test_positive_date: null
   other_antibody_test_results: Any tests negative, but none positive
-  other_antibody_test_results_raw: One or more tests were negative for antibodies
-    and none were positive
+  other_antibody_test_results_raw: Any tests negative, but none positive
   other_covid_infection_test: null
   other_covid_infection_test_first_positive_date: '2022-01-08 00:00:00.000000'
   other_covid_infection_test_last_negative_date: null
   other_covid_infection_test_negative_date: null
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: All Tests failed
-  other_covid_infection_test_results_raw: All tests failed
   other_household_member_care_home_last_28_days: Don't know
   other_household_member_hospital_last_28_days: Don't know
   participant_completion_window_end_datetime: '2022-05-02 03:38:27.000000'

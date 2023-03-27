@@ -276,7 +276,6 @@ def fill_forward_event(
     Fill forwards all columns associated with an event.
     Disambiguate events by earliest recorded expression of an event and
     take the latest event for each visit_datetime forward across all records.
-
     Parameters
     ----------
     df
@@ -291,13 +290,10 @@ def fill_forward_event(
     visit_id_column
     """
     event_columns = [event_date_column, event_indicator_column, *detail_columns]
-
     ordering_window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
     window = Window.partitionBy(participant_id_column, visit_datetime_column, visit_id_column).orderBy("VISIT_DIFF")
-
     completed_sections = []
     events_df = None
-
     # ~~ Pre process dataframe to remove unworkable rows ~~ #
     filtered_df = df.filter(
         (F.col(visit_datetime_column).isNotNull())
@@ -306,21 +302,17 @@ def fill_forward_event(
     ).distinct()
     null_df = df.filter(F.col(visit_datetime_column).isNull())
     df = df.filter(F.col(visit_datetime_column).isNotNull())
-
     # ~~ Normalise dates ~~ #
-
     # create an expression for when a series of dates has been normalised
     # gets the date difference between the first row by visit datetime in the filtered dataset
     apply_logic = (
         F.abs(F.datediff(F.first(F.col(event_date_column)).over(ordering_window), F.col(event_date_column)))
         <= event_date_tolerance
     )
-
     # optimise the filtered_df schema and cache to improve spark plan creation / runtime
     filtered_df = filtered_df.select(
         participant_id_column, visit_datetime_column, visit_id_column, *event_columns
     ).cache()
-
     # loops until there are no rows left to normalise getting the first row where that satisfies the `apply_logic` condition
     i = 0
     while filtered_df.count() > 0:
@@ -337,7 +329,6 @@ def fill_forward_event(
             )
         filtered_df = filtered_df.filter(~F.col("LOGIC_APPLIED"))
         i += 1
-
     # combine the sections of normalised dates together and rejoin the null data
     if not use_hdfs:
         if len(completed_sections) >= 2:
@@ -359,7 +350,6 @@ def fill_forward_event(
         )
     else:
         df = df.withColumn("DROP_EVENT", F.lit(False))
-
     # add the additional detail columns to the original dataframe
     for col in event_columns:
         df = df.withColumn(col, F.when(F.col("DROP_EVENT"), None).otherwise(F.col(col)))

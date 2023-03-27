@@ -17,13 +17,15 @@ from cishouseholds.edit import update_valid_order_2
 from cishouseholds.filter import filter_before_date_or_null
 from cishouseholds.filter import filter_invalid_vaccines
 from cishouseholds.filter import filter_single_dose
+from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.high_level_transformations import pivot_vaccine_columns
 
 # from pyspark.sql import Window
 
 
-def vaccine_transformations(df: DataFrame):
+def vaccine_transformations(df: DataFrame, vaccine_capture_df: DataFrame):
     """"""
+    df = union_multiple_tables([df, vaccine_capture_df])  # combine with vaccine capture df
     df = mapping(df)
     df = preprocessing(df)
     df = deduplication(df)
