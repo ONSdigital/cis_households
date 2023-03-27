@@ -1,9 +1,18 @@
+from typing import Any
 from typing import List
 from typing import Union
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+
+
+def filter_leave_at_least_1(df: DataFrame, retain_condition: Any, window: Window):
+    """ """
+    window = window.orderBy("DROP")
+    df = df.withColumn("DROP", F.when(retain_condition, 0).otherwise(1))
+    df = df.withColumn("ROW", F.row_number().over(window))
+    return df.filter((F.col("ROW") == 1) | (F.col("DROP") == 0)).drop("ROW", "DROP")
 
 
 def filter_single_dose(
@@ -22,14 +31,14 @@ def filter_single_dose(
     Only drop on condition if count in row window is > 1. Using sum rows in window prior to performing each step of logic.
     """
     window = Window.partitionBy(participant_id_column, i_dose_column)
-    disambiguation_window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
+
     df = df.withColumn("MIN", F.min(F.col(order_column)).over(window))
-    df = df.filter(F.col(order_column) == F.col("MIN"))
-    df = df.filter(((F.col(poss_1_2_column) == "Yes") & (F.col(vaccine_type_column).isin(allowed_vaccine_types))))
-    df = df.filter(F.col(default_date_column) != 1)
-    df = df.withColumn("ROW", F.row_number().over(disambiguation_window))
-    df = df.filter(F.col("ROW") == 1)
-    return df.drop("ROW", "MIN")
+    df = filter_leave_at_least_1(df, (F.col(order_column) == F.col("MIN")), window)
+    df = filter_leave_at_least_1(
+        df, ((F.col(poss_1_2_column) == "Yes") & (F.col(vaccine_type_column).isin(allowed_vaccine_types))), window
+    )
+    df = filter_leave_at_least_1(df, (F.col(default_date_column) != 1), window)
+    return df.drop("MIN")
 
 
 def filter_before_date_or_null(df: DataFrame, date_column: str, min_date: str):

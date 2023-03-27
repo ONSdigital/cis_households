@@ -14,7 +14,6 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import Window
 
-from cishouseholds.derive import assign_valid_order
 from cishouseholds.expressions import all_columns_null
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.expressions import any_column_null
@@ -33,6 +32,7 @@ def update_valid_order_2(
     vaccine_number_doses_column: str,
 ):
     """"""
+    from cishouseholds.derive import assign_valid_order
 
     first_dose = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
     df = assign_valid_order(
