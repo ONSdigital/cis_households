@@ -23,7 +23,6 @@ from cishouseholds.expressions import set_date_component
 from cishouseholds.expressions import sum_within_row
 
 
-
 def update_valid_order_2(
     df: DataFrame,
     participant_id_column: str,
@@ -60,7 +59,8 @@ def update_valid_order_2(
         ),
     ).drop("TEMP")
     return df
-    
+
+
 def update_valid_order(
     df: DataFrame,
     column_name_to_update: str,
