@@ -1320,4 +1320,8 @@ fields:
   name: cis_covid_vaccine_number_of_doses
   nullable: true
   type: string
+- metadata: {}
+  name: participant_completion_window_status
+  nullable: true
+  type: string
 type: struct
