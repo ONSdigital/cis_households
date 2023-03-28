@@ -69,7 +69,28 @@ def update_valid_order(
     vaccine_date_column: str,
     first_dose_column: str,
 ):
-    """"""
+    """
+    Assigns a score to a participant's vaccine type and date, utilising business logic
+    based on UK government vaccination guidance at the time. This is used to de-duplicate
+    multiple reports of the same vaccine dose
+
+    Parameters
+    ----------
+    df
+        The input DataFrame to process
+    column_name_to_update
+        The name of the column that will hold the score calculated e.g. valid_order
+    participant_id_column
+        The id that groups together records for one participant
+    vaccine_type_column
+        The column containing the type of vaccine reported
+    vaccine_date_column
+        The column containing the date of vaccine reported
+    first_dose_column
+        The column identifying the first dose for that participant, from which the
+        best match for subsequent doses are decided
+
+    """
     window = Window.partitionBy(participant_id_column).orderBy(F.col(first_dose_column).desc())
 
     def get_logic(date):
@@ -97,7 +118,20 @@ def update_valid_order(
 
 
 def add_prefix(df: DataFrame, column_name_to_update: str, prefix: str, sep: str = ""):
-    """Add a prefix to a column"""
+    """Adds a prefix to all the values in a dataframe column
+
+    Parameters
+    ----------
+    df
+       The input DataFrame to process
+    column_name_to_update
+       The column containing the values the prefix is being added to
+    prefix
+       The string being fixed to the start of the column values
+    sep
+       An optional string separate between the prefix and the column value e.g. '_'
+
+    """
     return df.withColumn(column_name_to_update, F.concat_ws(sep, F.lit(prefix), F.col(column_name_to_update)))
 
 
@@ -109,7 +143,22 @@ def update_work_main_job_changed(
     change_to_not_null_columns: List[str],
 ):
     """
-    re-derive work main job changed to denote whether any of the work variables differ between rows.
+    re-derives boolean variable work_main_job_changed to denote whether any of the work variables differ between rows
+    for a participant, where the first row for the participant is treated separately
+
+    Parameters
+    ----------
+    df
+       The input DataFrame to process
+    column_name_to_update
+       The column to be updated
+    change_to_any_columns
+       list of columns where a change to from one row to the next would
+       result in column_name_to_update to be updated, as long as the current row is not null
+    change_to_not_noll_columns
+       list of columns where a change from null to not null from one row to the next
+       would result in column_name_to_update to be updated
+
     """
     if column_name_to_update not in df.columns:
         df = df.withColumn(column_name_to_update, F.lit(None))
@@ -164,6 +213,25 @@ def fuzzy_update(
     Update a column value if more than 'min_matches' values match in a series of column values 'cols_to_check'.
 
     Does not update values that already exist.
+
+    Parameters
+    ----------
+    left_df
+       dataframe to process
+    cols_to_check
+       columns that will all be checked to see how close in value they are across a window
+    update_column
+       column to be updated with final resulting value
+    min_matches
+       minimum number of times values must match in cols_to_check
+    id_column
+       specifies window over which you are calculating
+    visit_date_column
+       column containing day of visit
+    right_df
+       dataframe to join onto left, if different from main df to process
+    filter_out_of_range
+       Defines whether cols with values greater than visit_date_column will be filtered out or not
     """
 
     window = Window.partitionBy(id_column).orderBy(id_column)
@@ -180,6 +248,7 @@ def fuzzy_update(
 
     df = left_df.join(right_df, on=id_column, how="left")
 
+    # filter for rows where update_column is before the visit
     if filter_out_of_range:
         df = df.filter(F.col(f"{update_column}_right") <= F.col(visit_date_column))
 
@@ -202,7 +271,16 @@ def fuzzy_update(
 
 def normalise_think_had_covid_columns(df: DataFrame, symptom_columns_prefix: str):
     """
-    Update symptom columns to No if any of the symptom columns are not null
+    Update symptom columns to No if any of the symptom columns in row are not null
+
+    Parameters
+    ----------
+    df
+       dataframe to process
+    symptom_columns_prefix
+       columns prefix on df which indicates all columns of symptoms.
+       This just saves writing out whole list of symptom cols if they have a consistent
+       naming convention
     """
     symptom_columns = [col for col in df.columns if symptom_columns_prefix in col]
     df = df.withColumn("CHECK", any_column_not_null(symptom_columns))
@@ -219,7 +297,21 @@ def correct_date_ranges_union_dependent(
     visit_id_column: str,
 ):
     """
-    Correct datetime columns given a range looking across all rows
+    Corrects datetime columns based on earlier/later reported values for the same datetime cols
+    across all rows for a participant
+
+    Parameters
+    ----------
+    df
+       dataframe to process
+    columns_to_edit
+       List of cols to correct
+    participant_id_column
+       id grouping together one participant
+    visit_date_column
+       column containing date of visit, used to filter away events in the 'future' comparative to the visit
+    visit_id_column
+       Used to take the datetime with the least difference in days to the visit where month and day are the same
     """
     for col in columns_to_edit:
         df = df.withColumn("MONTH", F.month(df[col])).withColumn("DAY", F.dayofmonth(df[col]))
@@ -260,7 +352,20 @@ def remove_incorrect_dates(
     df: DataFrame, columns_to_edit: List[str], visit_date_column: str, min_date: str, min_date_dict: Dict[str, str]
 ):
     """
-    removes out of range dates
+    Removes out of range dates with respect to minimum dates and visit_date
+
+    Parameters
+    ----------
+    df
+       dataframe to process
+    columns_to_edit
+       columns containing dates we want to nullify
+    visit_date_column
+       column containing date of visit. If columns_to_edit > visit_date, columns_to_edit is nullified
+    min_date:
+      a minimum date, before which columns_to_edit are nullified
+    min_date_dict:
+      a dictionary of column names to datetimes, if minimum dates vary by column
     """
     for col in columns_to_edit:
         min_date = min_date_dict.get(col, min_date)
@@ -276,7 +381,21 @@ def correct_date_ranges(
     min_date_dict: dict = {},
 ):
     """
-    Correct datetime columns given a range
+    Corrects datetime columns if incorrect, based on a minimum range and the visit_date
+
+    Parameters
+    ----------
+    df
+       Dataframe to process
+    columns_to_edit
+       Columns containing dates we want to edit/correct
+    visit_date_column
+       Column containing date of visit. If columns_to_edit is after visit_date_column function alters year or month
+       to give more feasible date for columns_to_edit, relative to visit_date
+    min_date
+       A minimum date. If columns_to_edit is before function tries to correct by altering year
+    min_date_dict
+       A dictionary of column names to datetimes, if minimum dates vary by column
     """
     for col in columns_to_edit:
         df = df.withColumn(
@@ -401,7 +520,8 @@ def update_column_in_time_window(
 def update_to_value_if_any_not_null(
     df: DataFrame, column_name_to_update: str, true_false_values: list, column_list: list
 ):
-    """Edit existing column to `value_to_assign` when a value is present in any of the listed columns.
+    """
+    Edit existing column to `value_to_assign` when a value is present in any of the listed columns.
 
     Parameters
     ----------
@@ -410,7 +530,8 @@ def update_to_value_if_any_not_null(
     column_name_to_update
         The name of the existing column
     true_false_values
-        True and false values to be assigned
+        True and false values to be assigned, with true value taking first position and
+        false value taking second position
     column_list
         A list of columns to check if any of them do not have null values
     """
@@ -436,11 +557,19 @@ def update_column_if_ref_in_list(
     Parameters
     ----------
     df
+      The input DataFrame to process
     column_name_to_update
+      The name of the existing column
     old_value
+      The existing value we want to replace
     new_value
-    reference_column:str
+      The value we want to replace old_value with
+    reference_column
+      The column to check whether contains values in check_list, the presence of
+      which decides whether we update with new_value
     check_list
+      values in reference_column that will cause the update to column_name_to_update if
+      in reference_column
     """
     df = df.withColumn(
         column_name_to_update,
@@ -461,16 +590,23 @@ def update_value_if_multiple_and_ref_in_list(
 ):
     """
     Update column value with new value if multiple strings found, separated by separator e.g. ','
-    and based on whether column contains any value in check_list or not
+    and based on whether column contains any value in check_list or not. This is to reduce
+    length of strings and reduce categories
 
     Parameters
     -----------
-    df
+     df
+      The input DataFrame to process
     column_name_to_update
+      The name of the existing column
     check_list
+      Values in column_name_to_update to check for, which if exist updates to new_value_if_in_list
     new_value_if_in_list
+      column_name_to_update updated to this if check_list condition met
     new_value_if_not_in_list
+      column_name_to_update updated to this if check_list condition not met
     separator
+      Separator to check for presence of e.g. ;
     """
     df = df.withColumn("ref_flag", F.lit(0))
     for check in check_list:
@@ -648,7 +784,9 @@ def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: st
     Parameters
     ----------
     df
+        The input DataFrame to process
     column_name_to_update
+        The name of the column to update
     """
     df = df.withColumn(
         column_name_to_update,
@@ -665,6 +803,13 @@ def update_think_have_covid_symptom_any(df: DataFrame, column_name_to_update: st
 def clean_barcode_simple(df: DataFrame, barcode_column: str):
     """
     Clean barcode by converting to upper an removing whitespace
+
+    Parameters
+    ----------
+    df
+        The input DataFrame to process
+    barcode_column
+        Name of the column containing the barcode
     """
     df = df.withColumn(barcode_column, F.upper(F.regexp_replace(F.col(barcode_column), r"[^a-zA-Z0-9]", "")))
     return df
@@ -750,11 +895,11 @@ def update_from_lookup_df(df: DataFrame, lookup_df: DataFrame, id_column: str = 
     df
         The input DataFrame to process
     lookup_df
-        The lookup df with the structure described
-    dataset_name
-        Name of the dataset to filter rows in `lookup_df` by
+        The lookup df with the structure described above
     id_column
         Name of the the id column in `df`
+    dataset_name
+        Name of the dataset to filter rows in `lookup_df` by
     """
     drop_list = []
     id_columns = [id_column]
@@ -860,8 +1005,11 @@ def update_social_column(df: DataFrame, social_column: str, health_column: str):
     Parameters
     ----------
     df
+        The input DataFrame to process
     social_column
+        The column containing social work info
     health_column
+        The column containing health work info
     """
     df = df.withColumn(
         social_column,
@@ -893,7 +1041,7 @@ def update_column_values_from_map(
         The column name to assign - alias for column_name_to_update
     map
         A dictionary of dictionaries - the top level key in this dictionary can correspond to
-        the `column` you want to update. A dictionary associated with the top level key is expected
+        the `column` you want to update. A dictionary associated with the top level key is expected to
         contain key-value pairs. The keys in the key-value pairs are matched with the values in
         the column `column` and when matched, the value in the column is replaced by the value in
         corresponding key-value pair.
@@ -903,6 +1051,9 @@ def update_column_values_from_map(
         If True, an error is raised if the set of values to map are not present in `map`
     default_value
         Default value to use when values in column `column` cannot be matched with keys in `map`
+    condition_expression
+        Will only update value in 'column' if this expression is True, default to None
+
     """
     if reference_column is None:
         reference_column = column
@@ -973,7 +1124,7 @@ def update_work_facing_now_column(
 
 def convert_null_if_not_in_list(df: DataFrame, column_name: str, options_list: List[str]) -> DataFrame:
     """
-    Convert column values to null if the entry is not present in provided list
+    Convert column values to null if value not contain in the options_list
 
     Parameters
     ----------
@@ -1014,7 +1165,18 @@ def convert_barcode_null_if_zero(df: DataFrame, barcode_column_name: str):
 
 def nullify_columns_before_date(df: DataFrame, column_list: List[str], date_column: str, date: str):
     """
-    Nullify the values of a list of column names if the date in the `date_column` is before the specified `date`.
+    Nullify the values of columns in list column_list if the date in the `date_column` is before the specified `date`
+    Parameters
+    ----------
+    df
+        The Dataframe to process
+    column_list
+        list of columns to convert to null if the date_column is < date
+    date_column
+        The name of the column which is being compared against date
+    date
+       A date hard coded as agreed business logic, and is compared to date_column
+
     """
     for col in [c for c in column_list if c in df.columns]:
         df = df.withColumn(col, F.when(F.col(date_column) >= date, F.col(col)))
@@ -1046,6 +1208,7 @@ def convert_columns_to_timestamps(df: DataFrame, column_format_map: dict) -> Dat
     Parameters
     ----------
     df
+        he Dataframe to process
     column_format_map
         format of datetime string and associated list of column names to which it applies
     """
@@ -1081,7 +1244,9 @@ def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> 
     Parameters
     ----------
     df
+        The Dataframe to process
     column_name_to_assign
+        The name of the column that will be formatted
     """
     df = df.withColumn(
         column_name_to_assign,
@@ -1100,11 +1265,12 @@ def format_string_upper_and_clean(df: DataFrame, column_name_to_assign: str) -> 
 
 def rename_column_names(df: DataFrame, variable_name_map: dict) -> DataFrame:
     """
-    Rename column names.
+    Rename column names based on variable_name_map
 
     Parameters
     ----------
     df
+        The Dataframe to process
     variable_name_map
         map of current column names to new names
     """
@@ -1120,6 +1286,7 @@ def assign_from_map(df: DataFrame, column_name_to_assign: str, reference_column:
     Parameters
     ----------
     df
+        The Dataframe to process
     column_name_to_assign
         Name of column to be assigned
     reference_column
@@ -1166,6 +1333,7 @@ def assign_null_if_insufficient(
     Parameters
     ----------
     df
+        The Dataframe to process
     column_name_to_assign
         Name of column to assign outcome to
     first_reference_column
@@ -1192,8 +1360,9 @@ def edit_swab_results_single(
     ----------
     df
     gene_result_classification
+        Name of the column to be updated
     gene_result_value
-        column name that consists of float values
+        column name that consists of float values, used to inform update of gene_result_classification
     overall_result_classification
     """
     return df.withColumn(
@@ -1235,7 +1404,7 @@ def edit_to_sum_or_max_value(
     max_value: int,
 ):
     """
-    Imputes column_name_to_assign based a sum of the columns_to_sum.
+    Imputes column_name_to_assign based on a sum of the columns_to_sum.
     If exceeds max, uses max_value. If all values are Null, sets outcome to Null.
 
     column_name_to_assign must already exist on the df.
@@ -1249,7 +1418,7 @@ def edit_to_sum_or_max_value(
     columns_to_sum
         List of column names to sum up
     max_value
-        Max value
+        Max value which column_name_to_assign can not exceed
     """
     df = df.withColumn(
         column_name_to_assign,
@@ -1269,6 +1438,16 @@ def join_on_existing(df: DataFrame, df_to_join: DataFrame, on: List):
     Join 2 dataframes on columns in 'on' list and
     override empty values in the left dataframe with values from the right
     dataframe.
+
+    Parameters
+    ----------
+    df
+      The Dataframe to process
+    df_to_join
+      the data frame you are left joining onto df, taking values from here when they don't exist in df
+    on
+      column/s on which to join the two dfs together
+
     """
     columns = [col for col in df_to_join.columns if col in df.columns]
     for col in columns:
@@ -1282,7 +1461,17 @@ def join_on_existing(df: DataFrame, df_to_join: DataFrame, on: List):
 
 
 def recode_column_values(df: DataFrame, lookup: dict):
-    """wrapper to loop over multiple value maps for different columns"""
+    """wrapper to loop over multiple value maps for different columns
+
+    Parameters
+    ----------
+    df
+      The Dataframe to process
+    lookup
+       a dictionary of dictionaries containing a column name with keys:values, with the key:value pairs
+       which take the form of existing value:new value
+
+    """
     for column_name, map in lookup.items():
         df = update_column_values_from_map(df, column_name, map)
     return df
@@ -1294,6 +1483,17 @@ def update_column(df: DataFrame, lookup_df: DataFrame, column_name_to_update: st
     """
     Assign column (column_name_to_update) new value from lookup dataframe (lookup_df) if the value does not match
     its counterpart in the old dataframe
+
+    Parameters
+    ----------
+    df
+      The Dataframe to process
+    lookup_df
+      The Dataframe joining onto df, the values from which are updating column_name_to_update values
+    columns_name_to_update
+      Name of the column where the values are to be updated by values in lookup_df
+    join_on_columns
+      column/s on which to join the two dfs together
     """
     lookup_df = lookup_df.withColumnRenamed(column_name_to_update, f"{column_name_to_update}_from_lookup")
     df = df.join(lookup_df, on=[*join_on_columns], how="left")
@@ -1312,6 +1512,13 @@ def update_column(df: DataFrame, lookup_df: DataFrame, column_name_to_update: st
 def update_data(df: DataFrame, auxillary_dfs: dict):
     """
     wrapper function for calling update column
+
+    Parameters
+    ----------
+    df
+      The Dataframe to process
+    auxillary_dfs
+      Dictionary containing dataframes
     """
     df = update_column(
         df=df,
@@ -1336,9 +1543,22 @@ def survey_edit_auto_complete(
     file_date_column: str,
 ):
     """
-    Add a status type for the variable survey_completion_status to reflect participants who have filled in the final
-    question on the survey but had their questionnaire automatically submitted when the test window closed
-    as they didn't click "submit"
+    Add a category into column_name_to_assign to reflect participants who have filled in the final
+    question on the survey but did not click submit
+
+    Parameters
+    ----------
+    df
+      The Dataframe to process
+    column_name_to_assign
+      The name of the column we are updating with an additional category, "Auto Completed"
+    completion_window_column
+      The column which indicates whether the participant's testing window is still open
+    last_question_column
+       The name of the column which is the final question on the survey, we assume that if not null the participant
+       has answered every question in the survey
+    file_date_column
+       The name of the column containing the date the survey response was processed
     """
 
     df = df.withColumn(
