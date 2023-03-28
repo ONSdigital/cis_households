@@ -144,7 +144,7 @@ cis_digital_datetime_map = {
 }
 
 phm_datetime_map = {
-    "dd/MM/yyyy": [
+    "yyyy-MM-dd": [
         "swab_taken_date",
         "swab_return_date",
         "swab_return_future_date",
@@ -160,5 +160,5 @@ phm_datetime_map = {
         "cis_covid_vaccine_date",
         "think_have_covid_onset_date",
     ],
-    None: ["survey_completed_datetime"],
+    "yyyy-MM-dd'T'HH:mm:ss'Z'": ["survey_completed_datetime"],
 }

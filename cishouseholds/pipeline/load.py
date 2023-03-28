@@ -90,12 +90,18 @@ def delete_tables(
         drop_tables(tables)
 
 
-def extract_from_table(table_name: str, break_lineage: bool = False, alternate_prefix: str = None) -> DataFrame:
+def extract_from_table(
+    table_name: str, break_lineage: bool = False, alternate_prefix: str = None, alternate_database: str = None
+) -> DataFrame:
     spark_session = get_or_create_spark_session()
-    check_table_exists(table_name, raise_if_missing=True, alternate_prefix=alternate_prefix)
+    check_table_exists(
+        table_name, raise_if_missing=True, alternate_prefix=alternate_prefix, alternate_database=alternate_database
+    )
     if break_lineage:
-        return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix)}").checkpoint()
-    return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix)}")
+        return spark_session.sql(
+            f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix, alternate_database)}"
+        ).checkpoint()
+    return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix, alternate_database)}")
 
 
 def update_table(
@@ -123,9 +129,11 @@ def update_table(
         df.write.mode(write_mode).saveAsTable(f"{get_full_table_name(table_name)}_{now}")
 
 
-def check_table_exists(table_name: str, raise_if_missing: bool = False, alternate_prefix: str = None):
+def check_table_exists(
+    table_name: str, raise_if_missing: bool = False, alternate_prefix: str = None, alternate_database: str = None
+):
     spark_session = get_or_create_spark_session()
-    full_table_name = get_full_table_name(table_name, alternate_prefix)
+    full_table_name = get_full_table_name(table_name, alternate_prefix, alternate_database)
     table_exists = spark_session.catalog._jcatalog.tableExists(full_table_name)
     if raise_if_missing and not table_exists:
         raise TableNotFoundError(f"Table does not exist: {full_table_name}")
@@ -179,15 +187,20 @@ def get_run_id():
     return run_id
 
 
-def get_full_table_name(table_short_name, alternate_prefix: str = None):
+def get_full_table_name(table_short_name, alternate_prefix: str = None, alternate_database: str = None):
     """
     Get the full database.table_name address for the specified table.
     Based on database and name prefix from config.
+    alternate database offered if want to use alternative to storage settings
     """
     storage_config = get_config()["storage"]
+    if alternate_database is not None:
+        database = alternate_database
+    else:
+        database = f'{storage_config["database"]}'
     if alternate_prefix is not None:
-        return f'{storage_config["database"]}.{alternate_prefix}{table_short_name}'
-    return f'{storage_config["database"]}.{storage_config["table_prefix"]}{table_short_name}'
+        return f"{database}.{alternate_prefix}{table_short_name}"
+    return f'{database}.{storage_config["table_prefix"]}{table_short_name}'
 
 
 def _create_error_file_log_entry(run_id: int, file_path: str, error_text: str):
