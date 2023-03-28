@@ -30,7 +30,7 @@ def filter_single_dose(
     Filter to a single dose per participant per idose using a series of prescribed filters.
     Only drop on condition if count in row window is > 1. Using sum rows in window prior to performing each step of logic.
     """
-    window = Window.partitionBy(participant_id_column, i_dose_column)
+    window = Window.partitionBy(participant_id_column, i_dose_column).orderBy(visit_datetime_column)
 
     df = df.withColumn("MIN", F.min(F.col(order_column)).over(window))
     df = filter_leave_at_least_1(df, (F.col(order_column) == F.col("MIN")), window)
@@ -38,7 +38,11 @@ def filter_single_dose(
         df, ((F.col(poss_1_2_column) == "Yes") & (F.col(vaccine_type_column).isin(allowed_vaccine_types))), window
     )
     df = filter_leave_at_least_1(df, (F.col(default_date_column) != 1), window)
-    return df.drop("MIN")
+
+    # Finally keep first reported vaccine by visit_date for the window
+    df = df.withColumn("ROW", F.row_number().over(window))
+    df = df.filter(F.col("ROW") == 1)
+    return df.drop("MIN", "ROW")
 
 
 def filter_before_date_or_null(df: DataFrame, date_column: str, min_date: str):
