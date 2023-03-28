@@ -13,6 +13,7 @@ from cishouseholds.derive import assign_date_from_filename
 from cishouseholds.derive import assign_datetime_from_coalesced_columns_and_log_source
 from cishouseholds.derive import assign_datetime_from_combined_columns
 from cishouseholds.derive import assign_raw_copies
+from cishouseholds.derive import assign_survey_completed_status
 from cishouseholds.derive import combine_like_array_columns
 from cishouseholds.derive import concat_fields_if_true
 from cishouseholds.derive import derive_had_symptom_last_7days_from_digital
@@ -677,6 +678,13 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
             "7 doses": 7,
             "8 doses or more": 8,
         },
+    )
+
+    df = assign_survey_completed_status(
+        df=df,
+        column_name_to_assign="survey_completion_status",
+        survey_completed_datetime_column="survey_completed_datetime",
+        survey_flushed_column="survey_completion_status_flushed",
     )
 
     return df
