@@ -42,7 +42,7 @@ def assign_window_status(
     """
     df = df.withColumn(
         column_name_to_assign,
-        F.when((F.col(window_start_column) < current_date) & (current_date <= F.col(window_end_column)), "Open")
+        F.when((F.col(window_start_column) <= current_date) & (current_date <= F.col(window_end_column)), "Open")
         .when(current_date > F.col(window_end_column), "Closed")
         .when(current_date < F.col(window_start_column), "New"),
     )
