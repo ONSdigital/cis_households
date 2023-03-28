@@ -74,6 +74,7 @@
   participant_completion_window_end_date: '2022-01-04'
   participant_completion_window_id: '0165'
   participant_completion_window_start_date: null
+  participant_completion_window_status: Closed
   participant_first_name_confirmation: null
   participant_first_name_on_behalf: 'No'
   participant_id: DHR-602276804025
@@ -414,6 +415,7 @@
   participant_completion_window_end_date: '2022-01-04'
   participant_completion_window_id: 0284
   participant_completion_window_start_date: '2022-01-06'
+  participant_completion_window_status: Closed
   participant_first_name_confirmation: 'No'
   participant_first_name_on_behalf: null
   participant_id: DHR-642607714195
@@ -757,6 +759,7 @@
   participant_completion_window_end_date: '2022-01-03'
   participant_completion_window_id: '1449'
   participant_completion_window_start_date: '2022-01-05'
+  participant_completion_window_status: Closed
   participant_first_name_confirmation: 'Yes'
   participant_first_name_on_behalf: 'Yes'
   participant_id: DHR-039598076526
@@ -1099,6 +1102,7 @@
   participant_completion_window_end_date: '2022-01-06'
   participant_completion_window_id: '2013'
   participant_completion_window_start_date: '2022-01-03'
+  participant_completion_window_status: Closed
   participant_first_name_confirmation: null
   participant_first_name_on_behalf: null
   participant_id: DHR-882718828437
@@ -1441,6 +1445,7 @@
   participant_completion_window_end_date: '2022-01-09'
   participant_completion_window_id: '3623'
   participant_completion_window_start_date: '2022-01-04'
+  participant_completion_window_status: Closed
   participant_first_name_confirmation: 'No'
   participant_first_name_on_behalf: 'Yes'
   participant_id: DHR-182564559272
@@ -1779,6 +1784,7 @@
   participant_completion_window_end_date: '2022-01-03'
   participant_completion_window_id: '3965'
   participant_completion_window_start_date: '2022-01-03'
+  participant_completion_window_status: Closed
   participant_first_name_confirmation: 'No'
   participant_first_name_on_behalf: 'No'
   participant_id: DHR-263322966171
@@ -2121,6 +2127,7 @@
   participant_completion_window_end_date: '2022-01-02'
   participant_completion_window_id: '5123'
   participant_completion_window_start_date: null
+  participant_completion_window_status: Closed
   participant_first_name_confirmation: 'Yes'
   participant_first_name_on_behalf: 'Yes'
   participant_id: DHR-528425723964
@@ -2468,6 +2475,7 @@
   participant_completion_window_end_date: '2022-01-02'
   participant_completion_window_id: '7540'
   participant_completion_window_start_date: '2022-01-09'
+  participant_completion_window_status: Closed
   participant_first_name_confirmation: 'Yes'
   participant_first_name_on_behalf: null
   participant_id: DHR-624980420762
@@ -2810,6 +2818,7 @@
   participant_completion_window_end_date: '2022-01-08'
   participant_completion_window_id: '9696'
   participant_completion_window_start_date: '2022-01-01'
+  participant_completion_window_status: Closed
   participant_first_name_confirmation: null
   participant_first_name_on_behalf: null
   participant_id: DHR-633873344214
@@ -3156,6 +3165,7 @@
   participant_completion_window_end_date: '2022-01-08'
   participant_completion_window_id: '9981'
   participant_completion_window_start_date: '2022-01-08'
+  participant_completion_window_status: Closed
   participant_first_name_confirmation: 'No'
   participant_first_name_on_behalf: 'No'
   participant_id: DHR-144229485098
