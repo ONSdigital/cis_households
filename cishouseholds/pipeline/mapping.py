@@ -431,21 +431,21 @@ category_maps = {
             "Yes, care/residential home, non-resident-facing": 3,
             "Yes, other social care, non-resident-facing": 4,
         },
-        "work_social_care_original": {
+        "work_social_care_raw": {
             "No": 0,
             "Yes, care/residential home, resident-facing": 1,
             "Yes, other social care, resident-facing": 2,
             "Yes, care/residential home, non-resident-facing": 3,
             "Yes, other social care, non-resident-facing": 4,
         },
-        "work_status_v0_original": {
+        "work_status_v0_raw": {
             "Employed": 1,
             "Self-employed": 2,
             "Furloughed (temporarily not working)": 3,
             "Not working (unemployed, retired, long-term sick etc.)": 4,
             "Student": 5,
         },
-        "work_status_v1_original": {
+        "work_status_v1_raw": {
             "Employed and currently working": 1,
             "Employed and currently not working": 2,
             "Self-employed and currently working": 3,
@@ -457,7 +457,7 @@ category_maps = {
             "Child under 5y attending child care": 9,
             "5y and older in full-time education": 10,
         },
-        "work_status_v2_original": {
+        "work_status_v2_raw": {
             "Employed and currently working": 1,
             "Employed and currently not working": 2,
             "Self-employed and currently working": 3,
@@ -471,7 +471,7 @@ category_maps = {
             "Attending college or FE (including if temporarily absent)": 11,
             "Attending university (including if temporarily absent)": 12,
         },
-        "work_location_original": {
+        "work_location_raw": {
             "Working from home": 1,
             "From home in the same grounds or building as your home": 1,
             "Working somewhere else (not your home)": 2,
