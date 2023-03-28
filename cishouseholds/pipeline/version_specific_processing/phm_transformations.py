@@ -686,13 +686,13 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
         window_start_column="participant_completion_window_start_date",
         window_end_column="participant_completion_window_end_date",
     )
+
     df = assign_survey_completed_status(
         df=df,
         column_name_to_assign="survey_completion_status",
         survey_completed_datetime_column="survey_completed_datetime",
         survey_flushed_column="survey_completion_status_flushed",
     )
-
     return df
 
 

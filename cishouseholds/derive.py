@@ -30,25 +30,6 @@ from cishouseholds.pipeline.mapping import _vaccine_type_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
-def assign_window_status(
-    df: DataFrame,
-    column_name_to_assign: str,
-    window_start_column: str,
-    window_end_column: str,
-    current_date: datetime = datetime.now(),
-):
-    """
-    Derive the status of the survey window for a given point in time
-    """
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when((F.col(window_start_column) <= current_date) & (current_date <= F.col(window_end_column)), "Open")
-        .when(current_date > F.col(window_end_column), "Closed")
-        .when(current_date < F.col(window_start_column), "New"),
-    )
-    return df
-
-
 def assign_survey_completed_status(
     df: DataFrame,
     column_name_to_assign: str,
@@ -82,6 +63,25 @@ def assign_survey_completed_status(
             (F.col(survey_completed_datetime_column).isNull()) & (F.col(survey_flushed_column) == "FALSE"),
             "Not Completed",
         ),
+    )
+    return df
+
+
+def assign_window_status(
+    df: DataFrame,
+    column_name_to_assign: str,
+    window_start_column: str,
+    window_end_column: str,
+    current_date: datetime = datetime.now(),
+):
+    """
+    Derive the status of the survey window for a given point in time
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when((F.col(window_start_column) <= current_date) & (current_date <= F.col(window_end_column)), "Open")
+        .when(current_date > F.col(window_end_column), "Closed")
+        .when(current_date < F.col(window_start_column), "New"),
     )
     return df
 
