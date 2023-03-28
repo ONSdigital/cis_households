@@ -122,7 +122,9 @@ def blind_csv_to_table(path: str, table_name: str, sep: str = "|"):
 
 
 @register_pipeline_stage("table_to_table")
-def table_to_table(table_name: str, break_lineage: bool = False, alternate_prefix: str = None):
+def table_to_table(
+    table_name: str, break_lineage: bool = False, alternate_prefix: str = None, alternate_database: str = None
+):
     """
     Extracts a HIVE table, with an alternate prefix, and saves it out with the project prefix
 
@@ -134,8 +136,11 @@ def table_to_table(table_name: str, break_lineage: bool = False, alternate_prefi
         whether to create a checkpoint on loading the file
     alternate_prefix : str
         alternate prefix to use for input HIVE table
+    alternate_database: str
+        alternate database to use for input HIVE table being copied
     """
-    df = extract_from_table(table_name, break_lineage, alternate_prefix)
+
+    df = extract_from_table(table_name, break_lineage, alternate_prefix, alternate_database)
     df = update_table(df, table_name, "overwrite")
 
 
