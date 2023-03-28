@@ -14,6 +14,7 @@ from cishouseholds.derive import assign_datetime_from_coalesced_columns_and_log_
 from cishouseholds.derive import assign_datetime_from_combined_columns
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_survey_completed_status
+from cishouseholds.derive import assign_window_status
 from cishouseholds.derive import combine_like_array_columns
 from cishouseholds.derive import concat_fields_if_true
 from cishouseholds.derive import derive_had_symptom_last_7days_from_digital
@@ -687,6 +688,12 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
         survey_flushed_column="survey_completion_status_flushed",
     )
 
+    df = assign_window_status(
+        df=df,
+        column_name_to_assign="participant_completion_window_status",
+        window_start_column="participant_completion_window_start_date",
+        window_end_column="participant_completion_window_end_date",
+    )
     return df
 
 
