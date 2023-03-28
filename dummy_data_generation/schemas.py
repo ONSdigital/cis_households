@@ -3341,12 +3341,28 @@ phm_date_format = "%d/%m/%Y"
 
 def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
     return lambda: {  # noqa: E731
+        "portal_id": _("custom_random.random_integer", lower=1000, upper=12000, null_percent=0),
+        "launch_language_code": _("choice", items=["en", "we"]),
+        "submission_language_code": _("choice", items=["en", "we"]),
+        "survey_completed_datetime": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=digital_datetime_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
         # "uac": _("random.custom_code", mask="################", digit="#"),
         # "household_completion_window_id": _("random.custom_code", mask="####", digit="#"),
         # "ons_household_id": _("random.custom_code", mask="############", digit="#"),
-        # "participant_id":_("random.custom_code", mask="DHR-############", digit="#"),
         # "cohort": _("choice", items=["Swab Only", "Fingerprick and Swab", None]),
         # "participant_under_16": _("choice", items=yes_no_none_choice),
+        "participant_id": _("random.custom_code", mask="DHR-############", digit="#"),  # Also DHRF-##########
         "participant_completion_window_id": _("random.custom_code", mask="####", digit="#"),
         "participant_first_name_confirmation": _("choice", items=yes_no_none_choice),
         "participant_first_name_on_behalf": _("choice", items=yes_no_none_choice),
@@ -3670,7 +3686,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             weights=[0.5, 0.5],
         ),
         "flu_vaccine_received": _("choice", items=yes_no_prefer_not_to_say),
-        "flu_vaccine_received_date": _(
+        "flu_vaccine_date": _(
             "discrete_distribution",
             population=[
                 _(
@@ -3767,14 +3783,14 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 "Do not know",
             ],
         ),
-        "other_covid_infection_test_negative_date": _(
-            "discrete_distribution",
-            population=[
-                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=phm_date_format),
-                None,
-            ],
-            weights=[0.5, 0.5],
-        ),
+        # "other_covid_infection_test_negative_date": _(
+        #     "discrete_distribution",
+        #     population=[
+        #         _("custom_random.random_date", start=start_date_list, end=end_date_list, format=phm_date_format),
+        #         None,
+        #     ],
+        #     weights=[0.5, 0.5],
+        # ),
         "last_28_days_unable_usual_activities": _("custom_random.random_integer", lower=0, upper=28, null_percent=15),
         "last_28_days_unable_usual_activities_due_to_respiratory_infection": _(
             "custom_random.random_integer", lower=0, upper=28, null_percent=15
@@ -3879,5 +3895,32 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
         ),
         "end_screen_questionnaire": _("choice", items=["Continue", None]),
-        # "end_screen_sample": _("choice", items=["Continue", None]), #to be added when bio samples begin
+        "end_screen_sample": _("choice", items=["Continue", None]),  # to be added when bio samples begin
+        "survey_completion_status_flushed": _("choice", items=["false", "true"]),
+        "participant_completion_window_start_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_date_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "participant_completion_window_end_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_date_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
     }

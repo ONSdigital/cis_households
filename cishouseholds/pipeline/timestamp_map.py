@@ -153,11 +153,12 @@ phm_datetime_map = {
         "blood_return_future_date",
         "think_had_covid_onset_date",
         "phm_think_had_flu_onset_date",
-        "flu_vaccination_received_date",
+        "flu_vaccine_date",
         "phm_think_had_other_infection_onset_date",
         "been_outside_uk_last_return_date",
         "other_covid_infection_test_positive_date",
         "cis_covid_vaccine_date",
         "think_have_covid_onset_date",
     ],
+    None: ["survey_completed_datetime"],
 }
