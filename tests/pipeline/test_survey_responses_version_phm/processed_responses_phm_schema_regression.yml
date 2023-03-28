@@ -60,6 +60,14 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
+  name: swab_taken_time_hour
+  nullable: true
+  type: string
+- metadata: {}
+  name: swab_taken_time_minute
+  nullable: true
+  type: string
+- metadata: {}
   name: swab_taken_am_pm
   nullable: true
   type: string
@@ -103,6 +111,14 @@ fields:
   name: blood_taken_date
   nullable: true
   type: timestamp
+- metadata: {}
+  name: blood_taken_time_hour
+  nullable: true
+  type: string
+- metadata: {}
+  name: blood_taken_time_minute
+  nullable: true
+  type: string
 - metadata: {}
   name: blood_taken_am_pm
   nullable: true

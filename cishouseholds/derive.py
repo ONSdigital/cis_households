@@ -188,23 +188,26 @@ def assign_datetime_from_combined_columns(
         if col_name is None:
             df = df.withColumn(temp_col_name, F.lit(0))
         else:
-            df = df.withColumn(temp_col_name, F.col(col_name)).drop(col_name)
+            df = df.withColumn(temp_col_name, F.col(col_name))
 
-    hour = F.when((F.col(am_pm_column) == "pm") & (F.col("_hour") != 12), F.col("_hour") + 12).otherwise(F.col("_hour"))
+    time = F.concat_ws(":", F.col("_hour"), F.col("_min"), F.col("_sec"))
+
     df = df.withColumn(
         column_name_to_assign,
         F.concat_ws(
             " ",
-            F.col(date_column),
+            # F.col(date_column),
+            F.concat_ws("-", F.year(date_column), F.month(date_column), F.dayofmonth(date_column)),
             F.concat_ws(
                 ":",
-                hour,
-                *[F.when(F.col(col) == 0, "00").otherwise(F.col(col).cast("string")) for col in ["_min", "_sec"]],
+                F.when(F.col(am_pm_column) == "PM", F.hour(time) + 12).otherwise(F.hour(time)),
+                F.minute(time),
+                F.second(time),
             ),
         ),
     )
-    df = df.withColumn(column_name_to_assign, F.to_timestamp(column_name_to_assign)).drop("_hour", "_min", "_sec")
-    return df
+    df = df.withColumn(column_name_to_assign, F.to_timestamp(column_name_to_assign))
+    return df.drop("_hour", "_min", "_sec")
 
 
 def group_participant_within_date_range(
