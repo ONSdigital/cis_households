@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 from functools import reduce
 from itertools import chain
 from operator import add
@@ -29,16 +30,35 @@ from cishouseholds.pipeline.mapping import _vaccine_type_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def assign_window_status(
+    df: DataFrame,
+    column_name_to_assign: str,
+    window_start_column: str,
+    window_end_column: str,
+    current_date: datetime = datetime.now(),
+):
+    """
+    Derive the status of the survey window for a given point in time
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when((F.col(window_start_column) <= current_date) & (current_date <= F.col(window_end_column)), "Open")
+        .when(current_date > F.col(window_end_column), "Closed")
+        .when(current_date < F.col(window_start_column), "New"),
+    )
+    return df
+
+
 def assign_valid_order(
     df: DataFrame,
     column_name_to_assign: str,
     participant_id_column: str,
     vaccine_date_column: str,
     vaccine_type_column: str,
-    first_dose_column: str,
+    visit_date_column: str,
 ):
     """"""
-    window = Window.partitionBy(participant_id_column).orderBy(F.col(first_dose_column).desc())
+    window = Window.partitionBy(participant_id_column).orderBy(visit_date_column)
     # [min days before, max days before, min days after, max days after, allowed_type, allowed_first_type]
     orders = reversed(
         [
@@ -53,7 +73,7 @@ def assign_valid_order(
             [6, 0, 0, 28, 149, "Don't know type", "Pfizer/AZ/Moderna"],
         ]
     )
-    diff = F.datediff(F.col(vaccine_date_column), F.first(F.col(vaccine_date_column)).over(window))
+    diff = F.datediff(F.col(vaccine_date_column), F.first(F.col(vaccine_date_column), True).over(window))
     df = df.withColumn(column_name_to_assign, F.lit(None))
     for check in orders:
         neg_range = (diff > check[2]) & (diff < check[1])
@@ -248,16 +268,13 @@ def assign_max_doses(
     return df
 
 
-def assign_first_dose(
-    df: DataFrame,
-    column_name_to_assign: str,
-    participant_id_column: str,
-    visit_datetime: str,
+def assign_nth_dose(
+    df: DataFrame, column_name_to_assign: str, participant_id_column: str, visit_datetime: str, dose_number: int = 1
 ):
     """Assign the date of the first dose reported and order by visit_datetime."""
     window = Window.partitionBy(participant_id_column).orderBy(visit_datetime)
     df = df.withColumn("row", F.row_number().over(window))
-    df = df.withColumn(column_name_to_assign, F.when(F.col("row") == 1, "Yes").otherwise("No"))
+    df = df.withColumn(column_name_to_assign, F.when(F.col("row") == dose_number, "Yes").otherwise("No"))
     return df.drop("row")
 
 

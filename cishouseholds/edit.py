@@ -22,6 +22,45 @@ from cishouseholds.expressions import set_date_component
 from cishouseholds.expressions import sum_within_row
 
 
+def update_valid_order_2(
+    df: DataFrame,
+    participant_id_column: str,
+    vaccine_date_column: str,
+    vaccine_type_column: str,
+    valid_order_column: str,
+    visit_datetime_column: str,
+    vaccine_number_doses_column: str,
+):
+    """"""
+    from cishouseholds.derive import assign_valid_order
+
+    first_dose = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
+    df = assign_valid_order(
+        df=df,
+        column_name_to_assign="TEMP",
+        participant_id_column=participant_id_column,
+        vaccine_type_column=vaccine_type_column,
+        vaccine_date_column=vaccine_date_column,
+        visit_date_column=visit_datetime_column,
+    )
+    df = df.withColumn(
+        "TEMP",
+        F.when(
+            (F.col(valid_order_column) >= 7)
+            & (F.datediff(F.first(F.lead(first_dose, 1)), F.first(first_dose)) <= 60)  # alternative second dose
+            & (F.col(vaccine_number_doses_column) < 3),
+            F.col("TEMP"),
+        ),
+    )
+    df = df.withColumn(
+        valid_order_column,
+        F.when(F.col("TEMP").isNotNull() & (F.col("TEMP") < F.col(valid_order_column)), F.col("TEMP")).otherwise(
+            F.col(valid_order_column)
+        ),
+    ).drop("TEMP")
+    return df
+
+
 def update_valid_order(
     df: DataFrame,
     column_name_to_update: str,
