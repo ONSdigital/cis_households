@@ -5,7 +5,7 @@
   aged_16_or_over: 'Yes'
   been_outside_uk: 'No'
   been_outside_uk_last_country: Philippines
-  been_outside_uk_last_return_date: '2022-01-06 00:00:00.000000'
+  been_outside_uk_last_return_date: '2022-01-02 00:00:00.000000'
   blood_not_taken_could_not_other: Where are my pants?
   blood_not_taken_could_not_reason: The pot spilled
   blood_not_taken_could_not_reason_had_bruising: null
@@ -15,17 +15,19 @@
   blood_not_taken_could_not_reason_pot_spilled: 'Yes'
   blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_reason: I asked not to receive a blood test kit this month
-  blood_return_date: '2022-01-01 00:00:00.000000'
-  blood_return_future_date: '2022-01-02 00:00:00.000000'
+  blood_return_date: '2022-01-05 00:00:00.000000'
+  blood_return_future_date: '2022-01-01 00:00:00.000000'
   blood_returned: null
   blood_sample_barcode_correct: 'Yes'
   blood_sample_barcode_user_entered: BLTBLT93008687
   blood_taken: 'Yes'
   blood_taken_am_pm: AM
-  blood_taken_date: '2022-01-01 00:00:00.000000'
-  blood_taken_datetime: null
+  blood_taken_date: '2022-01-04 00:00:00.000000'
+  blood_taken_datetime: '2022-01-04 02:00:00.000000'
+  blood_taken_time_hour: '2'
+  blood_taken_time_minute: '0'
   care_home_last_28_days: 'Yes'
-  cis_covid_vaccine_date: null
+  cis_covid_vaccine_date: '2022-01-06 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: 1 dose
   cis_covid_vaccine_received: null
   cis_covid_vaccine_type: Sinopharm
@@ -46,7 +48,7 @@
   face_covering_work_or_education: Yes, sometimes
   face_covering_work_or_education_raw: Yes sometimes
   file_date: '2022-01-03 11:24:22.000000'
-  flu_vaccine_date: null
+  flu_vaccine_date: '2022-01-05 00:00:00.000000'
   flu_vaccine_received: Prefer not to say
   hospital_last_28_days: null
   illness_lasting_over_12_months: 'No'
@@ -69,9 +71,9 @@
   other_covid_infection_test_positive_date: '2022-01-08 00:00:00.000000'
   other_covid_infection_test_results: All Tests failed
   other_covid_infection_test_results_raw: All tests failed
-  participant_completion_window_end_date: 05/01/2022
+  participant_completion_window_end_date: '2022-01-04'
   participant_completion_window_id: '0165'
-  participant_completion_window_start_date: 07/01/2022
+  participant_completion_window_start_date: null
   participant_first_name_confirmation: null
   participant_first_name_on_behalf: 'No'
   participant_id: DHR-602276804025
@@ -80,7 +82,7 @@
   phm_think_had_flu: null
   phm_think_had_flu_onset_date: null
   phm_think_had_other_infection: 'Yes'
-  phm_think_had_other_infection_onset_date: '2022-01-06 00:00:00.000000'
+  phm_think_had_other_infection_onset_date: null
   phm_think_had_respiratory_infection: 'Yes'
   phm_think_had_respiratory_infection_type:
   - Another type of respiratory infection of illness
@@ -110,15 +112,17 @@
   survey_completion_status_flushed: false
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: The swab test kit arrived with parts missing
-  swab_return_date: '2022-01-07 00:00:00.000000'
-  swab_return_future_date: '2022-01-09 00:00:00.000000'
+  swab_return_date: '2022-01-09 00:00:00.000000'
+  swab_return_future_date: null
   swab_returned: 'Yes'
   swab_sample_barcode_correct: 'Yes'
   swab_sample_barcode_user_entered: SWTSWT25808631
   swab_taken: 'Yes'
   swab_taken_am_pm: PM
-  swab_taken_date: null
-  swab_taken_datetime: '2023-03-23 00:00:00.000000'
+  swab_taken_date: '2022-01-03 00:00:00.000000'
+  swab_taken_datetime: '2022-01-03 20:00:00.000000'
+  swab_taken_time_hour: '8'
+  swab_taken_time_minute: '0'
   test_kit_info_end_of_survey: null
   test_type_positive_result: Do not know
   think_had_covid_any_symptom_list_1:
@@ -339,7 +343,7 @@
   aged_16_or_over: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Kuwait
-  been_outside_uk_last_return_date: null
+  been_outside_uk_last_return_date: '2022-01-03 00:00:00.000000'
   blood_not_taken_could_not_other: Its main implementation is the Glasgow Haskell
     Compiler.
   blood_not_taken_could_not_reason: I felt unwell
@@ -357,8 +361,10 @@
   blood_sample_barcode_user_entered: BLTBLT58587422
   blood_taken: 'No'
   blood_taken_am_pm: AM
-  blood_taken_date: '2022-01-02 00:00:00.000000'
-  blood_taken_datetime: null
+  blood_taken_date: '2022-01-08 00:00:00.000000'
+  blood_taken_datetime: '2022-01-08 09:45:00.000000'
+  blood_taken_time_hour: '9'
+  blood_taken_time_minute: '45'
   care_home_last_28_days: 'Yes'
   cis_covid_vaccine_date: null
   cis_covid_vaccine_number_of_doses: 3 doses
@@ -380,8 +386,8 @@
   face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, sometimes
   face_covering_work_or_education_raw: Yes sometimes
-  file_date: '2022-01-08 22:45:03.000000'
-  flu_vaccine_date: null
+  file_date: '2022-01-06 14:03:46.000000'
+  flu_vaccine_date: '2022-01-08 00:00:00.000000'
   flu_vaccine_received: 'No'
   hospital_last_28_days: null
   illness_lasting_over_12_months: Prefer not to say
@@ -401,21 +407,21 @@
   last_28_days_urgent_care_respiratory_infection: null
   launch_language_code: en
   other_covid_infection_test: 'No'
-  other_covid_infection_test_positive_date: '2022-01-08 00:00:00.000000'
+  other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
   other_covid_infection_test_results_raw: One or more tests were positive
-  participant_completion_window_end_date: 08/01/2022
+  participant_completion_window_end_date: '2022-01-04'
   participant_completion_window_id: 0284
-  participant_completion_window_start_date: 08/01/2022
+  participant_completion_window_start_date: '2022-01-06'
   participant_first_name_confirmation: 'No'
   participant_first_name_on_behalf: null
   participant_id: DHR-642607714195
   phm_covid_vaccine_number_of_doses: '3'
   phm_think_had_covid: 'Yes'
   phm_think_had_flu: null
-  phm_think_had_flu_onset_date: null
+  phm_think_had_flu_onset_date: '2022-01-01 00:00:00.000000'
   phm_think_had_other_infection: null
-  phm_think_had_other_infection_onset_date: '2022-01-08 00:00:00.000000'
+  phm_think_had_other_infection_onset_date: null
   phm_think_had_respiratory_infection: 'No'
   phm_think_had_respiratory_infection_type:
   - COVID-19
@@ -426,7 +432,7 @@
   physical_contact_over_70_years_raw: null
   physical_contact_under_18_years: 11-20
   physical_contact_under_18_years_raw: 11 to 20
-  portal_id: 827
+  portal_id: 4470
   problem_with_survey_access_helpline: null
   questionnaire_started_no_incentive: 'Yes'
   smoke_cigarettes: null
@@ -441,19 +447,21 @@
   social_distance_contact_under_18_years: 11-20
   social_distance_contact_under_18_years_raw: 11 to 20
   submission_language_code: en
-  survey_completed_datetime: '2022-01-08 22:45:03.000000'
+  survey_completed_datetime: '2022-01-06 14:03:46.000000'
   survey_completion_status_flushed: true
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: The swab test kit arrived damaged
-  swab_return_date: '2022-01-08 00:00:00.000000'
-  swab_return_future_date: '2022-01-06 00:00:00.000000'
+  swab_return_date: '2022-01-09 00:00:00.000000'
+  swab_return_future_date: '2022-01-08 00:00:00.000000'
   swab_returned: 'No'
   swab_sample_barcode_correct: null
   swab_sample_barcode_user_entered: SWTSWT86959867
   swab_taken: 'Yes'
   swab_taken_am_pm: AM
-  swab_taken_date: null
-  swab_taken_datetime: null
+  swab_taken_date: '2022-01-02 00:00:00.000000'
+  swab_taken_datetime: '2022-01-02 11:30:00.000000'
+  swab_taken_time_hour: '11'
+  swab_taken_time_minute: '30'
   test_kit_info_end_of_survey: null
   test_type_positive_result: Do not know
   think_had_covid_any_symptom_list_1:
@@ -461,7 +469,7 @@
   think_had_covid_any_symptom_list_2:
   - Weakness or tiredness
   think_had_covid_any_symptoms: 'Yes'
-  think_had_covid_onset_date: '2022-01-03 00:00:00.000000'
+  think_had_covid_onset_date: '2022-01-08 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: null
   think_had_covid_symptom_anxiety: null
   think_had_covid_symptom_cough: null
@@ -544,7 +552,7 @@
   think_have_covid_any_symptom_list_2:
   - Difficulty concentrating
   think_have_covid_any_symptoms: 'Yes'
-  think_have_covid_onset_date: '2022-01-08 00:00:00.000000'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: 'Yes'
   think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_cough: null
@@ -647,7 +655,7 @@
   transport_shared_outside_household_last_28_days_train: null
   transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: Motorbike, scooter or moped
-  visit_datetime: '2022-01-08 22:45:03.000000'
+  visit_datetime: '2022-01-06 14:03:46.000000'
   work_direct_contact_patients_or_clients: 'Yes'
   work_health_care_area: Secondary
   work_in_additional_paid_employment: Prefer not to say
@@ -676,7 +684,7 @@
   aged_16_or_over: 'No'
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Tuvalu
-  been_outside_uk_last_return_date: '2022-01-06 00:00:00.000000'
+  been_outside_uk_last_return_date: '2022-01-09 00:00:00.000000'
   blood_not_taken_could_not_other: I don't even care.
   blood_not_taken_could_not_reason: null
   blood_not_taken_could_not_reason_had_bruising: null
@@ -686,17 +694,19 @@
   blood_not_taken_could_not_reason_pot_spilled: null
   blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_reason: I asked not to receive a blood test kit this month
-  blood_return_date: '2022-01-04 00:00:00.000000'
-  blood_return_future_date: '2022-01-09 00:00:00.000000'
+  blood_return_date: '2022-01-03 00:00:00.000000'
+  blood_return_future_date: '2022-01-06 00:00:00.000000'
   blood_returned: null
   blood_sample_barcode_correct: null
   blood_sample_barcode_user_entered: BLTBLT61757503
   blood_taken: 'No'
   blood_taken_am_pm: AM
   blood_taken_date: '2022-01-03 00:00:00.000000'
-  blood_taken_datetime: null
+  blood_taken_datetime: '2022-01-03 07:15:00.000000'
+  blood_taken_time_hour: '7'
+  blood_taken_time_minute: '15'
   care_home_last_28_days: 'Yes'
-  cis_covid_vaccine_date: '2022-01-03 00:00:00.000000'
+  cis_covid_vaccine_date: null
   cis_covid_vaccine_number_of_doses: 4 doses
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: Valneva
@@ -717,8 +727,8 @@
   face_covering_outside_of_home: null
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: Prefer not to say
-  file_date: null
-  flu_vaccine_date: null
+  file_date: '2022-01-08 21:17:43.000000'
+  flu_vaccine_date: '2022-01-02 00:00:00.000000'
   flu_vaccine_received: 'Yes'
   hospital_last_28_days: null
   illness_lasting_over_12_months: 'Yes'
@@ -738,20 +748,20 @@
   last_28_days_urgent_care_respiratory_infection: null
   launch_language_code: we
   other_covid_infection_test: 'Yes'
-  other_covid_infection_test_positive_date: null
+  other_covid_infection_test_positive_date: '2022-01-01 00:00:00.000000'
   other_covid_infection_test_results: Any tests negative, but none positive
   other_covid_infection_test_results_raw: One or more tests were negative and none
     were positive
-  participant_completion_window_end_date: null
+  participant_completion_window_end_date: '2022-01-03'
   participant_completion_window_id: '1449'
-  participant_completion_window_start_date: 05/01/2022
+  participant_completion_window_start_date: '2022-01-05'
   participant_first_name_confirmation: 'Yes'
   participant_first_name_on_behalf: 'Yes'
   participant_id: DHR-039598076526
   phm_covid_vaccine_number_of_doses: '4'
   phm_think_had_covid: 'Yes'
   phm_think_had_flu: null
-  phm_think_had_flu_onset_date: '2022-01-06 00:00:00.000000'
+  phm_think_had_flu_onset_date: null
   phm_think_had_other_infection: null
   phm_think_had_other_infection_onset_date: null
   phm_think_had_respiratory_infection: null
@@ -764,7 +774,7 @@
   physical_contact_over_70_years_raw: 6 to 10
   physical_contact_under_18_years: null
   physical_contact_under_18_years_raw: null
-  portal_id: 353
+  portal_id: 10372
   problem_with_survey_access_helpline: null
   questionnaire_started_no_incentive: 'No'
   smoke_cigarettes: null
@@ -779,20 +789,22 @@
   social_distance_contact_under_18_years: null
   social_distance_contact_under_18_years_raw: null
   submission_language_code: we
-  survey_completed_datetime: null
+  survey_completed_datetime: '2022-01-08 21:17:43.000000'
   survey_completion_status_flushed: false
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: I am near the end of my testing window and my swab test kit
     has not arrived
   swab_return_date: '2022-01-09 00:00:00.000000'
-  swab_return_future_date: '2022-01-08 00:00:00.000000'
+  swab_return_future_date: '2022-01-05 00:00:00.000000'
   swab_returned: null
   swab_sample_barcode_correct: 'Yes'
   swab_sample_barcode_user_entered: SWTSWT82519826
   swab_taken: 'Yes'
   swab_taken_am_pm: AM
   swab_taken_date: '2022-01-03 00:00:00.000000'
-  swab_taken_datetime: null
+  swab_taken_datetime: '2022-01-03 05:00:00.000000'
+  swab_taken_time_hour: '5'
+  swab_taken_time_minute: '0'
   test_kit_info_end_of_survey: Continue
   test_type_positive_result: A lateral flow test. That is the test you can do yourself
     and you do not have to send it to a laboratory because the result shows in the
@@ -885,7 +897,7 @@
   think_have_covid_any_symptom_list_2:
   - Low mood or not enjoying anything
   think_have_covid_any_symptoms: 'Yes'
-  think_have_covid_onset_date: '2022-01-05 00:00:00.000000'
+  think_have_covid_onset_date: '2022-01-09 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_cough: null
@@ -987,7 +999,7 @@
   transport_shared_outside_household_last_28_days_train: null
   transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: Underound or Metro or Light Rail or Tram
-  visit_datetime: null
+  visit_datetime: '2022-01-08 21:17:43.000000'
   work_direct_contact_patients_or_clients: 'No'
   work_health_care_area: Secondary
   work_in_additional_paid_employment: Prefer not to say
@@ -1013,7 +1025,7 @@
   aged_16_or_over: 'No'
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Belize
-  been_outside_uk_last_return_date: null
+  been_outside_uk_last_return_date: '2022-01-08 00:00:00.000000'
   blood_not_taken_could_not_other: In 1989 the building was heavily damaged by fire,
     but it has since been restored.
   blood_not_taken_could_not_reason: null
@@ -1024,17 +1036,19 @@
   blood_not_taken_could_not_reason_pot_spilled: null
   blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_reason: The blood test kit arrived damaged
-  blood_return_date: '2022-01-04 00:00:00.000000'
-  blood_return_future_date: '2022-01-06 00:00:00.000000'
+  blood_return_date: '2022-01-01 00:00:00.000000'
+  blood_return_future_date: '2022-01-02 00:00:00.000000'
   blood_returned: 'Yes'
   blood_sample_barcode_correct: 'No'
   blood_sample_barcode_user_entered: BLTBLT19192147
   blood_taken: null
   blood_taken_am_pm: PM
-  blood_taken_date: '2022-01-06 00:00:00.000000'
+  blood_taken_date: '2022-01-05 00:00:00.000000'
   blood_taken_datetime: null
+  blood_taken_time_hour: '12'
+  blood_taken_time_minute: '45'
   care_home_last_28_days: 'No'
-  cis_covid_vaccine_date: null
+  cis_covid_vaccine_date: '2022-01-09 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: 3 doses
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: Other / specify
@@ -1055,8 +1069,8 @@
   face_covering_outside_of_home: null
   face_covering_work_or_education: Never
   face_covering_work_or_education_raw: Never
-  file_date: '2022-01-07 01:50:45.000000'
-  flu_vaccine_date: '2022-01-02 00:00:00.000000'
+  file_date: '2022-01-04 13:29:23.000000'
+  flu_vaccine_date: null
   flu_vaccine_received: Prefer not to say
   hospital_last_28_days: 'Yes'
   illness_lasting_over_12_months: 'No'
@@ -1076,21 +1090,21 @@
   last_28_days_urgent_care_respiratory_infection: null
   launch_language_code: en
   other_covid_infection_test: 'No'
-  other_covid_infection_test_positive_date: '2022-01-03 00:00:00.000000'
+  other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
   other_covid_infection_test_results_raw: One or more tests were positive
-  participant_completion_window_end_date: 02/01/2022
+  participant_completion_window_end_date: '2022-01-06'
   participant_completion_window_id: '2013'
-  participant_completion_window_start_date: null
+  participant_completion_window_start_date: '2022-01-03'
   participant_first_name_confirmation: null
   participant_first_name_on_behalf: null
   participant_id: DHR-882718828437
   phm_covid_vaccine_number_of_doses: '3'
   phm_think_had_covid: null
   phm_think_had_flu: 'Yes'
-  phm_think_had_flu_onset_date: '2022-01-04 00:00:00.000000'
+  phm_think_had_flu_onset_date: '2022-01-02 00:00:00.000000'
   phm_think_had_other_infection: null
-  phm_think_had_other_infection_onset_date: '2022-01-07 00:00:00.000000'
+  phm_think_had_other_infection_onset_date: '2022-01-08 00:00:00.000000'
   phm_think_had_respiratory_infection: 'No'
   phm_think_had_respiratory_infection_type:
   - Flu
@@ -1101,7 +1115,7 @@
   physical_contact_over_70_years_raw: null
   physical_contact_under_18_years: '0'
   physical_contact_under_18_years_raw: '0'
-  portal_id: 6545
+  portal_id: 2625
   problem_with_survey_access_helpline: null
   questionnaire_started_no_incentive: null
   smoke_cigarettes: null
@@ -1116,19 +1130,21 @@
   social_distance_contact_under_18_years: '0'
   social_distance_contact_under_18_years_raw: '0'
   submission_language_code: en
-  survey_completed_datetime: '2022-01-07 01:50:45.000000'
+  survey_completed_datetime: '2022-01-04 13:29:23.000000'
   survey_completion_status_flushed: false
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: I did not want to take it this month
-  swab_return_date: '2022-01-09 00:00:00.000000'
-  swab_return_future_date: '2022-01-03 00:00:00.000000'
+  swab_return_date: '2022-01-07 00:00:00.000000'
+  swab_return_future_date: '2022-01-01 00:00:00.000000'
   swab_returned: 'No'
   swab_sample_barcode_correct: 'Yes'
   swab_sample_barcode_user_entered: SWTSWT89263959
   swab_taken: null
   swab_taken_am_pm: AM
-  swab_taken_date: '2022-01-03 00:00:00.000000'
-  swab_taken_datetime: null
+  swab_taken_date: '2022-01-07 00:00:00.000000'
+  swab_taken_datetime: '2022-01-07 04:45:00.000000'
+  swab_taken_time_hour: '4'
+  swab_taken_time_minute: '45'
   test_kit_info_end_of_survey: null
   test_type_positive_result: Do not know
   think_had_covid_any_symptom_list_1:
@@ -1136,7 +1152,7 @@
   think_had_covid_any_symptom_list_2:
   - Headache
   think_had_covid_any_symptoms: 'Yes'
-  think_had_covid_onset_date: '2022-01-03 00:00:00.000000'
+  think_had_covid_onset_date: '2022-01-04 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: 'Yes'
   think_had_covid_symptom_anxiety: null
   think_had_covid_symptom_cough: null
@@ -1321,7 +1337,7 @@
   transport_shared_outside_household_last_28_days_train: 'Yes'
   transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: On foot
-  visit_datetime: '2022-01-07 01:50:45.000000'
+  visit_datetime: '2022-01-04 13:29:23.000000'
   work_direct_contact_patients_or_clients: 'No'
   work_health_care_area: Secondary
   work_in_additional_paid_employment: Prefer not to say
@@ -1350,7 +1366,7 @@
   aged_16_or_over: 'No'
   been_outside_uk: null
   been_outside_uk_last_country: Oman
-  been_outside_uk_last_return_date: '2022-01-05 00:00:00.000000'
+  been_outside_uk_last_return_date: '2022-01-03 00:00:00.000000'
   blood_not_taken_could_not_other: He looked inquisitively at his keyboard and wrote
     another sentence.
   blood_not_taken_could_not_reason: I felt unwell
@@ -1362,14 +1378,16 @@
   blood_not_taken_could_not_reason_unwell: 'Yes'
   blood_not_taken_reason: I decided not to take it this month
   blood_return_date: '2022-01-08 00:00:00.000000'
-  blood_return_future_date: '2022-01-02 00:00:00.000000'
+  blood_return_future_date: '2022-01-03 00:00:00.000000'
   blood_returned: 'No'
   blood_sample_barcode_correct: 'Yes'
   blood_sample_barcode_user_entered: BLTBLT98831876
   blood_taken: 'Yes'
   blood_taken_am_pm: PM
-  blood_taken_date: '2022-01-05 00:00:00.000000'
-  blood_taken_datetime: null
+  blood_taken_date: '2022-01-01 00:00:00.000000'
+  blood_taken_datetime: '2022-01-01 16:15:00.000000'
+  blood_taken_time_hour: '4'
+  blood_taken_time_minute: '15'
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_number_of_doses: 5 doses
@@ -1392,7 +1410,7 @@
   face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, sometimes
   face_covering_work_or_education_raw: Yes sometimes
-  file_date: '2022-01-07 00:29:57.000000'
+  file_date: '2022-01-04 21:06:25.000000'
   flu_vaccine_date: null
   flu_vaccine_received: 'No'
   hospital_last_28_days: 'Yes'
@@ -1413,21 +1431,21 @@
   last_28_days_urgent_care_respiratory_infection: null
   launch_language_code: we
   other_covid_infection_test: null
-  other_covid_infection_test_positive_date: '2022-01-01 00:00:00.000000'
+  other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: null
   other_covid_infection_test_results_raw: null
-  participant_completion_window_end_date: 01/01/2022
+  participant_completion_window_end_date: '2022-01-09'
   participant_completion_window_id: '3623'
-  participant_completion_window_start_date: 05/01/2022
+  participant_completion_window_start_date: '2022-01-04'
   participant_first_name_confirmation: 'No'
   participant_first_name_on_behalf: 'Yes'
   participant_id: DHR-182564559272
   phm_covid_vaccine_number_of_doses: '5'
   phm_think_had_covid: null
   phm_think_had_flu: null
-  phm_think_had_flu_onset_date: '2022-01-07 00:00:00.000000'
+  phm_think_had_flu_onset_date: null
   phm_think_had_other_infection: 'Yes'
-  phm_think_had_other_infection_onset_date: '2022-01-09 00:00:00.000000'
+  phm_think_had_other_infection_onset_date: null
   phm_think_had_respiratory_infection: 'No'
   phm_think_had_respiratory_infection_type:
   - Another type of respiratory infection of illness
@@ -1438,7 +1456,7 @@
   physical_contact_over_70_years_raw: Prefer not to say
   physical_contact_under_18_years: '0'
   physical_contact_under_18_years_raw: '0'
-  portal_id: 2618
+  portal_id: 1066
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: null
   smoke_cigarettes: null
@@ -1453,19 +1471,21 @@
   social_distance_contact_under_18_years: null
   social_distance_contact_under_18_years_raw: Don't know
   submission_language_code: en
-  survey_completed_datetime: '2022-01-07 00:29:57.000000'
+  survey_completed_datetime: '2022-01-04 21:06:25.000000'
   survey_completion_status_flushed: false
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: null
-  swab_return_date: '2022-01-09 00:00:00.000000'
-  swab_return_future_date: '2022-01-06 00:00:00.000000'
+  swab_return_date: '2022-01-07 00:00:00.000000'
+  swab_return_future_date: '2022-01-09 00:00:00.000000'
   swab_returned: 'Yes'
   swab_sample_barcode_correct: null
   swab_sample_barcode_user_entered: SWTSWT70499022
   swab_taken: 'No'
   swab_taken_am_pm: AM
-  swab_taken_date: '2022-01-02 00:00:00.000000'
-  swab_taken_datetime: null
+  swab_taken_date: '2022-01-04 00:00:00.000000'
+  swab_taken_datetime: '2022-01-04 09:45:00.000000'
+  swab_taken_time_hour: '9'
+  swab_taken_time_minute: '45'
   test_kit_info_end_of_survey: Continue
   test_type_positive_result: PCR test. That is the test that is sent off to a laboratory
   think_had_covid_any_symptom_list_1:
@@ -1473,7 +1493,7 @@
   think_had_covid_any_symptom_list_2:
   - Muscle ache
   think_had_covid_any_symptoms: 'Yes'
-  think_had_covid_onset_date: null
+  think_had_covid_onset_date: '2022-01-03 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: null
   think_had_covid_symptom_anxiety: null
   think_had_covid_symptom_cough: null
@@ -1556,7 +1576,7 @@
   think_have_covid_any_symptom_list_2:
   - Memory loss or confusion
   think_have_covid_any_symptoms: 'Yes'
-  think_have_covid_onset_date: null
+  think_have_covid_onset_date: '2022-01-02 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_cough: null
@@ -1658,7 +1678,7 @@
   transport_shared_outside_household_last_28_days_train: null
   transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: Motorbike, scooter or moped
-  visit_datetime: '2022-01-07 00:29:57.000000'
+  visit_datetime: '2022-01-04 21:06:25.000000'
   work_direct_contact_patients_or_clients: 'No'
   work_health_care_area: Primary
   work_in_additional_paid_employment: 'Yes'
@@ -1684,7 +1704,7 @@
   aged_16_or_over: null
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Liechtenstein
-  been_outside_uk_last_return_date: null
+  been_outside_uk_last_return_date: '2022-01-02 00:00:00.000000'
   blood_not_taken_could_not_other: Erlang is known for its designs that are well suited
     for systems.
   blood_not_taken_could_not_reason: I couldn't get enough blood into the pot
@@ -1695,15 +1715,17 @@
   blood_not_taken_could_not_reason_pot_spilled: null
   blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_reason: The blood test kit arrived both damaged and with parts missing
-  blood_return_date: '2022-01-03 00:00:00.000000'
+  blood_return_date: '2022-01-01 00:00:00.000000'
   blood_return_future_date: '2022-01-03 00:00:00.000000'
   blood_returned: null
   blood_sample_barcode_correct: 'Yes'
   blood_sample_barcode_user_entered: BLTBLT98363942
   blood_taken: 'No'
   blood_taken_am_pm: AM
-  blood_taken_date: '2022-01-07 00:00:00.000000'
-  blood_taken_datetime: null
+  blood_taken_date: '2022-01-03 00:00:00.000000'
+  blood_taken_datetime: '2022-01-03 03:30:00.000000'
+  blood_taken_time_hour: '3'
+  blood_taken_time_minute: '30'
   care_home_last_28_days: null
   cis_covid_vaccine_date: null
   cis_covid_vaccine_number_of_doses: 7 doses
@@ -1725,8 +1747,8 @@
   face_covering_work_or_education: My face is already covered
   face_covering_work_or_education_raw: I cover my face for other reasons - for example
     for religious or cultural reasons
-  file_date: '2022-01-05 23:14:26.000000'
-  flu_vaccine_date: '2022-01-01 00:00:00.000000'
+  file_date: '2022-01-06 13:36:00.000000'
+  flu_vaccine_date: '2022-01-04 00:00:00.000000'
   flu_vaccine_received: Prefer not to say
   hospital_last_28_days: null
   illness_lasting_over_12_months: 'No'
@@ -1746,21 +1768,21 @@
   last_28_days_urgent_care_respiratory_infection: null
   launch_language_code: en
   other_covid_infection_test: null
-  other_covid_infection_test_positive_date: '2022-01-02 00:00:00.000000'
+  other_covid_infection_test_positive_date: '2022-01-06 00:00:00.000000'
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
-  participant_completion_window_end_date: null
+  participant_completion_window_end_date: '2022-01-03'
   participant_completion_window_id: '3965'
-  participant_completion_window_start_date: 08/01/2022
+  participant_completion_window_start_date: '2022-01-03'
   participant_first_name_confirmation: 'No'
   participant_first_name_on_behalf: 'No'
   participant_id: DHR-263322966171
   phm_covid_vaccine_number_of_doses: '7'
   phm_think_had_covid: null
   phm_think_had_flu: 'Yes'
-  phm_think_had_flu_onset_date: '2022-01-04 00:00:00.000000'
+  phm_think_had_flu_onset_date: '2022-01-09 00:00:00.000000'
   phm_think_had_other_infection: null
-  phm_think_had_other_infection_onset_date: null
+  phm_think_had_other_infection_onset_date: '2022-01-06 00:00:00.000000'
   phm_think_had_respiratory_infection: 'No'
   phm_think_had_respiratory_infection_type:
   - Flu
@@ -1771,7 +1793,7 @@
   physical_contact_over_70_years_raw: 1 to 5
   physical_contact_under_18_years: 21 or more
   physical_contact_under_18_years_raw: 21 or more
-  portal_id: 4164
+  portal_id: 9124
   problem_with_survey_access_helpline: null
   questionnaire_started_no_incentive: 'No'
   smoke_cigarettes: null
@@ -1786,19 +1808,21 @@
   social_distance_contact_under_18_years: 21 or more
   social_distance_contact_under_18_years_raw: 21 or more
   submission_language_code: en
-  survey_completed_datetime: '2022-01-05 23:14:26.000000'
+  survey_completed_datetime: '2022-01-06 13:36:00.000000'
   survey_completion_status_flushed: false
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: I tried but could not take it
-  swab_return_date: '2022-01-08 00:00:00.000000'
-  swab_return_future_date: '2022-01-06 00:00:00.000000'
+  swab_return_date: '2022-01-01 00:00:00.000000'
+  swab_return_future_date: '2022-01-03 00:00:00.000000'
   swab_returned: 'No'
   swab_sample_barcode_correct: 'Yes'
   swab_sample_barcode_user_entered: SWTSWT68720322
   swab_taken: null
   swab_taken_am_pm: AM
   swab_taken_date: '2022-01-08 00:00:00.000000'
-  swab_taken_datetime: null
+  swab_taken_datetime: '2022-01-08 09:15:00.000000'
+  swab_taken_time_hour: '9'
+  swab_taken_time_minute: '15'
   test_kit_info_end_of_survey: null
   test_type_positive_result: Do not know
   think_had_covid_any_symptom_list_1:
@@ -1889,7 +1913,7 @@
   think_have_covid_any_symptom_list_2:
   - Memory loss or confusion
   think_have_covid_any_symptoms: 'Yes'
-  think_have_covid_onset_date: '2022-01-01 00:00:00.000000'
+  think_have_covid_onset_date: '2022-01-06 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_cough: null
@@ -1991,7 +2015,7 @@
   transport_shared_outside_household_last_28_days_train: 'Yes'
   transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: Car or van
-  visit_datetime: '2022-01-05 23:14:26.000000'
+  visit_datetime: '2022-01-06 13:36:00.000000'
   work_direct_contact_patients_or_clients: Prefer not to say
   work_health_care_area: null
   work_in_additional_paid_employment: 'Yes'
@@ -2020,7 +2044,7 @@
   aged_16_or_over: 'Yes'
   been_outside_uk: 'No'
   been_outside_uk_last_country: Estonia
-  been_outside_uk_last_return_date: '2022-01-02 00:00:00.000000'
+  been_outside_uk_last_return_date: null
   blood_not_taken_could_not_other: Haskell features a type system with type inference
     and lazy evaluation.
   blood_not_taken_could_not_reason: null
@@ -2031,17 +2055,19 @@
   blood_not_taken_could_not_reason_pot_spilled: null
   blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_reason: I tried but could not take it
-  blood_return_date: '2022-01-05 00:00:00.000000'
-  blood_return_future_date: '2022-01-09 00:00:00.000000'
+  blood_return_date: '2022-01-03 00:00:00.000000'
+  blood_return_future_date: '2022-01-06 00:00:00.000000'
   blood_returned: 'Yes'
   blood_sample_barcode_correct: 'Yes'
   blood_sample_barcode_user_entered: BLTBLT02621954
   blood_taken: 'No'
   blood_taken_am_pm: AM
-  blood_taken_date: null
-  blood_taken_datetime: null
+  blood_taken_date: '2022-01-02 00:00:00.000000'
+  blood_taken_datetime: '2022-01-02 11:45:00.000000'
+  blood_taken_time_hour: '11'
+  blood_taken_time_minute: '45'
   care_home_last_28_days: null
-  cis_covid_vaccine_date: '2022-01-03 00:00:00.000000'
+  cis_covid_vaccine_date: null
   cis_covid_vaccine_number_of_doses: 3 doses
   cis_covid_vaccine_received: null
   cis_covid_vaccine_type: null
@@ -2062,8 +2088,8 @@
   face_covering_outside_of_home: null
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: Prefer not to say
-  file_date: '2022-01-07 11:40:33.000000'
-  flu_vaccine_date: '2022-01-05 00:00:00.000000'
+  file_date: '2022-01-04 21:54:33.000000'
+  flu_vaccine_date: '2022-01-07 00:00:00.000000'
   flu_vaccine_received: 'Yes'
   hospital_last_28_days: 'Yes'
   illness_lasting_over_12_months: 'No'
@@ -2083,21 +2109,21 @@
   last_28_days_urgent_care_respiratory_infection: null
   launch_language_code: we
   other_covid_infection_test: null
-  other_covid_infection_test_positive_date: null
+  other_covid_infection_test_positive_date: '2022-01-03 00:00:00.000000'
   other_covid_infection_test_results: null
   other_covid_infection_test_results_raw: null
-  participant_completion_window_end_date: 01/01/2022
+  participant_completion_window_end_date: '2022-01-02'
   participant_completion_window_id: '5123'
-  participant_completion_window_start_date: 03/01/2022
+  participant_completion_window_start_date: null
   participant_first_name_confirmation: 'Yes'
   participant_first_name_on_behalf: 'Yes'
   participant_id: DHR-528425723964
   phm_covid_vaccine_number_of_doses: '3'
   phm_think_had_covid: null
   phm_think_had_flu: 'Yes'
-  phm_think_had_flu_onset_date: '2022-01-08 00:00:00.000000'
+  phm_think_had_flu_onset_date: null
   phm_think_had_other_infection: null
-  phm_think_had_other_infection_onset_date: '2022-01-03 00:00:00.000000'
+  phm_think_had_other_infection_onset_date: null
   phm_think_had_respiratory_infection: 'Yes'
   phm_think_had_respiratory_infection_type:
   - Flu
@@ -2108,7 +2134,7 @@
   physical_contact_over_70_years_raw: 1 to 5
   physical_contact_under_18_years: 6-10
   physical_contact_under_18_years_raw: 6 to 10
-  portal_id: 126
+  portal_id: 1227
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: null
   smoke_cigarettes: null
@@ -2123,19 +2149,21 @@
   social_distance_contact_under_18_years: 6-10
   social_distance_contact_under_18_years_raw: 6 to 10
   submission_language_code: we
-  survey_completed_datetime: '2022-01-07 11:40:33.000000'
+  survey_completed_datetime: '2022-01-04 21:54:33.000000'
   survey_completion_status_flushed: false
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: The swab test kit arrived both damaged and with parts missing
   swab_return_date: '2022-01-03 00:00:00.000000'
-  swab_return_future_date: '2022-01-06 00:00:00.000000'
+  swab_return_future_date: '2022-01-05 00:00:00.000000'
   swab_returned: 'No'
   swab_sample_barcode_correct: 'Yes'
   swab_sample_barcode_user_entered: SWTSWT52206298
   swab_taken: null
   swab_taken_am_pm: AM
-  swab_taken_date: null
-  swab_taken_datetime: null
+  swab_taken_date: '2022-01-05 00:00:00.000000'
+  swab_taken_datetime: '2022-01-05 11:45:00.000000'
+  swab_taken_time_hour: '11'
+  swab_taken_time_minute: '45'
   test_kit_info_end_of_survey: Continue
   test_type_positive_result: A lateral flow test. That is the test you can do yourself
     and you do not have to send it to a laboratory because the result shows in the
@@ -2145,7 +2173,7 @@
   think_had_covid_any_symptom_list_2:
   - Difficulty concentrating
   think_had_covid_any_symptoms: 'Yes'
-  think_had_covid_onset_date: null
+  think_had_covid_onset_date: '2022-01-08 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: null
   think_had_covid_symptom_anxiety: null
   think_had_covid_symptom_cough: null
@@ -2228,7 +2256,7 @@
   think_have_covid_any_symptom_list_2:
   - Worry or anxiety
   think_have_covid_any_symptoms: 'Yes'
-  think_have_covid_onset_date: '2022-01-08 00:00:00.000000'
+  think_have_covid_onset_date: '2022-01-06 00:00:00.000000'
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: 'Yes'
   think_have_covid_symptom_cough: null
@@ -2330,7 +2358,7 @@
   transport_shared_outside_household_last_28_days_train: null
   transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: On foot
-  visit_datetime: '2022-01-07 11:40:33.000000'
+  visit_datetime: '2022-01-04 21:54:33.000000'
   work_direct_contact_patients_or_clients: 'Yes'
   work_health_care_area: Other
   work_in_additional_paid_employment: 'No'
@@ -2361,7 +2389,7 @@
   aged_16_or_over: null
   been_outside_uk: null
   been_outside_uk_last_country: Syria
-  been_outside_uk_last_return_date: null
+  been_outside_uk_last_return_date: '2022-01-05 00:00:00.000000'
   blood_not_taken_could_not_other: Erlang is known for its designs that are well suited
     for systems.
   blood_not_taken_could_not_reason: I felt unwell
@@ -2372,17 +2400,19 @@
   blood_not_taken_could_not_reason_pot_spilled: null
   blood_not_taken_could_not_reason_unwell: 'Yes'
   blood_not_taken_reason: The blood test kit arrived damaged
-  blood_return_date: '2022-01-01 00:00:00.000000'
-  blood_return_future_date: '2022-01-04 00:00:00.000000'
+  blood_return_date: '2022-01-06 00:00:00.000000'
+  blood_return_future_date: '2022-01-05 00:00:00.000000'
   blood_returned: 'Yes'
   blood_sample_barcode_correct: null
   blood_sample_barcode_user_entered: BLTBLT38788221
   blood_taken: 'No'
   blood_taken_am_pm: AM
   blood_taken_date: '2022-01-02 00:00:00.000000'
-  blood_taken_datetime: null
+  blood_taken_datetime: '2022-01-02 12:30:00.000000'
+  blood_taken_time_hour: '12'
+  blood_taken_time_minute: '30'
   care_home_last_28_days: 'Yes'
-  cis_covid_vaccine_date: '2022-01-03 00:00:00.000000'
+  cis_covid_vaccine_date: '2022-01-01 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: 2 doses
   cis_covid_vaccine_received: null
   cis_covid_vaccine_type: Sinovac
@@ -2404,8 +2434,8 @@
   face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, sometimes
   face_covering_work_or_education_raw: Yes sometimes
-  file_date: '2022-01-09 17:18:11.000000'
-  flu_vaccine_date: '2022-01-08 00:00:00.000000'
+  file_date: '2022-01-05 02:16:54.000000'
+  flu_vaccine_date: '2022-01-06 00:00:00.000000'
   flu_vaccine_received: 'No'
   hospital_last_28_days: 'Yes'
   illness_lasting_over_12_months: Prefer not to say
@@ -2428,9 +2458,9 @@
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
   other_covid_infection_test_results_raw: One or more tests were positive
-  participant_completion_window_end_date: 01/01/2022
+  participant_completion_window_end_date: '2022-01-02'
   participant_completion_window_id: '7540'
-  participant_completion_window_start_date: 09/01/2022
+  participant_completion_window_start_date: '2022-01-09'
   participant_first_name_confirmation: 'Yes'
   participant_first_name_on_behalf: null
   participant_id: DHR-624980420762
@@ -2450,7 +2480,7 @@
   physical_contact_over_70_years_raw: null
   physical_contact_under_18_years: '0'
   physical_contact_under_18_years_raw: '0'
-  portal_id: 9197
+  portal_id: 8625
   problem_with_survey_access_helpline: null
   questionnaire_started_no_incentive: 'No'
   smoke_cigarettes: 'Yes'
@@ -2465,19 +2495,21 @@
   social_distance_contact_under_18_years: 1-5
   social_distance_contact_under_18_years_raw: 1 to 5
   submission_language_code: we
-  survey_completed_datetime: '2022-01-09 17:18:11.000000'
+  survey_completed_datetime: '2022-01-05 02:16:54.000000'
   survey_completion_status_flushed: true
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: null
-  swab_return_date: null
-  swab_return_future_date: '2022-01-05 00:00:00.000000'
+  swab_return_date: '2022-01-06 00:00:00.000000'
+  swab_return_future_date: '2022-01-07 00:00:00.000000'
   swab_returned: null
   swab_sample_barcode_correct: 'Yes'
   swab_sample_barcode_user_entered: SWTSWT08958511
   swab_taken: null
   swab_taken_am_pm: PM
-  swab_taken_date: '2022-01-09 00:00:00.000000'
+  swab_taken_date: '2022-01-04 00:00:00.000000'
   swab_taken_datetime: null
+  swab_taken_time_hour: '12'
+  swab_taken_time_minute: '30'
   test_kit_info_end_of_survey: null
   test_type_positive_result: A lateral flow test. That is the test you can do yourself
     and you do not have to send it to a laboratory because the result shows in the
@@ -2487,7 +2519,7 @@
   think_had_covid_any_symptom_list_2:
   - Low mood or not enjoying anything
   think_had_covid_any_symptoms: 'Yes'
-  think_had_covid_onset_date: null
+  think_had_covid_onset_date: '2022-01-08 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: null
   think_had_covid_symptom_anxiety: null
   think_had_covid_symptom_cough: null
@@ -2570,7 +2602,7 @@
   think_have_covid_any_symptom_list_2:
   - Worry or anxiety
   think_have_covid_any_symptoms: 'Yes'
-  think_have_covid_onset_date: '2022-01-09 00:00:00.000000'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: 'Yes'
   think_have_covid_symptom_cough: null
@@ -2672,7 +2704,7 @@
   transport_shared_outside_household_last_28_days_train: null
   transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: Underound or Metro or Light Rail or Tram
-  visit_datetime: '2022-01-09 17:18:11.000000'
+  visit_datetime: '2022-01-05 02:16:54.000000'
   work_direct_contact_patients_or_clients: 'Yes'
   work_health_care_area: Secondary
   work_in_additional_paid_employment: Prefer not to say
@@ -2697,7 +2729,7 @@
   aged_16_or_over: 'No'
   been_outside_uk: 'Yes'
   been_outside_uk_last_country: Antigua and Barbuda
-  been_outside_uk_last_return_date: null
+  been_outside_uk_last_return_date: '2022-01-04 00:00:00.000000'
   blood_not_taken_could_not_other: Atoms can contain any character if they are enclosed
     within single quotes and an escape convention exists which allows any character
     to be used within an atom.
@@ -2710,17 +2742,19 @@
   blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_reason: I am near the end of my testing window and my swab test
     kit has not arrived
-  blood_return_date: '2022-01-09 00:00:00.000000'
-  blood_return_future_date: '2022-01-02 00:00:00.000000'
+  blood_return_date: '2022-01-07 00:00:00.000000'
+  blood_return_future_date: '2022-01-06 00:00:00.000000'
   blood_returned: 'No'
   blood_sample_barcode_correct: null
   blood_sample_barcode_user_entered: BLTBLT42497105
   blood_taken: null
   blood_taken_am_pm: AM
-  blood_taken_date: null
-  blood_taken_datetime: null
+  blood_taken_date: '2022-01-04 00:00:00.000000'
+  blood_taken_datetime: '2022-01-04 00:45:00.000000'
+  blood_taken_time_hour: '0'
+  blood_taken_time_minute: '45'
   care_home_last_28_days: null
-  cis_covid_vaccine_date: '2022-01-01 00:00:00.000000'
+  cis_covid_vaccine_date: '2022-01-07 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: 1 dose
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: Moderna
@@ -2740,7 +2774,7 @@
   face_covering_outside_of_home: null
   face_covering_work_or_education: Yes, always
   face_covering_work_or_education_raw: Yes always
-  file_date: '2022-01-06 12:07:20.000000'
+  file_date: null
   flu_vaccine_date: '2022-01-05 00:00:00.000000'
   flu_vaccine_received: 'Yes'
   hospital_last_28_days: 'No'
@@ -2765,18 +2799,18 @@
   other_covid_infection_test_results: Any tests negative, but none positive
   other_covid_infection_test_results_raw: One or more tests were negative and none
     were positive
-  participant_completion_window_end_date: 04/01/2022
+  participant_completion_window_end_date: '2022-01-08'
   participant_completion_window_id: '9696'
-  participant_completion_window_start_date: 05/01/2022
+  participant_completion_window_start_date: '2022-01-01'
   participant_first_name_confirmation: null
   participant_first_name_on_behalf: null
   participant_id: DHR-633873344214
   phm_covid_vaccine_number_of_doses: '1'
   phm_think_had_covid: 'Yes'
   phm_think_had_flu: null
-  phm_think_had_flu_onset_date: '2022-01-07 00:00:00.000000'
+  phm_think_had_flu_onset_date: null
   phm_think_had_other_infection: null
-  phm_think_had_other_infection_onset_date: '2022-01-02 00:00:00.000000'
+  phm_think_had_other_infection_onset_date: null
   phm_think_had_respiratory_infection: null
   phm_think_had_respiratory_infection_type:
   - COVID-19
@@ -2787,7 +2821,7 @@
   physical_contact_over_70_years_raw: 1 to 5
   physical_contact_under_18_years: null
   physical_contact_under_18_years_raw: Don't know
-  portal_id: 7739
+  portal_id: 2239
   problem_with_survey_access_helpline: null
   questionnaire_started_no_incentive: 'Yes'
   smoke_cigarettes: null
@@ -2802,19 +2836,21 @@
   social_distance_contact_under_18_years: 6-10
   social_distance_contact_under_18_years_raw: 6 to 10
   submission_language_code: we
-  survey_completed_datetime: '2022-01-06 12:07:20.000000'
+  survey_completed_datetime: null
   survey_completion_status_flushed: true
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: I did not want to take it this month
-  swab_return_date: '2022-01-01 00:00:00.000000'
-  swab_return_future_date: null
+  swab_return_date: '2022-01-08 00:00:00.000000'
+  swab_return_future_date: '2022-01-01 00:00:00.000000'
   swab_returned: null
   swab_sample_barcode_correct: null
   swab_sample_barcode_user_entered: SWTSWT35024564
   swab_taken: 'No'
   swab_taken_am_pm: PM
-  swab_taken_date: '2022-01-09 00:00:00.000000'
-  swab_taken_datetime: null
+  swab_taken_date: '2022-01-03 00:00:00.000000'
+  swab_taken_datetime: '2022-01-03 23:00:00.000000'
+  swab_taken_time_hour: '11'
+  swab_taken_time_minute: '0'
   test_kit_info_end_of_survey: Continue
   test_type_positive_result: A lateral flow test. That is the test you can do yourself
     and you do not have to send it to a laboratory because the result shows in the
@@ -2824,7 +2860,7 @@
   think_had_covid_any_symptom_list_2:
   - Headache
   think_had_covid_any_symptoms: 'Yes'
-  think_had_covid_onset_date: null
+  think_had_covid_onset_date: '2022-01-01 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: null
   think_had_covid_symptom_anxiety: null
   think_had_covid_symptom_cough: null
@@ -2907,7 +2943,7 @@
   think_have_covid_any_symptom_list_2:
   - Fever, including high temperature
   think_have_covid_any_symptoms: 'Yes'
-  think_have_covid_onset_date: '2022-01-02 00:00:00.000000'
+  think_have_covid_onset_date: null
   think_have_covid_symptom_abdominal_pain: null
   think_have_covid_symptom_anxiety: null
   think_have_covid_symptom_cough: null
@@ -3009,7 +3045,7 @@
   transport_shared_outside_household_last_28_days_train: null
   transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: Bicycle
-  visit_datetime: '2022-01-06 12:07:20.000000'
+  visit_datetime: null
   work_direct_contact_patients_or_clients: 'No'
   work_health_care_area: Secondary
   work_in_additional_paid_employment: 'No'
@@ -3040,7 +3076,7 @@
   aged_16_or_over: 'Yes'
   been_outside_uk: null
   been_outside_uk_last_country: St Kitts and Nevis
-  been_outside_uk_last_return_date: '2022-01-05 00:00:00.000000'
+  been_outside_uk_last_return_date: '2022-01-04 00:00:00.000000'
   blood_not_taken_could_not_other: Ports are created with the built-in function open_port.
   blood_not_taken_could_not_reason: I couldn't get enough blood into the pot
   blood_not_taken_could_not_reason_had_bruising: null
@@ -3050,8 +3086,8 @@
   blood_not_taken_could_not_reason_pot_spilled: null
   blood_not_taken_could_not_reason_unwell: null
   blood_not_taken_reason: I asked not to receive a blood test kit this month
-  blood_return_date: '2022-01-05 00:00:00.000000'
-  blood_return_future_date: '2022-01-03 00:00:00.000000'
+  blood_return_date: '2022-01-06 00:00:00.000000'
+  blood_return_future_date: '2022-01-04 00:00:00.000000'
   blood_returned: 'Yes'
   blood_sample_barcode_correct: null
   blood_sample_barcode_user_entered: BLTBLT44995712
@@ -3059,8 +3095,10 @@
   blood_taken_am_pm: PM
   blood_taken_date: '2022-01-02 00:00:00.000000'
   blood_taken_datetime: null
+  blood_taken_time_hour: '12'
+  blood_taken_time_minute: '15'
   care_home_last_28_days: 'Yes'
-  cis_covid_vaccine_date: null
+  cis_covid_vaccine_date: '2022-01-02 00:00:00.000000'
   cis_covid_vaccine_number_of_doses: 6 doses
   cis_covid_vaccine_received: null
   cis_covid_vaccine_type: Sputnik
@@ -3082,8 +3120,8 @@
   face_covering_outside_of_home: null
   face_covering_work_or_education: null
   face_covering_work_or_education_raw: Prefer not to say
-  file_date: '2022-01-01 18:30:04.000000'
-  flu_vaccine_date: '2022-01-02 00:00:00.000000'
+  file_date: null
+  flu_vaccine_date: '2022-01-03 00:00:00.000000'
   flu_vaccine_received: 'Yes'
   hospital_last_28_days: 'No'
   illness_lasting_over_12_months: 'Yes'
@@ -3103,21 +3141,21 @@
   last_28_days_urgent_care_respiratory_infection: null
   launch_language_code: we
   other_covid_infection_test: null
-  other_covid_infection_test_positive_date: '2022-01-09 00:00:00.000000'
+  other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
-  participant_completion_window_end_date: 08/01/2022
+  participant_completion_window_end_date: '2022-01-08'
   participant_completion_window_id: '9981'
-  participant_completion_window_start_date: 09/01/2022
+  participant_completion_window_start_date: '2022-01-08'
   participant_first_name_confirmation: 'No'
   participant_first_name_on_behalf: 'No'
   participant_id: DHR-144229485098
   phm_covid_vaccine_number_of_doses: '6'
   phm_think_had_covid: null
   phm_think_had_flu: null
-  phm_think_had_flu_onset_date: null
+  phm_think_had_flu_onset_date: '2022-01-03 00:00:00.000000'
   phm_think_had_other_infection: 'Yes'
-  phm_think_had_other_infection_onset_date: null
+  phm_think_had_other_infection_onset_date: '2022-01-02 00:00:00.000000'
   phm_think_had_respiratory_infection: 'No'
   phm_think_had_respiratory_infection_type:
   - Another type of respiratory infection of illness
@@ -3128,7 +3166,7 @@
   physical_contact_over_70_years_raw: 21 or more
   physical_contact_under_18_years: null
   physical_contact_under_18_years_raw: Don't know
-  portal_id: 10417
+  portal_id: 6048
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'No'
   smoke_cigarettes: 'Yes'
@@ -3143,19 +3181,21 @@
   social_distance_contact_under_18_years: 6-10
   social_distance_contact_under_18_years_raw: 6 to 10
   submission_language_code: en
-  survey_completed_datetime: '2022-01-01 18:30:04.000000'
+  survey_completed_datetime: null
   survey_completion_status_flushed: true
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: I tried but could not take it
-  swab_return_date: '2022-01-07 00:00:00.000000'
+  swab_return_date: '2022-01-05 00:00:00.000000'
   swab_return_future_date: '2022-01-07 00:00:00.000000'
   swab_returned: null
   swab_sample_barcode_correct: 'Yes'
   swab_sample_barcode_user_entered: SWTSWT42403927
   swab_taken: 'No'
   swab_taken_am_pm: PM
-  swab_taken_date: null
-  swab_taken_datetime: '2023-03-23 00:00:00.000000'
+  swab_taken_date: '2022-01-08 00:00:00.000000'
+  swab_taken_datetime: '2022-01-08 14:00:00.000000'
+  swab_taken_time_hour: '2'
+  swab_taken_time_minute: '0'
   test_kit_info_end_of_survey: Continue
   test_type_positive_result: PCR test. That is the test that is sent off to a laboratory
   think_had_covid_any_symptom_list_1:
@@ -3163,7 +3203,7 @@
   think_had_covid_any_symptom_list_2:
   - Worry or anxiety
   think_had_covid_any_symptoms: 'Yes'
-  think_had_covid_onset_date: '2022-01-07 00:00:00.000000'
+  think_had_covid_onset_date: '2022-01-06 00:00:00.000000'
   think_had_covid_symptom_abdominal_pain: null
   think_had_covid_symptom_anxiety: 'Yes'
   think_had_covid_symptom_cough: null
@@ -3348,7 +3388,7 @@
   transport_shared_outside_household_last_28_days_train: null
   transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: On foot
-  visit_datetime: '2022-01-01 18:30:04.000000'
+  visit_datetime: null
   work_direct_contact_patients_or_clients: Prefer not to say
   work_health_care_area: Other
   work_in_additional_paid_employment: Prefer not to say
