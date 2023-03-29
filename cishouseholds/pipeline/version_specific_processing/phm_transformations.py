@@ -183,6 +183,14 @@ def pre_processing(df: DataFrame) -> DataFrame:
             "One or more tests were positive": "One or more positive test(s)",
         },
         "cis_covid_vaccine_type": vaccine_type_map,
+        "launch_language_code": {
+            "en": "English",
+            "cy": "Welsh",
+        },
+        "submission_language_code": {
+            "en": "English",
+            "cy": "Welsh",
+        },
     }
     df = apply_value_map_multiple_columns(df, column_editing_map)
     df = assign_datetime_from_combined_columns(
@@ -236,6 +244,7 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
     - times_outside_shopping_or_socialising_last_7_days
     - face_covering_outside_of_home
     - cis_covid_vaccine_number_of_doses
+    - language_code_changed
 
     Reference columns:
     - currently_smokes_or_vapes_description
