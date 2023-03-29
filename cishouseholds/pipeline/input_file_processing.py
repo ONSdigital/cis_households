@@ -139,6 +139,7 @@ def extract_validate_transform_input_data(
 
     for transformation_function in transformation_functions:
         df = transformation_function(df)
+
     return df
 
 
@@ -200,9 +201,7 @@ def extract_input_data(
         for file_name, data_string in zip(json_file_paths, data_strings):
             data = decode_phm_json(data_string)
             _df = spark_session.createDataFrame(data=data, schema=spark_schema)
-            _df.withColumn(
-                source_file_column, (F.regexp_replace(F.lit(file_name), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", ""))
-            )
+            _df.withColumn(source_file_column, F.lit(file_name))
             dfs.append(_df)
         if df is None:
             df = union_multiple_tables(dfs)
