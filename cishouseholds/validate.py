@@ -196,7 +196,7 @@ def validate_files(file_paths: Union[str, List[str]], validation_schema: dict, s
 
 
 def validate_processed_files(df: DataFrame, source_file_column: str):
-    """"""
+    """Check that all of the files processed in a combined dataframe exist in the folder from which they were found."""
     processed_files = column_to_distinct_list(df, source_file_column)
     dirs = [Path(f).parent.as_posix() for f in processed_files]
     found_files = []
