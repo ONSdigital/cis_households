@@ -55,10 +55,10 @@ def assign_valid_order(
     participant_id_column: str,
     vaccine_date_column: str,
     vaccine_type_column: str,
-    visit_date_column: str,
+    visit_datetime_column: str,
 ):
     """"""
-    window = Window.partitionBy(participant_id_column).orderBy(visit_date_column)
+    window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
     # [min days before, max days before, min days after, max days after, allowed_type, allowed_first_type]
     orders = reversed(
         [
