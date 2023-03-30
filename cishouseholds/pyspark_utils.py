@@ -94,6 +94,17 @@ def convert_array_strings_to_array(df: DF, schema: Dict[str, Any]):
     return df
 
 
+def convert_array_to_array_strings(df: DF, schema: Dict[str, Any] = None, sep: str = ";"):
+    """Converts a dataframe containing arrays to array columns represented as strings given a schema or df dtypes"""
+    if schema:
+        array_schema = {k: v["type"] for k, v in schema.items() if "array" in list(v.values())[0]}
+    else:
+        array_schema = {k: v for k, v in df.dtypes if "array" in v}
+    for k, v in array_schema.items():
+        df = df.withColumn(k, F.array_join(k, sep))
+    return df
+
+
 def get_or_create_spark_session() -> SparkSession:
     """
     Create a spark_session, hiding console progress and enabling HIVE table overwrite.

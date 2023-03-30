@@ -77,6 +77,7 @@ from cishouseholds.pipeline.validation_schema import soc_schema
 from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
 from cishouseholds.pipeline.visit_transformations import visit_transformations
 from cishouseholds.prediction_checker_class import PredictionChecker
+from cishouseholds.pyspark_utils import convert_array_to_array_strings
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import check_lookup_table_joined_columns_unique
 from cishouseholds.validate import normalise_schema
@@ -1106,6 +1107,7 @@ def tables_to_csv(
 
     for table in config_file["create_tables"]:
         df = extract_from_table(table["table_name"])
+        df = convert_array_to_array_strings(df)
         if table.get("column_name_map"):
             if accept_missing:
                 columns_to_select = [element for element in table["column_name_map"].keys() if element in df.columns]
