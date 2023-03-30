@@ -201,7 +201,7 @@ def extract_input_data(
         for file_name, data_string in zip(json_file_paths, data_strings):
             data = decode_phm_json(data_string)
             _df = spark_session.createDataFrame(data=data, schema=spark_schema)
-            _df.withColumn(source_file_column, F.lit(file_name))
+            _df = _df.withColumn(source_file_column, F.lit(file_name))
             dfs.append(_df)
         if df is None:
             df = union_multiple_tables(dfs)
