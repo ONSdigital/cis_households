@@ -110,6 +110,7 @@
   social_distance_contact_under_18_years_raw: 11 to 20
   submission_language_code: en
   survey_completed_datetime: '2022-01-03 11:24:22.000000'
+  survey_completion_status: Completed
   survey_completion_status_flushed: false
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: The swab test kit arrived with parts missing
@@ -450,6 +451,7 @@
   social_distance_contact_under_18_years_raw: 11 to 20
   submission_language_code: en
   survey_completed_datetime: '2022-01-06 14:03:46.000000'
+  survey_completion_status: Partially Completed
   survey_completion_status_flushed: true
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: The swab test kit arrived damaged
@@ -793,6 +795,7 @@
   social_distance_contact_under_18_years_raw: null
   submission_language_code: we
   survey_completed_datetime: '2022-01-08 21:17:43.000000'
+  survey_completion_status: Completed
   survey_completion_status_flushed: false
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: I am near the end of my testing window and my swab test kit
@@ -1135,6 +1138,7 @@
   social_distance_contact_under_18_years_raw: '0'
   submission_language_code: en
   survey_completed_datetime: '2022-01-04 13:29:23.000000'
+  survey_completion_status: Completed
   survey_completion_status_flushed: false
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: I did not want to take it this month
@@ -1477,6 +1481,7 @@
   social_distance_contact_under_18_years_raw: Don't know
   submission_language_code: en
   survey_completed_datetime: '2022-01-04 21:06:25.000000'
+  survey_completion_status: Completed
   survey_completion_status_flushed: false
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: null
@@ -1815,6 +1820,7 @@
   social_distance_contact_under_18_years_raw: 21 or more
   submission_language_code: en
   survey_completed_datetime: '2022-01-06 13:36:00.000000'
+  survey_completion_status: Completed
   survey_completion_status_flushed: false
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: I tried but could not take it
@@ -2157,6 +2163,7 @@
   social_distance_contact_under_18_years_raw: 6 to 10
   submission_language_code: we
   survey_completed_datetime: '2022-01-04 21:54:33.000000'
+  survey_completion_status: Completed
   survey_completion_status_flushed: false
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: The swab test kit arrived both damaged and with parts missing
@@ -2504,6 +2511,7 @@
   social_distance_contact_under_18_years_raw: 1 to 5
   submission_language_code: we
   survey_completed_datetime: '2022-01-05 02:16:54.000000'
+  survey_completion_status: Partially Completed
   survey_completion_status_flushed: true
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: null
@@ -2846,6 +2854,7 @@
   social_distance_contact_under_18_years_raw: 6 to 10
   submission_language_code: we
   survey_completed_datetime: null
+  survey_completion_status: Partially Completed
   survey_completion_status_flushed: true
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: I did not want to take it this month
@@ -3192,6 +3201,7 @@
   social_distance_contact_under_18_years_raw: 6 to 10
   submission_language_code: en
   survey_completed_datetime: null
+  survey_completion_status: Partially Completed
   survey_completion_status_flushed: true
   survey_response_dataset_major_version: 4
   swab_not_taken_reason: I tried but could not take it
