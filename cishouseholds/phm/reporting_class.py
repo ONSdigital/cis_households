@@ -10,6 +10,8 @@ from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.expressions import all_columns_not_null
 from cishouseholds.hdfs_utils import write_string_to_file
+from cishouseholds.pyspark_utils import get_or_create_spark_session
+from cishouseholds.validate import validate_processed_files
 
 
 class Report:
@@ -239,3 +241,15 @@ class Report:
         full_df_rate = full_df_rate.withColumn("date_range", F.concat_ws("-", "START", "END")).drop("START", "END")
 
         return partial_df_rate, full_df_rate
+
+    def create_validated_file_list(self, df: DataFrame, source_file_column: str, sheet_name_prefix: str = "validated"):
+        """
+        Runs the validate_processed_files on the input df and creates dfs and then sheets to add to the report object
+        """
+        spark_session = get_or_create_spark_session()
+        unprocessed, non_existent = validate_processed_files(df, source_file_column)
+        unprocessed_df = spark_session.createDataFrame(pd.DataFrame(unprocessed, columns=["file_path"]))
+        non_existent_df = spark_session.createDataFrame(pd.DataFrame(non_existent, columns=["file_path"]))
+
+        self.add_sheet(unprocessed_df, f"{sheet_name_prefix} unprocessed file paths")
+        self.add_sheet(non_existent_df, f"{sheet_name_prefix} nonexistent file paths")
