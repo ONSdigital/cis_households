@@ -210,6 +210,7 @@ def validate_processed_files(df: DataFrame, source_file_column: str):
     if non_existent:
         n = "\n".join(non_existent)
         print(f"Found {len(non_existent)} files that have been processed but no longer exist: {n}")  # functional
+    return unprocessed, non_existent
 
 
 def check_singular_match(
