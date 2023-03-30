@@ -1030,54 +1030,29 @@ def phm_report(
 ) -> DataFrame:
     """"""
     df = extract_from_table(input_survey_table)
-    report = Report(output_directory=output_directory)
-    report.create_completion_table_days(
-        df=df,
-        participant_id_column="participant_id",
-        window_start_column="participant_completion_window_start_datetime",
-        window_end_column="participant_completion_window_end_datetime",
-        window_status_column="survey_completion_status",
-        reference_date_column="visit_datetime",
-        window_range=14,
-    )
-    report.create_completion_table_set_range(
-        df=df,
-        participant_id_column="participant_id",
-        window_start_column="participant_completion_window_start_datetime",
-        window_end_column="participant_completion_window_end_datetime",
-        window_status_column="survey_completion_status",
-        reference_date_column="visit_datetime",
-        window_range=28,
-    )
-    report.write_excel_output()
-
-
-@register_pipeline_stage("phm_language_report")
-def phm_language_report(
-    input_survey_table: str,
-    output_directory: str,
-) -> DataFrame:
-    df = extract_from_table(input_survey_table)
-    df = df.select()
-    report = Report(output_directory=output_directory)
-    report.create_completion_table_days(
-        df=df,
-        participant_id_column="participant_id",
-        window_start_column="participant_completion_window_start_datetime",
-        window_end_column="participant_completion_window_end_datetime",
-        window_status_column="survey_completion_status",
-        reference_date_column="visit_datetime",
-        window_range=14,
-    )
-    report.create_completion_table_set_range(
-        df=df,
-        participant_id_column="participant_id",
-        window_start_column="participant_completion_window_start_datetime",
-        window_end_column="participant_completion_window_end_datetime",
-        window_status_column="survey_completion_status",
-        reference_date_column="visit_datetime",
-        window_range=28,
-    )
+    report = Report(output_directory=output_directory, output_file_prefix="phm_report_output")
+    for lang in ["Welsh", "English"]:
+        lang_df = df.filter(F.col("launch_language_code") == lang)
+        report.create_completion_table_days(
+            df=lang_df,
+            participant_id_column="participant_id",
+            window_start_column="participant_completion_window_start_datetime",
+            window_end_column="participant_completion_window_end_datetime",
+            window_status_column="survey_completion_status",
+            reference_date_column="visit_datetime",
+            window_range=14,
+            sheet_name_prefix=f"{lang} daily",
+        )
+        report.create_completion_table_set_range(
+            df=lang_df,
+            participant_id_column="participant_id",
+            window_start_column="participant_completion_window_start_datetime",
+            window_end_column="participant_completion_window_end_datetime",
+            window_status_column="survey_completion_status",
+            reference_date_column="visit_datetime",
+            window_range=28,
+            sheet_name_prefix=f"{lang} monthly",
+        )
     report.write_excel_output()
 
 
