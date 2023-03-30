@@ -153,11 +153,12 @@ def first_second_doses(df: DataFrame):
         participant_id_column="participant_id",
         vaccine_date_column="cis_covid_vaccine_date",
         vaccine_type_column="cis_covid_vaccine_type",
-        visit_date_column="visit_datetime",
+        visit_datetime_column="visit_datetime",
     )
     # Derive valid_order for dose_2 and then take the minimum out of this one and the one assigned previously
     df = update_valid_order_2(
         df=df,
+        column_name_to_update="valid_order",
         participant_id_column="participant_id",
         vaccine_date_column="cis_covid_vaccine_date",
         vaccine_type_column="cis_covid_vaccine_type",

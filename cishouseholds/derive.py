@@ -30,6 +30,43 @@ from cishouseholds.pipeline.mapping import _vaccine_type_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def assign_survey_completed_status(
+    df: DataFrame,
+    column_name_to_assign: str,
+    survey_completed_datetime_column: str,
+    survey_flushed_column: str,
+):
+    """
+    function that return a column containing categorical data on survey completion, based
+    on datetime of completing the survey and whether the survey was flushed
+    Parameters
+    ----------
+    df DataFrame to process
+    column_name_to_assign
+        the name of the column being derived
+    survey_completed_datetime_column
+        The column containing the timestamp at which the participant completed the survey
+    survey_flushed_column
+        boolean column indicating whether the survey response was 'flushed', and thus not completed submitted
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col(survey_completed_datetime_column).isNotNull()) & (F.col(survey_flushed_column) == "FALSE"),
+            "Completed",
+        )
+        .when(
+            (F.col(survey_flushed_column) == "TRUE"),
+            "Partially Completed",
+        )
+        .when(
+            (F.col(survey_completed_datetime_column).isNull()) & (F.col(survey_flushed_column) == "FALSE"),
+            "Not Completed",
+        ),
+    )
+    return df
+
+
 def assign_window_status(
     df: DataFrame,
     column_name_to_assign: str,
@@ -55,10 +92,10 @@ def assign_valid_order(
     participant_id_column: str,
     vaccine_date_column: str,
     vaccine_type_column: str,
-    visit_date_column: str,
+    visit_datetime_column: str,
 ):
     """"""
-    window = Window.partitionBy(participant_id_column).orderBy(visit_date_column)
+    window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
     # [min days before, max days before, min days after, max days after, allowed_type, allowed_first_type]
     orders = reversed(
         [
