@@ -51,6 +51,8 @@ def list_contents(path: str, recursive: Optional[bool] = False, date_from_filena
         df["upload_date"] = pd.to_datetime(df["upload_date"], errors="coerce", format="%Y%m%d")
     else:
         df["upload_date"] = pd.to_datetime(df["upload_date"], errors="coerce", format="%Y-%m-%d")
+
+    pd.set_option("max_colwidth", 35)
     return df
 
 

@@ -198,10 +198,14 @@ def validate_files(file_paths: Union[str, List[str]], validation_schema: dict, s
 def validate_processed_files(df: DataFrame, source_file_column: str):
     """Check that all of the files processed in a combined dataframe exist in the folder from which they were found."""
     processed_files = column_to_distinct_list(df, source_file_column)
+    processed_files = [f for f in processed_files if isinstance(f, str) and f != ""]
     dirs = [Path(f).parent.as_posix() for f in processed_files]
+    dirs = [d for d in dirs if d not in ["."]]
+    dirs = [d for d in dirs if isinstance(d, str)]
     found_files = []
     for d in dirs:
-        found_files.extend(list_contents(d, date_from_filename=False))
+        files = [f for f in list_contents(d, date_from_filename=False)["file_path"].to_list() if isinstance(f, str)]
+        found_files.extend(files)
     unprocessed = set(found_files) - set(dirs)
     non_existent = set(dirs) - set(found_files)
     if unprocessed:
