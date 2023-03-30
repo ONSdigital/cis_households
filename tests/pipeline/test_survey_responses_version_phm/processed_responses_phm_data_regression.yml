@@ -66,7 +66,7 @@
   last_28_days_unable_usual_activities_due_to_respiratory_infection: null
   last_28_days_urgent_care: null
   last_28_days_urgent_care_respiratory_infection: null
-  launch_language_code: en
+  launch_language_code: English
   other_covid_infection_test: 'No'
   other_covid_infection_test_positive_date: '2022-01-08 00:00:00.000000'
   other_covid_infection_test_results: All Tests failed
@@ -108,7 +108,7 @@
   social_distance_contact_over_70_years_raw: Prefer not to say
   social_distance_contact_under_18_years: 11-20
   social_distance_contact_under_18_years_raw: 11 to 20
-  submission_language_code: en
+  submission_language_code: English
   survey_completed_datetime: '2022-01-03 11:24:22.000000'
   survey_completion_status: Completed
   survey_completion_status_flushed: false
@@ -407,7 +407,7 @@
   last_28_days_unable_usual_activities_due_to_respiratory_infection: null
   last_28_days_urgent_care: null
   last_28_days_urgent_care_respiratory_infection: null
-  launch_language_code: en
+  launch_language_code: English
   other_covid_infection_test: 'No'
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
@@ -449,7 +449,7 @@
   social_distance_contact_over_70_years_raw: null
   social_distance_contact_under_18_years: 11-20
   social_distance_contact_under_18_years_raw: 11 to 20
-  submission_language_code: en
+  submission_language_code: English
   survey_completed_datetime: '2022-01-06 14:03:46.000000'
   survey_completion_status: Partially Completed
   survey_completion_status_flushed: true
@@ -1094,7 +1094,7 @@
   last_28_days_unable_usual_activities_due_to_respiratory_infection: null
   last_28_days_urgent_care: null
   last_28_days_urgent_care_respiratory_infection: null
-  launch_language_code: en
+  launch_language_code: English
   other_covid_infection_test: 'No'
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: One or more positive test(s)
@@ -1136,7 +1136,7 @@
   social_distance_contact_over_70_years_raw: 21 or more
   social_distance_contact_under_18_years: '0'
   social_distance_contact_under_18_years_raw: '0'
-  submission_language_code: en
+  submission_language_code: English
   survey_completed_datetime: '2022-01-04 13:29:23.000000'
   survey_completion_status: Completed
   survey_completion_status_flushed: false
@@ -1479,7 +1479,7 @@
   social_distance_contact_over_70_years_raw: Prefer not to say
   social_distance_contact_under_18_years: null
   social_distance_contact_under_18_years_raw: Don't know
-  submission_language_code: en
+  submission_language_code: English
   survey_completed_datetime: '2022-01-04 21:06:25.000000'
   survey_completion_status: Completed
   survey_completion_status_flushed: false
@@ -1776,7 +1776,7 @@
   last_28_days_unable_usual_activities_due_to_respiratory_infection: null
   last_28_days_urgent_care: null
   last_28_days_urgent_care_respiratory_infection: null
-  launch_language_code: en
+  launch_language_code: English
   other_covid_infection_test: null
   other_covid_infection_test_positive_date: '2022-01-06 00:00:00.000000'
   other_covid_infection_test_results: Waiting for all results
@@ -1818,7 +1818,7 @@
   social_distance_contact_over_70_years_raw: 6 to 10
   social_distance_contact_under_18_years: 21 or more
   social_distance_contact_under_18_years_raw: 21 or more
-  submission_language_code: en
+  submission_language_code: English
   survey_completed_datetime: '2022-01-06 13:36:00.000000'
   survey_completion_status: Completed
   survey_completion_status_flushed: false
@@ -3199,7 +3199,7 @@
   social_distance_contact_over_70_years_raw: Prefer not to say
   social_distance_contact_under_18_years: 6-10
   social_distance_contact_under_18_years_raw: 6 to 10
-  submission_language_code: en
+  submission_language_code: English
   survey_completed_datetime: null
   survey_completion_status: Partially Completed
   survey_completion_status_flushed: true
