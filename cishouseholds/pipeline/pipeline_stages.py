@@ -1023,12 +1023,12 @@ def report(
     )
 
 
-@register_pipeline_stage("phm_report")
-def phm_report(
+@register_pipeline_stage("phm_output_report")
+def phm_output_report(
     input_survey_table: str,
     output_directory: str,
 ) -> DataFrame:
-    """"""
+    """Generate a completion report for PHM / CRIS showing completion rates by launch language"""
     df = extract_from_table(input_survey_table)
     report = Report(output_directory=output_directory, output_file_prefix="phm_report_output")
     for lang in ["Welsh", "English"]:
@@ -1053,6 +1053,17 @@ def phm_report(
             window_range=28,
             sheet_name_prefix=f"{lang} monthly",
         )
+    report.write_excel_output()
+
+
+@register_pipeline_stage("phm_validation_report")
+def phm_validation_report(
+    input_survey_table: str,
+    output_directory: str,
+) -> DataFrame:
+    """Generate a validation report for PHM / CRIS"""
+    # df = extract_from_table(input_survey_table)
+    report = Report(output_directory=output_directory, output_file_prefix="phm_validation_output")
     report.write_excel_output()
 
 
