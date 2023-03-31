@@ -20,6 +20,7 @@ from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.validation_schema import validation_schemas
 from cishouseholds.pyspark_utils import convert_array_strings_to_array
+from cishouseholds.pyspark_utils import convert_array_to_array_strings
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
@@ -120,6 +121,7 @@ def extract_validate_transform_input_data(
         df = assign_filename_column(df, source_file_column)  # Must be called before update_from_lookup_df
     dataset_version = "" if dataset_version is None else "_" + dataset_version
     if include_hadoop_read_write:
+        df = convert_array_to_array_strings(df)
         update_table(df, f"raw_{dataset_name}{dataset_version}", write_mode)
         filter_ids = []
         if extraction_config is not None and dataset_name in extraction_config:
