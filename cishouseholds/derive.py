@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 from functools import reduce
 from itertools import chain
 from operator import add
@@ -29,16 +30,72 @@ from cishouseholds.pipeline.mapping import _vaccine_type_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def assign_survey_completed_status(
+    df: DataFrame,
+    column_name_to_assign: str,
+    survey_completed_datetime_column: str,
+    survey_flushed_column: str,
+):
+    """
+    function that return a column containing categorical data on survey completion, based
+    on datetime of completing the survey and whether the survey was flushed
+    Parameters
+    ----------
+    df DataFrame to process
+    column_name_to_assign
+        the name of the column being derived
+    survey_completed_datetime_column
+        The column containing the timestamp at which the participant completed the survey
+    survey_flushed_column
+        boolean column indicating whether the survey response was 'flushed', and thus not completed submitted
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            (F.col(survey_completed_datetime_column).isNotNull()) & (F.col(survey_flushed_column) == "FALSE"),
+            "Completed",
+        )
+        .when(
+            (F.col(survey_flushed_column) == "TRUE"),
+            "Partially Completed",
+        )
+        .when(
+            (F.col(survey_completed_datetime_column).isNull()) & (F.col(survey_flushed_column) == "FALSE"),
+            "Not Completed",
+        ),
+    )
+    return df
+
+
+def assign_window_status(
+    df: DataFrame,
+    column_name_to_assign: str,
+    window_start_column: str,
+    window_end_column: str,
+    current_date: datetime = datetime.now(),
+):
+    """
+    Derive the status of the survey window for a given point in time
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when((F.col(window_start_column) <= current_date) & (current_date <= F.col(window_end_column)), "Open")
+        .when(current_date > F.col(window_end_column), "Closed")
+        .when(current_date < F.col(window_start_column), "New"),
+    )
+    return df
+
+
 def assign_valid_order(
     df: DataFrame,
     column_name_to_assign: str,
     participant_id_column: str,
     vaccine_date_column: str,
     vaccine_type_column: str,
-    first_dose_column: str,
+    visit_datetime_column: str,
 ):
     """"""
-    window = Window.partitionBy(participant_id_column).orderBy(F.col(first_dose_column).desc())
+    window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
     # [min days before, max days before, min days after, max days after, allowed_type, allowed_first_type]
     orders = reversed(
         [
@@ -53,7 +110,7 @@ def assign_valid_order(
             [6, 0, 0, 28, 149, "Don't know type", "Pfizer/AZ/Moderna"],
         ]
     )
-    diff = F.datediff(F.col(vaccine_date_column), F.first(F.col(vaccine_date_column)).over(window))
+    diff = F.datediff(F.col(vaccine_date_column), F.first(F.col(vaccine_date_column), True).over(window))
     df = df.withColumn(column_name_to_assign, F.lit(None))
     for check in orders:
         neg_range = (diff > check[2]) & (diff < check[1])
@@ -188,23 +245,26 @@ def assign_datetime_from_combined_columns(
         if col_name is None:
             df = df.withColumn(temp_col_name, F.lit(0))
         else:
-            df = df.withColumn(temp_col_name, F.col(col_name)).drop(col_name)
+            df = df.withColumn(temp_col_name, F.col(col_name))
 
-    hour = F.when((F.col(am_pm_column) == "pm") & (F.col("_hour") != 12), F.col("_hour") + 12).otherwise(F.col("_hour"))
+    time = F.concat_ws(":", F.col("_hour"), F.col("_min"), F.col("_sec"))
+
     df = df.withColumn(
         column_name_to_assign,
         F.concat_ws(
             " ",
-            F.col(date_column),
+            # F.col(date_column),
+            F.concat_ws("-", F.year(date_column), F.month(date_column), F.dayofmonth(date_column)),
             F.concat_ws(
                 ":",
-                hour,
-                *[F.when(F.col(col) == 0, "00").otherwise(F.col(col).cast("string")) for col in ["_min", "_sec"]],
+                F.when(F.col(am_pm_column) == "PM", F.hour(time) + 12).otherwise(F.hour(time)),
+                F.minute(time),
+                F.second(time),
             ),
         ),
     )
-    df = df.withColumn(column_name_to_assign, F.to_timestamp(column_name_to_assign)).drop("_hour", "_min", "_sec")
-    return df
+    df = df.withColumn(column_name_to_assign, F.to_timestamp(column_name_to_assign))
+    return df.drop("_hour", "_min", "_sec")
 
 
 def group_participant_within_date_range(
@@ -245,16 +305,13 @@ def assign_max_doses(
     return df
 
 
-def assign_first_dose(
-    df: DataFrame,
-    column_name_to_assign: str,
-    participant_id_column: str,
-    visit_datetime: str,
+def assign_nth_dose(
+    df: DataFrame, column_name_to_assign: str, participant_id_column: str, visit_datetime: str, dose_number: int = 1
 ):
     """Assign the date of the first dose reported and order by visit_datetime."""
     window = Window.partitionBy(participant_id_column).orderBy(visit_datetime)
     df = df.withColumn("row", F.row_number().over(window))
-    df = df.withColumn(column_name_to_assign, F.when(F.col("row") == 1, "Yes").otherwise("No"))
+    df = df.withColumn(column_name_to_assign, F.when(F.col("row") == dose_number, "Yes").otherwise("No"))
     return df.drop("row")
 
 

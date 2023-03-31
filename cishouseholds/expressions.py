@@ -6,6 +6,7 @@ from typing import Any
 from typing import List
 
 import pyspark.sql.functions as F
+from pyspark.sql import Window
 
 
 def fill_nulls(column_name_to_update, fill_value: Any = 0):
@@ -110,3 +111,10 @@ def any_column_matches_regex(column_list: List[str], regex_pattern: str):
     more columns contain a null value.
     """
     return reduce(or_, [F.coalesce(F.col(column), F.lit("")).rlike(regex_pattern) for column in column_list])
+
+
+def get_nth_row_over_window(column_name: str, window: Window, nth_row: int):
+    """
+    Expression that returns the nth row from a window
+    """
+    return F.first(F.lead(F.col(column_name), nth_row).over(window), True).over(window)

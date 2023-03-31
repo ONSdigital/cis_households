@@ -128,6 +128,11 @@ def column_to_list(df: DataFrame, column_name: str):
     return [row[column_name] for row in df.collect()]
 
 
+def column_to_distinct_list(df: DataFrame, column_name: str):
+    """Fast collection of distinct records in a column to a standard list."""
+    return [row[column_name] for row in df.select(column_name).distinct().collect()]
+
+
 def running_in_dev_test() -> bool:
     """Convenience function to check if the code is executing in DevTest environment.
 

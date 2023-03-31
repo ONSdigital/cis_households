@@ -3336,7 +3336,7 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
     }
 
 
-phm_date_format = "%d/%m/%Y"
+phm_date_format = "%Y-%m-%d"
 
 
 def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
@@ -3386,34 +3386,20 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         "swab_sample_barcode_correct": _("choice", items=yes_no_none_choice),
         "swab_sample_barcode_user_entered": _("random.custom_code", mask="SWT########", digit="#"),
         "swab_taken_date": _(
-            "discrete_distribution",
-            population=[
-                _(
-                    "custom_random.random_date",
-                    start=start_date_list,
-                    end=end_date_list,
-                    format=phm_date_format,
-                ),
-                None,
-            ],
-            weights=[0.9, 0.1],
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format=phm_date_format,
         ),
-        "swab_taken_time_hour": _("custom_random.random_integer", lower=0, upper=12, null_percent=15),
+        "swab_taken_time_hour": _("custom_random.random_integer", lower=0, upper=12, null_percent=0),
         "swab_taken_time_minute": _("choice", items=[0, 15, 30, 45]),
         "swab_taken_am_pm": _("choice", items=["AM", "PM"]),
         "swab_returned": _("choice", items=yes_no_none_choice),
         "swab_return_date": _(
-            "discrete_distribution",
-            population=[
-                _(
-                    "custom_random.random_date",
-                    start=start_date_list,
-                    end=end_date_list,
-                    format=phm_date_format,
-                ),
-                None,
-            ],
-            weights=[0.9, 0.1],
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format=phm_date_format,
         ),
         "swab_return_future_date": _(
             "discrete_distribution",
@@ -3458,34 +3444,20 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         "blood_sample_barcode_correct": _("choice", items=yes_no_none_choice),
         "blood_sample_barcode_user_entered": _("random.custom_code", mask="BLT########", digit="#"),
         "blood_taken_date": _(
-            "discrete_distribution",
-            population=[
-                _(
-                    "custom_random.random_date",
-                    start=start_date_list,
-                    end=end_date_list,
-                    format=phm_date_format,
-                ),
-                None,
-            ],
-            weights=[0.9, 0.1],
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format=phm_date_format,
         ),
-        "blood_taken_time_hour": _("custom_random.random_integer", lower=0, upper=12, null_percent=15),
+        "blood_taken_time_hour": _("custom_random.random_integer", lower=0, upper=12, null_percent=0),
         "blood_taken_time_minute": _("choice", items=[0, 15, 30, 45]),
         "blood_taken_am_pm": _("choice", items=["AM", "PM"]),
         "blood_returned": _("choice", items=yes_no_none_choice),
         "blood_return_date": _(
-            "discrete_distribution",
-            population=[
-                _(
-                    "custom_random.random_date",
-                    start=start_date_list,
-                    end=end_date_list,
-                    format=phm_date_format,
-                ),
-                None,
-            ],
-            weights=[0.9, 0.1],
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format=phm_date_format,
         ),
         "blood_return_future_date": _(
             "discrete_distribution",
