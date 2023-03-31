@@ -569,10 +569,6 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: visit_datetime
-  nullable: true
-  type: timestamp
-- metadata: {}
   name: work_sector_raw
   nullable: true
   type: string
@@ -646,6 +642,10 @@ fields:
   type: integer
 - metadata: {}
   name: file_date
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: visit_datetime
   nullable: true
   type: timestamp
 - metadata: {}
