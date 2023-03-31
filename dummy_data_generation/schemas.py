@@ -3342,8 +3342,8 @@ phm_date_format = "%Y-%m-%d"
 def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
     return lambda: {  # noqa: E731
         "portal_id": _("custom_random.random_integer", lower=1000, upper=12000, null_percent=0),
-        "launch_language_code": _("choice", items=["en", "we"]),
-        "submission_language_code": _("choice", items=["en", "we"]),
+        "form_language_launch": _("choice", items=["en", "we"]),
+        "form_language_submitted": _("choice", items=["en", "we"]),
         "survey_completed_datetime": _(
             "discrete_distribution",
             population=[
@@ -3367,7 +3367,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         "participant_first_name_confirmation": _("choice", items=yes_no_none_choice),
         "participant_first_name_on_behalf": _("choice", items=yes_no_none_choice),
         "problem_with_survey_access_helpline": _("choice", items=["Continue", None]),
-        "cohort_type_PHM": _(
+        "cohort_type_phm": _(
             "choice", items=["Do this questionnaire only", "Do this questionnaire and take a swab sample"]
         ),
         "swab_taken": _("choice", items=yes_no_none_choice),
@@ -3550,6 +3550,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
         ),
         "work_direct_contact_patients_or_clients": _("choice", items=yes_no_prefer_not_to_say),
+        "work_nursing_or_residential_care_home": _("choice", items=yes_no_prefer_not_to_say),
         "work_location": _(
             "choice",
             items=[
