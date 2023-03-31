@@ -44,7 +44,6 @@ def pre_processing(df: DataFrame) -> DataFrame:
     """
     Sets categories to map for digital specific variables to Voyager 0/1/2 equivalent
     """
-    df = df.withColumn("visit_datetime", F.col("survey_completed_datetime"))
     raw_copy_list = [
         "work_sector",
         "illness_reduces_activity_or_ability",
@@ -237,6 +236,7 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
     - times_outside_shopping_or_socialising_last_7_days
     - face_covering_outside_of_home
     - cis_covid_vaccine_number_of_doses
+    - visit_datetime
 
     Reference columns:
     - currently_smokes_or_vapes_description
@@ -261,6 +261,13 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
     - work_not_from_home_days_per_week
     - phm_covid_vaccine_number_of_doses
     """
+    df = df.withColumn(
+        "visit_datetime",
+        F.when(
+            F.col("survey_completion_status_flushed") == True,
+            F.to_timestamp(F.col("participant_completion_window_end_date"), format="yyyy-MM-dd"),
+        ).otherwise(F.to_timestamp(F.col("survey_completed_datetime"), format="yyyy-MM-dd HH:mm:ss")),
+    )
     df = assign_any_symptoms(df)
     # df = split_array_columns(df)
     map_to_bool_columns_dict = {
