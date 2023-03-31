@@ -659,7 +659,7 @@
   transport_shared_outside_household_last_28_days_train: null
   transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: Motorbike, scooter or moped
-  visit_datetime: '2022-01-06 14:03:46.000000'
+  visit_datetime: '2022-01-04 00:00:00.000000'
   work_direct_contact_patients_or_clients: 'Yes'
   work_health_care_area: Secondary
   work_in_additional_paid_employment: Prefer not to say
@@ -2720,7 +2720,7 @@
   transport_shared_outside_household_last_28_days_train: null
   transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: Underound or Metro or Light Rail or Tram
-  visit_datetime: '2022-01-05 02:16:54.000000'
+  visit_datetime: '2022-01-02 00:00:00.000000'
   work_direct_contact_patients_or_clients: 'Yes'
   work_health_care_area: Secondary
   work_in_additional_paid_employment: Prefer not to say
@@ -3063,7 +3063,7 @@
   transport_shared_outside_household_last_28_days_train: null
   transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: Bicycle
-  visit_datetime: null
+  visit_datetime: '2022-01-08 00:00:00.000000'
   work_direct_contact_patients_or_clients: 'No'
   work_health_care_area: Secondary
   work_in_additional_paid_employment: 'No'
@@ -3408,7 +3408,7 @@
   transport_shared_outside_household_last_28_days_train: null
   transport_shared_outside_household_last_28_days_underground_metro: null
   transport_to_work_or_education: On foot
-  visit_datetime: null
+  visit_datetime: '2022-01-08 00:00:00.000000'
   work_direct_contact_patients_or_clients: Prefer not to say
   work_health_care_area: Other
   work_in_additional_paid_employment: Prefer not to say
