@@ -120,8 +120,8 @@ def extract_validate_transform_input_data(
     if source_file_column not in df.columns:
         df = assign_filename_column(df, source_file_column)  # Must be called before update_from_lookup_df
     dataset_version = "" if dataset_version is None else "_" + dataset_version
+    df = convert_array_to_array_strings(df)
     if include_hadoop_read_write:
-        df = convert_array_to_array_strings(df)
         update_table(df, f"raw_{dataset_name}{dataset_version}", write_mode)
         filter_ids = []
         if extraction_config is not None and dataset_name in extraction_config:
