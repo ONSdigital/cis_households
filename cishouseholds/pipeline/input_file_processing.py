@@ -19,7 +19,6 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.validation_schema import validation_schemas
-from cishouseholds.pyspark_utils import convert_array_strings_to_array
 from cishouseholds.pyspark_utils import convert_array_to_array_strings
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -183,8 +182,6 @@ def extract_input_data(
             ignoreTrailingWhiteSpace=True,
             sep=sep,
         )
-        if validation_schema:
-            df = convert_array_strings_to_array(df, validation_schema)  # type: ignore
     if xl_file_paths:
         spark = get_or_create_spark_session()
         dfs = [
@@ -209,6 +206,4 @@ def extract_input_data(
             df = union_multiple_tables(dfs)
         else:
             df = union_multiple_tables([df, *dfs])
-        if validation_schema:
-            df = convert_array_strings_to_array(df, validation_schema)  # type: ignore
     return df
