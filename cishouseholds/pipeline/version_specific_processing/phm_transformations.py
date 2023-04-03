@@ -296,6 +296,9 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
             }
         else:
             value_column_map = transformation_maps[col_to_map]
+        df = df.withColumn(col_to_map, F.regexp_replace(col_to_map, r"\[|\]", "")).withColumn(
+            col_to_map, F.regexp_replace(col_to_map, r", ", ";")
+        )
         df = map_options_to_bool_columns(df, col_to_map, value_column_map, ";")
 
     column_list = ["work_status_digital", "work_status_employment", "work_status_unemployment", "work_status_education"]
