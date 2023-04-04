@@ -608,8 +608,6 @@ def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_colu
         df = df.withColumn(reference_column, F.split(F.col(reference_column), sep))
     for val, col in value_column_name_map.items():
         df = df.withColumn(col, F.when(F.array_contains(reference_column, val), "Yes"))
-    if array_exists:
-        return df
     return df.withColumn(reference_column, F.array_join(reference_column, sep))
 
 
