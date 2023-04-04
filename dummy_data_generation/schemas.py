@@ -245,18 +245,6 @@ countries = (
 start_date_list = datetime(2022, 1, 1)
 end_date_list = datetime(2022, 1, 10)
 
-symptoms_list_2 = [
-    "Headache",
-    "Muscle ache",
-    "Weakness or tiredness",
-    "Fever, including high temperature",
-    "More trouble sleeping than usual",
-    "Memory loss or confusion",
-    "Difficulty concentrating",
-    "Worry or anxiety",
-    "Low mood or not enjoying anything",
-]
-
 symptoms_list_1 = [
     "Runny nose or sneezing",
     "Loss of smell",
@@ -269,6 +257,66 @@ symptoms_list_1 = [
     "Nausea or vomiting",
     "Diarrhoea",
     "Loss of appetite or eating less than usual",
+    "None of these symptoms",
+]
+symptoms_list_2 = [
+    "Headache",
+    "Muscle ache",
+    "Weakness or tiredness",
+    "Fever including high temperature",
+    "More trouble sleeping than usual",
+    "Memory loss or confusion",
+    "Difficulty concentrating",
+    "Worry or anxiety",
+    "Low mood or not enjoying anything",
+    "None of these symptoms",
+]
+
+long_covid_symptoms_list_1 = [
+    "Headache",
+    "Problems with eyesight or sore eyes",
+    "Tinnitus or problems hearing",
+    "Ear pain",
+    "Runny nose of sneezing",
+    "Nasal congestion",
+    "Sore throat",
+    "Cough",
+    "Shortness of breath",
+    "Noisy breathing or wheezing",
+    "Chest pain",
+    "Palpitations or heart rate pounding or beating irregularly",
+    "None of these symptoms",
+]
+
+long_covid_symptoms_list_2 = [
+    "Nausea or vomiting",
+    "Abdominal pain",
+    "Diarrhoea",
+    "Ear pain",
+    "Loss of appetite or eating less than usual",
+    "Muscle ache",
+    "Joint pain",
+    "Mobility problems",
+    "Loss of taste",
+    "Loss of smell",
+    "Memory loss or confusion",
+    "Difficulty concentrating",
+    "None of these symptoms",
+]
+
+long_covid_symptoms_list_3 = [
+    "More trouble sleeping than usual",
+    "Worry or anxiety",
+    "Low mood or not enjoying anything",
+    "Weakness or tiredness",
+    "Fever including high temperature",
+    "General pain",
+    "Vertigo or dizziness",
+    "Allergies or intolerances",
+    "Hair loss",
+    "Pins and needles or numbness",
+    "Skin rashes or itchy skin",
+    "None of these symptoms",
 ]
 
 infections = [
@@ -3802,9 +3850,9 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "think_have_long_covid_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
-        "think_have_long_covid_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
-        "think_have_long_covid_symptom_list_3": _("random.choices", population=symptoms_list_1, k=1),
+        "think_have_long_covid_symptom_list_1": _("random.choices", population=long_covid_symptoms_list_1, k=1),
+        "think_have_long_covid_symptom_list_2": _("random.choices", population=long_covid_symptoms_list_2, k=1),
+        "think_have_long_covid_symptom_list_3": _("random.choices", population=long_covid_symptoms_list_3, k=1),
         "think_have_long_covid_symptom_worse_after_effort": _("choice", items=yes_no_unknown_choice),
         "hospital_last_28_days": _("choice", items=yes_no_none_choice),
         "care_home_last_28_days": _("choice", items=yes_no_none_choice),
