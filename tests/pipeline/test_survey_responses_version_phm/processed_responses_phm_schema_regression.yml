@@ -4,11 +4,11 @@ fields:
   nullable: true
   type: integer
 - metadata: {}
-  name: launch_language_code
+  name: form_language_launch
   nullable: true
   type: string
 - metadata: {}
-  name: submission_language_code
+  name: form_language_submitted
   nullable: true
   type: string
 - metadata: {}
@@ -36,7 +36,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: cohort_type_PHM
+  name: cohort_type_phm
   nullable: true
   type: string
 - metadata: {}
@@ -196,6 +196,10 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: work_nursing_or_residential_care_home
+  nullable: true
+  type: string
+- metadata: {}
   name: work_location
   nullable: true
   type: string
@@ -218,31 +222,19 @@ fields:
 - metadata: {}
   name: think_have_covid_any_symptom_list_1
   nullable: true
-  type:
-    containsNull: true
-    elementType: string
-    type: array
+  type: string
 - metadata: {}
   name: think_have_covid_any_symptom_list_2
   nullable: true
-  type:
-    containsNull: true
-    elementType: string
-    type: array
+  type: string
 - metadata: {}
   name: think_have_symptoms_new_or_worse_list_1
   nullable: true
-  type:
-    containsNull: true
-    elementType: string
-    type: array
+  type: string
 - metadata: {}
   name: think_have_symptoms_new_or_worse_list_2
   nullable: true
-  type:
-    containsNull: true
-    elementType: string
-    type: array
+  type: string
 - metadata: {}
   name: think_have_covid_onset_date
   nullable: true
@@ -266,10 +258,7 @@ fields:
 - metadata: {}
   name: currently_smokes_or_vapes_description
   nullable: true
-  type:
-    containsNull: true
-    elementType: string
-    type: array
+  type: string
 - metadata: {}
   name: cis_covid_vaccine_received
   nullable: true
@@ -317,10 +306,7 @@ fields:
 - metadata: {}
   name: phm_think_had_respiratory_infection_type
   nullable: true
-  type:
-    containsNull: true
-    elementType: string
-    type: array
+  type: string
 - metadata: {}
   name: think_had_covid_onset_date
   nullable: true
@@ -328,17 +314,11 @@ fields:
 - metadata: {}
   name: think_had_covid_any_symptom_list_1
   nullable: true
-  type:
-    containsNull: true
-    elementType: string
-    type: array
+  type: string
 - metadata: {}
   name: think_had_covid_any_symptom_list_2
   nullable: true
-  type:
-    containsNull: true
-    elementType: string
-    type: array
+  type: string
 - metadata: {}
   name: phm_think_had_flu_onset_date
   nullable: true
@@ -346,17 +326,11 @@ fields:
 - metadata: {}
   name: think_had_flu_symptom_list_1
   nullable: true
-  type:
-    containsNull: true
-    elementType: string
-    type: array
+  type: string
 - metadata: {}
   name: think_had_flu_symptom_list_2
   nullable: true
-  type:
-    containsNull: true
-    elementType: string
-    type: array
+  type: string
 - metadata: {}
   name: phm_think_had_other_infection_onset_date
   nullable: true
@@ -364,17 +338,11 @@ fields:
 - metadata: {}
   name: think_had_other_infection_symptom_list_1
   nullable: true
-  type:
-    containsNull: true
-    elementType: string
-    type: array
+  type: string
 - metadata: {}
   name: think_had_other_infection_symptom_list_2
   nullable: true
-  type:
-    containsNull: true
-    elementType: string
-    type: array
+  type: string
 - metadata: {}
   name: other_covid_infection_test
   nullable: true
@@ -450,24 +418,15 @@ fields:
 - metadata: {}
   name: think_have_long_covid_symptom_list_1
   nullable: true
-  type:
-    containsNull: true
-    elementType: string
-    type: array
+  type: string
 - metadata: {}
   name: think_have_long_covid_symptom_list_2
   nullable: true
-  type:
-    containsNull: true
-    elementType: string
-    type: array
+  type: string
 - metadata: {}
   name: think_have_long_covid_symptom_list_3
   nullable: true
-  type:
-    containsNull: true
-    elementType: string
-    type: array
+  type: string
 - metadata: {}
   name: think_have_long_covid_symptom_worse_after_effort
   nullable: true
@@ -569,10 +528,6 @@ fields:
   nullable: false
   type: string
 - metadata: {}
-  name: visit_datetime
-  nullable: true
-  type: timestamp
-- metadata: {}
   name: work_sector_raw
   nullable: true
   type: string
@@ -646,6 +601,10 @@ fields:
   type: integer
 - metadata: {}
   name: file_date
+  nullable: true
+  type: timestamp
+- metadata: {}
+  name: visit_datetime
   nullable: true
   type: timestamp
 - metadata: {}
