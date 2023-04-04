@@ -3477,8 +3477,8 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
         ),
         "blood_not_taken_could_not_reason": _(
-            "choice",
-            items=[
+            "random.choices",
+            population=[
                 "I couldn't get enough blood into the pot",
                 "The pot spilled",
                 "I had bruising or pain",
@@ -3487,6 +3487,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 "There were issues with the kit",
                 None,
             ],
+            k=1,
         ),
         "blood_not_taken_could_not_other": _("text.sentence"),
         "blood_sample_barcode_correct": _("choice", items=yes_no_none_choice),
@@ -3643,8 +3644,8 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         ),
         "think_have_covid_any_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
         "think_have_covid_any_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
-        "think_have_symptoms_new_or_worse_list_1": _("random.choices", population=symptoms_list_1, k=1),
-        "think_have_symptoms_new_or_worse_list_2": _("random.choices", population=symptoms_list_2, k=1),
+        "think_have_symptoms_new_or_worse_list_1": _("random.choices", population=symptoms_list_1, k=2),
+        "think_have_symptoms_new_or_worse_list_2": _("random.choices", population=symptoms_list_2, k=3),
         "think_have_covid_onset_date": _(
             "discrete_distribution",
             population=[
