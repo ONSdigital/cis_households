@@ -257,7 +257,6 @@ symptoms_list_1 = [
     "Nausea or vomiting",
     "Diarrhoea",
     "Loss of appetite or eating less than usual",
-    "None of these symptoms",
 ]
 symptoms_list_2 = [
     "Headache",
@@ -269,7 +268,6 @@ symptoms_list_2 = [
     "Difficulty concentrating",
     "Worry or anxiety",
     "Low mood or not enjoying anything",
-    "None of these symptoms",
 ]
 
 long_covid_symptoms_list_1 = [
@@ -285,14 +283,12 @@ long_covid_symptoms_list_1 = [
     "Noisy breathing or wheezing",
     "Chest pain",
     "Palpitations or heart rate pounding or beating irregularly",
-    "None of these symptoms",
 ]
 
 long_covid_symptoms_list_2 = [
     "Nausea or vomiting",
     "Abdominal pain",
     "Diarrhoea",
-    "Ear pain",
     "Loss of appetite or eating less than usual",
     "Muscle ache",
     "Joint pain",
@@ -301,7 +297,6 @@ long_covid_symptoms_list_2 = [
     "Loss of smell",
     "Memory loss or confusion",
     "Difficulty concentrating",
-    "None of these symptoms",
 ]
 
 long_covid_symptoms_list_3 = [
@@ -316,7 +311,6 @@ long_covid_symptoms_list_3 = [
     "Hair loss",
     "Pins and needles or numbness",
     "Skin rashes or itchy skin",
-    "None of these symptoms",
 ]
 
 infections = [
@@ -3643,9 +3637,13 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
         ),
         "think_have_covid_any_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_have_covid_no_symptoms_list_1": _("choice", items=["None of these symptoms", None]),
         "think_have_covid_any_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
-        "think_have_symptoms_new_or_worse_list_1": _("random.choices", population=symptoms_list_1, k=2),
-        "think_have_symptoms_new_or_worse_list_2": _("random.choices", population=symptoms_list_2, k=3),
+        "think_have_covid_no_symptoms_list_2": _("choice", items=["None of these symptoms", None]),
+        "think_have_any_symptom_new_or_worse_list_1": _("random.choices", population=symptoms_list_1, k=2),
+        "think_have_no_symptoms_new_or_worse_list_1": _("choice", items=["None of these symptoms", None]),
+        "think_have_any_symptom_new_or_worse_list_2": _("random.choices", population=symptoms_list_2, k=3),
+        "think_have_no_symptoms_new_or_worse_list_2": _("choice", items=["None of these symptoms", None]),
         "think_have_covid_onset_date": _(
             "discrete_distribution",
             population=[
@@ -3747,7 +3745,9 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             weights=[0.5, 0.5],
         ),
         "think_had_covid_any_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_had_covid_no_symptoms_list_1": _("choice", items=["None of these symptoms", None]),
         "think_had_covid_any_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
+        "think_had_covid_no_symptoms_list_2": _("choice", items=["None of these symptoms", None]),
         "phm_think_had_flu_onset_date": _(
             "discrete_distribution",
             population=[
@@ -3761,8 +3761,10 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
             weights=[0.5, 0.5],
         ),
-        "think_had_flu_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
-        "think_had_flu_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
+        "think_had_flu_any_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_had_flu_no_symptoms_list_1": _("choice", items=["None of these symptoms", None]),
+        "think_had_flu_any_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
+        "think_had_flu_no_symptoms_list_2": _("choice", items=["None of these symptoms", None]),
         "phm_think_had_other_infection_onset_date": _(
             "discrete_distribution",
             population=[
@@ -3776,8 +3778,10 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
             weights=[0.5, 0.5],
         ),
-        "think_had_other_infection_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
-        "think_had_other_infection_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
+        "think_had_other_infection_any_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_had_other_infection_no_symptoms_list_1": _("choice", items=["None of these symptoms", None]),
+        "think_had_other_infection_any_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
+        "think_had_other_infection_no_symptoms_list_2": _("choice", items=["None of these symptoms", None]),
         "other_covid_infection_test": _("choice", items=yes_no_none_choice),
         "other_covid_infection_test_results": _(
             "choice",
@@ -3851,9 +3855,12 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "think_have_long_covid_symptom_list_1": _("random.choices", population=long_covid_symptoms_list_1, k=1),
-        "think_have_long_covid_symptom_list_2": _("random.choices", population=long_covid_symptoms_list_2, k=1),
-        "think_have_long_covid_symptom_list_3": _("random.choices", population=long_covid_symptoms_list_3, k=1),
+        "think_have_long_covid_any_symptom_list_1": _("random.choices", population=long_covid_symptoms_list_1, k=1),
+        "think_have_long_covid_no_symptoms_list_1": _("choice", items=["None of these symptoms", None]),
+        "think_have_long_covid_any_symptom_list_2": _("random.choices", population=long_covid_symptoms_list_2, k=1),
+        "think_have_long_covid_no_symptoms_list_2": _("choice", items=["None of these symptoms", None]),
+        "think_have_long_covid_any_symptom_list_3": _("random.choices", population=long_covid_symptoms_list_3, k=1),
+        "think_have_long_covid_no_symptoms_list_3": _("choice", items=["None of these symptoms", None]),
         "think_have_long_covid_symptom_worse_after_effort": _("choice", items=yes_no_unknown_choice),
         "hospital_last_28_days": _("choice", items=yes_no_none_choice),
         "care_home_last_28_days": _("choice", items=yes_no_none_choice),
