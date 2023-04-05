@@ -19,7 +19,7 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.validation_schema import validation_schemas
-from cishouseholds.pyspark_utils import convert_array_strings_to_array
+from cishouseholds.pyspark_utils import convert_array_to_array_strings
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
@@ -119,6 +119,7 @@ def extract_validate_transform_input_data(
     if source_file_column not in df.columns:
         df = assign_filename_column(df, source_file_column)  # Must be called before update_from_lookup_df
     dataset_version = "" if dataset_version is None else "_" + dataset_version
+    df = convert_array_to_array_strings(df)
     if include_hadoop_read_write:
         update_table(df, f"raw_{dataset_name}{dataset_version}", write_mode)
         filter_ids = []
@@ -139,6 +140,7 @@ def extract_validate_transform_input_data(
 
     for transformation_function in transformation_functions:
         df = transformation_function(df)
+
     return df
 
 
@@ -180,8 +182,6 @@ def extract_input_data(
             ignoreTrailingWhiteSpace=True,
             sep=sep,
         )
-        if validation_schema:
-            df = convert_array_strings_to_array(df, validation_schema)  # type: ignore
     if xl_file_paths:
         spark = get_or_create_spark_session()
         dfs = [
@@ -200,14 +200,10 @@ def extract_input_data(
         for file_name, data_string in zip(json_file_paths, data_strings):
             data = decode_phm_json(data_string)
             _df = spark_session.createDataFrame(data=data, schema=spark_schema)
-            _df.withColumn(
-                source_file_column, (F.regexp_replace(F.lit(file_name), r"(?<=:\/{2})(\w+|\d+)(?=\/{1})", ""))
-            )
+            _df = _df.withColumn(source_file_column, F.lit(file_name))
             dfs.append(_df)
         if df is None:
             df = union_multiple_tables(dfs)
         else:
             df = union_multiple_tables([df, *dfs])
-        if validation_schema:
-            df = convert_array_strings_to_array(df, validation_schema)  # type: ignore
     return df

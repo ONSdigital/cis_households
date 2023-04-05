@@ -80,6 +80,7 @@ from cishouseholds.prediction_checker_class import PredictionChecker
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import check_lookup_table_joined_columns_unique
 from cishouseholds.validate import normalise_schema
+from cishouseholds.validate import validate_processed_files
 from dummy_data_generation.generate_data import generate_cis_soc_data
 from dummy_data_generation.generate_data import generate_digital_data
 from dummy_data_generation.generate_data import generate_nims_table
@@ -505,6 +506,7 @@ def generate_input_processing_function(
                 write_mode,
                 archive,
             )
+            validate_processed_files(extract_from_table(f"transformed_{dataset_name}"), source_file_column)
             return {"status": "updated"}
         return df
 
@@ -1119,7 +1121,7 @@ def tables_to_csv(
 
     for table in config_file["create_tables"]:
         df = extract_from_table(table["table_name"])
-        if table["column_name_map"] is not None:
+        if table.get("column_name_map"):
             if accept_missing:
                 columns_to_select = [element for element in table["column_name_map"].keys() if element in df.columns]
             else:
