@@ -93,7 +93,7 @@
   physical_contact_over_70_years_raw: 11 to 20
   physical_contact_under_18_years: 1-5
   physical_contact_under_18_years_raw: 1 to 5
-  portal_id: 275
+  portal_id: '275'
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'Yes'
   smoke_cigarettes: null
@@ -263,6 +263,7 @@
   think_have_long_covid_symptom_nausea_or_vomiting: null
   think_have_long_covid_symptom_noisy_breathing: null
   think_have_long_covid_symptom_numbness: null
+  think_have_long_covid_symptom_palpitations: null
   think_have_long_covid_symptom_reduced_ability: null
   think_have_long_covid_symptom_runny_nose_or_sneezing: null
   think_have_long_covid_symptom_shortness_of_breath: null
@@ -273,7 +274,6 @@
   think_have_long_covid_symptoms_ear_pain: null
   think_have_long_covid_symptoms_eyesight: null
   think_have_long_covid_symptoms_nasal_congestion: null
-  think_have_long_covid_symptoms_palpitations: null
   think_have_long_covid_symptoms_tinnitus: null
   think_have_no_symptoms_new_or_worse_list_1: null
   think_have_no_symptoms_new_or_worse_list_2: null
@@ -435,7 +435,7 @@
   physical_contact_over_70_years_raw: 21 or more
   physical_contact_under_18_years: 6-10
   physical_contact_under_18_years_raw: 6 to 10
-  portal_id: 1227
+  portal_id: '1227'
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'Yes'
   smoke_cigarettes: null
@@ -607,6 +607,7 @@
   think_have_long_covid_symptom_nausea_or_vomiting: null
   think_have_long_covid_symptom_noisy_breathing: null
   think_have_long_covid_symptom_numbness: null
+  think_have_long_covid_symptom_palpitations: 'Yes'
   think_have_long_covid_symptom_reduced_ability: Not at all
   think_have_long_covid_symptom_runny_nose_or_sneezing: null
   think_have_long_covid_symptom_shortness_of_breath: null
@@ -617,7 +618,6 @@
   think_have_long_covid_symptoms_ear_pain: null
   think_have_long_covid_symptoms_eyesight: null
   think_have_long_covid_symptoms_nasal_congestion: null
-  think_have_long_covid_symptoms_palpitations: 'Yes'
   think_have_long_covid_symptoms_tinnitus: null
   think_have_no_symptoms_new_or_worse_list_1: null
   think_have_no_symptoms_new_or_worse_list_2: None of these symptoms
@@ -784,7 +784,7 @@
   physical_contact_over_70_years_raw: Prefer not to say
   physical_contact_under_18_years: '0'
   physical_contact_under_18_years_raw: '0'
-  portal_id: 8625
+  portal_id: '8625'
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'No'
   smoke_cigarettes: null
@@ -956,6 +956,7 @@
   think_have_long_covid_symptom_nausea_or_vomiting: null
   think_have_long_covid_symptom_noisy_breathing: null
   think_have_long_covid_symptom_numbness: null
+  think_have_long_covid_symptom_palpitations: 'Yes'
   think_have_long_covid_symptom_reduced_ability: null
   think_have_long_covid_symptom_runny_nose_or_sneezing: null
   think_have_long_covid_symptom_shortness_of_breath: null
@@ -966,7 +967,6 @@
   think_have_long_covid_symptoms_ear_pain: null
   think_have_long_covid_symptoms_eyesight: null
   think_have_long_covid_symptoms_nasal_congestion: null
-  think_have_long_covid_symptoms_palpitations: 'Yes'
   think_have_long_covid_symptoms_tinnitus: null
   think_have_no_symptoms_new_or_worse_list_1: null
   think_have_no_symptoms_new_or_worse_list_2: null
@@ -1132,7 +1132,7 @@
   physical_contact_over_70_years_raw: null
   physical_contact_under_18_years: 21 or more
   physical_contact_under_18_years_raw: 21 or more
-  portal_id: 2239
+  portal_id: '2239'
   problem_with_survey_access_helpline: null
   questionnaire_started_no_incentive: null
   smoke_cigarettes: null
@@ -1304,6 +1304,7 @@
   think_have_long_covid_symptom_nausea_or_vomiting: null
   think_have_long_covid_symptom_noisy_breathing: 'Yes'
   think_have_long_covid_symptom_numbness: null
+  think_have_long_covid_symptom_palpitations: null
   think_have_long_covid_symptom_reduced_ability: Yes a lot
   think_have_long_covid_symptom_runny_nose_or_sneezing: null
   think_have_long_covid_symptom_shortness_of_breath: null
@@ -1314,7 +1315,6 @@
   think_have_long_covid_symptoms_ear_pain: null
   think_have_long_covid_symptoms_eyesight: null
   think_have_long_covid_symptoms_nasal_congestion: null
-  think_have_long_covid_symptoms_palpitations: null
   think_have_long_covid_symptoms_tinnitus: null
   think_have_no_symptoms_new_or_worse_list_1: null
   think_have_no_symptoms_new_or_worse_list_2: null
@@ -1480,7 +1480,7 @@
   physical_contact_over_70_years_raw: 1 to 5
   physical_contact_under_18_years: null
   physical_contact_under_18_years_raw: null
-  portal_id: 4470
+  portal_id: '4470'
   problem_with_survey_access_helpline: null
   questionnaire_started_no_incentive: null
   smoke_cigarettes: 'Yes'
@@ -1653,6 +1653,7 @@
   think_have_long_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_long_covid_symptom_noisy_breathing: null
   think_have_long_covid_symptom_numbness: null
+  think_have_long_covid_symptom_palpitations: null
   think_have_long_covid_symptom_reduced_ability: Yes a lot
   think_have_long_covid_symptom_runny_nose_or_sneezing: null
   think_have_long_covid_symptom_shortness_of_breath: null
@@ -1663,7 +1664,6 @@
   think_have_long_covid_symptoms_ear_pain: null
   think_have_long_covid_symptoms_eyesight: null
   think_have_long_covid_symptoms_nasal_congestion: 'Yes'
-  think_have_long_covid_symptoms_palpitations: null
   think_have_long_covid_symptoms_tinnitus: null
   think_have_no_symptoms_new_or_worse_list_1: None of these symptoms
   think_have_no_symptoms_new_or_worse_list_2: None of these symptoms
@@ -1829,7 +1829,7 @@
   physical_contact_over_70_years_raw: '0'
   physical_contact_under_18_years: null
   physical_contact_under_18_years_raw: Prefer not to say
-  portal_id: 6048
+  portal_id: '6048'
   problem_with_survey_access_helpline: null
   questionnaire_started_no_incentive: null
   smoke_cigarettes: null
@@ -2001,6 +2001,7 @@
   think_have_long_covid_symptom_nausea_or_vomiting: null
   think_have_long_covid_symptom_noisy_breathing: null
   think_have_long_covid_symptom_numbness: null
+  think_have_long_covid_symptom_palpitations: null
   think_have_long_covid_symptom_reduced_ability: Yes a little
   think_have_long_covid_symptom_runny_nose_or_sneezing: null
   think_have_long_covid_symptom_shortness_of_breath: null
@@ -2011,7 +2012,6 @@
   think_have_long_covid_symptoms_ear_pain: null
   think_have_long_covid_symptoms_eyesight: null
   think_have_long_covid_symptoms_nasal_congestion: null
-  think_have_long_covid_symptoms_palpitations: null
   think_have_long_covid_symptoms_tinnitus: null
   think_have_no_symptoms_new_or_worse_list_1: None of these symptoms
   think_have_no_symptoms_new_or_worse_list_2: null
@@ -2177,7 +2177,7 @@
   physical_contact_over_70_years_raw: 1 to 5
   physical_contact_under_18_years: 11-20
   physical_contact_under_18_years_raw: 11 to 20
-  portal_id: 9124
+  portal_id: '9124'
   problem_with_survey_access_helpline: null
   questionnaire_started_no_incentive: 'No'
   smoke_cigarettes: null
@@ -2347,6 +2347,7 @@
   think_have_long_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_long_covid_symptom_noisy_breathing: null
   think_have_long_covid_symptom_numbness: null
+  think_have_long_covid_symptom_palpitations: null
   think_have_long_covid_symptom_reduced_ability: Yes a lot
   think_have_long_covid_symptom_runny_nose_or_sneezing: null
   think_have_long_covid_symptom_shortness_of_breath: null
@@ -2357,7 +2358,6 @@
   think_have_long_covid_symptoms_ear_pain: null
   think_have_long_covid_symptoms_eyesight: null
   think_have_long_covid_symptoms_nasal_congestion: null
-  think_have_long_covid_symptoms_palpitations: null
   think_have_long_covid_symptoms_tinnitus: null
   think_have_no_symptoms_new_or_worse_list_1: None of these symptoms
   think_have_no_symptoms_new_or_worse_list_2: null
@@ -2521,7 +2521,7 @@
   physical_contact_over_70_years_raw: 11 to 20
   physical_contact_under_18_years: 21 or more
   physical_contact_under_18_years_raw: 21 or more
-  portal_id: 2625
+  portal_id: '2625'
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'No'
   smoke_cigarettes: null
@@ -2691,6 +2691,7 @@
   think_have_long_covid_symptom_nausea_or_vomiting: 'Yes'
   think_have_long_covid_symptom_noisy_breathing: null
   think_have_long_covid_symptom_numbness: null
+  think_have_long_covid_symptom_palpitations: null
   think_have_long_covid_symptom_reduced_ability: null
   think_have_long_covid_symptom_runny_nose_or_sneezing: null
   think_have_long_covid_symptom_shortness_of_breath: null
@@ -2701,7 +2702,6 @@
   think_have_long_covid_symptoms_ear_pain: null
   think_have_long_covid_symptoms_eyesight: null
   think_have_long_covid_symptoms_nasal_congestion: null
-  think_have_long_covid_symptoms_palpitations: null
   think_have_long_covid_symptoms_tinnitus: 'Yes'
   think_have_no_symptoms_new_or_worse_list_1: None of these symptoms
   think_have_no_symptoms_new_or_worse_list_2: null
@@ -2867,7 +2867,7 @@
   physical_contact_over_70_years_raw: 11 to 20
   physical_contact_under_18_years: null
   physical_contact_under_18_years_raw: null
-  portal_id: 1066
+  portal_id: '1066'
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'No'
   smoke_cigarettes: null
@@ -3039,6 +3039,7 @@
   think_have_long_covid_symptom_nausea_or_vomiting: null
   think_have_long_covid_symptom_noisy_breathing: null
   think_have_long_covid_symptom_numbness: null
+  think_have_long_covid_symptom_palpitations: null
   think_have_long_covid_symptom_reduced_ability: null
   think_have_long_covid_symptom_runny_nose_or_sneezing: null
   think_have_long_covid_symptom_shortness_of_breath: null
@@ -3049,7 +3050,6 @@
   think_have_long_covid_symptoms_ear_pain: null
   think_have_long_covid_symptoms_eyesight: null
   think_have_long_covid_symptoms_nasal_congestion: null
-  think_have_long_covid_symptoms_palpitations: null
   think_have_long_covid_symptoms_tinnitus: null
   think_have_no_symptoms_new_or_worse_list_1: null
   think_have_no_symptoms_new_or_worse_list_2: null
@@ -3214,7 +3214,7 @@
   physical_contact_over_70_years_raw: null
   physical_contact_under_18_years: null
   physical_contact_under_18_years_raw: Prefer not to say
-  portal_id: 10372
+  portal_id: '10372'
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'Yes'
   smoke_cigarettes: null
@@ -3386,6 +3386,7 @@
   think_have_long_covid_symptom_nausea_or_vomiting: null
   think_have_long_covid_symptom_noisy_breathing: null
   think_have_long_covid_symptom_numbness: null
+  think_have_long_covid_symptom_palpitations: 'Yes'
   think_have_long_covid_symptom_reduced_ability: Not at all
   think_have_long_covid_symptom_runny_nose_or_sneezing: null
   think_have_long_covid_symptom_shortness_of_breath: null
@@ -3396,7 +3397,6 @@
   think_have_long_covid_symptoms_ear_pain: null
   think_have_long_covid_symptoms_eyesight: null
   think_have_long_covid_symptoms_nasal_congestion: null
-  think_have_long_covid_symptoms_palpitations: 'Yes'
   think_have_long_covid_symptoms_tinnitus: null
   think_have_no_symptoms_new_or_worse_list_1: null
   think_have_no_symptoms_new_or_worse_list_2: null
