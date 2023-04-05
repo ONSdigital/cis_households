@@ -2,7 +2,7 @@ fields:
 - metadata: {}
   name: portal_id
   nullable: true
-  type: integer
+  type: string
 - metadata: {}
   name: form_language_launch
   nullable: true
@@ -1224,7 +1224,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptoms_palpitations
+  name: think_have_long_covid_symptom_palpitations
   nullable: true
   type: string
 - metadata: {}
