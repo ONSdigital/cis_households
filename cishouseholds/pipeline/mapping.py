@@ -135,13 +135,12 @@ transformation_maps: Dict[str, Dict[str, str]] = {
         "Shortness of breath": "_symptom_shortness_of_breath",
         "Noisy breathing or wheezing": "_symptom_noisy_breathing",
         "Chest pain": "_symptom_chest_pain",
-        "Palpitations or heart rate pounding or beating irregularly": "_symptoms_palpitations",
+        "Palpitations or heart rate pounding or beating irregularly": "_symptom_palpitations",
     },
     "long_covid_symptoms_list_2": {
         "Nausea or vomiting": "_symptom_nausea_or_vomiting",
         "Abdominal pain": "_symptom_abdominal_pain",
         "Diarrhoea": "_symptom_diarrhoea",
-        "Ear pain": "_symptoms_ear_pain",  # TODO check if this is in twice
         "Loss of appetite or eating less than usual": "_symptom_loss_of_appetite",
         "Muscle ache": "_symptom_muscle_ache",
         "Joint pain": "_symptom_joint_pain",
