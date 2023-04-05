@@ -17,10 +17,10 @@ lookup = column_name_maps["phm_column_name_map"]
 
 
 def decode_phm_json(json_str: Union[str, bytes]) -> List[Tuple]:
-    json_dict = json.loads(json_str)
+    json_list = json.loads(json_str)
     # table = json_dict["submission"]
     answers_list = []
-    for table in json_dict.values():
+    for table in json_list:
 
         meta = table.pop("survey_metadata")
         data = table.pop("data")
