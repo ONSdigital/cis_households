@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.pipeline.phm_transformation import assign_any_symptoms
+from cishouseholds.pipeline.version_specific_processing.phm_transformations import assign_any_symptoms
 
 
 def test_assign_any_symptoms(spark_session):
@@ -22,7 +22,7 @@ def test_assign_any_symptoms(spark_session):
             (4, "Yes", None, None, 0, "symptom a", "symptom a", "symptom a", "Yes"),
         ],
         schema="""
-        id int,
+        id integer,
         think_have_long_covid string,
         think_have_long_covid_no_symptoms_list_1 string,
         think_have_long_covid_no_symptoms_list_2 string,
@@ -30,7 +30,36 @@ def test_assign_any_symptoms(spark_session):
         think_have_long_covid_any_symptom_list_1 string,
         think_have_long_covid_any_symptom_list_2 string,
         think_have_long_covid_any_symptom_list_3 string,
-        think_have_long_covid_any_symptoms,
+        think_have_covid_no_symptoms_list_1 string,
+        think_have_covid_no_symptoms_list_2 string,
+        think_have_covid_any_symptom_list_1 string,
+        think_have_covid_any_symptom_list_2 string,
+        think_have_no_symptoms_new_or_worse_list_1 string,
+        think_have_no_symptoms_new_or_worse_list_2 string,
+        think_have_any_symptoms_new_or_worse_list_1 string,
+        think_have_any_symptoms_new_or_worse_list_2 string,
+        phm_think_had_covid string,
+        think_had_covid_no_symptoms_list_1 string,
+        think_had_covid_no_symptoms_list_2 string,
+        think_had_covid_any_symptom_list_1 string,
+        think_had_covid_any_symptom_list_2 string,
+        phm_think_had_flu string,
+        think_had_flu_no_symptoms_list_1 string,
+        think_had_flu_no_symptoms_list_2 string,
+        think_had_flu_any_symptom_list_1 string,
+        think_had_flu_any_symptom_list_2 string,
+        phm_think_had_other_infection string,
+        think_had_other_infection_no_symptoms_list_1 string,
+        think_had_other_infection_no_symptoms_list_2 string,
+        think_had_other_infection_any_symptom_list_1 string,
+        think_had_other_infection_any_symptom_list_2 string,
+        think_have_long_covid_any_symptoms string,
+        think_have_covid_any_symptoms string,
+        think_have_any_symptoms_new_or_worse string,
+        think_have_long_covid_any_symptoms string,
+        think_had_covid_any_symptoms string,
+        think_had_flu_any_symptoms string,
+        think_had_other_infection_any_symptoms string,
         """,
     )
     input_df = expected_df.drop("think_have_long_covid_any_symptoms")
