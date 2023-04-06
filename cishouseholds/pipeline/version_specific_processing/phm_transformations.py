@@ -742,9 +742,7 @@ def assign_any_symptoms(df: DataFrame):
             "No",
         )
         .when(
-            any_column_not_null(
-                ["think_have_covid_covid_any_symptom_list_1", "think_have_covid_covid_any_symptom_list_2"]
-            ),
+            any_column_not_null(["think_have_covid_any_symptom_list_1", "think_have_covid_any_symptom_list_2"]),
             "Yes",
         )
         .otherwise(None),
