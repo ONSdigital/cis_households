@@ -269,7 +269,7 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
             F.to_timestamp(F.col("participant_completion_window_end_date"), format="yyyy-MM-dd"),
         ).otherwise(F.to_timestamp(F.col("survey_completed_datetime"), format="yyyy-MM-dd HH:mm:ss")),
     )
-    df = assign_any_symptoms(df)
+
     # df = split_array_columns(df)
     map_to_bool_columns_dict = {
         "currently_smokes_or_vapes_description": "",
@@ -303,6 +303,8 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
             col_to_map, F.regexp_replace(col_to_map, r", ", ";")
         )
         df = map_options_to_bool_columns(df, col_to_map, value_column_map, ";")
+
+    df = assign_any_symptoms(df)
 
     column_list = ["work_status_digital", "work_status_employment", "work_status_unemployment", "work_status_education"]
     df = assign_column_value_from_multiple_column_map(
@@ -757,7 +759,7 @@ def assign_any_symptoms(df: DataFrame):
         )
         .when(
             any_column_not_null(
-                ["think_have_any_symptoms_new_or_worse_list_1", "think_have_any_symptoms_new_or_worse_list_2"]
+                ["think_have_any_symptom_new_or_worse_list_1", "think_have_any_symptom_new_or_worse_list_2"]
             ),
             "Yes",
         )
