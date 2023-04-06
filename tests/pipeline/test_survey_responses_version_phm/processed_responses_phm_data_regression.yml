@@ -71,7 +71,7 @@
   other_covid_infection_test_positive_date: '2022-01-08 00:00:00.000000'
   other_covid_infection_test_results: All Tests failed
   other_covid_infection_test_results_raw: All tests failed
-  participant_completion_window_end_date: '2022-01-04'
+  participant_completion_window_end_date: '2022-01-04 00:00:00.000000'
   participant_completion_window_id: '0165'
   participant_completion_window_start_date: null
   participant_completion_window_status: Closed
@@ -413,7 +413,7 @@
   other_covid_infection_test_positive_date: '2022-01-03 00:00:00.000000'
   other_covid_infection_test_results: null
   other_covid_infection_test_results_raw: null
-  participant_completion_window_end_date: '2022-01-02'
+  participant_completion_window_end_date: '2022-01-02 00:00:00.000000'
   participant_completion_window_id: '0262'
   participant_completion_window_start_date: null
   participant_completion_window_status: Closed
@@ -762,9 +762,9 @@
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
-  participant_completion_window_end_date: '2022-01-02'
+  participant_completion_window_end_date: '2022-01-02 00:00:00.000000'
   participant_completion_window_id: '1989'
-  participant_completion_window_start_date: '2022-01-09'
+  participant_completion_window_start_date: '2022-01-09 00:00:00.000000'
   participant_completion_window_status: Closed
   participant_first_name_confirmation: null
   participant_first_name_on_behalf: 'No'
@@ -1109,9 +1109,9 @@
   other_covid_infection_test_results: Any tests negative, but none positive
   other_covid_infection_test_results_raw: One or more tests were negative and none
     were positive
-  participant_completion_window_end_date: '2022-01-08'
+  participant_completion_window_end_date: '2022-01-08 00:00:00.000000'
   participant_completion_window_id: '4616'
-  participant_completion_window_start_date: '2022-01-01'
+  participant_completion_window_start_date: '2022-01-01 00:00:00.000000'
   participant_completion_window_status: Closed
   participant_first_name_confirmation: 'No'
   participant_first_name_on_behalf: 'No'
@@ -1457,9 +1457,9 @@
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: All Tests failed
   other_covid_infection_test_results_raw: All tests failed
-  participant_completion_window_end_date: '2022-01-04'
+  participant_completion_window_end_date: '2022-01-04 00:00:00.000000'
   participant_completion_window_id: '5424'
-  participant_completion_window_start_date: '2022-01-06'
+  participant_completion_window_start_date: '2022-01-06 00:00:00.000000'
   participant_completion_window_status: Closed
   participant_first_name_confirmation: 'Yes'
   participant_first_name_on_behalf: 'Yes'
@@ -1806,9 +1806,9 @@
   other_covid_infection_test_results: Any tests negative, but none positive
   other_covid_infection_test_results_raw: One or more tests were negative and none
     were positive
-  participant_completion_window_end_date: '2022-01-08'
+  participant_completion_window_end_date: '2022-01-08 00:00:00.000000'
   participant_completion_window_id: '5712'
-  participant_completion_window_start_date: '2022-01-08'
+  participant_completion_window_start_date: '2022-01-08 00:00:00.000000'
   participant_completion_window_status: Closed
   participant_first_name_confirmation: 'Yes'
   participant_first_name_on_behalf: null
@@ -2155,9 +2155,9 @@
   other_covid_infection_test_positive_date: '2022-01-06 00:00:00.000000'
   other_covid_infection_test_results: null
   other_covid_infection_test_results_raw: null
-  participant_completion_window_end_date: '2022-01-03'
+  participant_completion_window_end_date: '2022-01-03 00:00:00.000000'
   participant_completion_window_id: '6872'
-  participant_completion_window_start_date: '2022-01-03'
+  participant_completion_window_start_date: '2022-01-03 00:00:00.000000'
   participant_completion_window_status: Closed
   participant_first_name_confirmation: null
   participant_first_name_on_behalf: null
@@ -2498,9 +2498,9 @@
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
-  participant_completion_window_end_date: '2022-01-06'
+  participant_completion_window_end_date: '2022-01-06 00:00:00.000000'
   participant_completion_window_id: '9577'
-  participant_completion_window_start_date: '2022-01-03'
+  participant_completion_window_start_date: '2022-01-03 00:00:00.000000'
   participant_completion_window_status: Closed
   participant_first_name_confirmation: 'No'
   participant_first_name_on_behalf: 'Yes'
@@ -2845,9 +2845,9 @@
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: All Tests failed
   other_covid_infection_test_results_raw: All tests failed
-  participant_completion_window_end_date: '2022-01-09'
+  participant_completion_window_end_date: '2022-01-09 00:00:00.000000'
   participant_completion_window_id: '9608'
-  participant_completion_window_start_date: '2022-01-04'
+  participant_completion_window_start_date: '2022-01-04 00:00:00.000000'
   participant_completion_window_status: Closed
   participant_first_name_confirmation: null
   participant_first_name_on_behalf: 'No'
@@ -3192,9 +3192,9 @@
   other_covid_infection_test_positive_date: '2022-01-01 00:00:00.000000'
   other_covid_infection_test_results: One or more positive test(s)
   other_covid_infection_test_results_raw: One or more tests were positive
-  participant_completion_window_end_date: '2022-01-03'
+  participant_completion_window_end_date: '2022-01-03 00:00:00.000000'
   participant_completion_window_id: '9826'
-  participant_completion_window_start_date: '2022-01-05'
+  participant_completion_window_start_date: '2022-01-05 00:00:00.000000'
   participant_completion_window_status: Closed
   participant_first_name_confirmation: null
   participant_first_name_on_behalf: 'No'
