@@ -17,13 +17,13 @@ from cishouseholds.pipeline.version_specific_processing.digital_transformations 
 )
 from cishouseholds.pipeline.version_specific_processing.mult_version import assign_has_been_columns
 from cishouseholds.pipeline.version_specific_processing.mult_version import derive_additional_v1_2_columns
-from cishouseholds.pipeline.version_specific_processing.participant_extract import transform_participant_extract_digital
-from cishouseholds.pipeline.version_specific_processing.participant_extract import (
+from cishouseholds.pipeline.version_specific_processing.participant_extract_digital import (
+    transform_participant_extract_digital,
+)
+from cishouseholds.pipeline.version_specific_processing.participant_extract_digital import (
     translate_welsh_survey_responses_version_digital,
 )
-from cishouseholds.pipeline.version_specific_processing.phm_transformations import (
-    phm_transformations,
-)
+from cishouseholds.pipeline.version_specific_processing.phm_transformations import phm_transformations
 from cishouseholds.pipeline.version_specific_processing.v0_transformations import (
     transform_survey_responses_version_0_delta,
 )
@@ -51,7 +51,7 @@ participant_extract_digital_parameters = {
     "source_file_column": "participant_extract_source_file",
 }
 
-phm_participant_parameters = {
+participant_extract_phm_parameters = {
     "stage_name": "phm_participant_extract_ETL",
     "dataset_name": "phm_participant_extract",
     "id_column": "participant_id",
@@ -63,7 +63,7 @@ phm_participant_parameters = {
     "source_file_column": "phm_participant_extract_gsource_file",
 }
 
-phm_parameters = {
+survey_responses_phm_parameters = {
     "stage_name": "survey_responses_version_phm_ETL",
     "dataset_name": "survey_responses_phm",
     "id_column": "participant_completion_window_id",
@@ -71,7 +71,6 @@ phm_parameters = {
     "datetime_column_map": phm_datetime_map,
     "date_from_filename": False,
     "transformation_functions": [
-        # high_level_phm_transformations,
         phm_transformations,
     ],
     "sep": "|",
@@ -79,7 +78,7 @@ phm_parameters = {
     "source_file_column": "survey_response_source_file",
 }
 
-cis_digital_parameters = {
+survey_responses_digital_parameters = {
     "stage_name": "survey_responses_version_digital_ETL",
     "dataset_name": "survey_responses_digital",
     "id_column": "participant_completion_window_id",
@@ -201,9 +200,10 @@ historical_blood_results_parameters = {
 }
 
 for parameters in [
+    participant_extract_phm_parameters,
     participant_extract_digital_parameters,
-    phm_parameters,
-    cis_digital_parameters,
+    survey_responses_phm_parameters,
+    survey_responses_digital_parameters,
     survey_responses_v2_parameters,
     survey_responses_v1_parameters,
     survey_responses_v0_parameters,
@@ -211,6 +211,5 @@ for parameters in [
     blood_results_parameters,
     historical_blood_results_parameters,
     brants_bridge_parameters,
-    phm_parameters,
 ]:
     generate_input_processing_function(**parameters)  # type:ignore

@@ -15,9 +15,10 @@ from cishouseholds.validate import validate_processed_files
 
 
 class Report:
-    def __init__(self, output_directory: str = None):
+    def __init__(self, output_directory: str = None, output_file_prefix: str = "phm_report_output"):
         """"""
         self.output_directory = output_directory
+        self.output_file_prefx = output_file_prefix
         self.sheets: List[Tuple[DataFrame, str]] = []
         self.output = BytesIO()
 
@@ -25,7 +26,7 @@ class Report:
         """"""
         self.sheets.append((df, sheet_name))
 
-    def write_excel_output(self, output_directory: str = None):
+    def write_excel_output(self, output_directory: str = None, output_file_prefix: str = "phm_report_output"):
         output_directory = output_directory if output_directory else self.output_directory
         with pd.ExcelWriter(self.output) as writer:
             for df, sheet_name in self.sheets:
@@ -33,7 +34,7 @@ class Report:
 
         write_string_to_file(
             self.output.getbuffer(),
-            f"{output_directory}/phm_report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx",
+            f"{output_directory}/{output_file_prefix}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx",
         )
 
     @staticmethod
@@ -246,9 +247,11 @@ class Report:
         Runs the validate_processed_files on the input df and creates dfs and then sheets to add to the report object
         """
         spark_session = get_or_create_spark_session()
-        unprocessed, non_existent = validate_processed_files(df, source_file_column)
-        unprocessed_df = spark_session.createDataFrame(pd.DataFrame(unprocessed, columns=["file_path"]))
-        non_existent_df = spark_session.createDataFrame(pd.DataFrame(non_existent, columns=["file_path"]))
+        processed_files, unprocessed_files, non_existent_files = validate_processed_files(df, source_file_column)
+        processed_df = spark_session.createDataFrame(pd.DataFrame(processed_files, columns=["file_path"]))
+        unprocessed_df = spark_session.createDataFrame(pd.DataFrame(unprocessed_files, columns=["file_path"]))
+        non_existent_df = spark_session.createDataFrame(pd.DataFrame(non_existent_files, columns=["file_path"]))
 
+        self.add_sheet(processed_df, f"{sheet_name_prefix} processed file paths")
         self.add_sheet(unprocessed_df, f"{sheet_name_prefix} unprocessed file paths")
         self.add_sheet(non_existent_df, f"{sheet_name_prefix} nonexistent file paths")

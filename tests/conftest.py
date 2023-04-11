@@ -18,10 +18,10 @@ from pytest_regressions.data_regression import RegressionYamlDumper
 
 from cishouseholds.hdfs_utils import copy_local_to_hdfs
 from cishouseholds.pipeline.input_file_stages import blood_results_parameters
-from cishouseholds.pipeline.input_file_stages import cis_digital_parameters
 from cishouseholds.pipeline.input_file_stages import generate_input_processing_function
 from cishouseholds.pipeline.input_file_stages import participant_extract_digital_parameters
-from cishouseholds.pipeline.input_file_stages import phm_parameters
+from cishouseholds.pipeline.input_file_stages import survey_responses_digital_parameters
+from cishouseholds.pipeline.input_file_stages import survey_responses_phm_parameters
 from cishouseholds.pipeline.input_file_stages import survey_responses_v0_parameters
 from cishouseholds.pipeline.input_file_stages import survey_responses_v1_parameters
 from cishouseholds.pipeline.input_file_stages import survey_responses_v2_parameters
@@ -188,7 +188,9 @@ def responses_digital_ETL_output(pandas_df_to_temporary_csv, blood_barcodes, swa
     )
     pandas_df = pd.DataFrame(schema.create(iterations=10))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
-    processing_function = generate_input_processing_function(**cis_digital_parameters, include_hadoop_read_write=False)
+    processing_function = generate_input_processing_function(
+        **survey_responses_digital_parameters, include_hadoop_read_write=False
+    )
     processed_df = processing_function(resource_path=csv_file_path)
     return processed_df
 
@@ -203,7 +205,9 @@ def responses_phm_ETL_output(pandas_df_to_temporary_csv, blood_barcodes, swab_ba
     )
     pandas_df = pd.DataFrame(schema.create(iterations=10))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
-    processing_function = generate_input_processing_function(**phm_parameters, include_hadoop_read_write=False)
+    processing_function = generate_input_processing_function(
+        **survey_responses_phm_parameters, include_hadoop_read_write=False
+    )
     processed_df = processing_function(resource_path=csv_file_path)
     return processed_df
 

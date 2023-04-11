@@ -206,15 +206,15 @@ def validate_processed_files(df: DataFrame, source_file_column: str):
     for d in dirs:
         files = [f for f in list_contents(d, date_from_filename=False)["file_path"].to_list() if isinstance(f, str)]
         found_files.extend(files)
-    unprocessed = set(found_files) - set(dirs)
-    non_existent = set(dirs) - set(found_files)
+    unprocessed = set(found_files) - set(processed_files)
+    non_existent = set(processed_files) - set(found_files)
     if unprocessed:
         u = "\n".join(unprocessed)
         print(f"Found {len(unprocessed)} unprocessed files: {u}")  # functional
     if non_existent:
         n = "\n".join(non_existent)
         print(f"Found {len(non_existent)} files that have been processed but no longer exist: {n}")  # functional
-    return unprocessed, non_existent
+    return processed_files, unprocessed, non_existent
 
 
 def check_singular_match(
