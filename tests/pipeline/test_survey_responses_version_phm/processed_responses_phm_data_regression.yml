@@ -182,26 +182,26 @@
   think_had_other_infection_any_symptoms: null
   think_had_other_infection_no_symptoms_list_1: null
   think_had_other_infection_no_symptoms_list_2: None of these symptoms
-  think_had_other_symptom_abdominal_pain: null
-  think_had_other_symptom_anxiety: null
-  think_had_other_symptom_cough: null
-  think_had_other_symptom_diarrhoea: null
-  think_had_other_symptom_difficulty_concentrating: null
-  think_had_other_symptom_fatigue: 'Yes'
-  think_had_other_symptom_fever: null
-  think_had_other_symptom_headache: null
-  think_had_other_symptom_loss_of_appetite: null
-  think_had_other_symptom_loss_of_smell: 'Yes'
-  think_had_other_symptom_loss_of_taste: null
-  think_had_other_symptom_low_mood: null
-  think_had_other_symptom_memory_loss_or_confusion: null
-  think_had_other_symptom_more_trouble_sleeping: null
-  think_had_other_symptom_muscle_ache: null
-  think_had_other_symptom_nausea_or_vomiting: null
-  think_had_other_symptom_noisy_breathing: null
-  think_had_other_symptom_runny_nose_or_sneezing: null
-  think_had_other_symptom_shortness_of_breath: null
-  think_had_other_symptom_sore_throat: null
+  think_had_other_infection_symptom_abdominal_pain: null
+  think_had_other_infection_symptom_anxiety: null
+  think_had_other_infection_symptom_cough: null
+  think_had_other_infection_symptom_diarrhoea: null
+  think_had_other_infection_symptom_difficulty_concentrating: null
+  think_had_other_infection_symptom_fatigue: 'Yes'
+  think_had_other_infection_symptom_fever: null
+  think_had_other_infection_symptom_headache: null
+  think_had_other_infection_symptom_loss_of_appetite: null
+  think_had_other_infection_symptom_loss_of_smell: 'Yes'
+  think_had_other_infection_symptom_loss_of_taste: null
+  think_had_other_infection_symptom_low_mood: null
+  think_had_other_infection_symptom_memory_loss_or_confusion: null
+  think_had_other_infection_symptom_more_trouble_sleeping: null
+  think_had_other_infection_symptom_muscle_ache: null
+  think_had_other_infection_symptom_nausea_or_vomiting: null
+  think_had_other_infection_symptom_noisy_breathing: null
+  think_had_other_infection_symptom_runny_nose_or_sneezing: null
+  think_had_other_infection_symptom_shortness_of_breath: null
+  think_had_other_infection_symptom_sore_throat: null
   think_have_any_symptom_new_or_worse_list_1: Noisy breathing or wheezing;Diarrhoea
   think_have_any_symptom_new_or_worse_list_2: Memory loss or confusion;Worry or anxiety;Memory
     loss or confusion
@@ -526,26 +526,26 @@
   think_had_other_infection_any_symptoms: null
   think_had_other_infection_no_symptoms_list_1: null
   think_had_other_infection_no_symptoms_list_2: None of these symptoms
-  think_had_other_symptom_abdominal_pain: null
-  think_had_other_symptom_anxiety: null
-  think_had_other_symptom_cough: null
-  think_had_other_symptom_diarrhoea: 'Yes'
-  think_had_other_symptom_difficulty_concentrating: null
-  think_had_other_symptom_fatigue: null
-  think_had_other_symptom_fever: null
-  think_had_other_symptom_headache: null
-  think_had_other_symptom_loss_of_appetite: null
-  think_had_other_symptom_loss_of_smell: null
-  think_had_other_symptom_loss_of_taste: null
-  think_had_other_symptom_low_mood: 'Yes'
-  think_had_other_symptom_memory_loss_or_confusion: null
-  think_had_other_symptom_more_trouble_sleeping: null
-  think_had_other_symptom_muscle_ache: null
-  think_had_other_symptom_nausea_or_vomiting: null
-  think_had_other_symptom_noisy_breathing: null
-  think_had_other_symptom_runny_nose_or_sneezing: null
-  think_had_other_symptom_shortness_of_breath: null
-  think_had_other_symptom_sore_throat: null
+  think_had_other_infection_symptom_abdominal_pain: null
+  think_had_other_infection_symptom_anxiety: null
+  think_had_other_infection_symptom_cough: null
+  think_had_other_infection_symptom_diarrhoea: 'Yes'
+  think_had_other_infection_symptom_difficulty_concentrating: null
+  think_had_other_infection_symptom_fatigue: null
+  think_had_other_infection_symptom_fever: null
+  think_had_other_infection_symptom_headache: null
+  think_had_other_infection_symptom_loss_of_appetite: null
+  think_had_other_infection_symptom_loss_of_smell: null
+  think_had_other_infection_symptom_loss_of_taste: null
+  think_had_other_infection_symptom_low_mood: 'Yes'
+  think_had_other_infection_symptom_memory_loss_or_confusion: null
+  think_had_other_infection_symptom_more_trouble_sleeping: null
+  think_had_other_infection_symptom_muscle_ache: null
+  think_had_other_infection_symptom_nausea_or_vomiting: null
+  think_had_other_infection_symptom_noisy_breathing: null
+  think_had_other_infection_symptom_runny_nose_or_sneezing: null
+  think_had_other_infection_symptom_shortness_of_breath: null
+  think_had_other_infection_symptom_sore_throat: null
   think_have_any_symptom_new_or_worse_list_1: Loss of taste;Cough
   think_have_any_symptom_new_or_worse_list_2: Fever including high temperature;Weakness
     or tiredness;Weakness or tiredness
@@ -876,26 +876,26 @@
   think_had_other_infection_any_symptoms: null
   think_had_other_infection_no_symptoms_list_1: null
   think_had_other_infection_no_symptoms_list_2: null
-  think_had_other_symptom_abdominal_pain: null
-  think_had_other_symptom_anxiety: null
-  think_had_other_symptom_cough: null
-  think_had_other_symptom_diarrhoea: null
-  think_had_other_symptom_difficulty_concentrating: null
-  think_had_other_symptom_fatigue: null
-  think_had_other_symptom_fever: null
-  think_had_other_symptom_headache: null
-  think_had_other_symptom_loss_of_appetite: 'Yes'
-  think_had_other_symptom_loss_of_smell: null
-  think_had_other_symptom_loss_of_taste: null
-  think_had_other_symptom_low_mood: null
-  think_had_other_symptom_memory_loss_or_confusion: null
-  think_had_other_symptom_more_trouble_sleeping: null
-  think_had_other_symptom_muscle_ache: 'Yes'
-  think_had_other_symptom_nausea_or_vomiting: null
-  think_had_other_symptom_noisy_breathing: null
-  think_had_other_symptom_runny_nose_or_sneezing: null
-  think_had_other_symptom_shortness_of_breath: null
-  think_had_other_symptom_sore_throat: null
+  think_had_other_infection_symptom_abdominal_pain: null
+  think_had_other_infection_symptom_anxiety: null
+  think_had_other_infection_symptom_cough: null
+  think_had_other_infection_symptom_diarrhoea: null
+  think_had_other_infection_symptom_difficulty_concentrating: null
+  think_had_other_infection_symptom_fatigue: null
+  think_had_other_infection_symptom_fever: null
+  think_had_other_infection_symptom_headache: null
+  think_had_other_infection_symptom_loss_of_appetite: 'Yes'
+  think_had_other_infection_symptom_loss_of_smell: null
+  think_had_other_infection_symptom_loss_of_taste: null
+  think_had_other_infection_symptom_low_mood: null
+  think_had_other_infection_symptom_memory_loss_or_confusion: null
+  think_had_other_infection_symptom_more_trouble_sleeping: null
+  think_had_other_infection_symptom_muscle_ache: 'Yes'
+  think_had_other_infection_symptom_nausea_or_vomiting: null
+  think_had_other_infection_symptom_noisy_breathing: null
+  think_had_other_infection_symptom_runny_nose_or_sneezing: null
+  think_had_other_infection_symptom_shortness_of_breath: null
+  think_had_other_infection_symptom_sore_throat: null
   think_have_any_symptom_new_or_worse_list_1: Loss of taste;Runny nose or sneezing
   think_have_any_symptom_new_or_worse_list_2: Muscle ache;Weakness or tiredness;Worry
     or anxiety
@@ -1225,26 +1225,26 @@
   think_had_other_infection_any_symptoms: 'Yes'
   think_had_other_infection_no_symptoms_list_1: null
   think_had_other_infection_no_symptoms_list_2: null
-  think_had_other_symptom_abdominal_pain: null
-  think_had_other_symptom_anxiety: null
-  think_had_other_symptom_cough: null
-  think_had_other_symptom_diarrhoea: null
-  think_had_other_symptom_difficulty_concentrating: null
-  think_had_other_symptom_fatigue: null
-  think_had_other_symptom_fever: null
-  think_had_other_symptom_headache: null
-  think_had_other_symptom_loss_of_appetite: null
-  think_had_other_symptom_loss_of_smell: null
-  think_had_other_symptom_loss_of_taste: 'Yes'
-  think_had_other_symptom_low_mood: null
-  think_had_other_symptom_memory_loss_or_confusion: 'Yes'
-  think_had_other_symptom_more_trouble_sleeping: null
-  think_had_other_symptom_muscle_ache: null
-  think_had_other_symptom_nausea_or_vomiting: null
-  think_had_other_symptom_noisy_breathing: null
-  think_had_other_symptom_runny_nose_or_sneezing: null
-  think_had_other_symptom_shortness_of_breath: null
-  think_had_other_symptom_sore_throat: null
+  think_had_other_infection_symptom_abdominal_pain: null
+  think_had_other_infection_symptom_anxiety: null
+  think_had_other_infection_symptom_cough: null
+  think_had_other_infection_symptom_diarrhoea: null
+  think_had_other_infection_symptom_difficulty_concentrating: null
+  think_had_other_infection_symptom_fatigue: null
+  think_had_other_infection_symptom_fever: null
+  think_had_other_infection_symptom_headache: null
+  think_had_other_infection_symptom_loss_of_appetite: null
+  think_had_other_infection_symptom_loss_of_smell: null
+  think_had_other_infection_symptom_loss_of_taste: 'Yes'
+  think_had_other_infection_symptom_low_mood: null
+  think_had_other_infection_symptom_memory_loss_or_confusion: 'Yes'
+  think_had_other_infection_symptom_more_trouble_sleeping: null
+  think_had_other_infection_symptom_muscle_ache: null
+  think_had_other_infection_symptom_nausea_or_vomiting: null
+  think_had_other_infection_symptom_noisy_breathing: null
+  think_had_other_infection_symptom_runny_nose_or_sneezing: null
+  think_had_other_infection_symptom_shortness_of_breath: null
+  think_had_other_infection_symptom_sore_throat: null
   think_have_any_symptom_new_or_worse_list_1: Loss of appetite or eating less than
     usual;Diarrhoea
   think_have_any_symptom_new_or_worse_list_2: Memory loss or confusion;Difficulty
@@ -1576,26 +1576,26 @@
   think_had_other_infection_any_symptoms: 'Yes'
   think_had_other_infection_no_symptoms_list_1: null
   think_had_other_infection_no_symptoms_list_2: None of these symptoms
-  think_had_other_symptom_abdominal_pain: 'Yes'
-  think_had_other_symptom_anxiety: null
-  think_had_other_symptom_cough: null
-  think_had_other_symptom_diarrhoea: null
-  think_had_other_symptom_difficulty_concentrating: null
-  think_had_other_symptom_fatigue: null
-  think_had_other_symptom_fever: null
-  think_had_other_symptom_headache: null
-  think_had_other_symptom_loss_of_appetite: null
-  think_had_other_symptom_loss_of_smell: null
-  think_had_other_symptom_loss_of_taste: null
-  think_had_other_symptom_low_mood: null
-  think_had_other_symptom_memory_loss_or_confusion: null
-  think_had_other_symptom_more_trouble_sleeping: null
-  think_had_other_symptom_muscle_ache: 'Yes'
-  think_had_other_symptom_nausea_or_vomiting: null
-  think_had_other_symptom_noisy_breathing: null
-  think_had_other_symptom_runny_nose_or_sneezing: null
-  think_had_other_symptom_shortness_of_breath: null
-  think_had_other_symptom_sore_throat: null
+  think_had_other_infection_symptom_abdominal_pain: 'Yes'
+  think_had_other_infection_symptom_anxiety: null
+  think_had_other_infection_symptom_cough: null
+  think_had_other_infection_symptom_diarrhoea: null
+  think_had_other_infection_symptom_difficulty_concentrating: null
+  think_had_other_infection_symptom_fatigue: null
+  think_had_other_infection_symptom_fever: null
+  think_had_other_infection_symptom_headache: null
+  think_had_other_infection_symptom_loss_of_appetite: null
+  think_had_other_infection_symptom_loss_of_smell: null
+  think_had_other_infection_symptom_loss_of_taste: null
+  think_had_other_infection_symptom_low_mood: null
+  think_had_other_infection_symptom_memory_loss_or_confusion: null
+  think_had_other_infection_symptom_more_trouble_sleeping: null
+  think_had_other_infection_symptom_muscle_ache: 'Yes'
+  think_had_other_infection_symptom_nausea_or_vomiting: null
+  think_had_other_infection_symptom_noisy_breathing: null
+  think_had_other_infection_symptom_runny_nose_or_sneezing: null
+  think_had_other_infection_symptom_shortness_of_breath: null
+  think_had_other_infection_symptom_sore_throat: null
   think_have_any_symptom_new_or_worse_list_1: Sore throat;Abdominal pain
   think_have_any_symptom_new_or_worse_list_2: Fever including high temperature;Muscle
     ache;More trouble sleeping than usual
@@ -1925,26 +1925,26 @@
   think_had_other_infection_any_symptoms: 'Yes'
   think_had_other_infection_no_symptoms_list_1: null
   think_had_other_infection_no_symptoms_list_2: null
-  think_had_other_symptom_abdominal_pain: null
-  think_had_other_symptom_anxiety: null
-  think_had_other_symptom_cough: null
-  think_had_other_symptom_diarrhoea: null
-  think_had_other_symptom_difficulty_concentrating: 'Yes'
-  think_had_other_symptom_fatigue: null
-  think_had_other_symptom_fever: null
-  think_had_other_symptom_headache: null
-  think_had_other_symptom_loss_of_appetite: null
-  think_had_other_symptom_loss_of_smell: null
-  think_had_other_symptom_loss_of_taste: null
-  think_had_other_symptom_low_mood: null
-  think_had_other_symptom_memory_loss_or_confusion: null
-  think_had_other_symptom_more_trouble_sleeping: null
-  think_had_other_symptom_muscle_ache: null
-  think_had_other_symptom_nausea_or_vomiting: null
-  think_had_other_symptom_noisy_breathing: null
-  think_had_other_symptom_runny_nose_or_sneezing: null
-  think_had_other_symptom_shortness_of_breath: null
-  think_had_other_symptom_sore_throat: 'Yes'
+  think_had_other_infection_symptom_abdominal_pain: null
+  think_had_other_infection_symptom_anxiety: null
+  think_had_other_infection_symptom_cough: null
+  think_had_other_infection_symptom_diarrhoea: null
+  think_had_other_infection_symptom_difficulty_concentrating: 'Yes'
+  think_had_other_infection_symptom_fatigue: null
+  think_had_other_infection_symptom_fever: null
+  think_had_other_infection_symptom_headache: null
+  think_had_other_infection_symptom_loss_of_appetite: null
+  think_had_other_infection_symptom_loss_of_smell: null
+  think_had_other_infection_symptom_loss_of_taste: null
+  think_had_other_infection_symptom_low_mood: null
+  think_had_other_infection_symptom_memory_loss_or_confusion: null
+  think_had_other_infection_symptom_more_trouble_sleeping: null
+  think_had_other_infection_symptom_muscle_ache: null
+  think_had_other_infection_symptom_nausea_or_vomiting: null
+  think_had_other_infection_symptom_noisy_breathing: null
+  think_had_other_infection_symptom_runny_nose_or_sneezing: null
+  think_had_other_infection_symptom_shortness_of_breath: null
+  think_had_other_infection_symptom_sore_throat: 'Yes'
   think_have_any_symptom_new_or_worse_list_1: Noisy breathing or wheezing;Cough
   think_have_any_symptom_new_or_worse_list_2: Memory loss or confusion;More trouble
     sleeping than usual;Low mood or not enjoying anything
@@ -2272,26 +2272,26 @@
   think_had_other_infection_any_symptoms: null
   think_had_other_infection_no_symptoms_list_1: None of these symptoms
   think_had_other_infection_no_symptoms_list_2: null
-  think_had_other_symptom_abdominal_pain: null
-  think_had_other_symptom_anxiety: null
-  think_had_other_symptom_cough: null
-  think_had_other_symptom_diarrhoea: null
-  think_had_other_symptom_difficulty_concentrating: null
-  think_had_other_symptom_fatigue: null
-  think_had_other_symptom_fever: null
-  think_had_other_symptom_headache: null
-  think_had_other_symptom_loss_of_appetite: null
-  think_had_other_symptom_loss_of_smell: null
-  think_had_other_symptom_loss_of_taste: null
-  think_had_other_symptom_low_mood: 'Yes'
-  think_had_other_symptom_memory_loss_or_confusion: null
-  think_had_other_symptom_more_trouble_sleeping: null
-  think_had_other_symptom_muscle_ache: null
-  think_had_other_symptom_nausea_or_vomiting: null
-  think_had_other_symptom_noisy_breathing: null
-  think_had_other_symptom_runny_nose_or_sneezing: null
-  think_had_other_symptom_shortness_of_breath: 'Yes'
-  think_had_other_symptom_sore_throat: null
+  think_had_other_infection_symptom_abdominal_pain: null
+  think_had_other_infection_symptom_anxiety: null
+  think_had_other_infection_symptom_cough: null
+  think_had_other_infection_symptom_diarrhoea: null
+  think_had_other_infection_symptom_difficulty_concentrating: null
+  think_had_other_infection_symptom_fatigue: null
+  think_had_other_infection_symptom_fever: null
+  think_had_other_infection_symptom_headache: null
+  think_had_other_infection_symptom_loss_of_appetite: null
+  think_had_other_infection_symptom_loss_of_smell: null
+  think_had_other_infection_symptom_loss_of_taste: null
+  think_had_other_infection_symptom_low_mood: 'Yes'
+  think_had_other_infection_symptom_memory_loss_or_confusion: null
+  think_had_other_infection_symptom_more_trouble_sleeping: null
+  think_had_other_infection_symptom_muscle_ache: null
+  think_had_other_infection_symptom_nausea_or_vomiting: null
+  think_had_other_infection_symptom_noisy_breathing: null
+  think_had_other_infection_symptom_runny_nose_or_sneezing: null
+  think_had_other_infection_symptom_shortness_of_breath: 'Yes'
+  think_had_other_infection_symptom_sore_throat: null
   think_have_any_symptom_new_or_worse_list_1: Loss of appetite or eating less than
     usual;Shortness of breath
   think_have_any_symptom_new_or_worse_list_2: Headache;Headache;Headache
@@ -2617,26 +2617,26 @@
   think_had_other_infection_any_symptoms: 'Yes'
   think_had_other_infection_no_symptoms_list_1: null
   think_had_other_infection_no_symptoms_list_2: null
-  think_had_other_symptom_abdominal_pain: null
-  think_had_other_symptom_anxiety: 'Yes'
-  think_had_other_symptom_cough: null
-  think_had_other_symptom_diarrhoea: 'Yes'
-  think_had_other_symptom_difficulty_concentrating: null
-  think_had_other_symptom_fatigue: null
-  think_had_other_symptom_fever: null
-  think_had_other_symptom_headache: null
-  think_had_other_symptom_loss_of_appetite: null
-  think_had_other_symptom_loss_of_smell: null
-  think_had_other_symptom_loss_of_taste: null
-  think_had_other_symptom_low_mood: null
-  think_had_other_symptom_memory_loss_or_confusion: null
-  think_had_other_symptom_more_trouble_sleeping: null
-  think_had_other_symptom_muscle_ache: null
-  think_had_other_symptom_nausea_or_vomiting: null
-  think_had_other_symptom_noisy_breathing: null
-  think_had_other_symptom_runny_nose_or_sneezing: null
-  think_had_other_symptom_shortness_of_breath: null
-  think_had_other_symptom_sore_throat: null
+  think_had_other_infection_symptom_abdominal_pain: null
+  think_had_other_infection_symptom_anxiety: 'Yes'
+  think_had_other_infection_symptom_cough: null
+  think_had_other_infection_symptom_diarrhoea: 'Yes'
+  think_had_other_infection_symptom_difficulty_concentrating: null
+  think_had_other_infection_symptom_fatigue: null
+  think_had_other_infection_symptom_fever: null
+  think_had_other_infection_symptom_headache: null
+  think_had_other_infection_symptom_loss_of_appetite: null
+  think_had_other_infection_symptom_loss_of_smell: null
+  think_had_other_infection_symptom_loss_of_taste: null
+  think_had_other_infection_symptom_low_mood: null
+  think_had_other_infection_symptom_memory_loss_or_confusion: null
+  think_had_other_infection_symptom_more_trouble_sleeping: null
+  think_had_other_infection_symptom_muscle_ache: null
+  think_had_other_infection_symptom_nausea_or_vomiting: null
+  think_had_other_infection_symptom_noisy_breathing: null
+  think_had_other_infection_symptom_runny_nose_or_sneezing: null
+  think_had_other_infection_symptom_shortness_of_breath: null
+  think_had_other_infection_symptom_sore_throat: null
   think_have_any_symptom_new_or_worse_list_1: Sore throat;Noisy breathing or wheezing
   think_have_any_symptom_new_or_worse_list_2: Headache;Weakness or tiredness;Fever
     including high temperature
@@ -2966,26 +2966,26 @@
   think_had_other_infection_any_symptoms: null
   think_had_other_infection_no_symptoms_list_1: None of these symptoms
   think_had_other_infection_no_symptoms_list_2: None of these symptoms
-  think_had_other_symptom_abdominal_pain: null
-  think_had_other_symptom_anxiety: 'Yes'
-  think_had_other_symptom_cough: null
-  think_had_other_symptom_diarrhoea: null
-  think_had_other_symptom_difficulty_concentrating: null
-  think_had_other_symptom_fatigue: null
-  think_had_other_symptom_fever: null
-  think_had_other_symptom_headache: null
-  think_had_other_symptom_loss_of_appetite: null
-  think_had_other_symptom_loss_of_smell: null
-  think_had_other_symptom_loss_of_taste: null
-  think_had_other_symptom_low_mood: null
-  think_had_other_symptom_memory_loss_or_confusion: null
-  think_had_other_symptom_more_trouble_sleeping: null
-  think_had_other_symptom_muscle_ache: null
-  think_had_other_symptom_nausea_or_vomiting: null
-  think_had_other_symptom_noisy_breathing: 'Yes'
-  think_had_other_symptom_runny_nose_or_sneezing: null
-  think_had_other_symptom_shortness_of_breath: null
-  think_had_other_symptom_sore_throat: null
+  think_had_other_infection_symptom_abdominal_pain: null
+  think_had_other_infection_symptom_anxiety: 'Yes'
+  think_had_other_infection_symptom_cough: null
+  think_had_other_infection_symptom_diarrhoea: null
+  think_had_other_infection_symptom_difficulty_concentrating: null
+  think_had_other_infection_symptom_fatigue: null
+  think_had_other_infection_symptom_fever: null
+  think_had_other_infection_symptom_headache: null
+  think_had_other_infection_symptom_loss_of_appetite: null
+  think_had_other_infection_symptom_loss_of_smell: null
+  think_had_other_infection_symptom_loss_of_taste: null
+  think_had_other_infection_symptom_low_mood: null
+  think_had_other_infection_symptom_memory_loss_or_confusion: null
+  think_had_other_infection_symptom_more_trouble_sleeping: null
+  think_had_other_infection_symptom_muscle_ache: null
+  think_had_other_infection_symptom_nausea_or_vomiting: null
+  think_had_other_infection_symptom_noisy_breathing: 'Yes'
+  think_had_other_infection_symptom_runny_nose_or_sneezing: null
+  think_had_other_infection_symptom_shortness_of_breath: null
+  think_had_other_infection_symptom_sore_throat: null
   think_have_any_symptom_new_or_worse_list_1: Runny nose or sneezing;Nausea or vomiting
   think_have_any_symptom_new_or_worse_list_2: Memory loss or confusion;Weakness or
     tiredness;Difficulty concentrating
@@ -3313,26 +3313,26 @@
   think_had_other_infection_any_symptoms: null
   think_had_other_infection_no_symptoms_list_1: None of these symptoms
   think_had_other_infection_no_symptoms_list_2: null
-  think_had_other_symptom_abdominal_pain: null
-  think_had_other_symptom_anxiety: null
-  think_had_other_symptom_cough: null
-  think_had_other_symptom_diarrhoea: null
-  think_had_other_symptom_difficulty_concentrating: null
-  think_had_other_symptom_fatigue: 'Yes'
-  think_had_other_symptom_fever: null
-  think_had_other_symptom_headache: null
-  think_had_other_symptom_loss_of_appetite: null
-  think_had_other_symptom_loss_of_smell: null
-  think_had_other_symptom_loss_of_taste: 'Yes'
-  think_had_other_symptom_low_mood: null
-  think_had_other_symptom_memory_loss_or_confusion: null
-  think_had_other_symptom_more_trouble_sleeping: null
-  think_had_other_symptom_muscle_ache: null
-  think_had_other_symptom_nausea_or_vomiting: null
-  think_had_other_symptom_noisy_breathing: null
-  think_had_other_symptom_runny_nose_or_sneezing: null
-  think_had_other_symptom_shortness_of_breath: null
-  think_had_other_symptom_sore_throat: null
+  think_had_other_infection_symptom_abdominal_pain: null
+  think_had_other_infection_symptom_anxiety: null
+  think_had_other_infection_symptom_cough: null
+  think_had_other_infection_symptom_diarrhoea: null
+  think_had_other_infection_symptom_difficulty_concentrating: null
+  think_had_other_infection_symptom_fatigue: 'Yes'
+  think_had_other_infection_symptom_fever: null
+  think_had_other_infection_symptom_headache: null
+  think_had_other_infection_symptom_loss_of_appetite: null
+  think_had_other_infection_symptom_loss_of_smell: null
+  think_had_other_infection_symptom_loss_of_taste: 'Yes'
+  think_had_other_infection_symptom_low_mood: null
+  think_had_other_infection_symptom_memory_loss_or_confusion: null
+  think_had_other_infection_symptom_more_trouble_sleeping: null
+  think_had_other_infection_symptom_muscle_ache: null
+  think_had_other_infection_symptom_nausea_or_vomiting: null
+  think_had_other_infection_symptom_noisy_breathing: null
+  think_had_other_infection_symptom_runny_nose_or_sneezing: null
+  think_had_other_infection_symptom_shortness_of_breath: null
+  think_had_other_infection_symptom_sore_throat: null
   think_have_any_symptom_new_or_worse_list_1: Nausea or vomiting;Nausea or vomiting
   think_have_any_symptom_new_or_worse_list_2: Muscle ache;More trouble sleeping than
     usual;More trouble sleeping than usual
