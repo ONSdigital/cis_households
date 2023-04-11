@@ -132,6 +132,7 @@ def table_to_table(
     alternate_prefix: str = None,
     alternate_database: str = None,
     transformation_functions: List[str] = [],
+    latest_table: bool = True,
 ):
     """
     Extracts a HIVE table, with an alternate prefix, and saves it out with the project prefix
@@ -148,8 +149,10 @@ def table_to_table(
         alternate database to use for input HIVE table being copied
     transformation_functions: List[str]
         list of transformation functions to be run on the dataframe
+    latest_table: bool
+        If table_name has multiple versions (suffixed with _YYYYMMDD, take the latest one)
     """
-    df = extract_from_table(table_name, break_lineage, alternate_prefix, alternate_database)
+    df = extract_from_table(table_name, break_lineage, alternate_prefix, alternate_database, latest_table)
     transformations_dict: Dict[str, Any]
     transformations_dict = {
         "partcipant_extract_phm": transform_participant_extract_phm,

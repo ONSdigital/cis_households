@@ -91,7 +91,11 @@ def delete_tables(
 
 
 def extract_from_table(
-    table_name: str, break_lineage: bool = False, alternate_prefix: str = None, alternate_database: str = None
+    table_name: str,
+    break_lineage: bool = False,
+    alternate_prefix: str = None,
+    alternate_database: str = None,
+    latest_table: bool = False,
 ) -> DataFrame:
     spark_session = get_or_create_spark_session()
     check_table_exists(
@@ -99,9 +103,11 @@ def extract_from_table(
     )
     if break_lineage:
         return spark_session.sql(
-            f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix, alternate_database)}"
+            f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix, alternate_database, latest_table)}"
         ).checkpoint()
-    return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix, alternate_database)}")
+    return spark_session.sql(
+        f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix, alternate_database, latest_table)}"
+    )
 
 
 def update_table(
@@ -187,11 +193,16 @@ def get_run_id():
     return run_id
 
 
-def get_full_table_name(table_short_name, alternate_prefix: str = None, alternate_database: str = None):
+def get_full_table_name(
+    table_short_name, alternate_prefix: str = None, alternate_database: str = None, latest_table: bool = False
+):
     """
     Get the full database.table_name address for the specified table.
     Based on database and name prefix from config.
     alternate database offered if want to use alternative to storage settings
+    latest table:
+       Used for when tables are suffixed with a date e.g. tablename_yyyymmdd. If True will return the latest
+       table from the database
     """
     storage_config = get_config()["storage"]
     if alternate_database is not None:
@@ -200,6 +211,13 @@ def get_full_table_name(table_short_name, alternate_prefix: str = None, alternat
         database = f'{storage_config["database"]}'
     if alternate_prefix is not None:
         return f"{database}.{alternate_prefix}{table_short_name}"
+    if latest_table:
+        spark_session = get_or_create_spark_session()
+        table_names_df = spark_session.sql(f"show tables in {database} like '{table_short_name}_20*'")
+        table_names_lst = table_names_df.select("tableName").rdd.flatMap(lambda x: x).collect()
+        table_short_name = table_names_lst[-1:]
+    else:
+        return table_short_name
     return f'{database}.{storage_config["table_prefix"]}{table_short_name}'
 
 
