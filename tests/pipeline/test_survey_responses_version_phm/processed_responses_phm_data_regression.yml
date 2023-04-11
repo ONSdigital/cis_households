@@ -49,8 +49,8 @@
   file_date: '2022-01-03 11:24:22.000000'
   flu_vaccine_date: '2022-01-05 00:00:00.000000'
   flu_vaccine_received: 'No'
-  form_language_launch: en
-  form_language_submitted: en
+  form_language_launch: English
+  form_language_submitted: English
   hospital_last_28_days: 'Yes'
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: null
@@ -391,8 +391,8 @@
   file_date: '2022-01-04 21:54:33.000000'
   flu_vaccine_date: '2022-01-07 00:00:00.000000'
   flu_vaccine_received: 'Yes'
-  form_language_launch: we
-  form_language_submitted: en
+  form_language_launch: Welsh
+  form_language_submitted: English
   hospital_last_28_days: 'Yes'
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: null
@@ -740,8 +740,8 @@
   file_date: '2022-01-05 02:16:54.000000'
   flu_vaccine_date: '2022-01-06 00:00:00.000000'
   flu_vaccine_received: 'No'
-  form_language_launch: we
-  form_language_submitted: we
+  form_language_launch: Welsh
+  form_language_submitted: Welsh
   hospital_last_28_days: 'No'
   illness_lasting_over_12_months: Prefer not to say
   illness_reduces_activity_or_ability: Yes, a lot
@@ -1086,8 +1086,8 @@
   file_date: null
   flu_vaccine_date: '2022-01-05 00:00:00.000000'
   flu_vaccine_received: 'Yes'
-  form_language_launch: en
-  form_language_submitted: we
+  form_language_launch: English
+  form_language_submitted: Welsh
   hospital_last_28_days: 'No'
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Not at all
@@ -1435,8 +1435,8 @@
   file_date: '2022-01-06 14:03:46.000000'
   flu_vaccine_date: '2022-01-08 00:00:00.000000'
   flu_vaccine_received: Prefer not to say
-  form_language_launch: en
-  form_language_submitted: en
+  form_language_launch: English
+  form_language_submitted: English
   hospital_last_28_days: null
   illness_lasting_over_12_months: 'No'
   illness_reduces_activity_or_ability: Not at all
@@ -1783,8 +1783,8 @@
   file_date: null
   flu_vaccine_date: '2022-01-03 00:00:00.000000'
   flu_vaccine_received: 'Yes'
-  form_language_launch: en
-  form_language_submitted: we
+  form_language_launch: English
+  form_language_submitted: Welsh
   hospital_last_28_days: 'No'
   illness_lasting_over_12_months: 'Yes'
   illness_reduces_activity_or_ability: Yes, a little
@@ -2133,8 +2133,8 @@
   file_date: '2022-01-06 13:36:00.000000'
   flu_vaccine_date: '2022-01-04 00:00:00.000000'
   flu_vaccine_received: 'Yes'
-  form_language_launch: en
-  form_language_submitted: en
+  form_language_launch: English
+  form_language_submitted: English
   hospital_last_28_days: 'No'
   illness_lasting_over_12_months: Prefer not to say
   illness_reduces_activity_or_ability: Not at all
@@ -2476,8 +2476,8 @@
   file_date: '2022-01-04 13:29:23.000000'
   flu_vaccine_date: null
   flu_vaccine_received: 'Yes'
-  form_language_launch: we
-  form_language_submitted: en
+  form_language_launch: Welsh
+  form_language_submitted: English
   hospital_last_28_days: 'No'
   illness_lasting_over_12_months: Prefer not to say
   illness_reduces_activity_or_ability: Yes, a lot
@@ -2823,8 +2823,8 @@
   file_date: '2022-01-04 21:06:25.000000'
   flu_vaccine_date: null
   flu_vaccine_received: 'No'
-  form_language_launch: we
-  form_language_submitted: en
+  form_language_launch: Welsh
+  form_language_submitted: English
   hospital_last_28_days: null
   illness_lasting_over_12_months: Prefer not to say
   illness_reduces_activity_or_ability: Yes, a little
@@ -3170,8 +3170,8 @@
   file_date: '2022-01-08 21:17:43.000000'
   flu_vaccine_date: '2022-01-02 00:00:00.000000'
   flu_vaccine_received: 'No'
-  form_language_launch: we
-  form_language_submitted: we
+  form_language_launch: Welsh
+  form_language_submitted: Welsh
   hospital_last_28_days: 'Yes'
   illness_lasting_over_12_months: Prefer not to say
   illness_reduces_activity_or_ability: Yes, a lot

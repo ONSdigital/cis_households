@@ -15,9 +15,10 @@ from cishouseholds.validate import validate_processed_files
 
 
 class Report:
-    def __init__(self, output_directory: str = None):
+    def __init__(self, output_directory: str = None, output_file_prefix: str = "phm_report_output"):
         """"""
         self.output_directory = output_directory
+        self.output_file_prefx = output_file_prefix
         self.sheets: List[Tuple[DataFrame, str]] = []
         self.output = BytesIO()
 
@@ -25,7 +26,7 @@ class Report:
         """"""
         self.sheets.append((df, sheet_name))
 
-    def write_excel_output(self, output_directory: str = None):
+    def write_excel_output(self, output_directory: str = None, output_file_prefix: str = "phm_report_output"):
         output_directory = output_directory if output_directory else self.output_directory
         with pd.ExcelWriter(self.output) as writer:
             for df, sheet_name in self.sheets:
@@ -33,7 +34,7 @@ class Report:
 
         write_string_to_file(
             self.output.getbuffer(),
-            f"{output_directory}/phm_report_output_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx",
+            f"{output_directory}/{output_file_prefix}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.xlsx",
         )
 
     @staticmethod

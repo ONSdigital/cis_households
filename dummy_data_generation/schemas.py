@@ -3384,8 +3384,8 @@ phm_date_format = "%Y-%m-%d"
 def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
     return lambda: {  # noqa: E731
         "portal_id": _("custom_random.random_integer", lower=1000, upper=12000, null_percent=0),
-        "form_language_launch": _("choice", items=["en", "we"]),
-        "form_language_submitted": _("choice", items=["en", "we"]),
+        "form_language_launch": _("choice", items=["en", "cy"]),
+        "form_language_submitted": _("choice", items=["en", "cy"]),
         "survey_completed_datetime": _(
             "discrete_distribution",
             population=[
