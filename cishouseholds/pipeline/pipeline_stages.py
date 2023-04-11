@@ -1087,7 +1087,6 @@ def phm_validation_report(
     df = extract_from_table(input_survey_table)
     report = Report(output_directory=output_directory, output_file_prefix="phm_validation_output")
     report.create_validated_file_list(df=df, source_file_column="survey_response_source_file", sheet_name_prefix="all")
-=======
     report.create_completion_table_days(
         df=df,
         participant_id_column="participant_id",
