@@ -29,6 +29,7 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_strings_to_sentence_case
 from cishouseholds.edit import update_value_if_multiple_and_ref_in_list
 from cishouseholds.expressions import all_columns_values_in_list
+from cishouseholds.expressions import any_column_not_null
 from cishouseholds.pipeline.mapping import transformation_maps
 
 # THIS IS A DIRECT COPY OF A DIGITAL VERSION-SPECIFIC TRANSFORMATIONS - NEEDS TO BE UPDATED WITH THE PHM-SPECIFIC TRANSFORMATIONS AND THEN THEN THE REDUNDANT PROCESSES CLEANED UP
@@ -276,7 +277,7 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
             F.to_timestamp(F.col("participant_completion_window_end_date"), format="yyyy-MM-dd"),
         ).otherwise(F.to_timestamp(F.col("survey_completed_datetime"), format="yyyy-MM-dd HH:mm:ss")),
     )
-    df = assign_any_symptoms(df)
+
     # df = split_array_columns(df)
     map_to_bool_columns_dict = {
         "currently_smokes_or_vapes_description": "",
@@ -310,6 +311,8 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
             col_to_map, F.regexp_replace(col_to_map, r", ", ";")
         )
         df = map_options_to_bool_columns(df, col_to_map, value_column_map, ";")
+
+    df = assign_any_symptoms(df)
 
     column_list = ["work_status_digital", "work_status_employment", "work_status_unemployment", "work_status_education"]
     df = assign_column_value_from_multiple_column_map(
@@ -744,51 +747,92 @@ def assign_any_symptoms(df: DataFrame):
     df = df.withColumn(
         "think_have_covid_any_symptoms",
         F.when(
-            ~(F.col("think_have_covid_no_symptoms_list_1").contains("None of these symptoms"))
-            | ~(F.col("think_have_covid_no_symptoms_list_2").contains("None of these symptoms")),
+            (F.col("think_have_covid_no_symptoms_list_1").contains("None of these symptoms"))
+            & (F.col("think_have_covid_no_symptoms_list_2").contains("None of these symptoms")),
+            "No",
+        )
+        .when(
+            any_column_not_null(["think_have_covid_any_symptom_list_1", "think_have_covid_any_symptom_list_2"]),
             "Yes",
-        ).otherwise("No"),
+        )
+        .otherwise(None),
     )
+
     df = df.withColumn(
         "think_have_any_symptoms_new_or_worse",
         F.when(
-            ~(F.col("think_have_no_symptoms_new_or_worse_list_1").contains("None of these symptoms"))
-            | ~(F.col("think_have_no_symptoms_new_or_worse_list_2").contains("None of these symptoms")),
+            (F.col("think_have_no_symptoms_new_or_worse_list_1").contains("None of these symptoms"))
+            & (F.col("think_have_no_symptoms_new_or_worse_list_1").contains("None of these symptoms")),
+            "No",
+        )
+        .when(
+            any_column_not_null(
+                ["think_have_any_symptom_new_or_worse_list_1", "think_have_any_symptom_new_or_worse_list_2"]
+            ),
             "Yes",
-        ).otherwise("No"),
+        )
+        .otherwise(None),
     )
     df = df.withColumn(
         "think_have_long_covid_any_symptoms",
-        F.when(
-            ~(F.col("think_have_long_covid_no_symptoms_list_1").contains("None of these symptoms"))
-            | ~(F.col("think_have_long_covid_no_symptoms_list_2").contains("None of these symptoms"))
-            | ~(F.col("think_have_long_covid_no_symptoms_list_3").contains("None of these symptoms")),
+        F.when(F.col("think_have_long_covid").isNull(), None)
+        .when(
+            (F.col("think_have_long_covid_no_symptoms_list_1").contains("None of these symptoms"))
+            & (F.col("think_have_long_covid_no_symptoms_list_2").contains("None of these symptoms"))
+            & (F.col("think_have_long_covid_no_symptoms_list_3").contains("None of these symptoms")),
+            "No",
+        )
+        .when(
+            any_column_not_null(
+                [
+                    "think_have_long_covid_any_symptom_list_1",
+                    "think_have_long_covid_any_symptom_list_2",
+                    "think_have_long_covid_any_symptom_list_3",
+                ]
+            ),
             "Yes",
-        ).otherwise("No"),
+        )
+        .otherwise(None),
     )
+
     df = df.withColumn(
         "think_had_covid_any_symptoms",
-        F.when(
-            ~(F.col("think_had_covid_no_symptoms_list_1").contains("None of these symptoms"))
-            | ~(F.col("think_had_covid_no_symptoms_list_2").contains("None of these symptoms")),
-            "Yes",
-        ).otherwise("No"),
+        F.when(F.col("phm_think_had_covid").isNull(), None)
+        .when(
+            (F.col("think_had_covid_no_symptoms_list_1").contains("None of these symptoms"))
+            & (F.col("think_had_covid_no_symptoms_list_2").contains("None of these symptoms")),
+            "No",
+        )
+        .when(any_column_not_null(["think_had_covid_any_symptom_list_1", "think_had_covid_any_symptom_list_2"]), "Yes")
+        .otherwise(None),
     )
+
     df = df.withColumn(
         "think_had_flu_any_symptoms",
-        F.when(
-            ~(F.col("think_had_flu_no_symptoms_list_1").contains("None of these symptoms"))
-            | ~(F.col("think_had_flu_no_symptoms_list_2").contains("None of these symptoms")),
-            "Yes",
-        ).otherwise("No"),
+        F.when(F.col("phm_think_had_flu").isNull(), None)
+        .when(
+            (F.col("think_had_flu_no_symptoms_list_1").contains("None of these symptoms"))
+            & (F.col("think_had_flu_no_symptoms_list_2").contains("None of these symptoms")),
+            "No",
+        )
+        .when(any_column_not_null(["think_had_flu_any_symptom_list_1", "think_had_flu_any_symptom_list_2"]), "Yes")
+        .otherwise(None),
     )
     df = df.withColumn(
         "think_had_other_infection_any_symptoms",
-        F.when(
-            ~(F.col("think_had_other_infection_no_symptoms_list_1").contains("None of these symptoms"))
-            | ~(F.col("think_had_other_infection_no_symptoms_list_2").contains("None of these symptoms")),
+        F.when(F.col("phm_think_had_other_infection").isNull(), None)
+        .when(
+            (F.col("think_had_other_infection_no_symptoms_list_1").contains("None of these symptoms"))
+            & (F.col("think_had_other_infection_no_symptoms_list_2").contains("None of these symptoms")),
+            "No",
+        )
+        .when(
+            any_column_not_null(
+                ["think_had_other_infection_any_symptom_list_1", "think_had_other_infection_any_symptom_list_2"]
+            ),
             "Yes",
-        ).otherwise("No"),
+        )
+        .otherwise(None),
     )
     return df
 
