@@ -1642,6 +1642,7 @@ column_name_maps = {
         "flushed": "survey_completion_status_flushed",
         "launch_language_code": "form_language_launch",
         "submission_language_code": "form_language_submitted",
+        "started_at": "survey_start_datetime",
     },
     "phm_participant_column_name_map": {
         "arrival_timestamp_consol_warehouse": "consolidation_warehouse_sample_received_timestamp",  # TODO check this is correct
