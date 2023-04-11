@@ -247,9 +247,11 @@ class Report:
         Runs the validate_processed_files on the input df and creates dfs and then sheets to add to the report object
         """
         spark_session = get_or_create_spark_session()
-        unprocessed, non_existent = validate_processed_files(df, source_file_column)
-        unprocessed_df = spark_session.createDataFrame(pd.DataFrame(unprocessed, columns=["file_path"]))
-        non_existent_df = spark_session.createDataFrame(pd.DataFrame(non_existent, columns=["file_path"]))
+        processed_files, unprocessed_files, non_existent_files = validate_processed_files(df, source_file_column)
+        processed_df = spark_session.createDataFrame(pd.DataFrame(processed_files, columns=["file_path"]))
+        unprocessed_df = spark_session.createDataFrame(pd.DataFrame(unprocessed_files, columns=["file_path"]))
+        non_existent_df = spark_session.createDataFrame(pd.DataFrame(non_existent_files, columns=["file_path"]))
 
+        self.add_sheet(processed_df, f"{sheet_name_prefix} processed file paths")
         self.add_sheet(unprocessed_df, f"{sheet_name_prefix} unprocessed file paths")
         self.add_sheet(non_existent_df, f"{sheet_name_prefix} nonexistent file paths")
