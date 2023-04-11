@@ -3952,4 +3952,17 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
             weights=[0.9, 0.1],
         ),
+        "survey_start_datetime": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_date_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
     }

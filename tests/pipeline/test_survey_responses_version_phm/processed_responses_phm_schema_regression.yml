@@ -576,6 +576,10 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
+  name: survey_start_datetime
+  nullable: true
+  type: timestamp
+- metadata: {}
   name: survey_response_source_file
   nullable: false
   type: string
