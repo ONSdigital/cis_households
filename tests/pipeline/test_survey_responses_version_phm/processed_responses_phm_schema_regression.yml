@@ -660,30 +660,6 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
-  name: think_have_covid_any_symptoms
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_have_any_symptoms_new_or_worse
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_have_long_covid_any_symptoms
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_had_covid_any_symptoms
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_had_flu_any_symptoms
-  nullable: false
-  type: string
-- metadata: {}
-  name: think_had_other_infection_any_symptoms
-  nullable: false
-  type: string
-- metadata: {}
   name: smoke_cigarettes
   nullable: true
   type: string
@@ -1313,6 +1289,30 @@ fields:
   type: string
 - metadata: {}
   name: think_have_long_covid_symptom_skin_rash_itch
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_have_covid_any_symptoms
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_have_any_symptoms_new_or_worse
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_have_long_covid_any_symptoms
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_covid_any_symptoms
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_any_symptoms
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_other_infection_any_symptoms
   nullable: true
   type: string
 - metadata: {}
