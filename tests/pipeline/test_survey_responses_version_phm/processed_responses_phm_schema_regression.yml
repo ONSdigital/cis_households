@@ -570,11 +570,11 @@ fields:
 - metadata: {}
   name: participant_completion_window_start_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: participant_completion_window_end_date
   nullable: true
-  type: string
+  type: timestamp
 - metadata: {}
   name: survey_response_source_file
   nullable: false
