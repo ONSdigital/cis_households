@@ -160,6 +160,8 @@ phm_datetime_map = {
         "cis_covid_vaccine_date",
         "think_have_covid_onset_date",
         "survey_start_datetime",
+        "participant_completion_window_start_date",
+        "participant_completion_window_end_date",
     ],
     "yyyy-MM-dd'T'HH:mm:ss'Z'": ["survey_completed_datetime"],
 }

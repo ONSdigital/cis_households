@@ -71,7 +71,7 @@
   other_covid_infection_test_positive_date: '2022-01-08 00:00:00.000000'
   other_covid_infection_test_results: All Tests failed
   other_covid_infection_test_results_raw: All tests failed
-  participant_completion_window_end_date: '2022-01-04'
+  participant_completion_window_end_date: '2022-01-04 00:00:00.000000'
   participant_completion_window_id: '0165'
   participant_completion_window_start_date: null
   participant_completion_window_status: Closed
@@ -153,7 +153,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptom_list_1: Runny nose or sneezing
   think_had_flu_any_symptom_list_2: Weakness or tiredness
-  think_had_flu_any_symptoms: 'No'
+  think_had_flu_any_symptoms: null
   think_had_flu_no_symptoms_list_1: None of these symptoms
   think_had_flu_no_symptoms_list_2: None of these symptoms
   think_had_flu_symptom_abdominal_pain: null
@@ -178,7 +178,7 @@
   think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptom_list_1: Loss of smell
   think_had_other_infection_any_symptom_list_2: Weakness or tiredness
-  think_had_other_infection_any_symptoms: 'No'
+  think_had_other_infection_any_symptoms: null
   think_had_other_infection_no_symptoms_list_1: null
   think_had_other_infection_no_symptoms_list_2: None of these symptoms
   think_had_other_symptom_abdominal_pain: null
@@ -204,10 +204,10 @@
   think_have_any_symptom_new_or_worse_list_1: Noisy breathing or wheezing;Diarrhoea
   think_have_any_symptom_new_or_worse_list_2: Memory loss or confusion;Worry or anxiety;Memory
     loss or confusion
-  think_have_any_symptoms_new_or_worse: 'No'
+  think_have_any_symptoms_new_or_worse: 'Yes'
   think_have_covid_any_symptom_list_1: Loss of appetite or eating less than usual
   think_have_covid_any_symptom_list_2: Fever including high temperature
-  think_have_covid_any_symptoms: 'No'
+  think_have_covid_any_symptoms: 'Yes'
   think_have_covid_no_symptoms_list_1: None of these symptoms
   think_have_covid_no_symptoms_list_2: null
   think_have_covid_onset_date: null
@@ -235,7 +235,7 @@
   think_have_long_covid_any_symptom_list_1: Cough
   think_have_long_covid_any_symptom_list_2: Muscle ache
   think_have_long_covid_any_symptom_list_3: Fever including high temperature
-  think_have_long_covid_any_symptoms: 'No'
+  think_have_long_covid_any_symptoms: 'Yes'
   think_have_long_covid_no_symptoms_list_1: null
   think_have_long_covid_no_symptoms_list_2: None of these symptoms
   think_have_long_covid_no_symptoms_list_3: null
@@ -413,7 +413,7 @@
   other_covid_infection_test_positive_date: '2022-01-03 00:00:00.000000'
   other_covid_infection_test_results: null
   other_covid_infection_test_results_raw: null
-  participant_completion_window_end_date: '2022-01-02'
+  participant_completion_window_end_date: '2022-01-02 00:00:00.000000'
   participant_completion_window_id: '0262'
   participant_completion_window_start_date: null
   participant_completion_window_status: Closed
@@ -470,7 +470,7 @@
   test_type_positive_result: Do not know
   think_had_covid_any_symptom_list_1: Diarrhoea
   think_had_covid_any_symptom_list_2: More trouble sleeping than usual
-  think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms: null
   think_had_covid_no_symptoms_list_1: null
   think_had_covid_no_symptoms_list_2: None of these symptoms
   think_had_covid_onset_date: '2022-01-08 00:00:00.000000'
@@ -496,7 +496,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptom_list_1: Runny nose or sneezing
   think_had_flu_any_symptom_list_2: Low mood or not enjoying anything
-  think_had_flu_any_symptoms: 'No'
+  think_had_flu_any_symptoms: 'Yes'
   think_had_flu_no_symptoms_list_1: None of these symptoms
   think_had_flu_no_symptoms_list_2: null
   think_had_flu_symptom_abdominal_pain: null
@@ -521,7 +521,7 @@
   think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptom_list_1: Diarrhoea
   think_had_other_infection_any_symptom_list_2: Low mood or not enjoying anything
-  think_had_other_infection_any_symptoms: 'No'
+  think_had_other_infection_any_symptoms: null
   think_had_other_infection_no_symptoms_list_1: null
   think_had_other_infection_no_symptoms_list_2: None of these symptoms
   think_had_other_symptom_abdominal_pain: null
@@ -547,10 +547,10 @@
   think_have_any_symptom_new_or_worse_list_1: Loss of taste;Cough
   think_have_any_symptom_new_or_worse_list_2: Fever including high temperature;Weakness
     or tiredness;Weakness or tiredness
-  think_have_any_symptoms_new_or_worse: 'No'
+  think_have_any_symptoms_new_or_worse: 'Yes'
   think_have_covid_any_symptom_list_1: Diarrhoea
   think_have_covid_any_symptom_list_2: Weakness or tiredness
-  think_have_covid_any_symptoms: 'No'
+  think_have_covid_any_symptoms: 'Yes'
   think_have_covid_no_symptoms_list_1: null
   think_have_covid_no_symptoms_list_2: null
   think_have_covid_onset_date: '2022-01-06 00:00:00.000000'
@@ -579,7 +579,7 @@
     beating irregularly
   think_have_long_covid_any_symptom_list_2: Memory loss or confusion
   think_have_long_covid_any_symptom_list_3: Worry or anxiety
-  think_have_long_covid_any_symptoms: 'No'
+  think_have_long_covid_any_symptoms: 'Yes'
   think_have_long_covid_no_symptoms_list_1: null
   think_have_long_covid_no_symptoms_list_2: None of these symptoms
   think_have_long_covid_no_symptoms_list_3: None of these symptoms
@@ -762,9 +762,9 @@
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
-  participant_completion_window_end_date: '2022-01-02'
+  participant_completion_window_end_date: '2022-01-02 00:00:00.000000'
   participant_completion_window_id: '1989'
-  participant_completion_window_start_date: '2022-01-09'
+  participant_completion_window_start_date: '2022-01-09 00:00:00.000000'
   participant_completion_window_status: Closed
   participant_first_name_confirmation: null
   participant_first_name_on_behalf: 'No'
@@ -818,7 +818,7 @@
   test_type_positive_result: PCR test. That is the test that is sent off to a laboratory
   think_had_covid_any_symptom_list_1: Abdominal pain
   think_had_covid_any_symptom_list_2: Fever including high temperature
-  think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms: null
   think_had_covid_no_symptoms_list_1: None of these symptoms
   think_had_covid_no_symptoms_list_2: null
   think_had_covid_onset_date: '2022-01-08 00:00:00.000000'
@@ -844,7 +844,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptom_list_1: Loss of appetite or eating less than usual
   think_had_flu_any_symptom_list_2: More trouble sleeping than usual
-  think_had_flu_any_symptoms: 'No'
+  think_had_flu_any_symptoms: 'Yes'
   think_had_flu_no_symptoms_list_1: None of these symptoms
   think_had_flu_no_symptoms_list_2: null
   think_had_flu_symptom_abdominal_pain: null
@@ -870,7 +870,7 @@
   think_had_other_infection_any_symptom_list_1: Loss of appetite or eating less than
     usual
   think_had_other_infection_any_symptom_list_2: Muscle ache
-  think_had_other_infection_any_symptoms: 'No'
+  think_had_other_infection_any_symptoms: null
   think_had_other_infection_no_symptoms_list_1: null
   think_had_other_infection_no_symptoms_list_2: null
   think_had_other_symptom_abdominal_pain: null
@@ -896,7 +896,7 @@
   think_have_any_symptom_new_or_worse_list_1: Loss of taste;Runny nose or sneezing
   think_have_any_symptom_new_or_worse_list_2: Muscle ache;Weakness or tiredness;Worry
     or anxiety
-  think_have_any_symptoms_new_or_worse: 'No'
+  think_have_any_symptoms_new_or_worse: 'Yes'
   think_have_covid_any_symptom_list_1: Sore throat
   think_have_covid_any_symptom_list_2: Worry or anxiety
   think_have_covid_any_symptoms: 'No'
@@ -928,7 +928,7 @@
     beating irregularly
   think_have_long_covid_any_symptom_list_2: Abdominal pain
   think_have_long_covid_any_symptom_list_3: Skin rashes or itchy skin
-  think_have_long_covid_any_symptoms: 'No'
+  think_have_long_covid_any_symptoms: null
   think_have_long_covid_no_symptoms_list_1: None of these symptoms
   think_have_long_covid_no_symptoms_list_2: null
   think_have_long_covid_no_symptoms_list_3: None of these symptoms
@@ -1109,9 +1109,9 @@
   other_covid_infection_test_results: Any tests negative, but none positive
   other_covid_infection_test_results_raw: One or more tests were negative and none
     were positive
-  participant_completion_window_end_date: '2022-01-08'
+  participant_completion_window_end_date: '2022-01-08 00:00:00.000000'
   participant_completion_window_id: '4616'
-  participant_completion_window_start_date: '2022-01-01'
+  participant_completion_window_start_date: '2022-01-01 00:00:00.000000'
   participant_completion_window_status: Closed
   participant_first_name_confirmation: 'No'
   participant_first_name_on_behalf: 'No'
@@ -1167,7 +1167,7 @@
   test_type_positive_result: PCR test. That is the test that is sent off to a laboratory
   think_had_covid_any_symptom_list_1: Diarrhoea
   think_had_covid_any_symptom_list_2: Difficulty concentrating
-  think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms: null
   think_had_covid_no_symptoms_list_1: None of these symptoms
   think_had_covid_no_symptoms_list_2: None of these symptoms
   think_had_covid_onset_date: '2022-01-01 00:00:00.000000'
@@ -1193,7 +1193,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptom_list_1: Shortness of breath
   think_had_flu_any_symptom_list_2: Weakness or tiredness
-  think_had_flu_any_symptoms: 'No'
+  think_had_flu_any_symptoms: null
   think_had_flu_no_symptoms_list_1: None of these symptoms
   think_had_flu_no_symptoms_list_2: null
   think_had_flu_symptom_abdominal_pain: null
@@ -1218,7 +1218,7 @@
   think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptom_list_1: Loss of taste
   think_had_other_infection_any_symptom_list_2: Memory loss or confusion
-  think_had_other_infection_any_symptoms: 'No'
+  think_had_other_infection_any_symptoms: 'Yes'
   think_had_other_infection_no_symptoms_list_1: null
   think_had_other_infection_no_symptoms_list_2: null
   think_had_other_symptom_abdominal_pain: null
@@ -1245,10 +1245,10 @@
     usual;Diarrhoea
   think_have_any_symptom_new_or_worse_list_2: Memory loss or confusion;Difficulty
     concentrating;More trouble sleeping than usual
-  think_have_any_symptoms_new_or_worse: 'No'
+  think_have_any_symptoms_new_or_worse: 'Yes'
   think_have_covid_any_symptom_list_1: Loss of appetite or eating less than usual
   think_have_covid_any_symptom_list_2: Memory loss or confusion
-  think_have_covid_any_symptoms: 'No'
+  think_have_covid_any_symptoms: 'Yes'
   think_have_covid_no_symptoms_list_1: null
   think_have_covid_no_symptoms_list_2: null
   think_have_covid_onset_date: null
@@ -1276,7 +1276,7 @@
   think_have_long_covid_any_symptom_list_1: Noisy breathing or wheezing
   think_have_long_covid_any_symptom_list_2: Joint pain
   think_have_long_covid_any_symptom_list_3: Vertigo or dizziness
-  think_have_long_covid_any_symptoms: 'No'
+  think_have_long_covid_any_symptoms: 'Yes'
   think_have_long_covid_no_symptoms_list_1: None of these symptoms
   think_have_long_covid_no_symptoms_list_2: null
   think_have_long_covid_no_symptoms_list_3: None of these symptoms
@@ -1457,9 +1457,9 @@
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: All Tests failed
   other_covid_infection_test_results_raw: All tests failed
-  participant_completion_window_end_date: '2022-01-04'
+  participant_completion_window_end_date: '2022-01-04 00:00:00.000000'
   participant_completion_window_id: '5424'
-  participant_completion_window_start_date: '2022-01-06'
+  participant_completion_window_start_date: '2022-01-06 00:00:00.000000'
   participant_completion_window_status: Closed
   participant_first_name_confirmation: 'Yes'
   participant_first_name_on_behalf: 'Yes'
@@ -1517,7 +1517,7 @@
     device in about 30 minutes.
   think_had_covid_any_symptom_list_1: Runny nose or sneezing
   think_had_covid_any_symptom_list_2: Fever including high temperature
-  think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms: null
   think_had_covid_no_symptoms_list_1: null
   think_had_covid_no_symptoms_list_2: None of these symptoms
   think_had_covid_onset_date: '2022-01-08 00:00:00.000000'
@@ -1543,7 +1543,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptom_list_1: Noisy breathing or wheezing
   think_had_flu_any_symptom_list_2: Headache
-  think_had_flu_any_symptoms: 'No'
+  think_had_flu_any_symptoms: null
   think_had_flu_no_symptoms_list_1: None of these symptoms
   think_had_flu_no_symptoms_list_2: None of these symptoms
   think_had_flu_symptom_abdominal_pain: null
@@ -1568,7 +1568,7 @@
   think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptom_list_1: Abdominal pain
   think_had_other_infection_any_symptom_list_2: Muscle ache
-  think_had_other_infection_any_symptoms: 'No'
+  think_had_other_infection_any_symptoms: 'Yes'
   think_had_other_infection_no_symptoms_list_1: null
   think_had_other_infection_no_symptoms_list_2: None of these symptoms
   think_had_other_symptom_abdominal_pain: 'Yes'
@@ -1597,7 +1597,7 @@
   think_have_any_symptoms_new_or_worse: 'No'
   think_have_covid_any_symptom_list_1: Cough
   think_have_covid_any_symptom_list_2: Headache
-  think_have_covid_any_symptoms: 'No'
+  think_have_covid_any_symptoms: 'Yes'
   think_have_covid_no_symptoms_list_1: null
   think_have_covid_no_symptoms_list_2: null
   think_have_covid_onset_date: null
@@ -1625,7 +1625,7 @@
   think_have_long_covid_any_symptom_list_1: Nasal congestion
   think_have_long_covid_any_symptom_list_2: Nausea or vomiting
   think_have_long_covid_any_symptom_list_3: Fever including high temperature
-  think_have_long_covid_any_symptoms: 'No'
+  think_have_long_covid_any_symptoms: 'Yes'
   think_have_long_covid_no_symptoms_list_1: null
   think_have_long_covid_no_symptoms_list_2: None of these symptoms
   think_have_long_covid_no_symptoms_list_3: null
@@ -1806,9 +1806,9 @@
   other_covid_infection_test_results: Any tests negative, but none positive
   other_covid_infection_test_results_raw: One or more tests were negative and none
     were positive
-  participant_completion_window_end_date: '2022-01-08'
+  participant_completion_window_end_date: '2022-01-08 00:00:00.000000'
   participant_completion_window_id: '5712'
-  participant_completion_window_start_date: '2022-01-08'
+  participant_completion_window_start_date: '2022-01-08 00:00:00.000000'
   participant_completion_window_status: Closed
   participant_first_name_confirmation: 'Yes'
   participant_first_name_on_behalf: null
@@ -1865,7 +1865,7 @@
     device in about 30 minutes.
   think_had_covid_any_symptom_list_1: Loss of taste
   think_had_covid_any_symptom_list_2: Fever including high temperature
-  think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms: null
   think_had_covid_no_symptoms_list_1: None of these symptoms
   think_had_covid_no_symptoms_list_2: null
   think_had_covid_onset_date: '2022-01-06 00:00:00.000000'
@@ -1891,7 +1891,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptom_list_1: Abdominal pain
   think_had_flu_any_symptom_list_2: Weakness or tiredness
-  think_had_flu_any_symptoms: 'No'
+  think_had_flu_any_symptoms: null
   think_had_flu_no_symptoms_list_1: None of these symptoms
   think_had_flu_no_symptoms_list_2: None of these symptoms
   think_had_flu_symptom_abdominal_pain: 'Yes'
@@ -1916,7 +1916,7 @@
   think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptom_list_1: Sore throat
   think_had_other_infection_any_symptom_list_2: Difficulty concentrating
-  think_had_other_infection_any_symptoms: 'No'
+  think_had_other_infection_any_symptoms: 'Yes'
   think_had_other_infection_no_symptoms_list_1: null
   think_had_other_infection_no_symptoms_list_2: null
   think_had_other_symptom_abdominal_pain: null
@@ -1973,7 +1973,7 @@
   think_have_long_covid_any_symptom_list_1: Headache
   think_have_long_covid_any_symptom_list_2: Joint pain
   think_have_long_covid_any_symptom_list_3: Skin rashes or itchy skin
-  think_have_long_covid_any_symptoms: 'No'
+  think_have_long_covid_any_symptoms: 'Yes'
   think_have_long_covid_no_symptoms_list_1: null
   think_have_long_covid_no_symptoms_list_2: null
   think_have_long_covid_no_symptoms_list_3: null
@@ -2155,9 +2155,9 @@
   other_covid_infection_test_positive_date: '2022-01-06 00:00:00.000000'
   other_covid_infection_test_results: null
   other_covid_infection_test_results_raw: null
-  participant_completion_window_end_date: '2022-01-03'
+  participant_completion_window_end_date: '2022-01-03 00:00:00.000000'
   participant_completion_window_id: '6872'
-  participant_completion_window_start_date: '2022-01-03'
+  participant_completion_window_start_date: '2022-01-03 00:00:00.000000'
   participant_completion_window_status: Closed
   participant_first_name_confirmation: null
   participant_first_name_on_behalf: null
@@ -2211,7 +2211,7 @@
   test_type_positive_result: Do not know
   think_had_covid_any_symptom_list_1: Cough
   think_had_covid_any_symptom_list_2: Headache
-  think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms: null
   think_had_covid_no_symptoms_list_1: None of these symptoms
   think_had_covid_no_symptoms_list_2: None of these symptoms
   think_had_covid_onset_date: null
@@ -2237,7 +2237,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptom_list_1: Cough
   think_had_flu_any_symptom_list_2: Low mood or not enjoying anything
-  think_had_flu_any_symptoms: 'No'
+  think_had_flu_any_symptoms: null
   think_had_flu_no_symptoms_list_1: null
   think_had_flu_no_symptoms_list_2: None of these symptoms
   think_had_flu_symptom_abdominal_pain: null
@@ -2262,7 +2262,7 @@
   think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptom_list_1: Shortness of breath
   think_had_other_infection_any_symptom_list_2: Low mood or not enjoying anything
-  think_had_other_infection_any_symptoms: 'No'
+  think_had_other_infection_any_symptoms: null
   think_had_other_infection_no_symptoms_list_1: None of these symptoms
   think_had_other_infection_no_symptoms_list_2: null
   think_had_other_symptom_abdominal_pain: null
@@ -2291,7 +2291,7 @@
   think_have_any_symptoms_new_or_worse: 'No'
   think_have_covid_any_symptom_list_1: Cough
   think_have_covid_any_symptom_list_2: Muscle ache
-  think_have_covid_any_symptoms: 'No'
+  think_have_covid_any_symptoms: 'Yes'
   think_have_covid_no_symptoms_list_1: null
   think_have_covid_no_symptoms_list_2: None of these symptoms
   think_have_covid_onset_date: '2022-01-06 00:00:00.000000'
@@ -2319,7 +2319,7 @@
   think_have_long_covid_any_symptom_list_1: Chest pain
   think_have_long_covid_any_symptom_list_2: Nausea or vomiting
   think_have_long_covid_any_symptom_list_3: Allergies or intolerances
-  think_have_long_covid_any_symptoms: 'No'
+  think_have_long_covid_any_symptoms: 'Yes'
   think_have_long_covid_no_symptoms_list_1: null
   think_have_long_covid_no_symptoms_list_2: None of these symptoms
   think_have_long_covid_no_symptoms_list_3: None of these symptoms
@@ -2498,9 +2498,9 @@
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: Waiting for all results
   other_covid_infection_test_results_raw: Waiting for all results
-  participant_completion_window_end_date: '2022-01-06'
+  participant_completion_window_end_date: '2022-01-06 00:00:00.000000'
   participant_completion_window_id: '9577'
-  participant_completion_window_start_date: '2022-01-03'
+  participant_completion_window_start_date: '2022-01-03 00:00:00.000000'
   participant_completion_window_status: Closed
   participant_first_name_confirmation: 'No'
   participant_first_name_on_behalf: 'Yes'
@@ -2555,7 +2555,7 @@
   test_type_positive_result: Do not know
   think_had_covid_any_symptom_list_1: Shortness of breath
   think_had_covid_any_symptom_list_2: Fever including high temperature
-  think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms: null
   think_had_covid_no_symptoms_list_1: None of these symptoms
   think_had_covid_no_symptoms_list_2: null
   think_had_covid_onset_date: '2022-01-04 00:00:00.000000'
@@ -2581,7 +2581,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptom_list_1: Loss of taste
   think_had_flu_any_symptom_list_2: More trouble sleeping than usual
-  think_had_flu_any_symptoms: 'No'
+  think_had_flu_any_symptoms: null
   think_had_flu_no_symptoms_list_1: null
   think_had_flu_no_symptoms_list_2: None of these symptoms
   think_had_flu_symptom_abdominal_pain: null
@@ -2606,7 +2606,7 @@
   think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptom_list_1: Diarrhoea
   think_had_other_infection_any_symptom_list_2: Worry or anxiety
-  think_had_other_infection_any_symptoms: 'No'
+  think_had_other_infection_any_symptoms: 'Yes'
   think_had_other_infection_no_symptoms_list_1: null
   think_had_other_infection_no_symptoms_list_2: null
   think_had_other_symptom_abdominal_pain: null
@@ -2663,7 +2663,7 @@
   think_have_long_covid_any_symptom_list_1: Tinnitus or problems hearing
   think_have_long_covid_any_symptom_list_2: Nausea or vomiting
   think_have_long_covid_any_symptom_list_3: General pain
-  think_have_long_covid_any_symptoms: 'No'
+  think_have_long_covid_any_symptoms: 'Yes'
   think_have_long_covid_no_symptoms_list_1: None of these symptoms
   think_have_long_covid_no_symptoms_list_2: null
   think_have_long_covid_no_symptoms_list_3: null
@@ -2845,9 +2845,9 @@
   other_covid_infection_test_positive_date: null
   other_covid_infection_test_results: All Tests failed
   other_covid_infection_test_results_raw: All tests failed
-  participant_completion_window_end_date: '2022-01-09'
+  participant_completion_window_end_date: '2022-01-09 00:00:00.000000'
   participant_completion_window_id: '9608'
-  participant_completion_window_start_date: '2022-01-04'
+  participant_completion_window_start_date: '2022-01-04 00:00:00.000000'
   participant_completion_window_status: Closed
   participant_first_name_confirmation: null
   participant_first_name_on_behalf: 'No'
@@ -2903,7 +2903,7 @@
     device in about 30 minutes.
   think_had_covid_any_symptom_list_1: Runny nose or sneezing
   think_had_covid_any_symptom_list_2: Headache
-  think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms: null
   think_had_covid_no_symptoms_list_1: null
   think_had_covid_no_symptoms_list_2: None of these symptoms
   think_had_covid_onset_date: '2022-01-03 00:00:00.000000'
@@ -2929,7 +2929,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptom_list_1: Diarrhoea
   think_had_flu_any_symptom_list_2: Low mood or not enjoying anything
-  think_had_flu_any_symptoms: 'No'
+  think_had_flu_any_symptoms: 'Yes'
   think_had_flu_no_symptoms_list_1: None of these symptoms
   think_had_flu_no_symptoms_list_2: null
   think_had_flu_symptom_abdominal_pain: null
@@ -2954,7 +2954,7 @@
   think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptom_list_1: Noisy breathing or wheezing
   think_had_other_infection_any_symptom_list_2: Worry or anxiety
-  think_had_other_infection_any_symptoms: 'No'
+  think_had_other_infection_any_symptoms: null
   think_had_other_infection_no_symptoms_list_1: None of these symptoms
   think_had_other_infection_no_symptoms_list_2: None of these symptoms
   think_had_other_symptom_abdominal_pain: null
@@ -2980,10 +2980,10 @@
   think_have_any_symptom_new_or_worse_list_1: Runny nose or sneezing;Nausea or vomiting
   think_have_any_symptom_new_or_worse_list_2: Memory loss or confusion;Weakness or
     tiredness;Difficulty concentrating
-  think_have_any_symptoms_new_or_worse: 'No'
+  think_have_any_symptoms_new_or_worse: 'Yes'
   think_have_covid_any_symptom_list_1: Cough
   think_have_covid_any_symptom_list_2: Weakness or tiredness
-  think_have_covid_any_symptoms: 'No'
+  think_have_covid_any_symptoms: 'Yes'
   think_have_covid_no_symptoms_list_1: null
   think_have_covid_no_symptoms_list_2: null
   think_have_covid_onset_date: '2022-01-02 00:00:00.000000'
@@ -3011,7 +3011,7 @@
   think_have_long_covid_any_symptom_list_1: Sore throat
   think_have_long_covid_any_symptom_list_2: Abdominal pain
   think_have_long_covid_any_symptom_list_3: Worry or anxiety
-  think_have_long_covid_any_symptoms: 'No'
+  think_have_long_covid_any_symptoms: 'Yes'
   think_have_long_covid_no_symptoms_list_1: None of these symptoms
   think_have_long_covid_no_symptoms_list_2: null
   think_have_long_covid_no_symptoms_list_3: null
@@ -3192,9 +3192,9 @@
   other_covid_infection_test_positive_date: '2022-01-01 00:00:00.000000'
   other_covid_infection_test_results: One or more positive test(s)
   other_covid_infection_test_results_raw: One or more tests were positive
-  participant_completion_window_end_date: '2022-01-03'
+  participant_completion_window_end_date: '2022-01-03 00:00:00.000000'
   participant_completion_window_id: '9826'
-  participant_completion_window_start_date: '2022-01-05'
+  participant_completion_window_start_date: '2022-01-05 00:00:00.000000'
   participant_completion_window_status: Closed
   participant_first_name_confirmation: null
   participant_first_name_on_behalf: 'No'
@@ -3249,7 +3249,7 @@
   test_type_positive_result: PCR test. That is the test that is sent off to a laboratory
   think_had_covid_any_symptom_list_1: Cough
   think_had_covid_any_symptom_list_2: Muscle ache
-  think_had_covid_any_symptoms: 'No'
+  think_had_covid_any_symptoms: null
   think_had_covid_no_symptoms_list_1: None of these symptoms
   think_had_covid_no_symptoms_list_2: None of these symptoms
   think_had_covid_onset_date: null
@@ -3275,7 +3275,7 @@
   think_had_covid_symptom_sore_throat: null
   think_had_flu_any_symptom_list_1: Shortness of breath
   think_had_flu_any_symptom_list_2: Difficulty concentrating
-  think_had_flu_any_symptoms: 'No'
+  think_had_flu_any_symptoms: null
   think_had_flu_no_symptoms_list_1: None of these symptoms
   think_had_flu_no_symptoms_list_2: null
   think_had_flu_symptom_abdominal_pain: null
@@ -3300,7 +3300,7 @@
   think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptom_list_1: Loss of taste
   think_had_other_infection_any_symptom_list_2: Weakness or tiredness
-  think_had_other_infection_any_symptoms: 'No'
+  think_had_other_infection_any_symptoms: null
   think_had_other_infection_no_symptoms_list_1: None of these symptoms
   think_had_other_infection_no_symptoms_list_2: null
   think_had_other_symptom_abdominal_pain: null
@@ -3326,10 +3326,10 @@
   think_have_any_symptom_new_or_worse_list_1: Nausea or vomiting;Nausea or vomiting
   think_have_any_symptom_new_or_worse_list_2: Muscle ache;More trouble sleeping than
     usual;More trouble sleeping than usual
-  think_have_any_symptoms_new_or_worse: 'No'
+  think_have_any_symptoms_new_or_worse: 'Yes'
   think_have_covid_any_symptom_list_1: Shortness of breath
   think_have_covid_any_symptom_list_2: Headache
-  think_have_covid_any_symptoms: 'No'
+  think_have_covid_any_symptoms: 'Yes'
   think_have_covid_no_symptoms_list_1: null
   think_have_covid_no_symptoms_list_2: null
   think_have_covid_onset_date: '2022-01-09 00:00:00.000000'
@@ -3358,7 +3358,7 @@
     beating irregularly
   think_have_long_covid_any_symptom_list_2: Loss of taste
   think_have_long_covid_any_symptom_list_3: Fever including high temperature
-  think_have_long_covid_any_symptoms: 'No'
+  think_have_long_covid_any_symptoms: 'Yes'
   think_have_long_covid_no_symptoms_list_1: null
   think_have_long_covid_no_symptoms_list_2: None of these symptoms
   think_have_long_covid_no_symptoms_list_3: None of these symptoms
