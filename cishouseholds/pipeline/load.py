@@ -229,9 +229,9 @@ def get_full_table_name(
         prefix = storage_config["table_prefix"]
     if latest_table:
         spark_session = get_or_create_spark_session()
-        table_names_df = spark_session.sql(f"show tables in {database} like '{table_short_name}_20*'")
+        table_names_df = spark_session.sql(f"show tables in {database} like '{prefix}{table_short_name}_20*'")
         table_names_lst = table_names_df.select("tableName").rdd.flatMap(lambda x: x).collect()
-        table_short_name = table_names_lst[-1]
+        table_short_name = table_names_lst[-1].replace(f"{prefix}", "")
     return f"{database}.{prefix}{table_short_name}"
 
 
