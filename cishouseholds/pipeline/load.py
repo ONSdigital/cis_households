@@ -99,7 +99,11 @@ def extract_from_table(
 ) -> DataFrame:
     spark_session = get_or_create_spark_session()
     check_table_exists(
-        table_name, raise_if_missing=True, alternate_prefix=alternate_prefix, alternate_database=alternate_database
+        table_name,
+        raise_if_missing=True,
+        alternate_prefix=alternate_prefix,
+        alternate_database=alternate_database,
+        latest_table=latest_table,
     )
     if break_lineage:
         return spark_session.sql(
@@ -136,10 +140,14 @@ def update_table(
 
 
 def check_table_exists(
-    table_name: str, raise_if_missing: bool = False, alternate_prefix: str = None, alternate_database: str = None
+    table_name: str,
+    raise_if_missing: bool = False,
+    alternate_prefix: str = None,
+    alternate_database: str = None,
+    latest_table: bool = False,
 ):
     spark_session = get_or_create_spark_session()
-    full_table_name = get_full_table_name(table_name, alternate_prefix, alternate_database)
+    full_table_name = get_full_table_name(table_name, alternate_prefix, alternate_database, latest_table)
     table_exists = spark_session.catalog._jcatalog.tableExists(full_table_name)
     if raise_if_missing and not table_exists:
         raise TableNotFoundError(f"Table does not exist: {full_table_name}")
@@ -216,8 +224,6 @@ def get_full_table_name(
         table_names_df = spark_session.sql(f"show tables in {database} like '{table_short_name}_20*'")
         table_names_lst = table_names_df.select("tableName").rdd.flatMap(lambda x: x).collect()
         table_short_name = table_names_lst[-1:]
-    else:
-        return table_short_name
     return f'{database}.{storage_config["table_prefix"]}{table_short_name}'
 
 
