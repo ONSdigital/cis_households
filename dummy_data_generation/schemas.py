@@ -316,7 +316,7 @@ long_covid_symptoms_list_3 = [
 infections = [
     "COVID-19",
     "Flu",
-    "Another type of respiratory infection of illness",
+    "Another type of respiratory infection",
     "Do not know the type",
 ]
 

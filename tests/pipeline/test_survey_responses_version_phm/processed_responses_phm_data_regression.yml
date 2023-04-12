@@ -1127,7 +1127,6 @@
   phm_think_had_other_infection_onset_date: null
   phm_think_had_respiratory_infection: null
   phm_think_had_respiratory_infection_type: Another type of respiratory infection
-    of illness
   phm_think_had_unknown: null
   physical_contact_18_to_69_years: 6-10
   physical_contact_18_to_69_years_raw: 6 to 10
@@ -1476,7 +1475,6 @@
   phm_think_had_other_infection_onset_date: '2022-01-02 00:00:00.000000'
   phm_think_had_respiratory_infection: 'Yes'
   phm_think_had_respiratory_infection_type: Another type of respiratory infection
-    of illness
   phm_think_had_unknown: null
   physical_contact_18_to_69_years: null
   physical_contact_18_to_69_years_raw: null
@@ -1826,7 +1824,6 @@
   phm_think_had_other_infection_onset_date: null
   phm_think_had_respiratory_infection: 'No'
   phm_think_had_respiratory_infection_type: Another type of respiratory infection
-    of illness
   phm_think_had_unknown: null
   physical_contact_18_to_69_years: null
   physical_contact_18_to_69_years_raw: Don't know
@@ -2520,7 +2517,6 @@
   phm_think_had_other_infection_onset_date: null
   phm_think_had_respiratory_infection: 'No'
   phm_think_had_respiratory_infection_type: Another type of respiratory infection
-    of illness
   phm_think_had_unknown: null
   physical_contact_18_to_69_years: null
   physical_contact_18_to_69_years_raw: Don't know

@@ -96,7 +96,7 @@ transformation_maps: Dict[str, Dict[str, str]] = {
     "phm_think_had_respiratory_infection_type": {
         "COVID-19": "phm_think_had_covid",
         "Flu": "phm_think_had_flu",
-        "Another type of respiratory infection of illness": "phm_think_had_other_infection",
+        "Another type of respiratory infection": "phm_think_had_other_infection",
         "Do not know the type": "phm_think_had_unknown",
     },
     "symptoms_list_1": {
