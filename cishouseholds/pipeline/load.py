@@ -115,13 +115,19 @@ def extract_from_table(
 
 
 def update_table(
-    df: DataFrame, table_name, write_mode, archive=False, survey_table=False, error_if_cols_differ: bool = True
+    df: DataFrame,
+    table_name,
+    write_mode,
+    archive=False,
+    survey_table=False,
+    error_if_cols_differ: bool = True,
+    latest_table: bool = False,
 ):
     from cishouseholds.merge import union_multiple_tables
 
     if write_mode == "append":
         if check_table_exists(table_name):
-            check = extract_from_table(table_name, break_lineage=True)
+            check = extract_from_table(table_name, break_lineage=True, latest_table=latest_table)
             if check.columns != df.columns:
                 msg = f"Trying to append to {table_name} but columns differ"  # functional
                 if error_if_cols_differ:
@@ -132,7 +138,7 @@ def update_table(
                     df = union_multiple_tables([check, df])
                     df = df.distinct()
                     write_mode = "overwrite"
-    df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
+    df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name, latest_table=latest_table))
     add_table_log_entry(table_name, survey_table, write_mode)
     if archive:
         now = datetime.strftime(datetime.now(), "%Y%m%d_%H%M%S")
@@ -196,7 +202,7 @@ def get_run_id():
     run_id = 1
     if check_table_exists("run_log"):
         spark_session = get_or_create_spark_session()
-        log_table = get_full_table_name("run_log")
+        log_table = get_full_table_name(table_short_name="run_log")
         run_id += spark_session.read.table(log_table).select(F.max("run_id")).first()[0]
     return run_id
 

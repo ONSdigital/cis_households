@@ -160,7 +160,7 @@ def table_to_table(
     }
     for transformation in transformation_functions:
         df = transformations_dict[transformation](df)
-    df = update_table(df, table_name, "overwrite")
+    df = update_table(df, table_name, "overwrite", latest_table)
 
 
 @register_pipeline_stage("csv_to_table")
