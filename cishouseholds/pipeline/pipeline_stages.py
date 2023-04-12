@@ -551,6 +551,33 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
     return {"output_survey_table": output_survey_table}
 
 
+@register_pipeline_stage("split_survey_table")
+def split_survey_table(
+    input_survey_table: str, output_survey_table: str, secondary_table: str, split_columns: List[str]
+):
+    """
+    Splits one single input_survey_table based on a list of columns:
+        the output_survey_table where all split_columns must be null
+        the secondary_table where any split_column is not null
+
+    Returns two tables, one output_survey_table and a secondary_table
+
+    Parameters
+    ----------
+    input_survey_table : str
+    output_survey_table : str
+    secondary_table : str
+    split_columns : List[str]
+        list of columns that must all be null to split the table around
+    """
+    df = extract_from_table(input_survey_table)
+    secondary_df = df.filter(any_column_not_null(split_columns))
+    df = df.filter(all_columns_null(split_columns))
+    update_table(secondary_df, secondary_table, write_mode="overwrite", survey_table=False)
+    update_table(df, output_survey_table, write_mode="overwrite", survey_table=True)
+    return {"output_survey_table": output_survey_table}
+
+
 @register_pipeline_stage("post_union_processing")
 def execute_post_union_processing(
     input_survey_table: str,
