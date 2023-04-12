@@ -329,7 +329,7 @@ def get_cis_soc_data_description(_):
             "work_main_job_role": _("choice", items=[_("text.sentence"), None]),
             "standard_occupational_classification_code": _(
                 "choice",
-                items=[_("custom_random.random_integer", lower=1000, upper=9999, null_percent=15), "un", "uncodeable"],
+                items=[_("custom_random.random_integer", lower=1000, upper=9999, null_percent=0.1), "un", "uncodeable"],
             ),
         }
     else:
@@ -3371,8 +3371,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
         "form_language": _("choice", items=["Welsh", "English"]),
         "vaccinated_against_flu": _("choice", items=yes_no_none_choice),
         "think_respiratory_infection": _("choice", items=yes_no_none_choice),
-        "time_off_respiratory_infection": _("custom_random.random_integer", lower=0, upper=28, null_percent=15),
-        "time_off_health_reasons": _("custom_random.random_integer", lower=0, upper=28, null_percent=15),
+        "time_off_respiratory_infection": _("custom_random.random_integer", lower=0, upper=28, null_percent=0.1),
+        "time_off_health_reasons": _("custom_random.random_integer", lower=0, upper=28, null_percent=0.1),
         "survey_name": _("random.custom_code", mask="VS-########", digit="#"),
         "form_name": _("random.custom_code", mask="F-########", digit="#"),
     }
@@ -3819,33 +3819,33 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         #     ],
         #     weights=[0.5, 0.5],
         # ),
-        "last_28_days_unable_usual_activities": _("custom_random.random_integer", lower=0, upper=28, null_percent=15),
+        "last_28_days_unable_usual_activities": _("custom_random.random_integer", lower=0, upper=28, null_percent=0.1),
         "last_28_days_unable_usual_activities_due_to_respiratory_infection": _(
-            "custom_random.random_integer", lower=0, upper=28, null_percent=15
+            "custom_random.random_integer", lower=0, upper=28, null_percent=0.1
         ),
         "last_28_days_off_work_education_due_to_health": _(
-            "custom_random.random_integer", lower=0, upper=28, null_percent=15
+            "custom_random.random_integer", lower=0, upper=28, null_percent=0.1
         ),
         "last_28_days_off_work_education_due_to_health_respiratory_infection": _(
-            "custom_random.random_integer", lower=0, upper=28, null_percent=15
+            "custom_random.random_integer", lower=0, upper=28, null_percent=0.1
         ),
         "last_28_days_GP_appointment_health_reasons": _(
-            "custom_random.random_integer", lower=0, upper=28, null_percent=15
+            "custom_random.random_integer", lower=0, upper=28, null_percent=0.1
         ),
         "last_28_days_GP_appointment_health_reasons_respiratory_infection": _(
-            "custom_random.random_integer", lower=0, upper=28, null_percent=15
+            "custom_random.random_integer", lower=0, upper=28, null_percent=0.1
         ),
-        "last_28_days_pharmacist_111": _("custom_random.random_integer", lower=0, upper=28, null_percent=15),
+        "last_28_days_pharmacist_111": _("custom_random.random_integer", lower=0, upper=28, null_percent=0.1),
         "last_28_days_pharmacist_111_respiratory_infection": _(
-            "custom_random.random_integer", lower=0, upper=28, null_percent=15
+            "custom_random.random_integer", lower=0, upper=28, null_percent=0.1
         ),
-        "last_28_days_urgent_care": _("custom_random.random_integer", lower=0, upper=28, null_percent=15),
+        "last_28_days_urgent_care": _("custom_random.random_integer", lower=0, upper=28, null_percent=0.1),
         "last_28_days_urgent_care_respiratory_infection": _(
-            "custom_random.random_integer", lower=0, upper=28, null_percent=15
+            "custom_random.random_integer", lower=0, upper=28, null_percent=0.1
         ),
-        "last_28_days_admitted_to_hospital": _("custom_random.random_integer", lower=0, upper=28, null_percent=15),
+        "last_28_days_admitted_to_hospital": _("custom_random.random_integer", lower=0, upper=28, null_percent=0.1),
         "last_28_days_admitted_to_hospital_respiratory_infection": _(
-            "custom_random.random_integer", lower=0, upper=28, null_percent=15
+            "custom_random.random_integer", lower=0, upper=28, null_percent=0.1
         ),
         "think_have_long_covid": _("choice", items=yes_no_none_choice),
         "think_have_long_covid_symptom_reduced_ability": _(
@@ -3967,4 +3967,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
             weights=[0.9, 0.1],
         ),
+        "participant_feedback_count": _("custom_random.random_integer", lower=0, upper=28, null_percent=0.15),
+        "participant_feedback_text": _("text.quote"),
+        "participant_feedback_type": _("choice", items=["General feedback about this service", None]),
     }

@@ -1488,7 +1488,7 @@ category_maps = {
 
 column_name_maps: Dict[str, Dict[str, str]]
 column_name_maps = {
-    "phm_column_name_map": {
+    "phm_responses_column_name_map": {
         # "PHM-FUP-INT-002": "uac",
         "PHM-FUP-INT-003": "participant_first_name_confirmation",
         "PHM-FUP-INT-004": "participant_first_name_on_behalf",
@@ -1643,6 +1643,9 @@ column_name_maps = {
         "launch_language_code": "form_language_launch",
         "submission_language_code": "form_language_submitted",
         "started_at": "survey_start_datetime",
+        "feedback_count": "participant_feedback_count",
+        "feedback_text": "participant_feedback_text",
+        "feedback_type": "participant_feedback_type",
     },
     "phm_participant_column_name_map": {
         "arrival_timestamp_consol_warehouse": "consolidation_warehouse_sample_received_timestamp",  # TODO check this is correct

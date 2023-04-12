@@ -13,7 +13,7 @@ from cishouseholds.pipeline.validation_schema import validation_schemas
 # json.loads()
 
 phm_validation_schema = validation_schemas["phm_survey_validation_schema"]
-lookup = column_name_maps["phm_column_name_map"]
+lookup = column_name_maps["phm_responses_column_name_map"]
 
 
 def decode_phm_json(json_str: Union[str, bytes]) -> List[Tuple]:
@@ -28,16 +28,19 @@ def decode_phm_json(json_str: Union[str, bytes]) -> List[Tuple]:
         answers = defaultdict(lambda: list())
         list_items = defaultdict(lambda: list())
 
-        # process answer data into single nested degree dictionary keyed by PHM answer codes
-        for i, answer in enumerate(data["answers"]):
-            if answer.get("list_item_id"):
-                list_items[answer["list_item_id"]] = answer["answer_id"]
+        if data.get("answers", False):
+            # process answer data into single nested degree dictionary keyed by PHM answer codes
+            for i, answer in enumerate(data["answers"]):
+                if answer.get("list_item_id"):
+                    list_items[answer["list_item_id"]] = answer["answer_id"]
 
-            if isinstance(answer["value"], dict):  # this isnt used rn
-                for k, v in answer["value"].items():
-                    answers[data["answer_codes"][k]["code"]] = v
-            else:
-                answers[data["answer_codes"][i]["code"]] = answer["value"]
+                if isinstance(answer["value"], dict):  # this isnt used rn
+                    for k, v in answer["value"].items():
+                        answers[data["answer_codes"][k]["code"]] = v
+                else:
+                    answers[data["answer_codes"][i]["code"]] = answer["value"]
+        else:
+            answers.update(data)
 
         answers.update(meta)
         answers.update({k: v for k, v in table.items() if not isinstance(v, (list, dict))})

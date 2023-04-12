@@ -580,6 +580,18 @@ fields:
   nullable: true
   type: timestamp
 - metadata: {}
+  name: participant_feedback_count
+  nullable: true
+  type: string
+- metadata: {}
+  name: participant_feedback_text
+  nullable: true
+  type: string
+- metadata: {}
+  name: participant_feedback_type
+  nullable: true
+  type: string
+- metadata: {}
   name: survey_response_source_file
   nullable: false
   type: string
