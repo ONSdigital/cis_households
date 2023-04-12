@@ -52,15 +52,15 @@ def assign_survey_completed_status(
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            (F.col(survey_completed_datetime_column).isNotNull()) & (F.col(survey_flushed_column) == "FALSE"),
+            (F.col(survey_completed_datetime_column).isNotNull()) & (F.col(survey_flushed_column) == "false"),
             "Completed",
         )
         .when(
-            (F.col(survey_flushed_column) == "TRUE"),
+            (F.col(survey_flushed_column) == "true"),
             "Partially Completed",
         )
         .when(
-            (F.col(survey_completed_datetime_column).isNull()) & (F.col(survey_flushed_column) == "FALSE"),
+            (F.col(survey_completed_datetime_column).isNull()) & (F.col(survey_flushed_column) == "false"),
             "Not Completed",
         ),
     )

@@ -74,7 +74,10 @@ from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
 from cishouseholds.pipeline.vaccine_transformations import vaccine_transformations
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
-from cishouseholds.pipeline.validation_schema import validation_schemas  # noqa: F401
+from cishouseholds.pipeline.validation_schema import validation_schemas
+from cishouseholds.pipeline.version_specific_processing.participant_extract_phm import (
+    transform_participant_extract_phm,
+)  # noqa: F401
 from cishouseholds.pipeline.visit_transformations import visit_transformations
 from cishouseholds.prediction_checker_class import PredictionChecker
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -124,7 +127,12 @@ def blind_csv_to_table(path: str, table_name: str, sep: str = "|"):
 
 @register_pipeline_stage("table_to_table")
 def table_to_table(
-    table_name: str, break_lineage: bool = False, alternate_prefix: str = None, alternate_database: str = None
+    table_name: str,
+    break_lineage: bool = False,
+    alternate_prefix: str = None,
+    alternate_database: str = None,
+    transformation_functions: List[str] = [],
+    latest_table: bool = False,
 ):
     """
     Extracts a HIVE table, with an alternate prefix, and saves it out with the project prefix
@@ -139,9 +147,19 @@ def table_to_table(
         alternate prefix to use for input HIVE table
     alternate_database: str
         alternate database to use for input HIVE table being copied
+    transformation_functions: List[str]
+        list of transformation functions to be run on the dataframe
+    latest_table: bool
+        If table_name has multiple versions (suffixed with _YYYYMMDD), take the latest one which is the
+        last table in the list
     """
-
-    df = extract_from_table(table_name, break_lineage, alternate_prefix, alternate_database)
+    df = extract_from_table(table_name, break_lineage, alternate_prefix, alternate_database, latest_table)
+    transformations_dict: Dict[str, Any]
+    transformations_dict = {
+        "partcipant_extract_phm": transform_participant_extract_phm,
+    }
+    for transformation in transformation_functions:
+        df = transformations_dict[transformation](df)
     df = update_table(df, table_name, "overwrite")
 
 
@@ -702,8 +720,14 @@ def join_lookup_table(
         dictionary containing {column_name: value_to_assign} pairs to be added to unjoinable_data
     join_on_column: list
         list of columns to join on, defaults to ["work_main_job_title", "work_main_job_role"]
-    transformations: list
-        list of transformation functions to be run on the dataframe once the lookup has been joined
+    lookup_transformations: list
+        list of transformation functions to be run on the lookup dataframe before it has been joined
+    pre_join_transformations: list
+        list of transformation functions to be run on the dataframe before the lookup has been joined
+    post_join_transformations: list
+        list of transformation functions to be run on the dataframe after the lookup has been joined
+    output_table_name_key: str
+        can be altered to ensure that the output is not detected as an input_survey_table
     """
     transformations_dict: Dict[str, Any]
     transformations_dict = {
@@ -1025,14 +1049,48 @@ def report(
     )
 
 
-@register_pipeline_stage("phm_report")
-def phm_report(
+@register_pipeline_stage("phm_output_report")
+def phm_output_report(
     input_survey_table: str,
     output_directory: str,
 ) -> DataFrame:
-    """"""
+    """Generate a completion report for PHM / CRIS showing completion rates by launch language"""
     df = extract_from_table(input_survey_table)
-    report = Report(output_directory=output_directory)
+    report = Report(output_directory=output_directory, output_file_prefix="phm_report_output")
+    for lang in ["Welsh", "English"]:
+        lang_df = df.filter(F.col("launch_language_code") == lang)
+        report.create_completion_table_days(
+            df=lang_df,
+            participant_id_column="participant_id",
+            window_start_column="participant_completion_window_start_datetime",
+            window_end_column="participant_completion_window_end_datetime",
+            window_status_column="survey_completion_status",
+            reference_date_column="visit_datetime",
+            window_range=14,
+            sheet_name_prefix=f"{lang} daily",
+        )
+        report.create_completion_table_set_range(
+            df=lang_df,
+            participant_id_column="participant_id",
+            window_start_column="participant_completion_window_start_datetime",
+            window_end_column="participant_completion_window_end_datetime",
+            window_status_column="survey_completion_status",
+            reference_date_column="visit_datetime",
+            window_range=28,
+            sheet_name_prefix=f"{lang} monthly",
+        )
+    report.write_excel_output()
+
+
+@register_pipeline_stage("phm_validation_report")
+def phm_validation_report(
+    input_survey_table: str,
+    output_directory: str,
+) -> DataFrame:
+    """Generate a validation report for PHM / CRIS"""
+    df = extract_from_table(input_survey_table)
+    report = Report(output_directory=output_directory, output_file_prefix="phm_validation_output")
+    report.create_validated_file_list(df=df, source_file_column="survey_response_source_file", sheet_name_prefix="all")
     report.create_completion_table_days(
         df=df,
         participant_id_column="participant_id",
@@ -1041,6 +1099,7 @@ def phm_report(
         window_status_column="survey_completion_status",
         reference_date_column="visit_datetime",
         window_range=14,
+        sheet_name_prefix="all daily",
     )
     report.create_completion_table_set_range(
         df=df,
@@ -1050,6 +1109,49 @@ def phm_report(
         window_status_column="survey_completion_status",
         reference_date_column="visit_datetime",
         window_range=28,
+        sheet_name_prefix="all monthly",
+    )
+    welsh_preference_df = df.filter(F.col("language_preference") == "Welsh")
+    report.create_completion_table_days(
+        df=welsh_preference_df,
+        participant_id_column="participant_id",
+        window_start_column="participant_completion_window_start_datetime",
+        window_end_column="participant_completion_window_end_datetime",
+        window_status_column="survey_completion_status",
+        reference_date_column="visit_datetime",
+        window_range=14,
+        sheet_name_prefix="pref Welsh daily",
+    )
+    report.create_completion_table_set_range(
+        df=welsh_preference_df,
+        participant_id_column="participant_id",
+        window_start_column="participant_completion_window_start_datetime",
+        window_end_column="participant_completion_window_end_datetime",
+        window_status_column="survey_completion_status",
+        reference_date_column="visit_datetime",
+        window_range=28,
+        sheet_name_prefix="pref Welsh monthly",
+    )
+    welsh_submitted_df = df.filter(F.col("form_language_submitted") == "Welsh")
+    report.create_completion_table_days(
+        df=welsh_submitted_df,
+        participant_id_column="participant_id",
+        window_start_column="participant_completion_window_start_datetime",
+        window_end_column="participant_completion_window_end_datetime",
+        window_status_column="survey_completion_status",
+        reference_date_column="visit_datetime",
+        window_range=14,
+        sheet_name_prefix="submit Welsh daily",
+    )
+    report.create_completion_table_set_range(
+        df=welsh_submitted_df,
+        participant_id_column="participant_id",
+        window_start_column="participant_completion_window_start_datetime",
+        window_end_column="participant_completion_window_end_datetime",
+        window_status_column="survey_completion_status",
+        reference_date_column="visit_datetime",
+        window_range=28,
+        sheet_name_prefix="submit Welsh monthly",
     )
     report.write_excel_output()
 
