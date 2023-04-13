@@ -28,7 +28,10 @@ def decode_phm_json(json_str: Union[str, bytes]) -> List[Tuple]:
         answers = defaultdict(lambda: list())
         list_items = defaultdict(lambda: list())
 
-        # process answer data into single nested degree dictionary keyed by PHM answer codes
+        if data.get("feedback_count", False):
+            continue
+
+            # process answer data into single nested degree dictionary keyed by PHM answer codes
         for i, answer in enumerate(data["answers"]):
             if answer.get("list_item_id"):
                 list_items[answer["list_item_id"]] = answer["answer_id"]
