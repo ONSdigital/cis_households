@@ -1643,6 +1643,7 @@ column_name_maps = {
         "launch_language_code": "form_language_launch",
         "submission_language_code": "form_language_submitted",
         "started_at": "survey_start_datetime",
+        "schema_name": "schema_name",
     },
     "phm_participant_column_name_map": {
         "arrival_timestamp_consol_warehouse": "consolidation_warehouse_sample_received_timestamp",  # TODO check this is correct
