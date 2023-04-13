@@ -535,11 +535,14 @@ def assign_date_from_filename(df: DataFrame, column_name_to_assign: str, filenam
     column_name_to_assign
     filename_column
     """
-    date = F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 1)
+    pattern = r"_(\d{8}|\d{4}-\d{2}-\d{2})(_\d{6}|T\d{6})?[.](csv|txt|json)"
+    date = F.regexp_extract(F.col(filename_column), pattern, 1)
+    date = F.regexp_replace(date, "-", "")
     time = F.when(
-        F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 2) == "",
+        F.regexp_extract(F.col(filename_column), pattern, 2) == "",
         "_000000",
-    ).otherwise(F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 2))
+    ).otherwise(F.regexp_extract(F.col(filename_column), pattern, 2))
+    time = F.regexp_replace(time, "T", "_")
     df = df.withColumn(
         column_name_to_assign,
         F.to_timestamp(
