@@ -762,7 +762,7 @@ def assign_any_symptoms(df: DataFrame):
         "think_have_any_symptoms_new_or_worse",
         F.when(
             (F.col("think_have_no_symptoms_new_or_worse_list_1").contains("None of these symptoms"))
-            & (F.col("think_have_no_symptoms_new_or_worse_list_1").contains("None of these symptoms")),
+            & (F.col("think_have_no_symptoms_new_or_worse_list_2").contains("None of these symptoms")),
             "No",
         )
         .when(
