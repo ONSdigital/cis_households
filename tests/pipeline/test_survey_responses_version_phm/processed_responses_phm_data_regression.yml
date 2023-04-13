@@ -75,7 +75,7 @@
   participant_completion_window_id: '0165'
   participant_completion_window_start_date: null
   participant_completion_window_status: Closed
-  participant_feedback_count: '18'
+  participant_feedback_count: 18.0
   participant_feedback_text: Mama always said life was like a box of chocolates. You
     never know what you're gonna get.
   participant_feedback_type: General feedback about this service
@@ -422,7 +422,7 @@
   participant_completion_window_id: '0262'
   participant_completion_window_start_date: '2022-01-08 00:00:00.000000'
   participant_completion_window_status: Closed
-  participant_feedback_count: '12'
+  participant_feedback_count: 12.0
   participant_feedback_text: Mama always said life was like a box of chocolates. You
     never know what you're gonna get.
   participant_feedback_type: General feedback about this service
@@ -777,7 +777,7 @@
   participant_completion_window_id: '1989'
   participant_completion_window_start_date: '2022-01-01 00:00:00.000000'
   participant_completion_window_status: Closed
-  participant_feedback_count: '23'
+  participant_feedback_count: 23.0
   participant_feedback_text: Here's looking at you, kid.
   participant_feedback_type: General feedback about this service
   participant_first_name_confirmation: null
@@ -1478,7 +1478,7 @@
   participant_completion_window_id: '5424'
   participant_completion_window_start_date: '2022-01-04 00:00:00.000000'
   participant_completion_window_status: Closed
-  participant_feedback_count: '24'
+  participant_feedback_count: 24.0
   participant_feedback_text: A census taker once tried to test me. I ate his liver
     with some fava beans and a nice Chianti.
   participant_feedback_type: General feedback about this service
@@ -1830,7 +1830,7 @@
   participant_completion_window_id: '5712'
   participant_completion_window_start_date: '2022-01-02 00:00:00.000000'
   participant_completion_window_status: Closed
-  participant_feedback_count: '17'
+  participant_feedback_count: 17.0
   participant_feedback_text: You're gonna need a bigger boat.
   participant_feedback_type: null
   participant_first_name_confirmation: 'No'
@@ -2177,7 +2177,7 @@
   participant_completion_window_id: '6872'
   participant_completion_window_start_date: '2022-01-08 00:00:00.000000'
   participant_completion_window_status: Closed
-  participant_feedback_count: '28'
+  participant_feedback_count: 28.0
   participant_feedback_text: Those who refuse to learn from history are condemned
     to repeat it.
   participant_feedback_type: null
@@ -2524,7 +2524,7 @@
   participant_completion_window_id: '9577'
   participant_completion_window_start_date: '2022-01-03 00:00:00.000000'
   participant_completion_window_status: Closed
-  participant_feedback_count: '3'
+  participant_feedback_count: 3.0
   participant_feedback_text: Frankly, my dear, I don't give a damn.
   participant_feedback_type: null
   participant_first_name_confirmation: null
@@ -3224,7 +3224,7 @@
   participant_completion_window_id: '9826'
   participant_completion_window_start_date: '2022-01-02 00:00:00.000000'
   participant_completion_window_status: Closed
-  participant_feedback_count: '25'
+  participant_feedback_count: 25.0
   participant_feedback_text: Ask not what your country can do for you; ask what you
     can do for your country.
   participant_feedback_type: General feedback about this service

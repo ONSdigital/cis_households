@@ -582,7 +582,7 @@ fields:
 - metadata: {}
   name: participant_feedback_count
   nullable: true
-  type: string
+  type: integer
 - metadata: {}
   name: participant_feedback_text
   nullable: true
