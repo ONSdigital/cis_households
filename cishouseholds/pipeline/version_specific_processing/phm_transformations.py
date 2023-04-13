@@ -246,6 +246,7 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
     - face_covering_outside_of_home
     - cis_covid_vaccine_number_of_doses
     - visit_datetime
+    - from_date
 
     Reference columns:
     - currently_smokes_or_vapes_description
@@ -277,6 +278,8 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
             F.to_timestamp(F.col("participant_completion_window_end_date"), format="yyyy-MM-dd"),
         ).otherwise(F.to_timestamp(F.col("survey_completed_datetime"), format="yyyy-MM-dd HH:mm:ss")),
     )
+
+    df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
 
     # df = split_array_columns(df)
     map_to_bool_columns_dict = {
