@@ -820,7 +820,7 @@ def assign_any_symptoms(df: DataFrame):
     )
     df = df.withColumn(
         "think_had_other_infection_any_symptoms",
-        F.when(F.col("phm_think_had_other_infection").isNull(), None)
+        F.when((F.col("phm_think_had_other_infection").isNull()) & (F.col("phm_think_had_unknown").isNull()), None)
         .when(
             (F.col("think_had_other_infection_no_symptoms_list_1").contains("None of these symptoms"))
             & (F.col("think_had_other_infection_no_symptoms_list_2").contains("None of these symptoms")),
