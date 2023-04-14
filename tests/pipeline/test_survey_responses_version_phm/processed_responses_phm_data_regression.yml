@@ -96,6 +96,7 @@
   portal_id: '275'
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'Yes'
+  schema_name: cris_0001
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
@@ -439,6 +440,7 @@
   portal_id: '10492'
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'Yes'
+  schema_name: cris_0001
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
@@ -789,6 +791,7 @@
   portal_id: '7903'
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'No'
+  schema_name: cris_0001
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
@@ -1137,6 +1140,7 @@
   portal_id: '3043'
   problem_with_survey_access_helpline: null
   questionnaire_started_no_incentive: null
+  schema_name: cris_0001
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
@@ -1485,6 +1489,7 @@
   portal_id: '8102'
   problem_with_survey_access_helpline: null
   questionnaire_started_no_incentive: null
+  schema_name: cris_0001
   smoke_cigarettes: 'Yes'
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
@@ -1834,6 +1839,7 @@
   portal_id: '2329'
   problem_with_survey_access_helpline: null
   questionnaire_started_no_incentive: null
+  schema_name: cris_0001
   smoke_cigarettes: null
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: null
@@ -2183,6 +2189,7 @@
   portal_id: '6804'
   problem_with_survey_access_helpline: null
   questionnaire_started_no_incentive: 'No'
+  schema_name: cris_0001
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: null
@@ -2527,6 +2534,7 @@
   portal_id: '5041'
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'No'
+  schema_name: cris_0001
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: 'Yes'
@@ -2874,6 +2882,7 @@
   portal_id: '7407'
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'No'
+  schema_name: cris_0001
   smoke_cigarettes: null
   smokes_cigar: null
   smokes_hookah_shisha_pipes: 'Yes'
@@ -3222,6 +3231,7 @@
   portal_id: '3461'
   problem_with_survey_access_helpline: Continue
   questionnaire_started_no_incentive: 'Yes'
+  schema_name: cris_0001
   smoke_cigarettes: null
   smokes_cigar: 'Yes'
   smokes_hookah_shisha_pipes: null
