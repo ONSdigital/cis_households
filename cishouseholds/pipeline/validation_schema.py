@@ -1743,6 +1743,7 @@ validation_schemas = {
         "participant_completion_window_start_date": string_dict,
         "participant_completion_window_end_date": string_dict,
         "survey_start_datetime": string_dict,
+        "schema_name": string_dict,
     },
     "phm_participant_extract_validation_schema": {
         "ons_household_id": string_dict,
