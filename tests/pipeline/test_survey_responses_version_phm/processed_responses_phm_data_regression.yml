@@ -1951,7 +1951,7 @@
   think_have_any_symptom_new_or_worse_list_1: Noisy breathing or wheezing;Cough
   think_have_any_symptom_new_or_worse_list_2: Memory loss or confusion;More trouble
     sleeping than usual;Low mood or not enjoying anything
-  think_have_any_symptoms_new_or_worse: 'No'
+  think_have_any_symptoms_new_or_worse: 'Yes'
   think_have_covid_any_symptom_list_1: Loss of taste
   think_have_covid_any_symptom_list_2: Memory loss or confusion
   think_have_covid_any_symptoms: 'No'
@@ -2273,7 +2273,7 @@
   think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptom_list_1: Shortness of breath
   think_had_other_infection_any_symptom_list_2: Low mood or not enjoying anything
-  think_had_other_infection_any_symptoms: null
+  think_had_other_infection_any_symptoms: 'Yes'
   think_had_other_infection_no_symptoms_list_1: None of these symptoms
   think_had_other_infection_no_symptoms_list_2: null
   think_had_other_infection_symptom_abdominal_pain: null
@@ -2299,7 +2299,7 @@
   think_have_any_symptom_new_or_worse_list_1: Loss of appetite or eating less than
     usual;Shortness of breath
   think_have_any_symptom_new_or_worse_list_2: Headache;Headache;Headache
-  think_have_any_symptoms_new_or_worse: 'No'
+  think_have_any_symptoms_new_or_worse: 'Yes'
   think_have_covid_any_symptom_list_1: Cough
   think_have_covid_any_symptom_list_2: Muscle ache
   think_have_covid_any_symptoms: 'Yes'
@@ -2644,7 +2644,7 @@
   think_have_any_symptom_new_or_worse_list_1: Sore throat;Noisy breathing or wheezing
   think_have_any_symptom_new_or_worse_list_2: Headache;Weakness or tiredness;Fever
     including high temperature
-  think_have_any_symptoms_new_or_worse: 'No'
+  think_have_any_symptoms_new_or_worse: 'Yes'
   think_have_covid_any_symptom_list_1: Diarrhoea
   think_have_covid_any_symptom_list_2: Memory loss or confusion
   think_have_covid_any_symptoms: 'No'
@@ -3316,7 +3316,7 @@
   think_had_flu_symptom_sore_throat: null
   think_had_other_infection_any_symptom_list_1: Loss of taste
   think_had_other_infection_any_symptom_list_2: Weakness or tiredness
-  think_had_other_infection_any_symptoms: null
+  think_had_other_infection_any_symptoms: 'Yes'
   think_had_other_infection_no_symptoms_list_1: None of these symptoms
   think_had_other_infection_no_symptoms_list_2: null
   think_had_other_infection_symptom_abdominal_pain: null
