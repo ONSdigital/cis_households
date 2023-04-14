@@ -213,9 +213,6 @@ def pre_processing(df: DataFrame) -> DataFrame:
 
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 4)
     # df = generic_processing(df)
-    df = df.withColumn(
-        "file_date", F.col("survey_completed_datetime")
-    )  # the json files dont have dates so we add it here
     # df = assign_completion_status(df=df, column_name_to_assign="survey_completion_status")
     df = add_prefix(df, column_name_to_update="blood_sample_barcode_user_entered", prefix="BLT")
     df = add_prefix(df, column_name_to_update="swab_sample_barcode_user_entered", prefix="SWT")
@@ -246,6 +243,7 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
     - face_covering_outside_of_home
     - cis_covid_vaccine_number_of_doses
     - visit_datetime
+    - from_date
 
     Reference columns:
     - currently_smokes_or_vapes_description
@@ -277,6 +275,8 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
             F.to_timestamp(F.col("participant_completion_window_end_date"), format="yyyy-MM-dd"),
         ).otherwise(F.to_timestamp(F.col("survey_completed_datetime"), format="yyyy-MM-dd HH:mm:ss")),
     )
+
+    df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
 
     # df = split_array_columns(df)
     map_to_bool_columns_dict = {

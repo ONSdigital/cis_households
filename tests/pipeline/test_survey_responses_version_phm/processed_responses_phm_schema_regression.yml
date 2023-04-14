@@ -656,11 +656,11 @@ fields:
   nullable: false
   type: integer
 - metadata: {}
-  name: file_date
+  name: visit_datetime
   nullable: true
   type: timestamp
 - metadata: {}
-  name: visit_datetime
+  name: file_date
   nullable: true
   type: timestamp
 - metadata: {}
