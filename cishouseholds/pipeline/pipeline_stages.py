@@ -160,7 +160,7 @@ def table_to_table(
     }
     for transformation in transformation_functions:
         df = transformations_dict[transformation](df)
-    df = update_table(df, table_name, "overwrite")
+    df = update_table(df, table_name, "overwrite", latest_table)
 
 
 @register_pipeline_stage("csv_to_table")
@@ -703,6 +703,7 @@ def join_lookup_table(
     pre_join_transformations: List[str] = [],
     post_join_transformations: List[str] = [],
     output_table_name_key: str = "output_survey_table",
+    latest_lookup_table: bool = False,
     **kwargs: dict,
 ):
     """
@@ -728,6 +729,8 @@ def join_lookup_table(
         list of transformation functions to be run on the dataframe after the lookup has been joined
     output_table_name_key: str
         can be altered to ensure that the output is not detected as an input_survey_table
+    latest_lookup_table: bool
+        will get the latest lookup table name if the table_name has several versions with a datetime suffix
     """
     transformations_dict: Dict[str, Any]
     transformations_dict = {
@@ -737,7 +740,7 @@ def join_lookup_table(
         "ordered_household_id": ordered_household_id_tranformations,
     }
 
-    lookup_df = extract_from_table(lookup_table_name)
+    lookup_df = extract_from_table(lookup_table_name, latest_table=latest_lookup_table)
     for transformation in lookup_transformations:
         lookup_df = transformations_dict[transformation](lookup_df, **kwargs)
 
