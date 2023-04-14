@@ -162,6 +162,7 @@ phm_datetime_map = {
         "survey_start_datetime",
         "participant_completion_window_start_date",
         "participant_completion_window_end_date",
+        "date_of_birth",
     ],
     "yyyy-MM-dd'T'HH:mm:ss'+00:00'": ["survey_completed_datetime"],
     # "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'+00:00'": ["survey_start_datetime"],
