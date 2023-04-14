@@ -3379,6 +3379,8 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
 
 
 phm_date_format = "%Y-%m-%d"
+phm_datetime_format = "%Y-%m-%dT%H:%M:%S+00:00"
+phm_long_datetime_format = "%Y-%m-%dT%H:%M:%S.%f+00:00"
 
 
 def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
@@ -3393,7 +3395,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                     "custom_random.random_date",
                     start=start_date_list,
                     end=end_date_list,
-                    format=digital_datetime_format,
+                    format=phm_datetime_format,
                 ),
                 None,
             ],
@@ -3959,7 +3961,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                     "custom_random.random_date",
                     start=start_date_list,
                     end=end_date_list,
-                    format=phm_date_format,
+                    format=phm_long_datetime_format,
                 ),
                 None,
             ],
