@@ -31,6 +31,7 @@ from cishouseholds.edit import update_value_if_multiple_and_ref_in_list
 from cishouseholds.expressions import all_columns_values_in_list
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.pipeline.mapping import transformation_maps
+from cishouseholds.pipeline.visit_transformations import visit_transformations
 
 # THIS IS A DIRECT COPY OF A DIGITAL VERSION-SPECIFIC TRANSFORMATIONS - NEEDS TO BE UPDATED WITH THE PHM-SPECIFIC TRANSFORMATIONS AND THEN THEN THE REDUNDANT PROCESSES CLEANED UP
 # DOUBLE CHECK IF REDUNDANT BITS REMOVED BEFORE MERGING ON
@@ -38,6 +39,7 @@ def phm_transformations(df: DataFrame) -> DataFrame:
     """"""
     df = pre_processing(df)
     df = derive_additional_columns(df)
+    df = visit_transformations(df)
     return df
 
 
@@ -681,8 +683,6 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
         F.greatest("work_not_from_home_days_per_week", "education_in_person_days_per_week"),
     )
 
-    df = df.withColumn("face_covering_outside_of_home", F.lit(None).cast("string"))
-
     df = df.withColumn("cis_covid_vaccine_number_of_doses", F.col("phm_covid_vaccine_number_of_doses"))
 
     df = update_column_values_from_map(
@@ -834,42 +834,4 @@ def assign_any_symptoms(df: DataFrame):
         )
         .otherwise(None),
     )
-    return df
-
-
-def split_array_columns(df: DataFrame):
-    """"""
-    array_column_prefixes = [
-        "think_have_covid_any_symptom_list",
-        "think_have_symptoms_new_or_worse_list",
-        "think_have_long_covid_symptom_list",
-        "think_had_covid_any_symptom_list",
-        "think_had_flu_symptom_list",
-        "think_had_other_infection_symptom_list",
-    ]
-
-    array_columns = [
-        *array_column_prefixes,
-        "currently_smokes_or_vapes_description",
-        "phm_think_had_respiratory_infection_type",
-    ]
-
-    prefixes = {"currently_smokes_or_vapes_description": "smokes"}
-
-    for prefix in array_column_prefixes:
-        df = combine_like_array_columns(df, prefix)
-    df.cache()
-    for col in array_columns:
-        df = assign_columns_from_array(
-            df=df,
-            array_column_name=col,
-            prefix=prefixes.get(col, col.split("_list")[0]),
-            true_false_values=["Yes", "No"],
-        )
-    df.unpersist()
-
-    # remove any columns generated above that refer to the absence of a symptom
-    cols = [col for col in df.columns if "none_of_these" in col]
-    df = df.drop(*cols)
-
     return df
