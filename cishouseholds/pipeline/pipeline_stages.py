@@ -56,6 +56,7 @@ from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.lookup_and_regex_transformations import blood_past_positive_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import clean_participant_extract_phm
 from cishouseholds.pipeline.lookup_and_regex_transformations import design_weights_lookup_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import nims_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import ordered_household_id_tranformations
@@ -75,9 +76,7 @@ from cishouseholds.pipeline.vaccine_transformations import vaccine_transformatio
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
 from cishouseholds.pipeline.validation_schema import validation_schemas
-from cishouseholds.pipeline.version_specific_processing.participant_extract_phm import (
-    transform_participant_extract_phm,
-)  # noqa: F401
+from cishouseholds.pipeline.version_specific_processing.participant_extract_phm import transform_participant_extract_phm
 from cishouseholds.pipeline.visit_transformations import visit_transformations
 from cishouseholds.prediction_checker_class import PredictionChecker
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -156,7 +155,7 @@ def table_to_table(
     df = extract_from_table(table_name, break_lineage, alternate_prefix, alternate_database, latest_table)
     transformations_dict: Dict[str, Any]
     transformations_dict = {
-        "partcipant_extract_phm": transform_participant_extract_phm,
+        "participant_extract_phm": transform_participant_extract_phm,
     }
     for transformation in transformation_functions:
         df = transformations_dict[transformation](df)
@@ -738,6 +737,7 @@ def join_lookup_table(
         "blood_past_positive": blood_past_positive_transformations,
         "design_weights_lookup": design_weights_lookup_transformations,
         "ordered_household_id": ordered_household_id_tranformations,
+        "participant_extract_phm": clean_participant_extract_phm,
     }
 
     lookup_df = extract_from_table(lookup_table_name, latest_table=latest_lookup_table)

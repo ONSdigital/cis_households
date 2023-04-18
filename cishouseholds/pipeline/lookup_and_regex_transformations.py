@@ -213,6 +213,19 @@ def ordered_household_id_tranformations(df: DataFrame, **kwargs: dict) -> DataFr
     return df
 
 
+def clean_participant_extract_phm(df: DataFrame, **kwargs: dict) -> DataFrame:
+    """Removes unwanted columns from the PHM participant extract prior to joining to the PHM survey responses"""
+    # null_columns = [col for col in df.columns if df.filter(df[col].isNull()).count() == df.count()]
+    cols_to_drop = [
+        # *null_columns,
+        "participant_completion_window_start_date",
+        "ethnicity_group",
+    ]
+    join_on_columns = [col for col in df.columns if col not in cols_to_drop]
+    df = df.select(join_on_columns)
+    return df
+
+
 def process_vaccine_regex(df: DataFrame, vaccine_type_col: str) -> DataFrame:
     """Add result of vaccine regex pattern matchings"""
 
