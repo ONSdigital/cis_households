@@ -577,6 +577,7 @@ def union_historical_visit_transformations(tables_to_process: List, output_surve
     df = union_multiple_tables(df_list)
     for transformation in transformations:
         df = transformations_dict[transformation](df)
+    df = df.filter(F.col("filter_survey_response_dataset_major_version")) > 3
     update_table(df, output_survey_table, "overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
