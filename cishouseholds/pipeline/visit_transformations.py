@@ -3,6 +3,7 @@ from pyspark.sql import DataFrame
 from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
+from cishouseholds.derive import assign_fake_id
 from cishouseholds.derive import assign_first_visit
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
@@ -19,6 +20,7 @@ def visit_transformations(df: DataFrame):
 
 def visit_derivations(df: DataFrame):
 
+    df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
     df = assign_visit_order(
         df=df,
         column_name_to_assign="visit_order",
