@@ -42,13 +42,8 @@ def phm_transformations(df: DataFrame) -> DataFrame:
     return df
 
 
-def participant_dependent_derivations(
-    df: DataFrame,
-    participant_df: DataFrame,
-) -> DataFrame:
-    """joins participant info and derives visit based fields"""
-
-    df = df.join(df, participant_df, ["participant_id", "participant_completion_window_id"], how="left")
+def phm_visit_transformations(df: DataFrame) -> DataFrame:
+    """derives visit based fields, must have participant info joined prior to transformations"""
     df = visit_transformations(df)
     return df
 

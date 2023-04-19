@@ -78,7 +78,7 @@ from cishouseholds.pipeline.validation_schema import validation_schemas
 from cishouseholds.pipeline.version_specific_processing.participant_extract_phm import (
     transform_participant_extract_phm,
 )  # noqa: F401
-from cishouseholds.pipeline.version_specific_processing.phm_transformations import participant_dependent_derivations
+from cishouseholds.pipeline.version_specific_processing.phm_transformations import phm_visit_transformations
 from cishouseholds.pipeline.visit_transformations import visit_transformations
 from cishouseholds.prediction_checker_class import PredictionChecker
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -693,22 +693,6 @@ def execute_lab_transformations(
     return {"output_survey_table": output_survey_table}
 
 
-@register_pipeline_stage("phm_participant_dependent_transformations")
-def phm_participant_dependent_transformations(
-    input_survey_table: str,
-    participant_table: str,
-    output_survey_table: str,
-):
-    """
-    Stage which join the participant dataset to the responses for PHM,
-    and executes transformations dependent on having participant information present
-    """
-    df = extract_from_table(input_survey_table)
-    df = df(participant_dependent_derivations(df, participant_table))
-    update_table(df, output_survey_table, "overwrite", survey_table=True)
-    return {"output_survey_table": output_survey_table}
-
-
 @register_pipeline_stage("join_lookup_table")
 def join_lookup_table(
     input_survey_table: str,
@@ -755,6 +739,7 @@ def join_lookup_table(
         "blood_past_positive": blood_past_positive_transformations,
         "design_weights_lookup": design_weights_lookup_transformations,
         "ordered_household_id": ordered_household_id_tranformations,
+        "phm_visit_transformation": phm_visit_transformations,
     }
 
     lookup_df = extract_from_table(lookup_table_name, latest_table=latest_lookup_table)
