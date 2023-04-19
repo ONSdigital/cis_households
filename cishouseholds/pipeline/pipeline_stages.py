@@ -80,7 +80,6 @@ from cishouseholds.pipeline.version_specific_processing.participant_extract_phm 
     transform_participant_extract_phm,
 )  # noqa: F401
 from cishouseholds.pipeline.version_specific_processing.phm_transformations import phm_visit_transformations
-from cishouseholds.pipeline.version_specific_processing.participant_extract_phm import transform_participant_extract_phm
 from cishouseholds.pipeline.visit_transformations import visit_transformations
 from cishouseholds.prediction_checker_class import PredictionChecker
 from cishouseholds.pyspark_utils import get_or_create_spark_session
