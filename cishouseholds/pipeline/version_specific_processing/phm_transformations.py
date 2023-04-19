@@ -249,7 +249,6 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
     - times_outside_shopping_or_socialising_last_7_days
     - face_covering_outside_of_home
     - cis_covid_vaccine_number_of_doses
-    - visit_datetime
     - from_date
 
     Reference columns:
@@ -275,13 +274,6 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
     - work_not_from_home_days_per_week
     - phm_covid_vaccine_number_of_doses
     """
-    df = df.withColumn(
-        "visit_datetime",
-        F.when(
-            F.col("survey_completion_status_flushed") == True,
-            F.to_timestamp(F.col("participant_completion_window_end_date"), format="yyyy-MM-dd"),
-        ).otherwise(F.to_timestamp(F.col("survey_completed_datetime"), format="yyyy-MM-dd HH:mm:ss")),
-    )
 
     df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
 
