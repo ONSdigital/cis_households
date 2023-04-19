@@ -43,7 +43,7 @@ def phm_transformations(df: DataFrame) -> DataFrame:
 
 
 def phm_visit_transformations(df: DataFrame) -> DataFrame:
-    """derives visit based fields, must have participant info joined prior to transformations"""
+    """derives visit based fields, must have participant info and historical visits joined prior to transformations"""
     df = visit_transformations(df)
     return df
 
@@ -229,6 +229,8 @@ def pre_processing(df: DataFrame) -> DataFrame:
 def derive_additional_columns(df: DataFrame) -> DataFrame:
     """
     New columns:
+    - visit_datetime
+    - visit_id
     - think_have_covid_any_symptoms
     - think_have_any_symptoms_new_or_worse
     - think_have_long_covid_any_symptoms
@@ -252,6 +254,9 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
     - from_date
 
     Reference columns:
+    - participant_completion_window_id
+    - survey_completion_status_flushed
+    - survey_completed_datetime
     - currently_smokes_or_vapes_description
     - blood_not_taken_could_not_reason
     - transport_shared_outside_household_last_28_days
@@ -274,7 +279,14 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
     - work_not_from_home_days_per_week
     - phm_covid_vaccine_number_of_doses
     """
-
+    df = df.withColumn("visit_id", F.col("participant_completion_window_id"))
+    df = df.withColumn(
+        "visit_datetime",
+        F.when(
+            F.col("survey_completion_status_flushed") == "true",
+            F.to_timestamp(F.col("participant_completion_window_end_date"), format="yyyy-MM-dd"),
+        ).otherwise(F.to_timestamp(F.col("survey_completed_datetime"), format="yyyy-MM-dd HH:mm:ss")),
+    )
     df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
 
     # df = split_array_columns(df)

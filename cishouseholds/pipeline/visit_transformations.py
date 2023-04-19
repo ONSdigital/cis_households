@@ -1,4 +1,3 @@
-import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_column_given_proportion
@@ -11,22 +10,15 @@ from cishouseholds.derive import assign_visit_order
 
 
 def visit_transformations(df: DataFrame):
-    """"""
+    """derives visit based derivations, but must have old responses joined to first
+    in order to be continuous from CRIS to PHM
+    """
     df = visit_derivations(df).custom_checkpoint()
     return df
 
 
 def visit_derivations(df: DataFrame):
 
-    df = df.withColumn("visit_id", F.col("participant_completion_window_id"))
-
-    df = df.withColumn(
-        "visit_datetime",
-        F.when(
-            F.col("survey_completion_status_flushed") == "true",
-            F.to_timestamp(F.col("participant_completion_window_end_date"), format="yyyy-MM-dd"),
-        ).otherwise(F.to_timestamp(F.col("survey_completed_datetime"), format="yyyy-MM-dd HH:mm:ss")),
-    )
     df = assign_visit_order(
         df=df,
         column_name_to_assign="visit_order",

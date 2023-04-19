@@ -552,6 +552,34 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
     return {"output_survey_table": output_survey_table}
 
 
+@register_pipeline_stage("union_historical_visit_transformations")
+def union_historical_visit_transformations(tables_to_process: List, output_survey_table: str, transformations: List):
+    """
+    Union list of tables_to_process, and write to table.
+
+    Parameters
+    ----------
+    tables_to_process
+        input tables for extracting each of the transformed survey responses tables
+    output_survey_table
+        output table name for the combine file of all unioned survey responses
+    Transformations
+        transformation functions to be applied once the union has taken place
+    """
+    df_list = [extract_from_table(table) for table in tables_to_process]
+
+    transformations_dict: Dict[str, Any]
+    transformations_dict = {
+        "phm_visit_transformation": phm_visit_transformations,
+    }
+
+    df = union_multiple_tables(df_list)
+    for transformation in transformations:
+        df = transformations_dict[transformation](df)
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
+    return {"output_survey_table": output_survey_table}
+
+
 @register_pipeline_stage("post_union_processing")
 def execute_post_union_processing(
     input_survey_table: str,
