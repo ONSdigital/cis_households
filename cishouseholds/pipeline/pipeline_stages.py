@@ -571,7 +571,7 @@ def union_historical_visit_transformations(tables_to_process: List, output_surve
 
     transformations_dict: Dict[str, Any]
     transformations_dict = {
-        "phm_visit_transformation": phm_visit_transformations,
+        "phm_visit_transformations": phm_visit_transformations,
     }
 
     df = union_multiple_tables(df_list)
