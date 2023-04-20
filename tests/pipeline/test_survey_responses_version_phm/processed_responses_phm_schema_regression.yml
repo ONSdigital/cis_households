@@ -660,6 +660,10 @@ fields:
   nullable: false
   type: integer
 - metadata: {}
+  name: visit_id
+  nullable: true
+  type: string
+- metadata: {}
   name: visit_datetime
   nullable: true
   type: timestamp
@@ -1339,10 +1343,6 @@ fields:
   name: times_outside_shopping_or_socialising_last_7_days
   nullable: true
   type: integer
-- metadata: {}
-  name: face_covering_outside_of_home
-  nullable: true
-  type: string
 - metadata: {}
   name: cis_covid_vaccine_number_of_doses
   nullable: true
