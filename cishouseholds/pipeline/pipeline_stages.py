@@ -56,6 +56,7 @@ from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.lookup_and_regex_transformations import blood_past_positive_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import clean_historic_geography_lookup
 from cishouseholds.pipeline.lookup_and_regex_transformations import clean_participant_extract_phm
 from cishouseholds.pipeline.lookup_and_regex_transformations import design_weights_lookup_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import nims_transformations
@@ -159,6 +160,7 @@ def table_to_table(
     transformations_dict: Dict[str, Any]
     transformations_dict = {
         "participant_extract_phm": transform_participant_extract_phm,
+        "clean_historic_geography_lookup": clean_historic_geography_lookup,
     }
     for transformation in transformation_functions:
         df = transformations_dict[transformation](df)
@@ -1202,7 +1204,7 @@ def tables_to_csv(
             filter = {key: val if type(val) == list else [val] for key, val in filter.items()}
             df = df.filter(reduce(and_, [F.col(col).isin(val) for col, val in filter.items()]))
 
-        df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
+        df = map_output_values_and_column_names(df, table.get("column_name_map", None), category_map_dictionary)
 
         file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
         write_csv_rename(df, file_path, sep, extension)
