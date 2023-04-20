@@ -286,8 +286,8 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
         "phm_think_had_respiratory_infection_type": "",
         "think_have_covid_any_symptom_list_1": "think_have_covid",
         "think_have_covid_any_symptom_list_2": "think_have_covid",
-        "think_have_any_symptom_new_or_worse_list_1": "think_have_symptoms",
-        "think_have_any_symptom_new_or_worse_list_2": "think_have_symptoms",
+        "think_have_any_symptom_new_or_worse_list_1": "think_have_new_or_worse",
+        "think_have_any_symptom_new_or_worse_list_2": "think_have_new_or_worse",
         "think_had_covid_any_symptom_list_1": "think_had_covid",
         "think_had_covid_any_symptom_list_2": "think_had_covid",
         "think_had_other_infection_any_symptom_list_1": "think_had_other_infection",
@@ -762,7 +762,7 @@ def assign_any_symptoms(df: DataFrame):
         "think_have_any_symptoms_new_or_worse",
         F.when(
             (F.col("think_have_no_symptoms_new_or_worse_list_1").contains("None of these symptoms"))
-            & (F.col("think_have_no_symptoms_new_or_worse_list_1").contains("None of these symptoms")),
+            & (F.col("think_have_no_symptoms_new_or_worse_list_2").contains("None of these symptoms")),
             "No",
         )
         .when(
@@ -820,7 +820,7 @@ def assign_any_symptoms(df: DataFrame):
     )
     df = df.withColumn(
         "think_had_other_infection_any_symptoms",
-        F.when(F.col("phm_think_had_other_infection").isNull(), None)
+        F.when((F.col("phm_think_had_other_infection").isNull()) & (F.col("phm_think_had_unknown").isNull()), None)
         .when(
             (F.col("think_had_other_infection_no_symptoms_list_1").contains("None of these symptoms"))
             & (F.col("think_had_other_infection_no_symptoms_list_2").contains("None of these symptoms")),

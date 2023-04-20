@@ -18,7 +18,7 @@ class Report:
     def __init__(self, output_directory: str = None, output_file_prefix: str = "phm_report_output"):
         """"""
         self.output_directory = output_directory
-        self.output_file_prefx = output_file_prefix
+        self.output_file_prefix = output_file_prefix
         self.sheets: List[Tuple[DataFrame, str]] = []
         self.output = BytesIO()
 
@@ -26,8 +26,9 @@ class Report:
         """"""
         self.sheets.append((df, sheet_name))
 
-    def write_excel_output(self, output_directory: str = None, output_file_prefix: str = "phm_report_output"):
+    def write_excel_output(self, output_directory: str = None, output_file_prefix: str = None):
         output_directory = output_directory if output_directory else self.output_directory
+        output_file_prefix = output_file_prefix if output_file_prefix else self.output_file_prefix
         with pd.ExcelWriter(self.output) as writer:
             for df, sheet_name in self.sheets:
                 df.toPandas().to_excel(writer, sheet_name=sheet_name, index=False)
