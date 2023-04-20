@@ -230,6 +230,7 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
     """
     New columns:
     - visit_datetime
+    - visit_date
     - visit_id
     - think_have_covid_any_symptoms
     - think_have_any_symptoms_new_or_worse
@@ -288,6 +289,8 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
         ).otherwise(F.to_timestamp(F.col("survey_completed_datetime"), format="yyyy-MM-dd HH:mm:ss")),
     )
     df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
+
+    df = df.withColumn("visit_date", F.date_trunc("day", F.col("visit_datetime")))
 
     # df = split_array_columns(df)
     map_to_bool_columns_dict = {
