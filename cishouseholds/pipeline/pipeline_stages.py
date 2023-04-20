@@ -1171,7 +1171,7 @@ def tables_to_csv(
             filter = {key: val if type(val) == list else [val] for key, val in filter.items()}
             df = df.filter(reduce(and_, [F.col(col).isin(val) for col, val in filter.items()]))
 
-        df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
+        df = map_output_values_and_column_names(df, table.get("column_name_map", None), category_map_dictionary)
 
         file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
         write_csv_rename(df, file_path, sep, extension)
