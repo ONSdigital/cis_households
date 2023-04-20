@@ -634,13 +634,13 @@ def execute_demographic_transformations(
     input_survey_table: str,
     output_survey_table: str,
     imputed_value_lookup_table: str,
-    design_weights_lookup_table: str,
+    rural_urban_lookup_table: str,
     geography_lookup_table: str,
 ):
     """"""
     df = extract_from_table(input_survey_table)
     geography_lookup_df = extract_from_table(geography_lookup_table)
-    design_weights_lookup_df = extract_from_table(design_weights_lookup_table)
+    rural_urban_lookup_df = extract_from_table(rural_urban_lookup_table)
     imputed_value_lookup_df = None
     if check_table_exists(imputed_value_lookup_table):
         imputed_value_lookup_df = extract_from_table(imputed_value_lookup_table, break_lineage=True)
@@ -648,7 +648,7 @@ def execute_demographic_transformations(
         df=df,
         imputed_value_lookup_df=imputed_value_lookup_df,
         geography_lookup_df=geography_lookup_df,
-        design_weights_lookup_df=design_weights_lookup_df,
+        rural_urban_lookup_df=rural_urban_lookup_df,
     )
     update_table(df, output_survey_table, "overwrite", survey_table=True)
     update_table(imputed_value_lookup_df, imputed_value_lookup_table, "overwrite")
