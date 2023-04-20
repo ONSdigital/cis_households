@@ -58,6 +58,7 @@ from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.lookup_and_regex_transformations import blood_past_positive_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import clean_historic_geography_lookup
 from cishouseholds.pipeline.lookup_and_regex_transformations import clean_participant_extract_phm
+from cishouseholds.pipeline.lookup_and_regex_transformations import create_historic_visits
 from cishouseholds.pipeline.lookup_and_regex_transformations import design_weights_lookup_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import nims_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import ordered_household_id_tranformations
@@ -161,6 +162,7 @@ def table_to_table(
     transformations_dict = {
         "participant_extract_phm": transform_participant_extract_phm,
         "clean_historic_geography_lookup": clean_historic_geography_lookup,
+        "create_historic_visits": create_historic_visits,
     }
     for transformation in transformation_functions:
         df = transformations_dict[transformation](df)
