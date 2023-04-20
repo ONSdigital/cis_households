@@ -683,17 +683,20 @@ def execute_vaccine_transformations(
 
 @register_pipeline_stage("job_transformations")
 def execute_job_transformations(
-    input_survey_table: str, output_survey_table: str, soc_lookup_table: str, job_lookup_table: str
+    input_survey_table: str,
+    output_survey_table: str,
 ):
-    """"""
+    """
+    Runs job transformations on the input survey table and produces output table
+    """
     df = extract_from_table(input_survey_table)
-    soc_lookup_df = extract_from_table(soc_lookup_table)
-    job_lookup_df = None
-    if check_table_exists(job_lookup_table):
-        job_lookup_df = extract_from_table(job_lookup_table, break_lineage=True)
-    df, job_lookup_df = job_transformations(df=df, soc_lookup_df=soc_lookup_df, job_lookup_df=job_lookup_df)
+    # soc_lookup_df = extract_from_table(soc_lookup_table)
+    # job_lookup_df = None
+    # if check_table_exists(job_lookup_table):
+    #     job_lookup_df = extract_from_table(job_lookup_table, break_lineage=True)
+    df, job_lookup_df = job_transformations(df=df)
     update_table(df, output_survey_table, "overwrite", survey_table=True)
-    update_table(job_lookup_df, job_lookup_table, "overwrite")
+    # update_table(job_lookup_df, job_lookup_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
 
