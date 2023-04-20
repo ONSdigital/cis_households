@@ -96,7 +96,7 @@ transformation_maps: Dict[str, Dict[str, str]] = {
     "phm_think_had_respiratory_infection_type": {
         "COVID-19": "phm_think_had_covid",
         "Flu": "phm_think_had_flu",
-        "Another type of respiratory infection of illness": "phm_think_had_other_infection",
+        "Another type of respiratory infection": "phm_think_had_other_infection",
         "Do not know the type": "phm_think_had_unknown",
     },
     "symptoms_list_1": {
@@ -1643,6 +1643,7 @@ column_name_maps = {
         "launch_language_code": "form_language_launch",
         "submission_language_code": "form_language_submitted",
         "started_at": "survey_start_datetime",
+        "schema_name": "schema_name",
     },
     "phm_participant_column_name_map": {
         "arrival_timestamp_consol_warehouse": "consolidation_warehouse_sample_received_timestamp",  # TODO check this is correct
@@ -1684,8 +1685,8 @@ column_name_maps = {
         "ons_household_id": "ons_household_id",
         "original_invite_cohort": "participant_original_invite_cohort",
         "participant_completion_window_id": "participant_completion_window_id",
-        "participant_completion_window_start_datetime": "participant_completion_window_start_datetime",
-        "participant_digital_enrolment_datetime": "participant_digital_enrolment_datetime",
+        "participant_completion_window_start_datetime": "participant_completion_window_start_date",
+        "participant_digital_enrolment_datetime": "participant_digital_enrolment_date",
         "participant_enrolled_digital": "participant_enrolled_digital",
         "participant_id": "participant_id",
         "participant_invited_to_digital": "participant_invited_to_digital",

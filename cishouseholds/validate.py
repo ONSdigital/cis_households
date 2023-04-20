@@ -206,8 +206,9 @@ def validate_processed_files(df: DataFrame, source_file_column: str):
     for d in dirs:
         files = [f for f in list_contents(d, date_from_filename=False)["file_path"].to_list() if isinstance(f, str)]
         found_files.extend(files)
-    unprocessed = set(found_files) - set(processed_files)
-    non_existent = set(processed_files) - set(found_files)
+    found_files = sorted(found_files)
+    unprocessed = sorted(set(found_files) - set(processed_files))
+    non_existent = sorted(set(processed_files) - set(found_files))
     if unprocessed:
         u = "\n".join(unprocessed)
         print(f"Found {len(unprocessed)} unprocessed files: {u}")  # functional

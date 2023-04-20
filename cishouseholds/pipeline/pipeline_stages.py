@@ -56,6 +56,7 @@ from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.lookup_and_regex_transformations import blood_past_positive_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import clean_participant_extract_phm
 from cishouseholds.pipeline.lookup_and_regex_transformations import design_weights_lookup_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import nims_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import ordered_household_id_tranformations
@@ -75,9 +76,7 @@ from cishouseholds.pipeline.vaccine_transformations import vaccine_transformatio
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
 from cishouseholds.pipeline.validation_schema import validation_schemas
-from cishouseholds.pipeline.version_specific_processing.participant_extract_phm import (
-    transform_participant_extract_phm,
-)  # noqa: F401
+from cishouseholds.pipeline.version_specific_processing.participant_extract_phm import transform_participant_extract_phm
 from cishouseholds.pipeline.visit_transformations import visit_transformations
 from cishouseholds.prediction_checker_class import PredictionChecker
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -156,11 +155,11 @@ def table_to_table(
     df = extract_from_table(table_name, break_lineage, alternate_prefix, alternate_database, latest_table)
     transformations_dict: Dict[str, Any]
     transformations_dict = {
-        "partcipant_extract_phm": transform_participant_extract_phm,
+        "participant_extract_phm": transform_participant_extract_phm,
     }
     for transformation in transformation_functions:
         df = transformations_dict[transformation](df)
-    df = update_table(df, table_name, "overwrite")
+    df = update_table(df, table_name, "overwrite", latest_table)
 
 
 @register_pipeline_stage("csv_to_table")
@@ -703,6 +702,7 @@ def join_lookup_table(
     pre_join_transformations: List[str] = [],
     post_join_transformations: List[str] = [],
     output_table_name_key: str = "output_survey_table",
+    latest_lookup_table: bool = False,
     **kwargs: dict,
 ):
     """
@@ -728,6 +728,8 @@ def join_lookup_table(
         list of transformation functions to be run on the dataframe after the lookup has been joined
     output_table_name_key: str
         can be altered to ensure that the output is not detected as an input_survey_table
+    latest_lookup_table: bool
+        will get the latest lookup table name if the table_name has several versions with a datetime suffix
     """
     transformations_dict: Dict[str, Any]
     transformations_dict = {
@@ -735,9 +737,10 @@ def join_lookup_table(
         "blood_past_positive": blood_past_positive_transformations,
         "design_weights_lookup": design_weights_lookup_transformations,
         "ordered_household_id": ordered_household_id_tranformations,
+        "participant_extract_phm": clean_participant_extract_phm,
     }
 
-    lookup_df = extract_from_table(lookup_table_name)
+    lookup_df = extract_from_table(lookup_table_name, latest_table=latest_lookup_table)
     for transformation in lookup_transformations:
         lookup_df = transformations_dict[transformation](lookup_df, **kwargs)
 
@@ -1055,29 +1058,34 @@ def phm_output_report(
     output_directory: str,
 ) -> DataFrame:
     """Generate a completion report for PHM / CRIS showing completion rates by launch language"""
-    df = extract_from_table(input_survey_table)
+    all_df = extract_from_table(input_survey_table)
+    welsh_preference_df = all_df.filter(F.col("language_preference") == "Welsh")
+    welsh_submitted_df = all_df.filter(F.col("form_language_submitted") == "Welsh")
     report = Report(output_directory=output_directory, output_file_prefix="phm_report_output")
-    for lang in ["Welsh", "English"]:
-        lang_df = df.filter(F.col("launch_language_code") == lang)
+    dfs = [all_df, welsh_preference_df, welsh_submitted_df]
+    prefixes = ["all", "pref Welsh", "submit Welsh"]
+    for df, prefix in zip(dfs, prefixes):
+        if df.count() == 0:
+            continue
         report.create_completion_table_days(
-            df=lang_df,
+            df=df,
             participant_id_column="participant_id",
-            window_start_column="participant_completion_window_start_datetime",
-            window_end_column="participant_completion_window_end_datetime",
+            window_start_column="participant_completion_window_start_date",
+            window_end_column="participant_completion_window_end_date",
             window_status_column="survey_completion_status",
             reference_date_column="visit_datetime",
             window_range=14,
-            sheet_name_prefix=f"{lang} daily",
+            sheet_name_prefix=f"{prefix} daily",
         )
         report.create_completion_table_set_range(
-            df=lang_df,
+            df=df,
             participant_id_column="participant_id",
-            window_start_column="participant_completion_window_start_datetime",
-            window_end_column="participant_completion_window_end_datetime",
+            window_start_column="participant_completion_window_start_date",
+            window_end_column="participant_completion_window_end_date",
             window_status_column="survey_completion_status",
             reference_date_column="visit_datetime",
             window_range=28,
-            sheet_name_prefix=f"{lang} monthly",
+            sheet_name_prefix=f"{prefix} monthly",
         )
     report.write_excel_output()
 
@@ -1091,68 +1099,6 @@ def phm_validation_report(
     df = extract_from_table(input_survey_table)
     report = Report(output_directory=output_directory, output_file_prefix="phm_validation_output")
     report.create_validated_file_list(df=df, source_file_column="survey_response_source_file", sheet_name_prefix="all")
-    report.create_completion_table_days(
-        df=df,
-        participant_id_column="participant_id",
-        window_start_column="participant_completion_window_start_datetime",
-        window_end_column="participant_completion_window_end_datetime",
-        window_status_column="survey_completion_status",
-        reference_date_column="visit_datetime",
-        window_range=14,
-        sheet_name_prefix="all daily",
-    )
-    report.create_completion_table_set_range(
-        df=df,
-        participant_id_column="participant_id",
-        window_start_column="participant_completion_window_start_datetime",
-        window_end_column="participant_completion_window_end_datetime",
-        window_status_column="survey_completion_status",
-        reference_date_column="visit_datetime",
-        window_range=28,
-        sheet_name_prefix="all monthly",
-    )
-    welsh_preference_df = df.filter(F.col("language_preference") == "Welsh")
-    report.create_completion_table_days(
-        df=welsh_preference_df,
-        participant_id_column="participant_id",
-        window_start_column="participant_completion_window_start_datetime",
-        window_end_column="participant_completion_window_end_datetime",
-        window_status_column="survey_completion_status",
-        reference_date_column="visit_datetime",
-        window_range=14,
-        sheet_name_prefix="pref Welsh daily",
-    )
-    report.create_completion_table_set_range(
-        df=welsh_preference_df,
-        participant_id_column="participant_id",
-        window_start_column="participant_completion_window_start_datetime",
-        window_end_column="participant_completion_window_end_datetime",
-        window_status_column="survey_completion_status",
-        reference_date_column="visit_datetime",
-        window_range=28,
-        sheet_name_prefix="pref Welsh monthly",
-    )
-    welsh_submitted_df = df.filter(F.col("form_language_submitted") == "Welsh")
-    report.create_completion_table_days(
-        df=welsh_submitted_df,
-        participant_id_column="participant_id",
-        window_start_column="participant_completion_window_start_datetime",
-        window_end_column="participant_completion_window_end_datetime",
-        window_status_column="survey_completion_status",
-        reference_date_column="visit_datetime",
-        window_range=14,
-        sheet_name_prefix="submit Welsh daily",
-    )
-    report.create_completion_table_set_range(
-        df=welsh_submitted_df,
-        participant_id_column="participant_id",
-        window_start_column="participant_completion_window_start_datetime",
-        window_end_column="participant_completion_window_end_datetime",
-        window_status_column="survey_completion_status",
-        reference_date_column="visit_datetime",
-        window_range=28,
-        sheet_name_prefix="submit Welsh monthly",
-    )
     report.write_excel_output()
 
 

@@ -22,8 +22,8 @@ def preprocessing(df: DataFrame) -> DataFrame:
     """
     col_val_map = {
         "language_preference": {
-            "cy": "Welsh",
-            "en": "English",
+            "CY": "Welsh",
+            "EN": "English",
         },
         "participant_withdrawal_reason": {
             "Moving Location": "Moving location",

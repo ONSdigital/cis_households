@@ -161,9 +161,8 @@ phm_datetime_map = {
         "think_have_covid_onset_date",
         "participant_completion_window_start_date",
         "participant_completion_window_end_date",
+        "date_of_birth",
     ],
-    "yyyy-MM-dd'T'HH:mm:ss'Z'": [
-        "survey_completed_datetime",
-        "survey_start_datetime",
-    ],
+    "yyyy-MM-dd'T'HH:mm:ss'+00:00'": ["survey_completed_datetime"],
+    "yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX": ["survey_start_datetime"],
 }

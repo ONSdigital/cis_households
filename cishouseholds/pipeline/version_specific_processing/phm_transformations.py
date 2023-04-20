@@ -213,9 +213,6 @@ def pre_processing(df: DataFrame) -> DataFrame:
 
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 4)
     # df = generic_processing(df)
-    df = df.withColumn(
-        "file_date", F.col("survey_completed_datetime")
-    )  # the json files dont have dates so we add it here
     # df = assign_completion_status(df=df, column_name_to_assign="survey_completion_status")
     df = add_prefix(df, column_name_to_update="blood_sample_barcode_user_entered", prefix="BLT")
     df = add_prefix(df, column_name_to_update="swab_sample_barcode_user_entered", prefix="SWT")
@@ -246,6 +243,7 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
     - face_covering_outside_of_home
     - cis_covid_vaccine_number_of_doses
     - visit_datetime
+    - from_date
 
     Reference columns:
     - currently_smokes_or_vapes_description
@@ -278,6 +276,8 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
         ).otherwise(F.to_timestamp(F.col("survey_completed_datetime"), format="yyyy-MM-dd HH:mm:ss")),
     )
 
+    df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
+
     # df = split_array_columns(df)
     map_to_bool_columns_dict = {
         "currently_smokes_or_vapes_description": "",
@@ -286,8 +286,8 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
         "phm_think_had_respiratory_infection_type": "",
         "think_have_covid_any_symptom_list_1": "think_have_covid",
         "think_have_covid_any_symptom_list_2": "think_have_covid",
-        "think_have_any_symptom_new_or_worse_list_1": "think_have_symptoms",
-        "think_have_any_symptom_new_or_worse_list_2": "think_have_symptoms",
+        "think_have_any_symptom_new_or_worse_list_1": "think_have_new_or_worse",
+        "think_have_any_symptom_new_or_worse_list_2": "think_have_new_or_worse",
         "think_had_covid_any_symptom_list_1": "think_had_covid",
         "think_had_covid_any_symptom_list_2": "think_had_covid",
         "think_had_other_infection_any_symptom_list_1": "think_had_other_infection",
@@ -762,7 +762,7 @@ def assign_any_symptoms(df: DataFrame):
         "think_have_any_symptoms_new_or_worse",
         F.when(
             (F.col("think_have_no_symptoms_new_or_worse_list_1").contains("None of these symptoms"))
-            & (F.col("think_have_no_symptoms_new_or_worse_list_1").contains("None of these symptoms")),
+            & (F.col("think_have_no_symptoms_new_or_worse_list_2").contains("None of these symptoms")),
             "No",
         )
         .when(
@@ -820,7 +820,7 @@ def assign_any_symptoms(df: DataFrame):
     )
     df = df.withColumn(
         "think_had_other_infection_any_symptoms",
-        F.when(F.col("phm_think_had_other_infection").isNull(), None)
+        F.when((F.col("phm_think_had_other_infection").isNull()) & (F.col("phm_think_had_unknown").isNull()), None)
         .when(
             (F.col("think_had_other_infection_no_symptoms_list_1").contains("None of these symptoms"))
             & (F.col("think_had_other_infection_no_symptoms_list_2").contains("None of these symptoms")),
