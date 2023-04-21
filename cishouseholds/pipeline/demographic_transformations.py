@@ -7,19 +7,15 @@ from pyspark.sql import Window
 from cishouseholds.derive import assign_age_group_school_year
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_regex_match
-from cishouseholds.derive import assign_consent_code
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_household_participant_count
-from cishouseholds.derive import assign_household_under_2_count
 from cishouseholds.derive import assign_multigenerational
 from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_work_status_group
 from cishouseholds.derive import clean_postcode
 from cishouseholds.derive import derive_age_based_columns
 from cishouseholds.edit import update_column_values_from_map
-from cishouseholds.edit import update_person_count_from_ages
 from cishouseholds.edit import update_to_value_if_any_not_null
-from cishouseholds.expressions import sum_within_row
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
 from cishouseholds.impute import fill_forward_from_last_change
 from cishouseholds.impute import fill_forward_only_to_nulls
@@ -31,13 +27,12 @@ from cishouseholds.impute import impute_date_by_k_nearest_neighbours
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.merge import left_join_keep_right
 from cishouseholds.pipeline.config import get_config
-from cishouseholds.pipeline.lookup_and_regex_transformations import design_weights_lookup_transformations
 
 
 def demographic_transformations(
     df: DataFrame,
     geography_lookup_df: DataFrame,
-    design_weights_lookup_df: DataFrame,
+    rural_urban_lookup_df: DataFrame,
     imputed_value_lookup_df: Optional[DataFrame] = None,
 ):
     """
@@ -48,13 +43,12 @@ def demographic_transformations(
     log_directory: str = get_config()["imputation_log_directory"]
 
     df = generic_processing(df).custom_checkpoint()
-    df = replace_design_weights_transformations(
-        df=df, geography_lookup_df=geography_lookup_df, design_weights_lookup_df=design_weights_lookup_df
+    df = join_statistical_geographies(
+        df=df, geography_lookup_df=geography_lookup_df, rural_urban_lookup_df=rural_urban_lookup_df
     ).custom_checkpoint()
     df = fill_forwards_and_backwards(df).custom_checkpoint()
     df = ethnicity_transformations(df).custom_checkpoint()
     df = derive_people_in_household_count(df).custom_checkpoint()
-
     imputed_demographic_columns_df = impute_key_columns(df, imputed_value_lookup_df, log_directory).custom_checkpoint()
     df = geography_dependent_transformations(
         df=df, imputed_demographic_columns_df=imputed_demographic_columns_df
@@ -93,23 +87,22 @@ def generic_processing(df: DataFrame):
         reference_column="email_address",
         pattern=r"/^w+[+.w-]*@([w-]+.)*w+[w-]*.([a-z]{2,4}|d+)$/i",
     )
-    consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
+    # consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
 
-    if all(col in df.columns for col in consent_cols):
-        df = assign_consent_code(df, "consent_summary", reference_columns=consent_cols)
+    # if all(col in df.columns for col in consent_cols):
+    #     df = assign_consent_code(df, "consent_summary", reference_columns=consent_cols)
     return df
 
 
-def replace_design_weights_transformations(
+def join_statistical_geographies(
     df: DataFrame,
     geography_lookup_df: DataFrame,  # should include rural urban lookup,
-    design_weights_lookup_df: DataFrame,
+    rural_urban_lookup_df: DataFrame,
 ) -> DataFrame:
     """Run required post-join transformations for replace_design_weights"""
 
     df = left_join_keep_right(df, geography_lookup_df, ["ons_household_id"])
-    design_weights_lookup_df = design_weights_lookup_transformations(design_weights_lookup_df)
-    df = left_join_keep_right(df, design_weights_lookup_df, ["ons_household_id"])
+    df = left_join_keep_right(df, rural_urban_lookup_df, ["cis_area_code_20"])
 
     df = df.withColumn(
         "local_authority_unity_authority_code",
@@ -251,45 +244,45 @@ def derive_people_in_household_count(df) -> DataFrame:
         household_id_column="ons_household_id",
         participant_id_column="participant_id",
     )
-    df = update_person_count_from_ages(
-        df,
-        column_name_to_assign="household_participants_not_consenting_count",
-        column_pattern=r"person_not_consenting_age_[1-9]",
-    )
-    df = update_person_count_from_ages(
-        df,
-        column_name_to_assign="household_members_over_2_years_and_not_present_count",
-        column_pattern=r"person_not_present_age_[1-8]",
-    )
-    df = assign_household_under_2_count(
-        df,
-        column_name_to_assign="household_members_under_2_years_count",
-        column_pattern=r"infant_age_months_[1-9]",
-        condition_column="household_members_under_2_years",
-    )
-    household_window = Window.partitionBy("ons_household_id")
+    # df = update_person_count_from_ages(
+    #     df,
+    #     column_name_to_assign="household_participants_not_consenting_count",
+    #     column_pattern=r"person_not_consenting_age_[1-9]",
+    # )
+    # df = update_person_count_from_ages(
+    #     df,
+    #     column_name_to_assign="household_members_over_2_years_and_not_present_count",
+    #     column_pattern=r"person_not_present_age_[1-8]",
+    # )
+    # df = assign_household_under_2_count(
+    #     df,
+    #     column_name_to_assign="household_members_under_2_years_count",
+    #     column_pattern=r"infant_age_months_[1-9]",
+    #     condition_column="household_members_under_2_years",
+    # )
+    # household_window = Window.partitionBy("ons_household_id")
 
-    household_participants = [
-        "household_participant_count",
-        "household_participants_not_consenting_count",
-        "household_members_over_2_years_and_not_present_count",
-        "household_members_under_2_years_count",
-    ]
-    for household_participant_type in household_participants:
-        df = df.withColumn(
-            household_participant_type,
-            F.max(household_participant_type).over(household_window),
-        )
-    df = df.withColumn(
-        "people_in_household_count",
-        sum_within_row(household_participants),
-    )
-    df = df.withColumn(
-        "people_in_household_count_group",
-        F.when(F.col("people_in_household_count") >= 5, "5+").otherwise(
-            F.col("people_in_household_count").cast("string")
-        ),
-    )
+    # household_participants = [
+    #     "household_participant_count",
+    #     "household_participants_not_consenting_count",
+    #     "household_members_over_2_years_and_not_present_count",
+    #     "household_members_under_2_years_count",
+    # ]
+    # for household_participant_type in household_participants:
+    #     df = df.withColumn(
+    #         household_participant_type,
+    #         F.max(household_participant_type).over(household_window),
+    #     )
+    # df = df.withColumn(
+    #     "people_in_household_count",
+    #     sum_within_row(household_participants),
+    # )
+    # df = df.withColumn(
+    #     "people_in_household_count_group",
+    #     F.when(F.col("people_in_household_count") >= 5, "5+").otherwise(
+    #         F.col("people_in_household_count").cast("string")
+    #     ),
+    # )
     return df
 
 
