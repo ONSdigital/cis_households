@@ -22,21 +22,35 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 def validate_csv_fields(text_file: RDD, delimiter: str = ","):
     """
     Function to validate the number of fields within records of a csv file.
+
     Parameters
     ----------
-    text_file
+    text_file : RDD
         A text file (csv) that has been ready by spark context
-    delimiter
+    delimiter : str
         Delimiter used in csv file, default as ','
+
+    Returns
+    -------
+    bool
+        True if all rows have the expected number of columns or False
+        if any rows exist with a different number of fields.
     """
 
     def count_fields_in_row(delimiter, row):
+        """
+        Return the number of fields for a given row, as separated by the given delimiter.
+        """
         f = StringIO(row)
         reader = csv.reader(f, delimiter=delimiter)
         n_fields = len(next(reader))
         return n_fields
 
     def check_field(delimiter, row, number_of_columns):
+        """
+        Check whether number of fields on a given row matches expected number of columns.
+        Return True boolean if numbers match and return False if not the case.
+        """
         if len(row) > 2 and count_fields_in_row(delimiter, row) != number_of_columns:
             return True
         return False
@@ -56,6 +70,21 @@ def normalise_schema(file_path: str, reference_validation_schema: dict, regex_sc
     """
     Use a series of regex patterns mapped to correct column names to build an individual schema
     for a given csv input file that has varied headings across a group of similar files.
+
+    Parameters
+    ----------
+    file_path: str
+        File path to input data file.
+    reference_validation_schema: dict
+        ???
+    regex_schema: dict
+        ???
+
+    Returns
+    -------
+    str or DataFrame
+        If validation check failed and unrcognised columns are found, returns custom error message. Otherwise,
+        returns dataframe of ???
     """
     spark_session = get_or_create_spark_session()
 
@@ -122,10 +151,17 @@ def validate_csv_header(text_file: RDD, expected_header: List[str], delimiter: s
 
     Parameters
     ----------
-    text_file
+    text_file : RDD
         A text file (csv) that has been read by spark context
-    expected_header
+    expected_header : List[str]
         Exact header expected in csv file
+    delimiter : str
+        Delimiter used in csv file, default as ','
+
+    Returns
+    -------
+    bool
+        Boolean indicator of whether expected and actual headers are identical.
     """
     actual_header = text_file.first()
     buffer = StringIO(actual_header)
@@ -140,12 +176,24 @@ def validate_files(file_paths: Union[str, List[str]], validation_schema: dict, s
 
     Parameters
     ----------
-    file_paths
-        one or more paths to files to validate
-    validation_schema
+    file_paths : Union[str, List[str]]
+        One or more paths to files to validate
+    validation_schema : dict
         dictionary with ordered keys containing expected column names
-    sep
-        file separator
+    sep : str
+        Delimiter used in file, default as ','.
+
+    Raises
+    ------
+    FileNotFoundError
+       If no file path parsed then raise error saying "No file path specified".
+
+    Returns
+    -------
+    list
+       Returns list of file paths for files which have passed the validation check
+       and generates a log of file paths and the nature of the error for the files
+       which do not pass the validation.
     """
     if file_paths is None or file_paths == "":
         raise FileNotFoundError("No file path specified")
@@ -196,7 +244,9 @@ def validate_files(file_paths: Union[str, List[str]], validation_schema: dict, s
 
 
 def validate_processed_files(df: DataFrame, source_file_column: str):
-    """Check that all of the files processed in a combined dataframe exist in the folder from which they were found."""
+    """
+    Check that all of the files processed in a combined dataframe exist in the folder from which they were found.
+    """
     processed_files = column_to_distinct_list(df, source_file_column)
     processed_files = [f for f in processed_files if isinstance(f, str) and f != ""]
     dirs = [Path(f).parent.as_posix() for f in processed_files]
