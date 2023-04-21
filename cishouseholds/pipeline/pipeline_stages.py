@@ -137,6 +137,7 @@ def table_to_table(
     alternate_database: str = None,
     transformation_functions: List[str] = [],
     latest_table: bool = False,
+    output_table: str = None,
 ):
     """
     Extracts a HIVE table, with an alternate prefix, and saves it out with the project prefix
@@ -156,6 +157,8 @@ def table_to_table(
     latest_table: bool
         If table_name has multiple versions (suffixed with _YYYYMMDD), take the latest one which is the
         last table in the list
+    output_table:
+        An option to call the copied table something different to the original
     """
     df = extract_from_table(table_name, break_lineage, alternate_prefix, alternate_database, latest_table)
     transformations_dict: Dict[str, Any]
@@ -166,7 +169,10 @@ def table_to_table(
     }
     for transformation in transformation_functions:
         df = transformations_dict[transformation](df)
-    df = update_table(df, table_name, "overwrite", latest_table)
+    if output_table is None:
+        df = update_table(df, table_name, "overwrite", latest_table)
+    else:
+        df = update_table(df, output_table, "overwrite", latest_table)
 
 
 @register_pipeline_stage("csv_to_table")

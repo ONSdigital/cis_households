@@ -102,7 +102,7 @@ def join_statistical_geographies(
     """Run required post-join transformations for replace_design_weights"""
 
     df = left_join_keep_right(df, geography_lookup_df, ["ons_household_id"])
-    df = left_join_keep_right(df, rural_urban_lookup_df, ["cis_area_code_20"])
+    df = left_join_keep_right(df, rural_urban_lookup_df, ["lower_super_output_area_code_11"])
 
     df = df.withColumn(
         "local_authority_unity_authority_code",
