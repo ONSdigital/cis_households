@@ -290,7 +290,7 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
     )
     df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
 
-    df = df.withColumn("visit_date", F.date_trunc("day", F.col("visit_datetime")))
+    df = df.withColumn("visit_date", F.to_date(F.col("visit_datetime"), "MM-dd-yyyy HH:mm:ss"))
 
     # df = split_array_columns(df)
     map_to_bool_columns_dict = {
