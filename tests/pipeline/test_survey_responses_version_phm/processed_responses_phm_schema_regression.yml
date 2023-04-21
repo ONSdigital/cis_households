@@ -674,7 +674,7 @@ fields:
 - metadata: {}
   name: visit_date
   nullable: true
-  type: timestamp
+  type: date
 - metadata: {}
   name: smoke_cigarettes
   nullable: true
