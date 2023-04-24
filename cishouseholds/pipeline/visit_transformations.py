@@ -20,7 +20,7 @@ def visit_transformations(df: DataFrame):
 
 def visit_derivations(df: DataFrame):
 
-    df = assign_fake_id(df, "ordered_household_id", "ons_household_id")
+    df = assign_fake_id(df, "ordered_household_id_new", "ons_household_id")
     df = assign_visit_order(
         df=df,
         column_name_to_assign="visit_order",
