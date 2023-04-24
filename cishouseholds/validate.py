@@ -424,6 +424,15 @@ def check_lookup_table_joined_columns_unique(df, join_column_list, name_of_df):
     """
     Check for duplicated join keys in lookup table. (???)
 
+    Parameters
+    ----------
+    df : DataFrame
+       Lookup dataframe to be checked.
+    join_column_list: List[str]
+       List of column headers for columns to be joined by. (???)
+    name_of_df: str
+       Name of corresponding lookup table to be checked.
+
     Raises
     ------
     ValueError
