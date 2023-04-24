@@ -246,6 +246,19 @@ def validate_files(file_paths: Union[str, List[str]], validation_schema: dict, s
 def validate_processed_files(df: DataFrame, source_file_column: str):
     """
     Check that all of the files processed in a combined dataframe exist in the folder from which they were found.
+
+    Parameters
+    ----------
+    df : DataFrame
+        Combined dataframe to be checked
+    source_file_column: str
+        ???
+
+    Returns
+    -------
+    list, list, list
+        List of processed files, list of unprocessed files and list of files that have been processed
+        but no longer exist.
     """
     processed_files = column_to_distinct_list(df, source_file_column)
     processed_files = [f for f in processed_files if isinstance(f, str) and f != ""]
@@ -268,6 +281,7 @@ def validate_processed_files(df: DataFrame, source_file_column: str):
     return processed_files, unprocessed, non_existent
 
 
+# This function does not appear to be used n any other scripts in the project!
 def check_singular_match(
     df: DataFrame,
     drop_flag_column_name: str,
@@ -279,17 +293,25 @@ def check_singular_match(
     Given a set of columns related to the final drop flag of a given merge function on the complete
     (merged) dataframe produce an indication column (failure column) which stipulates whether the
     merge function has returned a unique match
+
     Parameters
     ----------
-    df
-    flag_column_name
-        Column with final flag from merge function
-    failure_column_name
+    df : DataFrame
+        The merged dataframe to be executed on.
+    drop_flag_column_name: str,
+        Column with final flag from merge function to be dropped(??)
+    failure_column_name : str
         Column in which to store bool flag that shows if singular match occurred for given merge
-    match_type_column
-        Column to identify type of merge
-    group_by_column
-        Column to check is singular given criteria
+    group_by_columns : List[str]
+        List of columns to check is singular given criteria
+    existing_failure_column : str
+        ??? Default is None.
+
+    Returns
+    -------
+    DataFrame
+        Input dataframe with additional column added indicating whether the merge function has returned
+        a unique match, with new column header given by failure_column_name.
     """
     if type(group_by_columns) != list:
         group_by_columns = [group_by_columns]  # type: ignore
@@ -312,13 +334,21 @@ class ConfigError(Exception):
 
 def validate_config_stages(pipeline_stage_functions: Dict, stages_to_run: List[str], stages_config: List):
     """
-    Checks that there's a valid input in the pipeline_config.yaml for every stage
-    input argument.
+    Checks that there's a valid input in the pipeline_config.yaml for every stage input argument.
 
     Parameters
     ----------
-    all_function_dict: dictionary of all functions name and function object in pipeline_stages.py
-    pipeline_stage_list: from the config file all the functions that have been set up to run.
+    all_function_dict : dict
+       Dictionary of all functions name and function object in pipeline_stages.py
+    stages_to_run: List[str]
+       List from the config file all the functions that have been set up to run. (??)
+    stages_config: List
+       ???
+
+    Raises
+    -------
+    ConfigError
+        Custom error message (error_msg), built up by variety of checks highlighting any failures.
     """
     error_msg = "\n"
     optional_parameters = ["function", "input_survey_table", "input_stage"]
@@ -391,9 +421,18 @@ def validate_config_stages(pipeline_stage_functions: Dict, stages_to_run: List[s
 
 
 def check_lookup_table_joined_columns_unique(df, join_column_list, name_of_df):
+    """
+    Check for duplicated join keys in lookup table. (???)
+
+    Raises
+    ------
+    ValueError
+        If duplicated join keys are found in lookup dataframe, error message is raised with dataframe name and
+        problem rows given.
+    """
     duplicate_key_rows_df = df.groupBy(*join_column_list).count().filter("count > 1").drop("count")
     if duplicate_key_rows_df.count() > 0:
         raise ValueError(
-            f"The lookup dataframe {name_of_df} has entried with duplicate join keys ({', '.join(join_column_list)})."
+            f"The lookup dataframe {name_of_df} has entries with duplicate join keys ({', '.join(join_column_list)})."
             f"Duplicate rows: \n{duplicate_key_rows_df.toPandas()}"
         )
