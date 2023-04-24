@@ -118,11 +118,11 @@ def fill_forwards(df: DataFrame):
             "work_sector",
             "work_sector_other",
             "work_health_care_area",
-            "work_nursing_or_residential",
+            "work_nursing_or_residential_care_home",
             "work_not_from_home_days_per_week",
             "education_in_person_days_per_week",
             "transport_to_work_or_education",
-            "ability_to_socially_distance_at_work",
+            "ability_to_socially_distance_at_work_or_education",
         ],
     )
     return df
