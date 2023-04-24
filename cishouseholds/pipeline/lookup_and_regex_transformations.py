@@ -226,6 +226,56 @@ def clean_participant_extract_phm(df: DataFrame, **kwargs: dict) -> DataFrame:
     return df
 
 
+def clean_historic_geography_lookup(df: DataFrame) -> DataFrame:
+    """Selects columns from the input table"""
+    cols_to_select = [
+        "ons_household_id",
+        "cis_area_code_20",
+        "country_code_12",
+        "postcode",
+        "lower_super_output_area_code_11",
+        "local_authority_unity_authority_code",
+        "output_area_code_11_census_output_area_classification_11",
+        "middle_super_output_area_code_11",
+        "rural_urban_classification_11",
+        "output_area_code_11",
+        "country_name_12",
+    ]
+    df = df.select(cols_to_select)
+    return df
+
+
+def create_historic_visits(df: DataFrame) -> DataFrame:
+    """Selects columns from the input table"""
+    cols_to_select = [
+        "participant_id",
+        "ons_household_id",
+        "ordered_household_id",
+        "visit_id",
+        "visit_datetime",
+        "participant_visit_status",
+        "work_status_v0",
+        "work_status_digital",
+        "work_status_employment",
+        "work_status_unemployment",
+        "work_status_education",
+        "work_location",
+        "work_main_job_title",
+        "work_main_job_role",
+        "work_sector",
+        "work_sector_other",
+        "work_health_care_area",
+        "work_nursing_or_residential",
+        "work_not_from_home_days_per_week",
+        "education_in_person_days_per_week",
+        "transport_to_work_or_education",
+        "ability_to_socially_distance_at_work",
+        "survey_response_dataset_major_version",
+    ]
+    df = df.select(cols_to_select)
+    return df
+
+
 def process_vaccine_regex(df: DataFrame, vaccine_type_col: str) -> DataFrame:
     """Add result of vaccine regex pattern matchings"""
 

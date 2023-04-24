@@ -56,7 +56,9 @@ from cishouseholds.pipeline.load import get_run_id
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.load import update_table_and_log_source_files
 from cishouseholds.pipeline.lookup_and_regex_transformations import blood_past_positive_transformations
+from cishouseholds.pipeline.lookup_and_regex_transformations import clean_historic_geography_lookup
 from cishouseholds.pipeline.lookup_and_regex_transformations import clean_participant_extract_phm
+from cishouseholds.pipeline.lookup_and_regex_transformations import create_historic_visits
 from cishouseholds.pipeline.lookup_and_regex_transformations import design_weights_lookup_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import nims_transformations
 from cishouseholds.pipeline.lookup_and_regex_transformations import ordered_household_id_tranformations
@@ -76,7 +78,10 @@ from cishouseholds.pipeline.vaccine_transformations import vaccine_transformatio
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
 from cishouseholds.pipeline.validation_schema import validation_schemas
-from cishouseholds.pipeline.version_specific_processing.participant_extract_phm import transform_participant_extract_phm
+from cishouseholds.pipeline.version_specific_processing.participant_extract_phm import (
+    transform_participant_extract_phm,
+)  # noqa: F401
+from cishouseholds.pipeline.version_specific_processing.phm_transformations import phm_visit_transformations
 from cishouseholds.pipeline.visit_transformations import visit_transformations
 from cishouseholds.prediction_checker_class import PredictionChecker
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -156,6 +161,8 @@ def table_to_table(
     transformations_dict: Dict[str, Any]
     transformations_dict = {
         "participant_extract_phm": transform_participant_extract_phm,
+        "clean_historic_geography_lookup": clean_historic_geography_lookup,
+        "create_historic_visits": create_historic_visits,
     }
     for transformation in transformation_functions:
         df = transformations_dict[transformation](df)
@@ -550,6 +557,34 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
     return {"output_survey_table": output_survey_table}
 
 
+@register_pipeline_stage("union_historical_visit_transformations")
+def union_historical_visit_transformations(tables_to_process: List, output_survey_table: str, transformations: List):
+    """
+    Union list of tables_to_process, and write to table.
+
+    Parameters
+    ----------
+    tables_to_process
+        input tables for extracting each of the transformed survey responses tables
+    output_survey_table
+        output table name for the combine file of all unioned survey responses
+    Transformations
+        transformation functions to be applied once the union has taken place
+    """
+    df_list = [extract_from_table(table) for table in tables_to_process]
+
+    transformations_dict: Dict[str, Any]
+    transformations_dict = {
+        "phm_visit_transformations": phm_visit_transformations,
+    }
+
+    df = union_multiple_tables(df_list)
+    for transformation in transformations:
+        df = transformations_dict[transformation](df)
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
+    return {"output_survey_table": output_survey_table}
+
+
 @register_pipeline_stage("post_union_processing")
 def execute_post_union_processing(
     input_survey_table: str,
@@ -600,13 +635,13 @@ def execute_demographic_transformations(
     input_survey_table: str,
     output_survey_table: str,
     imputed_value_lookup_table: str,
-    design_weights_lookup_table: str,
+    rural_urban_lookup_table: str,
     geography_lookup_table: str,
 ):
     """"""
     df = extract_from_table(input_survey_table)
     geography_lookup_df = extract_from_table(geography_lookup_table)
-    design_weights_lookup_df = extract_from_table(design_weights_lookup_table)
+    rural_urban_lookup_df = extract_from_table(rural_urban_lookup_table)
     imputed_value_lookup_df = None
     if check_table_exists(imputed_value_lookup_table):
         imputed_value_lookup_df = extract_from_table(imputed_value_lookup_table, break_lineage=True)
@@ -614,7 +649,7 @@ def execute_demographic_transformations(
         df=df,
         imputed_value_lookup_df=imputed_value_lookup_df,
         geography_lookup_df=geography_lookup_df,
-        design_weights_lookup_df=design_weights_lookup_df,
+        rural_urban_lookup_df=rural_urban_lookup_df,
     )
     update_table(df, output_survey_table, "overwrite", survey_table=True)
     update_table(imputed_value_lookup_df, imputed_value_lookup_table, "overwrite")
@@ -649,17 +684,22 @@ def execute_vaccine_transformations(
 
 @register_pipeline_stage("job_transformations")
 def execute_job_transformations(
-    input_survey_table: str, output_survey_table: str, soc_lookup_table: str, job_lookup_table: str
+    input_survey_table: str,
+    output_survey_table: str,
 ):
-    """"""
+    """
+    Runs job transformations on the input survey table and produces output table
+    Then drops historical survey responses
+    """
     df = extract_from_table(input_survey_table)
-    soc_lookup_df = extract_from_table(soc_lookup_table)
-    job_lookup_df = None
-    if check_table_exists(job_lookup_table):
-        job_lookup_df = extract_from_table(job_lookup_table, break_lineage=True)
-    df, job_lookup_df = job_transformations(df=df, soc_lookup_df=soc_lookup_df, job_lookup_df=job_lookup_df)
+    # soc_lookup_df = extract_from_table(soc_lookup_table)
+    # job_lookup_df = None
+    # if check_table_exists(job_lookup_table):
+    #     job_lookup_df = extract_from_table(job_lookup_table, break_lineage=True)
+    df = job_transformations(df=df)
+    df = df.filter(F.col("survey_response_dataset_major_version") > 3)
     update_table(df, output_survey_table, "overwrite", survey_table=True)
-    update_table(job_lookup_df, job_lookup_table, "overwrite")
+    # update_table(job_lookup_df, job_lookup_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
 
@@ -737,6 +777,7 @@ def join_lookup_table(
         "blood_past_positive": blood_past_positive_transformations,
         "design_weights_lookup": design_weights_lookup_transformations,
         "ordered_household_id": ordered_household_id_tranformations,
+        "phm_visit_transformation": phm_visit_transformations,
         "participant_extract_phm": clean_participant_extract_phm,
     }
 
@@ -1169,7 +1210,7 @@ def tables_to_csv(
             filter = {key: val if type(val) == list else [val] for key, val in filter.items()}
             df = df.filter(reduce(and_, [F.col(col).isin(val) for col, val in filter.items()]))
 
-        df = map_output_values_and_column_names(df, table["column_name_map"], category_map_dictionary)
+        df = map_output_values_and_column_names(df, table.get("column_name_map", None), category_map_dictionary)
 
         file_path = file_directory / f"{table['output_file_name']}_{output_datetime_str}"
         write_csv_rename(df, file_path, sep, extension)
