@@ -30,6 +30,7 @@ from cishouseholds.edit import update_strings_to_sentence_case
 from cishouseholds.edit import update_value_if_multiple_and_ref_in_list
 from cishouseholds.expressions import all_columns_values_in_list
 from cishouseholds.expressions import any_column_not_null
+from cishouseholds.filter import filter_exclude_by_pattern
 from cishouseholds.pipeline.mapping import transformation_maps
 from cishouseholds.pipeline.visit_transformations import visit_transformations
 
@@ -52,6 +53,8 @@ def pre_processing(df: DataFrame) -> DataFrame:
     """
     Sets categories to map for digital specific variables to Voyager 0/1/2 equivalent
     """
+    df = filter_exclude_by_pattern(df, "participant_id", r"SMOKE[1-9]")
+
     raw_copy_list = [
         "work_sector",
         "illness_reduces_activity_or_ability",
