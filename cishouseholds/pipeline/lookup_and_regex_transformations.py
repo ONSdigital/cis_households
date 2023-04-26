@@ -255,6 +255,7 @@ def create_historic_visits(df: DataFrame) -> DataFrame:
         "visit_id",
         "visit_datetime",
         "participant_visit_status",
+        "people_in_household_count",
         "work_status_v0",
         "work_status_digital",
         "work_status_employment",

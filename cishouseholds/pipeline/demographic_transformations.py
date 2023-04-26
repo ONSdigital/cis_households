@@ -8,7 +8,6 @@ from cishouseholds.derive import assign_age_group_school_year
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_ethnicity_white
-from cishouseholds.derive import assign_household_participant_count
 from cishouseholds.derive import assign_multigenerational
 from cishouseholds.derive import assign_outward_postcode
 from cishouseholds.derive import assign_work_status_group
@@ -200,6 +199,7 @@ def fill_forwards_and_backwards(df: DataFrame):
             "sex",
             "date_of_birth",
             "ethnicity",
+            "people_in_household_count",
         ],
     )
     df = fill_forward_from_last_change(
@@ -238,12 +238,12 @@ def derive_people_in_household_count(df) -> DataFrame:
     - person_not_present_age_[1-8]
     - household_members_under_2_years
     """
-    df = assign_household_participant_count(
-        df,
-        column_name_to_assign="household_participant_count",
-        household_id_column="ons_household_id",
-        participant_id_column="participant_id",
-    )
+    # df = assign_household_participant_count(
+    #     df,
+    #     column_name_to_assign="household_participant_count",
+    #     household_id_column="ons_household_id",
+    #     participant_id_column="participant_id",
+    # )
     # df = update_person_count_from_ages(
     #     df,
     #     column_name_to_assign="household_participants_not_consenting_count",
@@ -277,12 +277,12 @@ def derive_people_in_household_count(df) -> DataFrame:
     #     "people_in_household_count",
     #     sum_within_row(household_participants),
     # )
-    # df = df.withColumn(
-    #     "people_in_household_count_group",
-    #     F.when(F.col("people_in_household_count") >= 5, "5+").otherwise(
-    #         F.col("people_in_household_count").cast("string")
-    #     ),
-    # )
+    df = df.withColumn(
+        "people_in_household_count_group",
+        F.when(F.col("people_in_household_count") >= 5, "5+").otherwise(
+            F.col("people_in_household_count").cast("string")
+        ),
+    )
     return df
 
 
