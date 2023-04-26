@@ -270,7 +270,7 @@ def create_historic_visits(df: DataFrame) -> DataFrame:
         "work_not_from_home_days_per_week",
         "education_in_person_days_per_week",
         "transport_to_work_or_education",
-        "ability_to_socially_distance_at_work",
+        "ability_to_socially_distance_at_work_or_education",
         "survey_response_dataset_major_version",
     ]
     df = df.select(cols_to_select)
