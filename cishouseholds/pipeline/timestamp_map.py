@@ -164,5 +164,5 @@ phm_datetime_map = {
         "date_of_birth",
     ],
     "yyyy-MM-dd'T'HH:mm:ss'+00:00'": ["survey_completed_datetime"],
-    "yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX": ["survey_start_datetime"],
+    "yyyy-MM-dd'T'HH:mm:ss": ["survey_start_datetime"],
 }
