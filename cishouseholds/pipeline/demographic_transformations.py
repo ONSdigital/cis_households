@@ -22,7 +22,6 @@ from cishouseholds.impute import impute_and_flag
 from cishouseholds.impute import impute_by_distribution
 from cishouseholds.impute import impute_by_k_nearest_neighbours
 from cishouseholds.impute import impute_by_mode
-from cishouseholds.impute import impute_date_by_k_nearest_neighbours
 from cishouseholds.impute import merge_previous_imputed_values
 from cishouseholds.merge import left_join_keep_right
 from cishouseholds.pipeline.config import get_config
@@ -344,13 +343,13 @@ def impute_key_columns(df: DataFrame, imputed_value_lookup_df: DataFrame, log_di
         second_imputation_value="Male",
     ).custom_checkpoint()
 
-    deduplicated_df = impute_and_flag(
-        deduplicated_df,
-        impute_date_by_k_nearest_neighbours,
-        reference_column="date_of_birth",
-        donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
-        log_file_path=log_directory,
-    )
+    # deduplicated_df = impute_and_flag(
+    #     deduplicated_df,
+    #     impute_date_by_k_nearest_neighbours,
+    #     reference_column="date_of_birth",
+    #     donor_group_columns=["region_code", "people_in_household_count_group", "work_status_group"],
+    #     log_file_path=log_directory,
+    # )
 
     return deduplicated_df.select(
         unique_id_column,
