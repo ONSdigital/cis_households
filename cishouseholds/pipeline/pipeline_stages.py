@@ -926,7 +926,8 @@ def validate_survey_responses(
 
     Parameters
     ----------
-    input_survey_table
+    input_survey_table : str
+        Name of input survey table to validate
     duplicate_count_column_name
         column name in which to count duplicates of rows within the dataframe
     validation_failure_flag_column

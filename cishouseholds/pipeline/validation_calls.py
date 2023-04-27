@@ -9,6 +9,14 @@ from cishouseholds.validate_class import SparkValidate
 
 
 def validation_calls(SparkVal):
+    """
+    Suite of custom validation checks to be performed.
+
+    Parameters
+    ----------
+    SparkVal : object
+        Initialised SparkValidate Class object.
+    """
     column_calls = {
         "visit_datetime": {
             "between": {
@@ -43,6 +51,7 @@ def validation_calls(SparkVal):
             "subset": F.col("survey_response_dataset_major_version") == 3,
         },
     }
+
     for col in SparkVal.dataframe.columns:
         if col in category_maps["iqvia_raw_category_map"]:
             column_calls[col] = {"isin": list(category_maps["iqvia_raw_category_map"][col].keys())}
@@ -90,6 +99,7 @@ def validation_calls(SparkVal):
 
     SparkVal.validate_all_columns_in_df(dataset_calls)
 
+    # Checks that if "cis_covid_vaccine_type" is not "Other / specify" then "cis_covid_vaccine_type_other" should be null.
     SparkVal.validate_user_defined_logic(
         logic=(
             ((F.col("cis_covid_vaccine_type") == "Other / specify") & F.col("cis_covid_vaccine_type_other").isNull())
@@ -99,6 +109,8 @@ def validation_calls(SparkVal):
         columns=["cis_covid_vaccine_type", "cis_covid_vaccine_type_other"],
     )
 
+    # Checks that "work_social_care" is set to "No" when respondent has said "Yes" to either "work_nursing_or_residential_care_home"
+    # or "work_directly_contact_patients_or_clients".
     SparkVal.validate_user_defined_logic(
         logic=(
             (
@@ -119,6 +131,8 @@ def validation_calls(SparkVal):
     )
 
     SparkVal.validate_user_defined_logic(
+        # Checks for responses on face coverings. Raises an error if "face_covering_outside_of_home" is null
+        # and "face_covering_other_enclosed_places" and "face_covering_work_or_education" are null.
         logic=(
             (
                 (
@@ -137,7 +151,8 @@ def validation_calls(SparkVal):
         ],
     )
 
-    SparkVal.validate_user_defined_logic(  # Sample_taken_out_of_range
+    SparkVal.validate_user_defined_logic(
+        # Check if sample taken date is within a valid range
         logic=(
             ((F.col("visit_datetime") <= F.lit(datetime.now())) & (F.col("visit_datetime") >= F.lit("2020/04/26")))
             | (
@@ -152,6 +167,23 @@ def validation_calls(SparkVal):
 
 
 def validation_ETL(df: DataFrame, validation_check_failure_column_name: str, duplicate_count_column_name: str):
+    """
+    Applies custom suite of validation checks.
+
+    Parameters
+    ----------
+    df : DataFrame
+        Dataframe to validate
+    validation_check_failure_column_name : str
+        Name for error column wherein each of the validation checks results are appended
+    duplicate_count_column_name : str
+        Column name in which to count duplicates of rows within the dataframe
+
+    Returns
+    -------
+        If return_failed True, returns a dataframe of valid survey responses, which have passed checks and a datafreme of
+        invalid response which have failed. If return_failed==False, returns only the valid survey response dataframe.
+    """
     SparkVal = SparkValidate(dataframe=df, error_column_name=validation_check_failure_column_name)
     SparkVal.count_complete_duplicates(duplicate_count_column_name)
     validation_calls(SparkVal)
