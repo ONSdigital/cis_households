@@ -53,7 +53,7 @@ def pre_processing(df: DataFrame) -> DataFrame:
     """
     Sets categories to map for digital specific variables to Voyager 0/1/2 equivalent
     """
-    df = filter_exclude_by_pattern(df, "participant_id", r"SMOKE[1-9]")
+    df = filter_exclude_by_pattern(df, "participant_id", r"SMOKE")
 
     raw_copy_list = [
         "work_sector",
