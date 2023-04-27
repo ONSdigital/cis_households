@@ -240,6 +240,7 @@ def clean_historic_geography_lookup(df: DataFrame) -> DataFrame:
         "rural_urban_classification_11",
         "output_area_code_11",
         "country_name_12",
+        "region_code",
     ]
     df = df.select(cols_to_select)
     return df
