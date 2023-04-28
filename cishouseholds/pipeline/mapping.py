@@ -1317,6 +1317,10 @@ category_maps = {
             "English": 1,
             "Welsh": 2,
         },
+        "form_language": {
+            "English": 1,
+            "Welsh": 2,
+        },
         "household_completion_window_status": {
             "New": 1,
             "Open": 2,
@@ -1390,6 +1394,7 @@ category_maps = {
         # "blood_not_taken_missing_parts": {},  # TODO Logic for multiple choice responses
         # "blood_not_taken_could_not_reason": {},  # TODO Logic for multiple choice responses
         "blood_returned": _yes_no_categories,
+        "aged_16_or_over": _yes_no_categories,
         "work_status_digital": {
             "Employed": 1,
             "Self-employed": 2,
@@ -1493,6 +1498,8 @@ category_maps = {
         },
         "household_members_under_2_years": _yes_no_categories,
         "any_household_members_over_2_years_and_not_present": _yes_no_categories,
+        "participant_first_name_confirmation": _yes_no_categories,
+        "participant_first_name_on_behalf": _yes_no_categories,
     }
 }
 
