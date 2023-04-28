@@ -418,6 +418,7 @@ class SparkValidate:
         """
         Ensure that the file date column is at least 2 days earlier than visit_datetime
         and swab/blood barcodes are null.
+        # TODO: Check logic and confirm this description correct.
 
         Parameters
         ----------
