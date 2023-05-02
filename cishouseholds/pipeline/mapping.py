@@ -1737,6 +1737,30 @@ category_maps = {
             "Zambia": 195,
             "Zimbabwe": 196,
         },
+        "times_shopping_last_7_days": {
+            "0": 0,
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5,
+            "6": 6,
+            "7 times or more": 7,
+            "None": 8,
+            "Participant Would Not/Could Not Answer": 9,
+        },
+        "times_socialising_last_7_days": {
+            "0": 0,
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5,
+            "6": 6,
+            "7 times or more": 7,
+            "None": 8,
+            "Participant Would Not/Could Not Answer": 9,
+        },
     }
 }
 
