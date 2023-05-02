@@ -1761,6 +1761,30 @@ category_maps = {
             "None": 8,
             "Participant Would Not/Could Not Answer": 9,
         },
+        "cohort_type_phm": {
+            "Do this questionnaire only": 1,
+            "Do this questionnaire and take a swab sample": 2,
+        },
+        "times_large_events_last_28_days": {
+            "No": 0,
+            "Yes": 1,
+            "Unknown": 2,
+        },
+        "times_medium_events_last_28_days": {
+            "No": 0,
+            "Yes": 1,
+            "Unknown": 2,
+        },
+        "transport_shared_outside_household_last_28_days": {
+            "Bus or minibus or coach": 1,
+            "Car or van": 2,
+            "Taxi or minicab": 3,
+            "Train": 4,
+            "Underground or Metro or Light Rail or Tram": 5,
+            "Plane": 6,
+            "Other method": 7,
+            "I have not used transport shared with people outside of my home for reasons other than travel to work or education": 8,
+        },
     }
 }
 
