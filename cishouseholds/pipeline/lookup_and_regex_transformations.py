@@ -241,6 +241,7 @@ def clean_historic_geography_lookup(df: DataFrame) -> DataFrame:
         "output_area_code_11",
         "country_name_12",
         "region_code",
+        "index_multiple_deprivation",
     ]
     df = df.select(cols_to_select)
     return df
