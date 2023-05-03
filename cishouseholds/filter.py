@@ -229,3 +229,18 @@ def file_exclude(df: DataFrame, source_file_col: str, files_to_exclude: list):
         df = df.filter(~F.col(source_file_col).isin(item))
 
     return df
+
+
+def filter_exclude_by_pattern(df: DataFrame, column: str, pattern: str) -> DataFrame:
+    """
+    Function to filter dataframe by excluding pattern in specific column
+
+    Parameters
+    --------
+    df
+    column
+        String name of column in dataframe to filter on.
+    pattern
+        String or raw string literal to match and remove from dataframe
+    """
+    return df.filter(~F.col(column).rlike(pattern))
