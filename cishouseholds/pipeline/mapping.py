@@ -41,6 +41,8 @@ date_cols_min_date_dict = {
 
 _yes_no_categories = {"No": 0, "Yes": 1}
 
+_yes_no_unknown_categories = {"No": 0, "Yes": 1, "Don't know": 2}
+
 _vaccine_type_map = {
     "Don't know type": 1,
     "From a research study/trial": 2,
@@ -266,9 +268,9 @@ category_maps = {
         "contact_known_positive_covid_last_28_days": _yes_no_categories,
         "contact_suspected_positive_covid_last_28_days": _yes_no_categories,
         "hospital_last_28_days": _yes_no_categories,
-        "other_household_member_hospital_last_28_days": _yes_no_categories,
+        "other_household_member_hospital_last_28_days": _yes_no_unknown_categories,
         "care_home_last_28_days": _yes_no_categories,
-        "other_household_member_care_home_last_28_days": _yes_no_categories,
+        "other_household_member_care_home_last_28_days": _yes_no_unknown_categories,
         "contact_known_positive_covid_last_28_days_raw": _yes_no_categories,
         "contact_suspected_positive_covid_last_28_days_raw": _yes_no_categories,
         "think_had_covid_contacted_nhs_raw": _yes_no_categories,
@@ -334,7 +336,7 @@ category_maps = {
         "think_have_long_covid_symptom_difficulty_concentrating": _yes_no_categories,
         "think_have_long_covid_symptom_runny_nose_or_sneezing": _yes_no_categories,
         "think_have_long_covid_symptom_noisy_breathing": _yes_no_categories,
-        "think_have_long_covid_symptom_worse_after_effort": _yes_no_categories,
+        "think_have_long_covid_symptom_worse_after_effort": _yes_no_unknown_categories,
         "think_have_long_covid_symptoms_eyesight": _yes_no_categories,
         "think_have_long_covid_symptoms_ear_pain": _yes_no_categories,
         "think_have_long_covid_symptoms_tinnitus": _yes_no_categories,
@@ -1765,16 +1767,8 @@ category_maps = {
             "Do this questionnaire only": 1,
             "Do this questionnaire and take a swab sample": 2,
         },
-        "times_large_events_last_28_days": {
-            "No": 0,
-            "Yes": 1,
-            "Unknown": 2,
-        },
-        "times_medium_events_last_28_days": {
-            "No": 0,
-            "Yes": 1,
-            "Unknown": 2,
-        },
+        "times_large_events_last_28_days": _yes_no_unknown_categories,
+        "times_medium_events_last_28_days": _yes_no_unknown_categories,
         "transport_shared_outside_household_last_28_days": {
             "Bus or minibus or coach": 1,
             "Car or van": 2,
