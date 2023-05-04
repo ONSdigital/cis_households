@@ -219,6 +219,7 @@ def clean_participant_extract_phm(df: DataFrame, **kwargs: dict) -> DataFrame:
     cols_to_drop = [
         # *null_columns,
         "participant_completion_window_start_date",
+        "participant_completion_window_id",
         "ethnicity_group",
     ]
     join_on_columns = [col for col in df.columns if col not in cols_to_drop]
@@ -240,6 +241,8 @@ def clean_historic_geography_lookup(df: DataFrame) -> DataFrame:
         "rural_urban_classification_11",
         "output_area_code_11",
         "country_name_12",
+        "region_code",
+        "index_multiple_deprivation",
     ]
     df = df.select(cols_to_select)
     return df
@@ -254,6 +257,7 @@ def create_historic_visits(df: DataFrame) -> DataFrame:
         "visit_id",
         "visit_datetime",
         "participant_visit_status",
+        "people_in_household_count",
         "work_status_v0",
         "work_status_digital",
         "work_status_employment",
@@ -265,11 +269,11 @@ def create_historic_visits(df: DataFrame) -> DataFrame:
         "work_sector",
         "work_sector_other",
         "work_health_care_area",
-        "work_nursing_or_residential",
+        "work_nursing_or_residential_care_home",
         "work_not_from_home_days_per_week",
         "education_in_person_days_per_week",
         "transport_to_work_or_education",
-        "ability_to_socially_distance_at_work",
+        "ability_to_socially_distance_at_work_or_education",
         "survey_response_dataset_major_version",
     ]
     df = df.select(cols_to_select)
