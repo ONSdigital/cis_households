@@ -1691,7 +1691,7 @@ def convert_symptom_columns_to_no_if_null(df: DataFrame):
         if infection_col in df.columns:
             columns_to_replace = [col for col in df.columns if col.startswith(symptom_prefix)]
             df = df.select(
-                F.col(infection_col),
+                *[col for col in df.columns if col not in columns_to_replace],
                 *[
                     F.when(F.col(infection_col) == "Yes", F.coalesce(F.col(c), F.lit("No")))
                     .otherwise(F.col(c))
