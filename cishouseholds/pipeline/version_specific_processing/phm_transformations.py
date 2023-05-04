@@ -19,6 +19,7 @@ from cishouseholds.edit import clean_barcode_simple
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import any_column_not_null
+from cishouseholds.filter import filter_exclude_by_pattern
 from cishouseholds.pipeline.mapping import transformation_maps
 from cishouseholds.pipeline.visit_transformations import visit_transformations
 
@@ -40,6 +41,8 @@ def pre_processing(df: DataFrame) -> DataFrame:
     """
     Sets categories to map for digital specific variables to Voyager 0/1/2 equivalent
     """
+    df = filter_exclude_by_pattern(df, "participant_id", r"SMOKE")
+
     raw_copy_list = [
         "work_sector",
         "illness_reduces_activity_or_ability",
