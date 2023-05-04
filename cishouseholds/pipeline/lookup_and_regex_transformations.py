@@ -219,6 +219,7 @@ def clean_participant_extract_phm(df: DataFrame, **kwargs: dict) -> DataFrame:
     cols_to_drop = [
         # *null_columns,
         "participant_completion_window_start_date",
+        "participant_completion_window_id",
         "ethnicity_group",
     ]
     join_on_columns = [col for col in df.columns if col not in cols_to_drop]
