@@ -9,6 +9,7 @@ _times_in_last_7_day_categories = {
     "5": 5,
     "6": 6,
     "7": 7,
+    "Don't know": 8,
 }
 
 consolidation_categories = {
@@ -1772,6 +1773,7 @@ category_maps = {
             "7 times or more": 7,
             "None": 8,
             "Participant Would Not/Could Not Answer": 9,
+            "Don't know": 10,
         },
         "times_socialising_last_7_days": {
             "0": 0,
@@ -1784,6 +1786,7 @@ category_maps = {
             "7 times or more": 7,
             "None": 8,
             "Participant Would Not/Could Not Answer": 9,
+            "Don't know": 10,
         },
         "cohort_type_phm": {
             "Do this questionnaire only": 1,
