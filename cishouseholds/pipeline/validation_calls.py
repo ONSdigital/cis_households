@@ -17,10 +17,10 @@ def validation_calls(SparkVal):
         Initialised SparkValidate Class object.
     """
     column_calls = {
-        "visit_datetime": {
+        "survey_completed_datetime": {
             "between": {
-                "lower_bound": {"inclusive": True, "value": F.to_timestamp(F.lit("26/04/2020"), format="dd/MM/yyyy")},
-                "upper_bound": {"inclusive": True, "value": F.col("file_date") + F.expr("INTERVAL 2 DAYS")},
+                "lower_bound": {"inclusive": True, "value": F.to_timestamp(F.lit("11/04/2023"), format="dd/MM/yyyy")},
+                "upper_bound": {"inclusive": True, "value": F.col("file_date")},
             }
         },
         "age_at_visit": {
@@ -30,15 +30,14 @@ def validation_calls(SparkVal):
                 "allow_none": True,
             }
         },
-        "visit_id": {"starts_with": r"DHV"},
-        "blood_sample_barcode": {
-            "matches": r"^BLT[0-9]{8}$",
-            "subset": F.col("survey_response_dataset_major_version") == 3,
-        },
-        "swab_sample_barcode": {
-            "matches": r"^SWT[0-9]{8}$",
-            "subset": F.col("survey_response_dataset_major_version") == 3,
-        },
+        # "blood_sample_barcode": {
+        #     "matches": r"^BLT[0-9]{8}$",
+        #     "subset": F.col("survey_response_dataset_major_version") == 3,
+        # },
+        # "swab_sample_barcode": {
+        #     "matches": r"^SWT[0-9]{8}$",
+        #     "subset": F.col("survey_response_dataset_major_version") == 3,
+        # },
     }
 
     for col in SparkVal.dataframe.columns:
@@ -53,41 +52,42 @@ def validation_calls(SparkVal):
             vaccine_columns.append(template.format(number))
 
     dataset_calls = {
-        "null": {"check_columns": ["ons_household_id", "participant_id", "participant_completion_window_start_date"]},
+        "null": {
+            "check_columns": [
+                "ons_household_id",
+                "participant_id",
+                "participant_completion_window_start_date",
+                "participant_completion_window_id",
+                "participant_completion_window_end_date",
+                "survey_completion_status_flushed",
+            ]
+        },
         "duplicated": [
             # check for duplicated rows
             {"check_columns": SparkVal.dataframe.columns},
             # check for multiple entries assigned to unique participant on same date
-            {"check_columns": ["participant_id", "visit_datetime"]},
-            # check for multiple entries assigned to unique participant on same date on same visit
-            {"check_columns": ["participant_id", "visit_id", "visit_datetime"]},
-            # check for multiple entries assigned to unique participant on same date with same visit status
-            {"check_columns": ["participant_id", "visit_datetime", "participant_visit_status"]},
-            # check for uniqueness in visit_id
-            {"check_columns": ["visit_id"]},
+            {"check_columns": ["participant_id", "survey_completed_datetime"]},
+            # check for multiple entries assigned to unique participant on same date on with same completion id
+            {"check_columns": ["participant_id", "participant_completion_window_id", "survey_completed_datetime"]},
+            # check for uniqueness in participant_completion_window_id
+            {"check_columns": ["participant_completion_window_id"]},
         ],
-        # "valid_file_date": {
-        #     "visit_datetime_column": "visit_datetime",
-        #     "file_date_column": "file_date",
-        #     "swab_barcode_column": "swab_sample_barcode",
-        #     "blood_barcode_column": "blood_sample_barcode",
-        # },
-        "check_all_null_given_condition": [
-            {
-                "condition": F.col("work_main_job_changed") != "Yes",
-                "null_columns": [
-                    "work_main_job_title",
-                    "work_main_job_role",
-                    "work_sector",
-                    "work_sector_other",
-                    "work_location",
-                ],
-            },
-            {
-                "condition": F.col("survey_response_type") != "First Visit",
-                "null_columns": vaccine_columns,
-            },
-        ],
+        # "check_all_null_given_condition": [
+        #     # {
+        #     #     "condition": F.col("work_main_job_changed") != "Yes",
+        #     #     "null_columns": [
+        #     #         "work_main_job_title",
+        #     #         "work_main_job_role",
+        #     #         "work_sector",
+        #     #         "work_sector_other",
+        #     #         "work_location",
+        #     #     ],
+        #     # },
+        #     {
+        #         "condition": F.col("survey_response_type") != "First Visit",
+        #         "null_columns": vaccine_columns,
+        #     },
+        # ],
     }
 
     SparkVal.validate_all_columns_in_df(dataset_calls)
@@ -95,34 +95,32 @@ def validation_calls(SparkVal):
     # Checks that if "covid_vaccine_type" is not "Other / specify" then "covid_vaccine_type_other" should be null.
     SparkVal.validate_user_defined_logic(
         logic=(
-            ((F.col("covid_vaccine_type") == "Other / specify") & F.col("covid_vaccine_type_other").isNull())
-            | (F.col("covid_vaccine_type") != "Other / specify")
+            ((F.col("cis_covid_vaccine_type") == "Another vaccine") & F.col("cis_covid_vaccine_type_other").isNull())
+            | (F.col("cis_covid_vaccine_type") != "Another vaccine")
         ),
-        error_message="vaccine type other should be null unless vaccine type is 'Other / specify'",
-        columns=["covid_vaccine_type", "covid_vaccine_type_other"],
+        error_message="vaccine type other should be null unless vaccine type is 'Another vaccine'",
+        columns=["cis_covid_vaccine_type", "cis_covid_vaccine_type_other"],
     )
-
-    # Checks that "work_social_care" is set to "Yes" only when respondent has said "Yes" to either "work_nursing_or_residential_care_home"
-    # or "work_directly_contact_patients_or_clients".
-    SparkVal.validate_user_defined_logic(
-        logic=(
-            (
-                (F.col("work_social_care") == "Yes")
-                & (
-                    (F.col("work_nursing_or_residential_care_home") == "Yes")
-                    | (F.col("work_direct_contact_patients_or_clients") == "Yes")
-                )
-            )
-            | (F.col("work_social_care") == "No")
-        ),
-        error_message="work social care should be 'No' if not working in care homes or in direct contact",
-        columns=[
-            "work_social_care",
-            "work_nursing_or_residential_care_home",
-            "work_direct_contact_patients_or_clients",
-        ],
-    )
-
+    # SparkVal.validate_user_defined_logic(
+    #     # Checks for responses on face coverings. Raises an error if "face_covering_outside_of_home" is null
+    #     # and "face_covering_other_enclosed_places" and "face_covering_work_or_education" are null.
+    #     logic=(
+    #         (
+    #             (
+    #                 F.col("face_covering_other_enclosed_places").isNotNull()
+    #                 | F.col("face_covering_work_or_education").isNotNull()
+    #             )
+    #             & (F.col("face_covering_outside_of_home").isNull())
+    #         )
+    #         | (F.col("face_covering_outside_of_home").isNotNull())
+    #     ),
+    #     error_message="face covering is null when face covering at work and other places are null",
+    #     columns=[
+    #         "face_covering_other_enclosed_places",
+    #         "face_covering_work_or_education",
+    #         "face_covering_outside_of_home",
+    #     ],
+    # )
     # SparkVal.validate_user_defined_logic(
     #     # Check if sample taken date is within a valid range
     #     logic=(
