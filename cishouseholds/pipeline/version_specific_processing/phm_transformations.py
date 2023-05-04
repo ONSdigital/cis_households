@@ -22,6 +22,7 @@ from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.edit import add_prefix
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_barcode_simple
+from cishouseholds.edit import convert_derived_columns_from_null_to_no
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import survey_edit_auto_complete
 from cishouseholds.edit import update_column_in_time_window
@@ -328,6 +329,15 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
             col_to_map, F.regexp_replace(col_to_map, r", ", ";")
         )
         df = map_options_to_bool_columns(df, col_to_map, value_column_map, ";")
+
+    # bool col : symptom columns prefix
+    infection_sympton_dict = {
+        "phm_think_had_covid": "think_had_covid_symptom",
+        "phm_think_had_other_infection": "think_had_other_infection_symptom",
+        "think_have_long_covid": "think_have_long_covid_symptom",
+        "phm_think_had_flu": "think_had_flu_symptom",
+    }
+    df = convert_derived_columns_from_null_to_no(df, infection_sympton_dict)
 
     df = assign_any_symptoms(df)
 
