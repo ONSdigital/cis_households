@@ -210,8 +210,6 @@ def pre_processing(df: DataFrame) -> DataFrame:
         am_pm_column="swab_taken_am_pm",
     )
 
-    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 4)
-    df = assign_completion_status(df, column_name_to_assign="survey_completion_status")
     df = add_prefix(df, column_name_to_update="blood_sample_barcode_user_entered", prefix="BLT")
     df = add_prefix(df, column_name_to_update="swab_sample_barcode_user_entered", prefix="SWT")
     return df
@@ -280,7 +278,8 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
         ).otherwise(F.col("survey_completed_datetime")),
     )
     df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
-
+    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 4)
+    df = assign_completion_status(df, column_name_to_assign="survey_completion_status")
     df = df.withColumn("visit_date", F.to_timestamp(F.to_date(F.col("visit_datetime"))))
 
     map_to_bool_columns_dict = {
