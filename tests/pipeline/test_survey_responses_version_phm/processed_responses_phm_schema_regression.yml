@@ -452,10 +452,6 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_have_long_covid_symptom_reduced_ability
-  nullable: true
-  type: string
-- metadata: {}
   name: think_have_long_covid_any_symptom_list_1
   nullable: true
   type: string
@@ -477,10 +473,6 @@ fields:
   type: string
 - metadata: {}
   name: think_have_long_covid_no_symptoms_list_3
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_have_long_covid_symptom_worse_after_effort
   nullable: true
   type: string
 - metadata: {}
@@ -1092,83 +1084,11 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_flu_symptom_runny_nose_or_sneezing
+  name: think_have_long_covid_symptom_reduced_ability
   nullable: true
   type: string
 - metadata: {}
-  name: think_had_flu_symptom_loss_of_smell
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_loss_of_taste
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_sore_throat
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_cough
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_shortness_of_breath
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_noisy_breathing
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_abdominal_pain
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_nausea_or_vomiting
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_diarrhoea
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_loss_of_appetite
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_headache
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_muscle_ache
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_fatigue
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_fever
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_more_trouble_sleeping
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_memory_loss_or_confusion
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_difficulty_concentrating
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_anxiety
-  nullable: true
-  type: string
-- metadata: {}
-  name: think_had_flu_symptom_low_mood
+  name: think_have_long_covid_symptom_worse_after_effort
   nullable: true
   type: string
 - metadata: {}
@@ -1305,6 +1225,86 @@ fields:
   type: string
 - metadata: {}
   name: think_have_long_covid_symptom_skin_rash_itch
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_runny_nose_or_sneezing
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_loss_of_smell
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_loss_of_taste
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_sore_throat
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_cough
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_shortness_of_breath
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_noisy_breathing
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_abdominal_pain
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_nausea_or_vomiting
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_diarrhoea
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_loss_of_appetite
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_headache
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_muscle_ache
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_fatigue
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_fever
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_more_trouble_sleeping
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_memory_loss_or_confusion
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_difficulty_concentrating
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_anxiety
+  nullable: true
+  type: string
+- metadata: {}
+  name: think_had_flu_symptom_low_mood
   nullable: true
   type: string
 - metadata: {}
