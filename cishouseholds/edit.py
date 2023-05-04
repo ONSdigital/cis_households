@@ -1674,3 +1674,30 @@ def conditionally_set_column_values(df: DataFrame, condition: Any, cols_to_set_t
         for col in columns:
             df = df.withColumn(col, F.when(F.col("condition_col"), value).otherwise(F.col(col)))
     return df.drop("condition_col")
+
+
+def convert_symptom_columns_to_no_if_null(df: DataFrame):
+    # bool col : symptom columns prefix
+    map_dict = {
+        "think_have_covid": "think_have_covid_symptom",
+        "think_have_new_or_worse": "think_have_new_or_worse_symptom",
+        "phm_think_had_covid": "think_had_covid_symptom",
+        "phm_think_had_other_infection": "think_had_other_infection_symptom",
+        "think_have_long_covid_any_symptoms": "think_have_long_covid_symptom",
+        "phm_think_had_flu": "think_had_flu_symptom",
+    }
+
+    for infection_col, symptom_prefix in map_dict.items():
+        if infection_col in df.columns:
+            columns_to_replace = [col for col in df.columns if col.startswith(symptom_prefix)]
+            df = df.select(
+                F.col(infection_col),
+                *[
+                    F.when(F.col(infection_col) == "Yes", F.coalesce(F.col(c), F.lit("No")))
+                    .otherwise(F.col(c))
+                    .alias(c)
+                    for c in columns_to_replace
+                ],
+            )
+
+    return df
