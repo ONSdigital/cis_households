@@ -48,6 +48,7 @@ _vaccine_type_map = {
     "Oxford/AstraZeneca": 4,
     "Pfizer/BioNTech": 5,
     "Other / specify": 6,
+    "Another vaccine": 6,
     "Janssen/Johnson&Johnson": 7,
     "Novavax": 8,
     "Sinovac": 9,
