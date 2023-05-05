@@ -46,6 +46,8 @@ def validation_calls(SparkVal):
                 "allow_none": True,
             }
         },
+        # check visit_id parameter begins with the participant_id parameter (from which it is partially derived)
+        "visit_id": {"starts_with": F.col("participant_id")},
         # "blood_sample_barcode": {
         #     "matches": r"^BLT[0-9]{8}$",
         #     "subset": F.col("survey_response_dataset_major_version") == 3,
