@@ -16,11 +16,27 @@ def validation_calls(SparkVal):
     SparkVal : object
         Initialised SparkValidate Class object.
     """
+    # define survey launch date (in dd/MM/yyyy) for checking valid date ranges
+    survey_launch_date = "11/04/2023"
+
     column_calls = {
         "survey_completed_datetime": {
             "between": {
-                "lower_bound": {"inclusive": True, "value": F.to_timestamp(F.lit("11/04/2023"), format="dd/MM/yyyy")},
+                "lower_bound": {
+                    "inclusive": True,
+                    "value": F.to_timestamp(F.lit(survey_launch_date), format="dd/MM/yyyy"),
+                },
                 "upper_bound": {"inclusive": True, "value": F.col("file_date")},
+            }
+        },
+        # check participant_completion_window_start_date before participant_completion_window_end_date
+        "participant_completion_window_start_date ": {
+            "between": {
+                "lower_bound": {
+                    "inclusive": True,
+                    "value": F.to_timestamp(F.lit(survey_launch_date), format="dd/MM/yyyy"),
+                },
+                "upper_bound": {"inclusive": True, "value": F.col("participant_completion_window_end_date")},
             }
         },
         "age_at_visit": {
