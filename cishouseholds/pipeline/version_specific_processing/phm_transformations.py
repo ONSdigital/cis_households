@@ -33,12 +33,6 @@ def phm_transformations(df: DataFrame) -> DataFrame:
     return df
 
 
-def phm_visit_transformations(df: DataFrame) -> DataFrame:
-    """derives visit based fields, must have participant info and historical visits joined prior to transformations"""
-    df = visit_transformations(df)
-    return df
-
-
 def pre_processing(df: DataFrame) -> DataFrame:
     """
     Sets categories to map for digital specific variables to Voyager 0/1/2 equivalent
