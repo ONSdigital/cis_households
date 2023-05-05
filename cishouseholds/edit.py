@@ -1674,3 +1674,20 @@ def conditionally_set_column_values(df: DataFrame, condition: Any, cols_to_set_t
         for col in columns:
             df = df.withColumn(col, F.when(F.col("condition_col"), value).otherwise(F.col(col)))
     return df.drop("condition_col")
+
+
+def convert_derived_columns_from_null_to_no(df: DataFrame, infection_symptom_dict: Dict[str, str]):
+    for infection_col, symptom_prefix in infection_symptom_dict.items():
+        if infection_col in df.columns:
+            columns_to_replace = [col for col in df.columns if col.startswith(symptom_prefix)]
+            df = df.select(
+                *[col for col in df.columns if col not in columns_to_replace],
+                *[
+                    F.when(F.col(infection_col) == "Yes", F.coalesce(F.col(c), F.lit("No")))
+                    .otherwise(F.col(c))
+                    .alias(c)
+                    for c in columns_to_replace
+                ],
+            )
+
+    return df
