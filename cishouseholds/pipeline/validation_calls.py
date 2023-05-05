@@ -46,10 +46,10 @@ def validation_calls(SparkVal):
 
     SparkVal.validate_column(column_calls)
 
-    vaccine_columns = []
-    for template in ["covid_vaccine_type_{}", "covid_vaccine_type_other_{}", "covid_vaccine_date_{}"]:
-        for number in range(1, 5):
-            vaccine_columns.append(template.format(number))
+    # vaccine_columns = []
+    # for template in ["cis_covid_vaccine_type_{}", "cis_covid_vaccine_type_other_{}", "cis_covid_vaccine_date_{}"]:
+    #     for number in range(1, 5):
+    #         vaccine_columns.append(template.format(number))
 
     dataset_calls = {
         "null": {
@@ -92,7 +92,7 @@ def validation_calls(SparkVal):
 
     SparkVal.validate_all_columns_in_df(dataset_calls)
 
-    # Checks that if "covid_vaccine_type" is not "Other / specify" then "covid_vaccine_type_other" should be null.
+    # Checks that if "cis_covid_vaccine_type" is not "Another vaccine" then "cis_covid_vaccine_type_other" should be null.
     SparkVal.validate_user_defined_logic(
         logic=(
             ((F.col("cis_covid_vaccine_type") == "Another vaccine") & F.col("cis_covid_vaccine_type_other").isNull())
