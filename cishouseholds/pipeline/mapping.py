@@ -9,6 +9,7 @@ _times_in_last_7_day_categories = {
     "5": 5,
     "6": 6,
     "7": 7,
+    "Don't know": 8,
 }
 
 consolidation_categories = {
@@ -40,6 +41,8 @@ date_cols_min_date_dict = {
 }
 
 _yes_no_categories = {"No": 0, "Yes": 1}
+
+_yes_no_unknown_categories = {"No": 0, "Yes": 1, "Don't know": 2}
 
 _vaccine_type_map = {
     "Don't know type": 1,
@@ -204,8 +207,9 @@ category_maps = {
         "blood_taken_am_pm": {"AM": 1, "PM": 2},
         "swab_taken_am_pm": {"AM": 1, "PM": 2},
         "test_type_positive_result": {
-            "A lateral flow test. That is the test you can do yourself and you do not have to send it to a laboratory because the result shows in the device in about 30 minutes.": 1,
-            "PCR test. That is the test that is sent off to a laboratory.": 2,
+            "A lateral flow test. That is the test you can do yourself and you do not have to send it to a laboratory because the result shows in the device in about 30 minutes": 1,
+            "PCR test. That is the test that is sent off to a laboratory": 2,
+            "Do not know": 3,
         },
         "contact_known_or_suspected_covid": _yes_no_categories,
         "contact_known_or_suspected_covid_type": {"Living in your own home": 1, "Outside your home": 2},
@@ -267,9 +271,9 @@ category_maps = {
         "contact_known_positive_covid_last_28_days": _yes_no_categories,
         "contact_suspected_positive_covid_last_28_days": _yes_no_categories,
         "hospital_last_28_days": _yes_no_categories,
-        "other_household_member_hospital_last_28_days": _yes_no_categories,
+        "other_household_member_hospital_last_28_days": _yes_no_unknown_categories,
         "care_home_last_28_days": _yes_no_categories,
-        "other_household_member_care_home_last_28_days": _yes_no_categories,
+        "other_household_member_care_home_last_28_days": _yes_no_unknown_categories,
         "contact_known_positive_covid_last_28_days_raw": _yes_no_categories,
         "contact_suspected_positive_covid_last_28_days_raw": _yes_no_categories,
         "think_had_covid_contacted_nhs_raw": _yes_no_categories,
@@ -335,7 +339,7 @@ category_maps = {
         "think_have_long_covid_symptom_difficulty_concentrating": _yes_no_categories,
         "think_have_long_covid_symptom_runny_nose_or_sneezing": _yes_no_categories,
         "think_have_long_covid_symptom_noisy_breathing": _yes_no_categories,
-        "think_have_long_covid_symptom_worse_after_effort": _yes_no_categories,
+        "think_have_long_covid_symptom_worse_after_effort": _yes_no_unknown_categories,
         "think_have_long_covid_symptoms_eyesight": _yes_no_categories,
         "think_have_long_covid_symptoms_ear_pain": _yes_no_categories,
         "think_have_long_covid_symptoms_tinnitus": _yes_no_categories,
@@ -615,12 +619,33 @@ category_maps = {
             "Yes, I have": 1,
             "No I haven’t, but someone else in my household has": 2,
         },
-        "physical_contact_under_18_years": {"0": 0, "1-5": 1, "6-10": 2, "11-20": 3, "21 or more": 4},
-        "physical_contact_18_to_69_years": {"0": 0, "1-5": 1, "6-10": 2, "11-20": 3, "21 or more": 4},
-        "physical_contact_over_70_years": {"0": 0, "1-5": 1, "6-10": 2, "11-20": 3, "21 or more": 4},
-        "social_distance_contact_under_18_years": {"0": 0, "1-5": 1, "6-10": 2, "11-20": 3, "21 or more": 4},
-        "social_distance_contact_18_to_69_years": {"0": 0, "1-5": 1, "6-10": 2, "11-20": 3, "21 or more": 4},
-        "social_distance_contact_over_70_years": {"0": 0, "1-5": 1, "6-10": 2, "11-20": 3, "21 or more": 4},
+        "physical_contact_under_18_years": {"0": 0, "1-5": 1, "6-10": 2, "11-20": 3, "21 or more": 4, "Don't know": 5},
+        "physical_contact_18_to_69_years": {"0": 0, "1-5": 1, "6-10": 2, "11-20": 3, "21 or more": 4, "Don't know": 5},
+        "physical_contact_over_70_years": {"0": 0, "1-5": 1, "6-10": 2, "11-20": 3, "21 or more": 4, "Don't know": 5},
+        "social_distance_contact_under_18_years": {
+            "0": 0,
+            "1-5": 1,
+            "6-10": 2,
+            "11-20": 3,
+            "21 or more": 4,
+            "Don't know": 5,
+        },
+        "social_distance_contact_18_to_69_years": {
+            "0": 0,
+            "1-5": 1,
+            "6-10": 2,
+            "11-20": 3,
+            "21 or more": 4,
+            "Don't know": 5,
+        },
+        "social_distance_contact_over_70_years": {
+            "0": 0,
+            "1-5": 1,
+            "6-10": 2,
+            "11-20": 3,
+            "21 or more": 4,
+            "Don't know": 5,
+        },
         "face_covering_outside_of_home": {
             "No": 0,
             "Yes, at work/school only": 1,
@@ -1749,6 +1774,7 @@ category_maps = {
             "7 times or more": 7,
             "None": 8,
             "Participant Would Not/Could Not Answer": 9,
+            "Don't know": 10,
         },
         "times_socialising_last_7_days": {
             "0": 0,
@@ -1761,21 +1787,14 @@ category_maps = {
             "7 times or more": 7,
             "None": 8,
             "Participant Would Not/Could Not Answer": 9,
+            "Don't know": 10,
         },
         "cohort_type_phm": {
             "Do this questionnaire only": 1,
             "Do this questionnaire and take a swab sample": 2,
         },
-        "times_large_events_last_28_days": {
-            "No": 0,
-            "Yes": 1,
-            "Unknown": 2,
-        },
-        "times_medium_events_last_28_days": {
-            "No": 0,
-            "Yes": 1,
-            "Unknown": 2,
-        },
+        "times_large_events_last_28_days": _yes_no_unknown_categories,
+        "times_medium_events_last_28_days": _yes_no_unknown_categories,
         "transport_shared_outside_household_last_28_days": {
             "Bus or minibus or coach": 1,
             "Car or van": 2,
