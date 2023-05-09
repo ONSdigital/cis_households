@@ -42,7 +42,7 @@ date_cols_min_date_dict = {
 
 _yes_no_categories = {"No": 0, "Yes": 1}
 
-_yes_no_unknown_categories = {"No": 0, "Yes": 1, "Don't know": 2}
+_yes_no_unknown_categories = {"No": 0, "Yes": 1, "Don't know": 2, "Do not know": 2}
 
 _vaccine_type_map = {
     "Don't know type": 1,
