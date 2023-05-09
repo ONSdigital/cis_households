@@ -81,7 +81,6 @@ from cishouseholds.pipeline.validation_schema import validation_schemas
 from cishouseholds.pipeline.version_specific_processing.participant_extract_phm import (
     transform_participant_extract_phm,
 )  # noqa: F401
-from cishouseholds.pipeline.version_specific_processing.phm_transformations import phm_visit_transformations
 from cishouseholds.pipeline.visit_transformations import visit_transformations
 from cishouseholds.prediction_checker_class import PredictionChecker
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -563,8 +562,8 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
     return {"output_survey_table": output_survey_table}
 
 
-@register_pipeline_stage("union_historical_visit_transformations")
-def union_historical_visit_transformations(tables_to_process: List, output_survey_table: str, transformations: List):
+@register_pipeline_stage("union_historical_visits")
+def union_historical_visits(tables_to_process: List, output_survey_table: str):
     """
     Union list of tables_to_process, and write to table.
 
@@ -578,15 +577,7 @@ def union_historical_visit_transformations(tables_to_process: List, output_surve
         transformation functions to be applied once the union has taken place
     """
     df_list = [extract_from_table(table) for table in tables_to_process]
-
-    transformations_dict: Dict[str, Any]
-    transformations_dict = {
-        "phm_visit_transformations": phm_visit_transformations,
-    }
-
     df = union_multiple_tables(df_list)
-    for transformation in transformations:
-        df = transformations_dict[transformation](df)
     update_table(df, output_survey_table, "overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
@@ -783,7 +774,6 @@ def join_lookup_table(
         "blood_past_positive": blood_past_positive_transformations,
         "design_weights_lookup": design_weights_lookup_transformations,
         "ordered_household_id": ordered_household_id_tranformations,
-        "phm_visit_transformation": phm_visit_transformations,
         "participant_extract_phm": clean_participant_extract_phm,
     }
 
@@ -932,7 +922,8 @@ def validate_survey_responses(
 
     Parameters
     ----------
-    input_survey_table
+    input_survey_table : str
+        Name of input survey table to validate
     duplicate_count_column_name
         column name in which to count duplicates of rows within the dataframe
     validation_failure_flag_column

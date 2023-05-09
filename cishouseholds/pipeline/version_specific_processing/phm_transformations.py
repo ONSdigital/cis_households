@@ -7,45 +7,29 @@ from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
-from cishouseholds.derive import assign_columns_from_array
 from cishouseholds.derive import assign_completion_status
 from cishouseholds.derive import assign_date_from_filename
-from cishouseholds.derive import assign_datetime_from_coalesced_columns_and_log_source
 from cishouseholds.derive import assign_datetime_from_combined_columns
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_survey_completed_status
 from cishouseholds.derive import assign_window_status
-from cishouseholds.derive import combine_like_array_columns
-from cishouseholds.derive import concat_fields_if_true
-from cishouseholds.derive import derive_had_symptom_last_7days_from_digital
 from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.edit import add_prefix
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_barcode_simple
+from cishouseholds.edit import convert_derived_columns_from_null_to_no
 from cishouseholds.edit import edit_to_sum_or_max_value
-from cishouseholds.edit import survey_edit_auto_complete
-from cishouseholds.edit import update_column_in_time_window
 from cishouseholds.edit import update_column_values_from_map
-from cishouseholds.edit import update_strings_to_sentence_case
-from cishouseholds.edit import update_value_if_multiple_and_ref_in_list
-from cishouseholds.expressions import all_columns_values_in_list
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.filter import filter_exclude_by_pattern
 from cishouseholds.pipeline.mapping import transformation_maps
 from cishouseholds.pipeline.visit_transformations import visit_transformations
 
-# THIS IS A DIRECT COPY OF A DIGITAL VERSION-SPECIFIC TRANSFORMATIONS - NEEDS TO BE UPDATED WITH THE PHM-SPECIFIC TRANSFORMATIONS AND THEN THEN THE REDUNDANT PROCESSES CLEANED UP
-# DOUBLE CHECK IF REDUNDANT BITS REMOVED BEFORE MERGING ON
+
 def phm_transformations(df: DataFrame) -> DataFrame:
     """"""
     df = pre_processing(df)
     df = derive_additional_columns(df)
-    return df
-
-
-def phm_visit_transformations(df: DataFrame) -> DataFrame:
-    """derives visit based fields, must have participant info and historical visits joined prior to transformations"""
-    df = visit_transformations(df)
     return df
 
 
@@ -221,9 +205,6 @@ def pre_processing(df: DataFrame) -> DataFrame:
         am_pm_column="swab_taken_am_pm",
     )
 
-    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 4)
-    # df = generic_processing(df)
-    # df = assign_completion_status(df=df, column_name_to_assign="survey_completion_status")
     df = add_prefix(df, column_name_to_update="blood_sample_barcode_user_entered", prefix="BLT")
     df = add_prefix(df, column_name_to_update="swab_sample_barcode_user_entered", prefix="SWT")
     return df
@@ -287,15 +268,15 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "visit_datetime",
         F.when(
-            F.col("survey_completion_status_flushed") == "true",
-            F.to_timestamp(F.col("participant_completion_window_end_date"), format="yyyy-MM-dd"),
-        ).otherwise(F.to_timestamp(F.col("survey_completed_datetime"), format="yyyy-MM-dd HH:mm:ss")),
+            F.col("survey_completion_status_flushed"),
+            F.col("participant_completion_window_end_date"),
+        ).otherwise(F.col("survey_completed_datetime")),
     )
     df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
+    df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 4)
+    df = assign_completion_status(df, column_name_to_assign="survey_completion_status")
+    df = df.withColumn("visit_date", F.to_timestamp(F.to_date(F.col("visit_datetime"))))
 
-    df = df.withColumn("visit_date", F.to_date(F.col("visit_datetime"), "MM-dd-yyyy HH:mm:ss"))
-
-    # df = split_array_columns(df)
     map_to_bool_columns_dict = {
         "currently_smokes_or_vapes_description": "",
         "blood_not_taken_could_not_reason": "",
@@ -328,6 +309,15 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
             col_to_map, F.regexp_replace(col_to_map, r", ", ";")
         )
         df = map_options_to_bool_columns(df, col_to_map, value_column_map, ";")
+
+    # bool col : symptom columns prefix
+    infection_sympton_dict = {
+        "phm_think_had_covid": "think_had_covid_symptom",
+        "phm_think_had_other_infection": "think_had_other_infection_symptom",
+        "think_have_long_covid": "think_have_long_covid_symptom",
+        "phm_think_had_flu": "think_had_flu_symptom",
+    }
+    df = convert_derived_columns_from_null_to_no(df, infection_sympton_dict)
 
     df = assign_any_symptoms(df)
 
