@@ -172,7 +172,19 @@ fields:
   nullable: true
   type: string
 - metadata: {}
+  name: work_main_job_title
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_main_job_role
+  nullable: true
+  type: string
+- metadata: {}
   name: work_sector
+  nullable: true
+  type: string
+- metadata: {}
+  name: work_sector_other
   nullable: true
   type: string
 - metadata: {}
@@ -269,6 +281,10 @@ fields:
   type: string
 - metadata: {}
   name: cis_covid_vaccine_type
+  nullable: true
+  type: string
+- metadata: {}
+  name: cis_covid_vaccine_type_other
   nullable: true
   type: string
 - metadata: {}
@@ -562,22 +578,6 @@ fields:
 - metadata: {}
   name: survey_response_source_file
   nullable: false
-  type: string
-- metadata: {}
-  name: work_main_job_title
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_main_job_role
-  nullable: true
-  type: string
-- metadata: {}
-  name: work_sector_other
-  nullable: true
-  type: string
-- metadata: {}
-  name: cis_covid_vaccine_type_other
-  nullable: true
   type: string
 - metadata: {}
   name: work_sector_raw
