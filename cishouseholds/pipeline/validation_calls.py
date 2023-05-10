@@ -74,10 +74,9 @@ def validation_calls(SparkVal):
             "check_columns": [
                 "ons_household_id",
                 "participant_id",
-                "participant_completion_window_start_date",
                 "participant_completion_window_id",
+                "participant_completion_window_start_date",
                 "participant_completion_window_end_date",
-                "survey_completion_status_flushed",
             ]
         },
         "duplicated": [
@@ -177,8 +176,7 @@ def validation_ETL(df: DataFrame, validation_check_failure_column_name: str, dup
     validation_calls(SparkVal)
     return SparkVal.filter(
         selected_errors=[
-            "participant_id, visit_datetime, visit_id, ons_household_id should not be null",
-            "the date in visit_datetime should be before the date in file_date plus two days when both swab_sample_barcode and blood_sample_barcode are null",  # noqa:E501
+            "ons_household_id, participant_id, participant_completion_window_id, participant_completion_window_start_date, participant_completion_window_end_date should not be null",  # noqa:E501
         ],
         any=True,
         return_failed=True,
