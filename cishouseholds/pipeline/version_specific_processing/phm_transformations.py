@@ -33,6 +33,21 @@ def phm_transformations(df: DataFrame) -> DataFrame:
     return df
 
 
+def clean_survey_responses_version_phm(df: DataFrame) -> DataFrame:
+    """
+    Performs minimal functional cleaning of free text fields and deduplication of raw JSON data
+    """
+    phm_free_text_columns = [
+        "work_main_job_title",
+        "work_main_job_role",
+        "work_sector_other",
+        "cis_covid_vaccine_type_other",
+    ]
+    for col in phm_free_text_columns:
+        df = df.withColumn(col, F.regexp_replace(col, r"[\"\'\|]", ""))
+    return df
+
+
 def pre_processing(df: DataFrame) -> DataFrame:
     """
     Sets categories to map for digital specific variables to Voyager 0/1/2 equivalent
