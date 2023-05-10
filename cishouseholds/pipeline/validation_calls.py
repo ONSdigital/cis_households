@@ -16,11 +16,27 @@ def validation_calls(SparkVal):
     SparkVal : object
         Initialised SparkValidate Class object.
     """
+    # define survey launch date (in dd/MM/yyyy) for checking valid date ranges
+    survey_launch_date = "11/04/2023"
+
     column_calls = {
         "survey_completed_datetime": {
             "between": {
-                "lower_bound": {"inclusive": True, "value": F.to_timestamp(F.lit("11/04/2023"), format="dd/MM/yyyy")},
+                "lower_bound": {
+                    "inclusive": True,
+                    "value": F.to_timestamp(F.lit(survey_launch_date), format="dd/MM/yyyy"),
+                },
                 "upper_bound": {"inclusive": True, "value": F.col("file_date")},
+            }
+        },
+        # check participant_completion_window_start_date before participant_completion_window_end_date
+        "participant_completion_window_start_date ": {
+            "between": {
+                "lower_bound": {
+                    "inclusive": True,
+                    "value": F.to_timestamp(F.lit(survey_launch_date), format="dd/MM/yyyy"),
+                },
+                "upper_bound": {"inclusive": True, "value": F.col("participant_completion_window_end_date")},
             }
         },
         "age_at_visit": {
@@ -30,6 +46,8 @@ def validation_calls(SparkVal):
                 "allow_none": True,
             }
         },
+        # check visit_id parameter begins with the participant_id parameter (from which it is partially derived)
+        "visit_id": {"starts_with": F.col("participant_id")},
         # "blood_sample_barcode": {
         #     "matches": r"^BLT[0-9]{8}$",
         #     "subset": F.col("survey_response_dataset_major_version") == 3,
@@ -56,10 +74,9 @@ def validation_calls(SparkVal):
             "check_columns": [
                 "ons_household_id",
                 "participant_id",
-                "participant_completion_window_start_date",
                 "participant_completion_window_id",
+                "participant_completion_window_start_date",
                 "participant_completion_window_end_date",
-                "survey_completion_status_flushed",
             ]
         },
         "duplicated": [
@@ -159,8 +176,7 @@ def validation_ETL(df: DataFrame, validation_check_failure_column_name: str, dup
     validation_calls(SparkVal)
     return SparkVal.filter(
         selected_errors=[
-            "participant_id, visit_datetime, visit_id, ons_household_id should not be null",
-            "the date in visit_datetime should be before the date in file_date plus two days when both swab_sample_barcode and blood_sample_barcode are null",  # noqa:E501
+            "ons_household_id, participant_id, participant_completion_window_id, participant_completion_window_start_date, participant_completion_window_end_date should not be null",  # noqa:E501
         ],
         any=True,
         return_failed=True,
