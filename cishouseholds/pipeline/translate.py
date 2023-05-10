@@ -446,21 +446,27 @@ def get_welsh_responses_to_be_translated(df: DataFrame) -> DataFrame:
     """
     digital_unique_identifiers = ["participant_id", "participant_completion_window_id"]
 
-    digital_free_text_columns = [
-        "reason_for_not_consenting_1",
-        "reason_for_not_consenting_2",
-        "reason_for_not_consenting_3",
-        "reason_for_not_consenting_4",
-        "reason_for_not_consenting_5",
-        "reason_for_not_consenting_6",
-        "reason_for_not_consenting_7",
-        "reason_for_not_consenting_8",
-        "ethnicity_other",
-        "swab_not_taken_damage_description",
-        "swab_not_taken_other",
-        "blood_not_taken_damage_description",
-        "blood_not_taken_other",
-        "blood_not_taken_could_not_other",
+    # digital_free_text_columns = [
+    #     "reason_for_not_consenting_1",
+    #     "reason_for_not_consenting_2",
+    #     "reason_for_not_consenting_3",
+    #     "reason_for_not_consenting_4",
+    #     "reason_for_not_consenting_5",
+    #     "reason_for_not_consenting_6",
+    #     "reason_for_not_consenting_7",
+    #     "reason_for_not_consenting_8",
+    #     "ethnicity_other",
+    #     "swab_not_taken_damage_description",
+    #     "swab_not_taken_other",
+    #     "blood_not_taken_damage_description",
+    #     "blood_not_taken_other",
+    #     "blood_not_taken_could_not_other",
+    #     "work_main_job_title",
+    #     "work_main_job_role",
+    #     "work_sector_other",
+    #     "cis_covid_vaccine_type_other",
+    # ]
+    phm_free_text_columns = [
         "work_main_job_title",
         "work_main_job_role",
         "work_sector_other",
@@ -468,9 +474,9 @@ def get_welsh_responses_to_be_translated(df: DataFrame) -> DataFrame:
     ]
     to_be_translated_df = (
         df.withColumn("id", F.concat(F.lit(F.col("participant_id")), F.lit(F.col("participant_completion_window_id"))))
-        .select(digital_unique_identifiers + digital_free_text_columns + ["form_language", "id"])
+        .select(digital_unique_identifiers + phm_free_text_columns + ["form_language", "id"])
         .filter(F.col("form_language") == "Welsh")
-        .na.drop(how="all", subset=digital_free_text_columns)
+        .na.drop(how="all", subset=phm_free_text_columns)
         .distinct()
     )
     return to_be_translated_df
