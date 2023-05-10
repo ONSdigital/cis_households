@@ -78,9 +78,8 @@ from cishouseholds.pipeline.vaccine_transformations import vaccine_transformatio
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
 from cishouseholds.pipeline.validation_schema import validation_schemas
-from cishouseholds.pipeline.version_specific_processing.participant_extract_phm import (
-    transform_participant_extract_phm,
-)  # noqa: F401
+from cishouseholds.pipeline.version_specific_processing.participant_extract_phm import transform_participant_extract_phm
+from cishouseholds.pipeline.version_specific_processing.phm_transformations import clean_survey_responses_version_phm
 from cishouseholds.pipeline.visit_transformations import visit_transformations
 from cishouseholds.prediction_checker_class import PredictionChecker
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -1159,6 +1158,7 @@ def tables_to_csv(
     extension=".txt",
     dry_run=False,
     accept_missing=False,
+    transformation_functions=[],
 ):
     """
     Writes data from an existing HIVE table to csv output, including mapping of column names and values.
@@ -1180,6 +1180,8 @@ def tables_to_csv(
         when set to True, will delete files after they are written (for testing). Default is False.
     accept_missing
         remove missing columns from map if not in dataframe
+    transformation_functions
+        list of transformation functions to be run on the dataframe before it is exported
     """
     output_datetime = datetime.today()
     output_datetime_str = output_datetime.strftime("%Y%m%d_%H%M%S")
@@ -1190,8 +1192,14 @@ def tables_to_csv(
 
     config_file = get_secondary_config(tables_to_csv_config_file)
 
+    transformations_dict = {
+        "clean_survey_responses_version_phm": clean_survey_responses_version_phm,
+    }
+
     for table in config_file["create_tables"]:
         df = extract_from_table(table["table_name"])
+        for transformation in transformation_functions:
+            df = transformations_dict[transformation](df)
         if table.get("column_name_map"):
             if accept_missing:
                 columns_to_select = [element for element in table["column_name_map"].keys() if element in df.columns]
