@@ -44,7 +44,7 @@ def clean_survey_responses_version_phm(df: DataFrame) -> DataFrame:
         "cis_covid_vaccine_type_other",
     ]
     for col in phm_free_text_columns:
-        df = df.withColumn(col, F.regexp_replace(col, r"[\"\'\|]", ""))
+        df = df.withColumn(col, F.regexp_replace(col, r"[\r\n]", ""))
     return df
 
 

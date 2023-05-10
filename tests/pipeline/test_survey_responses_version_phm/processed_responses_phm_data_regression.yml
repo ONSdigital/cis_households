@@ -376,9 +376,9 @@
   cis_covid_vaccine_received: 'Yes'
   cis_covid_vaccine_type: Oxford/AstraZeneca
   cis_covid_vaccine_type_other: Mama always said life was like a box of chocolates.
-    You never know what youre gonna get.
+    You never know what you're gonna get.
   cis_covid_vaccine_type_other_raw: Mama always said life was like a box of chocolates.
-    You never know what youre gonna get.
+    You never know what you're gonna get.
   cis_covid_vaccine_type_raw: Oxford / AstraZeneca
   cohort_type_phm: Do this questionnaire and take a swab sample
   currently_smokes_or_vapes: Prefer not to say
@@ -727,10 +727,10 @@
   cis_covid_vaccine_number_of_doses: 6 doses
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: Pfizer/BioNTech
-  cis_covid_vaccine_type_other: 'Youve got to ask yourself one question: Do I feel
-    lucky? Well, do ya? Punk!'
-  cis_covid_vaccine_type_other_raw: 'Youve got to ask yourself one question: Do I
-    feel lucky? Well, do ya? Punk!'
+  cis_covid_vaccine_type_other: '"You''ve got to ask yourself one question: ""Do I
+    feel lucky?"" Well, do ya? Punk!"'
+  cis_covid_vaccine_type_other_raw: '"You''ve got to ask yourself one question: ""Do
+    I feel lucky?"" Well, do ya? Punk!"'
   cis_covid_vaccine_type_raw: Pfizer / BioNTech
   cohort_type_phm: Do this questionnaire and take a swab sample
   currently_smokes_or_vapes: 'No'
@@ -2083,8 +2083,8 @@
   work_not_from_home_days_per_week: '7'
   work_nursing_or_residential_care_home: 'Yes'
   work_sector: Hospitality (e.g. hotel, restaurant)
-  work_sector_other: Messages can be sent to and received from ports, but these messages
-    must obey the so-called port protocol.
+  work_sector_other: '"Messages can be sent to and received from ports, but these
+    messages must obey the so-called ""port protocol."""'
   work_sector_raw: Hospitality - for example hotels or restaurants or cafe
   work_status_digital: In education
   work_status_education: A child below school age and attending a nursery or pre-school
@@ -2130,8 +2130,8 @@
   cis_covid_vaccine_number_of_doses: 8 doses or more
   cis_covid_vaccine_received: 'No'
   cis_covid_vaccine_type: Sinovac
-  cis_covid_vaccine_type_other: Heres looking at you, kid.
-  cis_covid_vaccine_type_other_raw: Heres looking at you, kid.
+  cis_covid_vaccine_type_other: Here's looking at you, kid.
+  cis_covid_vaccine_type_other_raw: Here's looking at you, kid.
   cis_covid_vaccine_type_raw: Sinovac
   cohort_type_phm: Do this questionnaire only
   currently_smokes_or_vapes: 'No'
@@ -3128,8 +3128,8 @@
   work_not_from_home_days_per_week: '3'
   work_nursing_or_residential_care_home: Prefer not to say
   work_sector: Healthcare
-  work_sector_other: Messages can be sent to and received from ports, but these messages
-    must obey the so-called port protocol.
+  work_sector_other: '"Messages can be sent to and received from ports, but these
+    messages must obey the so-called ""port protocol."""'
   work_sector_raw: Healthcare
   work_status_digital: In education
   work_status_education: Attending university
@@ -3473,8 +3473,8 @@
   work_in_additional_paid_employment: 'No'
   work_location: null
   work_main_job_changed: 'Yes'
-  work_main_job_role: Messages can be sent to and received from ports, but these messages
-    must obey the so-called port protocol.
+  work_main_job_role: '"Messages can be sent to and received from ports, but these
+    messages must obey the so-called ""port protocol."""'
   work_main_job_title: Make me a sandwich.
   work_not_from_home_days_per_week: '2'
   work_nursing_or_residential_care_home: 'No'
