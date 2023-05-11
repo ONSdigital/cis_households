@@ -5,8 +5,8 @@ import pytest
 @pytest.mark.integration
 def test_swab_results_df(swab_results_output, regression_test_df):
     regression_test_df(
-        swab_results_output.drop("swab_results_source_file"), "pcr_lab_id", "processed_swab_results"
-    )  # remove source file column, as it varies for our temp dummy data
+        swab_results_output.drop("swab_results_source_file"), "pcr_result_recorded_datetime", "processed_swab_results"
+    )
 
 
 @pytest.mark.regression
