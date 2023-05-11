@@ -1148,6 +1148,32 @@ def lab_report(input_survey_table: str, swab_report_table: str, blood_report_tab
     update_table(blood_df, blood_report_table, "overwrite")
 
 
+@register_pipeline_stage("filter_dataframe")
+def filter_dataframe(
+    input_survey_table: str,
+    output_survey_table: str,
+    filter: dict,
+) -> DataFrame:
+    """
+     Stage which filters an input table on specified variables and values
+       ----------
+    Parameters
+    input_survey_table : str
+         Name of input survey table to filter
+     output_survey_table: str
+         Name of the output survey table with filtered applied
+     filter: Dict
+         List of variables and the value on which to filter e.g. sex: [1]
+    """
+    df = extract_from_table(input_survey_table)
+
+    if len(filter.keys()) > 0:
+        filter = {key: val if type(val) == list else [val] for key, val in filter.items()}
+        df = df.filter(reduce(and_, [F.col(col).isin(val) for col, val in filter.items()]))
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
+    return {"output_survey_table": output_survey_table}
+
+
 @register_pipeline_stage("tables_to_csv")
 def tables_to_csv(
     outgoing_directory,
