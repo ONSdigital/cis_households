@@ -30,7 +30,7 @@ def validation_calls(SparkVal):
             }
         },
         # check participant_completion_window_start_date before participant_completion_window_end_date
-        "participant_completion_window_start_date ": {
+        "participant_completion_window_start_date": {
             "between": {
                 "lower_bound": {
                     "inclusive": True,
