@@ -324,6 +324,29 @@ Requires lookup_tables to exist or be created prior to being called</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.filter_dataframe">
+<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">filter_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pyspark.sql.dataframe.DataFrame</span></span></span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.filter_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><dl class="simple">
+<dt>Stage which filters an input table on specified variables and values</dt><dd></dd>
+</dl>
+</div></blockquote>
+<p>Parameters
+input_survey_table : str</p>
+<blockquote>
+<div><blockquote>
+<div><p>Name of input survey table to filter</p>
+</div></blockquote>
+<dl class="simple">
+<dt>output_survey_table: str</dt><dd><p>Name of the output survey table with filtered applied</p>
+</dd>
+<dt>filter: Dict</dt><dd><p>List of variables and the value on which to filter e.g. sex: [1]</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.generate_dummy_data">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">generate_dummy_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_directory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.generate_dummy_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates dummy input table data for Voyager 0, 1, 2, CIS-Digital, and CIS-SOC-code schemas</p>
