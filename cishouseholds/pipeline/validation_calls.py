@@ -46,8 +46,6 @@ def validation_calls(SparkVal):
                 "allow_none": True,
             }
         },
-        # check visit_id parameter begins with the participant_id parameter (from which it is partially derived)
-        "visit_id": {"starts_with": F.col("participant_id")},
         # "blood_sample_barcode": {
         #     "matches": r"^BLT[0-9]{8}$",
         #     "subset": F.col("survey_response_dataset_major_version") == 3,
@@ -117,6 +115,12 @@ def validation_calls(SparkVal):
         ),
         error_message="vaccine type other should be null unless vaccine type is 'Another vaccine'",
         columns=["cis_covid_vaccine_type", "cis_covid_vaccine_type_other"],
+    )
+    # Check visit_id parameter begins with the participant_id parameter (from which it is partially derived)
+    SparkVal.validate_user_defined_logic(
+        logic=(F.col("visit_id").startswith(F.col("participant_id"))),
+        error_message="visit_id should start with the participant_id value",
+        columns=["visit_id", "participant_id"],
     )
     # SparkVal.validate_user_defined_logic(
     #     # Checks for responses on face coverings. Raises an error if "face_covering_outside_of_home" is null
