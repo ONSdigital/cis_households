@@ -71,6 +71,7 @@ survey_responses_phm_parameters = {
     "date_from_filename": False,
     "transformation_functions": [
         clean_survey_responses_version_phm,
+        translate_welsh_survey_responses,
         phm_transformations,
     ],
     "sep": "|",
@@ -89,6 +90,7 @@ survey_responses_phm_backup_parameters = {
     "datetime_column_map": phm_datetime_map,
     "date_from_filename": False,
     "transformation_functions": [
+        translate_welsh_survey_responses,
         phm_transformations,
     ],
     "sep": "|",
