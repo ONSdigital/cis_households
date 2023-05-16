@@ -78,9 +78,8 @@ from cishouseholds.pipeline.vaccine_transformations import vaccine_transformatio
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
 from cishouseholds.pipeline.validation_schema import validation_schemas
-from cishouseholds.pipeline.version_specific_processing.participant_extract_phm import (
-    transform_participant_extract_phm,
-)  # noqa: F401
+from cishouseholds.pipeline.version_specific_processing.participant_extract_phm import transform_participant_extract_phm
+from cishouseholds.pipeline.version_specific_processing.phm_transformations import clean_survey_responses_version_phm
 from cishouseholds.pipeline.visit_transformations import visit_transformations
 from cishouseholds.prediction_checker_class import PredictionChecker
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -1149,6 +1148,32 @@ def lab_report(input_survey_table: str, swab_report_table: str, blood_report_tab
     update_table(blood_df, blood_report_table, "overwrite")
 
 
+@register_pipeline_stage("filter_dataframe")
+def filter_dataframe(
+    input_survey_table: str,
+    output_survey_table: str,
+    filter: dict,
+) -> DataFrame:
+    """
+     Stage which filters an input table on specified variables and values
+       ----------
+    Parameters
+    input_survey_table : str
+         Name of input survey table to filter
+     output_survey_table: str
+         Name of the output survey table with filtered applied
+     filter: Dict
+         List of variables and the value on which to filter e.g. sex: [1]
+    """
+    df = extract_from_table(input_survey_table)
+
+    if len(filter.keys()) > 0:
+        filter = {key: val if type(val) == list else [val] for key, val in filter.items()}
+        df = df.filter(reduce(and_, [F.col(col).isin(val) for col, val in filter.items()]))
+    update_table(df, output_survey_table, "overwrite", survey_table=True)
+    return {"output_survey_table": output_survey_table}
+
+
 @register_pipeline_stage("tables_to_csv")
 def tables_to_csv(
     outgoing_directory,
@@ -1159,6 +1184,7 @@ def tables_to_csv(
     extension=".txt",
     dry_run=False,
     accept_missing=False,
+    transformation_functions=[],
 ):
     """
     Writes data from an existing HIVE table to csv output, including mapping of column names and values.
@@ -1180,6 +1206,8 @@ def tables_to_csv(
         when set to True, will delete files after they are written (for testing). Default is False.
     accept_missing
         remove missing columns from map if not in dataframe
+    transformation_functions
+        list of transformation functions to be run on the dataframe before it is exported
     """
     output_datetime = datetime.today()
     output_datetime_str = output_datetime.strftime("%Y%m%d_%H%M%S")
@@ -1190,8 +1218,14 @@ def tables_to_csv(
 
     config_file = get_secondary_config(tables_to_csv_config_file)
 
+    transformations_dict = {
+        "clean_survey_responses_version_phm": clean_survey_responses_version_phm,
+    }
+
     for table in config_file["create_tables"]:
         df = extract_from_table(table["table_name"])
+        for transformation in transformation_functions:
+            df = transformations_dict[transformation](df)
         if table.get("column_name_map"):
             if accept_missing:
                 columns_to_select = [element for element in table["column_name_map"].keys() if element in df.columns]

@@ -21,6 +21,7 @@ from cishouseholds.pipeline.version_specific_processing.mult_version import deri
 from cishouseholds.pipeline.version_specific_processing.participant_extract_digital import (
     transform_participant_extract_digital,
 )
+from cishouseholds.pipeline.version_specific_processing.phm_transformations import clean_survey_responses_version_phm
 from cishouseholds.pipeline.version_specific_processing.phm_transformations import phm_transformations
 from cishouseholds.pipeline.version_specific_processing.v0_transformations import (
     transform_survey_responses_version_0_delta,
@@ -69,11 +70,30 @@ survey_responses_phm_parameters = {
     "datetime_column_map": phm_datetime_map,
     "date_from_filename": False,
     "transformation_functions": [
+        clean_survey_responses_version_phm,
         phm_transformations,
     ],
     "sep": "|",
     "cast_to_double_list": [],
     "source_file_column": "survey_response_source_file",
+}
+
+survey_responses_phm_backup_parameters = {
+    "stage_name": "survey_responses_version_phm_backup_ETL",
+    "dataset_name": "survey_responses_phm_backup",
+    "id_column": "participant_completion_window_id",
+    "validation_schema": {
+        **validation_schemas["phm_survey_validation_schema"],
+        "survey_response_source_file": {"type": "string"},
+    },
+    "datetime_column_map": phm_datetime_map,
+    "date_from_filename": False,
+    "transformation_functions": [
+        phm_transformations,
+    ],
+    "sep": "|",
+    "cast_to_double_list": [],
+    "source_file_column": "backup_source_file",
 }
 
 survey_responses_digital_parameters = {
@@ -201,6 +221,7 @@ for parameters in [
     participant_extract_phm_parameters,
     participant_extract_digital_parameters,
     survey_responses_phm_parameters,
+    survey_responses_phm_backup_parameters,
     survey_responses_digital_parameters,
     survey_responses_v2_parameters,
     survey_responses_v1_parameters,

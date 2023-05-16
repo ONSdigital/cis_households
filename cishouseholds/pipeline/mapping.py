@@ -42,7 +42,7 @@ date_cols_min_date_dict = {
 
 _yes_no_categories = {"No": 0, "Yes": 1}
 
-_yes_no_unknown_categories = {"No": 0, "Yes": 1, "Don't know": 2}
+_yes_no_unknown_categories = {"No": 0, "Yes": 1, "Don't know": 2, "Do not know": 2}
 
 _vaccine_type_map = {
     "Don't know type": 1,
@@ -1805,7 +1805,6 @@ category_maps = {
             "Other method": 7,
             "I have not used transport shared with people outside of my home for reasons other than travel to work or education": 8,
         },
-        "survey_completion_status_flushed": {False: 0, True: 1},
     }
 }
 
