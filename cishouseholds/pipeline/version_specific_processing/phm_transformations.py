@@ -53,6 +53,7 @@ def pre_processing(df: DataFrame) -> DataFrame:
     Sets categories to map for digital specific variables to Voyager 0/1/2 equivalent
     """
     df = filter_exclude_by_pattern(df, "participant_id", r"SMOKE")
+    df = df.dropDuplicates([col for col in df.columns if col not in ["survey_response_source_file"]])
 
     raw_copy_list = [
         "work_sector",
