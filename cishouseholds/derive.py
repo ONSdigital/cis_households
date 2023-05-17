@@ -35,8 +35,8 @@ def assign_survey_completed_status(
     df: DataFrame,
     column_name_to_assign: str,
     survey_completed_datetime_column: str,
-    survey_flushed_column: str,
-    no_columns: List[str] = [],
+    survey_flushed_column: bool,
+    no_columns: List = [],
 ):
     """
     function that return a column containing categorical data on survey completion, based
@@ -54,6 +54,10 @@ def assign_survey_completed_status(
     df = df.withColumn(
         column_name_to_assign,
         F.when(
+            all_columns_values_in_list(no_columns, "No"),
+            "Non-response",
+        )
+        .when(
             (F.col(survey_completed_datetime_column).isNotNull()) & (~(F.col(survey_flushed_column))),
             "Completed",
         )
@@ -64,10 +68,6 @@ def assign_survey_completed_status(
         .when(
             (F.col(survey_completed_datetime_column).isNull()) & (~(F.col(survey_flushed_column))),
             "Not Completed",
-        )
-        .when(
-            all_columns_values_in_list(no_columns, ["No"]),
-            "Non-response",
         ),
     )
     return df
