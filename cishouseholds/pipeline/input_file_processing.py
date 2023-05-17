@@ -183,8 +183,6 @@ def extract_input_data(
             ignoreTrailingWhiteSpace=True,
             sep=sep,
         )
-        if ["survey_completion_status_flushed" in col for col in df.columns]:
-            df = df.filter(~(F.col("survey_completion_status_flushed")))
     if xl_file_paths:
         spark = get_or_create_spark_session()
         dfs = [
