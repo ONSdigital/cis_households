@@ -10,6 +10,7 @@ from cishouseholds.pipeline.timestamp_map import phm_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v0_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v1_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v2_datetime_map
+from cishouseholds.pipeline.translate import translate_welsh_survey_responses
 from cishouseholds.pipeline.validation_schema import validation_schemas
 from cishouseholds.pipeline.version_specific_processing.digital_transformations import digital_responses_preprocessing
 from cishouseholds.pipeline.version_specific_processing.digital_transformations import (
@@ -19,9 +20,6 @@ from cishouseholds.pipeline.version_specific_processing.mult_version import assi
 from cishouseholds.pipeline.version_specific_processing.mult_version import derive_additional_v1_2_columns
 from cishouseholds.pipeline.version_specific_processing.participant_extract_digital import (
     transform_participant_extract_digital,
-)
-from cishouseholds.pipeline.version_specific_processing.participant_extract_digital import (
-    translate_welsh_survey_responses_version_digital,
 )
 from cishouseholds.pipeline.version_specific_processing.phm_transformations import clean_survey_responses_version_phm
 from cishouseholds.pipeline.version_specific_processing.phm_transformations import phm_transformations
@@ -73,6 +71,7 @@ survey_responses_phm_parameters = {
     "date_from_filename": False,
     "transformation_functions": [
         clean_survey_responses_version_phm,
+        translate_welsh_survey_responses,
         phm_transformations,
     ],
     "sep": "|",
@@ -91,6 +90,7 @@ survey_responses_phm_backup_parameters = {
     "datetime_column_map": phm_datetime_map,
     "date_from_filename": False,
     "transformation_functions": [
+        translate_welsh_survey_responses,
         phm_transformations,
     ],
     "sep": "|",
@@ -105,7 +105,7 @@ survey_responses_digital_parameters = {
     "validation_schema": validation_schemas["cis_digital_validation_schema"],
     "datetime_column_map": cis_digital_datetime_map,
     "transformation_functions": [
-        translate_welsh_survey_responses_version_digital,
+        translate_welsh_survey_responses,
         digital_responses_preprocessing,
         transform_survey_responses_version_digital_delta,
         assign_has_been_columns,
