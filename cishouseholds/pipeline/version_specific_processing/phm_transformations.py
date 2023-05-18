@@ -7,7 +7,6 @@ from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_column_uniform_value
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
-from cishouseholds.derive import assign_completion_status
 from cishouseholds.derive import assign_date_from_filename
 from cishouseholds.derive import assign_datetime_from_combined_columns
 from cishouseholds.derive import assign_raw_copies
@@ -289,7 +288,6 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
     )
     df = assign_date_from_filename(df, "file_date", "survey_response_source_file")
     df = assign_column_uniform_value(df, "survey_response_dataset_major_version", 4)
-    df = assign_completion_status(df, column_name_to_assign="survey_completion_status")
     df = df.withColumn("visit_date", F.to_timestamp(F.to_date(F.col("visit_datetime"))))
 
     map_to_bool_columns_dict = {
@@ -735,6 +733,7 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
         column_name_to_assign="survey_completion_status",
         survey_completed_datetime_column="survey_completed_datetime",
         survey_flushed_column="survey_completion_status_flushed",
+        no_columns=["participant_first_name_confirmation", "participant_first_name_on_behalf"],
     )
     return df
 

@@ -664,10 +664,6 @@ fields:
   nullable: false
   type: integer
 - metadata: {}
-  name: survey_completion_status
-  nullable: true
-  type: string
-- metadata: {}
   name: visit_date
   nullable: true
   type: timestamp
@@ -1357,6 +1353,10 @@ fields:
   type: string
 - metadata: {}
   name: participant_completion_window_status
+  nullable: true
+  type: string
+- metadata: {}
+  name: survey_completion_status
   nullable: true
   type: string
 type: struct
