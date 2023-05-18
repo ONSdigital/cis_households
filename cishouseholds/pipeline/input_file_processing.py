@@ -206,4 +206,6 @@ def extract_input_data(
             df = union_multiple_tables(dfs)
         else:
             df = union_multiple_tables([df, *dfs])
+        if ["survey_completion_status_flushed" in col for col in df.columns]:
+            df = df.filter(~(F.col("survey_completion_status_flushed")))
     return df
