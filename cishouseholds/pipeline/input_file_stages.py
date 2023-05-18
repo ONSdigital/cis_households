@@ -59,7 +59,7 @@ participant_extract_phm_parameters = {
     "transformation_functions": [],
     "sep": "|",
     "cast_to_double_list": [],
-    "source_file_column": "phm_participant_extract_gsource_file",
+    "source_file_column": "phm_participant_extract_source_file",
 }
 
 survey_responses_phm_parameters = {
