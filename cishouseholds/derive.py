@@ -35,7 +35,7 @@ def assign_survey_completed_status(
     df: DataFrame,
     column_name_to_assign: str,
     survey_completed_datetime_column: str,
-    survey_flushed_column: bool,
+    survey_flushed_column: str,
     no_columns: List = [],
 ):
     """
