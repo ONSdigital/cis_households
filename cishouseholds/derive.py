@@ -19,6 +19,7 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 from cishouseholds.edit import update_column_values_from_map
+from cishouseholds.expressions import all_columns_values_in_list
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.expressions import all_null_over_window
@@ -35,6 +36,7 @@ def assign_survey_completed_status(
     column_name_to_assign: str,
     survey_completed_datetime_column: str,
     survey_flushed_column: str,
+    no_columns: List = [],
 ):
     """
     function that return a column containing categorical data on survey completion, based
@@ -52,15 +54,19 @@ def assign_survey_completed_status(
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            (F.col(survey_completed_datetime_column).isNotNull()) & (F.col(survey_flushed_column) == "false"),
+            all_columns_values_in_list(no_columns, "No"),
+            "Non-response",
+        )
+        .when(
+            (F.col(survey_completed_datetime_column).isNotNull()) & (~(F.col(survey_flushed_column))),
             "Completed",
         )
         .when(
-            (F.col(survey_flushed_column) == "true"),
+            (F.col(survey_flushed_column)),
             "Partially Completed",
         )
         .when(
-            (F.col(survey_completed_datetime_column).isNull()) & (F.col(survey_flushed_column) == "false"),
+            (F.col(survey_completed_datetime_column).isNull()) & (~(F.col(survey_flushed_column))),
             "Not Completed",
         ),
     )
