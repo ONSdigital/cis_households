@@ -3927,7 +3927,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         ),
         "end_screen_questionnaire": _("choice", items=["Continue", None]),
         "end_screen_sample": _("choice", items=["Continue", None]),  # to be added when bio samples begin
-        "survey_completion_status_flushed": _("choice", items=["false", "true"]),
+        "survey_completion_status_flushed": _("choice", items=[False, True]),
         "participant_completion_window_start_date": _(
             "discrete_distribution",
             population=[
