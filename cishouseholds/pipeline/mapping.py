@@ -1394,6 +1394,7 @@ category_maps = {
             "Locked": 5,
             "Auto Completed": 11,
             "Not Completed": 99,
+            "Non-response": 99,
         },
         "swab_not_taken_reason": {
             "I am near the end of my testing window and my swab test kit has not arrived": 1,
