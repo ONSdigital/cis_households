@@ -135,7 +135,6 @@ def extract_validate_transform_input_data(
             )
             df = update_from_lookup_df(df, editing_lookup_df, dataset_name=dataset_name)
 
-    df = df.dropDuplicates([col for col in df.columns if col not in source_file_column])
     df = convert_columns_to_timestamps(df, datetime_map)
     df = cast_columns_from_string(df, cast_to_double_columns_list, "double")
 
@@ -207,4 +206,6 @@ def extract_input_data(
             df = union_multiple_tables(dfs)
         else:
             df = union_multiple_tables([df, *dfs])
+        if ["survey_completion_status_flushed" in col for col in df.columns]:
+            df = df.filter(~(F.col("survey_completion_status_flushed")))
     return df
