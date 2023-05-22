@@ -3968,4 +3968,5 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             weights=[0.9, 0.1],
         ),
         "schema_name": "cris_0001",
+        "qid": _("random.custom_code", mask="################", digit="#"),
     }
