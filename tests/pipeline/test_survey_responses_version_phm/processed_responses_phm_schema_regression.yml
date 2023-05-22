@@ -1,5 +1,9 @@
 fields:
 - metadata: {}
+  name: questionnaire_id
+  nullable: true
+  type: string
+- metadata: {}
   name: portal_id
   nullable: true
   type: string
