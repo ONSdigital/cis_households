@@ -126,6 +126,7 @@ def get_or_create_spark_session() -> SparkSession:
         .config("spark.sql.crossJoin.enabled", "true")
         .config("spark.sql.adaptive.enabled", "true")
         .config("spark.task.cpus", spark_session_options["spark.task.cpus"])
+        .config("spark.sql.session.timeZone", "UTC")
         .appName("cishouseholds")
         .enableHiveSupport()
         .getOrCreate()
