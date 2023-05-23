@@ -1591,6 +1591,7 @@ validation_schemas = {
         "participant_digital_voucher_preference": string_dict,
     },
     "phm_survey_validation_schema": {
+        "questionnaire_id": string_dict,
         "portal_id": string_dict,
         "form_language_launch": string_dict,
         "form_language_submitted": string_dict,
