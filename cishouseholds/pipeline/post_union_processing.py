@@ -1,6 +1,3 @@
-from functools import reduce
-from operator import or_
-
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
@@ -10,17 +7,14 @@ from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import convert_null_if_not_in_list
-from cishouseholds.edit import correct_date_ranges
 from cishouseholds.edit import map_column_values_to_null
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_face_covering_outside_of_home
-from cishouseholds.pipeline.mapping import date_cols_min_date_dict
 
 
 def post_union_processing(df: DataFrame):
     """"""
     df = raw_copies(df)
-    df = date_corrections(df)
     df = generic_processing(df)
     return df
 
@@ -85,38 +79,6 @@ def raw_copies(df: DataFrame):
     df = assign_raw_copies(df, [column for column in raw_copy_list if column in df.columns])
 
     df = assign_raw_copies(df, [column for column in original_copy_list if column in df.columns], "original")
-    return df
-
-
-def date_corrections(df: DataFrame):
-    """"""
-    df = df.withColumn(
-        "visit_datetime",
-        F.to_timestamp(F.when(F.col("visit_datetime") > "2023-03-13", "2023-03-13").otherwise(F.col("visit_datetime"))),
-    )
-    date_cols_to_correct = [
-        col
-        for col in [
-            "last_covid_contact_date",
-            "last_suspected_covid_contact_date",
-            "think_had_covid_onset_date",
-            "think_have_covid_onset_date",
-            "been_outside_uk_last_return_date",
-            "other_covid_infection_test_first_positive_date",
-            "other_covid_infection_test_last_negative_date",
-            "other_antibody_test_first_positive_date",
-            "other_antibody_test_last_negative_date",
-        ]
-        if col in df.columns
-    ]
-
-    df = assign_raw_copies(df, date_cols_to_correct, "pdc")  # pre date correction?
-    df = correct_date_ranges(df, date_cols_to_correct, "visit_datetime", "2019-08-01", date_cols_min_date_dict)
-    df = df.withColumn(
-        "any_date_corrected",
-        F.when(reduce(or_, [~F.col(col).eqNullSafe(F.col(f"{col}_pdc")) for col in date_cols_to_correct]), "Yes"),
-    )
-    df = df.drop(*[f"{col}_pdc" for col in date_cols_to_correct])
     return df
 
 
