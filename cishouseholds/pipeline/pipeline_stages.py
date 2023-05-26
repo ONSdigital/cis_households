@@ -23,6 +23,7 @@ from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.expressions import all_columns_null
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.extract import get_files_to_be_processed
+from cishouseholds.filter import filter_from_config
 from cishouseholds.hdfs_utils import copy
 from cishouseholds.hdfs_utils import copy_local_to_hdfs
 from cishouseholds.hdfs_utils import create_dir
@@ -577,8 +578,9 @@ def union_historical_visits(tables_to_process: List, output_survey_table: str):
     """
     df_list = [extract_from_table(table) for table in tables_to_process]
     df = union_multiple_tables(df_list)
-    update_table(df, output_survey_table, "overwrite", survey_table=True)
-    return {"output_survey_table": output_survey_table}
+    # update_table(df, output_survey_table, "overwrite", survey_table=True)
+    # return {"output_survey_table": output_survey_table}
+    return df
 
 
 @register_pipeline_stage("post_union_processing")
@@ -630,12 +632,15 @@ def execute_post_union_processing(
 def execute_demographic_transformations(
     input_survey_table: str,
     output_survey_table: str,
+    historic_survey_table: str,
     imputed_value_lookup_table: str,
     rural_urban_lookup_table: str,
     geography_lookup_table: str,
+    filter: dict,
 ):
     """"""
-    df = extract_from_table(input_survey_table)
+    df_list = [extract_from_table(table) for table in [input_survey_table, historic_survey_table]]
+    df = union_multiple_tables(df_list)
     geography_lookup_df = extract_from_table(geography_lookup_table)
     rural_urban_lookup_df = extract_from_table(rural_urban_lookup_table)
     imputed_value_lookup_df = None
@@ -647,6 +652,7 @@ def execute_demographic_transformations(
         geography_lookup_df=geography_lookup_df,
         rural_urban_lookup_df=rural_urban_lookup_df,
     )
+    df = filter_from_config(df, filter)
     update_table(df, output_survey_table, "overwrite", survey_table=True)
     update_table(imputed_value_lookup_df, imputed_value_lookup_table, "overwrite")
     return {"output_survey_table": output_survey_table}
@@ -656,10 +662,14 @@ def execute_demographic_transformations(
 def execute_visit_transformations(
     input_survey_table: str,
     output_survey_table: str,
+    historic_survey_table: str,
+    filter: dict,
 ):
     """"""
-    df = extract_from_table(input_survey_table)
+    df_list = [extract_from_table(table) for table in [input_survey_table, historic_survey_table]]
+    df = union_multiple_tables(df_list)
     df = visit_transformations(df)
+    df = filter_from_config(df, filter)
     update_table(df, output_survey_table, "overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
@@ -682,18 +692,21 @@ def execute_vaccine_transformations(
 def execute_job_transformations(
     input_survey_table: str,
     output_survey_table: str,
+    historic_survey_table: str,
+    filter: dict,
 ):
     """
     Runs job transformations on the input survey table and produces output table
     Then drops historical survey responses
     """
-    df = extract_from_table(input_survey_table)
+    df_list = [extract_from_table(table) for table in [input_survey_table, historic_survey_table]]
+    df = union_multiple_tables(df_list)
     # soc_lookup_df = extract_from_table(soc_lookup_table)
     # job_lookup_df = None
     # if check_table_exists(job_lookup_table):
     #     job_lookup_df = extract_from_table(job_lookup_table, break_lineage=True)
     df = job_transformations(df=df)
-    # df = df.filter(F.col("survey_response_dataset_major_version") > 3)
+    df = filter_from_config(df, filter)
     update_table(df, output_survey_table, "overwrite", survey_table=True)
     # update_table(job_lookup_df, job_lookup_table, "overwrite")
     return {"output_survey_table": output_survey_table}
@@ -731,7 +744,9 @@ def execute_lab_transformations(
 def join_lookup_table(
     input_survey_table: str,
     output_survey_table: str,
+    historic_survey_table: str,
     lookup_table_name: str,
+    filter: dict,
     unjoinable_values: Dict[str, Union[str, int]] = {},
     join_on_columns: List[str] = ["work_main_job_title", "work_main_job_role"],
     lookup_transformations: List[str] = [],
@@ -780,7 +795,8 @@ def join_lookup_table(
     for transformation in lookup_transformations:
         lookup_df = transformations_dict[transformation](lookup_df, **kwargs)
 
-    df = extract_from_table(input_survey_table)
+    df_list = [extract_from_table(table) for table in [input_survey_table, historic_survey_table]]
+    df = union_multiple_tables(df_list)
     for transformation in pre_join_transformations:
         df = transformations_dict[transformation](df, **kwargs)
 
@@ -794,6 +810,8 @@ def join_lookup_table(
 
     for transformation in post_join_transformations:
         df = transformations_dict[transformation](df, **kwargs)
+
+    df = filter_from_config(df, filter)
 
     survey_table = True if output_survey_table == "output_survey_table" else False
     update_table(df, output_survey_table, "overwrite", survey_table=survey_table)
@@ -1237,9 +1255,7 @@ def tables_to_csv(
 
             df = df.select(*columns_to_select)
 
-        if len(filter.keys()) > 0:
-            filter = {key: val if type(val) == list else [val] for key, val in filter.items()}
-            df = df.filter(reduce(and_, [F.col(col).isin(val) for col, val in filter.items()]))
+        df = filter_from_config(df, filter)
 
         df = map_output_values_and_column_names(df, table.get("column_name_map", None), category_map_dictionary)
 
