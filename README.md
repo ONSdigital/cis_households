@@ -6,9 +6,16 @@
 
 # CIS Households
 
-Data engineering pipeline for the [Office for National Statistics coronavirus (COVID-19) Infection Survey (CIS)](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/bulletins/coronaviruscovid19infectionsurveypilot/previousReleases).
+This repository contains the data engineering pipeline for the Office for National Statistics [COVID-19 and Respiratory Infections Survey (CRIS)](https://www.ons.gov.uk/surveys/informationforhouseholdsandindividuals/householdandindividualsurveys/covid19andrespiratoryinfectionssurveycris/aboutthestudy).
+
+This pipeline was developed and used in production for the predecessor survey to CRIS, the [Coronavirus (COVID-19) Infection Survey (CIS)](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/bulletins/coronaviruscovid19infectionsurveypilot/previousReleases), and is in the process of being upated for CRIS.
+
 
 **Please note that this project is open for external reuse and review but closed for contribution.**
+
+## Workflow
+
+The following diagram provides a high level overview of the pipeline for CRIS.
 
 ```mermaid
 flowchart LR
