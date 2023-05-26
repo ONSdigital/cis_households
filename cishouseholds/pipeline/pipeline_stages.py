@@ -743,7 +743,9 @@ def join_lookup_table(
     ----------
     input_survey_table
     output_survey_table
+    historic_survey_table
     lookup_table_name
+    filter
     unjoinable_values: dict
         dictionary containing {column_name: value_to_assign} pairs to be added to unjoinable_data
     join_on_column: list
