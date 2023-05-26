@@ -1,7 +1,5 @@
 from datetime import datetime
-from functools import reduce
 from io import BytesIO
-from operator import and_
 from pathlib import Path
 from typing import Any
 from typing import Dict
@@ -560,27 +558,6 @@ def union_survey_response_files(tables_to_process: List, output_survey_table: st
     df = union_multiple_tables(df_list)
     update_table(df, output_survey_table, "overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
-
-
-@register_pipeline_stage("union_historical_visits")
-def union_historical_visits(tables_to_process: List, output_survey_table: str):
-    """
-    Union list of tables_to_process, and write to table.
-
-    Parameters
-    ----------
-    tables_to_process
-        input tables for extracting each of the transformed survey responses tables
-    output_survey_table
-        output table name for the combine file of all unioned survey responses
-    Transformations
-        transformation functions to be applied once the union has taken place
-    """
-    df_list = [extract_from_table(table) for table in tables_to_process]
-    df = union_multiple_tables(df_list)
-    # update_table(df, output_survey_table, "overwrite", survey_table=True)
-    # return {"output_survey_table": output_survey_table}
-    return df
 
 
 @register_pipeline_stage("post_union_processing")
@@ -1164,32 +1141,6 @@ def lab_report(input_survey_table: str, swab_report_table: str, blood_report_tab
     swab_df, blood_df = generate_lab_report(survey_responses_df)
     update_table(swab_df, swab_report_table, "overwrite")
     update_table(blood_df, blood_report_table, "overwrite")
-
-
-@register_pipeline_stage("filter_dataframe")
-def filter_dataframe(
-    input_survey_table: str,
-    output_survey_table: str,
-    filter: dict,
-) -> DataFrame:
-    """
-     Stage which filters an input table on specified variables and values
-       ----------
-    Parameters
-    input_survey_table : str
-         Name of input survey table to filter
-     output_survey_table: str
-         Name of the output survey table with filtered applied
-     filter: Dict
-         List of variables and the value on which to filter e.g. sex: [1]
-    """
-    df = extract_from_table(input_survey_table)
-
-    if len(filter.keys()) > 0:
-        filter = {key: val if type(val) == list else [val] for key, val in filter.items()}
-        df = df.filter(reduce(and_, [F.col(col).isin(val) for col, val in filter.items()]))
-    update_table(df, output_survey_table, "overwrite", survey_table=True)
-    return {"output_survey_table": output_survey_table}
 
 
 @register_pipeline_stage("tables_to_csv")
