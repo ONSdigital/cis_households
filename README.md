@@ -1,3 +1,9 @@
+<img src="https://github.com/datasciencecampus/awesome-campus/blob/master/ons_logo.png">
+
+![Python Version](https://img.shields.io/badge/Python-3.6.8-blue.svg)
+[![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
+[![status: active](https://github.com/GIScience/badges/raw/master/status/active.svg)](https://github.com/GIScience/badges#active)
+
 # CIS Households
 
 Data engineering pipeline for the [Office for National Statistics coronavirus (COVID-19) Infection Survey (CIS)](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/bulletins/coronaviruscovid19infectionsurveypilot/previousReleases).
