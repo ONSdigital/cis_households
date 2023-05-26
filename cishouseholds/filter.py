@@ -1,3 +1,5 @@
+from functools import reduce
+from operator import and_
 from typing import Any
 from typing import List
 from typing import Union
@@ -244,3 +246,12 @@ def filter_exclude_by_pattern(df: DataFrame, column: str, pattern: str) -> DataF
         String or raw string literal to match and remove from dataframe
     """
     return df.filter(~F.col(column).rlike(pattern))
+
+
+def filter_from_config(df: DataFrame, filter: dict):
+    """filter_dataframe functionality to go here"""
+    if len(filter.keys()) > 0:
+        filter = {key: val if type(val) == list else [val] for key, val in filter.items()}
+        df = df.filter(reduce(and_, [F.col(col).isin(val) for col, val in filter.items()]))
+
+    return df
