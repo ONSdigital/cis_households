@@ -4,6 +4,36 @@ Data engineering pipeline for the [Office for National Statistics coronavirus (C
 
 **Please note that this project is open for external reuse and review but closed for contribution.**
 
+```mermaid
+flowchart LR
+    SP_1[Copy Table] --> SP_2[Lookup CSVs to Tables]
+    SP_2 --> IOP_1(CRIS ETL)
+    IOP_1 --> IOP_2(Participant ETL)
+    IOP_2 --> SP_3[Union Historical Visits]
+    SP_3 --> SP_4[Join Participant ID]
+    SP_4 --> TA_1{Visit Transforms}
+    TA_1 --> TA_2{Job Transforms}
+    TA_2 --> TA_3{Demogrpahic Transforms}
+    TA_3 --> TA_4{Filter Dataframe}
+    TA_4 --> SP_5[Validate Survey Responses]
+    SP_5 --> IOP_3(Output Report)
+    SP_5 --> IOP_4(Export Report)
+    SP_5 --> IOP_5(Export Data to Analysis)
+    subgraph Legend
+          direction LR
+        start1[ ] --> SP[Supporting Process] --> stop1[ ]
+        start2[ ] --> IOP(Input/Output Process) --> stop2[ ]
+        start3[ ] --> TA{Transform Actions} --> stop3[ ]
+    end
+classDef green fill:#9f6,stroke:#333,stroke-width:2px;
+classDef orange fill:#f96,stroke:#333,stroke-width:4px;
+classDef blue fill:#89CFF0,stroke:#333,stroke-width:4px;
+classDef empty height:0px;
+class SP,SP_1,SP_2,SP_3,SP_4,SP_5 green
+class IOP,IOP_1,IOP_2,IOP_3,IOP_4,IOP_5 orange
+class TA,TA_1,TA_2,TA_3,TA_4 blue
+class start1,start2,start3,stop1,stop2,stop3 empty
+```
 
 ## Directories and files of note
 
