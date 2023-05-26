@@ -249,7 +249,14 @@ def filter_exclude_by_pattern(df: DataFrame, column: str, pattern: str) -> DataF
 
 
 def filter_from_config(df: DataFrame, filter: dict):
-    """filter_dataframe functionality to go here"""
+    """Function to filter dataframe using a config file.
+
+    Parameters
+    --------
+    df
+    filter
+        Dictionary with the keys being columns to filter and values being the values for the column to equal
+    """
     if len(filter.keys()) > 0:
         filter = {key: val if type(val) == list else [val] for key, val in filter.items()}
         df = df.filter(reduce(and_, [F.col(col).isin(val) for col, val in filter.items()]))
