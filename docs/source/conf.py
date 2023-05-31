@@ -35,7 +35,7 @@ templates_path = ["_templates"]
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-#html_theme = "classic"
+# html_theme = "classic"
 html_theme = "pydata_sphinx_theme"
 
 html_theme_options = {
