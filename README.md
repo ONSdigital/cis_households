@@ -40,7 +40,7 @@ flowchart TD
     TA_3 --> TA_4{{Filter Dataframe}}
     TA_4 --> SP_5[Validate Survey Responses]
     SP_5 --> IOP_3(Output Report)
-    SP_5 --> IOP_4(Export Report)
+    IOP_3 --> IOP_4(Export Report)
     SP_5 --> IOP_5(Export Data to Analysis)
     subgraph Legend
           direction LR
