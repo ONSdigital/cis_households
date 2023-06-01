@@ -181,6 +181,7 @@ def validation_ETL(df: DataFrame, validation_check_failure_column_name: str, dup
     return SparkVal.filter(
         selected_errors=[
             "ons_household_id, participant_id, participant_completion_window_id, participant_completion_window_start_date, participant_completion_window_end_date should not be null",  # noqa:E501
+            "participant_completion_window_id should be unique",  # noqa:E501
         ],
         any=True,
         return_failed=True,
