@@ -160,6 +160,9 @@ def run_from_config():
     except ValueError as e:
         add_run_status(run_id, "Error in cleanup", "cleanup", e)
         pipeline_error_count += 1
+    finally:
+        # clean up check-pointed files
+        cleanup_checkpoint_dir(spark)
 
     print(f"\nPipeline run completed in: {run_time//60:.0f} minute(s) and {run_time%60:.1f} second(s)")  # functional
     if pipeline_error_count != 0:
