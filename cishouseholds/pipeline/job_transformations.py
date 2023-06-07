@@ -23,7 +23,6 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 def job_transformations(df: DataFrame):
     """apply all transformations in order related to a persons vocation."""
-    df = fill_forwards(df).custom_checkpoint()
     return df
 
 
