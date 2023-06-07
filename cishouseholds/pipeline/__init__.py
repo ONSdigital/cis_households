@@ -1,3 +1,4 @@
+"""The primary body of code for the pipeline sits within this sub-package"""
 import os
 
 from pyspark.sql import DataFrame
