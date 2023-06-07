@@ -23,6 +23,7 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 def job_transformations(df: DataFrame):
     """apply all transformations in order related to a persons vocation."""
+    df = fill_forwards(df).custom_checkpoint()
     return df
 
 
@@ -106,24 +107,27 @@ def fill_forwards(df: DataFrame):
         id="participant_id",
         date="visit_datetime",
         list_fill_forward=[
-            "work_status_v0",
-            "work_status_digital",
-            "work_status_employment",
-            "work_status_unemployment",
-            "work_status_education",
-            "work_location",
             "work_main_job_title",
             "work_main_job_role",
             "work_sector",
             "work_sector_other",
             "work_health_care_area",
             "work_nursing_or_residential_care_home",
-            "work_not_from_home_days_per_week",
-            "education_in_person_days_per_week",
-            "transport_to_work_or_education",
-            "ability_to_socially_distance_at_work_or_education",
         ],
     )
+    # tidy up health and social care specific variables
+    df = df.withColumn(
+        "work_health_care_area",
+        F.when((~F.col("work_sector").rlike("^Health")), None).otherwise(F.col("work_health_care_area")),
+    )
+
+    df = df.withColumn(
+        "work_nursing_or_residential_care_home",
+        F.when(~((F.col("work_sector").rlike("^Health")) | (F.col("work_sector").rlike("^Social"))), None).otherwise(
+            F.col("work_nursing_or_residential_care_home")
+        ),
+    )
+
     return df
 
 
