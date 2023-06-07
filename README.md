@@ -8,10 +8,11 @@
 
 # CIS Households
 
-This repository contains the data engineering pipeline for the Office for National Statistics [COVID-19 and Respiratory Infections Survey (CRIS)](https://www.ons.gov.uk/surveys/informationforhouseholdsandindividuals/householdandindividualsurveys/covid19andrespiratoryinfectionssurveycris/aboutthestudy).
+This repository contains the data engineering pipeline for the Office for National Statistics' [COVID-19 and Respiratory Infections Survey (CRIS)](https://www.ons.gov.uk/surveys/informationforhouseholdsandindividuals/householdandindividualsurveys/covid19andrespiratoryinfectionssurveycris/aboutthestudy).
 
 This pipeline was developed and used in production for the predecessor survey to CRIS, the [Coronavirus (COVID-19) Infection Survey (CIS)](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/bulletins/coronaviruscovid19infectionsurveypilot/previousReleases), and is in the process of being updated for CRIS.
 
+**A note around terminology:** 'PMH' and 'CRIS' are used interchangeably throughout this repository, but both refer to the successor to CIS.
 
 **Please note that this project is open for external reuse and review but closed for contribution.**
 
@@ -36,7 +37,7 @@ flowchart TD
     SP_3 --> SP_4[Join Participant ID]
     SP_4 --> TA_1{{Visit Transforms}}
     TA_1 --> TA_2{{Job Transforms}}
-    TA_2 --> TA_3{{Demogrpahic Transforms}}
+    TA_2 --> TA_3{{Demographic Transforms}}
     TA_3 --> TA_4{{Filter Dataframe}}
     TA_4 --> SP_5[Validate Survey Responses]
     SP_5 --> IOP_3(Output Report)
@@ -63,27 +64,29 @@ class data_1,data_2,DAT data
 
 ## Directories and files of note
 
-The hierarchy of folders (packages and subpackages) generally reflects how specific and abstract the code is. Code that is lower-level in abstraction and is more project-specific will sit deeper in the hierarchy.
+The hierarchy of folders (packages and sub-packages) generally reflects how specific and abstract the code is. Code that is lower-level in abstraction and is more project-specific will sit deeper in the hierarchy.
 
 Modules in the package are named semantically, so describe the types of operations that their contents perform.
 
 Descriptions of project directories and other significant files:
 * `cishouseholds/` - the core package in project. Code that is not project specific sits in the modules directly under this directory (i.e. data engineering functions and spark/hdf utilities that could be used in other projects)
-    * `cishouseholds/pipeline` - code that is specific to the project sits within this sub-package
+    * `cishouseholds/pipeline` - the primary body of code for the pipeline sits within this sub-package
         * `cishouseholds/pipeline/run.py` - the pipeline entry-point, which is executed to run the pipeline. This file assumes the presence of the necessary configuration YAML files.
         * `cishouseholds/pipeline/pipeline_stages.py` - contains the definitions of most pipeline stages (except for input file processing stage; see `cishouseholds/pipeline/input_file_stages.py`), which are the highest level groups of logic in the form of an ETL process. In practice, the execution and ordering of these stages is determined by the configuration YAML files.
         * `cishouseholds/pipeline/input_file_stages.py` - pipeline stages for processing input data files are configured here, using a reusable function factory
-        * `cishouseholds/pipeline/pre_union_transformations.py` - functions containing the transformation logic of the pre-union pipeline stages. These exist to allow us to integration test the transformations independents of the extract and load parts of the stages. Usually includes calls to multiple low-level functions
         * `cishouseholds/pipeline/lookup_and_regex_transformations.py` - functions containing the transformation logic of the lookup and regex based pipeline stages. These exist to allow us to integration test the transformations independents of the extract and load parts of the stages. Usually includes calls to multiple low-level functions
         * `cishouseholds/pipeline/post_union_transformations.py` - functions containing the transformation logic of the post-union pipeline stages. These exist to allow us to integration test the transformations independents of the extract and load parts of the stages. Usually includes calls to multiple low-level functions
         * `cishouseholds/pipeline/manifest.py` - a class used to generate a manifest file to trigger automated export of data produced by the pipeline
+        * `cishouseholds/pipeline/version_specific_processing` - sub-package containing the processing logic required for each version of the survey in order to harmonise the data before unioning together into a single set of survey responses
+    * `cishouseholds/phm` - sub-package of code added specifically to handle new questions and responses and structures introduced in CRIS/PHM (i.e. as opposed to historic CIS responses).
+    * `cishouseholds/regex` - sub-package of scripts containing regular expression code for handling textual survey responses. These are designed for pattern matching and categorising text field responses in relation to participant occupations, healthcare roles and vaccine information.
 * `docs/` - package documentation that is built and hosted as HTML by Github Actions based on the `main` branch code. See [documentation for sphinx for updating or building docs manually](https://www.sphinx-doc.org/en/master/)
-* `dummy_data_generation/` - dummy data schemata and functions to generate datesets. Used in regression tests for input processing functions
+* `dummy_data_generation/` - dummy data schemata and functions to generate datasets. Used in regression tests for input processing functions
 * `tests/` - tests for the code under `cishouseholds/`. Roughly follows the structure of the package, but has become out of date during refactors over time. Searching for references to the current function name is the most reliable way to identify associated tests
     * `tests/conftest.py` - reusable functions and pytest fixtures that can be accessed by any pytest tests
 * `CONTRIBUTING.md` - general guidance for contributing to the project
 * `Jenkinsfile` - config for Jenkins pipeline that detects new version tags (git tags) and deploys the built package to Artifactory
-* `.github/workflows` - configs for Github Actions
+* `.github/workflows` - configuration set-ups for the Github Actions associated with this repo - including building the documentation
 
 # Office for National Statistics
 
