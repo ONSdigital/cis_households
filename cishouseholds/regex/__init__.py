@@ -1,3 +1,6 @@
+"""Handles textual survey responses - regex designed for pattern matching and categorising text field responses in relation to participant occupations, healthcare roles and vaccine information."""
+
+
 def match_with_exclusions(patters_to_match, patterns_to_exclude=[]):
     if type(patters_to_match) != list:
         patters_to_match = [patters_to_match]
