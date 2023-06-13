@@ -2405,14 +2405,14 @@ def regex_match_result(
 
     The Truth Table below shows how the final pattern matching result is arrived at.
 
-    +----------------------+----------------------+-----+
-    |positive_regex_pattern|negative_regex_pattern|final|
-    +----------------------+----------------------+-----+
-    |                  true|                  true|false|
-    |                  true|                 false| true|
-    |                 false|                  true|false|
-    |                 false|                 false|false|
-    +----------------------+----------------------+-----+
+    #+----------------------+----------------------+-----+
+    #|positive_regex_pattern|negative_regex_pattern|final|
+    #+----------------------+----------------------+-----+
+    #|                  true|                  true|false|
+    #|                  true|                 false| true|
+    #|                 false|                  true|false|
+    #|                 false|                 false|false|
+    #+----------------------+----------------------+-----+
 
     Parameters:
     -----------
@@ -2465,14 +2465,14 @@ def assign_regex_match_result(
 
     The Truth Table below shows how the final pattern matching result is assigned.
 
-    +----------------------+----------------------+-----+
-    |positive_regex_pattern|negative_regex_pattern|final|
-    +----------------------+----------------------+-----+
-    |                  true|                  true|false|
-    |                  true|                 false| true|
-    |                 false|                  true|false|
-    |                 false|                 false|false|
-    +----------------------+----------------------+-----+
+    #+----------------------+----------------------+-----+
+    #|positive_regex_pattern|negative_regex_pattern|final|
+    #+----------------------+----------------------+-----+
+    #|                  true|                  true|false|
+    #|                  true|                 false| true|
+    #|                 false|                  true|false|
+    #|                 false|                 false|false|
+    #+----------------------+----------------------+-----+
 
     Parameters:
     -----------
