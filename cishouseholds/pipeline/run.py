@@ -170,6 +170,7 @@ def run_from_config():
     with spark_description_set("adding run status"):
         add_run_status(run_id, "finished")
 
+    cleanup_checkpoint_dir(spark)
     splunk_logger.log(status="success")
 
 
