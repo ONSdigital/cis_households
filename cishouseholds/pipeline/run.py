@@ -149,6 +149,9 @@ def run_from_config():
             error_message=repr(e),
         )
         raise e
+    finally:
+        # clean up check-pointed files
+        cleanup_checkpoint_dir(spark)
 
     run_time = (datetime.now() - run_datetime).total_seconds()
 
