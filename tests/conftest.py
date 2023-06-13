@@ -305,8 +305,8 @@ def prepare_regex_test_cases():
     def _prepare_regex_test_cases(test_data: Dict[str, List[str]]) -> List[Tuple[str, bool]]:
         """Convenience function to prepare regex test cases.
 
-        Parameters:
-        -----------
+        Parameters
+        ----------
         test_data:
             A dictionary with two keys, "positive" & "negative" & a list of strings as values
         """
