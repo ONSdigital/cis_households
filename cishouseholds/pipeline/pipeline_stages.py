@@ -434,6 +434,7 @@ def generate_input_processing_function(
     cast_to_double_list: List[str] = [],
     include_hadoop_read_write: bool = True,
     date_from_filename: bool = True,
+    survey_table: bool = False,
 ):
     """
     Generate an input file processing stage function and register it.
@@ -462,6 +463,7 @@ def generate_input_processing_function(
         source_file_column=source_file_column,
         write_mode=write_mode,
         archive=False,
+        survey_table=survey_table,
     ):
         """
         Extracts data from csv file to a HIVE table. Parameters control
@@ -524,6 +526,7 @@ def generate_input_processing_function(
             sep=sep,
             cast_to_double_columns_list=cast_to_double_list,
             write_mode=write_mode,
+            survey_table=survey_table,
         )
         if include_hadoop_read_write:
             update_table_and_log_source_files(
@@ -532,7 +535,8 @@ def generate_input_processing_function(
                 source_file_column,
                 dataset_name,
                 write_mode,
-                archive,
+                survey_table=survey_table,
+                archive=archive,
             )
             validate_processed_files(extract_from_table(f"transformed_{dataset_name}"), source_file_column)
             return {"status": "updated"}
@@ -577,7 +581,7 @@ def union_historical_visits(tables_to_process: List, output_survey_table: str):
     """
     df_list = [extract_from_table(table) for table in tables_to_process]
     df = union_multiple_tables(df_list)
-    update_table(df, output_survey_table, "overwrite", survey_table=True)
+    update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
 
@@ -647,7 +651,7 @@ def execute_demographic_transformations(
         geography_lookup_df=geography_lookup_df,
         rural_urban_lookup_df=rural_urban_lookup_df,
     )
-    update_table(df, output_survey_table, "overwrite", survey_table=True)
+    update_table(df, output_survey_table, "overwrite")
     update_table(imputed_value_lookup_df, imputed_value_lookup_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
@@ -660,7 +664,7 @@ def execute_visit_transformations(
     """"""
     df = extract_from_table(input_survey_table)
     df = visit_transformations(df)
-    update_table(df, output_survey_table, "overwrite", survey_table=True)
+    update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
 
@@ -694,7 +698,7 @@ def execute_job_transformations(
     #     job_lookup_df = extract_from_table(job_lookup_table, break_lineage=True)
     df = job_transformations(df=df)
     # df = df.filter(F.col("survey_response_dataset_major_version") > 3)
-    update_table(df, output_survey_table, "overwrite", survey_table=True)
+    update_table(df, output_survey_table, "overwrite")
     # update_table(job_lookup_df, job_lookup_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
@@ -970,7 +974,7 @@ def validate_survey_responses(
     update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
     update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
     update_table(valid_survey_responses, output_survey_table, write_mode="overwrite", archive=True, survey_table=True)
-    update_table(erroneous_survey_responses, invalid_survey_responses_table, write_mode="overwrite")
+    update_table(erroneous_survey_responses, invalid_survey_responses_table, write_mode="overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
 
