@@ -2405,17 +2405,17 @@ def regex_match_result(
 
     The Truth Table below shows how the final pattern matching result is arrived at.
 
-    +----------------------+----------------------+-----+
-    |positive_regex_pattern|negative_regex_pattern|final|
-    +----------------------+----------------------+-----+
-    |                  true|                  true|false|
-    |                  true|                 false| true|
-    |                 false|                  true|false|
-    |                 false|                 false|false|
-    +----------------------+----------------------+-----+
+    #+----------------------+----------------------+-----+
+    #|positive_regex_pattern|negative_regex_pattern|final|
+    #+----------------------+----------------------+-----+
+    #|                  true|                  true|false|
+    #|                  true|                 false| true|
+    #|                 false|                  true|false|
+    #|                 false|                 false|false|
+    #+----------------------+----------------------+-----+
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     columns_to_check_in
         a list of columns in which to look for the `positive_regex_pattern`
     positive_regex_pattern
@@ -2426,8 +2426,8 @@ def regex_match_result(
         If True and `negative_regex_pattern` is not None, then result of applying positive_regex_pattern and
         negative_regex_pattern are turned in addition to the final result.
 
-    Returns:
-    --------
+    Returns
+    -------
     Column
         The final result of applying positive_regex_pattern and negative_regex_pattern (if given)
     Tuple[Column, Column, Column]
@@ -2465,17 +2465,17 @@ def assign_regex_match_result(
 
     The Truth Table below shows how the final pattern matching result is assigned.
 
-    +----------------------+----------------------+-----+
-    |positive_regex_pattern|negative_regex_pattern|final|
-    +----------------------+----------------------+-----+
-    |                  true|                  true|false|
-    |                  true|                 false| true|
-    |                 false|                  true|false|
-    |                 false|                 false|false|
-    +----------------------+----------------------+-----+
+    #+----------------------+----------------------+-----+
+    #|positive_regex_pattern|negative_regex_pattern|final|
+    #+----------------------+----------------------+-----+
+    #|                  true|                  true|false|
+    #|                  true|                 false| true|
+    #|                 false|                  true|false|
+    #|                 false|                 false|false|
+    #+----------------------+----------------------+-----+
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     df
         The input dataframe to process
     columns_to_check_in
@@ -2493,8 +2493,8 @@ def assign_regex_match_result(
     debug_mode:
         Only relevant when `column_name_to_assign` is not None - See `negative_regex_pattern` above.
 
-    See Also:
-    ---------
+    See Also
+    --------
     regex_match_result: `assign_regex_match_result` wraps around `regex_match_result`
     """
     match_result = regex_match_result(

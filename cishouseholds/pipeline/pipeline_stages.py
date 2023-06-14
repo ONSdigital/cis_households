@@ -1159,9 +1159,10 @@ def filter_dataframe(
     filter: dict,
 ) -> DataFrame:
     """
-     Stage which filters an input table on specified variables and values
-       ----------
+    Stage which filters an input table on specified variables and values
+
     Parameters
+    ----------
     input_survey_table : str
          Name of input survey table to filter
      output_survey_table: str
@@ -1480,7 +1481,7 @@ def sample_file_ETL(
 
     This is dependent on receiving the new sample file in the format expected as specified in the excel specification.
 
-    Paramaters
+    Parameters
     ----------
     household_level_populations_table
         HIVE table create by household level population calculation, containing population by CIS area and country
