@@ -577,7 +577,7 @@ def union_historical_visits(tables_to_process: List, output_survey_table: str):
     """
     df_list = [extract_from_table(table) for table in tables_to_process]
     df = union_multiple_tables(df_list)
-    update_table(df, output_survey_table, "overwrite", survey_table=True)
+    update_table(df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
 
 
