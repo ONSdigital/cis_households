@@ -71,6 +71,7 @@ def extract_validate_transform_input_data(
     cast_to_double_columns_list: list = [],
     include_hadoop_read_write: bool = False,
     dataset_version: str = None,
+    survey_table: bool = False,
 ):
     """
     Wraps the extract input data function reading a set of csv files into a single dataframe,
@@ -107,6 +108,7 @@ def extract_validate_transform_input_data(
         optional boolean toggle to denote if hdfs operations should be used
     dataset_version
         optional integer to denote the voyager version of the survey file
+    survey_table
     """
     if include_hadoop_read_write:
         storage_config = get_config()["storage"]
@@ -121,7 +123,7 @@ def extract_validate_transform_input_data(
     dataset_version = "" if dataset_version is None else "_" + dataset_version
     df = convert_array_to_array_strings(df)
     if include_hadoop_read_write:
-        update_table(df, f"raw_{dataset_name}{dataset_version}", write_mode)
+        update_table(df, f"raw_{dataset_name}{dataset_version}", write_mode, survey_table=survey_table)
         filter_ids = []
         if extraction_config is not None and dataset_name in extraction_config:
             filter_ids = extraction_config[dataset_name]

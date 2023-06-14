@@ -434,6 +434,7 @@ def generate_input_processing_function(
     cast_to_double_list: List[str] = [],
     include_hadoop_read_write: bool = True,
     date_from_filename: bool = True,
+    survey_table: bool = False,
 ):
     """
     Generate an input file processing stage function and register it.
@@ -462,6 +463,7 @@ def generate_input_processing_function(
         source_file_column=source_file_column,
         write_mode=write_mode,
         archive=False,
+        survey_table=survey_table,
     ):
         """
         Extracts data from csv file to a HIVE table. Parameters control
@@ -524,6 +526,7 @@ def generate_input_processing_function(
             sep=sep,
             cast_to_double_columns_list=cast_to_double_list,
             write_mode=write_mode,
+            survey_table=survey_table,
         )
         if include_hadoop_read_write:
             update_table_and_log_source_files(
@@ -532,7 +535,8 @@ def generate_input_processing_function(
                 source_file_column,
                 dataset_name,
                 write_mode,
-                archive,
+                survey_table=survey_table,
+                archive=archive,
             )
             validate_processed_files(extract_from_table(f"transformed_{dataset_name}"), source_file_column)
             return {"status": "updated"}

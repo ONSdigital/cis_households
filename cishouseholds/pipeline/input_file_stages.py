@@ -77,6 +77,7 @@ survey_responses_phm_parameters = {
     "sep": "|",
     "cast_to_double_list": [],
     "source_file_column": "survey_response_source_file",
+    "survey_table": True,
 }
 
 survey_responses_phm_backup_parameters = {
@@ -96,6 +97,7 @@ survey_responses_phm_backup_parameters = {
     "sep": "|",
     "cast_to_double_list": [],
     "source_file_column": "backup_source_file",
+    "survey_table": True,
 }
 
 survey_responses_digital_parameters = {
