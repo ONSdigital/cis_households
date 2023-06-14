@@ -1,0 +1,6 @@
+cishouseholds.impute.impute\_by\_mode
+=====================================
+
+.. currentmodule:: cishouseholds.impute
+
+.. autofunction:: impute_by_mode

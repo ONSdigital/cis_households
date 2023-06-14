@@ -1,0 +1,6 @@
+cishouseholds.derive.flag\_records\_for\_childcare\_v1\_rules
+=============================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: flag_records_for_childcare_v1_rules

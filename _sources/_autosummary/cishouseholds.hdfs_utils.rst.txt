@@ -1,0 +1,45 @@
+cishouseholds.hdfs\_utils
+=========================
+
+.. automodule:: cishouseholds.hdfs_utils
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      cleanup_checkpoint_dir
+      copy
+      copy_local_to_hdfs
+      create_dir
+      delete_dir
+      delete_file
+      dir_size
+      hdfs_md5sum
+      hdfs_stat_size
+      isdir
+      isfile
+      move_local_to_hdfs
+      read_file_to_string
+      read_header
+      rename
+      write_string_to_file
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

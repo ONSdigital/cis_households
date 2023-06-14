@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_any\_symptoms\_around\_visit
+=========================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_any_symptoms_around_visit

@@ -1,0 +1,78 @@
+cishouseholds.edit
+==================
+
+.. automodule:: cishouseholds.edit
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      add_prefix
+      apply_value_map_multiple_columns
+      assign_from_map
+      assign_null_if_insufficient
+      cast_columns_from_string
+      clean_barcode
+      clean_barcode_simple
+      clean_job_description_string
+      clean_postcode
+      clean_within_range
+      conditionally_replace_columns
+      conditionally_set_column_values
+      convert_barcode_null_if_zero
+      convert_columns_to_timestamps
+      convert_derived_columns_from_null_to_no
+      convert_null_if_not_in_list
+      correct_date_ranges
+      correct_date_ranges_union_dependent
+      edit_swab_results_single
+      edit_to_sum_or_max_value
+      format_string_upper_and_clean
+      fuzzy_update
+      join_on_existing
+      map_column_values_to_null
+      normalise_think_had_covid_columns
+      nullify_columns_before_date
+      recode_column_values
+      remove_incorrect_dates
+      rename_column_names
+      replace_sample_barcode
+      split_school_year_by_country
+      survey_edit_auto_complete
+      update_column
+      update_column_if_ref_in_list
+      update_column_in_time_window
+      update_column_values_from_map
+      update_data
+      update_face_covering_outside_of_home
+      update_from_lookup_df
+      update_person_count_from_ages
+      update_social_column
+      update_strings_to_sentence_case
+      update_think_have_covid_symptom_any
+      update_to_value_if_any_not_null
+      update_valid_order
+      update_valid_order_2
+      update_value_if_multiple_and_ref_in_list
+      update_work_facing_now_column
+      update_work_main_job_changed
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

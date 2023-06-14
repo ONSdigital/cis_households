@@ -1,0 +1,6 @@
+cishouseholds.edit.clean\_job\_description\_string
+==================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: clean_job_description_string

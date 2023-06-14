@@ -1,0 +1,6 @@
+cishouseholds.filter.filter\_leave\_at\_least\_1
+================================================
+
+.. currentmodule:: cishouseholds.filter
+
+.. autofunction:: filter_leave_at_least_1

@@ -1,0 +1,6 @@
+cishouseholds.pipeline.vaccine\_transformations.first\_second\_doses
+====================================================================
+
+.. currentmodule:: cishouseholds.pipeline.vaccine_transformations
+
+.. autofunction:: first_second_doses

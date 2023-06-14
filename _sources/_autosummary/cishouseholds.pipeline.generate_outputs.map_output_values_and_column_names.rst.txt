@@ -1,0 +1,6 @@
+cishouseholds.pipeline.generate\_outputs.map\_output\_values\_and\_column\_names
+================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.generate_outputs
+
+.. autofunction:: map_output_values_and_column_names

@@ -1,0 +1,6 @@
+cishouseholds.pipeline.load.update\_table\_and\_log\_source\_files
+==================================================================
+
+.. currentmodule:: cishouseholds.pipeline.load
+
+.. autofunction:: update_table_and_log_source_files

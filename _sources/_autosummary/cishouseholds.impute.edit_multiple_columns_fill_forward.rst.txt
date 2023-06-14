@@ -1,0 +1,6 @@
+cishouseholds.impute.edit\_multiple\_columns\_fill\_forward
+===========================================================
+
+.. currentmodule:: cishouseholds.impute
+
+.. autofunction:: edit_multiple_columns_fill_forward

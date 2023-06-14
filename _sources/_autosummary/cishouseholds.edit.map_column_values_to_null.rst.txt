@@ -1,0 +1,6 @@
+cishouseholds.edit.map\_column\_values\_to\_null
+================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: map_column_values_to_null

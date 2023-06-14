@@ -1,0 +1,6 @@
+cishouseholds.pipeline.high\_level\_transformations.pivot\_vaccine\_columns
+===========================================================================
+
+.. currentmodule:: cishouseholds.pipeline.high_level_transformations
+
+.. autofunction:: pivot_vaccine_columns

@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.generate\_dummy\_data
+=============================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: generate_dummy_data

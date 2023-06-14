@@ -1,0 +1,6 @@
+cishouseholds.log.SplunkLogger
+==============================
+
+.. currentmodule:: cishouseholds.log
+
+.. autoclass:: SplunkLogger

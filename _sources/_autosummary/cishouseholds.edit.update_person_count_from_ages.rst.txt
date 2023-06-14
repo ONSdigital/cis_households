@@ -1,0 +1,6 @@
+cishouseholds.edit.update\_person\_count\_from\_ages
+====================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: update_person_count_from_ages

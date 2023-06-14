@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.backup\_files
+=====================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: backup_files

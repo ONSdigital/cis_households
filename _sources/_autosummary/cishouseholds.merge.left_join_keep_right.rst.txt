@@ -1,0 +1,6 @@
+cishouseholds.merge.left\_join\_keep\_right
+===========================================
+
+.. currentmodule:: cishouseholds.merge
+
+.. autofunction:: left_join_keep_right

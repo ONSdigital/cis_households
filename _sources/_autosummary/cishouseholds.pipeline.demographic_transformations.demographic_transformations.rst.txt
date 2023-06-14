@@ -1,0 +1,6 @@
+cishouseholds.pipeline.demographic\_transformations.demographic\_transformations
+================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.demographic_transformations
+
+.. autofunction:: demographic_transformations

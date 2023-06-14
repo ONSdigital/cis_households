@@ -1,0 +1,6 @@
+cishouseholds.filter.filter\_before\_date\_or\_null
+===================================================
+
+.. currentmodule:: cishouseholds.filter
+
+.. autofunction:: filter_before_date_or_null

@@ -1,0 +1,6 @@
+cishouseholds.expressions.count\_occurrence\_in\_row
+====================================================
+
+.. currentmodule:: cishouseholds.expressions
+
+.. autofunction:: count_occurrence_in_row

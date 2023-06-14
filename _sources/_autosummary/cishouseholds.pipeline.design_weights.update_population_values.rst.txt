@@ -1,0 +1,6 @@
+cishouseholds.pipeline.design\_weights.update\_population\_values
+=================================================================
+
+.. currentmodule:: cishouseholds.pipeline.design_weights
+
+.. autofunction:: update_population_values

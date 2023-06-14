@@ -1,0 +1,53 @@
+cishouseholds.pipeline.design\_weights
+======================================
+
+.. automodule:: cishouseholds.pipeline.design_weights
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      assign_sample_new_previous
+      assign_tranche_factor
+      calculate_antibody_design_weights_without_migration
+      calculate_combined_design_weights
+      calculate_design_weights
+      calculate_raw_antibody_design_weights_with_migration
+      calculate_raw_design_weight_swabs
+      calculate_scaled_antibody_design_weights
+      calculate_scaled_swab_design_weights
+      clean_df
+      join_and_process_lookups
+      recode_columns
+      reformat_age_population_table
+      scale_antibody_design_weights
+      scale_swab_design_weight
+      update_population_values
+      validate_design_weights
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+      :toctree:
+   
+      DesignWeightError
+   
+   
+
+
+

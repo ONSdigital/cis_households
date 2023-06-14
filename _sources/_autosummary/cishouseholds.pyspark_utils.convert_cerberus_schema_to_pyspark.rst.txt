@@ -1,0 +1,6 @@
+cishouseholds.pyspark\_utils.convert\_cerberus\_schema\_to\_pyspark
+===================================================================
+
+.. currentmodule:: cishouseholds.pyspark_utils
+
+.. autofunction:: convert_cerberus_schema_to_pyspark

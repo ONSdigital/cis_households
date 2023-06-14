@@ -1,0 +1,6 @@
+cishouseholds.edit.update\_face\_covering\_outside\_of\_home
+============================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: update_face_covering_outside_of_home

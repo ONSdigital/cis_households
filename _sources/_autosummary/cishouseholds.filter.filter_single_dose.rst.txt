@@ -1,0 +1,6 @@
+cishouseholds.filter.filter\_single\_dose
+=========================================
+
+.. currentmodule:: cishouseholds.filter
+
+.. autofunction:: filter_single_dose

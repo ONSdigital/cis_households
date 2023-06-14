@@ -1,0 +1,6 @@
+cishouseholds.hdfs\_utils.isdir
+===============================
+
+.. currentmodule:: cishouseholds.hdfs_utils
+
+.. autofunction:: isdir

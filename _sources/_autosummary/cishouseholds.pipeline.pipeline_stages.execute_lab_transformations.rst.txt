@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.execute\_lab\_transformations
+=====================================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: execute_lab_transformations

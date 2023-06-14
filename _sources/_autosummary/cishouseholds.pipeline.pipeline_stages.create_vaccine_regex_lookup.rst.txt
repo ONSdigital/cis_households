@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.create\_vaccine\_regex\_lookup
+======================================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: create_vaccine_regex_lookup

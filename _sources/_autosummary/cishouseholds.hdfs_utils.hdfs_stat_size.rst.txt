@@ -1,0 +1,6 @@
+cishouseholds.hdfs\_utils.hdfs\_stat\_size
+==========================================
+
+.. currentmodule:: cishouseholds.hdfs_utils
+
+.. autofunction:: hdfs_stat_size

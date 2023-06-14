@@ -1,0 +1,6 @@
+cishouseholds.pipeline.high\_level\_transformations.fix\_timestamps
+===================================================================
+
+.. currentmodule:: cishouseholds.pipeline.high_level_transformations
+
+.. autofunction:: fix_timestamps

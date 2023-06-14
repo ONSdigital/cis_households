@@ -1,0 +1,6 @@
+cishouseholds.derive.flag\_records\_for\_not\_working\_rules\_v2\_b
+===================================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: flag_records_for_not_working_rules_v2_b

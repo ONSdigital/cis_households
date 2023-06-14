@@ -1,0 +1,6 @@
+cishouseholds.pipeline.generate\_outputs.check\_columns
+=======================================================
+
+.. currentmodule:: cishouseholds.pipeline.generate_outputs
+
+.. autofunction:: check_columns

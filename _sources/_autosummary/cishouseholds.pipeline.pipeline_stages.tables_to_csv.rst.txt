@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.tables\_to\_csv
+=======================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: tables_to_csv

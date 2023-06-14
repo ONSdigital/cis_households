@@ -1,0 +1,6 @@
+cishouseholds.edit.update\_valid\_order
+=======================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: update_valid_order

@@ -1,0 +1,34 @@
+cishouseholds.pipeline.vaccine\_transformations
+===============================================
+
+.. automodule:: cishouseholds.pipeline.vaccine_transformations
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      deduplication
+      first_second_doses
+      mapping
+      preprocessing
+      vaccine_transformations
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

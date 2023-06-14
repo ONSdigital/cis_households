@@ -1,0 +1,6 @@
+cishouseholds.pipeline.demographic\_transformations.geography\_dependent\_transformations
+=========================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.demographic_transformations
+
+.. autofunction:: geography_dependent_transformations

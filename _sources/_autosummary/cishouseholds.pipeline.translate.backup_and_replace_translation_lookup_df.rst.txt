@@ -1,0 +1,6 @@
+cishouseholds.pipeline.translate.backup\_and\_replace\_translation\_lookup\_df
+==============================================================================
+
+.. currentmodule:: cishouseholds.pipeline.translate
+
+.. autofunction:: backup_and_replace_translation_lookup_df

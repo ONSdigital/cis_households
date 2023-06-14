@@ -1,0 +1,6 @@
+cishouseholds.impute.impute\_latest\_date\_flag
+===============================================
+
+.. currentmodule:: cishouseholds.impute
+
+.. autofunction:: impute_latest_date_flag

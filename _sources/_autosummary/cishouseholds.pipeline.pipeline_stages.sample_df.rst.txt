@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.sample\_df
+==================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: sample_df

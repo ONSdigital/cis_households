@@ -1,0 +1,6 @@
+cishouseholds.edit.update\_to\_value\_if\_any\_not\_null
+========================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: update_to_value_if_any_not_null

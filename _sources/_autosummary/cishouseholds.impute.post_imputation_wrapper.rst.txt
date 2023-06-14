@@ -1,0 +1,6 @@
+cishouseholds.impute.post\_imputation\_wrapper
+==============================================
+
+.. currentmodule:: cishouseholds.impute
+
+.. autofunction:: post_imputation_wrapper

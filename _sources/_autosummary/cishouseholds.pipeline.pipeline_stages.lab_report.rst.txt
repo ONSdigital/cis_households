@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.lab\_report
+===================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: lab_report

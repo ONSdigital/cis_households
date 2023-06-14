@@ -1,0 +1,6 @@
+cishouseholds.pipeline.version\_specific\_processing.digital\_transformations.transform\_survey\_responses\_version\_digital\_delta
+===================================================================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.version_specific_processing.digital_transformations
+
+.. autofunction:: transform_survey_responses_version_digital_delta

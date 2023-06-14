@@ -1,0 +1,47 @@
+cishouseholds.expressions
+=========================
+
+.. automodule:: cishouseholds.expressions
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      all_columns_not_null
+      all_columns_null
+      all_columns_values_in_list
+      all_equal
+      all_equal_or_Null
+      all_null_over_window
+      any_column_equal_value
+      any_column_matches_regex
+      any_column_not_null
+      any_column_null
+      array_contains_any
+      count_occurrence_in_row
+      fill_nulls
+      first_sorted_val_row_wise
+      get_nth_row_over_window
+      last_sorted_val_row_wise
+      set_date_component
+      sum_within_row
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

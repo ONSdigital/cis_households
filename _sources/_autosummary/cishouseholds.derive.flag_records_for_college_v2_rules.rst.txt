@@ -1,0 +1,6 @@
+cishouseholds.derive.flag\_records\_for\_college\_v2\_rules
+===========================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: flag_records_for_college_v2_rules

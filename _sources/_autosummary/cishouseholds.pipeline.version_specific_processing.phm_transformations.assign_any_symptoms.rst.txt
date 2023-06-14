@@ -1,0 +1,6 @@
+cishouseholds.pipeline.version\_specific\_processing.phm\_transformations.assign\_any\_symptoms
+===============================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.version_specific_processing.phm_transformations
+
+.. autofunction:: assign_any_symptoms

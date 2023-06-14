@@ -1,0 +1,6 @@
+cishouseholds.pipeline.run.check\_dependencies
+==============================================
+
+.. currentmodule:: cishouseholds.pipeline.run
+
+.. autofunction:: check_dependencies

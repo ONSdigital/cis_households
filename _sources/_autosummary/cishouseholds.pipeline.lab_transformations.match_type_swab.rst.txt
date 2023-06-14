@@ -1,0 +1,6 @@
+cishouseholds.pipeline.lab\_transformations.match\_type\_swab
+=============================================================
+
+.. currentmodule:: cishouseholds.pipeline.lab_transformations
+
+.. autofunction:: match_type_swab

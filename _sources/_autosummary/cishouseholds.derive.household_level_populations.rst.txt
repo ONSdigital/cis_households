@@ -1,0 +1,6 @@
+cishouseholds.derive.household\_level\_populations
+==================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: household_level_populations

@@ -1,0 +1,6 @@
+cishouseholds.pipeline.run.spark\_description\_set
+==================================================
+
+.. currentmodule:: cishouseholds.pipeline.run
+
+.. autofunction:: spark_description_set

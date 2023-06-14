@@ -1,0 +1,6 @@
+cishouseholds.pipeline.config.get\_secondary\_config
+====================================================
+
+.. currentmodule:: cishouseholds.pipeline.config
+
+.. autofunction:: get_secondary_config

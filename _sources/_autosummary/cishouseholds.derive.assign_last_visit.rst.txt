@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_last\_visit
+========================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_last_visit

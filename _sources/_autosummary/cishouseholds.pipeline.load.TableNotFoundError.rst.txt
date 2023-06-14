@@ -1,0 +1,6 @@
+cishouseholds.pipeline.load.TableNotFoundError
+==============================================
+
+.. currentmodule:: cishouseholds.pipeline.load
+
+.. autoexception:: TableNotFoundError

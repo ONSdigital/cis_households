@@ -1,0 +1,6 @@
+cishouseholds.validate.validate\_csv\_fields
+============================================
+
+.. currentmodule:: cishouseholds.validate
+
+.. autofunction:: validate_csv_fields

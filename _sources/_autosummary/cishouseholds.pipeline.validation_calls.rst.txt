@@ -1,0 +1,31 @@
+cishouseholds.pipeline.validation\_calls
+========================================
+
+.. automodule:: cishouseholds.pipeline.validation_calls
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      validation_ETL
+      validation_calls
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

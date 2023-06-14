@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.join\_lookup\_table
+===========================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: join_lookup_table

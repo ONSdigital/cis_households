@@ -1,0 +1,6 @@
+cishouseholds.edit.format\_string\_upper\_and\_clean
+====================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: format_string_upper_and_clean

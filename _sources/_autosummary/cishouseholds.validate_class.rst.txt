@@ -1,0 +1,31 @@
+cishouseholds.validate\_class
+=============================
+
+.. automodule:: cishouseholds.validate_class
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      SparkValidate
+   
+   
+
+   
+   
+   
+
+
+

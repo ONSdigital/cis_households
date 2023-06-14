@@ -1,0 +1,6 @@
+cishouseholds.pipeline.logging.check\_survey\_table\_lengths
+============================================================
+
+.. currentmodule:: cishouseholds.pipeline.logging
+
+.. autofunction:: check_survey_table_lengths

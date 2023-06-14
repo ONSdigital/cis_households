@@ -1,0 +1,36 @@
+cishouseholds.pipeline.covid\_event\_transformations
+====================================================
+
+.. automodule:: cishouseholds.pipeline.covid_event_transformations
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      clean_inconsistent_event_detail_part_1
+      clean_inconsistent_event_detail_part_2
+      covid_event_transformations
+      data_dependent_derivations
+      derive_contact_any_covid_covid_variables
+      derive_new_columns
+      edit_existing_columns
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

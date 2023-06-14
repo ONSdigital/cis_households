@@ -1,0 +1,6 @@
+cishouseholds.edit.clean\_barcode\_simple
+=========================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: clean_barcode_simple

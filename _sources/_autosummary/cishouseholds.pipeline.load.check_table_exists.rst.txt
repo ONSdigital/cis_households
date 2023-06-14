@@ -1,0 +1,6 @@
+cishouseholds.pipeline.load.check\_table\_exists
+================================================
+
+.. currentmodule:: cishouseholds.pipeline.load
+
+.. autofunction:: check_table_exists

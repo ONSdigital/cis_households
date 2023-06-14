@@ -1,0 +1,6 @@
+cishouseholds.expressions.sum\_within\_row
+==========================================
+
+.. currentmodule:: cishouseholds.expressions
+
+.. autofunction:: sum_within_row

@@ -1,0 +1,6 @@
+cishouseholds.pipeline.design\_weights.join\_and\_process\_lookups
+==================================================================
+
+.. currentmodule:: cishouseholds.pipeline.design_weights
+
+.. autofunction:: join_and_process_lookups

@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_correct\_age\_at\_date
+===================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_correct_age_at_date

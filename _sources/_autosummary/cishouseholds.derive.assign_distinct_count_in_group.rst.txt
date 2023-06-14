@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_distinct\_count\_in\_group
+=======================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_distinct_count_in_group

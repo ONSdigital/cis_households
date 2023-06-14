@@ -1,0 +1,6 @@
+cishouseholds.regex.match\_with\_exclusions
+===========================================
+
+.. currentmodule:: cishouseholds.regex
+
+.. autofunction:: match_with_exclusions

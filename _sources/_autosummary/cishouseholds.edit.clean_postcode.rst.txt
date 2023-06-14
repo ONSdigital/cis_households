@@ -1,0 +1,6 @@
+cishouseholds.edit.clean\_postcode
+==================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: clean_postcode

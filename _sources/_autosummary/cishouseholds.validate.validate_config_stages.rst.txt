@@ -1,0 +1,6 @@
+cishouseholds.validate.validate\_config\_stages
+===============================================
+
+.. currentmodule:: cishouseholds.validate
+
+.. autofunction:: validate_config_stages

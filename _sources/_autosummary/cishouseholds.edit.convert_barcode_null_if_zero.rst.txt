@@ -1,0 +1,6 @@
+cishouseholds.edit.convert\_barcode\_null\_if\_zero
+===================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: convert_barcode_null_if_zero

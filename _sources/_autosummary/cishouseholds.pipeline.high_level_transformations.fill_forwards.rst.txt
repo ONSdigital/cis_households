@@ -1,0 +1,6 @@
+cishouseholds.pipeline.high\_level\_transformations.fill\_forwards
+==================================================================
+
+.. currentmodule:: cishouseholds.pipeline.high_level_transformations
+
+.. autofunction:: fill_forwards

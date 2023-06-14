@@ -1,0 +1,6 @@
+cishouseholds.pipeline.design\_weights.DesignWeightError
+========================================================
+
+.. currentmodule:: cishouseholds.pipeline.design_weights
+
+.. autoexception:: DesignWeightError

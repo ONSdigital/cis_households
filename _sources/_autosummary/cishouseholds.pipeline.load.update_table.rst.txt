@@ -1,0 +1,6 @@
+cishouseholds.pipeline.load.update\_table
+=========================================
+
+.. currentmodule:: cishouseholds.pipeline.load
+
+.. autofunction:: update_table

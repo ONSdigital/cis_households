@@ -1,0 +1,6 @@
+cishouseholds.pipeline.visit\_transformations.create\_ever\_variable\_columns
+=============================================================================
+
+.. currentmodule:: cishouseholds.pipeline.visit_transformations
+
+.. autofunction:: create_ever_variable_columns

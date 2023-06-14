@@ -1,0 +1,6 @@
+cishouseholds.pipeline.lookup\_and\_regex\_transformations.clean\_historic\_geography\_lookup
+=============================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.lookup_and_regex_transformations
+
+.. autofunction:: clean_historic_geography_lookup

@@ -1,0 +1,38 @@
+cishouseholds.pipeline.manifest
+===============================
+
+.. automodule:: cishouseholds.pipeline.manifest
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      Manifest
+   
+   
+
+   
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+      :toctree:
+   
+      ManifestError
+   
+   
+
+
+

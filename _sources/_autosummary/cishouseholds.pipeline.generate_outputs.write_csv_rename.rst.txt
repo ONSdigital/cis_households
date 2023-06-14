@@ -1,0 +1,6 @@
+cishouseholds.pipeline.generate\_outputs.write\_csv\_rename
+===========================================================
+
+.. currentmodule:: cishouseholds.pipeline.generate_outputs
+
+.. autofunction:: write_csv_rename

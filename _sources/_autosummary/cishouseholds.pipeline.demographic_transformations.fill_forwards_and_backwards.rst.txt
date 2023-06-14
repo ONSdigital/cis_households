@@ -1,0 +1,6 @@
+cishouseholds.pipeline.demographic\_transformations.fill\_forwards\_and\_backwards
+==================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.demographic_transformations
+
+.. autofunction:: fill_forwards_and_backwards

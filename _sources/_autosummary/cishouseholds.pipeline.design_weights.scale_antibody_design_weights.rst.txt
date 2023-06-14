@@ -1,0 +1,6 @@
+cishouseholds.pipeline.design\_weights.scale\_antibody\_design\_weights
+=======================================================================
+
+.. currentmodule:: cishouseholds.pipeline.design_weights
+
+.. autofunction:: scale_antibody_design_weights

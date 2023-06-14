@@ -1,0 +1,6 @@
+cishouseholds.pipeline.lab\_transformations.assign\_match\_type
+===============================================================
+
+.. currentmodule:: cishouseholds.pipeline.lab_transformations
+
+.. autofunction:: assign_match_type

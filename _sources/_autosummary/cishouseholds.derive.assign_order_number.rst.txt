@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_order\_number
+==========================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_order_number

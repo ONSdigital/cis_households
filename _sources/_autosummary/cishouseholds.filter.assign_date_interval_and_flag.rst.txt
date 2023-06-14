@@ -1,0 +1,6 @@
+cishouseholds.filter.assign\_date\_interval\_and\_flag
+======================================================
+
+.. currentmodule:: cishouseholds.filter
+
+.. autofunction:: assign_date_interval_and_flag

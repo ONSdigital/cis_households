@@ -1,0 +1,6 @@
+cishouseholds.edit.update\_value\_if\_multiple\_and\_ref\_in\_list
+==================================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: update_value_if_multiple_and_ref_in_list

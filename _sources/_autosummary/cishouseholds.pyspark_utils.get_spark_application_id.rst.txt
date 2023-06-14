@@ -1,0 +1,6 @@
+cishouseholds.pyspark\_utils.get\_spark\_application\_id
+========================================================
+
+.. currentmodule:: cishouseholds.pyspark_utils
+
+.. autofunction:: get_spark_application_id

@@ -1,0 +1,6 @@
+cishouseholds.impute.fill\_forward\_event
+=========================================
+
+.. currentmodule:: cishouseholds.impute
+
+.. autofunction:: fill_forward_event

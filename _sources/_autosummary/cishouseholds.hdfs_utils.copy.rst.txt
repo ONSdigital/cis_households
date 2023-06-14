@@ -1,0 +1,6 @@
+cishouseholds.hdfs\_utils.copy
+==============================
+
+.. currentmodule:: cishouseholds.hdfs_utils
+
+.. autofunction:: copy

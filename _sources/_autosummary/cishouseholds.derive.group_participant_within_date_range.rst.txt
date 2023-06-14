@@ -1,0 +1,6 @@
+cishouseholds.derive.group\_participant\_within\_date\_range
+============================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: group_participant_within_date_range

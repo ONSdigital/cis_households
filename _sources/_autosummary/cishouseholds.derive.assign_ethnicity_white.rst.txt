@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_ethnicity\_white
+=============================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_ethnicity_white

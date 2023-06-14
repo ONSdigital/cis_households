@@ -1,0 +1,6 @@
+cishouseholds.edit.correct\_date\_ranges\_union\_dependent
+==========================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: correct_date_ranges_union_dependent

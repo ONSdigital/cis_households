@@ -1,0 +1,42 @@
+cishouseholds.pipeline.lookup\_and\_regex\_transformations
+==========================================================
+
+.. automodule:: cishouseholds.pipeline.lookup_and_regex_transformations
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      blood_past_positive_transformations
+      clean_historic_geography_lookup
+      clean_participant_extract_phm
+      create_historic_visits
+      derive_overall_vaccination
+      design_weights_lookup_transformations
+      nims_transformations
+      ordered_household_id_tranformations
+      process_healthcare_regex
+      process_vaccine_regex
+      reclassify_work_variables
+      transform_cis_soc_data
+      transform_from_lookups
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

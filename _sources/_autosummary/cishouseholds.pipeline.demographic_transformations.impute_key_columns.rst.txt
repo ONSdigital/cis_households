@@ -1,0 +1,6 @@
+cishouseholds.pipeline.demographic\_transformations.impute\_key\_columns
+========================================================================
+
+.. currentmodule:: cishouseholds.pipeline.demographic_transformations
+
+.. autofunction:: impute_key_columns

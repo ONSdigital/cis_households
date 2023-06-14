@@ -1,0 +1,6 @@
+cishouseholds.pipeline.visit\_transformations.visit\_transformations
+====================================================================
+
+.. currentmodule:: cishouseholds.pipeline.visit_transformations
+
+.. autofunction:: visit_transformations

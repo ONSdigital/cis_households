@@ -1,0 +1,6 @@
+cishouseholds.pipeline.translate.get\_welsh\_responses\_to\_be\_translated
+==========================================================================
+
+.. currentmodule:: cishouseholds.pipeline.translate
+
+.. autofunction:: get_welsh_responses_to_be_translated

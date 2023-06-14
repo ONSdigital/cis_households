@@ -1,0 +1,6 @@
+cishouseholds.hdfs\_utils.hdfs\_md5sum
+======================================
+
+.. currentmodule:: cishouseholds.hdfs_utils
+
+.. autofunction:: hdfs_md5sum

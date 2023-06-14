@@ -1,0 +1,6 @@
+cishouseholds.pipeline.lookup\_and\_regex\_transformations.transform\_from\_lookups
+===================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.lookup_and_regex_transformations
+
+.. autofunction:: transform_from_lookups

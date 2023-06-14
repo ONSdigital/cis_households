@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.blind\_csv\_to\_table
+=============================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: blind_csv_to_table

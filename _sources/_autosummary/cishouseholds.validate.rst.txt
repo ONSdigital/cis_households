@@ -1,0 +1,44 @@
+cishouseholds.validate
+======================
+
+.. automodule:: cishouseholds.validate
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      check_lookup_table_joined_columns_unique
+      check_singular_match
+      normalise_schema
+      validate_config_stages
+      validate_csv_fields
+      validate_csv_header
+      validate_files
+      validate_processed_files
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+      :toctree:
+   
+      ConfigError
+   
+   
+
+
+

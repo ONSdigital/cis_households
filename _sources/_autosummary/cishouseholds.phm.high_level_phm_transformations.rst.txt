@@ -1,0 +1,31 @@
+cishouseholds.phm.high\_level\_phm\_transformations
+===================================================
+
+.. automodule:: cishouseholds.phm.high_level_phm_transformations
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      high_level_phm_transformations
+      preprocessing
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_isin\_list
+=======================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_isin_list

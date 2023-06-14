@@ -1,0 +1,38 @@
+cishouseholds.pyspark\_utils
+============================
+
+.. automodule:: cishouseholds.pyspark_utils
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      column_to_distinct_list
+      column_to_list
+      convert_array_strings_to_array
+      convert_array_to_array_strings
+      convert_cerberus_schema_to_pyspark
+      get_or_create_spark_session
+      get_spark_application_id
+      get_spark_ui_url
+      running_in_dev_test
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

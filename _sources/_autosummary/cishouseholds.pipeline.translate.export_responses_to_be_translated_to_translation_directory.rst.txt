@@ -1,0 +1,6 @@
+cishouseholds.pipeline.translate.export\_responses\_to\_be\_translated\_to\_translation\_directory
+==================================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.translate
+
+.. autofunction:: export_responses_to_be_translated_to_translation_directory

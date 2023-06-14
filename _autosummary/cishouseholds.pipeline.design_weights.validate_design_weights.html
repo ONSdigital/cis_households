@@ -1,0 +1,4337 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>cishouseholds.pipeline.design_weights.validate_design_weights &#8212; cishouseholds  documentation</title>
+    
+  <link href="../_static/css/theme.css" rel="stylesheet">
+  <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/blank.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="cishouseholds.pipeline.design_weights.DesignWeightError" href="cishouseholds.pipeline.design_weights.DesignWeightError.html" />
+    <link rel="prev" title="cishouseholds.pipeline.design_weights.update_population_values" href="cishouseholds.pipeline.design_weights.update_population_values.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="../index.html">
+<p class="title">cishouseholds</p>
+</a>
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../modules.html">
+  Module Index and Docs
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../pipeline_stages.html">
+  Pipeline Stages
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/ONS-SST/cis_households" rel="noopener" target="_blank" title="GitHub">
+            <span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label>
+          </a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="cishouseholds.html">
+   cishouseholds
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.derive.html">
+     cishouseholds.derive
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/>
+    <label for="toctree-checkbox-2">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.aggregated_output_groupby.html">
+       cishouseholds.derive.aggregated_output_groupby
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.aggregated_output_window.html">
+       cishouseholds.derive.aggregated_output_window
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_age_at_date.html">
+       cishouseholds.derive.assign_age_at_date
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_age_group_school_year.html">
+       cishouseholds.derive.assign_age_group_school_year
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_any_symptoms_around_visit.html">
+       cishouseholds.derive.assign_any_symptoms_around_visit
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_column_from_mapped_list_key.html">
+       cishouseholds.derive.assign_column_from_mapped_list_key
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_column_given_proportion.html">
+       cishouseholds.derive.assign_column_given_proportion
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_column_regex_match.html">
+       cishouseholds.derive.assign_column_regex_match
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_column_to_date_string.html">
+       cishouseholds.derive.assign_column_to_date_string
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_column_uniform_value.html">
+       cishouseholds.derive.assign_column_uniform_value
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_column_value_from_multiple_column_map.html">
+       cishouseholds.derive.assign_column_value_from_multiple_column_map
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_columns_from_array.html">
+       cishouseholds.derive.assign_columns_from_array
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_completion_status.html">
+       cishouseholds.derive.assign_completion_status
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_consent_code.html">
+       cishouseholds.derive.assign_consent_code
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_correct_age_at_date.html">
+       cishouseholds.derive.assign_correct_age_at_date
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_count_by_group.html">
+       cishouseholds.derive.assign_count_by_group
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_date_difference.html">
+       cishouseholds.derive.assign_date_difference
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_date_from_filename.html">
+       cishouseholds.derive.assign_date_from_filename
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_datetime_from_coalesced_columns_and_log_source.html">
+       cishouseholds.derive.assign_datetime_from_coalesced_columns_and_log_source
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_datetime_from_combined_columns.html">
+       cishouseholds.derive.assign_datetime_from_combined_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_default_date_flag.html">
+       cishouseholds.derive.assign_default_date_flag
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_distinct_count_in_group.html">
+       cishouseholds.derive.assign_distinct_count_in_group
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_ethnicity_white.html">
+       cishouseholds.derive.assign_ethnicity_white
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_ever_had_long_term_health_condition_or_disabled.html">
+       cishouseholds.derive.assign_ever_had_long_term_health_condition_or_disabled
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_fake_id.html">
+       cishouseholds.derive.assign_fake_id
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_filename_column.html">
+       cishouseholds.derive.assign_filename_column
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_first_visit.html">
+       cishouseholds.derive.assign_first_visit
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_grouped_variable_from_days_since.html">
+       cishouseholds.derive.assign_grouped_variable_from_days_since
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_grouped_variable_from_days_since_contact.html">
+       cishouseholds.derive.assign_grouped_variable_from_days_since_contact
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_household_participant_count.html">
+       cishouseholds.derive.assign_household_participant_count
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_household_under_2_count.html">
+       cishouseholds.derive.assign_household_under_2_count
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_isin_list.html">
+       cishouseholds.derive.assign_isin_list
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_last_non_null_value_from_col_list.html">
+       cishouseholds.derive.assign_last_non_null_value_from_col_list
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_last_visit.html">
+       cishouseholds.derive.assign_last_visit
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_max_doses.html">
+       cishouseholds.derive.assign_max_doses
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_multigenerational.html">
+       cishouseholds.derive.assign_multigenerational
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_named_buckets.html">
+       cishouseholds.derive.assign_named_buckets
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_nth_dose.html">
+       cishouseholds.derive.assign_nth_dose
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_order_number.html">
+       cishouseholds.derive.assign_order_number
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_outward_postcode.html">
+       cishouseholds.derive.assign_outward_postcode
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_population_projections.html">
+       cishouseholds.derive.assign_population_projections
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_poss_1_2.html">
+       cishouseholds.derive.assign_poss_1_2
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_random_day_in_month.html">
+       cishouseholds.derive.assign_random_day_in_month
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_raw_copies.html">
+       cishouseholds.derive.assign_raw_copies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_regex_from_map.html">
+       cishouseholds.derive.assign_regex_from_map
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_regex_from_map_additional_rules.html">
+       cishouseholds.derive.assign_regex_from_map_additional_rules
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_regex_match_result.html">
+       cishouseholds.derive.assign_regex_match_result
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_school_year.html">
+       cishouseholds.derive.assign_school_year
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_school_year_september_start.html">
+       cishouseholds.derive.assign_school_year_september_start
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_survey_completed_status.html">
+       cishouseholds.derive.assign_survey_completed_status
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_survey_not_completed_reason_code.html">
+       cishouseholds.derive.assign_survey_not_completed_reason_code
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_taken_column.html">
+       cishouseholds.derive.assign_taken_column
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_true_if_any.html">
+       cishouseholds.derive.assign_true_if_any
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_unique_id_column.html">
+       cishouseholds.derive.assign_unique_id_column
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_valid_order.html">
+       cishouseholds.derive.assign_valid_order
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_visit_order.html">
+       cishouseholds.derive.assign_visit_order
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_window_status.html">
+       cishouseholds.derive.assign_window_status
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_work_health_care.html">
+       cishouseholds.derive.assign_work_health_care
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_work_patient_facing_now.html">
+       cishouseholds.derive.assign_work_patient_facing_now
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_work_person_facing_now.html">
+       cishouseholds.derive.assign_work_person_facing_now
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_work_social_column.html">
+       cishouseholds.derive.assign_work_social_column
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.assign_work_status_group.html">
+       cishouseholds.derive.assign_work_status_group
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.clean_postcode.html">
+       cishouseholds.derive.clean_postcode
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.combine_like_array_columns.html">
+       cishouseholds.derive.combine_like_array_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.concat_fields_if_true.html">
+       cishouseholds.derive.concat_fields_if_true
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.contact_known_or_suspected_covid_type.html">
+       cishouseholds.derive.contact_known_or_suspected_covid_type
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.count_value_occurrences_in_column_subset_row_wise.html">
+       cishouseholds.derive.count_value_occurrences_in_column_subset_row_wise
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.derive_age_based_columns.html">
+       cishouseholds.derive.derive_age_based_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.derive_country_code.html">
+       cishouseholds.derive.derive_country_code
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.derive_digital_merge_type.html">
+       cishouseholds.derive.derive_digital_merge_type
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.derive_had_symptom_last_7days_from_digital.html">
+       cishouseholds.derive.derive_had_symptom_last_7days_from_digital
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.derive_household_been_columns.html">
+       cishouseholds.derive.derive_household_been_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_childcare_v0_rules.html">
+       cishouseholds.derive.flag_records_for_childcare_v0_rules
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_childcare_v1_rules.html">
+       cishouseholds.derive.flag_records_for_childcare_v1_rules
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_childcare_v2_b_rules.html">
+       cishouseholds.derive.flag_records_for_childcare_v2_b_rules
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_college_v0_rules.html">
+       cishouseholds.derive.flag_records_for_college_v0_rules
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_college_v1_rules.html">
+       cishouseholds.derive.flag_records_for_college_v1_rules
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_college_v2_rules.html">
+       cishouseholds.derive.flag_records_for_college_v2_rules
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_furlough_rules_v0.html">
+       cishouseholds.derive.flag_records_for_furlough_rules_v0
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_furlough_rules_v1_a.html">
+       cishouseholds.derive.flag_records_for_furlough_rules_v1_a
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_furlough_rules_v1_b.html">
+       cishouseholds.derive.flag_records_for_furlough_rules_v1_b
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_furlough_rules_v2_a.html">
+       cishouseholds.derive.flag_records_for_furlough_rules_v2_a
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_furlough_rules_v2_b.html">
+       cishouseholds.derive.flag_records_for_furlough_rules_v2_b
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_not_working_rules_v0.html">
+       cishouseholds.derive.flag_records_for_not_working_rules_v0
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_not_working_rules_v1_a.html">
+       cishouseholds.derive.flag_records_for_not_working_rules_v1_a
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_not_working_rules_v1_b.html">
+       cishouseholds.derive.flag_records_for_not_working_rules_v1_b
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_not_working_rules_v2_a.html">
+       cishouseholds.derive.flag_records_for_not_working_rules_v2_a
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_not_working_rules_v2_b.html">
+       cishouseholds.derive.flag_records_for_not_working_rules_v2_b
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_retired_rules.html">
+       cishouseholds.derive.flag_records_for_retired_rules
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_school_v2_rules.html">
+       cishouseholds.derive.flag_records_for_school_v2_rules
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_self_employed_rules_v0.html">
+       cishouseholds.derive.flag_records_for_self_employed_rules_v0
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_self_employed_rules_v1_a.html">
+       cishouseholds.derive.flag_records_for_self_employed_rules_v1_a
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_self_employed_rules_v1_b.html">
+       cishouseholds.derive.flag_records_for_self_employed_rules_v1_b
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_self_employed_rules_v2_a.html">
+       cishouseholds.derive.flag_records_for_self_employed_rules_v2_a
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_self_employed_rules_v2_b.html">
+       cishouseholds.derive.flag_records_for_self_employed_rules_v2_b
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_uni_v0_rules.html">
+       cishouseholds.derive.flag_records_for_uni_v0_rules
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_uni_v1_rules.html">
+       cishouseholds.derive.flag_records_for_uni_v1_rules
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_uni_v2_rules.html">
+       cishouseholds.derive.flag_records_for_uni_v2_rules
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_work_from_home_rules.html">
+       cishouseholds.derive.flag_records_for_work_from_home_rules
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_work_location_null.html">
+       cishouseholds.derive.flag_records_for_work_location_null
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.flag_records_for_work_location_student.html">
+       cishouseholds.derive.flag_records_for_work_location_student
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.get_keys_by_value.html">
+       cishouseholds.derive.get_keys_by_value
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.get_matches.html">
+       cishouseholds.derive.get_matches
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.group_participant_within_date_range.html">
+       cishouseholds.derive.group_participant_within_date_range
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.household_level_populations.html">
+       cishouseholds.derive.household_level_populations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.map_options_to_bool_columns.html">
+       cishouseholds.derive.map_options_to_bool_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.mean_across_columns.html">
+       cishouseholds.derive.mean_across_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.regex_match_result.html">
+       cishouseholds.derive.regex_match_result
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.derive.translate_column_regex_replace.html">
+       cishouseholds.derive.translate_column_regex_replace
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.edit.html">
+     cishouseholds.edit
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/>
+    <label for="toctree-checkbox-3">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.add_prefix.html">
+       cishouseholds.edit.add_prefix
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.apply_value_map_multiple_columns.html">
+       cishouseholds.edit.apply_value_map_multiple_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.assign_from_map.html">
+       cishouseholds.edit.assign_from_map
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.assign_null_if_insufficient.html">
+       cishouseholds.edit.assign_null_if_insufficient
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.cast_columns_from_string.html">
+       cishouseholds.edit.cast_columns_from_string
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.clean_barcode.html">
+       cishouseholds.edit.clean_barcode
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.clean_barcode_simple.html">
+       cishouseholds.edit.clean_barcode_simple
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.clean_job_description_string.html">
+       cishouseholds.edit.clean_job_description_string
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.clean_postcode.html">
+       cishouseholds.edit.clean_postcode
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.clean_within_range.html">
+       cishouseholds.edit.clean_within_range
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.conditionally_replace_columns.html">
+       cishouseholds.edit.conditionally_replace_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.conditionally_set_column_values.html">
+       cishouseholds.edit.conditionally_set_column_values
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.convert_barcode_null_if_zero.html">
+       cishouseholds.edit.convert_barcode_null_if_zero
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.convert_columns_to_timestamps.html">
+       cishouseholds.edit.convert_columns_to_timestamps
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.convert_derived_columns_from_null_to_no.html">
+       cishouseholds.edit.convert_derived_columns_from_null_to_no
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.convert_null_if_not_in_list.html">
+       cishouseholds.edit.convert_null_if_not_in_list
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.correct_date_ranges.html">
+       cishouseholds.edit.correct_date_ranges
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.correct_date_ranges_union_dependent.html">
+       cishouseholds.edit.correct_date_ranges_union_dependent
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.edit_swab_results_single.html">
+       cishouseholds.edit.edit_swab_results_single
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.edit_to_sum_or_max_value.html">
+       cishouseholds.edit.edit_to_sum_or_max_value
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.format_string_upper_and_clean.html">
+       cishouseholds.edit.format_string_upper_and_clean
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.fuzzy_update.html">
+       cishouseholds.edit.fuzzy_update
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.join_on_existing.html">
+       cishouseholds.edit.join_on_existing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.map_column_values_to_null.html">
+       cishouseholds.edit.map_column_values_to_null
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.normalise_think_had_covid_columns.html">
+       cishouseholds.edit.normalise_think_had_covid_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.nullify_columns_before_date.html">
+       cishouseholds.edit.nullify_columns_before_date
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.recode_column_values.html">
+       cishouseholds.edit.recode_column_values
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.remove_incorrect_dates.html">
+       cishouseholds.edit.remove_incorrect_dates
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.rename_column_names.html">
+       cishouseholds.edit.rename_column_names
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.replace_sample_barcode.html">
+       cishouseholds.edit.replace_sample_barcode
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.split_school_year_by_country.html">
+       cishouseholds.edit.split_school_year_by_country
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.survey_edit_auto_complete.html">
+       cishouseholds.edit.survey_edit_auto_complete
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.update_column.html">
+       cishouseholds.edit.update_column
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.update_column_if_ref_in_list.html">
+       cishouseholds.edit.update_column_if_ref_in_list
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.update_column_in_time_window.html">
+       cishouseholds.edit.update_column_in_time_window
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.update_column_values_from_map.html">
+       cishouseholds.edit.update_column_values_from_map
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.update_data.html">
+       cishouseholds.edit.update_data
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.update_face_covering_outside_of_home.html">
+       cishouseholds.edit.update_face_covering_outside_of_home
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.update_from_lookup_df.html">
+       cishouseholds.edit.update_from_lookup_df
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.update_person_count_from_ages.html">
+       cishouseholds.edit.update_person_count_from_ages
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.update_social_column.html">
+       cishouseholds.edit.update_social_column
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.update_strings_to_sentence_case.html">
+       cishouseholds.edit.update_strings_to_sentence_case
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.update_think_have_covid_symptom_any.html">
+       cishouseholds.edit.update_think_have_covid_symptom_any
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.update_to_value_if_any_not_null.html">
+       cishouseholds.edit.update_to_value_if_any_not_null
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.update_valid_order.html">
+       cishouseholds.edit.update_valid_order
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.update_valid_order_2.html">
+       cishouseholds.edit.update_valid_order_2
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.update_value_if_multiple_and_ref_in_list.html">
+       cishouseholds.edit.update_value_if_multiple_and_ref_in_list
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.update_work_facing_now_column.html">
+       cishouseholds.edit.update_work_facing_now_column
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.edit.update_work_main_job_changed.html">
+       cishouseholds.edit.update_work_main_job_changed
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.expressions.html">
+     cishouseholds.expressions
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/>
+    <label for="toctree-checkbox-4">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.all_columns_not_null.html">
+       cishouseholds.expressions.all_columns_not_null
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.all_columns_null.html">
+       cishouseholds.expressions.all_columns_null
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.all_columns_values_in_list.html">
+       cishouseholds.expressions.all_columns_values_in_list
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.all_equal.html">
+       cishouseholds.expressions.all_equal
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.all_equal_or_Null.html">
+       cishouseholds.expressions.all_equal_or_Null
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.all_null_over_window.html">
+       cishouseholds.expressions.all_null_over_window
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.any_column_equal_value.html">
+       cishouseholds.expressions.any_column_equal_value
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.any_column_matches_regex.html">
+       cishouseholds.expressions.any_column_matches_regex
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.any_column_not_null.html">
+       cishouseholds.expressions.any_column_not_null
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.any_column_null.html">
+       cishouseholds.expressions.any_column_null
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.array_contains_any.html">
+       cishouseholds.expressions.array_contains_any
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.count_occurrence_in_row.html">
+       cishouseholds.expressions.count_occurrence_in_row
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.fill_nulls.html">
+       cishouseholds.expressions.fill_nulls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.first_sorted_val_row_wise.html">
+       cishouseholds.expressions.first_sorted_val_row_wise
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.get_nth_row_over_window.html">
+       cishouseholds.expressions.get_nth_row_over_window
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.last_sorted_val_row_wise.html">
+       cishouseholds.expressions.last_sorted_val_row_wise
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.set_date_component.html">
+       cishouseholds.expressions.set_date_component
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.expressions.sum_within_row.html">
+       cishouseholds.expressions.sum_within_row
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.extract.html">
+     cishouseholds.extract
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/>
+    <label for="toctree-checkbox-5">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.extract.filter_list_items_in_table_when_condition.html">
+       cishouseholds.extract.filter_list_items_in_table_when_condition
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.extract.get_files_by_date.html">
+       cishouseholds.extract.get_files_by_date
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.extract.get_files_to_be_processed.html">
+       cishouseholds.extract.get_files_to_be_processed
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.extract.list_contents.html">
+       cishouseholds.extract.list_contents
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.extract.remove_list_items_in_table.html">
+       cishouseholds.extract.remove_list_items_in_table
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.extract.InvalidFileError.html">
+       cishouseholds.extract.InvalidFileError
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.filter.html">
+     cishouseholds.filter
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/>
+    <label for="toctree-checkbox-6">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.filter.assign_date_interval_and_flag.html">
+       cishouseholds.filter.assign_date_interval_and_flag
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.filter.file_exclude.html">
+       cishouseholds.filter.file_exclude
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.filter.filter_all_not_null.html">
+       cishouseholds.filter.filter_all_not_null
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.filter.filter_before_date_or_null.html">
+       cishouseholds.filter.filter_before_date_or_null
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.filter.filter_by_cq_diff.html">
+       cishouseholds.filter.filter_by_cq_diff
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.filter.filter_exclude_by_pattern.html">
+       cishouseholds.filter.filter_exclude_by_pattern
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.filter.filter_invalid_vaccines.html">
+       cishouseholds.filter.filter_invalid_vaccines
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.filter.filter_leave_at_least_1.html">
+       cishouseholds.filter.filter_leave_at_least_1
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.filter.filter_single_dose.html">
+       cishouseholds.filter.filter_single_dose
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.hdfs_utils.html">
+     cishouseholds.hdfs_utils
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/>
+    <label for="toctree-checkbox-7">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.hdfs_utils.cleanup_checkpoint_dir.html">
+       cishouseholds.hdfs_utils.cleanup_checkpoint_dir
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.hdfs_utils.copy.html">
+       cishouseholds.hdfs_utils.copy
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.hdfs_utils.copy_local_to_hdfs.html">
+       cishouseholds.hdfs_utils.copy_local_to_hdfs
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.hdfs_utils.create_dir.html">
+       cishouseholds.hdfs_utils.create_dir
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.hdfs_utils.delete_dir.html">
+       cishouseholds.hdfs_utils.delete_dir
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.hdfs_utils.delete_file.html">
+       cishouseholds.hdfs_utils.delete_file
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.hdfs_utils.dir_size.html">
+       cishouseholds.hdfs_utils.dir_size
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.hdfs_utils.hdfs_md5sum.html">
+       cishouseholds.hdfs_utils.hdfs_md5sum
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.hdfs_utils.hdfs_stat_size.html">
+       cishouseholds.hdfs_utils.hdfs_stat_size
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.hdfs_utils.isdir.html">
+       cishouseholds.hdfs_utils.isdir
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.hdfs_utils.isfile.html">
+       cishouseholds.hdfs_utils.isfile
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.hdfs_utils.move_local_to_hdfs.html">
+       cishouseholds.hdfs_utils.move_local_to_hdfs
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.hdfs_utils.read_file_to_string.html">
+       cishouseholds.hdfs_utils.read_file_to_string
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.hdfs_utils.read_header.html">
+       cishouseholds.hdfs_utils.read_header
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.hdfs_utils.rename.html">
+       cishouseholds.hdfs_utils.rename
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.hdfs_utils.write_string_to_file.html">
+       cishouseholds.hdfs_utils.write_string_to_file
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.impute.html">
+     cishouseholds.impute
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/>
+    <label for="toctree-checkbox-8">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.edit_multiple_columns_fill_forward.html">
+       cishouseholds.impute.edit_multiple_columns_fill_forward
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.fill_backwards_overriding_not_nulls.html">
+       cishouseholds.impute.fill_backwards_overriding_not_nulls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.fill_backwards_work_status_v2.html">
+       cishouseholds.impute.fill_backwards_work_status_v2
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.fill_forward_event.html">
+       cishouseholds.impute.fill_forward_event
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.fill_forward_from_last_change.html">
+       cishouseholds.impute.fill_forward_from_last_change
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.fill_forward_from_last_change_marked_subset.html">
+       cishouseholds.impute.fill_forward_from_last_change_marked_subset
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.fill_forward_from_last_change_process.html">
+       cishouseholds.impute.fill_forward_from_last_change_process
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.fill_forward_only_to_nulls.html">
+       cishouseholds.impute.fill_forward_only_to_nulls
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.fill_forward_only_to_nulls_in_dataset_based_on_column.html">
+       cishouseholds.impute.fill_forward_only_to_nulls_in_dataset_based_on_column
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.fill_forwards_covid_contact.html">
+       cishouseholds.impute.fill_forwards_covid_contact
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.fill_forwards_covid_infection.html">
+       cishouseholds.impute.fill_forwards_covid_infection
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.generate_fill_forward_df.html">
+       cishouseholds.impute.generate_fill_forward_df
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.impute_and_flag.html">
+       cishouseholds.impute.impute_and_flag
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.impute_by_distribution.html">
+       cishouseholds.impute.impute_by_distribution
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.impute_by_k_nearest_neighbours.html">
+       cishouseholds.impute.impute_by_k_nearest_neighbours
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.impute_by_mode.html">
+       cishouseholds.impute.impute_by_mode
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.impute_by_ordered_fill_forward.html">
+       cishouseholds.impute.impute_by_ordered_fill_forward
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.impute_date_by_k_nearest_neighbours.html">
+       cishouseholds.impute.impute_date_by_k_nearest_neighbours
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.impute_latest_date_flag.html">
+       cishouseholds.impute.impute_latest_date_flag
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.impute_outside_uk_columns.html">
+       cishouseholds.impute.impute_outside_uk_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.impute_visit_datetime.html">
+       cishouseholds.impute.impute_visit_datetime
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.merge_previous_imputed_values.html">
+       cishouseholds.impute.merge_previous_imputed_values
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.post_imputation_wrapper.html">
+       cishouseholds.impute.post_imputation_wrapper
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.impute.weighted_distance.html">
+       cishouseholds.impute.weighted_distance
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.log.html">
+     cishouseholds.log
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/>
+    <label for="toctree-checkbox-9">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.log.SplunkLogger.html">
+       cishouseholds.log.SplunkLogger
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.merge.html">
+     cishouseholds.merge
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/>
+    <label for="toctree-checkbox-10">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.merge.left_join_keep_only_non_null_right.html">
+       cishouseholds.merge.left_join_keep_only_non_null_right
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.merge.left_join_keep_right.html">
+       cishouseholds.merge.left_join_keep_right
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.merge.null_safe_join.html">
+       cishouseholds.merge.null_safe_join
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.merge.union_dataframes_to_hive.html">
+       cishouseholds.merge.union_dataframes_to_hive
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.merge.union_multiple_tables.html">
+       cishouseholds.merge.union_multiple_tables
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.phm.html">
+     cishouseholds.phm
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/>
+    <label for="toctree-checkbox-11">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.phm.high_level_phm_transformations.html">
+       cishouseholds.phm.high_level_phm_transformations
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/>
+      <label for="toctree-checkbox-12">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.phm.high_level_phm_transformations.high_level_phm_transformations.html">
+         cishouseholds.phm.high_level_phm_transformations.high_level_phm_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.phm.high_level_phm_transformations.preprocessing.html">
+         cishouseholds.phm.high_level_phm_transformations.preprocessing
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.phm.json_decode.html">
+       cishouseholds.phm.json_decode
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/>
+      <label for="toctree-checkbox-13">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.phm.json_decode.decode_phm_json.html">
+         cishouseholds.phm.json_decode.decode_phm_json
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.phm.reporting_class.html">
+       cishouseholds.phm.reporting_class
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/>
+      <label for="toctree-checkbox-14">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.phm.reporting_class.Report.html">
+         cishouseholds.phm.reporting_class.Report
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.html">
+     cishouseholds.pipeline
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" type="checkbox"/>
+    <label for="toctree-checkbox-15">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.custom_checkpoint.html">
+       cishouseholds.pipeline.custom_checkpoint
+      </a>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.config.html">
+       cishouseholds.pipeline.config
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" type="checkbox"/>
+      <label for="toctree-checkbox-16">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.config.get_config.html">
+         cishouseholds.pipeline.config.get_config
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.config.get_secondary_config.html">
+         cishouseholds.pipeline.config.get_secondary_config
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.covid_event_transformations.html">
+       cishouseholds.pipeline.covid_event_transformations
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" type="checkbox"/>
+      <label for="toctree-checkbox-17">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.covid_event_transformations.clean_inconsistent_event_detail_part_1.html">
+         cishouseholds.pipeline.covid_event_transformations.clean_inconsistent_event_detail_part_1
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.covid_event_transformations.clean_inconsistent_event_detail_part_2.html">
+         cishouseholds.pipeline.covid_event_transformations.clean_inconsistent_event_detail_part_2
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.covid_event_transformations.covid_event_transformations.html">
+         cishouseholds.pipeline.covid_event_transformations.covid_event_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.covid_event_transformations.data_dependent_derivations.html">
+         cishouseholds.pipeline.covid_event_transformations.data_dependent_derivations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.covid_event_transformations.derive_contact_any_covid_covid_variables.html">
+         cishouseholds.pipeline.covid_event_transformations.derive_contact_any_covid_covid_variables
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.covid_event_transformations.derive_new_columns.html">
+         cishouseholds.pipeline.covid_event_transformations.derive_new_columns
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.covid_event_transformations.edit_existing_columns.html">
+         cishouseholds.pipeline.covid_event_transformations.edit_existing_columns
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.html">
+       cishouseholds.pipeline.demographic_transformations
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" type="checkbox"/>
+      <label for="toctree-checkbox-18">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.demographic_transformations.html">
+         cishouseholds.pipeline.demographic_transformations.demographic_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.derive_people_in_household_count.html">
+         cishouseholds.pipeline.demographic_transformations.derive_people_in_household_count
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.ethnicity_transformations.html">
+         cishouseholds.pipeline.demographic_transformations.ethnicity_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.fill_forwards_and_backwards.html">
+         cishouseholds.pipeline.demographic_transformations.fill_forwards_and_backwards
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.generic_processing.html">
+         cishouseholds.pipeline.demographic_transformations.generic_processing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.geography_dependent_transformations.html">
+         cishouseholds.pipeline.demographic_transformations.geography_dependent_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.impute_key_columns.html">
+         cishouseholds.pipeline.demographic_transformations.impute_key_columns
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.join_statistical_geographies.html">
+         cishouseholds.pipeline.demographic_transformations.join_statistical_geographies
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 current active has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.html">
+       cishouseholds.pipeline.design_weights
+      </a>
+      <input checked="" class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" type="checkbox"/>
+      <label for="toctree-checkbox-19">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul class="current">
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.design_weights.assign_sample_new_previous.html">
+         cishouseholds.pipeline.design_weights.assign_sample_new_previous
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.design_weights.assign_tranche_factor.html">
+         cishouseholds.pipeline.design_weights.assign_tranche_factor
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.design_weights.calculate_antibody_design_weights_without_migration.html">
+         cishouseholds.pipeline.design_weights.calculate_antibody_design_weights_without_migration
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.design_weights.calculate_combined_design_weights.html">
+         cishouseholds.pipeline.design_weights.calculate_combined_design_weights
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.design_weights.calculate_design_weights.html">
+         cishouseholds.pipeline.design_weights.calculate_design_weights
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.design_weights.calculate_raw_antibody_design_weights_with_migration.html">
+         cishouseholds.pipeline.design_weights.calculate_raw_antibody_design_weights_with_migration
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.design_weights.calculate_raw_design_weight_swabs.html">
+         cishouseholds.pipeline.design_weights.calculate_raw_design_weight_swabs
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.design_weights.calculate_scaled_antibody_design_weights.html">
+         cishouseholds.pipeline.design_weights.calculate_scaled_antibody_design_weights
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.design_weights.calculate_scaled_swab_design_weights.html">
+         cishouseholds.pipeline.design_weights.calculate_scaled_swab_design_weights
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.design_weights.clean_df.html">
+         cishouseholds.pipeline.design_weights.clean_df
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.design_weights.join_and_process_lookups.html">
+         cishouseholds.pipeline.design_weights.join_and_process_lookups
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.design_weights.recode_columns.html">
+         cishouseholds.pipeline.design_weights.recode_columns
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.design_weights.reformat_age_population_table.html">
+         cishouseholds.pipeline.design_weights.reformat_age_population_table
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.design_weights.scale_antibody_design_weights.html">
+         cishouseholds.pipeline.design_weights.scale_antibody_design_weights
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.design_weights.scale_swab_design_weight.html">
+         cishouseholds.pipeline.design_weights.scale_swab_design_weight
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.design_weights.update_population_values.html">
+         cishouseholds.pipeline.design_weights.update_population_values
+        </a>
+       </li>
+       <li class="toctree-l4 current active">
+        <a class="current reference internal" href="#">
+         cishouseholds.pipeline.design_weights.validate_design_weights
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.design_weights.DesignWeightError.html">
+         cishouseholds.pipeline.design_weights.DesignWeightError
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.generate_outputs.html">
+       cishouseholds.pipeline.generate_outputs
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" type="checkbox"/>
+      <label for="toctree-checkbox-20">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.generate_outputs.check_columns.html">
+         cishouseholds.pipeline.generate_outputs.check_columns
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.generate_outputs.configure_outputs.html">
+         cishouseholds.pipeline.generate_outputs.configure_outputs
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.generate_outputs.generate_sample.html">
+         cishouseholds.pipeline.generate_outputs.generate_sample
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.generate_outputs.map_output_values_and_column_names.html">
+         cishouseholds.pipeline.generate_outputs.map_output_values_and_column_names
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.generate_outputs.write_csv_rename.html">
+         cishouseholds.pipeline.generate_outputs.write_csv_rename
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.high_level_transformations.html">
+       cishouseholds.pipeline.high_level_transformations
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-21" name="toctree-checkbox-21" type="checkbox"/>
+      <label for="toctree-checkbox-21">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.high_level_transformations.create_formatted_datetime_string_columns.html">
+         cishouseholds.pipeline.high_level_transformations.create_formatted_datetime_string_columns
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.high_level_transformations.fill_forwards.html">
+         cishouseholds.pipeline.high_level_transformations.fill_forwards
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.high_level_transformations.fix_timestamps.html">
+         cishouseholds.pipeline.high_level_transformations.fix_timestamps
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.high_level_transformations.get_differences.html">
+         cishouseholds.pipeline.high_level_transformations.get_differences
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.high_level_transformations.pivot_vaccine_columns.html">
+         cishouseholds.pipeline.high_level_transformations.pivot_vaccine_columns
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.input_file_processing.html">
+       cishouseholds.pipeline.input_file_processing
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-22" name="toctree-checkbox-22" type="checkbox"/>
+      <label for="toctree-checkbox-22">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.input_file_processing.extract_input_data.html">
+         cishouseholds.pipeline.input_file_processing.extract_input_data
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.input_file_processing.extract_lookup_csv.html">
+         cishouseholds.pipeline.input_file_processing.extract_lookup_csv
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.input_file_processing.extract_validate_transform_input_data.html">
+         cishouseholds.pipeline.input_file_processing.extract_validate_transform_input_data
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.input_file_processing.InvalidFileError.html">
+         cishouseholds.pipeline.input_file_processing.InvalidFileError
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.input_file_stages.html">
+       cishouseholds.pipeline.input_file_stages
+      </a>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.job_transformations.html">
+       cishouseholds.pipeline.job_transformations
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-23" name="toctree-checkbox-23" type="checkbox"/>
+      <label for="toctree-checkbox-23">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.job_transformations.create_job_lookup.html">
+         cishouseholds.pipeline.job_transformations.create_job_lookup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.job_transformations.data_dependent_derivations.html">
+         cishouseholds.pipeline.job_transformations.data_dependent_derivations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.job_transformations.fill_forwards.html">
+         cishouseholds.pipeline.job_transformations.fill_forwards
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.job_transformations.get_unprocessed_rows.html">
+         cishouseholds.pipeline.job_transformations.get_unprocessed_rows
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.job_transformations.job_transformations.html">
+         cishouseholds.pipeline.job_transformations.job_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.job_transformations.preprocessing.html">
+         cishouseholds.pipeline.job_transformations.preprocessing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.job_transformations.repopulate_missing_from_original.html">
+         cishouseholds.pipeline.job_transformations.repopulate_missing_from_original
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.lab_transformations.html">
+       cishouseholds.pipeline.lab_transformations
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-24" name="toctree-checkbox-24" type="checkbox"/>
+      <label for="toctree-checkbox-24">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lab_transformations.assign_match_type.html">
+         cishouseholds.pipeline.lab_transformations.assign_match_type
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lab_transformations.join_blood_lookup_df.html">
+         cishouseholds.pipeline.lab_transformations.join_blood_lookup_df
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lab_transformations.join_swab_lookup_df.html">
+         cishouseholds.pipeline.lab_transformations.join_swab_lookup_df
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lab_transformations.lab_transformations.html">
+         cishouseholds.pipeline.lab_transformations.lab_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lab_transformations.match_type_blood.html">
+         cishouseholds.pipeline.lab_transformations.match_type_blood
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lab_transformations.match_type_swab.html">
+         cishouseholds.pipeline.lab_transformations.match_type_swab
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.load.html">
+       cishouseholds.pipeline.load
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-25" name="toctree-checkbox-25" type="checkbox"/>
+      <label for="toctree-checkbox-25">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.load.add_error_file_log_entry.html">
+         cishouseholds.pipeline.load.add_error_file_log_entry
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.load.add_run_log_entry.html">
+         cishouseholds.pipeline.load.add_run_log_entry
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.load.add_run_status.html">
+         cishouseholds.pipeline.load.add_run_status
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.load.add_table_log_entry.html">
+         cishouseholds.pipeline.load.add_table_log_entry
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.load.check_table_exists.html">
+         cishouseholds.pipeline.load.check_table_exists
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.load.create_processed_file_log_entry.html">
+         cishouseholds.pipeline.load.create_processed_file_log_entry
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.load.delete_tables.html">
+         cishouseholds.pipeline.load.delete_tables
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.load.extract_from_table.html">
+         cishouseholds.pipeline.load.extract_from_table
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.load.get_full_table_name.html">
+         cishouseholds.pipeline.load.get_full_table_name
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.load.get_run_id.html">
+         cishouseholds.pipeline.load.get_run_id
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.load.update_processed_file_log.html">
+         cishouseholds.pipeline.load.update_processed_file_log
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.load.update_table.html">
+         cishouseholds.pipeline.load.update_table
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.load.update_table_and_log_source_files.html">
+         cishouseholds.pipeline.load.update_table_and_log_source_files
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.load.TableNotFoundError.html">
+         cishouseholds.pipeline.load.TableNotFoundError
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.logging.html">
+       cishouseholds.pipeline.logging
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-26" name="toctree-checkbox-26" type="checkbox"/>
+      <label for="toctree-checkbox-26">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.logging.check_survey_table_lengths.html">
+         cishouseholds.pipeline.logging.check_survey_table_lengths
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.html">
+       cishouseholds.pipeline.lookup_and_regex_transformations
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-27" name="toctree-checkbox-27" type="checkbox"/>
+      <label for="toctree-checkbox-27">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.blood_past_positive_transformations.html">
+         cishouseholds.pipeline.lookup_and_regex_transformations.blood_past_positive_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.clean_historic_geography_lookup.html">
+         cishouseholds.pipeline.lookup_and_regex_transformations.clean_historic_geography_lookup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.clean_participant_extract_phm.html">
+         cishouseholds.pipeline.lookup_and_regex_transformations.clean_participant_extract_phm
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.create_historic_visits.html">
+         cishouseholds.pipeline.lookup_and_regex_transformations.create_historic_visits
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.derive_overall_vaccination.html">
+         cishouseholds.pipeline.lookup_and_regex_transformations.derive_overall_vaccination
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.design_weights_lookup_transformations.html">
+         cishouseholds.pipeline.lookup_and_regex_transformations.design_weights_lookup_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.nims_transformations.html">
+         cishouseholds.pipeline.lookup_and_regex_transformations.nims_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.ordered_household_id_tranformations.html">
+         cishouseholds.pipeline.lookup_and_regex_transformations.ordered_household_id_tranformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.process_healthcare_regex.html">
+         cishouseholds.pipeline.lookup_and_regex_transformations.process_healthcare_regex
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.process_vaccine_regex.html">
+         cishouseholds.pipeline.lookup_and_regex_transformations.process_vaccine_regex
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.reclassify_work_variables.html">
+         cishouseholds.pipeline.lookup_and_regex_transformations.reclassify_work_variables
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.transform_cis_soc_data.html">
+         cishouseholds.pipeline.lookup_and_regex_transformations.transform_cis_soc_data
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.transform_from_lookups.html">
+         cishouseholds.pipeline.lookup_and_regex_transformations.transform_from_lookups
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.manifest.html">
+       cishouseholds.pipeline.manifest
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-28" name="toctree-checkbox-28" type="checkbox"/>
+      <label for="toctree-checkbox-28">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.manifest.Manifest.html">
+         cishouseholds.pipeline.manifest.Manifest
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.manifest.ManifestError.html">
+         cishouseholds.pipeline.manifest.ManifestError
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.mapping.html">
+       cishouseholds.pipeline.mapping
+      </a>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.html">
+       cishouseholds.pipeline.pipeline_stages
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-29" name="toctree-checkbox-29" type="checkbox"/>
+      <label for="toctree-checkbox-29">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.aggregated_output.html">
+         cishouseholds.pipeline.pipeline_stages.aggregated_output
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.backup_files.html">
+         cishouseholds.pipeline.pipeline_stages.backup_files
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.blind_csv_to_table.html">
+         cishouseholds.pipeline.pipeline_stages.blind_csv_to_table
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.calculate_household_level_populations.html">
+         cishouseholds.pipeline.pipeline_stages.calculate_household_level_populations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.check_predictions.html">
+         cishouseholds.pipeline.pipeline_stages.check_predictions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.compare.html">
+         cishouseholds.pipeline.pipeline_stages.compare
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.create_vaccine_regex_lookup.html">
+         cishouseholds.pipeline.pipeline_stages.create_vaccine_regex_lookup
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.csv_to_table.html">
+         cishouseholds.pipeline.pipeline_stages.csv_to_table
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.delete_tables_stage.html">
+         cishouseholds.pipeline.pipeline_stages.delete_tables_stage
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.execute_covid_transformations.html">
+         cishouseholds.pipeline.pipeline_stages.execute_covid_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.execute_demographic_transformations.html">
+         cishouseholds.pipeline.pipeline_stages.execute_demographic_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.execute_job_transformations.html">
+         cishouseholds.pipeline.pipeline_stages.execute_job_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.execute_lab_transformations.html">
+         cishouseholds.pipeline.pipeline_stages.execute_lab_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.execute_post_union_processing.html">
+         cishouseholds.pipeline.pipeline_stages.execute_post_union_processing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.execute_vaccine_transformations.html">
+         cishouseholds.pipeline.pipeline_stages.execute_vaccine_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.execute_visit_transformations.html">
+         cishouseholds.pipeline.pipeline_stages.execute_visit_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.filter_dataframe.html">
+         cishouseholds.pipeline.pipeline_stages.filter_dataframe
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.generate_dummy_data.html">
+         cishouseholds.pipeline.pipeline_stages.generate_dummy_data
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.generate_input_processing_function.html">
+         cishouseholds.pipeline.pipeline_stages.generate_input_processing_function
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.join_lookup_table.html">
+         cishouseholds.pipeline.pipeline_stages.join_lookup_table
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.lab_report.html">
+         cishouseholds.pipeline.pipeline_stages.lab_report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.phm_output_report.html">
+         cishouseholds.pipeline.pipeline_stages.phm_output_report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.phm_validation_report.html">
+         cishouseholds.pipeline.pipeline_stages.phm_validation_report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.process_soc_deltas.html">
+         cishouseholds.pipeline.pipeline_stages.process_soc_deltas
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.record_level_interface.html">
+         cishouseholds.pipeline.pipeline_stages.record_level_interface
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.register_pipeline_stage.html">
+         cishouseholds.pipeline.pipeline_stages.register_pipeline_stage
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.report.html">
+         cishouseholds.pipeline.pipeline_stages.report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.sample_df.html">
+         cishouseholds.pipeline.pipeline_stages.sample_df
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.sample_file_ETL.html">
+         cishouseholds.pipeline.pipeline_stages.sample_file_ETL
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.table_to_table.html">
+         cishouseholds.pipeline.pipeline_stages.table_to_table
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.tables_to_csv.html">
+         cishouseholds.pipeline.pipeline_stages.tables_to_csv
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.union_historical_visits.html">
+         cishouseholds.pipeline.pipeline_stages.union_historical_visits
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.union_survey_response_files.html">
+         cishouseholds.pipeline.pipeline_stages.union_survey_response_files
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.update_vaccine_types.html">
+         cishouseholds.pipeline.pipeline_stages.update_vaccine_types
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.validate_survey_responses.html">
+         cishouseholds.pipeline.pipeline_stages.validate_survey_responses
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.post_union_processing.html">
+       cishouseholds.pipeline.post_union_processing
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-30" name="toctree-checkbox-30" type="checkbox"/>
+      <label for="toctree-checkbox-30">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.post_union_processing.generic_processing.html">
+         cishouseholds.pipeline.post_union_processing.generic_processing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.post_union_processing.post_union_processing.html">
+         cishouseholds.pipeline.post_union_processing.post_union_processing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.post_union_processing.raw_copies.html">
+         cishouseholds.pipeline.post_union_processing.raw_copies
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.reporting.html">
+       cishouseholds.pipeline.reporting
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-31" name="toctree-checkbox-31" type="checkbox"/>
+      <label for="toctree-checkbox-31">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.reporting.count_variable_option.html">
+         cishouseholds.pipeline.reporting.count_variable_option
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.reporting.dfs_to_bytes_excel.html">
+         cishouseholds.pipeline.reporting.dfs_to_bytes_excel
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.reporting.generate_error_table.html">
+         cishouseholds.pipeline.reporting.generate_error_table
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.reporting.generate_lab_report.html">
+         cishouseholds.pipeline.reporting.generate_lab_report
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.reporting.multiple_visit_1_day.html">
+         cishouseholds.pipeline.reporting.multiple_visit_1_day
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.run.html">
+       cishouseholds.pipeline.run
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-32" name="toctree-checkbox-32" type="checkbox"/>
+      <label for="toctree-checkbox-32">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.run.check_conditions.html">
+         cishouseholds.pipeline.run.check_conditions
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.run.check_dependencies.html">
+         cishouseholds.pipeline.run.check_dependencies
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.run.run_from_config.html">
+         cishouseholds.pipeline.run.run_from_config
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.run.run_pipeline_stages.html">
+         cishouseholds.pipeline.run.run_pipeline_stages
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.run.spark_description_set.html">
+         cishouseholds.pipeline.run.spark_description_set
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.run.MissingTablesError.html">
+         cishouseholds.pipeline.run.MissingTablesError
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.timestamp_map.html">
+       cishouseholds.pipeline.timestamp_map
+      </a>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.translate.html">
+       cishouseholds.pipeline.translate
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-33" name="toctree-checkbox-33" type="checkbox"/>
+      <label for="toctree-checkbox-33">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.translate.backup_and_replace_translation_lookup_df.html">
+         cishouseholds.pipeline.translate.backup_and_replace_translation_lookup_df
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.translate.export_responses_to_be_translated_to_translation_directory.html">
+         cishouseholds.pipeline.translate.export_responses_to_be_translated_to_translation_directory
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.translate.get_new_translations_from_completed_translations_directory.html">
+         cishouseholds.pipeline.translate.get_new_translations_from_completed_translations_directory
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.translate.get_welsh_responses_to_be_translated.html">
+         cishouseholds.pipeline.translate.get_welsh_responses_to_be_translated
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.translate.translate_welsh_free_text_responses_digital.html">
+         cishouseholds.pipeline.translate.translate_welsh_free_text_responses_digital
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.translate.translate_welsh_survey_responses.html">
+         cishouseholds.pipeline.translate.translate_welsh_survey_responses
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.vaccine_transformations.html">
+       cishouseholds.pipeline.vaccine_transformations
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-34" name="toctree-checkbox-34" type="checkbox"/>
+      <label for="toctree-checkbox-34">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.vaccine_transformations.deduplication.html">
+         cishouseholds.pipeline.vaccine_transformations.deduplication
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.vaccine_transformations.first_second_doses.html">
+         cishouseholds.pipeline.vaccine_transformations.first_second_doses
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.vaccine_transformations.mapping.html">
+         cishouseholds.pipeline.vaccine_transformations.mapping
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.vaccine_transformations.preprocessing.html">
+         cishouseholds.pipeline.vaccine_transformations.preprocessing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.vaccine_transformations.vaccine_transformations.html">
+         cishouseholds.pipeline.vaccine_transformations.vaccine_transformations
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.validation_calls.html">
+       cishouseholds.pipeline.validation_calls
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-35" name="toctree-checkbox-35" type="checkbox"/>
+      <label for="toctree-checkbox-35">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.validation_calls.validation_ETL.html">
+         cishouseholds.pipeline.validation_calls.validation_ETL
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.validation_calls.validation_calls.html">
+         cishouseholds.pipeline.validation_calls.validation_calls
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.validation_schema.html">
+       cishouseholds.pipeline.validation_schema
+      </a>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.html">
+       cishouseholds.pipeline.version_specific_processing
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-36" name="toctree-checkbox-36" type="checkbox"/>
+      <label for="toctree-checkbox-36">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.digital_transformations.html">
+         cishouseholds.pipeline.version_specific_processing.digital_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.mult_version.html">
+         cishouseholds.pipeline.version_specific_processing.mult_version
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.participant_extract_digital.html">
+         cishouseholds.pipeline.version_specific_processing.participant_extract_digital
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.participant_extract_phm.html">
+         cishouseholds.pipeline.version_specific_processing.participant_extract_phm
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.phm_transformations.html">
+         cishouseholds.pipeline.version_specific_processing.phm_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.v0_transformations.html">
+         cishouseholds.pipeline.version_specific_processing.v0_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.v1_transformations.html">
+         cishouseholds.pipeline.version_specific_processing.v1_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.v2_transformations.html">
+         cishouseholds.pipeline.version_specific_processing.v2_transformations
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.visit_transformations.html">
+       cishouseholds.pipeline.visit_transformations
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-37" name="toctree-checkbox-37" type="checkbox"/>
+      <label for="toctree-checkbox-37">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.visit_transformations.create_ever_variable_columns.html">
+         cishouseholds.pipeline.visit_transformations.create_ever_variable_columns
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.visit_transformations.visit_derivations.html">
+         cishouseholds.pipeline.visit_transformations.visit_derivations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.visit_transformations.visit_transformations.html">
+         cishouseholds.pipeline.visit_transformations.visit_transformations
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.prediction_checker_class.html">
+     cishouseholds.prediction_checker_class
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-38" name="toctree-checkbox-38" type="checkbox"/>
+    <label for="toctree-checkbox-38">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.prediction_checker_class.PredictionChecker.html">
+       cishouseholds.prediction_checker_class.PredictionChecker
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.prepare_for_union.html">
+     cishouseholds.prepare_for_union
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-39" name="toctree-checkbox-39" type="checkbox"/>
+    <label for="toctree-checkbox-39">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.prepare_for_union.add_after.html">
+       cishouseholds.prepare_for_union.add_after
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.prepare_for_union.add_missing_columns.html">
+       cishouseholds.prepare_for_union.add_missing_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.prepare_for_union.get_missing_columns.html">
+       cishouseholds.prepare_for_union.get_missing_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.prepare_for_union.prepare_for_union.html">
+       cishouseholds.prepare_for_union.prepare_for_union
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pyspark_utils.html">
+     cishouseholds.pyspark_utils
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-40" name="toctree-checkbox-40" type="checkbox"/>
+    <label for="toctree-checkbox-40">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pyspark_utils.column_to_distinct_list.html">
+       cishouseholds.pyspark_utils.column_to_distinct_list
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pyspark_utils.column_to_list.html">
+       cishouseholds.pyspark_utils.column_to_list
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pyspark_utils.convert_array_strings_to_array.html">
+       cishouseholds.pyspark_utils.convert_array_strings_to_array
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pyspark_utils.convert_array_to_array_strings.html">
+       cishouseholds.pyspark_utils.convert_array_to_array_strings
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pyspark_utils.convert_cerberus_schema_to_pyspark.html">
+       cishouseholds.pyspark_utils.convert_cerberus_schema_to_pyspark
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pyspark_utils.get_or_create_spark_session.html">
+       cishouseholds.pyspark_utils.get_or_create_spark_session
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pyspark_utils.get_spark_application_id.html">
+       cishouseholds.pyspark_utils.get_spark_application_id
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pyspark_utils.get_spark_ui_url.html">
+       cishouseholds.pyspark_utils.get_spark_ui_url
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pyspark_utils.running_in_dev_test.html">
+       cishouseholds.pyspark_utils.running_in_dev_test
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.regex.html">
+     cishouseholds.regex
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-41" name="toctree-checkbox-41" type="checkbox"/>
+    <label for="toctree-checkbox-41">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.regex.match_with_exclusions.html">
+       cishouseholds.regex.match_with_exclusions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.regex.healthcare_regex.html">
+       cishouseholds.regex.healthcare_regex
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.regex.regex_patterns.html">
+       cishouseholds.regex.regex_patterns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.regex.vaccine_regex.html">
+       cishouseholds.regex.vaccine_regex
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.udfs.html">
+     cishouseholds.udfs
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-42" name="toctree-checkbox-42" type="checkbox"/>
+    <label for="toctree-checkbox-42">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.udfs.generate_sample_proportional_to_size_udf.html">
+       cishouseholds.udfs.generate_sample_proportional_to_size_udf
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.validate.html">
+     cishouseholds.validate
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-43" name="toctree-checkbox-43" type="checkbox"/>
+    <label for="toctree-checkbox-43">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.validate.check_lookup_table_joined_columns_unique.html">
+       cishouseholds.validate.check_lookup_table_joined_columns_unique
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.validate.check_singular_match.html">
+       cishouseholds.validate.check_singular_match
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.validate.normalise_schema.html">
+       cishouseholds.validate.normalise_schema
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.validate.validate_config_stages.html">
+       cishouseholds.validate.validate_config_stages
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.validate.validate_csv_fields.html">
+       cishouseholds.validate.validate_csv_fields
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.validate.validate_csv_header.html">
+       cishouseholds.validate.validate_csv_header
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.validate.validate_files.html">
+       cishouseholds.validate.validate_files
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.validate.validate_processed_files.html">
+       cishouseholds.validate.validate_processed_files
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.validate.ConfigError.html">
+       cishouseholds.validate.ConfigError
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.validate_class.html">
+     cishouseholds.validate_class
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-44" name="toctree-checkbox-44" type="checkbox"/>
+    <label for="toctree-checkbox-44">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.validate_class.SparkValidate.html">
+       cishouseholds.validate_class.SparkValidate
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="cishouseholds.pipeline.html">
+   cishouseholds.pipeline
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-45" name="toctree-checkbox-45" type="checkbox"/>
+  <label for="toctree-checkbox-45">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2">
+    <a class="reference internal" href="cishouseholds.pipeline.custom_checkpoint.html">
+     cishouseholds.pipeline.custom_checkpoint
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.config.html">
+     cishouseholds.pipeline.config
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-46" name="toctree-checkbox-46" type="checkbox"/>
+    <label for="toctree-checkbox-46">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.config.get_config.html">
+       cishouseholds.pipeline.config.get_config
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.config.get_secondary_config.html">
+       cishouseholds.pipeline.config.get_secondary_config
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.covid_event_transformations.html">
+     cishouseholds.pipeline.covid_event_transformations
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-47" name="toctree-checkbox-47" type="checkbox"/>
+    <label for="toctree-checkbox-47">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.covid_event_transformations.clean_inconsistent_event_detail_part_1.html">
+       cishouseholds.pipeline.covid_event_transformations.clean_inconsistent_event_detail_part_1
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.covid_event_transformations.clean_inconsistent_event_detail_part_2.html">
+       cishouseholds.pipeline.covid_event_transformations.clean_inconsistent_event_detail_part_2
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.covid_event_transformations.covid_event_transformations.html">
+       cishouseholds.pipeline.covid_event_transformations.covid_event_transformations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.covid_event_transformations.data_dependent_derivations.html">
+       cishouseholds.pipeline.covid_event_transformations.data_dependent_derivations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.covid_event_transformations.derive_contact_any_covid_covid_variables.html">
+       cishouseholds.pipeline.covid_event_transformations.derive_contact_any_covid_covid_variables
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.covid_event_transformations.derive_new_columns.html">
+       cishouseholds.pipeline.covid_event_transformations.derive_new_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.covid_event_transformations.edit_existing_columns.html">
+       cishouseholds.pipeline.covid_event_transformations.edit_existing_columns
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.html">
+     cishouseholds.pipeline.demographic_transformations
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-48" name="toctree-checkbox-48" type="checkbox"/>
+    <label for="toctree-checkbox-48">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.demographic_transformations.html">
+       cishouseholds.pipeline.demographic_transformations.demographic_transformations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.derive_people_in_household_count.html">
+       cishouseholds.pipeline.demographic_transformations.derive_people_in_household_count
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.ethnicity_transformations.html">
+       cishouseholds.pipeline.demographic_transformations.ethnicity_transformations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.fill_forwards_and_backwards.html">
+       cishouseholds.pipeline.demographic_transformations.fill_forwards_and_backwards
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.generic_processing.html">
+       cishouseholds.pipeline.demographic_transformations.generic_processing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.geography_dependent_transformations.html">
+       cishouseholds.pipeline.demographic_transformations.geography_dependent_transformations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.impute_key_columns.html">
+       cishouseholds.pipeline.demographic_transformations.impute_key_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.demographic_transformations.join_statistical_geographies.html">
+       cishouseholds.pipeline.demographic_transformations.join_statistical_geographies
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 current active has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.design_weights.html">
+     cishouseholds.pipeline.design_weights
+    </a>
+    <input checked="" class="toctree-checkbox" id="toctree-checkbox-49" name="toctree-checkbox-49" type="checkbox"/>
+    <label for="toctree-checkbox-49">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul class="current">
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.assign_sample_new_previous.html">
+       cishouseholds.pipeline.design_weights.assign_sample_new_previous
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.assign_tranche_factor.html">
+       cishouseholds.pipeline.design_weights.assign_tranche_factor
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.calculate_antibody_design_weights_without_migration.html">
+       cishouseholds.pipeline.design_weights.calculate_antibody_design_weights_without_migration
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.calculate_combined_design_weights.html">
+       cishouseholds.pipeline.design_weights.calculate_combined_design_weights
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.calculate_design_weights.html">
+       cishouseholds.pipeline.design_weights.calculate_design_weights
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.calculate_raw_antibody_design_weights_with_migration.html">
+       cishouseholds.pipeline.design_weights.calculate_raw_antibody_design_weights_with_migration
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.calculate_raw_design_weight_swabs.html">
+       cishouseholds.pipeline.design_weights.calculate_raw_design_weight_swabs
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.calculate_scaled_antibody_design_weights.html">
+       cishouseholds.pipeline.design_weights.calculate_scaled_antibody_design_weights
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.calculate_scaled_swab_design_weights.html">
+       cishouseholds.pipeline.design_weights.calculate_scaled_swab_design_weights
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.clean_df.html">
+       cishouseholds.pipeline.design_weights.clean_df
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.join_and_process_lookups.html">
+       cishouseholds.pipeline.design_weights.join_and_process_lookups
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.recode_columns.html">
+       cishouseholds.pipeline.design_weights.recode_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.reformat_age_population_table.html">
+       cishouseholds.pipeline.design_weights.reformat_age_population_table
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.scale_antibody_design_weights.html">
+       cishouseholds.pipeline.design_weights.scale_antibody_design_weights
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.scale_swab_design_weight.html">
+       cishouseholds.pipeline.design_weights.scale_swab_design_weight
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.update_population_values.html">
+       cishouseholds.pipeline.design_weights.update_population_values
+      </a>
+     </li>
+     <li class="toctree-l3 current active">
+      <a class="current reference internal" href="#">
+       cishouseholds.pipeline.design_weights.validate_design_weights
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.design_weights.DesignWeightError.html">
+       cishouseholds.pipeline.design_weights.DesignWeightError
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.generate_outputs.html">
+     cishouseholds.pipeline.generate_outputs
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-50" name="toctree-checkbox-50" type="checkbox"/>
+    <label for="toctree-checkbox-50">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.generate_outputs.check_columns.html">
+       cishouseholds.pipeline.generate_outputs.check_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.generate_outputs.configure_outputs.html">
+       cishouseholds.pipeline.generate_outputs.configure_outputs
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.generate_outputs.generate_sample.html">
+       cishouseholds.pipeline.generate_outputs.generate_sample
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.generate_outputs.map_output_values_and_column_names.html">
+       cishouseholds.pipeline.generate_outputs.map_output_values_and_column_names
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.generate_outputs.write_csv_rename.html">
+       cishouseholds.pipeline.generate_outputs.write_csv_rename
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.high_level_transformations.html">
+     cishouseholds.pipeline.high_level_transformations
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-51" name="toctree-checkbox-51" type="checkbox"/>
+    <label for="toctree-checkbox-51">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.high_level_transformations.create_formatted_datetime_string_columns.html">
+       cishouseholds.pipeline.high_level_transformations.create_formatted_datetime_string_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.high_level_transformations.fill_forwards.html">
+       cishouseholds.pipeline.high_level_transformations.fill_forwards
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.high_level_transformations.fix_timestamps.html">
+       cishouseholds.pipeline.high_level_transformations.fix_timestamps
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.high_level_transformations.get_differences.html">
+       cishouseholds.pipeline.high_level_transformations.get_differences
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.high_level_transformations.pivot_vaccine_columns.html">
+       cishouseholds.pipeline.high_level_transformations.pivot_vaccine_columns
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.input_file_processing.html">
+     cishouseholds.pipeline.input_file_processing
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-52" name="toctree-checkbox-52" type="checkbox"/>
+    <label for="toctree-checkbox-52">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.input_file_processing.extract_input_data.html">
+       cishouseholds.pipeline.input_file_processing.extract_input_data
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.input_file_processing.extract_lookup_csv.html">
+       cishouseholds.pipeline.input_file_processing.extract_lookup_csv
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.input_file_processing.extract_validate_transform_input_data.html">
+       cishouseholds.pipeline.input_file_processing.extract_validate_transform_input_data
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.input_file_processing.InvalidFileError.html">
+       cishouseholds.pipeline.input_file_processing.InvalidFileError
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cishouseholds.pipeline.input_file_stages.html">
+     cishouseholds.pipeline.input_file_stages
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.job_transformations.html">
+     cishouseholds.pipeline.job_transformations
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-53" name="toctree-checkbox-53" type="checkbox"/>
+    <label for="toctree-checkbox-53">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.job_transformations.create_job_lookup.html">
+       cishouseholds.pipeline.job_transformations.create_job_lookup
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.job_transformations.data_dependent_derivations.html">
+       cishouseholds.pipeline.job_transformations.data_dependent_derivations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.job_transformations.fill_forwards.html">
+       cishouseholds.pipeline.job_transformations.fill_forwards
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.job_transformations.get_unprocessed_rows.html">
+       cishouseholds.pipeline.job_transformations.get_unprocessed_rows
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.job_transformations.job_transformations.html">
+       cishouseholds.pipeline.job_transformations.job_transformations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.job_transformations.preprocessing.html">
+       cishouseholds.pipeline.job_transformations.preprocessing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.job_transformations.repopulate_missing_from_original.html">
+       cishouseholds.pipeline.job_transformations.repopulate_missing_from_original
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.lab_transformations.html">
+     cishouseholds.pipeline.lab_transformations
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-54" name="toctree-checkbox-54" type="checkbox"/>
+    <label for="toctree-checkbox-54">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lab_transformations.assign_match_type.html">
+       cishouseholds.pipeline.lab_transformations.assign_match_type
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lab_transformations.join_blood_lookup_df.html">
+       cishouseholds.pipeline.lab_transformations.join_blood_lookup_df
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lab_transformations.join_swab_lookup_df.html">
+       cishouseholds.pipeline.lab_transformations.join_swab_lookup_df
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lab_transformations.lab_transformations.html">
+       cishouseholds.pipeline.lab_transformations.lab_transformations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lab_transformations.match_type_blood.html">
+       cishouseholds.pipeline.lab_transformations.match_type_blood
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lab_transformations.match_type_swab.html">
+       cishouseholds.pipeline.lab_transformations.match_type_swab
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.load.html">
+     cishouseholds.pipeline.load
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-55" name="toctree-checkbox-55" type="checkbox"/>
+    <label for="toctree-checkbox-55">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.load.add_error_file_log_entry.html">
+       cishouseholds.pipeline.load.add_error_file_log_entry
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.load.add_run_log_entry.html">
+       cishouseholds.pipeline.load.add_run_log_entry
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.load.add_run_status.html">
+       cishouseholds.pipeline.load.add_run_status
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.load.add_table_log_entry.html">
+       cishouseholds.pipeline.load.add_table_log_entry
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.load.check_table_exists.html">
+       cishouseholds.pipeline.load.check_table_exists
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.load.create_processed_file_log_entry.html">
+       cishouseholds.pipeline.load.create_processed_file_log_entry
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.load.delete_tables.html">
+       cishouseholds.pipeline.load.delete_tables
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.load.extract_from_table.html">
+       cishouseholds.pipeline.load.extract_from_table
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.load.get_full_table_name.html">
+       cishouseholds.pipeline.load.get_full_table_name
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.load.get_run_id.html">
+       cishouseholds.pipeline.load.get_run_id
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.load.update_processed_file_log.html">
+       cishouseholds.pipeline.load.update_processed_file_log
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.load.update_table.html">
+       cishouseholds.pipeline.load.update_table
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.load.update_table_and_log_source_files.html">
+       cishouseholds.pipeline.load.update_table_and_log_source_files
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.load.TableNotFoundError.html">
+       cishouseholds.pipeline.load.TableNotFoundError
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.logging.html">
+     cishouseholds.pipeline.logging
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-56" name="toctree-checkbox-56" type="checkbox"/>
+    <label for="toctree-checkbox-56">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.logging.check_survey_table_lengths.html">
+       cishouseholds.pipeline.logging.check_survey_table_lengths
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.html">
+     cishouseholds.pipeline.lookup_and_regex_transformations
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-57" name="toctree-checkbox-57" type="checkbox"/>
+    <label for="toctree-checkbox-57">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.blood_past_positive_transformations.html">
+       cishouseholds.pipeline.lookup_and_regex_transformations.blood_past_positive_transformations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.clean_historic_geography_lookup.html">
+       cishouseholds.pipeline.lookup_and_regex_transformations.clean_historic_geography_lookup
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.clean_participant_extract_phm.html">
+       cishouseholds.pipeline.lookup_and_regex_transformations.clean_participant_extract_phm
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.create_historic_visits.html">
+       cishouseholds.pipeline.lookup_and_regex_transformations.create_historic_visits
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.derive_overall_vaccination.html">
+       cishouseholds.pipeline.lookup_and_regex_transformations.derive_overall_vaccination
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.design_weights_lookup_transformations.html">
+       cishouseholds.pipeline.lookup_and_regex_transformations.design_weights_lookup_transformations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.nims_transformations.html">
+       cishouseholds.pipeline.lookup_and_regex_transformations.nims_transformations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.ordered_household_id_tranformations.html">
+       cishouseholds.pipeline.lookup_and_regex_transformations.ordered_household_id_tranformations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.process_healthcare_regex.html">
+       cishouseholds.pipeline.lookup_and_regex_transformations.process_healthcare_regex
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.process_vaccine_regex.html">
+       cishouseholds.pipeline.lookup_and_regex_transformations.process_vaccine_regex
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.reclassify_work_variables.html">
+       cishouseholds.pipeline.lookup_and_regex_transformations.reclassify_work_variables
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.transform_cis_soc_data.html">
+       cishouseholds.pipeline.lookup_and_regex_transformations.transform_cis_soc_data
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.lookup_and_regex_transformations.transform_from_lookups.html">
+       cishouseholds.pipeline.lookup_and_regex_transformations.transform_from_lookups
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.manifest.html">
+     cishouseholds.pipeline.manifest
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-58" name="toctree-checkbox-58" type="checkbox"/>
+    <label for="toctree-checkbox-58">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.manifest.Manifest.html">
+       cishouseholds.pipeline.manifest.Manifest
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.manifest.ManifestError.html">
+       cishouseholds.pipeline.manifest.ManifestError
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cishouseholds.pipeline.mapping.html">
+     cishouseholds.pipeline.mapping
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.html">
+     cishouseholds.pipeline.pipeline_stages
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-59" name="toctree-checkbox-59" type="checkbox"/>
+    <label for="toctree-checkbox-59">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.aggregated_output.html">
+       cishouseholds.pipeline.pipeline_stages.aggregated_output
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.backup_files.html">
+       cishouseholds.pipeline.pipeline_stages.backup_files
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.blind_csv_to_table.html">
+       cishouseholds.pipeline.pipeline_stages.blind_csv_to_table
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.calculate_household_level_populations.html">
+       cishouseholds.pipeline.pipeline_stages.calculate_household_level_populations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.check_predictions.html">
+       cishouseholds.pipeline.pipeline_stages.check_predictions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.compare.html">
+       cishouseholds.pipeline.pipeline_stages.compare
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.create_vaccine_regex_lookup.html">
+       cishouseholds.pipeline.pipeline_stages.create_vaccine_regex_lookup
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.csv_to_table.html">
+       cishouseholds.pipeline.pipeline_stages.csv_to_table
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.delete_tables_stage.html">
+       cishouseholds.pipeline.pipeline_stages.delete_tables_stage
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.execute_covid_transformations.html">
+       cishouseholds.pipeline.pipeline_stages.execute_covid_transformations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.execute_demographic_transformations.html">
+       cishouseholds.pipeline.pipeline_stages.execute_demographic_transformations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.execute_job_transformations.html">
+       cishouseholds.pipeline.pipeline_stages.execute_job_transformations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.execute_lab_transformations.html">
+       cishouseholds.pipeline.pipeline_stages.execute_lab_transformations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.execute_post_union_processing.html">
+       cishouseholds.pipeline.pipeline_stages.execute_post_union_processing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.execute_vaccine_transformations.html">
+       cishouseholds.pipeline.pipeline_stages.execute_vaccine_transformations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.execute_visit_transformations.html">
+       cishouseholds.pipeline.pipeline_stages.execute_visit_transformations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.filter_dataframe.html">
+       cishouseholds.pipeline.pipeline_stages.filter_dataframe
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.generate_dummy_data.html">
+       cishouseholds.pipeline.pipeline_stages.generate_dummy_data
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.generate_input_processing_function.html">
+       cishouseholds.pipeline.pipeline_stages.generate_input_processing_function
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.join_lookup_table.html">
+       cishouseholds.pipeline.pipeline_stages.join_lookup_table
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.lab_report.html">
+       cishouseholds.pipeline.pipeline_stages.lab_report
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.phm_output_report.html">
+       cishouseholds.pipeline.pipeline_stages.phm_output_report
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.phm_validation_report.html">
+       cishouseholds.pipeline.pipeline_stages.phm_validation_report
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.process_soc_deltas.html">
+       cishouseholds.pipeline.pipeline_stages.process_soc_deltas
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.record_level_interface.html">
+       cishouseholds.pipeline.pipeline_stages.record_level_interface
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.register_pipeline_stage.html">
+       cishouseholds.pipeline.pipeline_stages.register_pipeline_stage
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.report.html">
+       cishouseholds.pipeline.pipeline_stages.report
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.sample_df.html">
+       cishouseholds.pipeline.pipeline_stages.sample_df
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.sample_file_ETL.html">
+       cishouseholds.pipeline.pipeline_stages.sample_file_ETL
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.table_to_table.html">
+       cishouseholds.pipeline.pipeline_stages.table_to_table
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.tables_to_csv.html">
+       cishouseholds.pipeline.pipeline_stages.tables_to_csv
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.union_historical_visits.html">
+       cishouseholds.pipeline.pipeline_stages.union_historical_visits
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.union_survey_response_files.html">
+       cishouseholds.pipeline.pipeline_stages.union_survey_response_files
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.update_vaccine_types.html">
+       cishouseholds.pipeline.pipeline_stages.update_vaccine_types
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.pipeline_stages.validate_survey_responses.html">
+       cishouseholds.pipeline.pipeline_stages.validate_survey_responses
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.post_union_processing.html">
+     cishouseholds.pipeline.post_union_processing
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-60" name="toctree-checkbox-60" type="checkbox"/>
+    <label for="toctree-checkbox-60">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.post_union_processing.generic_processing.html">
+       cishouseholds.pipeline.post_union_processing.generic_processing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.post_union_processing.post_union_processing.html">
+       cishouseholds.pipeline.post_union_processing.post_union_processing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.post_union_processing.raw_copies.html">
+       cishouseholds.pipeline.post_union_processing.raw_copies
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.reporting.html">
+     cishouseholds.pipeline.reporting
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-61" name="toctree-checkbox-61" type="checkbox"/>
+    <label for="toctree-checkbox-61">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.reporting.count_variable_option.html">
+       cishouseholds.pipeline.reporting.count_variable_option
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.reporting.dfs_to_bytes_excel.html">
+       cishouseholds.pipeline.reporting.dfs_to_bytes_excel
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.reporting.generate_error_table.html">
+       cishouseholds.pipeline.reporting.generate_error_table
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.reporting.generate_lab_report.html">
+       cishouseholds.pipeline.reporting.generate_lab_report
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.reporting.multiple_visit_1_day.html">
+       cishouseholds.pipeline.reporting.multiple_visit_1_day
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.run.html">
+     cishouseholds.pipeline.run
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-62" name="toctree-checkbox-62" type="checkbox"/>
+    <label for="toctree-checkbox-62">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.run.check_conditions.html">
+       cishouseholds.pipeline.run.check_conditions
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.run.check_dependencies.html">
+       cishouseholds.pipeline.run.check_dependencies
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.run.run_from_config.html">
+       cishouseholds.pipeline.run.run_from_config
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.run.run_pipeline_stages.html">
+       cishouseholds.pipeline.run.run_pipeline_stages
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.run.spark_description_set.html">
+       cishouseholds.pipeline.run.spark_description_set
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.run.MissingTablesError.html">
+       cishouseholds.pipeline.run.MissingTablesError
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cishouseholds.pipeline.timestamp_map.html">
+     cishouseholds.pipeline.timestamp_map
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.translate.html">
+     cishouseholds.pipeline.translate
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-63" name="toctree-checkbox-63" type="checkbox"/>
+    <label for="toctree-checkbox-63">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.translate.backup_and_replace_translation_lookup_df.html">
+       cishouseholds.pipeline.translate.backup_and_replace_translation_lookup_df
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.translate.export_responses_to_be_translated_to_translation_directory.html">
+       cishouseholds.pipeline.translate.export_responses_to_be_translated_to_translation_directory
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.translate.get_new_translations_from_completed_translations_directory.html">
+       cishouseholds.pipeline.translate.get_new_translations_from_completed_translations_directory
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.translate.get_welsh_responses_to_be_translated.html">
+       cishouseholds.pipeline.translate.get_welsh_responses_to_be_translated
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.translate.translate_welsh_free_text_responses_digital.html">
+       cishouseholds.pipeline.translate.translate_welsh_free_text_responses_digital
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.translate.translate_welsh_survey_responses.html">
+       cishouseholds.pipeline.translate.translate_welsh_survey_responses
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.vaccine_transformations.html">
+     cishouseholds.pipeline.vaccine_transformations
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-64" name="toctree-checkbox-64" type="checkbox"/>
+    <label for="toctree-checkbox-64">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.vaccine_transformations.deduplication.html">
+       cishouseholds.pipeline.vaccine_transformations.deduplication
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.vaccine_transformations.first_second_doses.html">
+       cishouseholds.pipeline.vaccine_transformations.first_second_doses
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.vaccine_transformations.mapping.html">
+       cishouseholds.pipeline.vaccine_transformations.mapping
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.vaccine_transformations.preprocessing.html">
+       cishouseholds.pipeline.vaccine_transformations.preprocessing
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.vaccine_transformations.vaccine_transformations.html">
+       cishouseholds.pipeline.vaccine_transformations.vaccine_transformations
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.validation_calls.html">
+     cishouseholds.pipeline.validation_calls
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-65" name="toctree-checkbox-65" type="checkbox"/>
+    <label for="toctree-checkbox-65">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.validation_calls.validation_ETL.html">
+       cishouseholds.pipeline.validation_calls.validation_ETL
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.validation_calls.validation_calls.html">
+       cishouseholds.pipeline.validation_calls.validation_calls
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cishouseholds.pipeline.validation_schema.html">
+     cishouseholds.pipeline.validation_schema
+    </a>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.html">
+     cishouseholds.pipeline.version_specific_processing
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-66" name="toctree-checkbox-66" type="checkbox"/>
+    <label for="toctree-checkbox-66">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.digital_transformations.html">
+       cishouseholds.pipeline.version_specific_processing.digital_transformations
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-67" name="toctree-checkbox-67" type="checkbox"/>
+      <label for="toctree-checkbox-67">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.digital_transformations.digital_responses_preprocessing.html">
+         cishouseholds.pipeline.version_specific_processing.digital_transformations.digital_responses_preprocessing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.digital_transformations.transform_survey_responses_version_digital_delta.html">
+         cishouseholds.pipeline.version_specific_processing.digital_transformations.transform_survey_responses_version_digital_delta
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.mult_version.html">
+       cishouseholds.pipeline.version_specific_processing.mult_version
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-68" name="toctree-checkbox-68" type="checkbox"/>
+      <label for="toctree-checkbox-68">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.mult_version.assign_has_been_columns.html">
+         cishouseholds.pipeline.version_specific_processing.mult_version.assign_has_been_columns
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.mult_version.derive_additional_v1_2_columns.html">
+         cishouseholds.pipeline.version_specific_processing.mult_version.derive_additional_v1_2_columns
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.participant_extract_digital.html">
+       cishouseholds.pipeline.version_specific_processing.participant_extract_digital
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-69" name="toctree-checkbox-69" type="checkbox"/>
+      <label for="toctree-checkbox-69">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.participant_extract_digital.transform_participant_extract_digital.html">
+         cishouseholds.pipeline.version_specific_processing.participant_extract_digital.transform_participant_extract_digital
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.participant_extract_phm.html">
+       cishouseholds.pipeline.version_specific_processing.participant_extract_phm
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-70" name="toctree-checkbox-70" type="checkbox"/>
+      <label for="toctree-checkbox-70">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.participant_extract_phm.preprocessing.html">
+         cishouseholds.pipeline.version_specific_processing.participant_extract_phm.preprocessing
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.participant_extract_phm.transform_participant_extract_phm.html">
+         cishouseholds.pipeline.version_specific_processing.participant_extract_phm.transform_participant_extract_phm
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.phm_transformations.html">
+       cishouseholds.pipeline.version_specific_processing.phm_transformations
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-71" name="toctree-checkbox-71" type="checkbox"/>
+      <label for="toctree-checkbox-71">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.phm_transformations.assign_any_symptoms.html">
+         cishouseholds.pipeline.version_specific_processing.phm_transformations.assign_any_symptoms
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.phm_transformations.clean_survey_responses_version_phm.html">
+         cishouseholds.pipeline.version_specific_processing.phm_transformations.clean_survey_responses_version_phm
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.phm_transformations.derive_additional_columns.html">
+         cishouseholds.pipeline.version_specific_processing.phm_transformations.derive_additional_columns
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.phm_transformations.phm_transformations.html">
+         cishouseholds.pipeline.version_specific_processing.phm_transformations.phm_transformations
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.phm_transformations.pre_processing.html">
+         cishouseholds.pipeline.version_specific_processing.phm_transformations.pre_processing
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.v0_transformations.html">
+       cishouseholds.pipeline.version_specific_processing.v0_transformations
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-72" name="toctree-checkbox-72" type="checkbox"/>
+      <label for="toctree-checkbox-72">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.v0_transformations.transform_survey_responses_version_0_delta.html">
+         cishouseholds.pipeline.version_specific_processing.v0_transformations.transform_survey_responses_version_0_delta
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.v1_transformations.html">
+       cishouseholds.pipeline.version_specific_processing.v1_transformations
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-73" name="toctree-checkbox-73" type="checkbox"/>
+      <label for="toctree-checkbox-73">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.v1_transformations.clean_survey_responses_version_1.html">
+         cishouseholds.pipeline.version_specific_processing.v1_transformations.clean_survey_responses_version_1
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.v1_transformations.transform_survey_responses_version_1_delta.html">
+         cishouseholds.pipeline.version_specific_processing.v1_transformations.transform_survey_responses_version_1_delta
+        </a>
+       </li>
+      </ul>
+     </li>
+     <li class="toctree-l3 has-children">
+      <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.v2_transformations.html">
+       cishouseholds.pipeline.version_specific_processing.v2_transformations
+      </a>
+      <input class="toctree-checkbox" id="toctree-checkbox-74" name="toctree-checkbox-74" type="checkbox"/>
+      <label for="toctree-checkbox-74">
+       <i class="fas fa-chevron-down">
+       </i>
+      </label>
+      <ul>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.v2_transformations.clean_survey_responses_version_2.html">
+         cishouseholds.pipeline.version_specific_processing.v2_transformations.clean_survey_responses_version_2
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.v2_transformations.derive_work_status_columns.html">
+         cishouseholds.pipeline.version_specific_processing.v2_transformations.derive_work_status_columns
+        </a>
+       </li>
+       <li class="toctree-l4">
+        <a class="reference internal" href="cishouseholds.pipeline.version_specific_processing.v2_transformations.transform_survey_responses_version_2_delta.html">
+         cishouseholds.pipeline.version_specific_processing.v2_transformations.transform_survey_responses_version_2_delta
+        </a>
+       </li>
+      </ul>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.pipeline.visit_transformations.html">
+     cishouseholds.pipeline.visit_transformations
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-75" name="toctree-checkbox-75" type="checkbox"/>
+    <label for="toctree-checkbox-75">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.visit_transformations.create_ever_variable_columns.html">
+       cishouseholds.pipeline.visit_transformations.create_ever_variable_columns
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.visit_transformations.visit_derivations.html">
+       cishouseholds.pipeline.visit_transformations.visit_derivations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.pipeline.visit_transformations.visit_transformations.html">
+       cishouseholds.pipeline.visit_transformations.visit_transformations
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="cishouseholds.regex.html">
+   cishouseholds.regex
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-76" name="toctree-checkbox-76" type="checkbox"/>
+  <label for="toctree-checkbox-76">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cishouseholds.regex.match_with_exclusions.html">
+     cishouseholds.regex.match_with_exclusions
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cishouseholds.regex.healthcare_regex.html">
+     cishouseholds.regex.healthcare_regex
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cishouseholds.regex.regex_patterns.html">
+     cishouseholds.regex.regex_patterns
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="cishouseholds.regex.vaccine_regex.html">
+     cishouseholds.regex.vaccine_regex
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1 has-children">
+  <a class="reference internal" href="cishouseholds.phm.html">
+   cishouseholds.phm
+  </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-77" name="toctree-checkbox-77" type="checkbox"/>
+  <label for="toctree-checkbox-77">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.phm.high_level_phm_transformations.html">
+     cishouseholds.phm.high_level_phm_transformations
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-78" name="toctree-checkbox-78" type="checkbox"/>
+    <label for="toctree-checkbox-78">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.phm.high_level_phm_transformations.high_level_phm_transformations.html">
+       cishouseholds.phm.high_level_phm_transformations.high_level_phm_transformations
+      </a>
+     </li>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.phm.high_level_phm_transformations.preprocessing.html">
+       cishouseholds.phm.high_level_phm_transformations.preprocessing
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.phm.json_decode.html">
+     cishouseholds.phm.json_decode
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-79" name="toctree-checkbox-79" type="checkbox"/>
+    <label for="toctree-checkbox-79">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.phm.json_decode.decode_phm_json.html">
+       cishouseholds.phm.json_decode.decode_phm_json
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toctree-l2 has-children">
+    <a class="reference internal" href="cishouseholds.phm.reporting_class.html">
+     cishouseholds.phm.reporting_class
+    </a>
+    <input class="toctree-checkbox" id="toctree-checkbox-80" name="toctree-checkbox-80" type="checkbox"/>
+    <label for="toctree-checkbox-80">
+     <i class="fas fa-chevron-down">
+     </i>
+    </label>
+    <ul>
+     <li class="toctree-l3">
+      <a class="reference internal" href="cishouseholds.phm.reporting_class.Report.html">
+       cishouseholds.phm.reporting_class.Report
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="cishouseholds-pipeline-design-weights-validate-design-weights">
+<h1>cishouseholds.pipeline.design_weights.validate_design_weights<a class="headerlink" href="#cishouseholds-pipeline-design-weights-validate-design-weights" title="Permalink to this headline">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="cishouseholds.pipeline.design_weights.validate_design_weights">
+<span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.design_weights.</span></span><span class="sig-name descname"><span class="pre">validate_design_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pyspark.sql.dataframe.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_households_by_cis_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_households_by_country_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swab_design_weight_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">antibody_design_weight_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cis_area_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rounding_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.pipeline.design_weights.validate_design_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate the derived design weights by checking 4 conditions are true:
+- design weights add to household population total
+- no design weights are negative
+- no design weights are missing
+- design weights consistent by group</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_households_by_cis_column</strong> – column containing number of households in each cis area</p></li>
+<li><p><strong>num_households_by_country_column</strong> – column containing number of households in each country</p></li>
+<li><p><strong>swab_design_weight_column</strong> – </p></li>
+<li><p><strong>antibody_design_weight_column</strong> – </p></li>
+<li><p><strong>cis_area_column</strong> – </p></li>
+<li><p><strong>country_column</strong> – </p></li>
+<li><p><strong>rounding_value</strong> – number of decimal places to which to round</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="cishouseholds.pipeline.design_weights.update_population_values.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">cishouseholds.pipeline.design_weights.update_population_values</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="cishouseholds.pipeline.design_weights.DesignWeightError.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">cishouseholds.pipeline.design_weights.DesignWeightError</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <script src="../_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2023, CRIS Development Team.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.4.0.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

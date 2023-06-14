@@ -1,0 +1,6 @@
+cishouseholds.validate.ConfigError
+==================================
+
+.. currentmodule:: cishouseholds.validate
+
+.. autoexception:: ConfigError

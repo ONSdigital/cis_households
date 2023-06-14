@@ -1,0 +1,23 @@
+cishouseholds.regex.healthcare\_regex
+=====================================
+
+.. automodule:: cishouseholds.regex.healthcare_regex
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

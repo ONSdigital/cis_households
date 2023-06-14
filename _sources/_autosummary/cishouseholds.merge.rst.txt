@@ -1,0 +1,34 @@
+cishouseholds.merge
+===================
+
+.. automodule:: cishouseholds.merge
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      left_join_keep_only_non_null_right
+      left_join_keep_right
+      null_safe_join
+      union_dataframes_to_hive
+      union_multiple_tables
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

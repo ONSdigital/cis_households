@@ -1,0 +1,6 @@
+cishouseholds.pipeline.demographic\_transformations.join\_statistical\_geographies
+==================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.demographic_transformations
+
+.. autofunction:: join_statistical_geographies

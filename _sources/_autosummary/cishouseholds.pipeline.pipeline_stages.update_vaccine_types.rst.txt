@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.update\_vaccine\_types
+==============================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: update_vaccine_types

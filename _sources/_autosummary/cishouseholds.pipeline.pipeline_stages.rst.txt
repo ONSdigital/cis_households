@@ -1,0 +1,64 @@
+cishouseholds.pipeline.pipeline\_stages
+=======================================
+
+.. automodule:: cishouseholds.pipeline.pipeline_stages
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      aggregated_output
+      backup_files
+      blind_csv_to_table
+      calculate_household_level_populations
+      check_predictions
+      compare
+      create_vaccine_regex_lookup
+      csv_to_table
+      delete_tables_stage
+      execute_covid_transformations
+      execute_demographic_transformations
+      execute_job_transformations
+      execute_lab_transformations
+      execute_post_union_processing
+      execute_vaccine_transformations
+      execute_visit_transformations
+      filter_dataframe
+      generate_dummy_data
+      generate_input_processing_function
+      join_lookup_table
+      lab_report
+      phm_output_report
+      phm_validation_report
+      process_soc_deltas
+      record_level_interface
+      register_pipeline_stage
+      report
+      sample_df
+      sample_file_ETL
+      table_to_table
+      tables_to_csv
+      union_historical_visits
+      union_survey_response_files
+      update_vaccine_types
+      validate_survey_responses
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

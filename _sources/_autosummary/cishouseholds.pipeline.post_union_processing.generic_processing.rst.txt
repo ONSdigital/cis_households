@@ -1,0 +1,6 @@
+cishouseholds.pipeline.post\_union\_processing.generic\_processing
+==================================================================
+
+.. currentmodule:: cishouseholds.pipeline.post_union_processing
+
+.. autofunction:: generic_processing

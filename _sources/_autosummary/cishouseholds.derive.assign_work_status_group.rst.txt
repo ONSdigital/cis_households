@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_work\_status\_group
+================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_work_status_group

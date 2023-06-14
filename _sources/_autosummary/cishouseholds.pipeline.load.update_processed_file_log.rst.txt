@@ -1,0 +1,6 @@
+cishouseholds.pipeline.load.update\_processed\_file\_log
+========================================================
+
+.. currentmodule:: cishouseholds.pipeline.load
+
+.. autofunction:: update_processed_file_log

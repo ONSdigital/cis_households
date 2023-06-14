@@ -1,0 +1,6 @@
+cishouseholds.pipeline.load.create\_processed\_file\_log\_entry
+===============================================================
+
+.. currentmodule:: cishouseholds.pipeline.load
+
+.. autofunction:: create_processed_file_log_entry

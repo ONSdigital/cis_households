@@ -1,0 +1,6 @@
+cishouseholds.pipeline.covid\_event\_transformations.edit\_existing\_columns
+============================================================================
+
+.. currentmodule:: cishouseholds.pipeline.covid_event_transformations
+
+.. autofunction:: edit_existing_columns

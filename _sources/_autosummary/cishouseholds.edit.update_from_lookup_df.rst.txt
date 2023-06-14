@@ -1,0 +1,6 @@
+cishouseholds.edit.update\_from\_lookup\_df
+===========================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: update_from_lookup_df

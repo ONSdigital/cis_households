@@ -1,0 +1,31 @@
+cishouseholds.pipeline.version\_specific\_processing.participant\_extract\_phm
+==============================================================================
+
+.. automodule:: cishouseholds.pipeline.version_specific_processing.participant_extract_phm
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      preprocessing
+      transform_participant_extract_phm
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,6 @@
+cishouseholds.expressions.all\_columns\_null
+============================================
+
+.. currentmodule:: cishouseholds.expressions
+
+.. autofunction:: all_columns_null

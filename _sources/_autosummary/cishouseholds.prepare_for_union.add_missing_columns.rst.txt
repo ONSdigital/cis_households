@@ -1,0 +1,6 @@
+cishouseholds.prepare\_for\_union.add\_missing\_columns
+=======================================================
+
+.. currentmodule:: cishouseholds.prepare_for_union
+
+.. autofunction:: add_missing_columns

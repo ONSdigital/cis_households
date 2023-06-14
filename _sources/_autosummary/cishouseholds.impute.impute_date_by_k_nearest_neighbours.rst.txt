@@ -1,0 +1,6 @@
+cishouseholds.impute.impute\_date\_by\_k\_nearest\_neighbours
+=============================================================
+
+.. currentmodule:: cishouseholds.impute
+
+.. autofunction:: impute_date_by_k_nearest_neighbours

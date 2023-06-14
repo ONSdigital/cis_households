@@ -1,0 +1,6 @@
+cishouseholds.pipeline.lookup\_and\_regex\_transformations.create\_historic\_visits
+===================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.lookup_and_regex_transformations
+
+.. autofunction:: create_historic_visits

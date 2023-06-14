@@ -1,0 +1,39 @@
+cishouseholds.pipeline.input\_file\_processing
+==============================================
+
+.. automodule:: cishouseholds.pipeline.input_file_processing
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      extract_input_data
+      extract_lookup_csv
+      extract_validate_transform_input_data
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+      :toctree:
+   
+      InvalidFileError
+   
+   
+
+
+

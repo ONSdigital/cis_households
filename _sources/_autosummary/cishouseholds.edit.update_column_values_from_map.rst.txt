@@ -1,0 +1,6 @@
+cishouseholds.edit.update\_column\_values\_from\_map
+====================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: update_column_values_from_map

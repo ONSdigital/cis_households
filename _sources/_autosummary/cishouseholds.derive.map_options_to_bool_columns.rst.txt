@@ -1,0 +1,6 @@
+cishouseholds.derive.map\_options\_to\_bool\_columns
+====================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: map_options_to_bool_columns

@@ -1,0 +1,6 @@
+cishouseholds.impute.impute\_and\_flag
+======================================
+
+.. currentmodule:: cishouseholds.impute
+
+.. autofunction:: impute_and_flag

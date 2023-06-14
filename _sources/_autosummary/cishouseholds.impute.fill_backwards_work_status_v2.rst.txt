@@ -1,0 +1,6 @@
+cishouseholds.impute.fill\_backwards\_work\_status\_v2
+======================================================
+
+.. currentmodule:: cishouseholds.impute
+
+.. autofunction:: fill_backwards_work_status_v2

@@ -1,0 +1,6 @@
+cishouseholds.pipeline.translate.get\_new\_translations\_from\_completed\_translations\_directory
+=================================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.translate
+
+.. autofunction:: get_new_translations_from_completed_translations_directory

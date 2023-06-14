@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_school\_year\_september\_start
+===========================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_school_year_september_start

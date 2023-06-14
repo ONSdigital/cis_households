@@ -1,0 +1,6 @@
+cishouseholds.edit.apply\_value\_map\_multiple\_columns
+=======================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: apply_value_map_multiple_columns

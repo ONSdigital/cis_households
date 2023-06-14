@@ -1,0 +1,6 @@
+cishouseholds.edit.update\_column\_in\_time\_window
+===================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: update_column_in_time_window

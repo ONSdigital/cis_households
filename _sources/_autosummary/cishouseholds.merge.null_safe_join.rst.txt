@@ -1,0 +1,6 @@
+cishouseholds.merge.null\_safe\_join
+====================================
+
+.. currentmodule:: cishouseholds.merge
+
+.. autofunction:: null_safe_join

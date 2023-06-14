@@ -1,0 +1,6 @@
+cishouseholds.pipeline.lookup\_and\_regex\_transformations.derive\_overall\_vaccination
+=======================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.lookup_and_regex_transformations
+
+.. autofunction:: derive_overall_vaccination

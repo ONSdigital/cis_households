@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_first\_visit
+=========================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_first_visit

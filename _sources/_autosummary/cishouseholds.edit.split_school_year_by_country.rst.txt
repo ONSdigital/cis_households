@@ -1,0 +1,6 @@
+cishouseholds.edit.split\_school\_year\_by\_country
+===================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: split_school_year_by_country

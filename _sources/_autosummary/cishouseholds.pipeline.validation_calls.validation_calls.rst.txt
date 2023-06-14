@@ -1,0 +1,6 @@
+cishouseholds.pipeline.validation\_calls.validation\_calls
+==========================================================
+
+.. currentmodule:: cishouseholds.pipeline.validation_calls
+
+.. autofunction:: validation_calls

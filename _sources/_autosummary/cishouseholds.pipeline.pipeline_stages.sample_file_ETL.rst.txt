@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.sample\_file\_ETL
+=========================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: sample_file_ETL

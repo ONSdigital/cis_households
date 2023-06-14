@@ -1,0 +1,6 @@
+cishouseholds.pipeline.version\_specific\_processing.v1\_transformations.clean\_survey\_responses\_version\_1
+=============================================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.version_specific_processing.v1_transformations
+
+.. autofunction:: clean_survey_responses_version_1

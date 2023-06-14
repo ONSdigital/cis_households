@@ -1,0 +1,6 @@
+cishouseholds.expressions.all\_equal\_or\_Null
+==============================================
+
+.. currentmodule:: cishouseholds.expressions
+
+.. autofunction:: all_equal_or_Null

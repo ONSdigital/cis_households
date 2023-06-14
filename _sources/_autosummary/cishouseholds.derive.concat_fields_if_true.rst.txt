@@ -1,0 +1,6 @@
+cishouseholds.derive.concat\_fields\_if\_true
+=============================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: concat_fields_if_true

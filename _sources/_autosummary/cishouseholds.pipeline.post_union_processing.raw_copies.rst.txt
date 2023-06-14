@@ -1,0 +1,6 @@
+cishouseholds.pipeline.post\_union\_processing.raw\_copies
+==========================================================
+
+.. currentmodule:: cishouseholds.pipeline.post_union_processing
+
+.. autofunction:: raw_copies

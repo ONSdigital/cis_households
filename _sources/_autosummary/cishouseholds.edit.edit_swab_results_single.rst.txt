@@ -1,0 +1,6 @@
+cishouseholds.edit.edit\_swab\_results\_single
+==============================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: edit_swab_results_single

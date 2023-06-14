@@ -1,0 +1,6 @@
+cishouseholds.impute.fill\_forward\_only\_to\_nulls\_in\_dataset\_based\_on\_column
+===================================================================================
+
+.. currentmodule:: cishouseholds.impute
+
+.. autofunction:: fill_forward_only_to_nulls_in_dataset_based_on_column

@@ -1,0 +1,6 @@
+cishouseholds.pipeline.covid\_event\_transformations.clean\_inconsistent\_event\_detail\_part\_2
+================================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.covid_event_transformations
+
+.. autofunction:: clean_inconsistent_event_detail_part_2

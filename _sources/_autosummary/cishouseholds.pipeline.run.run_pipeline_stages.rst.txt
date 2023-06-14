@@ -1,0 +1,6 @@
+cishouseholds.pipeline.run.run\_pipeline\_stages
+================================================
+
+.. currentmodule:: cishouseholds.pipeline.run
+
+.. autofunction:: run_pipeline_stages

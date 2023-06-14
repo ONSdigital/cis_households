@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.record\_level\_interface
+================================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: record_level_interface

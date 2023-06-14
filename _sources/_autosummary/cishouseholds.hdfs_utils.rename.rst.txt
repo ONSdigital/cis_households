@@ -1,0 +1,6 @@
+cishouseholds.hdfs\_utils.rename
+================================
+
+.. currentmodule:: cishouseholds.hdfs_utils
+
+.. autofunction:: rename

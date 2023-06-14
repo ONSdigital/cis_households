@@ -1,0 +1,6 @@
+cishouseholds.validate.validate\_processed\_files
+=================================================
+
+.. currentmodule:: cishouseholds.validate
+
+.. autofunction:: validate_processed_files

@@ -1,0 +1,34 @@
+cishouseholds.pipeline.reporting
+================================
+
+.. automodule:: cishouseholds.pipeline.reporting
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      count_variable_option
+      dfs_to_bytes_excel
+      generate_error_table
+      generate_lab_report
+      multiple_visit_1_day
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

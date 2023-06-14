@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_taken\_column
+==========================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_taken_column

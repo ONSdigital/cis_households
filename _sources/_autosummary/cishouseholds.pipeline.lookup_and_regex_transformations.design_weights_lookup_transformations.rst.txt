@@ -1,0 +1,6 @@
+cishouseholds.pipeline.lookup\_and\_regex\_transformations.design\_weights\_lookup\_transformations
+===================================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.lookup_and_regex_transformations
+
+.. autofunction:: design_weights_lookup_transformations

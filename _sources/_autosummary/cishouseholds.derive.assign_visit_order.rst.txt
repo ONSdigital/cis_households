@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_visit\_order
+=========================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_visit_order

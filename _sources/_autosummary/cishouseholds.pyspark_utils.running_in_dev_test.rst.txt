@@ -1,0 +1,6 @@
+cishouseholds.pyspark\_utils.running\_in\_dev\_test
+===================================================
+
+.. currentmodule:: cishouseholds.pyspark_utils
+
+.. autofunction:: running_in_dev_test

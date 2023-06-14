@@ -1,0 +1,6 @@
+cishouseholds.derive.contact\_known\_or\_suspected\_covid\_type
+===============================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: contact_known_or_suspected_covid_type

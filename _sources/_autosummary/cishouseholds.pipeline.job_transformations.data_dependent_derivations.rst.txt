@@ -1,0 +1,6 @@
+cishouseholds.pipeline.job\_transformations.data\_dependent\_derivations
+========================================================================
+
+.. currentmodule:: cishouseholds.pipeline.job_transformations
+
+.. autofunction:: data_dependent_derivations

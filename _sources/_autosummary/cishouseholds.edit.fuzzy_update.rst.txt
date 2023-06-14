@@ -1,0 +1,6 @@
+cishouseholds.edit.fuzzy\_update
+================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: fuzzy_update

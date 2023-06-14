@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_random\_day\_in\_month
+===================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_random_day_in_month

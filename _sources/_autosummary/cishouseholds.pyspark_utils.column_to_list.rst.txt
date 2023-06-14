@@ -1,0 +1,6 @@
+cishouseholds.pyspark\_utils.column\_to\_list
+=============================================
+
+.. currentmodule:: cishouseholds.pyspark_utils
+
+.. autofunction:: column_to_list

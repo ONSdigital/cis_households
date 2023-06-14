@@ -1,0 +1,33 @@
+cishouseholds.prepare\_for\_union
+=================================
+
+.. automodule:: cishouseholds.prepare_for_union
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      add_after
+      add_missing_columns
+      get_missing_columns
+      prepare_for_union
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

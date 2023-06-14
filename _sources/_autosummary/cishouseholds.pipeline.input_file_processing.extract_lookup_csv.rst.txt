@@ -1,0 +1,6 @@
+cishouseholds.pipeline.input\_file\_processing.extract\_lookup\_csv
+===================================================================
+
+.. currentmodule:: cishouseholds.pipeline.input_file_processing
+
+.. autofunction:: extract_lookup_csv

@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_columns\_from\_array
+=================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_columns_from_array

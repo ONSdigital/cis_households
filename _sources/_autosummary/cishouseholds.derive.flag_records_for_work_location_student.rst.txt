@@ -1,0 +1,6 @@
+cishouseholds.derive.flag\_records\_for\_work\_location\_student
+================================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: flag_records_for_work_location_student

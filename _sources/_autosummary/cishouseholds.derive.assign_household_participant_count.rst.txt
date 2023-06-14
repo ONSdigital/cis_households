@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_household\_participant\_count
+==========================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_household_participant_count

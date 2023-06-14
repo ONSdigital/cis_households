@@ -1,0 +1,6 @@
+cishouseholds.pipeline.post\_union\_processing.post\_union\_processing
+======================================================================
+
+.. currentmodule:: cishouseholds.pipeline.post_union_processing
+
+.. autofunction:: post_union_processing

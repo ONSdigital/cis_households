@@ -1,0 +1,6 @@
+cishouseholds.derive.get\_matches
+=================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: get_matches

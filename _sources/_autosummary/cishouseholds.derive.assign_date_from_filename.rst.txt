@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_date\_from\_filename
+=================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_date_from_filename

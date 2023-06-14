@@ -1,0 +1,6 @@
+cishouseholds.pipeline.design\_weights.validate\_design\_weights
+================================================================
+
+.. currentmodule:: cishouseholds.pipeline.design_weights
+
+.. autofunction:: validate_design_weights

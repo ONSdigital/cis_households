@@ -1,0 +1,6 @@
+cishouseholds.pipeline.version\_specific\_processing.mult\_version.derive\_additional\_v1\_2\_columns
+=====================================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.version_specific_processing.mult_version
+
+.. autofunction:: derive_additional_v1_2_columns

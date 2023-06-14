@@ -1,0 +1,36 @@
+cishouseholds.pipeline.job\_transformations
+===========================================
+
+.. automodule:: cishouseholds.pipeline.job_transformations
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      create_job_lookup
+      data_dependent_derivations
+      fill_forwards
+      get_unprocessed_rows
+      job_transformations
+      preprocessing
+      repopulate_missing_from_original
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

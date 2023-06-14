@@ -1,0 +1,6 @@
+cishouseholds.pipeline.covid\_event\_transformations.covid\_event\_transformations
+==================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.covid_event_transformations
+
+.. autofunction:: covid_event_transformations

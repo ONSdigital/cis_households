@@ -1,0 +1,6 @@
+cishouseholds.derive.flag\_records\_for\_work\_from\_home\_rules
+================================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: flag_records_for_work_from_home_rules

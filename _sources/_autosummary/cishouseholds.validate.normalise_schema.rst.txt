@@ -1,0 +1,6 @@
+cishouseholds.validate.normalise\_schema
+========================================
+
+.. currentmodule:: cishouseholds.validate
+
+.. autofunction:: normalise_schema

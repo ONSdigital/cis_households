@@ -1,0 +1,6 @@
+cishouseholds.pipeline.reporting.generate\_lab\_report
+======================================================
+
+.. currentmodule:: cishouseholds.pipeline.reporting
+
+.. autofunction:: generate_lab_report

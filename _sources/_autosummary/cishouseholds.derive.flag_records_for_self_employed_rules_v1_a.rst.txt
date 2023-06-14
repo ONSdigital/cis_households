@@ -1,0 +1,6 @@
+cishouseholds.derive.flag\_records\_for\_self\_employed\_rules\_v1\_a
+=====================================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: flag_records_for_self_employed_rules_v1_a

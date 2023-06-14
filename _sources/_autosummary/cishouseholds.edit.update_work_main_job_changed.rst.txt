@@ -1,0 +1,6 @@
+cishouseholds.edit.update\_work\_main\_job\_changed
+===================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: update_work_main_job_changed

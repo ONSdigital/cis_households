@@ -1,0 +1,6 @@
+cishouseholds.pipeline.reporting.count\_variable\_option
+========================================================
+
+.. currentmodule:: cishouseholds.pipeline.reporting
+
+.. autofunction:: count_variable_option

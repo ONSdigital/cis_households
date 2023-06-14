@@ -1,0 +1,6 @@
+cishouseholds.edit.update\_think\_have\_covid\_symptom\_any
+===========================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: update_think_have_covid_symptom_any

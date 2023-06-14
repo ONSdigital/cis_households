@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.phm\_validation\_report
+===============================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: phm_validation_report

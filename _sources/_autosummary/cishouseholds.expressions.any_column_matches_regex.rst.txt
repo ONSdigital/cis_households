@@ -1,0 +1,6 @@
+cishouseholds.expressions.any\_column\_matches\_regex
+=====================================================
+
+.. currentmodule:: cishouseholds.expressions
+
+.. autofunction:: any_column_matches_regex

@@ -1,0 +1,6 @@
+cishouseholds.pipeline.run.check\_conditions
+============================================
+
+.. currentmodule:: cishouseholds.pipeline.run
+
+.. autofunction:: check_conditions

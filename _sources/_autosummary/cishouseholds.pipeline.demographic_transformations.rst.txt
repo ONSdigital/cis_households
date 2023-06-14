@@ -1,0 +1,37 @@
+cishouseholds.pipeline.demographic\_transformations
+===================================================
+
+.. automodule:: cishouseholds.pipeline.demographic_transformations
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      demographic_transformations
+      derive_people_in_household_count
+      ethnicity_transformations
+      fill_forwards_and_backwards
+      generic_processing
+      geography_dependent_transformations
+      impute_key_columns
+      join_statistical_geographies
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,6 @@
+cishouseholds.pyspark\_utils.get\_spark\_ui\_url
+================================================
+
+.. currentmodule:: cishouseholds.pyspark_utils
+
+.. autofunction:: get_spark_ui_url

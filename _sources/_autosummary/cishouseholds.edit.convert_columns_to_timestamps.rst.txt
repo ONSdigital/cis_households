@@ -1,0 +1,6 @@
+cishouseholds.edit.convert\_columns\_to\_timestamps
+===================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: convert_columns_to_timestamps

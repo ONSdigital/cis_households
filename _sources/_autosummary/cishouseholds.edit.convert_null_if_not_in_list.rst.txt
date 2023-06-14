@@ -1,0 +1,6 @@
+cishouseholds.edit.convert\_null\_if\_not\_in\_list
+===================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: convert_null_if_not_in_list

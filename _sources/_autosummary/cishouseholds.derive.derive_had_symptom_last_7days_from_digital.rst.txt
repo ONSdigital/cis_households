@@ -1,0 +1,6 @@
+cishouseholds.derive.derive\_had\_symptom\_last\_7days\_from\_digital
+=====================================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: derive_had_symptom_last_7days_from_digital

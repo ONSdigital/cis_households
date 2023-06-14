@@ -1,0 +1,6 @@
+cishouseholds.edit.update\_column\_if\_ref\_in\_list
+====================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: update_column_if_ref_in_list

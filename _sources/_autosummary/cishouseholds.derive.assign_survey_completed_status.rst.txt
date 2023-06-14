@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_survey\_completed\_status
+======================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_survey_completed_status

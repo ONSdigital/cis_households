@@ -1,0 +1,6 @@
+cishouseholds.pipeline.design\_weights.reformat\_age\_population\_table
+=======================================================================
+
+.. currentmodule:: cishouseholds.pipeline.design_weights
+
+.. autofunction:: reformat_age_population_table

@@ -1,0 +1,38 @@
+cishouseholds.filter
+====================
+
+.. automodule:: cishouseholds.filter
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      assign_date_interval_and_flag
+      file_exclude
+      filter_all_not_null
+      filter_before_date_or_null
+      filter_by_cq_diff
+      filter_exclude_by_pattern
+      filter_invalid_vaccines
+      filter_leave_at_least_1
+      filter_single_dose
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

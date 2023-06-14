@@ -1,0 +1,6 @@
+cishouseholds.edit.replace\_sample\_barcode
+===========================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: replace_sample_barcode

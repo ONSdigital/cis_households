@@ -1,0 +1,6 @@
+cishouseholds.derive.clean\_postcode
+====================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: clean_postcode

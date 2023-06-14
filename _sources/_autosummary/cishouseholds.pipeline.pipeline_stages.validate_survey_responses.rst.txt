@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.validate\_survey\_responses
+===================================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: validate_survey_responses

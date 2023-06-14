@@ -1,0 +1,6 @@
+cishouseholds.phm.high\_level\_phm\_transformations.preprocessing
+=================================================================
+
+.. currentmodule:: cishouseholds.phm.high_level_phm_transformations
+
+.. autofunction:: preprocessing

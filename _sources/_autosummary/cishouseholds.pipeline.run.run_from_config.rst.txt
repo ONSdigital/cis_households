@@ -1,0 +1,6 @@
+cishouseholds.pipeline.run.run\_from\_config
+============================================
+
+.. currentmodule:: cishouseholds.pipeline.run
+
+.. autofunction:: run_from_config

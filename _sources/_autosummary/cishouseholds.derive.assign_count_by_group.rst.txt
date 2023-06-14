@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_count\_by\_group
+=============================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_count_by_group

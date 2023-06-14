@@ -1,0 +1,6 @@
+cishouseholds.phm.json\_decode.decode\_phm\_json
+================================================
+
+.. currentmodule:: cishouseholds.phm.json_decode
+
+.. autofunction:: decode_phm_json

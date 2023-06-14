@@ -1,0 +1,6 @@
+cishouseholds.edit.rename\_column\_names
+========================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: rename_column_names

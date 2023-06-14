@@ -1,0 +1,41 @@
+cishouseholds.pipeline.run
+==========================
+
+.. automodule:: cishouseholds.pipeline.run
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      check_conditions
+      check_dependencies
+      run_from_config
+      run_pipeline_stages
+      spark_description_set
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+      :toctree:
+   
+      MissingTablesError
+   
+   
+
+
+

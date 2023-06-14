@@ -1,0 +1,6 @@
+cishouseholds.derive.derive\_age\_based\_columns
+================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: derive_age_based_columns

@@ -1,0 +1,6 @@
+cishouseholds.hdfs\_utils.delete\_dir
+=====================================
+
+.. currentmodule:: cishouseholds.hdfs_utils
+
+.. autofunction:: delete_dir

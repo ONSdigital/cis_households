@@ -1,0 +1,64 @@
+cishouseholds.pipeline
+======================
+
+.. automodule:: cishouseholds.pipeline
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      custom_checkpoint
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   cishouseholds.pipeline.config
+   cishouseholds.pipeline.covid_event_transformations
+   cishouseholds.pipeline.demographic_transformations
+   cishouseholds.pipeline.design_weights
+   cishouseholds.pipeline.generate_outputs
+   cishouseholds.pipeline.high_level_transformations
+   cishouseholds.pipeline.input_file_processing
+   cishouseholds.pipeline.input_file_stages
+   cishouseholds.pipeline.job_transformations
+   cishouseholds.pipeline.lab_transformations
+   cishouseholds.pipeline.load
+   cishouseholds.pipeline.logging
+   cishouseholds.pipeline.lookup_and_regex_transformations
+   cishouseholds.pipeline.manifest
+   cishouseholds.pipeline.mapping
+   cishouseholds.pipeline.pipeline_stages
+   cishouseholds.pipeline.post_union_processing
+   cishouseholds.pipeline.reporting
+   cishouseholds.pipeline.run
+   cishouseholds.pipeline.timestamp_map
+   cishouseholds.pipeline.translate
+   cishouseholds.pipeline.vaccine_transformations
+   cishouseholds.pipeline.validation_calls
+   cishouseholds.pipeline.validation_schema
+   cishouseholds.pipeline.version_specific_processing
+   cishouseholds.pipeline.visit_transformations
+

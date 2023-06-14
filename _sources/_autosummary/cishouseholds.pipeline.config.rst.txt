@@ -1,0 +1,31 @@
+cishouseholds.pipeline.config
+=============================
+
+.. automodule:: cishouseholds.pipeline.config
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      get_config
+      get_secondary_config
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

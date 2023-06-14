@@ -1,0 +1,6 @@
+cishouseholds.extract.filter\_list\_items\_in\_table\_when\_condition
+=====================================================================
+
+.. currentmodule:: cishouseholds.extract
+
+.. autofunction:: filter_list_items_in_table_when_condition

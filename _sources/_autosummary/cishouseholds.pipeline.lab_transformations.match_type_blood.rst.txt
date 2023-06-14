@@ -1,0 +1,6 @@
+cishouseholds.pipeline.lab\_transformations.match\_type\_blood
+==============================================================
+
+.. currentmodule:: cishouseholds.pipeline.lab_transformations
+
+.. autofunction:: match_type_blood

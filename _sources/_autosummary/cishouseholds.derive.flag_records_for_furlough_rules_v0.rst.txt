@@ -1,0 +1,6 @@
+cishouseholds.derive.flag\_records\_for\_furlough\_rules\_v0
+============================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: flag_records_for_furlough_rules_v0

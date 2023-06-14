@@ -1,0 +1,6 @@
+cishouseholds.pipeline.config.get\_config
+=========================================
+
+.. currentmodule:: cishouseholds.pipeline.config
+
+.. autofunction:: get_config

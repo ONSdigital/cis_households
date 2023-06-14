@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_grouped\_variable\_from\_days\_since\_contact
+==========================================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_grouped_variable_from_days_since_contact

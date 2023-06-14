@@ -1,0 +1,6 @@
+cishouseholds.impute.impute\_visit\_datetime
+============================================
+
+.. currentmodule:: cishouseholds.impute
+
+.. autofunction:: impute_visit_datetime

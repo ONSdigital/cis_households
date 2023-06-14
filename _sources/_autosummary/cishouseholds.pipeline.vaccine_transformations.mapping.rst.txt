@@ -1,0 +1,6 @@
+cishouseholds.pipeline.vaccine\_transformations.mapping
+=======================================================
+
+.. currentmodule:: cishouseholds.pipeline.vaccine_transformations
+
+.. autofunction:: mapping

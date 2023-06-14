@@ -1,0 +1,6 @@
+cishouseholds.edit.normalise\_think\_had\_covid\_columns
+========================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: normalise_think_had_covid_columns

@@ -1,0 +1,6 @@
+cishouseholds.pipeline.translate.translate\_welsh\_survey\_responses
+====================================================================
+
+.. currentmodule:: cishouseholds.pipeline.translate
+
+.. autofunction:: translate_welsh_survey_responses

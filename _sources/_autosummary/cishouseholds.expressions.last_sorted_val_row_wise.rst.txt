@@ -1,0 +1,6 @@
+cishouseholds.expressions.last\_sorted\_val\_row\_wise
+======================================================
+
+.. currentmodule:: cishouseholds.expressions
+
+.. autofunction:: last_sorted_val_row_wise

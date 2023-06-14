@@ -1,0 +1,6 @@
+cishouseholds.impute.generate\_fill\_forward\_df
+================================================
+
+.. currentmodule:: cishouseholds.impute
+
+.. autofunction:: generate_fill_forward_df

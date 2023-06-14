@@ -1,0 +1,6 @@
+cishouseholds.pipeline.load.add\_run\_log\_entry
+================================================
+
+.. currentmodule:: cishouseholds.pipeline.load
+
+.. autofunction:: add_run_log_entry

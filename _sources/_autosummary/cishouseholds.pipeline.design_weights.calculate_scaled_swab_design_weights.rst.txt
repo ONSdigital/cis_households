@@ -1,0 +1,6 @@
+cishouseholds.pipeline.design\_weights.calculate\_scaled\_swab\_design\_weights
+===============================================================================
+
+.. currentmodule:: cishouseholds.pipeline.design_weights
+
+.. autofunction:: calculate_scaled_swab_design_weights

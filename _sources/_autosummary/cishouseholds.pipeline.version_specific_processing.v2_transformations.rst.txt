@@ -1,0 +1,32 @@
+cishouseholds.pipeline.version\_specific\_processing.v2\_transformations
+========================================================================
+
+.. automodule:: cishouseholds.pipeline.version_specific_processing.v2_transformations
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      clean_survey_responses_version_2
+      derive_work_status_columns
+      transform_survey_responses_version_2_delta
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

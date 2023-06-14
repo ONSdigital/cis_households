@@ -1,0 +1,6 @@
+cishouseholds.pipeline.version\_specific\_processing.phm\_transformations.pre\_processing
+=========================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.version_specific_processing.phm_transformations
+
+.. autofunction:: pre_processing

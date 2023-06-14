@@ -1,0 +1,31 @@
+cishouseholds.pipeline.version\_specific\_processing.digital\_transformations
+=============================================================================
+
+.. automodule:: cishouseholds.pipeline.version_specific_processing.digital_transformations
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      digital_responses_preprocessing
+      transform_survey_responses_version_digital_delta
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

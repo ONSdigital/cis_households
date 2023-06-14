@@ -1,0 +1,6 @@
+cishouseholds.pipeline.reporting.generate\_error\_table
+=======================================================
+
+.. currentmodule:: cishouseholds.pipeline.reporting
+
+.. autofunction:: generate_error_table

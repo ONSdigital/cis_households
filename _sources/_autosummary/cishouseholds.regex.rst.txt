@@ -1,0 +1,41 @@
+cishouseholds.regex
+===================
+
+.. automodule:: cishouseholds.regex
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      match_with_exclusions
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   cishouseholds.regex.healthcare_regex
+   cishouseholds.regex.regex_patterns
+   cishouseholds.regex.vaccine_regex
+

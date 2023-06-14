@@ -1,0 +1,6 @@
+cishouseholds.pipeline.load.delete\_tables
+==========================================
+
+.. currentmodule:: cishouseholds.pipeline.load
+
+.. autofunction:: delete_tables

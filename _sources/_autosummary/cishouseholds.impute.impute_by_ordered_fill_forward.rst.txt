@@ -1,0 +1,6 @@
+cishouseholds.impute.impute\_by\_ordered\_fill\_forward
+=======================================================
+
+.. currentmodule:: cishouseholds.impute
+
+.. autofunction:: impute_by_ordered_fill_forward

@@ -1,0 +1,6 @@
+cishouseholds.edit.update\_work\_facing\_now\_column
+====================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: update_work_facing_now_column

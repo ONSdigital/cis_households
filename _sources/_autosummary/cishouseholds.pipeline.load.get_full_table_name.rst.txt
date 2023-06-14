@@ -1,0 +1,6 @@
+cishouseholds.pipeline.load.get\_full\_table\_name
+==================================================
+
+.. currentmodule:: cishouseholds.pipeline.load
+
+.. autofunction:: get_full_table_name

@@ -1,0 +1,6 @@
+cishouseholds.validate.check\_singular\_match
+=============================================
+
+.. currentmodule:: cishouseholds.validate
+
+.. autofunction:: check_singular_match

@@ -1,0 +1,6 @@
+cishouseholds.expressions.set\_date\_component
+==============================================
+
+.. currentmodule:: cishouseholds.expressions
+
+.. autofunction:: set_date_component

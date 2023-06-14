@@ -1,0 +1,6 @@
+cishouseholds.impute.fill\_backwards\_overriding\_not\_nulls
+============================================================
+
+.. currentmodule:: cishouseholds.impute
+
+.. autofunction:: fill_backwards_overriding_not_nulls

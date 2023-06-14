@@ -1,0 +1,32 @@
+cishouseholds.pipeline.post\_union\_processing
+==============================================
+
+.. automodule:: cishouseholds.pipeline.post_union_processing
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      generic_processing
+      post_union_processing
+      raw_copies
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

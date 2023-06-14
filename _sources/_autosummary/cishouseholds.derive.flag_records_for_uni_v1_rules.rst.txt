@@ -1,0 +1,6 @@
+cishouseholds.derive.flag\_records\_for\_uni\_v1\_rules
+=======================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: flag_records_for_uni_v1_rules

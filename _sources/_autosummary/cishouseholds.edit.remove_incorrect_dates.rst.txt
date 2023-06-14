@@ -1,0 +1,6 @@
+cishouseholds.edit.remove\_incorrect\_dates
+===========================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: remove_incorrect_dates

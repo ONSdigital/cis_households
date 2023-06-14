@@ -1,0 +1,6 @@
+cishouseholds.derive.combine\_like\_array\_columns
+==================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: combine_like_array_columns

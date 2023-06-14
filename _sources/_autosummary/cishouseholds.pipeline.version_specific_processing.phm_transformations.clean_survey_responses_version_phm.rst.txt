@@ -1,0 +1,6 @@
+cishouseholds.pipeline.version\_specific\_processing.phm\_transformations.clean\_survey\_responses\_version\_phm
+================================================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.version_specific_processing.phm_transformations
+
+.. autofunction:: clean_survey_responses_version_phm

@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_datetime\_from\_coalesced\_columns\_and\_log\_source
+=================================================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_datetime_from_coalesced_columns_and_log_source

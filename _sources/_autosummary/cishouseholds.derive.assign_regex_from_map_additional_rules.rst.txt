@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_regex\_from\_map\_additional\_rules
+================================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_regex_from_map_additional_rules

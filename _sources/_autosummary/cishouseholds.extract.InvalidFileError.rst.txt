@@ -1,0 +1,6 @@
+cishouseholds.extract.InvalidFileError
+======================================
+
+.. currentmodule:: cishouseholds.extract
+
+.. autoexception:: InvalidFileError

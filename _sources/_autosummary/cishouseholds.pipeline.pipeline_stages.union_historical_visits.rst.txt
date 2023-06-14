@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.union\_historical\_visits
+=================================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: union_historical_visits

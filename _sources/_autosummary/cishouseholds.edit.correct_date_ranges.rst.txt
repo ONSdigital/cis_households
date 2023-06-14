@@ -1,0 +1,6 @@
+cishouseholds.edit.correct\_date\_ranges
+========================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: correct_date_ranges

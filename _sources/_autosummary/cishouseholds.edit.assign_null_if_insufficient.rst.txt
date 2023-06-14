@@ -1,0 +1,6 @@
+cishouseholds.edit.assign\_null\_if\_insufficient
+=================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: assign_null_if_insufficient

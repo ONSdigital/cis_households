@@ -34,7 +34,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Welcome to cishouseholds’s documentation!" href="index.html" />
+    <link rel="prev" title="cishouseholds.validate_class.SparkValidate" href="_autosummary/cishouseholds.validate_class.SparkValidate.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -69,7 +69,13 @@
       
       <div class="navbar-center-item">
         <ul id="navbar-main-elements" class="navbar-nav">
-    <li class="toctree-l1 current active nav-item">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="modules.html">
+  Module Index and Docs
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
  <a class="current reference internal nav-link" href="#">
   Pipeline Stages
  </a>
@@ -326,24 +332,21 @@ Requires lookup_tables to exist or be created prior to being called</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.pipeline.pipeline_stages.filter_dataframe">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.pipeline.pipeline_stages.</span></span><span class="sig-name descname"><span class="pre">filter_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_survey_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pyspark.sql.dataframe.DataFrame</span></span></span><a class="headerlink" href="#cishouseholds.pipeline.pipeline_stages.filter_dataframe" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><dl class="simple">
-<dt>Stage which filters an input table on specified variables and values</dt><dd></dd>
-</dl>
-</div></blockquote>
-<p>Parameters
-input_survey_table : str</p>
+<dd><p>Stage which filters an input table on specified variables and values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input_survey_table</strong> (<em>str</em>) – <p>Name of input survey table to filter
+output_survey_table: str</p>
 <blockquote>
-<div><blockquote>
-<div><p>Name of input survey table to filter</p>
+<div><p>Name of the output survey table with filtered applied</p>
 </div></blockquote>
 <dl class="simple">
-<dt>output_survey_table: str</dt><dd><p>Name of the output survey table with filtered applied</p>
-</dd>
 <dt>filter: Dict</dt><dd><p>List of variables and the value on which to filter e.g. sex: [1]</p>
 </dd>
 </dl>
-</div></blockquote>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -516,28 +519,21 @@ simplified to include only:
 - tranche_file_path
 - tranche_strata_columns</p>
 <p>This is dependent on receiving the new sample file in the format expected as specified in the excel specification.</p>
-<dl class="simple">
-<dt>household_level_populations_table</dt><dd><p>HIVE table create by household level population calculation, containing population by CIS area and country</p>
-</dd>
-<dt>old_sample_file</dt><dd><p>HIVE table containing the previously processed sample files, including design weights</p>
-</dd>
-<dt>new_sample_file</dt><dd><p>CSV file or HIVE table containing the new sample to be processed</p>
-</dd>
-<dt>new_sample_source_name</dt><dd><p>string constant to be stored as the sample source name for the new sample records</p>
-</dd>
-<dt>postcode_lookup</dt><dd><p>HIVE table containing the NSPL postcode lookup</p>
-</dd>
-<dt>master_sample_file</dt><dd><p>HIVE table containing the master sample</p>
-</dd>
-<dt>design_weight_table</dt><dd><p>HIVE table to write household geographies and design weights to</p>
-</dd>
-<dt>country_lookup</dt><dd><p>HIVE table containing country code 12 to country name lookup</p>
-</dd>
-<dt>lsoa_cis_lookup</dt><dd><p>HIVE table containing LSOA 11 to CIS area 20 lookup</p>
-</dd>
-<dt>tranche_file_path</dt><dd><p>path to tranche CSV file, if a tranche is required for the current sample file, otherwise leave empty in config</p>
-</dd>
-<dt>tranche_strata_columns</dt><dd><p>list of column names to be used as strata in tranche factor calculations</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>household_level_populations_table</strong> – HIVE table create by household level population calculation, containing population by CIS area and country</p></li>
+<li><p><strong>old_sample_file</strong> – HIVE table containing the previously processed sample files, including design weights</p></li>
+<li><p><strong>new_sample_file</strong> – CSV file or HIVE table containing the new sample to be processed</p></li>
+<li><p><strong>new_sample_source_name</strong> – string constant to be stored as the sample source name for the new sample records</p></li>
+<li><p><strong>postcode_lookup</strong> – HIVE table containing the NSPL postcode lookup</p></li>
+<li><p><strong>master_sample_file</strong> – HIVE table containing the master sample</p></li>
+<li><p><strong>design_weight_table</strong> – HIVE table to write household geographies and design weights to</p></li>
+<li><p><strong>country_lookup</strong> – HIVE table containing country code 12 to country name lookup</p></li>
+<li><p><strong>lsoa_cis_lookup</strong> – HIVE table containing LSOA 11 to CIS area 20 lookup</p></li>
+<li><p><strong>tranche_file_path</strong> – path to tranche CSV file, if a tranche is required for the current sample file, otherwise leave empty in config</p></li>
+<li><p><strong>tranche_strata_columns</strong> – list of column names to be used as strata in tranche factor calculations</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -642,11 +638,11 @@ transformed survey dataset.</p>
               
               <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
-    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="_autosummary/cishouseholds.validate_class.SparkValidate.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Welcome to cishouseholds’s documentation!</p>
+            <p class="prev-next-title">cishouseholds.validate_class.SparkValidate</p>
         </div>
     </a>
 </div>
@@ -663,7 +659,7 @@ transformed survey dataset.</p>
     
     <div class="footer-item">
       <p class="copyright">
-    &copy; Copyright 2022, CIS Development Team.<br>
+    &copy; Copyright 2023, CRIS Development Team.<br>
 </p>
     </div>
     

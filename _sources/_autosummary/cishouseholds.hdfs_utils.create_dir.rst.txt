@@ -1,0 +1,6 @@
+cishouseholds.hdfs\_utils.create\_dir
+=====================================
+
+.. currentmodule:: cishouseholds.hdfs_utils
+
+.. autofunction:: create_dir

@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_fake\_id
+=====================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_fake_id

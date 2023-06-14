@@ -1,0 +1,6 @@
+cishouseholds.filter.filter\_all\_not\_null
+===========================================
+
+.. currentmodule:: cishouseholds.filter
+
+.. autofunction:: filter_all_not_null

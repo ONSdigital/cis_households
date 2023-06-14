@@ -1,0 +1,6 @@
+cishouseholds.pipeline.design\_weights.recode\_columns
+======================================================
+
+.. currentmodule:: cishouseholds.pipeline.design_weights
+
+.. autofunction:: recode_columns

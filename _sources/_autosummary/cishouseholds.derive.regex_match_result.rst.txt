@@ -1,0 +1,6 @@
+cishouseholds.derive.regex\_match\_result
+=========================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: regex_match_result

@@ -1,0 +1,6 @@
+cishouseholds.extract.remove\_list\_items\_in\_table
+====================================================
+
+.. currentmodule:: cishouseholds.extract
+
+.. autofunction:: remove_list_items_in_table

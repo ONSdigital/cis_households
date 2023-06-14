@@ -1,0 +1,6 @@
+cishouseholds.merge.union\_dataframes\_to\_hive
+===============================================
+
+.. currentmodule:: cishouseholds.merge
+
+.. autofunction:: union_dataframes_to_hive

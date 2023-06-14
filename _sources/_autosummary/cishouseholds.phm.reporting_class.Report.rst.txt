@@ -1,0 +1,6 @@
+cishouseholds.phm.reporting\_class.Report
+=========================================
+
+.. currentmodule:: cishouseholds.phm.reporting_class
+
+.. autoclass:: Report

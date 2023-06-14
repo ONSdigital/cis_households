@@ -1,0 +1,6 @@
+cishouseholds.hdfs\_utils.read\_header
+======================================
+
+.. currentmodule:: cishouseholds.hdfs_utils
+
+.. autofunction:: read_header

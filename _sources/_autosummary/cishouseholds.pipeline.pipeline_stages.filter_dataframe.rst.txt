@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.filter\_dataframe
+=========================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: filter_dataframe

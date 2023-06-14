@@ -1,0 +1,6 @@
+cishouseholds.hdfs\_utils.move\_local\_to\_hdfs
+===============================================
+
+.. currentmodule:: cishouseholds.hdfs_utils
+
+.. autofunction:: move_local_to_hdfs

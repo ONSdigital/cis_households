@@ -1,0 +1,138 @@
+cishouseholds.derive
+====================
+
+.. automodule:: cishouseholds.derive
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      aggregated_output_groupby
+      aggregated_output_window
+      assign_age_at_date
+      assign_age_group_school_year
+      assign_any_symptoms_around_visit
+      assign_column_from_mapped_list_key
+      assign_column_given_proportion
+      assign_column_regex_match
+      assign_column_to_date_string
+      assign_column_uniform_value
+      assign_column_value_from_multiple_column_map
+      assign_columns_from_array
+      assign_completion_status
+      assign_consent_code
+      assign_correct_age_at_date
+      assign_count_by_group
+      assign_date_difference
+      assign_date_from_filename
+      assign_datetime_from_coalesced_columns_and_log_source
+      assign_datetime_from_combined_columns
+      assign_default_date_flag
+      assign_distinct_count_in_group
+      assign_ethnicity_white
+      assign_ever_had_long_term_health_condition_or_disabled
+      assign_fake_id
+      assign_filename_column
+      assign_first_visit
+      assign_grouped_variable_from_days_since
+      assign_grouped_variable_from_days_since_contact
+      assign_household_participant_count
+      assign_household_under_2_count
+      assign_isin_list
+      assign_last_non_null_value_from_col_list
+      assign_last_visit
+      assign_max_doses
+      assign_multigenerational
+      assign_named_buckets
+      assign_nth_dose
+      assign_order_number
+      assign_outward_postcode
+      assign_population_projections
+      assign_poss_1_2
+      assign_random_day_in_month
+      assign_raw_copies
+      assign_regex_from_map
+      assign_regex_from_map_additional_rules
+      assign_regex_match_result
+      assign_school_year
+      assign_school_year_september_start
+      assign_survey_completed_status
+      assign_survey_not_completed_reason_code
+      assign_taken_column
+      assign_true_if_any
+      assign_unique_id_column
+      assign_valid_order
+      assign_visit_order
+      assign_window_status
+      assign_work_health_care
+      assign_work_patient_facing_now
+      assign_work_person_facing_now
+      assign_work_social_column
+      assign_work_status_group
+      clean_postcode
+      combine_like_array_columns
+      concat_fields_if_true
+      contact_known_or_suspected_covid_type
+      count_value_occurrences_in_column_subset_row_wise
+      derive_age_based_columns
+      derive_country_code
+      derive_digital_merge_type
+      derive_had_symptom_last_7days_from_digital
+      derive_household_been_columns
+      flag_records_for_childcare_v0_rules
+      flag_records_for_childcare_v1_rules
+      flag_records_for_childcare_v2_b_rules
+      flag_records_for_college_v0_rules
+      flag_records_for_college_v1_rules
+      flag_records_for_college_v2_rules
+      flag_records_for_furlough_rules_v0
+      flag_records_for_furlough_rules_v1_a
+      flag_records_for_furlough_rules_v1_b
+      flag_records_for_furlough_rules_v2_a
+      flag_records_for_furlough_rules_v2_b
+      flag_records_for_not_working_rules_v0
+      flag_records_for_not_working_rules_v1_a
+      flag_records_for_not_working_rules_v1_b
+      flag_records_for_not_working_rules_v2_a
+      flag_records_for_not_working_rules_v2_b
+      flag_records_for_retired_rules
+      flag_records_for_school_v2_rules
+      flag_records_for_self_employed_rules_v0
+      flag_records_for_self_employed_rules_v1_a
+      flag_records_for_self_employed_rules_v1_b
+      flag_records_for_self_employed_rules_v2_a
+      flag_records_for_self_employed_rules_v2_b
+      flag_records_for_uni_v0_rules
+      flag_records_for_uni_v1_rules
+      flag_records_for_uni_v2_rules
+      flag_records_for_work_from_home_rules
+      flag_records_for_work_location_null
+      flag_records_for_work_location_student
+      get_keys_by_value
+      get_matches
+      group_participant_within_date_range
+      household_level_populations
+      map_options_to_bool_columns
+      mean_across_columns
+      regex_match_result
+      translate_column_regex_replace
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_survey\_not\_completed\_reason\_code
+=================================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_survey_not_completed_reason_code

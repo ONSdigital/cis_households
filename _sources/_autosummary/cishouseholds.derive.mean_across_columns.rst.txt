@@ -1,0 +1,6 @@
+cishouseholds.derive.mean\_across\_columns
+==========================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: mean_across_columns

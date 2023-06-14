@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_work\_patient\_facing\_now
+=======================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_work_patient_facing_now

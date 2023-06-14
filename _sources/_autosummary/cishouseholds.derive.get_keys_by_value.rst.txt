@@ -1,0 +1,6 @@
+cishouseholds.derive.get\_keys\_by\_value
+=========================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: get_keys_by_value

@@ -1,0 +1,6 @@
+cishouseholds.pipeline.covid\_event\_transformations.derive\_contact\_any\_covid\_covid\_variables
+==================================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.covid_event_transformations
+
+.. autofunction:: derive_contact_any_covid_covid_variables

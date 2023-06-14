@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_household\_under\_2\_count
+=======================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_household_under_2_count

@@ -1,0 +1,6 @@
+cishouseholds.validate\_class.SparkValidate
+===========================================
+
+.. currentmodule:: cishouseholds.validate_class
+
+.. autoclass:: SparkValidate

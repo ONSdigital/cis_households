@@ -1,0 +1,6 @@
+cishouseholds.prepare\_for\_union.prepare\_for\_union
+=====================================================
+
+.. currentmodule:: cishouseholds.prepare_for_union
+
+.. autofunction:: prepare_for_union

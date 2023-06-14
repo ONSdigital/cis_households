@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_outward\_postcode
+==============================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_outward_postcode

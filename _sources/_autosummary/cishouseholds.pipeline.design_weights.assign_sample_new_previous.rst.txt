@@ -1,0 +1,6 @@
+cishouseholds.pipeline.design\_weights.assign\_sample\_new\_previous
+====================================================================
+
+.. currentmodule:: cishouseholds.pipeline.design_weights
+
+.. autofunction:: assign_sample_new_previous

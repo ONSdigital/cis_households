@@ -1,0 +1,30 @@
+cishouseholds.phm.json\_decode
+==============================
+
+.. automodule:: cishouseholds.phm.json_decode
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      decode_phm_json
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

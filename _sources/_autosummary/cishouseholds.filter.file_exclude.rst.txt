@@ -1,0 +1,6 @@
+cishouseholds.filter.file\_exclude
+==================================
+
+.. currentmodule:: cishouseholds.filter
+
+.. autofunction:: file_exclude

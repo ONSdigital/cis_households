@@ -1,0 +1,6 @@
+cishouseholds.pipeline.version\_specific\_processing.v2\_transformations.derive\_work\_status\_columns
+======================================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.version_specific_processing.v2_transformations
+
+.. autofunction:: derive_work_status_columns

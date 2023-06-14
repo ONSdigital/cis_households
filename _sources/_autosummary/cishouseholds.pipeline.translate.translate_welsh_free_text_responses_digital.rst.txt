@@ -1,0 +1,6 @@
+cishouseholds.pipeline.translate.translate\_welsh\_free\_text\_responses\_digital
+=================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.translate
+
+.. autofunction:: translate_welsh_free_text_responses_digital

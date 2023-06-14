@@ -1,0 +1,6 @@
+cishouseholds.hdfs\_utils.read\_file\_to\_string
+================================================
+
+.. currentmodule:: cishouseholds.hdfs_utils
+
+.. autofunction:: read_file_to_string

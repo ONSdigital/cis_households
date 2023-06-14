@@ -1,0 +1,6 @@
+cishouseholds.pipeline.demographic\_transformations.derive\_people\_in\_household\_count
+========================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.demographic_transformations
+
+.. autofunction:: derive_people_in_household_count

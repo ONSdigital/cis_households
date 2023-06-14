@@ -1,0 +1,6 @@
+cishouseholds.edit.update\_social\_column
+=========================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: update_social_column

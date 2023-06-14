@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_school\_year
+=========================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_school_year

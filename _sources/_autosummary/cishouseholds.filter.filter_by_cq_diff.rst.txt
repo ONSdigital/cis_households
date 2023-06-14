@@ -1,0 +1,6 @@
+cishouseholds.filter.filter\_by\_cq\_diff
+=========================================
+
+.. currentmodule:: cishouseholds.filter
+
+.. autofunction:: filter_by_cq_diff

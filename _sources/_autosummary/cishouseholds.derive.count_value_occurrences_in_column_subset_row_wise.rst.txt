@@ -1,0 +1,6 @@
+cishouseholds.derive.count\_value\_occurrences\_in\_column\_subset\_row\_wise
+=============================================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: count_value_occurrences_in_column_subset_row_wise

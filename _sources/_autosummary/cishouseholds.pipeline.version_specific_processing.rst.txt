@@ -1,0 +1,39 @@
+cishouseholds.pipeline.version\_specific\_processing
+====================================================
+
+.. automodule:: cishouseholds.pipeline.version_specific_processing
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   cishouseholds.pipeline.version_specific_processing.digital_transformations
+   cishouseholds.pipeline.version_specific_processing.mult_version
+   cishouseholds.pipeline.version_specific_processing.participant_extract_digital
+   cishouseholds.pipeline.version_specific_processing.participant_extract_phm
+   cishouseholds.pipeline.version_specific_processing.phm_transformations
+   cishouseholds.pipeline.version_specific_processing.v0_transformations
+   cishouseholds.pipeline.version_specific_processing.v1_transformations
+   cishouseholds.pipeline.version_specific_processing.v2_transformations
+

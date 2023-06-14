@@ -1,0 +1,6 @@
+cishouseholds.edit.conditionally\_set\_column\_values
+=====================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: conditionally_set_column_values

@@ -1,0 +1,6 @@
+cishouseholds.pipeline.version\_specific\_processing.participant\_extract\_phm.transform\_participant\_extract\_phm
+===================================================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.version_specific_processing.participant_extract_phm
+
+.. autofunction:: transform_participant_extract_phm

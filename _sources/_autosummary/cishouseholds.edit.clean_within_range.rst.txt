@@ -1,0 +1,6 @@
+cishouseholds.edit.clean\_within\_range
+=======================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: clean_within_range

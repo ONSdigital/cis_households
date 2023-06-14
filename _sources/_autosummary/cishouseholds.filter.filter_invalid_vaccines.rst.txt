@@ -1,0 +1,6 @@
+cishouseholds.filter.filter\_invalid\_vaccines
+==============================================
+
+.. currentmodule:: cishouseholds.filter
+
+.. autofunction:: filter_invalid_vaccines

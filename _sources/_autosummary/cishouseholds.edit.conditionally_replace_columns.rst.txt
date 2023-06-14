@@ -1,0 +1,6 @@
+cishouseholds.edit.conditionally\_replace\_columns
+==================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: conditionally_replace_columns

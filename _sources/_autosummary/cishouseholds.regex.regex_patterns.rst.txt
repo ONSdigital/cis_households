@@ -1,0 +1,23 @@
+cishouseholds.regex.regex\_patterns
+===================================
+
+.. automodule:: cishouseholds.regex.regex_patterns
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

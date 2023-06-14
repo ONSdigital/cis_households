@@ -1,0 +1,53 @@
+cishouseholds.impute
+====================
+
+.. automodule:: cishouseholds.impute
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      edit_multiple_columns_fill_forward
+      fill_backwards_overriding_not_nulls
+      fill_backwards_work_status_v2
+      fill_forward_event
+      fill_forward_from_last_change
+      fill_forward_from_last_change_marked_subset
+      fill_forward_from_last_change_process
+      fill_forward_only_to_nulls
+      fill_forward_only_to_nulls_in_dataset_based_on_column
+      fill_forwards_covid_contact
+      fill_forwards_covid_infection
+      generate_fill_forward_df
+      impute_and_flag
+      impute_by_distribution
+      impute_by_k_nearest_neighbours
+      impute_by_mode
+      impute_by_ordered_fill_forward
+      impute_date_by_k_nearest_neighbours
+      impute_latest_date_flag
+      impute_outside_uk_columns
+      impute_visit_datetime
+      merge_previous_imputed_values
+      post_imputation_wrapper
+      weighted_distance
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

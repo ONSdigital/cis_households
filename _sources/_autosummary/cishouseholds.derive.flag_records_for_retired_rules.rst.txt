@@ -1,0 +1,6 @@
+cishouseholds.derive.flag\_records\_for\_retired\_rules
+=======================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: flag_records_for_retired_rules

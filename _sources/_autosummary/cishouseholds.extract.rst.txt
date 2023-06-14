@@ -1,0 +1,41 @@
+cishouseholds.extract
+=====================
+
+.. automodule:: cishouseholds.extract
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      filter_list_items_in_table_when_condition
+      get_files_by_date
+      get_files_to_be_processed
+      list_contents
+      remove_list_items_in_table
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+      :toctree:
+   
+      InvalidFileError
+   
+   
+
+
+

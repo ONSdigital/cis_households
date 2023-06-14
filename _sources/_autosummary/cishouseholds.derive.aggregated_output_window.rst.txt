@@ -1,0 +1,6 @@
+cishouseholds.derive.aggregated\_output\_window
+===============================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: aggregated_output_window

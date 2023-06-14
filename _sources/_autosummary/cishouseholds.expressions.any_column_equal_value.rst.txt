@@ -1,0 +1,6 @@
+cishouseholds.expressions.any\_column\_equal\_value
+===================================================
+
+.. currentmodule:: cishouseholds.expressions
+
+.. autofunction:: any_column_equal_value

@@ -1,0 +1,6 @@
+cishouseholds.pipeline.lab\_transformations.join\_blood\_lookup\_df
+===================================================================
+
+.. currentmodule:: cishouseholds.pipeline.lab_transformations
+
+.. autofunction:: join_blood_lookup_df

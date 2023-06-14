@@ -1,0 +1,31 @@
+cishouseholds.prediction\_checker\_class
+========================================
+
+.. automodule:: cishouseholds.prediction_checker_class
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      PredictionChecker
+   
+   
+
+   
+   
+   
+
+
+

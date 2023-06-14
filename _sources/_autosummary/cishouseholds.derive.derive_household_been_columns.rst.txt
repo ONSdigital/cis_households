@@ -1,0 +1,6 @@
+cishouseholds.derive.derive\_household\_been\_columns
+=====================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: derive_household_been_columns

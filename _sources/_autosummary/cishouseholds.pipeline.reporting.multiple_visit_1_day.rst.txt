@@ -1,0 +1,6 @@
+cishouseholds.pipeline.reporting.multiple\_visit\_1\_day
+========================================================
+
+.. currentmodule:: cishouseholds.pipeline.reporting
+
+.. autofunction:: multiple_visit_1_day

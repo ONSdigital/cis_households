@@ -1,0 +1,6 @@
+cishouseholds.expressions.array\_contains\_any
+==============================================
+
+.. currentmodule:: cishouseholds.expressions
+
+.. autofunction:: array_contains_any

@@ -1,0 +1,6 @@
+cishouseholds.edit.cast\_columns\_from\_string
+==============================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: cast_columns_from_string

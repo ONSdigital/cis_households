@@ -1,0 +1,6 @@
+cishouseholds.hdfs\_utils.write\_string\_to\_file
+=================================================
+
+.. currentmodule:: cishouseholds.hdfs_utils
+
+.. autofunction:: write_string_to_file

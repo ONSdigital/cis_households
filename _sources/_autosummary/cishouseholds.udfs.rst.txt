@@ -1,0 +1,30 @@
+cishouseholds.udfs
+==================
+
+.. automodule:: cishouseholds.udfs
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      generate_sample_proportional_to_size_udf
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

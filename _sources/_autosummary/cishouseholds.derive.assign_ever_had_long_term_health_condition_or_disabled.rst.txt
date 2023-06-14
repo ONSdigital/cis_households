@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_ever\_had\_long\_term\_health\_condition\_or\_disabled
+===================================================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_ever_had_long_term_health_condition_or_disabled

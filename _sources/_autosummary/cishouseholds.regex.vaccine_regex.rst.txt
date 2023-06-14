@@ -1,0 +1,23 @@
+cishouseholds.regex.vaccine\_regex
+==================================
+
+.. automodule:: cishouseholds.regex.vaccine_regex
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

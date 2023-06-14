@@ -1,0 +1,30 @@
+cishouseholds.pipeline.version\_specific\_processing.participant\_extract\_digital
+==================================================================================
+
+.. automodule:: cishouseholds.pipeline.version_specific_processing.participant_extract_digital
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      transform_participant_extract_digital
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

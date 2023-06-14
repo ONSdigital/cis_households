@@ -1,0 +1,6 @@
+cishouseholds.impute.fill\_forward\_from\_last\_change\_process
+===============================================================
+
+.. currentmodule:: cishouseholds.impute
+
+.. autofunction:: fill_forward_from_last_change_process

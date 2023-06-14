@@ -1,0 +1,6 @@
+cishouseholds.validate.validate\_csv\_header
+============================================
+
+.. currentmodule:: cishouseholds.validate
+
+.. autofunction:: validate_csv_header

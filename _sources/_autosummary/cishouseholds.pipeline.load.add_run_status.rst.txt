@@ -1,0 +1,6 @@
+cishouseholds.pipeline.load.add\_run\_status
+============================================
+
+.. currentmodule:: cishouseholds.pipeline.load
+
+.. autofunction:: add_run_status

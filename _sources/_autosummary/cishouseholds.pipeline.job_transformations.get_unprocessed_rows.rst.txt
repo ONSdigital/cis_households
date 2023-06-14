@@ -1,0 +1,6 @@
+cishouseholds.pipeline.job\_transformations.get\_unprocessed\_rows
+==================================================================
+
+.. currentmodule:: cishouseholds.pipeline.job_transformations
+
+.. autofunction:: get_unprocessed_rows

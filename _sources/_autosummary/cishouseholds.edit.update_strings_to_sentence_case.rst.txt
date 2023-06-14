@@ -1,0 +1,6 @@
+cishouseholds.edit.update\_strings\_to\_sentence\_case
+======================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: update_strings_to_sentence_case

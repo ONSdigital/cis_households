@@ -1,0 +1,6 @@
+cishouseholds.edit.update\_data
+===============================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: update_data

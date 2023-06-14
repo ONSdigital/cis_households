@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.compare
+===============================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: compare

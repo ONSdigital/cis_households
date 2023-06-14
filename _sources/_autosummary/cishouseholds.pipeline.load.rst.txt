@@ -1,0 +1,49 @@
+cishouseholds.pipeline.load
+===========================
+
+.. automodule:: cishouseholds.pipeline.load
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      add_error_file_log_entry
+      add_run_log_entry
+      add_run_status
+      add_table_log_entry
+      check_table_exists
+      create_processed_file_log_entry
+      delete_tables
+      extract_from_table
+      get_full_table_name
+      get_run_id
+      update_processed_file_log
+      update_table
+      update_table_and_log_source_files
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+      :toctree:
+   
+      TableNotFoundError
+   
+   
+
+
+

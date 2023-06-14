@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_raw\_copies
+========================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_raw_copies

@@ -1,0 +1,35 @@
+cishouseholds.pipeline.lab\_transformations
+===========================================
+
+.. automodule:: cishouseholds.pipeline.lab_transformations
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      assign_match_type
+      join_blood_lookup_df
+      join_swab_lookup_df
+      lab_transformations
+      match_type_blood
+      match_type_swab
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

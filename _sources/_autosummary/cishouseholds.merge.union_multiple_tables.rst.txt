@@ -1,0 +1,6 @@
+cishouseholds.merge.union\_multiple\_tables
+===========================================
+
+.. currentmodule:: cishouseholds.merge
+
+.. autofunction:: union_multiple_tables

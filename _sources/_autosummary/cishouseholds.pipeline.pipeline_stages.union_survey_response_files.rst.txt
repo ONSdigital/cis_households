@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.union\_survey\_response\_files
+======================================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: union_survey_response_files

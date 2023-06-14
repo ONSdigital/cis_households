@@ -1,0 +1,6 @@
+cishouseholds.prediction\_checker\_class.PredictionChecker
+==========================================================
+
+.. currentmodule:: cishouseholds.prediction_checker_class
+
+.. autoclass:: PredictionChecker

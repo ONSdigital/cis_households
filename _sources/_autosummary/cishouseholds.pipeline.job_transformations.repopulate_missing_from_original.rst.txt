@@ -1,0 +1,6 @@
+cishouseholds.pipeline.job\_transformations.repopulate\_missing\_from\_original
+===============================================================================
+
+.. currentmodule:: cishouseholds.pipeline.job_transformations
+
+.. autofunction:: repopulate_missing_from_original

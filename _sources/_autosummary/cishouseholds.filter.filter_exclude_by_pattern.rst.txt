@@ -1,0 +1,6 @@
+cishouseholds.filter.filter\_exclude\_by\_pattern
+=================================================
+
+.. currentmodule:: cishouseholds.filter
+
+.. autofunction:: filter_exclude_by_pattern

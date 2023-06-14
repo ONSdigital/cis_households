@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.process\_soc\_deltas
+============================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: process_soc_deltas

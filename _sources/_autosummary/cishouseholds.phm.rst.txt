@@ -1,0 +1,34 @@
+cishouseholds.phm
+=================
+
+.. automodule:: cishouseholds.phm
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   cishouseholds.phm.high_level_phm_transformations
+   cishouseholds.phm.json_decode
+   cishouseholds.phm.reporting_class
+

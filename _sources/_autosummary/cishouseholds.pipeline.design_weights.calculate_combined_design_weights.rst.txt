@@ -1,0 +1,6 @@
+cishouseholds.pipeline.design\_weights.calculate\_combined\_design\_weights
+===========================================================================
+
+.. currentmodule:: cishouseholds.pipeline.design_weights
+
+.. autofunction:: calculate_combined_design_weights

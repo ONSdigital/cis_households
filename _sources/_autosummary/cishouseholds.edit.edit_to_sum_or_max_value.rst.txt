@@ -1,0 +1,6 @@
+cishouseholds.edit.edit\_to\_sum\_or\_max\_value
+================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: edit_to_sum_or_max_value

@@ -1,0 +1,6 @@
+cishouseholds.pipeline.covid\_event\_transformations.derive\_new\_columns
+=========================================================================
+
+.. currentmodule:: cishouseholds.pipeline.covid_event_transformations
+
+.. autofunction:: derive_new_columns

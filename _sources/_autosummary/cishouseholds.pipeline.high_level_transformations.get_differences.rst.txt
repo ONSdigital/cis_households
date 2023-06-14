@@ -1,0 +1,6 @@
+cishouseholds.pipeline.high\_level\_transformations.get\_differences
+====================================================================
+
+.. currentmodule:: cishouseholds.pipeline.high_level_transformations
+
+.. autofunction:: get_differences

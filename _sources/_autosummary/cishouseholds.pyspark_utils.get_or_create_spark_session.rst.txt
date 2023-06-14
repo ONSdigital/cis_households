@@ -1,0 +1,6 @@
+cishouseholds.pyspark\_utils.get\_or\_create\_spark\_session
+============================================================
+
+.. currentmodule:: cishouseholds.pyspark_utils
+
+.. autofunction:: get_or_create_spark_session

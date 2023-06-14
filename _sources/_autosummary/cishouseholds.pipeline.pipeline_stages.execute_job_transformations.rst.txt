@@ -1,0 +1,6 @@
+cishouseholds.pipeline.pipeline\_stages.execute\_job\_transformations
+=====================================================================
+
+.. currentmodule:: cishouseholds.pipeline.pipeline_stages
+
+.. autofunction:: execute_job_transformations

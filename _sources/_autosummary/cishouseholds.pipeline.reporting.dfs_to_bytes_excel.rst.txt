@@ -1,0 +1,6 @@
+cishouseholds.pipeline.reporting.dfs\_to\_bytes\_excel
+======================================================
+
+.. currentmodule:: cishouseholds.pipeline.reporting
+
+.. autofunction:: dfs_to_bytes_excel

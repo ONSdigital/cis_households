@@ -1,0 +1,34 @@
+cishouseholds.pipeline.generate\_outputs
+========================================
+
+.. automodule:: cishouseholds.pipeline.generate_outputs
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      check_columns
+      configure_outputs
+      generate_sample
+      map_output_values_and_column_names
+      write_csv_rename
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

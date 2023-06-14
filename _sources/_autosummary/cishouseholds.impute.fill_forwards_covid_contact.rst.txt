@@ -1,0 +1,6 @@
+cishouseholds.impute.fill\_forwards\_covid\_contact
+===================================================
+
+.. currentmodule:: cishouseholds.impute
+
+.. autofunction:: fill_forwards_covid_contact

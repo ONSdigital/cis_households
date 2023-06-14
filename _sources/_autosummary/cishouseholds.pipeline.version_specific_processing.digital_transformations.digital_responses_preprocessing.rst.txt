@@ -1,0 +1,6 @@
+cishouseholds.pipeline.version\_specific\_processing.digital\_transformations.digital\_responses\_preprocessing
+===============================================================================================================
+
+.. currentmodule:: cishouseholds.pipeline.version_specific_processing.digital_transformations
+
+.. autofunction:: digital_responses_preprocessing

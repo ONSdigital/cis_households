@@ -1,0 +1,6 @@
+cishouseholds.hdfs\_utils.dir\_size
+===================================
+
+.. currentmodule:: cishouseholds.hdfs_utils
+
+.. autofunction:: dir_size

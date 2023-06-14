@@ -1,0 +1,6 @@
+cishouseholds.derive.assign\_age\_group\_school\_year
+=====================================================
+
+.. currentmodule:: cishouseholds.derive
+
+.. autofunction:: assign_age_group_school_year

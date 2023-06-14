@@ -1,0 +1,6 @@
+cishouseholds.edit.recode\_column\_values
+=========================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: recode_column_values

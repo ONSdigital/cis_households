@@ -1,0 +1,35 @@
+cishouseholds.pipeline.translate
+================================
+
+.. automodule:: cishouseholds.pipeline.translate
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      backup_and_replace_translation_lookup_df
+      export_responses_to_be_translated_to_translation_directory
+      get_new_translations_from_completed_translations_directory
+      get_welsh_responses_to_be_translated
+      translate_welsh_free_text_responses_digital
+      translate_welsh_survey_responses
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

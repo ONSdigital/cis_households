@@ -1,0 +1,6 @@
+cishouseholds.hdfs\_utils.cleanup\_checkpoint\_dir
+==================================================
+
+.. currentmodule:: cishouseholds.hdfs_utils
+
+.. autofunction:: cleanup_checkpoint_dir

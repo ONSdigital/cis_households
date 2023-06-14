@@ -1,0 +1,6 @@
+cishouseholds.edit.join\_on\_existing
+=====================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: join_on_existing

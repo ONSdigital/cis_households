@@ -1,0 +1,6 @@
+cishouseholds.extract.get\_files\_to\_be\_processed
+===================================================
+
+.. currentmodule:: cishouseholds.extract
+
+.. autofunction:: get_files_to_be_processed

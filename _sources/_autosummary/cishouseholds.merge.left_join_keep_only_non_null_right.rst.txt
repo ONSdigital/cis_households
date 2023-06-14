@@ -1,0 +1,6 @@
+cishouseholds.merge.left\_join\_keep\_only\_non\_null\_right
+============================================================
+
+.. currentmodule:: cishouseholds.merge
+
+.. autofunction:: left_join_keep_only_non_null_right
