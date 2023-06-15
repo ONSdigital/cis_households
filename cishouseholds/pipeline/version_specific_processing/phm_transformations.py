@@ -16,7 +16,7 @@ from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.edit import add_prefix
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_barcode_simple
-from cishouseholds.edit import convert_derived_columns_from_null_to_no
+from cishouseholds.edit import convert_derived_columns_from_null_to_value
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import any_column_not_null
@@ -328,12 +328,17 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
 
     # bool col : symptom columns prefix
     infection_sympton_dict = {
-        "phm_think_had_covid": "think_had_covid_symptom",
-        "phm_think_had_other_infection": "think_had_other_infection_symptom",
-        "think_have_long_covid": "think_have_long_covid_symptom",
-        "phm_think_had_flu": "think_had_flu_symptom",
+        "phm_think_had_flu": ("survey_completion_status", "Completed"),
+        "phm_think_had_respiratory_infection": ("survey_completion_status", "Completed"),
+        "phm_think_had_covid": ("survey_completion_status", "Completed"),
+        "phm_think_had_unknown": ("survey_completion_status", "Completed"),
+        "think_have_covid_symptom": ("survey_completion_status", "Completed"),
+        "think_had_covid_symptom": ("phm_think_had_covid", "Yes"),
+        "think_had_other_infection_symptom": ("phm_think_had_other_infection", "Yes"),
+        "think_have_long_covid_symptom": ("think_have_long_covid", "Yes"),
+        "think_had_flu_symptom": ("phm_think_had_flu", "Yes"),
     }
-    df = convert_derived_columns_from_null_to_no(df, infection_sympton_dict)
+    df = convert_derived_columns_from_null_to_value(df, infection_sympton_dict, "No")
 
     df = assign_any_symptoms(df)
 
