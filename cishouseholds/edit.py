@@ -1680,6 +1680,30 @@ def conditionally_set_column_values(df: DataFrame, condition: Any, cols_to_set_t
 def convert_derived_columns_from_null_to_value(
     df: DataFrame, infection_symptom_dict: Dict[str, Tuple[str, str]], value: Any
 ):
+    """
+    Replaces Null values in columns with a new value conditionally depending on a value in another column, typically
+    the precursor column although it doesn't have to be.
+
+    Parameters
+    ----------
+    df : DataFrame
+    infection_symptom_dict : Dict[str, Tuple[str, str]]
+        A dictionary whose key is the column name or column prefix indicating which columns
+        should have Null values converted to specified value. The value of the dictionary
+        is a tuple with two elements. The first element is the column that the key column
+        is derived from which will allow conditional replacement of Nulls based on the values
+        in this column. The second element of the tuple is the value in the column for which
+        Nulls will be replaced in the key column. E.g. if you want to replace all Nulls in
+        column test_column when column original_column is 'Yes' you could supply:
+        {test_column: (original_column, 'Yes')}
+    value : Any
+        The value to replace Nulls with on the target column/s.
+
+    Returns
+    -------
+    df : DataFrame
+        dataframe with replaced column values
+    """
     for symptom_prefix, derive_col_val in infection_symptom_dict.items():
         derive_col, derive_val = derive_col_val
         if derive_col in df.columns:

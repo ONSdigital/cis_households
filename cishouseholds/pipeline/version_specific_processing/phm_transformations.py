@@ -326,8 +326,8 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
         )
         df = map_options_to_bool_columns(df, col_to_map, value_column_map, ";")
 
-    # bool col : symptom columns prefix
-    infection_sympton_dict = {
+    # symptom column prefix all matching columns will have nulls converted to null conditionally: (column containing value that conditionally apply conversion, value in column where null conversion should be applied)
+    infection_symptom_dict = {
         "phm_think_had_flu": ("survey_completion_status", "Completed"),
         "phm_think_had_respiratory_infection": ("survey_completion_status", "Completed"),
         "phm_think_had_covid": ("survey_completion_status", "Completed"),
@@ -338,7 +338,7 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
         "think_have_long_covid_symptom": ("think_have_long_covid", "Yes"),
         "think_had_flu_symptom": ("phm_think_had_flu", "Yes"),
     }
-    df = convert_derived_columns_from_null_to_value(df, infection_sympton_dict, "No")
+    df = convert_derived_columns_from_null_to_value(df, infection_symptom_dict, "No")
 
     df = assign_any_symptoms(df)
 
