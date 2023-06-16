@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>cishouseholds.edit.convert_derived_columns_from_null_to_no &#8212; cishouseholds  documentation</title>
+    <title>cishouseholds.edit.convert_derived_columns_from_null_to_value &#8212; cishouseholds  documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet">
   <link href="../_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -767,7 +767,7 @@
      </li>
      <li class="toctree-l3 current active">
       <a class="current reference internal" href="#">
-       cishouseholds.edit.convert_derived_columns_from_null_to_no
+       cishouseholds.edit.convert_derived_columns_from_null_to_value
       </a>
      </li>
      <li class="toctree-l3">
@@ -4260,12 +4260,36 @@
               
               <div>
                 
-  <section id="cishouseholds-edit-convert-derived-columns-from-null-to-no">
-<h1>cishouseholds.edit.convert_derived_columns_from_null_to_no<a class="headerlink" href="#cishouseholds-edit-convert-derived-columns-from-null-to-no" title="Permalink to this headline">¶</a></h1>
+  <section id="cishouseholds-edit-convert-derived-columns-from-null-to-value">
+<h1>cishouseholds.edit.convert_derived_columns_from_null_to_value<a class="headerlink" href="#cishouseholds-edit-convert-derived-columns-from-null-to-value" title="Permalink to this headline">¶</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="cishouseholds.edit.convert_derived_columns_from_null_to_no">
-<span class="sig-prename descclassname"><span class="pre">cishouseholds.edit.</span></span><span class="sig-name descname"><span class="pre">convert_derived_columns_from_null_to_no</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pyspark.sql.dataframe.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">infection_symptom_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.edit.convert_derived_columns_from_null_to_no" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="cishouseholds.edit.convert_derived_columns_from_null_to_value">
+<span class="sig-prename descclassname"><span class="pre">cishouseholds.edit.</span></span><span class="sig-name descname"><span class="pre">convert_derived_columns_from_null_to_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pyspark.sql.dataframe.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">infection_symptom_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.edit.convert_derived_columns_from_null_to_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces Null values in columns with a new value conditionally depending on a value in another column, typically
+the precursor column although it doesn’t have to be.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – </p></li>
+<li><p><strong>infection_symptom_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – A dictionary whose key is the column name or column prefix indicating which columns
+should have Null values converted to specified value. The value of the dictionary
+is a tuple with two elements. The first element is the column that the key column
+is derived from which will allow conditional replacement of Nulls based on the values
+in this column. The second element of the tuple is the value in the column for which
+Nulls will be replaced in the key column. E.g. if you want to replace all Nulls in
+column test_column when column original_column is ‘Yes’ you could supply:
+{test_column: (original_column, ‘Yes’)}</p></li>
+<li><p><strong>value</strong> (<em>Any</em>) – The value to replace Nulls with on the target column/s.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>df</strong> – dataframe with replaced column values</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 

@@ -1,0 +1,6 @@
+cishouseholds.edit.convert\_derived\_columns\_from\_null\_to\_value
+===================================================================
+
+.. currentmodule:: cishouseholds.edit
+
+.. autofunction:: convert_derived_columns_from_null_to_value

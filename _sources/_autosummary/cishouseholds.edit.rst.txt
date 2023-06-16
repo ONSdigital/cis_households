@@ -28,7 +28,7 @@ cishouseholds.edit
       conditionally_set_column_values
       convert_barcode_null_if_zero
       convert_columns_to_timestamps
-      convert_derived_columns_from_null_to_no
+      convert_derived_columns_from_null_to_value
       convert_null_if_not_in_list
       correct_date_ranges
       correct_date_ranges_union_dependent
