@@ -326,6 +326,14 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
         )
         df = map_options_to_bool_columns(df, col_to_map, value_column_map, ";")
 
+    df = assign_survey_completed_status(
+        df=df,
+        column_name_to_assign="survey_completion_status",
+        survey_completed_datetime_column="survey_completed_datetime",
+        survey_flushed_column="survey_completion_status_flushed",
+        no_columns=["participant_first_name_confirmation", "participant_first_name_on_behalf"],
+    )
+
     # symptom column prefix all matching columns will have nulls converted to null conditionally: (column containing value that conditionally apply conversion, value in column where null conversion should be applied)
     infection_symptom_dict = {
         "phm_think_had_flu": ("survey_completion_status", "Completed"),
@@ -736,13 +744,6 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
         window_end_column="participant_completion_window_end_date",
     )
 
-    df = assign_survey_completed_status(
-        df=df,
-        column_name_to_assign="survey_completion_status",
-        survey_completed_datetime_column="survey_completed_datetime",
-        survey_flushed_column="survey_completion_status_flushed",
-        no_columns=["participant_first_name_confirmation", "participant_first_name_on_behalf"],
-    )
     return df
 
 
