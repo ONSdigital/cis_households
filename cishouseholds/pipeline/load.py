@@ -54,7 +54,7 @@ def delete_tables(
 
     protected_tables = [f"{table_prefix}{table_name}" for table_name in protected_tables]
 
-    if table_names is not None:
+    if len(table_names) > 0:
         if type(table_names) != list:
             table_names = [table_names]  # type:ignore
         table_names = [f"{table_prefix}{table_name}" for table_name in table_names]
