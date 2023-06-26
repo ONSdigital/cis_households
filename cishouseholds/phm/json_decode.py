@@ -4,27 +4,34 @@ from typing import List
 from typing import Tuple
 from typing import Union
 
-from cishouseholds.phm.lookup import lookup
-from cishouseholds.phm.lookup import phm_validation_schema
+from cishouseholds.pipeline.mapping import column_name_maps
+from cishouseholds.pipeline.validation_schema import validation_schemas
 
 # Open a json file into a json object
 # Note that F.read() returns the content
 # of the file as a string so we should call
 # json.loads()
 
+phm_validation_schema = validation_schemas["phm_survey_validation_schema"]
+lookup = column_name_maps["phm_column_name_map"]
+
 
 def decode_phm_json(json_str: Union[str, bytes]) -> List[Tuple]:
-    json_dict = json.loads(json_str)
+    json_list = json.loads(json_str)
     # table = json_dict["submission"]
     answers_list = []
-    for table in json_dict.values():
+    for table in json_list:
 
         meta = table.pop("survey_metadata")
         data = table.pop("data")
+        meta.update(table)
         answers = defaultdict(lambda: list())
         list_items = defaultdict(lambda: list())
 
-        # process answer data into single nested degree dictionary keyed by PHM answer codes
+        if data.get("feedback_count", False):
+            continue
+
+            # process answer data into single nested degree dictionary keyed by PHM answer codes
         for i, answer in enumerate(data["answers"]):
             if answer.get("list_item_id"):
                 list_items[answer["list_item_id"]] = answer["answer_id"]

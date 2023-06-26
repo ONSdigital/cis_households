@@ -54,7 +54,7 @@ def delete_tables(
 
     protected_tables = [f"{table_prefix}{table_name}" for table_name in protected_tables]
 
-    if table_names is not None:
+    if len(table_names) > 0:
         if type(table_names) != list:
             table_names = [table_names]  # type:ignore
         table_names = [f"{table_prefix}{table_name}" for table_name in table_names]
@@ -90,22 +90,44 @@ def delete_tables(
         drop_tables(tables)
 
 
-def extract_from_table(table_name: str, break_lineage: bool = False, alternate_prefix: str = None) -> DataFrame:
+def extract_from_table(
+    table_name: str,
+    break_lineage: bool = False,
+    alternate_prefix: str = None,
+    alternate_database: str = None,
+    latest_table: bool = False,
+) -> DataFrame:
     spark_session = get_or_create_spark_session()
-    check_table_exists(table_name, raise_if_missing=True, alternate_prefix=alternate_prefix)
+    check_table_exists(
+        table_name,
+        raise_if_missing=True,
+        alternate_prefix=alternate_prefix,
+        alternate_database=alternate_database,
+        latest_table=latest_table,
+    )
     if break_lineage:
-        return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix)}").checkpoint()
-    return spark_session.sql(f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix)}")
+        return spark_session.sql(
+            f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix, alternate_database, latest_table)}"
+        ).checkpoint()
+    return spark_session.sql(
+        f"SELECT * FROM {get_full_table_name(table_name, alternate_prefix, alternate_database, latest_table)}"
+    )
 
 
 def update_table(
-    df: DataFrame, table_name, write_mode, archive=False, survey_table=False, error_if_cols_differ: bool = True
+    df: DataFrame,
+    table_name,
+    write_mode,
+    archive=False,
+    survey_table=False,
+    error_if_cols_differ: bool = True,
+    latest_table: bool = False,
 ):
     from cishouseholds.merge import union_multiple_tables
 
     if write_mode == "append":
         if check_table_exists(table_name):
-            check = extract_from_table(table_name, break_lineage=True)
+            check = extract_from_table(table_name, break_lineage=True, latest_table=latest_table)
             if check.columns != df.columns:
                 msg = f"Trying to append to {table_name} but columns differ"  # functional
                 if error_if_cols_differ:
@@ -116,16 +138,22 @@ def update_table(
                     df = union_multiple_tables([check, df])
                     df = df.distinct()
                     write_mode = "overwrite"
-    df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name))
+    df.write.mode(write_mode).saveAsTable(get_full_table_name(table_name, latest_table=latest_table))
     add_table_log_entry(table_name, survey_table, write_mode)
     if archive:
         now = datetime.strftime(datetime.now(), "%Y%m%d_%H%M%S")
         df.write.mode(write_mode).saveAsTable(f"{get_full_table_name(table_name)}_{now}")
 
 
-def check_table_exists(table_name: str, raise_if_missing: bool = False, alternate_prefix: str = None):
+def check_table_exists(
+    table_name: str,
+    raise_if_missing: bool = False,
+    alternate_prefix: str = None,
+    alternate_database: str = None,
+    latest_table: bool = False,
+):
     spark_session = get_or_create_spark_session()
-    full_table_name = get_full_table_name(table_name, alternate_prefix)
+    full_table_name = get_full_table_name(table_name, alternate_prefix, alternate_database, latest_table)
     table_exists = spark_session.catalog._jcatalog.tableExists(full_table_name)
     if raise_if_missing and not table_exists:
         raise TableNotFoundError(f"Table does not exist: {full_table_name}")
@@ -174,20 +202,37 @@ def get_run_id():
     run_id = 1
     if check_table_exists("run_log"):
         spark_session = get_or_create_spark_session()
-        log_table = get_full_table_name("run_log")
+        log_table = get_full_table_name(table_short_name="run_log")
         run_id += spark_session.read.table(log_table).select(F.max("run_id")).first()[0]
     return run_id
 
 
-def get_full_table_name(table_short_name, alternate_prefix: str = None):
+def get_full_table_name(
+    table_short_name, alternate_prefix: str = None, alternate_database: str = None, latest_table: bool = False
+):
     """
     Get the full database.table_name address for the specified table.
     Based on database and name prefix from config.
+    alternate database offered if want to use alternative to storage settings
+    latest table:
+       Used for when tables are suffixed with a date e.g. tablename_yyyymmdd. If True will return the latest
+       table from the database
     """
     storage_config = get_config()["storage"]
+    if alternate_database is not None:
+        database = alternate_database
+    else:
+        database = f'{storage_config["database"]}'
     if alternate_prefix is not None:
-        return f'{storage_config["database"]}.{alternate_prefix}{table_short_name}'
-    return f'{storage_config["database"]}.{storage_config["table_prefix"]}{table_short_name}'
+        prefix = alternate_prefix
+    else:
+        prefix = storage_config["table_prefix"]
+    if latest_table:
+        spark_session = get_or_create_spark_session()
+        table_names_df = spark_session.sql(f"show tables in {database} like '{prefix}{table_short_name}_20*'")
+        table_names_lst = table_names_df.select("tableName").rdd.flatMap(lambda x: x).collect()
+        table_short_name = table_names_lst[-1].replace(f"{prefix}", "")
+    return f"{database}.{prefix}{table_short_name}"
 
 
 def _create_error_file_log_entry(run_id: int, file_path: str, error_text: str):

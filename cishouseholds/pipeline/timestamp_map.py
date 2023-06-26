@@ -144,7 +144,7 @@ cis_digital_datetime_map = {
 }
 
 phm_datetime_map = {
-    "dd/MM/yyyy": [
+    "yyyy-MM-dd": [
         "swab_taken_date",
         "swab_return_date",
         "swab_return_future_date",
@@ -153,11 +153,16 @@ phm_datetime_map = {
         "blood_return_future_date",
         "think_had_covid_onset_date",
         "phm_think_had_flu_onset_date",
-        "flu_vaccination_received_date",
+        "flu_vaccine_date",
         "phm_think_had_other_infection_onset_date",
         "been_outside_uk_last_return_date",
         "other_covid_infection_test_positive_date",
         "cis_covid_vaccine_date",
         "think_have_covid_onset_date",
+        "participant_completion_window_start_date",
+        "participant_completion_window_end_date",
+        "date_of_birth",
     ],
+    "yyyy-MM-dd'T'HH:mm:ss'+00:00'": ["survey_completed_datetime"],
+    "yyyy-MM-dd'T'HH:mm:ss": ["survey_start_datetime"],
 }

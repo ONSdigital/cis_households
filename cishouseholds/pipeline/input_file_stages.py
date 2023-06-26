@@ -10,6 +10,7 @@ from cishouseholds.pipeline.timestamp_map import phm_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v0_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v1_datetime_map
 from cishouseholds.pipeline.timestamp_map import survey_responses_v2_datetime_map
+from cishouseholds.pipeline.translate import translate_welsh_survey_responses
 from cishouseholds.pipeline.validation_schema import validation_schemas
 from cishouseholds.pipeline.version_specific_processing.digital_transformations import digital_responses_preprocessing
 from cishouseholds.pipeline.version_specific_processing.digital_transformations import (
@@ -17,13 +18,11 @@ from cishouseholds.pipeline.version_specific_processing.digital_transformations 
 )
 from cishouseholds.pipeline.version_specific_processing.mult_version import assign_has_been_columns
 from cishouseholds.pipeline.version_specific_processing.mult_version import derive_additional_v1_2_columns
-from cishouseholds.pipeline.version_specific_processing.participant_extract import transform_participant_extract_digital
-from cishouseholds.pipeline.version_specific_processing.participant_extract import (
-    translate_welsh_survey_responses_version_digital,
+from cishouseholds.pipeline.version_specific_processing.participant_extract_digital import (
+    transform_participant_extract_digital,
 )
-from cishouseholds.pipeline.version_specific_processing.phm_transformations import (
-    phm_transformations,
-)
+from cishouseholds.pipeline.version_specific_processing.phm_transformations import clean_survey_responses_version_phm
+from cishouseholds.pipeline.version_specific_processing.phm_transformations import phm_transformations
 from cishouseholds.pipeline.version_specific_processing.v0_transformations import (
     transform_survey_responses_version_0_delta,
 )
@@ -51,7 +50,7 @@ participant_extract_digital_parameters = {
     "source_file_column": "participant_extract_source_file",
 }
 
-phm_participant_parameters = {
+participant_extract_phm_parameters = {
     "stage_name": "phm_participant_extract_ETL",
     "dataset_name": "phm_participant_extract",
     "id_column": "participant_id",
@@ -60,31 +59,55 @@ phm_participant_parameters = {
     "transformation_functions": [],
     "sep": "|",
     "cast_to_double_list": [],
-    "source_file_column": "phm_participant_extract_gsource_file",
+    "source_file_column": "phm_participant_extract_source_file",
 }
 
-phm_parameters = {
+survey_responses_phm_parameters = {
     "stage_name": "survey_responses_version_phm_ETL",
     "dataset_name": "survey_responses_phm",
     "id_column": "participant_completion_window_id",
     "validation_schema": validation_schemas["phm_survey_validation_schema"],
     "datetime_column_map": phm_datetime_map,
+    "date_from_filename": False,
     "transformation_functions": [
+        clean_survey_responses_version_phm,
+        translate_welsh_survey_responses,
         phm_transformations,
     ],
     "sep": "|",
     "cast_to_double_list": [],
     "source_file_column": "survey_response_source_file",
+    "survey_table": True,
 }
 
-cis_digital_parameters = {
+survey_responses_phm_backup_parameters = {
+    "stage_name": "survey_responses_version_phm_backup_ETL",
+    "dataset_name": "survey_responses_phm_backup",
+    "id_column": "participant_completion_window_id",
+    "validation_schema": {
+        **validation_schemas["phm_survey_validation_schema"],
+        "survey_response_source_file": {"type": "string"},
+    },
+    "datetime_column_map": phm_datetime_map,
+    "date_from_filename": False,
+    "transformation_functions": [
+        translate_welsh_survey_responses,
+        phm_transformations,
+    ],
+    "sep": "|",
+    "cast_to_double_list": [],
+    "source_file_column": "backup_source_file",
+    "survey_table": True,
+}
+
+survey_responses_digital_parameters = {
     "stage_name": "survey_responses_version_digital_ETL",
     "dataset_name": "survey_responses_digital",
     "id_column": "participant_completion_window_id",
     "validation_schema": validation_schemas["cis_digital_validation_schema"],
     "datetime_column_map": cis_digital_datetime_map,
     "transformation_functions": [
-        translate_welsh_survey_responses_version_digital,
+        translate_welsh_survey_responses,
         digital_responses_preprocessing,
         transform_survey_responses_version_digital_delta,
         assign_has_been_columns,
@@ -199,8 +222,11 @@ historical_blood_results_parameters = {
 }
 
 for parameters in [
+    participant_extract_phm_parameters,
     participant_extract_digital_parameters,
-    cis_digital_parameters,
+    survey_responses_phm_parameters,
+    survey_responses_phm_backup_parameters,
+    survey_responses_digital_parameters,
     survey_responses_v2_parameters,
     survey_responses_v1_parameters,
     survey_responses_v0_parameters,

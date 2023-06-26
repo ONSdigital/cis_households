@@ -245,18 +245,6 @@ countries = (
 start_date_list = datetime(2022, 1, 1)
 end_date_list = datetime(2022, 1, 10)
 
-symptoms_list_2 = [
-    "Headache",
-    "Muscle ache",
-    "Weakness or tiredness",
-    "Fever, including high temperature",
-    "More trouble sleeping than usual",
-    "Memory loss or confusion",
-    "Difficulty concentrating",
-    "Worry or anxiety",
-    "Low mood or not enjoying anything",
-]
-
 symptoms_list_1 = [
     "Runny nose or sneezing",
     "Loss of smell",
@@ -270,11 +258,65 @@ symptoms_list_1 = [
     "Diarrhoea",
     "Loss of appetite or eating less than usual",
 ]
+symptoms_list_2 = [
+    "Headache",
+    "Muscle ache",
+    "Weakness or tiredness",
+    "Fever including high temperature",
+    "More trouble sleeping than usual",
+    "Memory loss or confusion",
+    "Difficulty concentrating",
+    "Worry or anxiety",
+    "Low mood or not enjoying anything",
+]
+
+long_covid_symptoms_list_1 = [
+    "Headache",
+    "Problems with eyesight or sore eyes",
+    "Tinnitus or problems hearing",
+    "Ear pain",
+    "Runny nose of sneezing",
+    "Nasal congestion",
+    "Sore throat",
+    "Cough",
+    "Shortness of breath",
+    "Noisy breathing or wheezing",
+    "Chest pain",
+    "Palpitations or heart rate pounding or beating irregularly",
+]
+
+long_covid_symptoms_list_2 = [
+    "Nausea or vomiting",
+    "Abdominal pain",
+    "Diarrhoea",
+    "Loss of appetite or eating less than usual",
+    "Muscle ache",
+    "Joint pain",
+    "Mobility problems",
+    "Loss of taste",
+    "Loss of smell",
+    "Memory loss or confusion",
+    "Difficulty concentrating",
+]
+
+long_covid_symptoms_list_3 = [
+    "More trouble sleeping than usual",
+    "Worry or anxiety",
+    "Low mood or not enjoying anything",
+    "Weakness or tiredness",
+    "Fever including high temperature",
+    "General pain",
+    "Vertigo or dizziness",
+    "Allergies or intolerances",
+    "Hair loss",
+    "Pins and needles or numbness",
+    "Skin rashes or itchy skin",
+]
 
 infections = [
     "COVID-19",
     "Flu",
-    "Another type of respiratory infection of illness",
+    "Another type of respiratory infection",
     "Do not know the type",
 ]
 
@@ -3336,22 +3378,41 @@ def get_survey_responses_digital_data_description(_, blood_barcodes, swab_barcod
     }
 
 
-phm_date_format = "%d/%m/%Y"
+phm_date_format = "%Y-%m-%d"
+phm_datetime_format = "%Y-%m-%dT%H:%M:%S+00:00"
+phm_long_datetime_format = "%Y-%m-%dT%H:%M:%S.%f+00:00"
 
 
 def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
     return lambda: {  # noqa: E731
+        "questionnaire_id": _("random.custom_code", mask="################", digit="#"),
+        "portal_id": _("custom_random.random_integer", lower=1000, upper=12000, null_percent=0),
+        "form_language_launch": _("choice", items=["en", "cy"]),
+        "form_language_submitted": _("choice", items=["en", "cy"]),
+        "survey_completed_datetime": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_datetime_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
         # "uac": _("random.custom_code", mask="################", digit="#"),
         # "household_completion_window_id": _("random.custom_code", mask="####", digit="#"),
         # "ons_household_id": _("random.custom_code", mask="############", digit="#"),
-        # "participant_id":_("random.custom_code", mask="DHR-############", digit="#"),
         # "cohort": _("choice", items=["Swab Only", "Fingerprick and Swab", None]),
         # "participant_under_16": _("choice", items=yes_no_none_choice),
+        "participant_id": _("random.custom_code", mask="DHR-############", digit="#"),  # Also DHRF-##########
         "participant_completion_window_id": _("random.custom_code", mask="####", digit="#"),
         "participant_first_name_confirmation": _("choice", items=yes_no_none_choice),
         "participant_first_name_on_behalf": _("choice", items=yes_no_none_choice),
         "problem_with_survey_access_helpline": _("choice", items=["Continue", None]),
-        "cohort_type_PHM": _(
+        "cohort_type_phm": _(
             "choice", items=["Do this questionnaire only", "Do this questionnaire and take a swab sample"]
         ),
         "swab_taken": _("choice", items=yes_no_none_choice),
@@ -3370,34 +3431,20 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
         "swab_sample_barcode_correct": _("choice", items=yes_no_none_choice),
         "swab_sample_barcode_user_entered": _("random.custom_code", mask="SWT########", digit="#"),
         "swab_taken_date": _(
-            "discrete_distribution",
-            population=[
-                _(
-                    "custom_random.random_date",
-                    start=start_date_list,
-                    end=end_date_list,
-                    format=phm_date_format,
-                ),
-                None,
-            ],
-            weights=[0.9, 0.1],
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format=phm_date_format,
         ),
-        "swab_taken_time_hour": _("custom_random.random_integer", lower=0, upper=12, null_percent=15),
+        "swab_taken_time_hour": _("custom_random.random_integer", lower=0, upper=12, null_percent=0),
         "swab_taken_time_minute": _("choice", items=[0, 15, 30, 45]),
         "swab_taken_am_pm": _("choice", items=["AM", "PM"]),
         "swab_returned": _("choice", items=yes_no_none_choice),
         "swab_return_date": _(
-            "discrete_distribution",
-            population=[
-                _(
-                    "custom_random.random_date",
-                    start=start_date_list,
-                    end=end_date_list,
-                    format=phm_date_format,
-                ),
-                None,
-            ],
-            weights=[0.9, 0.1],
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format=phm_date_format,
         ),
         "swab_return_future_date": _(
             "discrete_distribution",
@@ -3427,8 +3474,8 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
         ),
         "blood_not_taken_could_not_reason": _(
-            "choice",
-            items=[
+            "random.choices",
+            population=[
                 "I couldn't get enough blood into the pot",
                 "The pot spilled",
                 "I had bruising or pain",
@@ -3437,39 +3484,26 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 "There were issues with the kit",
                 None,
             ],
+            k=1,
         ),
         "blood_not_taken_could_not_other": _("text.sentence"),
         "blood_sample_barcode_correct": _("choice", items=yes_no_none_choice),
         "blood_sample_barcode_user_entered": _("random.custom_code", mask="BLT########", digit="#"),
         "blood_taken_date": _(
-            "discrete_distribution",
-            population=[
-                _(
-                    "custom_random.random_date",
-                    start=start_date_list,
-                    end=end_date_list,
-                    format=phm_date_format,
-                ),
-                None,
-            ],
-            weights=[0.9, 0.1],
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format=phm_date_format,
         ),
-        "blood_taken_time_hour": _("custom_random.random_integer", lower=0, upper=12, null_percent=15),
+        "blood_taken_time_hour": _("custom_random.random_integer", lower=0, upper=12, null_percent=0),
         "blood_taken_time_minute": _("choice", items=[0, 15, 30, 45]),
         "blood_taken_am_pm": _("choice", items=["AM", "PM"]),
         "blood_returned": _("choice", items=yes_no_none_choice),
         "blood_return_date": _(
-            "discrete_distribution",
-            population=[
-                _(
-                    "custom_random.random_date",
-                    start=start_date_list,
-                    end=end_date_list,
-                    format=phm_date_format,
-                ),
-                None,
-            ],
-            weights=[0.9, 0.1],
+            "custom_random.random_date",
+            start=start_date_list,
+            end=end_date_list,
+            format=phm_date_format,
         ),
         "blood_return_future_date": _(
             "discrete_distribution",
@@ -3562,6 +3596,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
         ),
         "work_direct_contact_patients_or_clients": _("choice", items=yes_no_prefer_not_to_say),
+        "work_nursing_or_residential_care_home": _("choice", items=yes_no_prefer_not_to_say),
         "work_location": _(
             "choice",
             items=[
@@ -3605,9 +3640,13 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
         ),
         "think_have_covid_any_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_have_covid_no_symptoms_list_1": _("choice", items=["None of these symptoms", None]),
         "think_have_covid_any_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
-        "think_have_symptoms_new_or_worse_list_1": _("random.choices", population=symptoms_list_1, k=1),
-        "think_have_symptoms_new_or_worse_list_2": _("random.choices", population=symptoms_list_2, k=1),
+        "think_have_covid_no_symptoms_list_2": _("choice", items=["None of these symptoms", None]),
+        "think_have_any_symptom_new_or_worse_list_1": _("random.choices", population=symptoms_list_1, k=2),
+        "think_have_no_symptoms_new_or_worse_list_1": _("choice", items=["None of these symptoms", None]),
+        "think_have_any_symptom_new_or_worse_list_2": _("random.choices", population=symptoms_list_2, k=3),
+        "think_have_no_symptoms_new_or_worse_list_2": _("choice", items=["None of these symptoms", None]),
         "think_have_covid_onset_date": _(
             "discrete_distribution",
             population=[
@@ -3670,7 +3709,7 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             weights=[0.5, 0.5],
         ),
         "flu_vaccine_received": _("choice", items=yes_no_prefer_not_to_say),
-        "flu_vaccine_received_date": _(
+        "flu_vaccine_date": _(
             "discrete_distribution",
             population=[
                 _(
@@ -3709,7 +3748,9 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             weights=[0.5, 0.5],
         ),
         "think_had_covid_any_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_had_covid_no_symptoms_list_1": _("choice", items=["None of these symptoms", None]),
         "think_had_covid_any_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
+        "think_had_covid_no_symptoms_list_2": _("choice", items=["None of these symptoms", None]),
         "phm_think_had_flu_onset_date": _(
             "discrete_distribution",
             population=[
@@ -3723,8 +3764,10 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
             weights=[0.5, 0.5],
         ),
-        "think_had_flu_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
-        "think_had_flu_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
+        "think_had_flu_any_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_had_flu_no_symptoms_list_1": _("choice", items=["None of these symptoms", None]),
+        "think_had_flu_any_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
+        "think_had_flu_no_symptoms_list_2": _("choice", items=["None of these symptoms", None]),
         "phm_think_had_other_infection_onset_date": _(
             "discrete_distribution",
             population=[
@@ -3738,8 +3781,10 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
             weights=[0.5, 0.5],
         ),
-        "think_had_other_infection_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
-        "think_had_other_infection_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
+        "think_had_other_infection_any_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
+        "think_had_other_infection_no_symptoms_list_1": _("choice", items=["None of these symptoms", None]),
+        "think_had_other_infection_any_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
+        "think_had_other_infection_no_symptoms_list_2": _("choice", items=["None of these symptoms", None]),
         "other_covid_infection_test": _("choice", items=yes_no_none_choice),
         "other_covid_infection_test_results": _(
             "choice",
@@ -3767,14 +3812,14 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 "Do not know",
             ],
         ),
-        "other_covid_infection_test_negative_date": _(
-            "discrete_distribution",
-            population=[
-                _("custom_random.random_date", start=start_date_list, end=end_date_list, format=phm_date_format),
-                None,
-            ],
-            weights=[0.5, 0.5],
-        ),
+        # "other_covid_infection_test_negative_date": _(
+        #     "discrete_distribution",
+        #     population=[
+        #         _("custom_random.random_date", start=start_date_list, end=end_date_list, format=phm_date_format),
+        #         None,
+        #     ],
+        #     weights=[0.5, 0.5],
+        # ),
         "last_28_days_unable_usual_activities": _("custom_random.random_integer", lower=0, upper=28, null_percent=15),
         "last_28_days_unable_usual_activities_due_to_respiratory_infection": _(
             "custom_random.random_integer", lower=0, upper=28, null_percent=15
@@ -3813,9 +3858,12 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
                 None,
             ],
         ),
-        "think_have_long_covid_symptom_list_1": _("random.choices", population=symptoms_list_1, k=1),
-        "think_have_long_covid_symptom_list_2": _("random.choices", population=symptoms_list_2, k=1),
-        "think_have_long_covid_symptom_list_3": _("random.choices", population=symptoms_list_1, k=1),
+        "think_have_long_covid_any_symptom_list_1": _("random.choices", population=long_covid_symptoms_list_1, k=1),
+        "think_have_long_covid_no_symptoms_list_1": _("choice", items=["None of these symptoms", None]),
+        "think_have_long_covid_any_symptom_list_2": _("random.choices", population=long_covid_symptoms_list_2, k=1),
+        "think_have_long_covid_no_symptoms_list_2": _("choice", items=["None of these symptoms", None]),
+        "think_have_long_covid_any_symptom_list_3": _("random.choices", population=long_covid_symptoms_list_3, k=1),
+        "think_have_long_covid_no_symptoms_list_3": _("choice", items=["None of these symptoms", None]),
         "think_have_long_covid_symptom_worse_after_effort": _("choice", items=yes_no_unknown_choice),
         "hospital_last_28_days": _("choice", items=yes_no_none_choice),
         "care_home_last_28_days": _("choice", items=yes_no_none_choice),
@@ -3879,5 +3927,46 @@ def get_phm_survey_responses_data_description(_, blood_barcodes, swab_barcodes):
             ],
         ),
         "end_screen_questionnaire": _("choice", items=["Continue", None]),
-        # "end_screen_sample": _("choice", items=["Continue", None]), #to be added when bio samples begin
+        "end_screen_sample": _("choice", items=["Continue", None]),  # to be added when bio samples begin
+        "survey_completion_status_flushed": _("choice", items=[False, True]),
+        "participant_completion_window_start_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_date_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "participant_completion_window_end_date": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_date_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "survey_start_datetime": _(
+            "discrete_distribution",
+            population=[
+                _(
+                    "custom_random.random_date",
+                    start=start_date_list,
+                    end=end_date_list,
+                    format=phm_long_datetime_format,
+                ),
+                None,
+            ],
+            weights=[0.9, 0.1],
+        ),
+        "schema_name": "cris_0001",
     }

@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 from functools import reduce
 from itertools import chain
 from operator import add
@@ -18,6 +19,7 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 from cishouseholds.edit import update_column_values_from_map
+from cishouseholds.expressions import all_columns_values_in_list
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.expressions import all_null_over_window
@@ -29,13 +31,74 @@ from cishouseholds.pipeline.mapping import _vaccine_type_map
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 
+def assign_survey_completed_status(
+    df: DataFrame,
+    column_name_to_assign: str,
+    survey_completed_datetime_column: str,
+    survey_flushed_column: str,
+    no_columns: List = [],
+):
+    """
+    function that return a column containing categorical data on survey completion, based
+    on datetime of completing the survey and whether the survey was flushed
+    Parameters
+    ----------
+    df DataFrame to process
+    column_name_to_assign
+        the name of the column being derived
+    survey_completed_datetime_column
+        The column containing the timestamp at which the participant completed the survey
+    survey_flushed_column
+        boolean column indicating whether the survey response was 'flushed', and thus not completed submitted
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(
+            all_columns_values_in_list(no_columns, "No"),
+            "Non-response",
+        )
+        .when(
+            (F.col(survey_completed_datetime_column).isNotNull()) & (~(F.col(survey_flushed_column))),
+            "Completed",
+        )
+        .when(
+            (F.col(survey_flushed_column)),
+            "Partially Completed",
+        )
+        .when(
+            (F.col(survey_completed_datetime_column).isNull()) & (~(F.col(survey_flushed_column))),
+            "Not Completed",
+        ),
+    )
+    return df
+
+
+def assign_window_status(
+    df: DataFrame,
+    column_name_to_assign: str,
+    window_start_column: str,
+    window_end_column: str,
+    current_date: datetime = datetime.now(),
+):
+    """
+    Derive the status of the survey window for a given point in time
+    """
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when((F.col(window_start_column) <= current_date) & (current_date <= F.col(window_end_column)), "Open")
+        .when(current_date > F.col(window_end_column), "Closed")
+        .when(current_date < F.col(window_start_column), "New"),
+    )
+    return df
+
+
 def assign_valid_order(
     df: DataFrame,
     column_name_to_assign: str,
     participant_id_column: str,
     vaccine_date_column: str,
     vaccine_type_column: str,
-    first_dose_column: str,
+    visit_datetime_column: str,
 ):
     """
     Derive a column to denote the priority (lower value higher priority) of a given vaccination.
@@ -52,7 +115,7 @@ def assign_valid_order(
     first_dose_column
         The column containing Yes if a given dose was a participants first
     """
-    window = Window.partitionBy(participant_id_column).orderBy(F.col(first_dose_column).desc())
+    window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
     # [min days before, max days before, min days after, max days after, allowed_type, allowed_first_type]
     orders = reversed(
         [
@@ -67,7 +130,7 @@ def assign_valid_order(
             [6, 0, 0, 28, 149, "Don't know type", "Pfizer/AZ/Moderna"],
         ]
     )
-    diff = F.datediff(F.col(vaccine_date_column), F.first(F.col(vaccine_date_column)).over(window))
+    diff = F.datediff(F.col(vaccine_date_column), F.first(F.col(vaccine_date_column), True).over(window))
     df = df.withColumn(column_name_to_assign, F.lit(None))
     for check in orders:
         neg_range = (diff > check[2]) & (diff < check[1])
@@ -241,30 +304,28 @@ def assign_datetime_from_combined_columns(
     """
     for col_name, temp_col_name in zip([hour_column, minute_column, second_column], ["hour", "min", "sec"]):
         if col_name is None:
-            df = df.withColumn(temp_col_name, 0)
+            df = df.withColumn(temp_col_name, F.lit(0))
+        else:
+            df = df.withColumn(temp_col_name, F.col(col_name))
 
-    hour = F.when((F.col(am_pm_column) == "pm") & (F.col(hour_column) != 12), F.col(hour_column) + 12).otherwise(
-        F.col(hour_column)
-    )
+    time = F.concat_ws(":", F.col("_hour"), F.col("_min"), F.col("_sec"))
+
     df = df.withColumn(
         column_name_to_assign,
         F.concat_ws(
             " ",
-            *[
-                F.col(date_column),
-                F.concat_ws(
-                    ":",
-                    hour,
-                    *[
-                        F.when(F.col(col) == 0, "00").otherwise(F.col(col).cast("string"))
-                        for col in [minute_column, second_column]
-                    ],
-                ),
-            ],
+            # F.col(date_column),
+            F.concat_ws("-", F.year(date_column), F.month(date_column), F.dayofmonth(date_column)),
+            F.concat_ws(
+                ":",
+                F.when(F.col(am_pm_column) == "PM", F.hour(time) + 12).otherwise(F.hour(time)),
+                F.minute(time),
+                F.second(time),
+            ),
         ),
     )
     df = df.withColumn(column_name_to_assign, F.to_timestamp(column_name_to_assign))
-    return df.drop(hour_column, minute_column, second_column, "hour", "min", "sec")
+    return df.drop("_hour", "_min", "_sec")
 
 
 def group_participant_within_date_range(
@@ -329,11 +390,8 @@ def assign_max_doses(
     return df
 
 
-def assign_first_dose(
-    df: DataFrame,
-    column_name_to_assign: str,
-    participant_id_column: str,
-    visit_datetime: str,
+def assign_nth_dose(
+    df: DataFrame, column_name_to_assign: str, participant_id_column: str, visit_datetime: str, dose_number: int = 1
 ):
     """
     Derive a column to denote the date of the first dose reported and order by visit_datetime.
@@ -347,7 +405,7 @@ def assign_first_dose(
     """
     window = Window.partitionBy(participant_id_column).orderBy(visit_datetime)
     df = df.withColumn("row", F.row_number().over(window))
-    df = df.withColumn(column_name_to_assign, F.when(F.col("row") == 1, "Yes").otherwise("No"))
+    df = df.withColumn(column_name_to_assign, F.when(F.col("row") == dose_number, "Yes").otherwise("No"))
     return df.drop("row")
 
 
@@ -599,11 +657,14 @@ def assign_date_from_filename(df: DataFrame, column_name_to_assign: str, filenam
     column_name_to_assign
     filename_column
     """
-    date = F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 1)
+    pattern = r"_(\d{8}|\d{4}-\d{2}-\d{2})(_\d{6}|T\d{6})?[.](csv|txt|json)"
+    date = F.regexp_extract(F.col(filename_column), pattern, 1)
+    date = F.regexp_replace(date, "-", "")
     time = F.when(
-        F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 2) == "",
+        F.regexp_extract(F.col(filename_column), pattern, 2) == "",
         "_000000",
-    ).otherwise(F.regexp_extract(F.col(filename_column), r"_(\d{8})(_\d{6})?[.](csv|txt)", 2))
+    ).otherwise(F.regexp_extract(F.col(filename_column), pattern, 2))
+    time = F.regexp_replace(time, "T", "_")
     df = df.withColumn(
         column_name_to_assign,
         F.to_timestamp(
@@ -672,8 +733,6 @@ def map_options_to_bool_columns(df: DataFrame, reference_column: str, value_colu
         df = df.withColumn(reference_column, F.split(F.col(reference_column), sep))
     for val, col in value_column_name_map.items():
         df = df.withColumn(col, F.when(F.array_contains(reference_column, val), "Yes"))
-    if array_exists:
-        return df
     return df.withColumn(reference_column, F.array_join(reference_column, sep))
 
 
@@ -2469,17 +2528,17 @@ def regex_match_result(
 
     The Truth Table below shows how the final pattern matching result is arrived at.
 
-    +----------------------+----------------------+-----+
-    |positive_regex_pattern|negative_regex_pattern|final|
-    +----------------------+----------------------+-----+
-    |                  true|                  true|false|
-    |                  true|                 false| true|
-    |                 false|                  true|false|
-    |                 false|                 false|false|
-    +----------------------+----------------------+-----+
+    #+----------------------+----------------------+-----+
+    #|positive_regex_pattern|negative_regex_pattern|final|
+    #+----------------------+----------------------+-----+
+    #|                  true|                  true|false|
+    #|                  true|                 false| true|
+    #|                 false|                  true|false|
+    #|                 false|                 false|false|
+    #+----------------------+----------------------+-----+
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     columns_to_check_in
         a list of columns in which to look for the `positive_regex_pattern`
     positive_regex_pattern
@@ -2490,8 +2549,8 @@ def regex_match_result(
         If True and `negative_regex_pattern` is not None, then result of applying positive_regex_pattern and
         negative_regex_pattern are turned in addition to the final result.
 
-    Returns:
-    --------
+    Returns
+    -------
     Column
         The final result of applying positive_regex_pattern and negative_regex_pattern (if given)
     Tuple[Column, Column, Column]
@@ -2529,17 +2588,17 @@ def assign_regex_match_result(
 
     The Truth Table below shows how the final pattern matching result is assigned.
 
-    +----------------------+----------------------+-----+
-    |positive_regex_pattern|negative_regex_pattern|final|
-    +----------------------+----------------------+-----+
-    |                  true|                  true|false|
-    |                  true|                 false| true|
-    |                 false|                  true|false|
-    |                 false|                 false|false|
-    +----------------------+----------------------+-----+
+    #+----------------------+----------------------+-----+
+    #|positive_regex_pattern|negative_regex_pattern|final|
+    #+----------------------+----------------------+-----+
+    #|                  true|                  true|false|
+    #|                  true|                 false| true|
+    #|                 false|                  true|false|
+    #|                 false|                 false|false|
+    #+----------------------+----------------------+-----+
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     df
         The input dataframe to process
     columns_to_check_in
@@ -2557,8 +2616,8 @@ def assign_regex_match_result(
     debug_mode:
         Only relevant when `column_name_to_assign` is not None - See `negative_regex_pattern` above.
 
-    See Also:
-    ---------
+    See Also
+    --------
     regex_match_result: `assign_regex_match_result` wraps around `regex_match_result`
     """
     match_result = regex_match_result(

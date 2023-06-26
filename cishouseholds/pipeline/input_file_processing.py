@@ -19,7 +19,7 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.load import update_table
 from cishouseholds.pipeline.validation_schema import validation_schemas
-from cishouseholds.pyspark_utils import convert_array_strings_to_array
+from cishouseholds.pyspark_utils import convert_array_to_array_strings
 from cishouseholds.pyspark_utils import convert_cerberus_schema_to_pyspark
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_files
@@ -71,6 +71,7 @@ def extract_validate_transform_input_data(
     cast_to_double_columns_list: list = [],
     include_hadoop_read_write: bool = False,
     dataset_version: str = None,
+    survey_table: bool = False,
 ):
     """
     Wraps the extract input data function reading a set of csv files into a single dataframe,
@@ -107,6 +108,7 @@ def extract_validate_transform_input_data(
         optional boolean toggle to denote if hdfs operations should be used
     dataset_version
         optional integer to denote the voyager version of the survey file
+    survey_table
     """
     if include_hadoop_read_write:
         storage_config = get_config()["storage"]
@@ -116,11 +118,12 @@ def extract_validate_transform_input_data(
     df = extract_input_data(resource_path, validation_schema, sep, source_file_column)
     if column_name_map is not None:
         df = rename_column_names(df, column_name_map)
-
-    df = assign_filename_column(df, source_file_column)  # Must be called before update_from_lookup_df
+    if source_file_column not in df.columns:
+        df = assign_filename_column(df, source_file_column)  # Must be called before update_from_lookup_df
     dataset_version = "" if dataset_version is None else "_" + dataset_version
+    df = convert_array_to_array_strings(df)
     if include_hadoop_read_write:
-        update_table(df, f"raw_{dataset_name}{dataset_version}", write_mode)
+        update_table(df, f"raw_{dataset_name}{dataset_version}", write_mode, survey_table=survey_table)
         filter_ids = []
         if extraction_config is not None and dataset_name in extraction_config:
             filter_ids = extraction_config[dataset_name]
@@ -139,6 +142,7 @@ def extract_validate_transform_input_data(
 
     for transformation_function in transformation_functions:
         df = transformation_function(df)
+
     return df
 
 
@@ -180,8 +184,6 @@ def extract_input_data(
             ignoreTrailingWhiteSpace=True,
             sep=sep,
         )
-        if validation_schema:
-            df = convert_array_strings_to_array(df, validation_schema)  # type: ignore
     if xl_file_paths:
         spark = get_or_create_spark_session()
         dfs = [
@@ -194,16 +196,18 @@ def extract_input_data(
             df = union_multiple_tables(dfs)
         else:
             df = union_multiple_tables([df, *dfs])
-        if validation_schema:
-            df = convert_array_strings_to_array(df, validation_schema)  # type: ignore
     if json_file_paths:
         dfs = []
         data_strings = [read_file_to_string(file, True) for file in json_file_paths]
-        for data_string in data_strings:
+        for file_name, data_string in zip(json_file_paths, data_strings):
             data = decode_phm_json(data_string)
-            dfs.append(spark_session.createDataFrame(data=data, schema=spark_schema))
+            _df = spark_session.createDataFrame(data=data, schema=spark_schema)
+            _df = _df.withColumn(source_file_column, F.lit(file_name))
+            dfs.append(_df)
         if df is None:
             df = union_multiple_tables(dfs)
         else:
             df = union_multiple_tables([df, *dfs])
+        if ["survey_completion_status_flushed" in col for col in df.columns]:
+            df = df.filter(~(F.col("survey_completion_status_flushed")))
     return df

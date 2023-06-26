@@ -1,38 +1,32 @@
-import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
+from cishouseholds.derive import assign_fake_id
 from cishouseholds.derive import assign_first_visit
 from cishouseholds.derive import assign_last_visit
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import assign_visit_order
-from cishouseholds.derive import derive_digital_merge_type
-from cishouseholds.edit import replace_sample_barcode
 
 
 def visit_transformations(df: DataFrame):
-    """"""
+    """derives visit based derivations, but must have old responses joined to first
+    in order to be continuous from CRIS to PHM
+    """
     df = visit_derivations(df).custom_checkpoint()
-    df = create_ever_variable_columns(df).custom_checkpoint()
     return df
 
 
 def visit_derivations(df: DataFrame):
 
+    df = assign_fake_id(df, "ordered_household_id_new", "ons_household_id")
     df = assign_visit_order(
         df=df,
         column_name_to_assign="visit_order",
         id="participant_id",
         order_list=["visit_datetime", "visit_id"],
     )
-    df = df.withColumn(
-        "participant_visit_status", F.coalesce(F.col("participant_visit_status"), F.col("survey_completion_status"))
-    )
-
-    df = derive_digital_merge_type(df=df, column_name_to_assign="digital_merge_type")
-    df = replace_sample_barcode(df=df)
 
     df = assign_first_visit(
         df=df,
@@ -60,13 +54,23 @@ def visit_derivations(df: DataFrame):
         end_reference_column="visit_datetime",
         format="fortnight",
     )
-    df = assign_date_difference(
-        df=df,
-        column_name_to_assign="household_weeks_since_survey_enrolment",
-        start_reference_column="survey start",
-        end_reference_column="visit_datetime",
-        format="weeks",
-    )
+    # df = df.withColumn("first_survey_week", F.lit("2020-04-16 00:00:00"))  # first fortnight of survey
+
+    # df = assign_date_difference(
+    #      df=df,
+    #      column_name_to_assign="fortnight_of_enrolment",
+    #      start_reference_column="first_survey_week",
+    #      end_reference_column="household_first_visit_datetime",
+    #      format="fortnight",
+    #  )
+    # df = df.withColumn("fortnight_of_enrolment", F.col("fortnight_of_enrolment") + F.lit(1)).drop("first_survey_week")
+    # df = assign_date_difference(
+    #      df=df,
+    #      column_name_to_assign="household_weeks_since_survey_enrolment",
+    #      start_reference_column="survey start",
+    #      end_reference_column="visit_datetime",
+    #      format="weeks",
+    #  )
     df = assign_named_buckets(
         df,
         reference_column="days_since_enrolment",

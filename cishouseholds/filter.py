@@ -1,9 +1,18 @@
+from typing import Any
 from typing import List
 from typing import Union
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+
+
+def filter_leave_at_least_1(df: DataFrame, retain_condition: Any, window: Window):
+    """ """
+    window = window.orderBy("DROP")
+    df = df.withColumn("DROP", F.when(retain_condition, 0).otherwise(1))
+    df = df.withColumn("ROW", F.row_number().over(window))
+    return df.filter((F.col("ROW") == 1) | (F.col("DROP") == 0)).drop("ROW", "DROP")
 
 
 def filter_single_dose(
@@ -19,16 +28,21 @@ def filter_single_dose(
 ):
     """
     Filter to a single dose per participant per idose using a series of prescribed filters.
+    Only drop on condition if count in row window is > 1. Using sum rows in window prior to performing each step of logic.
     """
-    window = Window.partitionBy(participant_id_column, i_dose_column)
-    disambiguation_window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
+    window = Window.partitionBy(participant_id_column, i_dose_column).orderBy(visit_datetime_column)
+
     df = df.withColumn("MIN", F.min(F.col(order_column)).over(window))
-    df = df.filter(F.col(order_column) == F.col("MIN"))
-    df = df.filter(((F.col(poss_1_2_column) == "Yes") & (F.col(vaccine_type_column).isin(allowed_vaccine_types))))
-    df = df.filter(F.col(default_date_column) != 1)
-    df = df.withColumn("ROW", F.row_number().over(disambiguation_window))
+    df = filter_leave_at_least_1(df, (F.col(order_column) == F.col("MIN")), window)
+    df = filter_leave_at_least_1(
+        df, ((F.col(poss_1_2_column) == "Yes") & (F.col(vaccine_type_column).isin(allowed_vaccine_types))), window
+    )
+    df = filter_leave_at_least_1(df, (F.col(default_date_column) != 1), window)
+
+    # Finally keep first reported vaccine by visit_date for the window
+    df = df.withColumn("ROW", F.row_number().over(window))
     df = df.filter(F.col("ROW") == 1)
-    return df.drop("ROW", "MIN")
+    return df.drop("MIN", "ROW")
 
 
 def filter_before_date_or_null(df: DataFrame, date_column: str, min_date: str):
@@ -215,3 +229,18 @@ def file_exclude(df: DataFrame, source_file_col: str, files_to_exclude: list):
         df = df.filter(~F.col(source_file_col).isin(item))
 
     return df
+
+
+def filter_exclude_by_pattern(df: DataFrame, column: str, pattern: str) -> DataFrame:
+    """
+    Function to filter dataframe by excluding pattern in specific column
+
+    Parameters
+    --------
+    df
+    column
+        String name of column in dataframe to filter on.
+    pattern
+        String or raw string literal to match and remove from dataframe
+    """
+    return df.filter(~F.col(column).rlike(pattern))

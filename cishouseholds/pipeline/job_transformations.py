@@ -11,12 +11,8 @@ from cishouseholds.derive import assign_work_status_group
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_job_description_string
 from cishouseholds.expressions import any_column_not_null
-from cishouseholds.impute import fill_backwards_work_status_v2
-from cishouseholds.impute import fill_forward_from_last_change_marked_subset
 from cishouseholds.impute import fill_forward_only_to_nulls
-from cishouseholds.merge import left_join_keep_right
 from cishouseholds.pipeline.lookup_and_regex_transformations import process_healthcare_regex
-from cishouseholds.pipeline.lookup_and_regex_transformations import reclassify_work_variables
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 
 # from cishouseholds.edit import update_work_main_job_changed
@@ -25,27 +21,16 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 # this wall feed in data from the joined healthcare regex
 
 
-def job_transformations(df: DataFrame, soc_lookup_df: DataFrame, job_lookup_df: Optional[DataFrame] = None):
+def job_transformations(df: DataFrame):
     """apply all transformations in order related to a persons vocation."""
-    df = preprocessing(df)
-    df = fill_forwards_and_backwards(df).custom_checkpoint()
-    df = reclassify_work_variables(df).custom_checkpoint()
-    job_lookup_df = create_job_lookup(df, soc_lookup_df=soc_lookup_df, lookup_df=job_lookup_df).custom_checkpoint()
-    df = left_join_keep_right(
-        left_df=df, right_df=job_lookup_df, join_on_columns=["work_main_job_title", "work_main_job_role"]
-    )
-    df = repopulate_missing_from_original(df=df, columns_to_update=job_lookup_df.columns)
-
-    df = data_dependent_derivations(df).custom_checkpoint()
-    return df, job_lookup_df
+    df = fill_forwards(df).custom_checkpoint()
+    return df
 
 
 def preprocessing(df: DataFrame):
     """Apply transformations that must occur before all other transformations can be processed."""
     df = clean_job_description_string(df, "work_main_job_title")
     df = clean_job_description_string(df, "work_main_job_role")
-    df = clean_job_description_string(df, "work_main_job_title_raw")
-    df = clean_job_description_string(df, "work_main_job_role_raw")
     col_val_map = {
         "work_health_care_area": {
             "Secondary care for example in a hospital": "Secondary",
@@ -115,54 +100,34 @@ def repopulate_missing_from_original(df: DataFrame, columns_to_update: List[str]
     return df
 
 
-def fill_forwards_and_backwards(df: DataFrame):
-    """Attempt to add data by adding data to rows where the datetime suggests the data point will be valid."""
-    df = fill_forward_from_last_change_marked_subset(
-        df=df,
-        fill_forward_columns=[
-            "work_main_job_title",
-            "work_main_job_role",
-            "work_sector",
-            "work_sector_other",
-            "work_social_care",
-            "work_health_care_patient_facing",
-            "work_health_care_area",
-            "work_nursing_or_residential_care_home",
-            "work_direct_contact_patients_or_clients",
-        ],
-        participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
-        record_changed_column="work_main_job_changed",
-        record_changed_value="Yes",
-        dateset_version_column="survey_response_dataset_major_version",
-        minimum_dateset_version=2,
-    )
-    df = fill_backwards_work_status_v2(
-        df=df,
-        date="visit_datetime",
-        id="participant_id",
-        fill_backward_column="work_status_v2",
-        condition_column="work_status_v1",
-        date_range=["2020-09-01", "2021-08-31"],
-        condition_column_values=["5y and older in full-time education"],
-        fill_only_backward_column_values=[
-            "4-5y and older at school/home-school",
-            "Attending college or FE (including if temporarily absent)",
-            "Attending university (including if temporarily absent)",
-        ],
-    )
+def fill_forwards(df: DataFrame):
+    """Takes most recent not null response and fills forward into nulls"""
     df = fill_forward_only_to_nulls(
         df,
         id="participant_id",
         date="visit_datetime",
         list_fill_forward=[
-            "work_status_v0",
-            "work_status_v1",
-            "work_status_v2",
-            "work_location",
-            "work_not_from_home_days_per_week",
+            "work_main_job_title",
+            "work_main_job_role",
+            "work_sector",
+            "work_sector_other",
+            "work_health_care_area",
+            "work_nursing_or_residential_care_home",
         ],
     )
+    # tidy up health and social care specific variables
+    df = df.withColumn(
+        "work_health_care_area",
+        F.when((~F.col("work_sector").rlike("^Health")), None).otherwise(F.col("work_health_care_area")),
+    )
+
+    df = df.withColumn(
+        "work_nursing_or_residential_care_home",
+        F.when(~((F.col("work_sector").rlike("^Health")) | (F.col("work_sector").rlike("^Social"))), None).otherwise(
+            F.col("work_nursing_or_residential_care_home")
+        ),
+    )
+
     return df
 
 

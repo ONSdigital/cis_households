@@ -1,1 +1,2 @@
-__version__ = "3.4.0-beta.1"
+"""Data engineering pipeline for CRIS"""
+__version__ = "4.5.0-beta.0"
