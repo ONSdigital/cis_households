@@ -1650,11 +1650,9 @@ def conditionally_replace_columns(
 
 def conditionally_set_column_values(df: DataFrame, condition: Any, cols_to_set_to_value: Any):
     """
-    Creates a temporary column based on the input condition, then reads in the cols_to_set_to_value dict
-    building a column list for each col_prefix in the dict.
-
-    For each col in the column list where the temporary condition_col is true, replace the value for that column
-    based on the cols_to_set_to_value dictionary entry.
+    Using a set conditional statement that evaluates to True/False the function sets a series of columns
+    keyed within 'cols_to_set_to_value' to the value mapped by the key in the dictionary if the condition
+    evaluates to True, otherwise retain the original value of the specified column.
 
     Return the df while dropping the temporary column.
 
