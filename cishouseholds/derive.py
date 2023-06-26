@@ -302,7 +302,7 @@ def assign_datetime_from_combined_columns(
         an optional name for a column containing a 1-12 number representing the second
         if this column is not specified the second will default to 0
     """
-    for col_name, temp_col_name in zip([hour_column, minute_column, second_column], ["hour", "min", "sec"]):
+    for col_name, temp_col_name in zip([hour_column, minute_column, second_column], ["_hour", "_min", "_sec"]):
         if col_name is None:
             df = df.withColumn(temp_col_name, F.lit(0))
         else:
