@@ -4265,7 +4265,24 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.derive.assign_survey_not_completed_reason_code">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.derive.</span></span><span class="sig-name descname"><span class="pre">assign_survey_not_completed_reason_code</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pyspark.sql.dataframe.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name_to_assign</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cohort_type_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">survey_filled_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">swab_barcode_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blood_barcode_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.derive.assign_survey_not_completed_reason_code" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Derive a column to represent the reason why a survey was not completed.
+The possible values here are:
+&gt; TNR: the survey was filled and the participant opted to complete swabs and or bloods but no swab or blood data was provided
+&gt; QNR: the survey was not filled but the participant opted to complete swabs and or bloods and they did provided swab or blood data
+&gt; FNR: the survey was not filled and the participant opted to complete swabs and or bloods but no swab or blood data was provided</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – </p></li>
+<li><p><strong>column_name_to_assign</strong> – </p></li>
+<li><p><strong>cohort_type_column</strong> – </p></li>
+<li><p><strong>survey_filled_column</strong> – </p></li>
+<li><p><strong>swab_barcode_column</strong> – </p></li>
+<li><p><strong>blood_barcode_column</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 

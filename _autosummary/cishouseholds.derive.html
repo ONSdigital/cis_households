@@ -4389,7 +4389,7 @@
 <td><p>Assign a new column with named ranges for given integer ranges contained within a reference column</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="cishouseholds.derive.assign_nth_dose.html#cishouseholds.derive.assign_nth_dose" title="cishouseholds.derive.assign_nth_dose"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_nth_dose</span></code></a>(df, column_name_to_assign, ...)</p></td>
-<td><p>Assign the date of the first dose reported and order by visit_datetime.</p></td>
+<td><p>Derive a column to denote the date of the first dose reported and order by visit_datetime.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="cishouseholds.derive.assign_order_number.html#cishouseholds.derive.assign_order_number" title="cishouseholds.derive.assign_order_number"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_order_number</span></code></a>(df, ...)</p></td>
 <td><p>Assigns an incrementing value based on input column conditions where the corresponding vaccine_type value matches one from the vaccine_type_map</p></td>
@@ -4410,7 +4410,7 @@
 <td><p>Create a copy of each column in a list, with a new suffix.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="cishouseholds.derive.assign_regex_from_map.html#cishouseholds.derive.assign_regex_from_map" title="cishouseholds.derive.assign_regex_from_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_regex_from_map</span></code></a>(df, ...)</p></td>
-<td><p></p></td>
+<td><p>Derive a column based ordered regex pattern matching.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="cishouseholds.derive.assign_regex_from_map_additional_rules.html#cishouseholds.derive.assign_regex_from_map_additional_rules" title="cishouseholds.derive.assign_regex_from_map_additional_rules"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_regex_from_map_additional_rules</span></code></a>(df, ...)</p></td>
 <td><p>Apply additional logic around the <cite>assign_regex_from_map</cite> function to allow for increased specificity/.</p></td>
@@ -4428,7 +4428,7 @@
 <td><p>function that return a column containing categorical data on survey completion, based on datetime of completing the survey and whether the survey was flushed :param df DataFrame to process: :param column_name_to_assign: the name of the column being derived :param survey_completed_datetime_column: The column containing the timestamp at which the participant completed the survey :param survey_flushed_column: boolean column indicating whether the survey response was 'flushed', and thus not completed submitted</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="cishouseholds.derive.assign_survey_not_completed_reason_code.html#cishouseholds.derive.assign_survey_not_completed_reason_code" title="cishouseholds.derive.assign_survey_not_completed_reason_code"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_survey_not_completed_reason_code</span></code></a>(df, ...)</p></td>
-<td><p></p></td>
+<td><p>Derive a column to represent the reason why a survey was not completed.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="cishouseholds.derive.assign_taken_column.html#cishouseholds.derive.assign_taken_column" title="cishouseholds.derive.assign_taken_column"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_taken_column</span></code></a>(df, ...)</p></td>
 <td><p>Uses references column value to assign a taken column &quot;yes&quot; or &quot;no&quot; depending on whether reference is Null</p></td>
@@ -4440,7 +4440,7 @@
 <td><p>Assign a unique column from concatenating multiple input columns</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="cishouseholds.derive.assign_valid_order.html#cishouseholds.derive.assign_valid_order" title="cishouseholds.derive.assign_valid_order"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_valid_order</span></code></a>(df, ...)</p></td>
-<td><p></p></td>
+<td><p>Derive a column to denote the priority (lower value higher priority) of a given vaccination.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="cishouseholds.derive.assign_visit_order.html#cishouseholds.derive.assign_visit_order" title="cishouseholds.derive.assign_visit_order"><code class="xref py py-obj docutils literal notranslate"><span class="pre">assign_visit_order</span></code></a>(df, ...)</p></td>
 <td><p>Assign an incremental count to each participants visit</p></td>
@@ -4467,7 +4467,7 @@
 <td><p>update postcode variable to include only uppercase alpha numeric characters and set to null if required format cannot be identified :param df: :param postcode_column:</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="cishouseholds.derive.combine_like_array_columns.html#cishouseholds.derive.combine_like_array_columns" title="cishouseholds.derive.combine_like_array_columns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combine_like_array_columns</span></code></a>(df, column_prefix)</p></td>
-<td><p></p></td>
+<td><p>Combine all columns with a given prefix into a single string column with name of the 'column_prefix'.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="cishouseholds.derive.concat_fields_if_true.html#cishouseholds.derive.concat_fields_if_true" title="cishouseholds.derive.concat_fields_if_true"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concat_fields_if_true</span></code></a>(df, ...[, sep])</p></td>
 <td><p>Concat the names of fields where a given condition is met to form a new column</p></td>
@@ -4591,7 +4591,7 @@
 <td><p>assign column to denote whether the data of a given set of columns (selection_columns) matches between old and new sample df's (old_sample_df) (new_sample_df)</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="cishouseholds.derive.group_participant_within_date_range.html#cishouseholds.derive.group_participant_within_date_range" title="cishouseholds.derive.group_participant_within_date_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group_participant_within_date_range</span></code></a>(df, ...)</p></td>
-<td><p>For each participant id group by a date variable within a given range.</p></td>
+<td><p>For each participant id group by a date variable within a given range and assign a unique uniform value for the group.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="cishouseholds.derive.household_level_populations.html#cishouseholds.derive.household_level_populations" title="cishouseholds.derive.household_level_populations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">household_level_populations</span></code></a>(address_lookup, ...)</p></td>
 <td><p><ol class="arabic simple">

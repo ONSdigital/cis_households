@@ -4265,7 +4265,22 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.derive.assign_regex_from_map">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.derive.</span></span><span class="sig-name descname"><span class="pre">assign_regex_from_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pyspark.sql.dataframe.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name_to_assign</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">priority_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.derive.assign_regex_from_map" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Derive a column based ordered regex pattern matching.
+Steps:
+&gt; upon checking regex patters against the combined value of a set of reference columns add the static value to an array if the pattern matches
+&gt; disambiguate the resultant array by using the priority map to sort the best maps</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – </p></li>
+<li><p><strong>column_name_to_assign</strong> – </p></li>
+<li><p><strong>reference_columns</strong> – A list of columns that will combine to form the reference string for regex matching</p></li>
+<li><p><strong>map</strong> – A map of static values to regex patterns that if matching the reference column will be added to the array</p></li>
+<li><p><strong>priority_map</strong> – A map of static values to prioritise (higher value, higher priority)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 

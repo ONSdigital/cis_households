@@ -4265,7 +4265,18 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cishouseholds.derive.group_participant_within_date_range">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.derive.</span></span><span class="sig-name descname"><span class="pre">group_participant_within_date_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pyspark.sql.dataframe.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name_to_assign</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">participant_id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.derive.group_participant_within_date_range" title="Permalink to this definition">¶</a></dt>
-<dd><p>For each participant id group by a date variable within a given range.</p>
+<dd><p>For each participant id group by a date variable within a given range and assign a unique uniform value for the group.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – </p></li>
+<li><p><strong>column_name_to_assign</strong> – </p></li>
+<li><p><strong>participant_id_column</strong> – </p></li>
+<li><p><strong>date_column</strong> – </p></li>
+<li><p><strong>date_range</strong> – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

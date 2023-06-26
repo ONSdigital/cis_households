@@ -4266,6 +4266,20 @@
 <dt class="sig sig-object py" id="cishouseholds.derive.assign_max_doses">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.derive.</span></span><span class="sig-name descname"><span class="pre">assign_max_doses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pyspark.sql.dataframe.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name_to_assign</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i_dose_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_doses_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">participant_id_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">visit_datetime_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.derive.assign_max_doses" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assign a variable true or false depending on whether a participant has had their max number of vaccine doses.</p>
+<p>Looking backwards over time for a given participant check to see if there has been a third or higher dose, if there has
+then the participant has had their max doses at this time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – </p></li>
+<li><p><strong>column_name_to_assign</strong> – </p></li>
+<li><p><strong>i_dose_column</strong> – </p></li>
+<li><p><strong>num_doses_column</strong> – </p></li>
+<li><p><strong>participant_id_column</strong> – </p></li>
+<li><p><strong>visit_datetime_column</strong> – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

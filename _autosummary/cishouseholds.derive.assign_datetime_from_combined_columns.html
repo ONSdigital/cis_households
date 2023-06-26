@@ -4266,6 +4266,22 @@
 <dt class="sig sig-object py" id="cishouseholds.derive.assign_datetime_from_combined_columns">
 <span class="sig-prename descclassname"><span class="pre">cishouseholds.derive.</span></span><span class="sig-name descname"><span class="pre">assign_datetime_from_combined_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pyspark.sql.dataframe.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name_to_assign</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">am_pm_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hour_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minute_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">second_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#cishouseholds.derive.assign_datetime_from_combined_columns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a formatted pyspark date column from a series of components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> – </p></li>
+<li><p><strong>column_name_to_assign</strong> – </p></li>
+<li><p><strong>date_column</strong> – </p></li>
+<li><p><strong>am_pm_column</strong> – </p></li>
+<li><p><strong>hour_column</strong> – an optional name for a column containing a 1-12 number representing the hour
+if this column is not specified the hour will default to 0</p></li>
+<li><p><strong>minute_column</strong> – an optional name for a column containing a 1-12 number representing the minute
+if this column is not specified the minute will default to 0</p></li>
+<li><p><strong>second_column</strong> – an optional name for a column containing a 1-12 number representing the second
+if this column is not specified the second will default to 0</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

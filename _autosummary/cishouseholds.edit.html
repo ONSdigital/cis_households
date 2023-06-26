@@ -4303,7 +4303,7 @@
 <td><p>Dictionaries for column_to_column_map are to_replace : replace_with formats.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="cishouseholds.edit.conditionally_set_column_values.html#cishouseholds.edit.conditionally_set_column_values" title="cishouseholds.edit.conditionally_set_column_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">conditionally_set_column_values</span></code></a>(df, ...)</p></td>
-<td><p>Creates a temporary column based on the input condition, then reads in the cols_to_set_to_value dict building a column list for each col_prefix in the dict.</p></td>
+<td><p>Using a set conditional statement that evaluates to True/False the function sets a series of columns keyed within 'cols_to_set_to_value' to the value mapped by the key in the dictionary if the condition evaluates to True, otherwise retain the original value of the specified column.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="cishouseholds.edit.convert_barcode_null_if_zero.html#cishouseholds.edit.convert_barcode_null_if_zero" title="cishouseholds.edit.convert_barcode_null_if_zero"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_barcode_null_if_zero</span></code></a>(df, ...)</p></td>
 <td><p>Converts barcode to null if numeric characters are all 0 otherwise performs no change</p></td>
