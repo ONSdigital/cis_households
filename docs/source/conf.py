@@ -15,7 +15,7 @@ sys.path.insert(0, os.path.abspath("../.."))
 sys.path.insert(0, os.path.abspath("../../cishouseholds"))
 # -- Project information -----------------------------------------------------
 
-project = "cishouseholds"
+project = "survey_pipeline_template"
 copyright = "2023, CRIS Development Team"
 author = "CRIS Development Team"
 
@@ -42,7 +42,7 @@ html_theme_options = {
     "icon_links": [
         {
             "name": "GitHub",
-            "url": "https://github.com/ONS-SST/cis_households",
+            "url": "https://github.com/mat-may/survey_pipeline_template",
             "icon": "fab fa-github-square",
             "type": "fontawesome",
         }
