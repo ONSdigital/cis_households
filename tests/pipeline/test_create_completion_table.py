@@ -2,7 +2,7 @@ import pyspark.sql.functions as F
 import pytest
 from chispa import assert_df_equality
 
-from cishouseholds.phm.reporting_class import Report
+from cishouseholds.pipeline.reporting import ExcelReport
 
 
 @pytest.fixture
@@ -97,7 +97,7 @@ def test_create_completion_table_month(spark_session, input_df):
         # fmt: on
         schema=schema
     )
-    report = Report()
+    report = ExcelReport()
     partial_df, full_df = report.create_completion_table_set_range(
         df=input_df,
         participant_id_column="id",
@@ -160,7 +160,7 @@ def test_create_completion_table_day(spark_session, input_df):
         expected_full_df = expected_full_df.withColumn(col, F.to_timestamp(col))
         expected_partial_df = expected_partial_df.withColumn(col, F.to_timestamp(col))
 
-    report = Report()
+    report = ExcelReport()
     partial_df, full_df = report.create_completion_table_days(
         df=input_df,
         participant_id_column="id",

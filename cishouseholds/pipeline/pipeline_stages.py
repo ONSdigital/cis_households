@@ -31,7 +31,6 @@ from cishouseholds.hdfs_utils import read_header
 from cishouseholds.hdfs_utils import write_string_to_file
 from cishouseholds.merge import left_join_keep_right
 from cishouseholds.merge import union_multiple_tables
-from cishouseholds.phm.reporting_class import Report
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.covid_event_transformations import covid_event_transformations
@@ -71,6 +70,7 @@ from cishouseholds.pipeline.mapping import column_name_maps
 from cishouseholds.pipeline.mapping import soc_regex_map
 from cishouseholds.pipeline.post_union_processing import post_union_processing
 from cishouseholds.pipeline.reporting import count_variable_option
+from cishouseholds.pipeline.reporting import ExcelReport
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import generate_lab_report
 from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
@@ -1102,7 +1102,7 @@ def phm_output_report(
     all_df = extract_from_table(input_survey_table)
     welsh_preference_df = all_df.filter(F.col("language_preference") == "Welsh")
     welsh_submitted_df = all_df.filter(F.col("form_language_submitted") == "Welsh")
-    report = Report(output_directory=output_directory, output_file_prefix="phm_report_output")
+    report = ExcelReport(output_directory=output_directory, output_file_prefix="phm_report_output")
     dfs = [all_df, welsh_preference_df, welsh_submitted_df]
     prefixes = ["all", "pref Welsh", "submit Welsh"]
     for df, prefix in zip(dfs, prefixes):
@@ -1138,7 +1138,7 @@ def phm_validation_report(
 ) -> DataFrame:
     """Generate a validation report for PHM / CRIS"""
     df = extract_from_table(input_survey_table)
-    report = Report(output_directory=output_directory, output_file_prefix="phm_validation_output")
+    report = ExcelReport(output_directory=output_directory, output_file_prefix="phm_validation_output")
     report.create_validated_file_list(df=df, source_file_column="survey_response_source_file", sheet_name_prefix="all")
     report.write_excel_output()
 

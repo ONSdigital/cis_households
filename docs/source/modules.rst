@@ -22,10 +22,3 @@ Module Index and Docs
    :recursive:
 
    cishouseholds.regex
-
-.. autosummary::
-   :toctree: _autosummary
-   :template: custom-module-template.rst
-   :recursive:
-
-   cishouseholds.phm

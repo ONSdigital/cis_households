@@ -14,7 +14,6 @@ from cishouseholds.edit import rename_column_names
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.hdfs_utils import read_file_to_string
 from cishouseholds.merge import union_multiple_tables
-from cishouseholds.phm.json_decode import decode_phm_json
 from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.load import update_table
@@ -168,7 +167,6 @@ def extract_input_data(
     file_paths = [file_paths] if type(file_paths) == str else file_paths
     csv_file_paths = [p for p in file_paths if Path(p).suffix in [".txt", ".csv"]]
     xl_file_paths = [p for p in file_paths if Path(p).suffix == ".xlsx"]
-    json_file_paths = [p for p in file_paths if Path(p).suffix == ".json"]
     df = None
     if csv_file_paths:
         if validation_schema:
@@ -196,18 +194,4 @@ def extract_input_data(
             df = union_multiple_tables(dfs)
         else:
             df = union_multiple_tables([df, *dfs])
-    if json_file_paths:
-        dfs = []
-        data_strings = [read_file_to_string(file, True) for file in json_file_paths]
-        for file_name, data_string in zip(json_file_paths, data_strings):
-            data = decode_phm_json(data_string)
-            _df = spark_session.createDataFrame(data=data, schema=spark_schema)
-            _df = _df.withColumn(source_file_column, F.lit(file_name))
-            dfs.append(_df)
-        if df is None:
-            df = union_multiple_tables(dfs)
-        else:
-            df = union_multiple_tables([df, *dfs])
-        if ["survey_completion_status_flushed" in col for col in df.columns]:
-            df = df.filter(~(F.col("survey_completion_status_flushed")))
     return df
