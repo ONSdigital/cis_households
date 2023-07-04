@@ -6,15 +6,22 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![status: active](https://github.com/GIScience/badges/raw/master/status/active.svg)](https://github.com/GIScience/badges#active)
 
-# CIS Households
+# Survey Pipeline Template
 
-This repository contains the data engineering pipeline for the Office for National Statistics' [COVID-19 and Respiratory Infections Survey (CRIS)](https://www.ons.gov.uk/surveys/informationforhouseholdsandindividuals/householdandindividualsurveys/covid19andrespiratoryinfectionssurveycris/aboutthestudy).
-
-This pipeline was developed and used in production for the predecessor survey to CRIS, the [Coronavirus (COVID-19) Infection Survey (CIS)](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/bulletins/coronaviruscovid19infectionsurveypilot/previousReleases), and is in the process of being updated for CRIS.
-
-**A note around terminology:** 'PMH' and 'CRIS' are used interchangeably throughout this repository, but both refer to the successor to CIS.
+This repository contains a template for a data engineering pipeline based on the pipeline developed for the Office for National Statistics' [COVID-19 and Respiratory Infections Survey (CRIS)](https://www.ons.gov.uk/surveys/informationforhouseholdsandindividuals/householdandindividualsurveys/covid19andrespiratoryinfectionssurveycris/aboutthestudy) and its predecessor, the [Coronavirus (COVID-19) Infection Survey (CIS)](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/bulletins/coronaviruscovid19infectionsurveypilot/previousReleases), and is in the process of being updated for generic use.
 
 **Please note that this project is open for external reuse and review but closed for contribution.**
+
+# Development Roadmap
+
+Work on this repository is ongoing and is proceeding according to the following goals:
+
+* `v0.x.x` - adapted directly from cishouseholds
+* `v1.x.x` - removed specific cishouseholds logic
+* `v2.x.x` - update up latest Python and Spark versions
+* `v3.x.x` - add compatability with other data processing platforms
+
+Further detail will be added to this as the project proceeds.
 
 # Workflow
 
@@ -90,7 +97,7 @@ Descriptions of project directories and other significant files:
 
 # Office for National Statistics
 
-We are the UK’s largest independent producer of official statistics and its recognised national statistical institute. We are responsible for collecting and publishing statistics related to the economy, population and society at national, regional and local levels. We also conduct the census in England and Wales every 10 years.
+This organisation is the UK’s largest independent producer of official statistics and its recognised national statistical institute. It is responsible for collecting and publishing statistics related to the economy, population and society at national, regional and local levels. It also conducts the census in England and Wales every 10 years.
 
 # Licence
 

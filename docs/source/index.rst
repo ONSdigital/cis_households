@@ -3,16 +3,18 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to cishouseholds's documentation!
+Welcome to survey_pipeline_template's documentation!
 =========================================
 
 .. note::
 
-   This documentation is under active development.
+   This documentation is under review.
 
 
-This is the documentation for the data engineering pipeline for the
-`Office for National Statistics coronavirus (COVID-19) Infection Survey (CIS) <https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/bulletins/coronaviruscovid19infectionsurveypilot/previousReleases>`_.
+This repository builds on an initial concept that drove the development of the data engineering pipeline for the
+`Office for National Statistics Coronavirus (COVID-19) Infection Survey (CIS) <https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/bulletins/coronaviruscovid19infectionsurveypilot/previousReleases>`_.
+
+The purpose of this project is to create a platform agnostic Pyspark based template for data engineering pipelines that can be used for surveys or other purposes.
 
 .. toctree::
    :maxdepth: 2
