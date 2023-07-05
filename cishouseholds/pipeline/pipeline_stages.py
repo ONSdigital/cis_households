@@ -78,8 +78,9 @@ from cishouseholds.pipeline.vaccine_transformations import vaccine_transformatio
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
 from cishouseholds.pipeline.validation_schema import validation_schemas
-from cishouseholds.pipeline.version_specific_processing.participant_extract_phm import transform_participant_extract_phm
-from cishouseholds.pipeline.version_specific_processing.phm_transformations import clean_survey_responses_version_phm
+from cishouseholds.pipeline.version_specific_processing.test_survey_response_data_version_1_transformations import (
+    clean_survey_responses_version_phm,
+)
 from cishouseholds.pipeline.visit_transformations import visit_transformations
 from cishouseholds.prediction_checker_class import PredictionChecker
 from cishouseholds.pyspark_utils import get_or_create_spark_session
@@ -87,12 +88,10 @@ from cishouseholds.validate import check_lookup_table_joined_columns_unique
 from cishouseholds.validate import normalise_schema
 from cishouseholds.validate import validate_processed_files
 from dummy_data_generation.generate_data import generate_cis_soc_data
-from dummy_data_generation.generate_data import generate_digital_data
 from dummy_data_generation.generate_data import generate_nims_table
-from dummy_data_generation.generate_data import generate_phm_survey_data
-from dummy_data_generation.generate_data import generate_survey_v0_data
-from dummy_data_generation.generate_data import generate_survey_v1_data
-from dummy_data_generation.generate_data import generate_survey_v2_data
+from dummy_data_generation.generate_data import generate_test_participant_data
+from dummy_data_generation.generate_data import generate_test_survey_response_version_1_data
+from dummy_data_generation.generate_data import generate_test_survey_response_version_2_data
 
 # from cishouseholds.validate import validate_files
 
@@ -161,7 +160,6 @@ def table_to_table(
     df = extract_from_table(table_name, break_lineage, alternate_prefix, alternate_database, latest_table)
     transformations_dict: Dict[str, Any]
     transformations_dict = {
-        "participant_extract_phm": transform_participant_extract_phm,
         "clean_historic_geography_lookup": clean_historic_geography_lookup,
         "create_historic_visits": create_historic_visits,
     }
@@ -319,26 +317,14 @@ def generate_dummy_data(output_directory):
     file_date = datetime.strftime(file_datetime, format="%Y%m%d")
 
     generate_cis_soc_data(directory=cis_soc_directory, file_date=file_date, records=50)
-
-    generate_survey_v0_data(directory=survey_dir, file_date=file_date, records=50, swab_barcodes=[], blood_barcodes=[])
-    generate_survey_v1_data(directory=survey_dir, file_date=file_date, records=50, swab_barcodes=[], blood_barcodes=[])
-    v2 = generate_survey_v2_data(
+    generate_test_participant_data(
         directory=survey_dir, file_date=file_date, records=50, swab_barcodes=[], blood_barcodes=[]
     )
-    generate_digital_data(
-        directory=digital_survey_dir,
-        file_date=file_date,
-        records=50,
-        swab_barcodes=[],
-        blood_barcodes=[],
+    generate_test_survey_response_version_1_data(
+        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=[], blood_barcodes=[]
     )
-
-    generate_phm_survey_data(
-        directory=phm_survey_dir,
-        file_date=file_date,
-        records=50,
-        swab_barcodes=[],
-        blood_barcodes=[],
+    v2 = generate_test_survey_response_version_2_data(
+        directory=survey_dir, file_date=file_date, records=50, swab_barcodes=[], blood_barcodes=[]
     )
 
     participant_ids = v2["Participant_id"].unique().tolist()

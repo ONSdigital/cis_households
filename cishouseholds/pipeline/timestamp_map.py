@@ -8,9 +8,9 @@ csv_datetime_maps = {
     },
 }
 
-lab_results_glasgow_datetime_map = {"yyyy-MM-dd HH:mm:ss 'UTC'": ["pcr_result_recorded_datetime"]}
-historical_blood_datetime_map = {"yyyy/MM/dd": ["received_date"]}
-blood_datetime_map = {
+test_swab_sample_results_datetime_map = {"yyyy-MM-dd HH:mm:ss 'UTC'": ["pcr_result_recorded_datetime"]}
+
+test_blood_sample_results_datetime_map = {
     "yyyy-MM-dd": [
         "antibody_test_result_recorded_date",
         "blood_sample_arrayed_date",
@@ -19,59 +19,7 @@ blood_datetime_map = {
     "yyyy-MM-dd HH:mm:ss": ["blood_sample_collected_datetime"],
 }
 
-survey_responses_v2_datetime_map = {
-    "dd/MM/yyyy": [
-        "think_have_covid_onset_date",
-        "last_covid_contact_date",
-        "last_suspected_covid_contact_date",
-        "think_had_covid_onset_date",
-        "other_covid_infection_test_first_positive_date",
-        "other_covid_infection_test_last_negative_date",
-        "other_antibody_test_first_positive_date",
-        "other_antibody_test_last_negative_date",
-        "cis_covid_vaccine_date",
-        "been_outside_uk_last_return_date",
-        "improved_visit_date",
-        "cis_covid_vaccine_date_1",
-        "cis_covid_vaccine_date_2",
-        "cis_covid_vaccine_date_3",
-        "cis_covid_vaccine_date_4",
-    ],
-    "dd/MM/yyyy HH:mm": ["date_of_birth"],
-    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'": ["visit_datetime", "samples_taken_datetime"],
-}
-
-survey_responses_v1_datetime_map = {
-    "dd/MM/yyyy": [
-        "think_have_covid_onset_date",
-        "last_covid_contact_date",
-        "last_suspected_covid_contact_date",
-        "think_had_covid_onset_date",
-        "other_covid_infection_test_first_positive_date",
-        "other_covid_infection_test_last_negative_date",
-        "cis_covid_vaccine_date",
-        "been_outside_uk_last_return_date",
-    ],
-    "yyyy-MM-dd": [
-        "date_of_birth",
-        "other_antibody_test_first_positive_date",
-        "other_antibody_test_last_negative_date",
-    ],
-    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'": ["visit_datetime", "samples_taken_datetime"],
-}
-
-survey_responses_v0_datetime_map = {
-    "dd/MM/yyyy": [
-        "think_have_covid_date",
-        "last_covid_contact_date",
-        "last_suspected_covid_contact_date",
-        "think_had_covid_onset_date",
-        "date_of_birth",
-    ],
-    "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'": ["visit_datetime", "samples_taken_datetime"],
-}
-
-cis_digital_datetime_map = {
+test_participant_data_datetime_map = {
     "yyyy-MM-dd'T'HH:mm:ss'Z'": [
         "participant_completion_window_start_datetime",
         "participant_completion_window_end_datetime",
@@ -143,7 +91,31 @@ cis_digital_datetime_map = {
     ],
 }
 
-phm_datetime_map = {
+test_survey_response_data_version_1_datetime_map = {
+    "yyyy-MM-dd": [
+        "swab_taken_date",
+        "swab_return_date",
+        "swab_return_future_date",
+        "blood_taken_date",
+        "blood_return_date",
+        "blood_return_future_date",
+        "think_had_covid_onset_date",
+        "phm_think_had_flu_onset_date",
+        "flu_vaccine_date",
+        "phm_think_had_other_infection_onset_date",
+        "been_outside_uk_last_return_date",
+        "other_covid_infection_test_positive_date",
+        "cis_covid_vaccine_date",
+        "think_have_covid_onset_date",
+        "participant_completion_window_start_date",
+        "participant_completion_window_end_date",
+        "date_of_birth",
+    ],
+    "yyyy-MM-dd'T'HH:mm:ss'+00:00'": ["survey_completed_datetime"],
+    "yyyy-MM-dd'T'HH:mm:ss": ["survey_start_datetime"],
+}
+
+test_survey_response_data_version_2_datetime_map = {
     "yyyy-MM-dd": [
         "swab_taken_date",
         "swab_return_date",

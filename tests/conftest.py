@@ -17,26 +17,20 @@ from pyspark.sql import SparkSession
 from pytest_regressions.data_regression import RegressionYamlDumper
 
 from cishouseholds.hdfs_utils import copy_local_to_hdfs
-from cishouseholds.pipeline.input_file_stages import blood_results_parameters
 from cishouseholds.pipeline.input_file_stages import generate_input_processing_function
-from cishouseholds.pipeline.input_file_stages import participant_extract_digital_parameters
-from cishouseholds.pipeline.input_file_stages import survey_responses_digital_parameters
-from cishouseholds.pipeline.input_file_stages import survey_responses_phm_parameters
-from cishouseholds.pipeline.input_file_stages import survey_responses_v0_parameters
-from cishouseholds.pipeline.input_file_stages import survey_responses_v1_parameters
-from cishouseholds.pipeline.input_file_stages import survey_responses_v2_parameters
-from cishouseholds.pipeline.input_file_stages import swab_results_parameters
+from cishouseholds.pipeline.input_file_stages import test_blood_sample_results_parameters
+from cishouseholds.pipeline.input_file_stages import test_participant_data_parameters
+from cishouseholds.pipeline.input_file_stages import test_survey_response_data_version_1_parameters
+from cishouseholds.pipeline.input_file_stages import test_survey_response_data_version_2_parameters
+from cishouseholds.pipeline.input_file_stages import test_swab_sample_results_parameters
 from cishouseholds.pyspark_utils import running_in_dev_test
 from dummy_data_generation.helpers import CustomRandom
 from dummy_data_generation.helpers_weight import Distribution
-from dummy_data_generation.schemas import get_blood_validation_schema
-from dummy_data_generation.schemas import get_glasgow_lab_data_description
-from dummy_data_generation.schemas import get_participant_extract_digital_data_description
-from dummy_data_generation.schemas import get_phm_survey_responses_data_description
-from dummy_data_generation.schemas import get_survey_responses_digital_data_description
-from dummy_data_generation.schemas import get_voyager_0_data_description
-from dummy_data_generation.schemas import get_voyager_1_data_description
-from dummy_data_generation.schemas import get_voyager_2_data_description
+from dummy_data_generation.schemas import get_test_blood_sample_results_data_description
+from dummy_data_generation.schemas import get_test_participant_data_data_description
+from dummy_data_generation.schemas import get_test_survey_response_data_version_1_data_description
+from dummy_data_generation.schemas import get_test_survey_response_data_version_2_data_description
+from dummy_data_generation.schemas import get_test_swab_sample_results_data_description
 
 
 def pytest_configure(config):
@@ -106,124 +100,85 @@ def swab_barcodes():
 
 
 @pytest.fixture(scope="session")
-def swab_results_output(pandas_df_to_temporary_csv, swab_barcodes):
-    """
-    Generate glasgow lab results_output.
-    """
-    schema = Schema(schema=get_glasgow_lab_data_description(create_mimesis_field(), swab_barcodes))
-    pandas_df = pd.DataFrame(schema.create(iterations=10))
-    csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep=",")
-    processing_function = generate_input_processing_function(**swab_results_parameters, include_hadoop_read_write=False)
-    processed_df = processing_function(resource_path=csv_file_path)
-    return processed_df
-
-
-@pytest.fixture(scope="session")
-def blood_results_output(pandas_df_to_temporary_csv, blood_barcodes):
-    """
-    Generate glasgow lab results_output.
-    """
-    schema = Schema(schema=get_blood_validation_schema(create_mimesis_field(), blood_barcodes))
-    pandas_df = pd.DataFrame(schema.create(iterations=10))
-    csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
-    processing_function = generate_input_processing_function(
-        **blood_results_parameters, include_hadoop_read_write=False
-    )
-    processed_df = processing_function(resource_path=csv_file_path)
-    return processed_df
-
-
-@pytest.fixture(scope="session")
-def responses_v0_survey_ETL_output(pandas_df_to_temporary_csv, blood_barcodes, swab_barcodes):
-    """
-    Generate dummy survey responses v0 delta.
-    """
-    schema = Schema(schema=get_voyager_0_data_description(create_mimesis_field(), blood_barcodes, swab_barcodes))
-    pandas_df = pd.DataFrame(schema.create(iterations=10))
-    csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
-    processing_function = generate_input_processing_function(
-        **survey_responses_v0_parameters, include_hadoop_read_write=False
-    )
-    processed_df = processing_function(resource_path=csv_file_path)
-    return processed_df
-
-
-@pytest.fixture(scope="session")
-def responses_v1_survey_ETL_output(pandas_df_to_temporary_csv, blood_barcodes, swab_barcodes):
-    """
-    Generate dummy survey responses v1 delta.
-    """
-    schema = Schema(schema=get_voyager_1_data_description(create_mimesis_field(), blood_barcodes, swab_barcodes))
-    pandas_df = pd.DataFrame(schema.create(iterations=10))
-    csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
-    processing_function = generate_input_processing_function(
-        **survey_responses_v1_parameters, include_hadoop_read_write=False
-    )
-    processed_df = processing_function(resource_path=csv_file_path)
-    return processed_df
-
-
-@pytest.fixture(scope="session")
-def responses_v2_survey_ETL_output(pandas_df_to_temporary_csv, blood_barcodes, swab_barcodes):
-    """
-    Generate dummy survey responses v2 delta.
-    """
-    schema = Schema(schema=get_voyager_2_data_description(create_mimesis_field(), blood_barcodes, swab_barcodes))
-    pandas_df = pd.DataFrame(schema.create(iterations=10))
-    csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
-    processing_function = generate_input_processing_function(
-        **survey_responses_v2_parameters, include_hadoop_read_write=False
-    )
-    processed_df = processing_function(resource_path=csv_file_path)
-    return processed_df
-
-
-@pytest.fixture(scope="session")
-def responses_digital_ETL_output(pandas_df_to_temporary_csv, blood_barcodes, swab_barcodes):
+def test_participant_data_ETL_output(pandas_df_to_temporary_csv, blood_barcodes, swab_barcodes):
     """
     Generate dummy survey responses digital.
     """
     schema = Schema(
-        schema=get_survey_responses_digital_data_description(create_mimesis_field(), blood_barcodes, swab_barcodes)
+        schema=get_test_participant_data_data_description(create_mimesis_field(), blood_barcodes, swab_barcodes)
     )
     pandas_df = pd.DataFrame(schema.create(iterations=10))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
     processing_function = generate_input_processing_function(
-        **survey_responses_digital_parameters, include_hadoop_read_write=False
+        **test_participant_data_parameters, include_hadoop_read_write=False
     )
     processed_df = processing_function(resource_path=csv_file_path)
     return processed_df
 
 
 @pytest.fixture(scope="session")
-def responses_phm_ETL_output(pandas_df_to_temporary_csv, blood_barcodes, swab_barcodes):
+def test_survey_response_data_version_1_data_description(pandas_df_to_temporary_csv, blood_barcodes, swab_barcodes):
     """
     Generate dummy survey responses for phm.
     """
     schema = Schema(
-        schema=get_phm_survey_responses_data_description(create_mimesis_field(), blood_barcodes, swab_barcodes)
+        schema=get_test_survey_response_data_version_1_data_description(
+            create_mimesis_field(), blood_barcodes, swab_barcodes
+        )
     )
     pandas_df = pd.DataFrame(schema.create(iterations=10))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
     processing_function = generate_input_processing_function(
-        **survey_responses_phm_parameters, include_hadoop_read_write=False
+        **test_survey_response_data_version_1_parameters, include_hadoop_read_write=False
     )
     processed_df = processing_function(resource_path=csv_file_path)
     return processed_df
 
 
 @pytest.fixture(scope="session")
-def participants_digital_ETL_output(pandas_df_to_temporary_csv, blood_barcodes, swab_barcodes):
+def test_survey_response_data_version_2_data_description(pandas_df_to_temporary_csv, blood_barcodes, swab_barcodes):
     """
-    Generate dummy survey responses digital.
+    Generate dummy survey responses v2 delta.
     """
     schema = Schema(
-        schema=get_participant_extract_digital_data_description(create_mimesis_field(), blood_barcodes, swab_barcodes)
+        schema=get_test_survey_response_data_version_2_data_description(
+            create_mimesis_field(), blood_barcodes, swab_barcodes
+        )
     )
     pandas_df = pd.DataFrame(schema.create(iterations=10))
     csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
     processing_function = generate_input_processing_function(
-        **participant_extract_digital_parameters, include_hadoop_read_write=False
+        **test_survey_response_data_version_2_parameters, include_hadoop_read_write=False
+    )
+    processed_df = processing_function(resource_path=csv_file_path)
+    return processed_df
+
+
+@pytest.fixture(scope="session")
+def test_swab_sample_results_output(pandas_df_to_temporary_csv, swab_barcodes):
+    """
+    Generate glasgow lab results_output.
+    """
+    schema = Schema(schema=get_test_swab_sample_results_data_description(create_mimesis_field(), swab_barcodes))
+    pandas_df = pd.DataFrame(schema.create(iterations=10))
+    csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep=",")
+    processing_function = generate_input_processing_function(
+        **test_swab_sample_results_parameters, include_hadoop_read_write=False
+    )
+    processed_df = processing_function(resource_path=csv_file_path)
+    return processed_df
+
+
+@pytest.fixture(scope="session")
+def test_blood_sample_results_output(pandas_df_to_temporary_csv, blood_barcodes):
+    """
+    Generate glasgow lab results_output.
+    """
+    schema = Schema(schema=get_test_blood_sample_results_data_description(create_mimesis_field(), blood_barcodes))
+    pandas_df = pd.DataFrame(schema.create(iterations=10))
+    csv_file_path = pandas_df_to_temporary_csv(pandas_df, sep="|")
+    processing_function = generate_input_processing_function(
+        **test_blood_sample_results_parameters, include_hadoop_read_write=False
     )
     processed_df = processing_function(resource_path=csv_file_path)
     return processed_df
