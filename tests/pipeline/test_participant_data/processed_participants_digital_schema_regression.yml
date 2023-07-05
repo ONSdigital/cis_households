@@ -344,7 +344,7 @@ fields:
   nullable: true
   type: string
 - metadata: {}
-  name: participant_extract_source_file
+  name: participant_data_source_file
   nullable: false
   type: string
 - metadata: {}

@@ -6,8 +6,7 @@ from pyspark.sql import Window
 from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.derive import assign_column_to_date_string
-from cishouseholds.derive import assign_columns_from_array
-from cishouseholds.pipeline.timestamp_map import cis_digital_datetime_map
+from cishouseholds.pipeline.timestamp_map import test_participant_data_datetime_map
 
 
 def pivot_vaccine_columns(df: DataFrame, row_number_column: str, prefixes: List[str]):
@@ -108,8 +107,8 @@ def create_formatted_datetime_string_columns(df) -> DataFrame:
         "contact_known_or_suspected_covid_latest_date",
     ]
     date_format_string_list = [
-        col for col in date_format_string_list if col not in cis_digital_datetime_map["yyyy-MM-dd"]
-    ] + cis_digital_datetime_map["yyyy-MM-dd"]
+        col for col in date_format_string_list if col not in test_participant_data_datetime_map["yyyy-MM-dd"]
+    ] + test_participant_data_datetime_map["yyyy-MM-dd"]
 
     for column_name_to_assign, timestamp_column in date_format_dict.items():
         if timestamp_column in df.columns:
@@ -138,7 +137,7 @@ def create_formatted_datetime_string_columns(df) -> DataFrame:
                 time_format="ddMMMyyyy HH:mm:ss",
                 lower_case=True,
             )
-    for timestamp_column in cis_digital_datetime_map["yyyy-MM-dd'T'HH:mm:ss'Z'"]:
+    for timestamp_column in test_participant_data_datetime_map["yyyy-MM-dd'T'HH:mm:ss'Z'"]:
         if timestamp_column in df.columns:
             df = assign_column_to_date_string(
                 df=df,
