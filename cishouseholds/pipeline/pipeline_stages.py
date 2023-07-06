@@ -74,7 +74,6 @@ from cishouseholds.pipeline.reporting import ExcelReport
 from cishouseholds.pipeline.reporting import generate_error_table
 from cishouseholds.pipeline.reporting import generate_lab_report
 from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
-from cishouseholds.pipeline.vaccine_transformations import vaccine_transformations
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
 from cishouseholds.pipeline.validation_schema import validation_schemas
@@ -651,20 +650,6 @@ def execute_visit_transformations(
     df = extract_from_table(input_survey_table)
     df = visit_transformations(df)
     update_table(df, output_survey_table, "overwrite")
-    return {"output_survey_table": output_survey_table}
-
-
-@register_pipeline_stage("vaccine_transformations")
-def execute_vaccine_transformations(
-    input_survey_table: str,
-    vaccine_capture_table: str,
-    output_survey_table: str,
-):
-    """"""
-    df = extract_from_table(input_survey_table)
-    vaccine_capture_df = extract_from_table(vaccine_capture_table)
-    df = vaccine_transformations(df, vaccine_capture_df)
-    update_table(df, output_survey_table, "overwrite", survey_table=True)
     return {"output_survey_table": output_survey_table}
 
 
