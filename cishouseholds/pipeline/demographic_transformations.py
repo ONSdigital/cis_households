@@ -10,8 +10,8 @@ from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigenerational
 from cishouseholds.derive import assign_outward_postcode
-from cishouseholds.derive import clean_postcode
 from cishouseholds.derive import derive_age_based_columns
+from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.edit import update_to_value_if_any_not_null
 from cishouseholds.impute import fill_backwards_overriding_not_nulls
@@ -73,8 +73,8 @@ def generic_processing(df: DataFrame):
     df = update_to_value_if_any_not_null(
         df=df,
         column_name_to_update="been_outside_uk",
-        true_false_values=["Yes", "No"],
         column_list=["been_outside_uk_last_country", "been_outside_uk_last_return_date"],
+        default_values=["Yes", "No"],
     )
     df = clean_postcode(df, "postcode")
     # DERIVE
@@ -241,12 +241,12 @@ def derive_people_in_household_count(df) -> DataFrame:
     #     household_id_column="ons_household_id",
     #     participant_id_column="participant_id",
     # )
-    # df = update_person_count_from_ages(
+    # df = update_count_from_columns(
     #     df,
     #     column_name_to_assign="household_participants_not_consenting_count",
     #     column_pattern=r"person_not_consenting_age_[1-9]",
     # )
-    # df = update_person_count_from_ages(
+    # df = update_count_from_columns(
     #     df,
     #     column_name_to_assign="household_members_over_2_years_and_not_present_count",
     #     column_pattern=r"person_not_present_age_[1-8]",

@@ -38,7 +38,7 @@ def test_assign_date_difference(spark_session):
         column_name_to_assign="diff",
         start_reference_column="date_1",
         end_reference_column="date_2",
-        format="fortnight",
+        format="fortnights",
     )
     assert_df_equality(output_df1, expected_df.filter(F.col("id") == 1), ignore_nullable=True, ignore_row_order=True)
     assert_df_equality(output_df2, expected_df.filter(F.col("id") == 2), ignore_nullable=True, ignore_row_order=True)

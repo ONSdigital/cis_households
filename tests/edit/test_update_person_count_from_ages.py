@@ -1,9 +1,9 @@
 from chispa import assert_df_equality
 
-from cishouseholds.edit import update_person_count_from_ages
+from cishouseholds.edit import update_count_from_columns
 
 
-def test_update_person_count_from_ages(spark_session):
+def test_update_count_from_columns(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
             (None, 0, 0, 1),
@@ -24,5 +24,5 @@ def test_update_person_count_from_ages(spark_session):
         schema="""count integer, 1_age integer, 2_age integer, 3_age integer""",
     )
 
-    output_df = update_person_count_from_ages(input_df, "count", r"[1-3]_age")
+    output_df = update_count_from_columns(input_df, "count", r"[1-3]_age")
     assert_df_equality(expected_df, output_df, ignore_nullable=True)

@@ -4,7 +4,6 @@ from pyspark.sql import DataFrame
 from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import assign_unique_id_column
 from cishouseholds.edit import update_column_values_from_map
-from cishouseholds.edit import update_face_covering_outside_of_home
 
 
 def post_union_processing(df: DataFrame):
@@ -81,15 +80,9 @@ def generic_processing(df: DataFrame):
     """"""
     df = assign_unique_id_column(df, "unique_participant_response_id", concat_columns=["visit_id", "participant_id"])
 
-    df = update_face_covering_outside_of_home(
-        df=df,
-        column_name_to_update="face_covering_outside_of_home",
-        covered_enclosed_column="face_covering_other_enclosed_places",
-        covered_work_column="face_covering_work_or_education",
-    )
     df = update_column_values_from_map(
         df=df,
-        column="smokes_nothing_now",
+        column_name_to_update="smokes_nothing_now",
         map={"Yes": "No", "No": "Yes"},
         reference_column="currently_smokes_or_vapes",
     )

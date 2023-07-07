@@ -1,9 +1,9 @@
 from chispa import assert_df_equality
 
-from cishouseholds.edit import clean_within_range
+from cishouseholds.edit import clean_within_number_range
 
 
-def test_clean_within_range(spark_session):
+def test_clean_within_number_range(spark_session):
     input_df = spark_session.createDataFrame(
         data=[
             (2, 1),
@@ -22,5 +22,5 @@ def test_clean_within_range(spark_session):
         schema="""ref integer, id integer""",
     )
 
-    output_df = clean_within_range(input_df, "ref", [1, 10])
+    output_df = clean_within_number_range(input_df, "ref", [1, 10])
     assert_df_equality(expected_df, output_df, ignore_nullable=True)

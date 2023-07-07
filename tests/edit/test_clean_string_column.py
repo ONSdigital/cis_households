@@ -1,9 +1,9 @@
 from chispa import assert_df_equality
 
-from cishouseholds.edit import clean_job_description_string
+from cishouseholds.edit import clean_string_column
 
 
-def test_clean_work_main_job_role(spark_session):
+def test_clean_string_column(spark_session):
 
     input_df = spark_session.createDataFrame(
         data=[
@@ -25,6 +25,6 @@ def test_clean_work_main_job_role(spark_session):
         schema="id integer, col1 string",
     )
 
-    output_df = clean_job_description_string(input_df, "col1")
+    output_df = clean_string_column(input_df, "col1")
 
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True)

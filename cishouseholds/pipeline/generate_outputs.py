@@ -197,7 +197,7 @@ def configure_outputs(
     if value_map is not None:
         for column_name_to_assign, map in value_map.items():
             df = update_column_values_from_map(
-                df=df, column=column_name_to_assign, map=map, error_if_value_not_found=complete_map
+                df=df, column_name_to_update=column_name_to_assign, map=map, error_if_value_not_found=complete_map
             )
     return df
 

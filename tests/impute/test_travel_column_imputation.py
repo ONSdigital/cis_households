@@ -77,8 +77,8 @@ def test_travel_column_imputation(spark_session):
     temp_df = update_to_value_if_any_not_null(
         df=input_df,
         column_name_to_update="been_outside_uk",
-        true_false_values=["Yes", "No"],
         column_list=["been_outside_uk_last_country", "been_outside_uk_last_return_date"],
+        default_values=["Yes", "No"],
     )
     output_df = fill_forward_from_last_change(
         df=temp_df,

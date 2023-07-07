@@ -11,9 +11,9 @@ from cishouseholds.derive import assign_count_by_group
 from cishouseholds.derive import assign_distinct_count_in_group
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_named_buckets
-from cishouseholds.derive import clean_postcode
+from cishouseholds.edit import apply_value_map_multiple_columns
+from cishouseholds.edit import clean_postcode
 from cishouseholds.edit import join_on_existing
-from cishouseholds.edit import recode_column_values
 from cishouseholds.expressions import fill_nulls
 from cishouseholds.merge import union_multiple_tables
 
@@ -810,7 +810,7 @@ def update_population_values(df: DataFrame):
     df = df.withColumn("interim_region_code", F.col("region_code"))
     df = df.withColumn("interim_sex", F.col("sex"))
 
-    df = recode_column_values(df, maps)
+    df = apply_value_map_multiple_columns(df, maps)
 
     for col, map in age_maps.items():  # type: ignore
         df = assign_named_buckets(df=df, reference_column="age", column_name_to_assign=col, map=map)

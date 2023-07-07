@@ -118,9 +118,11 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
     column_list = ["work_status_v0", "work_status_v1"]
     for column in column_list:
         df = df.withColumn(column, F.col("work_status_v2"))
-        df = update_column_values_from_map(df=df, column=column, map=work_status_dict[column])
+        df = update_column_values_from_map(df=df, column_name_to_update=column, map=work_status_dict[column])
 
-    df = update_column_values_from_map(df=df, column="work_status_v2", map=work_status_dict["work_status_v2"])
+    df = update_column_values_from_map(
+        df=df, column_name_to_update="work_status_v2", map=work_status_dict["work_status_v2"]
+    )
     return df
 
 
@@ -330,7 +332,7 @@ def transform_survey_responses_version_2_delta(df: DataFrame) -> DataFrame:
     )
     df = edit_to_sum_or_max_value(
         df=df,
-        column_name_to_assign="times_outside_shopping_or_socialising_last_7_days",
+        column_name_to_update="times_outside_shopping_or_socialising_last_7_days",
         columns_to_sum=[
             "times_shopping_last_7_days",
             "times_socialising_last_7_days",

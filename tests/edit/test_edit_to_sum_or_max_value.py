@@ -65,7 +65,7 @@ def test_edit_to_sum_or_max_value(spark_session):
     )
     output_df1 = edit_to_sum_or_max_value(
         df=input_df1,
-        column_name_to_assign="activity_combo",
+        column_name_to_update="activity_combo",
         columns_to_sum=[
             "activity_a",
             "activity_b",
@@ -75,7 +75,7 @@ def test_edit_to_sum_or_max_value(spark_session):
     )
     output_df2 = edit_to_sum_or_max_value(
         df=input_df2,
-        column_name_to_assign="activity_combo",
+        column_name_to_update="activity_combo",
         columns_to_sum=[
             "activity_a",
             "activity_b",

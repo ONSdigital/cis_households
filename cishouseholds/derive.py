@@ -1787,25 +1787,6 @@ def get_keys_by_value(input_dict: Dict, values_to_lookup: List) -> List:
     return result
 
 
-def clean_postcode(df: DataFrame, postcode_column: str):
-    """
-    update postcode variable to include only uppercase alpha numeric characters and set
-    to null if required format cannot be identified
-    Parameters
-    ----------
-    df
-    postcode_column
-    """
-    cleaned_postcode_characters = F.upper(F.regexp_replace(postcode_column, r"[^a-zA-Z\d]", ""))
-    inward_code = F.substring(cleaned_postcode_characters, -3, 3)
-    outward_code = F.regexp_replace(cleaned_postcode_characters, r".{3}$", "")
-    df = df.withColumn(
-        postcode_column,
-        F.when(F.length(outward_code) <= 4, F.concat(F.rpad(outward_code, 4, " "), inward_code)).otherwise(None),
-    )
-    return df
-
-
 def assign_population_projections(
     current_projection_df: DataFrame, previous_projection_df: DataFrame, month: int, m_f_columns: List[str]
 ):

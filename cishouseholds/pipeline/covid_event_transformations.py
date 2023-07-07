@@ -11,19 +11,11 @@ from cishouseholds.derive import assign_date_difference
 from cishouseholds.derive import assign_last_non_null_value_from_col_list
 from cishouseholds.derive import assign_true_if_any
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
-from cishouseholds.edit import conditionally_set_column_values
-from cishouseholds.edit import correct_date_ranges_union_dependent
-from cishouseholds.edit import normalise_think_had_covid_columns
 from cishouseholds.edit import nullify_columns_before_date
-from cishouseholds.edit import remove_incorrect_dates
-from cishouseholds.edit import update_think_have_covid_symptom_any
 from cishouseholds.expressions import all_columns_null
 from cishouseholds.expressions import all_columns_values_in_list
 from cishouseholds.expressions import any_column_equal_value
 from cishouseholds.expressions import count_occurrence_in_row
-from cishouseholds.pipeline.mapping import date_cols_min_date_dict
-
-# from cishouseholds.edit import fuzzy_update
 
 
 def covid_event_transformations(df: DataFrame) -> DataFrame:
@@ -61,49 +53,6 @@ def edit_existing_columns(df: DataFrame) -> DataFrame:
     - participant_id
     """
 
-    df = normalise_think_had_covid_columns(df, "think_had_covid_symptom")
-
-    invalid_covid_date = "2019-11-17"
-    conditions = {
-        "think_had_covid_onset_date": (
-            (F.col("think_had_covid_onset_date").isNotNull())
-            & (F.col("think_had_covid_onset_date") < invalid_covid_date)
-        ),
-        "last_suspected_covid_contact_date": (
-            (F.col("last_suspected_covid_contact_date").isNotNull())
-            & (F.col("last_suspected_covid_contact_date") < invalid_covid_date)
-        ),
-        "last_covid_contact_date": (
-            (F.col("last_covid_contact_date").isNotNull()) & (F.col("last_covid_contact_date") < invalid_covid_date)
-        ),
-    }
-    col_value_maps = {
-        "think_had_covid_onset_date": {
-            "think_had_covid_onset_date": None,
-            "think_had_covid_contacted_nhs": None,
-            "think_had_covid_admitted_to_hospital": None,
-            "think_had_covid_symptom_": None,
-        },
-        "last_suspected_covid_contact_date": {
-            "last_suspected_covid_": None,
-            "think_had_covid_onset_date": None,
-            "contact_suspected_positive_covid_last_28_days": "No",
-        },
-        "last_covid_contact_date": {
-            "last_covid_": None,
-            "think_had_covid_onset_date": None,
-            "contact_known_positive_covid_last_28_days": "No",
-        },
-    }
-    for condition in list(conditions.keys()):
-        df = conditionally_set_column_values(
-            df=df,
-            condition=conditions.get(condition),
-            cols_to_set_to_value=col_value_maps.get(condition),
-        )
-
-    df = df.custom_checkpoint()
-
     contact_dates = ["last_suspected_covid_contact_date", "last_covid_contact_date"]
     covid_contacts = ["contact_suspected_positive_covid_last_28_days", "contact_known_positive_covid_last_28_days"]
     contact_types = ["last_suspected_covid_contact_type", "last_covid_contact_type"]
@@ -121,10 +70,6 @@ def edit_existing_columns(df: DataFrame) -> DataFrame:
             contact_type, F.when(all_columns_null([contact, contact_date]), None).otherwise(F.col(contact_type))
         )
 
-    df = df.withColumn(
-        "think_had_covid",
-        F.when(conditions.get("think_had_covid_onset_date"), "No").otherwise(F.col("think_had_covid")),
-    )
     # think_had_covid_columns = [c for c in df.columns if c.startswith("think_had_covid_symptom_")]
     # df = fuzzy_update(
     #     df,
@@ -140,24 +85,6 @@ def edit_existing_columns(df: DataFrame) -> DataFrame:
     #     min_matches=len(think_had_covid_columns),  # num available columns - (4 + date column itself)
     #     filter_out_of_range=True,
     # )
-
-    date_cols_to_correct = [
-        col
-        for col in [
-            "last_covid_contact_date",
-            "last_suspected_covid_contact_date",
-            "think_had_covid_onset_date",
-            "think_have_covid_onset_date",
-            "been_outside_uk_last_return_date",
-            "other_covid_infection_test_first_positive_date",
-            "other_covid_infection_test_last_negative_date",
-            "other_antibody_test_first_positive_date",
-            "other_antibody_test_last_negative_date",
-        ]
-        if col in df.columns
-    ]
-    df = correct_date_ranges_union_dependent(df, date_cols_to_correct, "participant_id", "visit_datetime", "visit_id")
-    df = remove_incorrect_dates(df, date_cols_to_correct, "visit_datetime", "2019-08-01", date_cols_min_date_dict)
 
     return df
 
@@ -201,9 +128,6 @@ def derive_new_columns(df: DataFrame) -> DataFrame:
         column_name_to_assign="think_have_covid_symptom_count",
         selection_columns=original_think_have_symptoms,
         count_if_value="Yes",
-    )
-    df = update_think_have_covid_symptom_any(
-        df=df, column_name_to_update="think_have_covid_symptom_any", symptom_list=original_think_have_symptoms
     )
     df = count_value_occurrences_in_column_subset_row_wise(
         df=df,

@@ -7,9 +7,9 @@ from cishouseholds.derive import assign_last_occurence
 def test_assign_last_occurence(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
-            (1, "2020-02-06", "2020-02-06", "Completed"),
-            (1, "2020-02-05", "2020-02-06", "Completed"),
-            (1, "2020-12-12", None, "Cancelled"),
+            (1, "2020-02-06", "2020-12-12", "Completed"),
+            (1, "2020-02-05", "2020-12-12", "Completed"),
+            (1, "2020-12-12", "2020-12-12", "Cancelled"),
             (2, "2020-01-22", "2020-01-22", "Completed"),
         ],
         schema="id integer, visit_date string, result string, visit_status string",

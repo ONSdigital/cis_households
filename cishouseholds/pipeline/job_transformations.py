@@ -6,16 +6,11 @@ from pyspark.sql import DataFrame
 from pyspark.sql import Window
 
 from cishouseholds.edit import apply_value_map_multiple_columns
-from cishouseholds.edit import clean_job_description_string
+from cishouseholds.edit import clean_string_column
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.impute import fill_forward_only_to_nulls
 from cishouseholds.pipeline.lookup_and_regex_transformations import process_healthcare_regex
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-
-# from cishouseholds.edit import update_work_main_job_changed
-
-
-# this wall feed in data from the joined healthcare regex
 
 
 def job_transformations(df: DataFrame):
@@ -26,8 +21,8 @@ def job_transformations(df: DataFrame):
 
 def preprocessing(df: DataFrame):
     """Apply transformations that must occur before all other transformations can be processed."""
-    df = clean_job_description_string(df, "work_main_job_title")
-    df = clean_job_description_string(df, "work_main_job_role")
+    df = clean_string_column(df, "work_main_job_title")
+    df = clean_string_column(df, "work_main_job_role")
     col_val_map = {
         "work_health_care_area": {
             "Secondary care for example in a hospital": "Secondary",
@@ -140,12 +135,6 @@ def data_dependent_derivations(df: DataFrame) -> DataFrame:
     df = df.withColumn(
         "patient_facing_over_20_percent", F.when(patient_facing_percentage >= 0.2, "Yes").otherwise("No")
     )
-    # df = update_work_facing_now_column(
-    #     df,
-    #     "work_patient_facing_now",
-    #     "work_status_v0",
-    #     ["Furloughed (temporarily not working)", "Not working (unemployed, retired, long-term sick etc.)", "Student"],
-    # )
     soc_code_col = "standard_occupational_classification_code"
     df = df.withColumn(soc_code_col, F.when(F.col(soc_code_col).isNull(), "uncodeable").otherwise(F.col(soc_code_col)))
     return df

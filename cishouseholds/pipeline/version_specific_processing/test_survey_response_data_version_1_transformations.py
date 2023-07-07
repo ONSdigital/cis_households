@@ -9,7 +9,6 @@ from cishouseholds.derive import assign_raw_copies
 from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.edit import add_prefix
 from cishouseholds.edit import apply_value_map_multiple_columns
-from cishouseholds.edit import clean_barcode_simple
 from cishouseholds.edit import convert_derived_columns_from_null_to_value
 from cishouseholds.edit import edit_to_sum_or_max_value
 from cishouseholds.edit import update_column_values_from_map
@@ -684,13 +683,10 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
         ],
         column_list,
     )
-    df = clean_barcode_simple(df, "swab_sample_barcode_user_entered")
-    df = clean_barcode_simple(df, "blood_sample_barcode_user_entered")
-
     df = df.withColumn("times_outside_shopping_or_socialising_last_7_days", F.lit(None))
     df = edit_to_sum_or_max_value(
         df=df,
-        column_name_to_assign="times_outside_shopping_or_socialising_last_7_days",
+        column_name_to_update="times_outside_shopping_or_socialising_last_7_days",
         columns_to_sum=[
             "times_shopping_last_7_days",
             "times_socialising_last_7_days",
