@@ -212,7 +212,6 @@ category_maps = {
             "Do not know": 3,
         },
         "contact_known_or_suspected_covid": _yes_no_categories,
-        "contact_known_or_suspected_covid_type": {"Living in your own home": 1, "Outside your home": 2},
         "think_respiratory_infection": _yes_no_categories,
         "agreed_to_additional_consent_visit": _yes_no_categories,
         "consent_blood_samples_if_positive_yn": _yes_no_categories,

@@ -1,9 +1,9 @@
 from chispa import assert_df_equality
 
-from cishouseholds.derive import assign_household_under_2_count
+from cishouseholds.derive import assign_household_age_count
 
 
-def test_assign_household_under_2_count(spark_session):
+def test_assign_household_age_count(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
@@ -24,7 +24,12 @@ def test_assign_household_under_2_count(spark_session):
     )
     input_df = expected_df.drop("count")
 
-    output_df = assign_household_under_2_count(
-        df=input_df, column_name_to_assign="count", column_pattern=r"[1-3]_age", condition_column="condition"
+    output_df = assign_household_age_count(
+        df=input_df,
+        column_name_to_assign="count",
+        column_pattern=r"[1-3]_age",
+        condition_column="condition",
+        min_age=0,
+        max_age=24,
     )
     assert_df_equality(expected_df, output_df, ignore_nullable=True, ignore_row_order=True, ignore_column_order=True)

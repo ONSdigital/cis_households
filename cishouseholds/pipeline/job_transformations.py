@@ -5,9 +5,6 @@ import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 from pyspark.sql import Window
 
-from cishouseholds.derive import assign_work_patient_facing_now
-from cishouseholds.derive import assign_work_person_facing_now
-from cishouseholds.derive import assign_work_status_group
 from cishouseholds.edit import apply_value_map_multiple_columns
 from cishouseholds.edit import clean_job_description_string
 from cishouseholds.expressions import any_column_not_null
@@ -135,8 +132,6 @@ def data_dependent_derivations(df: DataFrame) -> DataFrame:
     """Apply transformations that require all data to have been previously filled over rows."""
     df = df.withColumn("work_main_job_title_and_role", F.concat_ws(" ", "work_main_job_title", "work_main_job_role"))
 
-    df = assign_work_status_group(df, "work_status_group", "work_status_v0")
-
     window = Window.partitionBy("participant_id")
     patient_facing_percentage = F.sum(
         F.when(F.col("work_direct_contact_patients_or_clients") == "Yes", 1).otherwise(0)
@@ -144,19 +139,6 @@ def data_dependent_derivations(df: DataFrame) -> DataFrame:
 
     df = df.withColumn(
         "patient_facing_over_20_percent", F.when(patient_facing_percentage >= 0.2, "Yes").otherwise("No")
-    )
-    df = assign_work_patient_facing_now(
-        df,
-        column_name_to_assign="work_patient_facing_now",
-        age_column="age_at_visit",
-        work_healthcare_column="work_health_care_patient_facing",
-    )
-    df = assign_work_person_facing_now(
-        df,
-        column_name_to_assign="work_person_facing_now",
-        work_patient_facing_now_column="work_patient_facing_now",
-        work_social_care_column="work_social_care",
-        age_at_visit_column="age_at_visit",
     )
     # df = update_work_facing_now_column(
     #     df,

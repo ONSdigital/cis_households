@@ -10,7 +10,6 @@ from cishouseholds.derive import assign_column_regex_match
 from cishouseholds.derive import assign_ethnicity_white
 from cishouseholds.derive import assign_multigenerational
 from cishouseholds.derive import assign_outward_postcode
-from cishouseholds.derive import assign_work_status_group
 from cishouseholds.derive import clean_postcode
 from cishouseholds.derive import derive_age_based_columns
 from cishouseholds.edit import update_column_values_from_map
@@ -79,7 +78,6 @@ def generic_processing(df: DataFrame):
     )
     df = clean_postcode(df, "postcode")
     # DERIVE
-    df = assign_work_status_group(df, "work_status_group", "work_status_v0")
     df = assign_column_regex_match(
         df,
         "bad_email",
@@ -89,7 +87,6 @@ def generic_processing(df: DataFrame):
     # consent_cols = ["consent_16_visits", "consent_5_visits", "consent_1_visit"]
 
     # if all(col in df.columns for col in consent_cols):
-    #     df = assign_consent_code(df, "consent_summary", reference_columns=consent_cols)
     return df
 
 
@@ -254,11 +251,13 @@ def derive_people_in_household_count(df) -> DataFrame:
     #     column_name_to_assign="household_members_over_2_years_and_not_present_count",
     #     column_pattern=r"person_not_present_age_[1-8]",
     # )
-    # df = assign_household_under_2_count(
+    # df = assign_household_age_count(
     #     df,
     #     column_name_to_assign="household_members_under_2_years_count",
     #     column_pattern=r"infant_age_months_[1-9]",
     #     condition_column="household_members_under_2_years",
+    #     min_age=0,
+    #     max_age=24,
     # )
     # household_window = Window.partitionBy("ons_household_id")
 

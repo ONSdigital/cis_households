@@ -17,7 +17,6 @@ from cishouseholds.derive import aggregated_output_groupby
 from cishouseholds.derive import aggregated_output_window
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_unique_id_column
-from cishouseholds.derive import household_level_populations
 from cishouseholds.edit import convert_columns_to_timestamps
 from cishouseholds.edit import update_from_lookup_df
 from cishouseholds.expressions import all_columns_null
@@ -36,6 +35,7 @@ from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.covid_event_transformations import covid_event_transformations
 from cishouseholds.pipeline.demographic_transformations import demographic_transformations
 from cishouseholds.pipeline.design_weights import calculate_design_weights
+from cishouseholds.pipeline.design_weights import household_level_populations
 from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename

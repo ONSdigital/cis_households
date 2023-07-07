@@ -1,9 +1,9 @@
 from chispa import assert_df_equality
 
-from cishouseholds.derive import flag_records_for_self_employed_rules_v1_a
-from cishouseholds.derive import flag_records_for_self_employed_rules_v1_b
-from cishouseholds.derive import flag_records_for_self_employed_rules_v2_a
-from cishouseholds.derive import flag_records_for_self_employed_rules_v2_b
+from cishouseholds.regex.regex_flags import flag_records_for_self_employed_rules_v1_a
+from cishouseholds.regex.regex_flags import flag_records_for_self_employed_rules_v1_b
+from cishouseholds.regex.regex_flags import flag_records_for_self_employed_rules_v2_a
+from cishouseholds.regex.regex_flags import flag_records_for_self_employed_rules_v2_b
 
 
 def test_flag_records_for_self_employed_rules_v1_a(spark_session):

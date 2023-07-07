@@ -7,15 +7,51 @@ from pyspark.sql import functions as F
 from pyspark.sql.types import DecimalType
 from pyspark.sql.window import Window
 
+from cishouseholds.derive import assign_count_by_group
 from cishouseholds.derive import assign_distinct_count_in_group
 from cishouseholds.derive import assign_filename_column
 from cishouseholds.derive import assign_named_buckets
 from cishouseholds.derive import clean_postcode
-from cishouseholds.derive import derive_country_code
 from cishouseholds.edit import join_on_existing
 from cishouseholds.edit import recode_column_values
 from cishouseholds.expressions import fill_nulls
 from cishouseholds.merge import union_multiple_tables
+
+
+def derive_country_code(df, column_name_to_assign: str, region_code_column: str):
+    """Derive country code from region code starting character."""
+    df = df.withColumn(
+        column_name_to_assign,
+        F.when(F.col(region_code_column).startswith("E"), "E92000001")
+        .when(F.col(region_code_column).startswith("N"), "N92000002")
+        .when(F.col(region_code_column).startswith("S"), "S92000003")
+        .when(F.col(region_code_column).startswith("W"), "W92000004")
+        .when(F.col(region_code_column).startswith("L"), "L93000001")
+        .when(F.col(region_code_column).startswith("M"), "M83000003"),
+    )
+    return df
+
+
+def household_level_populations(
+    address_lookup: DataFrame, postcode_lookup: DataFrame, lsoa_cis_lookup: DataFrame, country_lookup: DataFrame
+) -> DataFrame:
+    """
+    1. join address base extract with NSPL by postcode to get LSOA 11 and country 12
+    2. join LSOA to CIS lookup, by LSOA 11 to get CIS area 20
+    3. join country lookup by country_code to get country names
+    4. calculate household counts by CIS area and country
+
+    N.B. Expects join keys to be deduplicated.
+    """
+    address_lookup = clean_postcode(address_lookup, "postcode")
+    postcode_lookup = clean_postcode(postcode_lookup, "postcode")
+    df = address_lookup.join(F.broadcast(postcode_lookup), on="postcode", how="left")
+    df = df.join(F.broadcast(lsoa_cis_lookup), on="lower_super_output_area_code_11", how="left")
+    df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
+    df = assign_count_by_group(df, "number_of_households_by_cis_area", ["cis_area_code_20"])
+    df = assign_count_by_group(df, "number_of_households_by_country", ["country_code_12"])
+
+    return df
 
 
 def calculate_design_weights(
