@@ -22,5 +22,7 @@ def test_update_column_values_from_column_reference(spark_session):
         schema="""col integer, ref integer""",
     )
 
-    output_df = update_column_values_from_map(df=input_df, column="col", reference_column="ref", map={1: 99, 2: 98})
+    output_df = update_column_values_from_map(
+        df=input_df, column_name_to_update="col", reference_column="ref", map={1: 99, 2: 98}
+    )
     assert_df_equality(expected_df, output_df, ignore_nullable=True)

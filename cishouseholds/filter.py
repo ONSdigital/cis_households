@@ -1,18 +1,9 @@
-from typing import Any
 from typing import List
 from typing import Union
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
-
-
-def filter_leave_at_least_1(df: DataFrame, retain_condition: Any, window: Window):
-    """ """
-    window = window.orderBy("DROP")
-    df = df.withColumn("DROP", F.when(retain_condition, 0).otherwise(1))
-    df = df.withColumn("ROW", F.row_number().over(window))
-    return df.filter((F.col("ROW") == 1) | (F.col("DROP") == 0)).drop("ROW", "DROP")
 
 
 def filter_before_date_or_null(df: DataFrame, date_column: str, min_date: str):
@@ -154,7 +145,7 @@ def assign_date_interval_and_flag(
     )
 
 
-def file_exclude(df: DataFrame, source_file_col: str, files_to_exclude: list):
+def filter_exclude_source_file(df: DataFrame, source_file_col: str, files_to_exclude: list):
     """
     Function to exclude specific files from pipeline processing
 
