@@ -1,5 +1,4 @@
 import re
-from datetime import datetime
 from functools import reduce
 from itertools import chain
 from operator import add
@@ -19,135 +18,12 @@ from pyspark.sql import functions as F
 from pyspark.sql import Window
 
 from cishouseholds.edit import update_column_values_from_map
-from cishouseholds.expressions import all_columns_values_in_list
 from cishouseholds.expressions import all_equal
 from cishouseholds.expressions import all_equal_or_Null
 from cishouseholds.expressions import any_column_matches_regex
 from cishouseholds.expressions import any_column_not_null
-from cishouseholds.expressions import any_column_null
 from cishouseholds.merge import null_safe_join
 from cishouseholds.pyspark_utils import get_or_create_spark_session
-
-
-def assign_survey_completed_status(
-    df: DataFrame,
-    column_name_to_assign: str,
-    survey_completed_datetime_column: str,
-    survey_flushed_column: str,
-    no_columns: List = [],
-):
-    """
-    function that return a column containing categorical data on survey completion, based
-    on datetime of completing the survey and whether the survey was flushed
-    Parameters
-    ----------
-    df DataFrame to process
-    column_name_to_assign
-        the name of the column being derived
-    survey_completed_datetime_column
-        The column containing the timestamp at which the participant completed the survey
-    survey_flushed_column
-        boolean column indicating whether the survey response was 'flushed', and thus not completed submitted
-    """
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when(
-            all_columns_values_in_list(no_columns, "No"),
-            "Non-response",
-        )
-        .when(
-            (F.col(survey_completed_datetime_column).isNotNull()) & (~(F.col(survey_flushed_column))),
-            "Completed",
-        )
-        .when(
-            (F.col(survey_flushed_column)),
-            "Partially Completed",
-        )
-        .when(
-            (F.col(survey_completed_datetime_column).isNull()) & (~(F.col(survey_flushed_column))),
-            "Not Completed",
-        ),
-    )
-    return df
-
-
-def assign_window_status(
-    df: DataFrame,
-    column_name_to_assign: str,
-    window_start_column: str,
-    window_end_column: str,
-    current_date: datetime = datetime.now(),
-):
-    """
-    Derive the status of the survey window for a given point in time
-    """
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when((F.col(window_start_column) <= current_date) & (current_date <= F.col(window_end_column)), "Open")
-        .when(current_date > F.col(window_end_column), "Closed")
-        .when(current_date < F.col(window_start_column), "New"),
-    )
-    return df
-
-
-def assign_survey_not_completed_reason_code(
-    df: DataFrame,
-    column_name_to_assign: str,
-    cohort_type_column: str,
-    survey_filled_column: str,
-    swab_barcode_column: str,
-    blood_barcode_column: str,
-):
-    """
-    Derive a column to represent the reason why a survey was not completed.
-    The possible values here are:
-    > TNR: the survey was filled and the participant opted to complete swabs and or bloods but no swab or blood data was provided
-    > QNR: the survey was not filled but the participant opted to complete swabs and or bloods and they did provided swab or blood data
-    > FNR: the survey was not filled and the participant opted to complete swabs and or bloods but no swab or blood data was provided
-
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-    cohort_type_column
-    survey_filled_column
-    swab_barcode_column
-    blood_barcode_column
-    """
-    survey_filled = F.col(survey_filled_column).isNotNull()
-    swab = F.col(swab_barcode_column).isNotNull()
-    blood = F.col(blood_barcode_column).isNotNull()
-
-    questionnaire_only = F.col(cohort_type_column) == "Do this questionnaire only"
-    questionnaire_and_swab = F.col(cohort_type_column) == "Do this questionnaire and take a swab sample"
-    questionnaire_and_swab_and_blood = (
-        F.col(cohort_type_column) == "Do this questionnaire and take a swab sample and a blood sample"
-    )
-
-    filled_and_swab = survey_filled & swab
-    filled_and_swab_and_blood = filled_and_swab & blood
-    not_filled_and_swab = ~survey_filled & swab
-    not_filled_and_swab_and_blood = not_filled_and_swab & blood
-    filled_and_not_swab = survey_filled & ~swab
-    filled_and_not_swab_and_blood = survey_filled & ~swab & ~blood
-
-    fnr_logic_1 = questionnaire_only & ~survey_filled
-    fnr_logic_2 = questionnaire_and_swab & ~filled_and_swab
-    fnr_logic_3 = questionnaire_and_swab_and_blood & ~filled_and_swab_and_blood
-
-    qnr_logic_1 = questionnaire_and_swab & not_filled_and_swab
-    qnr_logic_2 = questionnaire_and_swab_and_blood & not_filled_and_swab_and_blood
-
-    tnr_logic_1 = questionnaire_and_swab & filled_and_not_swab
-    tnr_logic_2 = questionnaire_and_swab_and_blood & filled_and_not_swab_and_blood
-
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when(tnr_logic_1 | tnr_logic_2, "TNR")
-        .when(qnr_logic_1 | qnr_logic_2, "QNR")
-        .when(fnr_logic_1 | fnr_logic_2 | fnr_logic_3, "FNR"),
-    )
-    return df
 
 
 def combine_like_array_columns(df: DataFrame, column_prefix: str):
@@ -490,9 +366,9 @@ def assign_date_from_filename(df: DataFrame, column_name_to_assign: str, filenam
     return df
 
 
-def assign_visit_order(df: DataFrame, column_name_to_assign: str, id: str, order_list: List[str]):
+def assign_incremental_order(df: DataFrame, column_name_to_assign: str, id_column: str, order_list: List[str]):
     """
-    Assign an incremental count to each participants visit
+    Assign an incremental count to each id in id_column by occurences within order_list columns
 
     Parameters
     -------------
@@ -504,29 +380,8 @@ def assign_visit_order(df: DataFrame, column_name_to_assign: str, id: str, order
     order_list
         counting order occurrence. This list should NOT have any possible repetition.
     """
-    window = Window.partitionBy(id).orderBy(order_list)
+    window = Window.partitionBy(id_column).orderBy(order_list)
     df = df.withColumn(column_name_to_assign, F.row_number().over(window))
-    return df
-
-
-def translate_column_regex_replace(df: DataFrame, reference_column: str, multiple_choice_dict: dict):
-    """
-    Translate a multiple choice column from Welsh to English for downstream transformation based on
-    multiple_choice_dict. Function assumes that the lookup and translation values are already cleaned
-
-    Parameters
-    ----------
-    df
-    reference_column
-        column containing multiple choice values
-    multiple_choice_dict
-        dictionary containing lookup values for translation of values within reference column
-    """
-    for lookup_val, translation_val in multiple_choice_dict.items():
-        df = df.withColumn(
-            reference_column,
-            F.regexp_replace(reference_column, lookup_val, translation_val),
-        )
     return df
 
 
@@ -633,33 +488,6 @@ def concat_fields_if_true(
         ),
     )
     return df
-
-
-def derive_had_symptom_last_7days_from_digital(
-    df: DataFrame,
-    column_name_to_assign: str,
-    symptom_column_prefix: str,
-    symptoms: List[str],
-):
-    """
-    Derive symptoms in v2 format from digital file
-
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-    symptom_column_prefix
-    symptoms
-    """
-    symptom_columns = [f"{symptom_column_prefix}{symptom}" for symptom in symptoms]
-
-    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_NO", symptom_columns, "No")
-    df = count_value_occurrences_in_column_subset_row_wise(df, "NUM_YES", symptom_columns, "Yes")
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when(F.col("NUM_YES") > 0, "Yes").when(F.col("NUM_NO") > 0, "No").otherwise(None),
-    )
-    return df.drop("NUM_YES", "NUM_NO")
 
 
 def assign_fake_id(df: DataFrame, column_name_to_assign: str, reference_column: str):
@@ -851,14 +679,16 @@ def assign_household_participant_count(
     return df
 
 
-def assign_household_under_2_count(
+def assign_household_age_count(
     df: DataFrame,
     column_name_to_assign: str,
     column_pattern: str,
     condition_column: str,
+    min_age: int,
+    max_age: int,
 ):
     """
-    Count number of individuals below two from age (months) columns matching pattern.
+    Count number of individuals below max_age and above max_age from age columns matching pattern.
     if condition column is 'No' it will only count so long the range of columns ONLY have only 0s or nulls.
 
     Parameters
@@ -871,7 +701,10 @@ def assign_household_under_2_count(
     columns_to_count = [column for column in df.columns if re.match(column_pattern, column)]
     count = reduce(
         add,
-        [F.when((F.col(column) >= 0) & (F.col(column) <= 24), 1).otherwise(0) for column in columns_to_count],
+        [
+            F.when((F.col(column) >= min_age) & (F.col(column) <= max_age), 1).otherwise(0)
+            for column in columns_to_count
+        ],
     )
     df = df.withColumn(
         column_name_to_assign,
@@ -882,50 +715,6 @@ def assign_household_under_2_count(
         ).otherwise(0),
     )
     return df
-
-
-def assign_ever_had_long_term_health_condition_or_disabled(
-    df: DataFrame,
-    column_name_to_assign: str,
-    health_conditions_column: str,
-    condition_impact_column: str,
-):
-    """
-    Assign a column that identifies if patient is long term disabled by applying several
-    preset functions
-
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-    health_conditions_column
-    condition_impact_column
-    """
-
-    df = df.withColumn(
-        "TEMP_EVERNEVER",
-        F.when(
-            (F.col(health_conditions_column) == "Yes")
-            & (F.col(condition_impact_column).isin(["Yes, a little", "Yes, a lot"])),
-            "Yes",
-        )
-        .when(
-            (F.col(health_conditions_column).isin(["Yes", "No"]))
-            & ((F.col(condition_impact_column) == "Not at all") | (F.col(condition_impact_column).isNull())),
-            "No",
-        )
-        .otherwise(None),
-    )
-    df = assign_column_given_proportion(
-        df=df,
-        column_name_to_assign=column_name_to_assign,
-        groupby_column="participant_id",
-        reference_columns=["TEMP_EVERNEVER"],
-        count_if=["Yes"],
-        true_false_values=["Yes", "No"],
-    )  # not sure of correct  PIPELINE categories
-
-    return df.drop("TEMP_EVERNEVER")
 
 
 def assign_random_day_in_month(
@@ -962,51 +751,38 @@ def assign_random_day_in_month(
     return df.drop("TEMP_DATE", "TEMP_DAY")
 
 
-def assign_first_visit(df: DataFrame, column_name_to_assign: str, id_column: str, visit_date_column: str) -> DataFrame:
-    """
-    Assign first date a participant completed a visit
-
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-    id_column
-    visit_date_column
-    """
-    window = Window.partitionBy(id_column).orderBy(visit_date_column)
-    return df.withColumn(column_name_to_assign, F.first(visit_date_column, ignorenulls=True).over(window))
-
-
-def assign_last_visit(
-    df: DataFrame,
-    column_name_to_assign: str,
-    id_column: str,
-    visit_date_column: str,
-    visit_status_column: str,
+def assign_first_occurence(
+    df: DataFrame, column_name_to_assign: str, id_column: str, event_date_column: str
 ) -> DataFrame:
     """
-    Assign a column to contain only the last date a participant completed a visited
+    Assign first date occurence in a column for each id in id_column
 
     Parameters
     ----------
     df
     column_name_to_assign
     id_column
-    visit_date_column
-    visit_status_column
+    event_date_column
     """
-    window = Window.partitionBy(id_column).orderBy(F.desc(visit_date_column))
-    df = df.withColumn(
-        column_name_to_assign,
-        F.first(
-            F.when(
-                ~F.col(visit_status_column).isin("Cancelled", "Patient did not attend"),
-                F.col(visit_date_column),
-            ),
-            ignorenulls=True,
-        ).over(window),
-    )
-    return df
+    window = Window.partitionBy(id_column).orderBy(event_date_column)
+    return df.withColumn(column_name_to_assign, F.first(event_date_column, ignorenulls=True).over(window))
+
+
+def assign_last_occurence(
+    df: DataFrame, column_name_to_assign: str, id_column: str, event_date_column: str
+) -> DataFrame:
+    """
+    Assign first date occurence in a column for each id in id_column
+
+    Parameters
+    ----------
+    df
+    column_name_to_assign
+    id_column
+    event_date_column
+    """
+    window = Window.partitionBy(id_column).orderBy(F.desc(event_date_column))
+    return df.withColumn(column_name_to_assign, F.first(event_date_column, ignorenulls=True).over(window))
 
 
 def assign_column_given_proportion(
@@ -1084,17 +860,17 @@ def count_value_occurrences_in_column_subset_row_wise(
     return df
 
 
-def assign_any_symptoms_around_visit(
+def assign_condition_around_event(
     df: DataFrame,
     column_name_to_assign: str,
-    symptoms_bool_column: str,
+    condition_bool_column: str,
     id_column: str,
-    visit_date_column: str,
-    visit_id_column: str,
+    event_date_column: str,
+    event_id_column: str,
 ) -> DataFrame:
     """
-    Assign a column with boolean (Yes, No) if symptoms present around visit, derived
-    from if symptoms bool columns reported any true values -1 +1 from time window
+    Assign a column with boolean (Yes, No) if condition_bool_column is positive around an event, derived
+    from if condition_bool_columns reported any true values -1 +1 from event window
 
     Parameters
     ----------
@@ -1105,13 +881,13 @@ def assign_any_symptoms_around_visit(
     visit_date_column
     visit_id_column
     """
-    window = Window.partitionBy(id_column).orderBy(visit_date_column, visit_id_column)
+    window = Window.partitionBy(id_column).orderBy(event_date_column, event_id_column)
     df = df.withColumn(
         column_name_to_assign,
         F.when(
-            (F.col(symptoms_bool_column) == "Yes")
-            | (F.lag(symptoms_bool_column, 1).over(window) == "Yes")
-            | (F.lag(symptoms_bool_column, -1).over(window) == "Yes"),
+            (F.col(condition_bool_column) == "Yes")
+            | (F.lag(condition_bool_column, 1).over(window) == "Yes")
+            | (F.lag(condition_bool_column, -1).over(window) == "Yes"),
             "Yes",
         ).otherwise("No"),
     )
@@ -1149,54 +925,6 @@ def assign_true_if_any(
             .when(F.col(col).isNull() & F.lit(ignore_nulls), None)
             .otherwise(F.col(column_name_to_assign)),
         )
-    return df
-
-
-def assign_work_social_column(
-    df: DataFrame,
-    column_name_to_assign: str,
-    work_sector_column: str,
-    care_home_column: str,
-    direct_contact_column: str,
-) -> DataFrame:
-    """
-    Assign column for work social with standard string values depending on 3 given reference inputs
-
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-    work_sector_column
-    care_home_column
-    direct_contact_column
-    """
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when(F.col(work_sector_column).isNull(), None)
-        .when(
-            F.col(work_sector_column) != "Social care",
-            "No",
-        )
-        .when(
-            (F.col(care_home_column) == "Yes") & (F.col(direct_contact_column) == "Yes"),
-            "Yes, care/residential home, resident-facing",
-        )
-        .when(
-            ((F.col(care_home_column) == "No") | (F.col(care_home_column).isNull()))
-            & (F.col(direct_contact_column) == "Yes"),
-            "Yes, other social care, resident-facing",
-        )
-        .when(
-            ((F.col(direct_contact_column) == "No") | (F.col(direct_contact_column).isNull()))
-            & (F.col(care_home_column) == "Yes"),
-            "Yes, care/residential home, non-resident-facing",
-        )
-        .when(
-            ((F.col(care_home_column) == "No") | (F.col(care_home_column).isNull()))
-            & ((F.col(direct_contact_column) == "No") | (F.col(direct_contact_column).isNull())),
-            "Yes, other social care, non-resident-facing",
-        ),
-    )
     return df
 
 
@@ -1285,104 +1013,6 @@ def assign_school_year_september_start(
             (F.col(column_name_to_assign) <= 0) | (F.col(column_name_to_assign) > 13),
             None,
         ).otherwise(F.col(column_name_to_assign)),
-    )
-    return df
-
-
-def assign_work_patient_facing_now(
-    df: DataFrame,
-    column_name_to_assign: str,
-    age_column: str,
-    work_healthcare_column: str,
-) -> DataFrame:
-    """
-    Assign column for work person facing depending on values of given input reference
-    columns mapped to a list of outputs
-
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-    age_column
-    work_healthcare_column
-    """
-    df = assign_column_from_mapped_list_key(
-        df,
-        column_name_to_assign,
-        work_healthcare_column,
-        {
-            "Yes": [
-                "Yes",
-                "Yes, primary care, patient-facing",
-                "Yes, secondary care, patient-facing",
-                "Yes, other healthcare, patient-facing",
-            ],
-            "No": [
-                "No",
-                "Yes, primary care, non-patient-facing",
-                "Yes, secondary care, non-patient-facing",
-                "Yes, other healthcare, non-patient-facing",
-            ],
-        },
-    )
-    df = assign_named_buckets(
-        df,
-        age_column,
-        column_name_to_assign,
-        {0: "<=15y", 16: F.col(column_name_to_assign), 75: ">=75y"},
-    )
-    return df
-
-
-def assign_work_person_facing_now(
-    df: DataFrame,
-    column_name_to_assign: str,
-    work_patient_facing_now_column: str,
-    work_social_care_column: str,
-    age_at_visit_column: str,
-) -> DataFrame:
-    """
-    Assign column for work patient facing depending on values of given input reference
-    columns mapped to a list of outputs
-
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-    work_patient_facing_now_column
-    work_social_care_column
-    age_at_visit_column
-    """
-    df = assign_column_from_mapped_list_key(
-        df,
-        column_name_to_assign,
-        work_social_care_column,
-        {
-            "Yes": [
-                "Yes, care/residential home, resident-facing",
-                "Yes, other social care, resident-facing",
-            ],
-            "No": [
-                "No",
-                "Yes, care/residential home, non-resident-facing",
-                "Yes, other social care, non-resident-facing",
-            ],
-        },
-    )
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when(F.col(work_patient_facing_now_column) == "Yes", "Yes")
-        .when(
-            ~(F.col(work_patient_facing_now_column).isin("Yes", "No") | F.col(work_patient_facing_now_column).isNull()),
-            F.col(work_patient_facing_now_column),
-        )
-        .otherwise(F.col(column_name_to_assign)),
-    )
-    df = assign_named_buckets(
-        df,
-        age_at_visit_column,
-        column_name_to_assign,
-        {0: "<=15y", 16: F.col(column_name_to_assign), 75: ">=75y"},
     )
     return df
 
@@ -1675,7 +1305,7 @@ def assign_school_year(
     return df
 
 
-def mean_across_columns(df: DataFrame, new_column_name: str, column_names: list) -> DataFrame:
+def assign_mean_across_columns(df: DataFrame, new_column_name: str, column_names: list) -> DataFrame:
     """
     Create a new column containing the mean of multiple existing columns.
 
@@ -1727,13 +1357,13 @@ def assign_date_difference(
     end_reference_column
         Second date column name.
     format
-        time format (days, weeks, fortnight, months)
+        time format (days, weeks, fortnights)
 
     Return
     ------
     pyspark.sql.DataFrame
     """
-    allowed_formats = ["days", "weeks", "fortnight"]
+    allowed_formats = ["days", "weeks", "fortnights"]
     if format in allowed_formats:
         if start_reference_column == "survey start":
             start = F.to_timestamp(F.lit("2020-05-11 00:00:00"))
@@ -1741,7 +1371,7 @@ def assign_date_difference(
             start = F.col(start_reference_column)
         modifications = {
             "weeks": F.floor(F.col(column_name_to_assign) / 7),
-            "fortnight": F.floor(F.col(column_name_to_assign) / 14),
+            "fortnights": F.floor(F.col(column_name_to_assign) / 14),
         }
         df = df.withColumn(
             column_name_to_assign,
@@ -1752,101 +1382,6 @@ def assign_date_difference(
         return df.withColumn(column_name_to_assign, F.col(column_name_to_assign).cast("integer"))
     else:
         raise TypeError(f"{format} format not supported")
-
-
-def assign_completion_status(
-    df: DataFrame,
-    column_name_to_assign: str,
-) -> DataFrame:
-
-    """
-    Function to assign a completion status equivalent for PHM
-    questionnaire responses from pre-defined variables
-    """
-
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when(
-            ((F.col("end_screen_questionnaire") == "Continue") & (~F.col("survey_completed_datetime").isNull()))
-            | ((F.col("end_screen_sample") == "Continue") & (~F.col("survey_completed_datetime").isNull())),
-            "Submitted",
-        )
-        .when(
-            (F.col("survey_completion_status_flushed") == "TRUE")
-            & (F.col("file_date") <= F.col("participant_completion_window_end_date")),
-            "In progress",
-        )
-        .when(
-            (F.col("survey_completion_status_flushed") == "TRUE")
-            & (F.col("file_date") > F.col("participant_completion_window_end_date")),
-            "Completed",
-        )
-        .when(
-            (F.col("survey_completion_status_flushed") == "FALSE")
-            & (F.col("file_date") > F.col("participant_completion_window_start_date"))
-            & (F.col("file_date") <= F.col("participant_completion_window_end_date")),
-            "New",
-        ),
-    )
-    return df
-
-
-def derive_digital_merge_type(
-    df: DataFrame,
-    column_name_to_assign: str,
-) -> DataFrame:
-    """
-    Derive the digital merge type
-    From households_aggregate_processes.xlsx, derivation number 27.
-
-    Parameters
-    ----------
-    df
-    survey_completion_status
-        Variable with survey completion status.
-    form_start_datetime
-        First date column name.
-    participant_completion_window_end_datetime
-        Final date column name.
-    file_date
-        The date the file was created
-
-    Return
-    ------
-    pyspark.sql.DataFrame
-    """
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when(
-            (F.col("Survey_completion_status").isin(["Submitted", "Completed"])),
-            "Matched",
-        )
-        .when(
-            (~F.col("form_start_datetime").isNull())
-            & (F.to_date(F.col("participant_completion_window_end_datetime")) > F.to_date(F.col("file_date")))
-            & (F.col("survey_completion_status").isin(["Partially Completed", "New"])),
-            "Temporary Orphan",
-        )
-        .when(
-            (F.col("form_start_datetime").isNull())
-            & (F.to_date(F.col("participant_completion_window_end_datetime")) > F.to_date(F.col("file_date")))
-            & (F.col("survey_completion_status") == "New"),
-            "Potential Orphan",
-        )
-        .when(
-            (~F.col("form_start_datetime").isNull())
-            & (F.to_date(F.col("participant_completion_window_end_datetime")) <= F.to_date(F.col("file_date")))
-            & (F.col("survey_completion_status").isin(["Partially Completed", "New"])),
-            "Matched",
-        )
-        .when(
-            (F.col("form_start_datetime").isNull())
-            & (F.to_date(F.col("participant_completion_window_end_datetime")) <= F.to_date(F.col("file_date")))
-            & (F.col("survey_completion_status") == "New"),
-            "Permanent Orphan",
-        ),
-    )
-    return df
 
 
 def assign_column_uniform_value(df: DataFrame, column_name_to_assign: str, uniform_value) -> DataFrame:
@@ -1898,43 +1433,6 @@ def assign_column_regex_match(
     pyspark.sql.DataFrame
     """
     return df.withColumn(column_name_to_assign, F.col(reference_column).rlike(pattern))
-
-
-def assign_consent_code(df: DataFrame, column_name_to_assign: str, reference_columns: list) -> DataFrame:
-    """
-    Assign new column of value for the maximum consent version.
-    From households_aggregate_processes.xlsx, derivation number 19.
-
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-        Name of column to be assigned
-    reference_columns list[str]
-        Consent columns with 1,0 values used to determine
-        consent value.
-
-    Returns
-    -------
-    pyspark.sql.DataFrame
-
-    Notes
-    -----
-    Extracts digit value from column name using r'\\d+' pattern.
-    """
-    assert len(set(reference_columns).difference(set(df.schema.names))) == 0, "Reference columns not in df"
-
-    # assumes only one match in the pattern
-    consent_digit_values = [int(re.findall(r"\d+", column)[-1]) for column in reference_columns]
-
-    temp_column_names = [column + "_temp" for column in reference_columns]
-
-    consent_triplets = zip(reference_columns, temp_column_names, consent_digit_values)
-
-    for consent_column, temp_consent_column, consent_value in consent_triplets:
-        df = df.withColumn(temp_consent_column, (F.col(consent_column) * F.lit(consent_value)))
-
-    return df.withColumn(column_name_to_assign, F.greatest(*temp_column_names)).drop(*temp_column_names)
 
 
 def assign_column_to_date_string(
@@ -2058,140 +1556,10 @@ def assign_correct_age_at_date(df: DataFrame, column_name_to_assign, reference_d
     return df.drop("month_more", "day_more")
 
 
-def assign_grouped_variable_from_days_since(
-    df: DataFrame,
-    binary_reference_column: str,
-    days_since_reference_column: str,
-    column_name_to_assign: str,
-) -> DataFrame:
-    """
-    Function create variables applied for days_since_think_had_covid_group and
-    contact_known_or_suspected_covid_days_since_group. The variable
-    days_since_think_had_covid and contact_known_or_suspected_covid_days_since will
-    give a number that will be grouped in a range.
-
-    Parameters
-    ----
-    ------
-    df
-    binary_reference_column
-        yes/no values that describe whether the patient thinks have had covid
-    days_since_reference_column
-        column from which extract the number of days transcurred that needs to
-        be grouped
-    column_name_to_assign
-        grouping column
-    """
-    df = assign_named_buckets(
-        df=df,
-        reference_column=days_since_reference_column,
-        column_name_to_assign=column_name_to_assign,
-        map={0: "0-14", 15: "15-28", 29: "29-60", 61: "61-90", 91: "91+"},
-    )
-    return df.withColumn(
-        column_name_to_assign,
-        F.when(
-            (F.col(binary_reference_column) == "Yes") & (F.col(days_since_reference_column).isNull()),
-            "Date not given",
-        )
-        .otherwise(F.col(column_name_to_assign))
-        .cast("string"),
-    )
-
-
-def assign_grouped_variable_from_days_since_contact(
-    df: DataFrame,
-    reference_column: str,
-    days_since_reference_column: str,
-    column_name_to_assign: str,
-) -> DataFrame:
-    """
-    Function create variables applied for contact_known_or_suspected_covid_days_since_group. The variable contact_known_or_suspected_covid_days_since will
-    give a number that will be grouped in a range.
-
-    Parameters
-    ----------
-    df
-    reference_column
-        describes where the respondent had contact with someone with covid
-    days_since_reference_column
-        column from which extract the number of days transcurred that needs to
-        be grouped
-    column_name_to_assign
-        grouping column
-    """
-    df = assign_named_buckets(
-        df=df,
-        reference_column=days_since_reference_column,
-        column_name_to_assign=column_name_to_assign,
-        map={0: "1", 15: "2", 29: "3", 61: "4", 91: "5"},
-    )
-    return df.withColumn(
-        column_name_to_assign,
-        F.when(
-            (F.col(reference_column).isNotNull()) & (F.col(days_since_reference_column).isNull()),
-            "6",
-        )
-        .otherwise(F.col(column_name_to_assign))
-        .cast("string"),
-    )
-
-
 def assign_raw_copies(df: DataFrame, reference_columns: list, suffix: str = "raw") -> DataFrame:
     """Create a copy of each column in a list, with a new suffix."""
     for column in reference_columns:
         df = df.withColumn(column + "_" + suffix, F.col(column).cast(df.schema[column].dataType))
-    return df
-
-
-def assign_work_health_care(df, column_name_to_assign, direct_contact_column, health_care_column) -> DataFrame:
-    """
-    Combine direct contact and health care responses to get old format of health care responses.
-
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-    direct_contact_column
-        Column indicating whether participant works in direct contact
-    health_care_column
-        Column indicating if participant works in health care
-    """
-    health_care_map = {
-        "Yes, in primary care, e.g. GP, dentist": "Yes, primary care",
-        "Yes, in secondary care, e.g. hospital": "Yes, secondary care",
-        "Yes, in other healthcare settings, e.g. mental health": "Yes, other healthcare",
-    }
-    value_map = F.create_map([F.lit(x) for x in chain(*health_care_map.items())])
-    patient_facing_text = F.when(F.col(direct_contact_column) == "Yes", ", patient-facing").otherwise(
-        ", non-patient-facing"
-    )
-    edited_other_health_care_column = F.when(
-        (F.col(health_care_column) != "No") & F.col(health_care_column).isNotNull(),
-        F.concat(value_map[F.col(health_care_column)], patient_facing_text),
-    ).otherwise(F.col(health_care_column))
-    df = df.withColumn(column_name_to_assign, edited_other_health_care_column)
-    return df
-
-
-def assign_work_status_group(df: DataFrame, colum_name_to_assign: str, reference_column: str):
-    """
-    Assigns a string group based on work status. Uses minimal work status categories (voyager 0).
-    Results in groups of:
-    - Unknown (null)
-    - Student
-    - Employed
-    - Not working (unemployed, retired, long term sick etc)
-    """
-    df = df.withColumn(
-        colum_name_to_assign,
-        F.when(
-            F.col(reference_column).isin(["Employed", "Self-employed", "Furloughed (temporarily not working)"]),
-            "Employed",
-        )
-        .when(F.col(reference_column).isNull(), "Unknown")
-        .otherwise(F.col(reference_column)),
-    )
     return df
 
 
@@ -2209,70 +1577,6 @@ def assign_last_non_null_value_from_col_list(df: DataFrame, column_name_to_assig
     df = df.withColumn("temp_array", F.array_sort(F.array(column_list)))
     df = df.withColumn(column_name_to_assign, F.element_at(F.expr("filter(temp_array, x -> x is not null)"), -1))
     df = df.drop("temp_array")
-    return df
-
-
-def contact_known_or_suspected_covid_type(
-    df: DataFrame,
-    contact_known_covid_type_column: str,
-    contact_suspect_covid_type_column: str,
-    contact_any_covid_type_column: str,
-    contact_any_covid_date_column: str,
-    contact_known_covid_date_column: str,
-    contact_suspect_covid_date_column: str,
-):
-    """
-    Parameters
-    ----------
-    df
-    contact_known_covid_type_column
-    contact_suspect_covid_type_column
-    contact_any_covid_date_column
-    contact_known_covid_date_column
-    contact_suspect_covid_date_column
-    """
-    df = df.withColumn(
-        contact_any_covid_type_column,
-        F.when(
-            F.col(contact_any_covid_date_column) == F.col(contact_known_covid_date_column),
-            F.col(contact_known_covid_type_column),
-        )
-        .when(
-            F.col(contact_any_covid_date_column) == F.col(contact_suspect_covid_date_column),
-            F.col(contact_suspect_covid_type_column),
-        )
-        .otherwise(None),
-    )
-    return df
-
-
-def derive_household_been_columns(
-    df: DataFrame,
-    column_name_to_assign: str,
-    individual_response_column: str,
-    household_response_column: str,
-) -> DataFrame:
-    """
-    Combines a household and individual level response, to an overall household response.
-    Assumes input responses are 'Yes'/'no'.
-
-    Parameters
-    ----------
-    df
-    column_name_to_assign
-    individual_response_column
-    household_response_column
-    """
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when((F.col(individual_response_column) == "Yes"), "Yes, I have")
-        .when(
-            ((F.col(individual_response_column) != "Yes") | F.col(individual_response_column).isNull())
-            & (F.col(household_response_column) == "Yes"),
-            "No I haven’t, but someone else in my household has",
-        )
-        .otherwise("No, no one in my household has"),
-    )
     return df
 
 
@@ -2483,293 +1787,6 @@ def get_keys_by_value(input_dict: Dict, values_to_lookup: List) -> List:
     return result
 
 
-def flag_records_for_work_location_null() -> F.Column:
-    """Flag records for application of "Work location" rules. Rule_id: 7000"""
-    return (
-        F.col("work_location").isNull() | (F.col("work_main_job_title").isNull() & F.col("work_main_job_role").isNull())
-    ) & (
-        F.col("work_status_v0").isin(
-            "Furloughed (temporarily not working)",
-            "Not working (unemployed, retired, long-term sick etc.)",
-            "Student",
-        )
-    )
-
-
-def flag_records_for_work_location_student() -> F.Column:
-    """Flag records for application of "Work location" rules for students. Rule_id: 7000"""
-    return F.col("work_status_v0").isin("Student") | (F.col("age_at_visit") < F.lit(16))
-
-
-def flag_records_for_work_from_home_rules() -> F.Column:
-    """Flag records for application of "Work From Home" rules. Rule_id: 1000"""
-    return F.col("work_location").isNull() & ~(
-        (
-            F.col("work_status_v0").isin(
-                "Furloughed (temporarily not working)",
-                "Not working (unemployed, retired, long-term sick etc.)",
-                "Student",
-            )
-        )
-        | (F.col("age_at_visit") < F.lit(16))
-    )
-
-
-def flag_records_for_furlough_rules_v0() -> F.Column:
-    """Flag records for application of "Furlough Rules V0" rules. Rule_id: 2000"""
-    return F.col("work_status_v0").isin(
-        "Employed",
-        "Self-employed",
-        "Not working (unemployed, retired, long-term sick etc.)",
-    )
-
-
-def flag_records_for_furlough_rules_v1_a() -> F.Column:
-    """Flag records for application of "Furlough Rules V1-a" rules. Rule_id: 2001"""
-    return F.col("work_status_v1").isin(
-        "Employed and currently working",
-        "Looking for paid work and able to start",
-        "Not working and not looking for work",
-    )
-
-
-def flag_records_for_furlough_rules_v1_b() -> F.Column:
-    """Flag records for application of "Furlough Rules V1-b" rules. Rule_id: 2002"""
-    return F.col("work_status_v1").isin("Self-employed and currently working")
-
-
-def flag_records_for_furlough_rules_v2_a() -> F.Column:
-    """Flag records for application of "Furlough Rules V2-a" rules. Rule_id: 2003"""
-    return F.col("work_status_v2").isin(
-        "Employed and currently working",
-        "Looking for paid work and able to start",
-        "Not working and not looking for work",
-    )
-
-
-def flag_records_for_furlough_rules_v2_b() -> F.Column:
-    """Flag records for application of "Furlough Rules V2-b" rules. Rule_id: 2004"""
-    return F.col("work_status_v2").isin("Self-employed and currently working")
-
-
-def flag_records_for_self_employed_rules_v0() -> F.Column:
-    """Flag records for application of "Self-employed Rules V0" rules. Rule_id: 3000"""
-    return F.col("work_status_v0").isNull() | F.col("work_status_v0").isin("Employed")
-
-
-def flag_records_for_self_employed_rules_v1_a() -> F.Column:
-    """Flag records for application of "Self-employed Rules V1-a" rules. Rule_id: 3001"""
-    return F.col("work_status_v1").isin("Employed and currently working")
-
-
-def flag_records_for_self_employed_rules_v1_b() -> F.Column:
-    """Flag records for application of "Self-employed Rules V1-b" rules. Rule_id: 3002"""
-    return F.col("work_status_v1").isin("Employed and currently not working")
-
-
-def flag_records_for_self_employed_rules_v2_a() -> F.Column:
-    """Flag records for application of "Self-employed Rules V2-a" rules. Rule_id: 3003"""
-    return F.col("work_status_v2").isin("Employed and currently working")
-
-
-def flag_records_for_self_employed_rules_v2_b() -> F.Column:
-    """Flag records for application of "Self-employed Rules V2-b" rules. Rule_id: 3004"""
-    return F.col("work_status_v2").isin("Employed and currently not working")
-
-
-def flag_records_for_retired_rules() -> F.Column:
-    """Flag records for application of "Retired" rules. Rule_id: 4000, 4001, 4002"""
-    return (
-        any_column_null(["work_status_v0", "work_status_v1", "work_Status_v2"])
-        & F.col("work_main_job_title").isNull()
-        & F.col("work_main_job_role").isNull()
-        & (F.col("age_at_visit") > F.lit(75))
-    )
-
-
-def flag_records_for_not_working_rules_v0() -> F.Column:
-    """Flag records for application of "Not working Rules V0" rules. Rule_id: 5000"""
-    return F.col("work_status_v0").isin("Employed", "Self-employed")
-
-
-def flag_records_for_not_working_rules_v1_a() -> F.Column:
-    """Flag records for application of "Not working Rules V1-a" rules. Rule_id: 5001"""
-    return F.col("work_status_v1").isin("Employed and currently working")
-
-
-def flag_records_for_not_working_rules_v1_b() -> F.Column:
-    """Flag records for application of "Not working Rules V1-b" rules. Rule_id: 5002"""
-    return F.col("work_status_v1").isin("Self-employed and currently working")
-
-
-def flag_records_for_not_working_rules_v2_a() -> F.Column:
-    """Flag records for application of "Not working Rules V2-a" rules. Rule_id: 5003"""
-    return F.col("work_status_v2").isin("Employed and currently working")
-
-
-def flag_records_for_not_working_rules_v2_b() -> F.Column:
-    """Flag records for application of "Not working Rules V2-b" rules. Rule_id: 5004"""
-    return F.col("work_status_v2").isin("Self-employed and currently working")
-
-
-def flag_records_for_school_v2_rules() -> F.Column:
-    """Flag records for application of "School rules -v2" rules. Rule_id: 6000, 6002, 6005"""
-    return ((F.col("age_at_visit") >= F.lit(4)) & (F.col("age_at_visit") <= F.lit(18))) & ~(
-        F.col("school_year").isNull()
-    )
-
-
-def flag_records_for_uni_v0_rules() -> F.Column:
-    """Flag records for application of "Uni-v0" rules. Rule_id: 6000"""
-    return (
-        (F.col("age_at_visit") >= F.lit(17))
-        & (
-            F.col("work_status_v0").isNull()
-            | F.col("work_status_v0").isin(
-                "Furloughed (temporarily not working)",
-                "Not working (unemployed, retired, long-term sick etc.)",
-            )
-        )
-    ) | ((F.col("age_at_visit") >= F.lit(17)) & (F.col("age_at_visit") < F.lit(22)))
-
-
-def flag_records_for_uni_v1_rules() -> F.Column:
-    """Flag records for application of "Uni-v0" rules. Rule_id: 6002"""
-    return (
-        (F.col("age_at_visit") >= F.lit(17))
-        & (
-            F.col("work_status_v1").isNull()
-            | F.col("work_status_v1").isin(
-                "Employed and currently not working",
-                "Self-employed and currently not working",
-                "Looking for paid work and able to start",
-                "Not working and not looking for work",
-                "Retired",
-            )
-        )
-    ) | ((F.col("age_at_visit") >= F.lit(19)) & (F.col("age_at_visit") < F.lit(22)))
-
-
-def flag_records_for_uni_v2_rules() -> F.Column:
-    """Flag records for application of "Uni-v2" rules. Rule_id: 6007"""
-    return (
-        (F.col("age_at_visit") >= F.lit(17))
-        & (
-            F.col("work_status_v2").isNull()
-            | F.col("work_status_v2").isin(
-                "Employed and currently not working",
-                "Self-employed and currently not working",
-                "Looking for paid work and able to start",
-                "Not working and not looking for work",
-                "Retired",
-            )
-        )
-    ) | ((F.col("age_at_visit") >= F.lit(19)) & (F.col("age_at_visit") < F.lit(22)))
-
-
-def flag_records_for_college_v0_rules() -> F.Column:
-    """Flag records for application of "College-v0" rules. Rule_id: 6000"""
-    return (
-        (F.col("age_at_visit") >= F.lit(16))
-        & (
-            F.col("work_status_v0").isNull()
-            | F.col("work_status_v0").isin(
-                "Furloughed (temporarily not working)",
-                "Not working (unemployed, retired, long-term sick etc.)",
-            )
-        )
-    ) | ((F.col("age_at_visit") >= F.lit(17)) & (F.col("age_at_visit") < F.lit(19)))
-
-
-def flag_records_for_college_v1_rules() -> F.Column:
-    """Flag records for application of "College-v0" rules. Rule_id: 6002"""
-    return (
-        (F.col("age_at_visit") >= F.lit(16))
-        & (
-            F.col("work_status_v1").isNull()
-            | F.col("work_status_v1").isin(
-                "Employed and currently not working",
-                "Self-employed and currently not working",
-                "Looking for paid work and able to start",
-                "Not working and not looking for work",
-                "Retired",
-            )
-        )
-    ) | ((F.col("age_at_visit") >= F.lit(17)) & (F.col("age_at_visit") < F.lit(19)))
-
-
-def flag_records_for_college_v2_rules() -> F.Column:
-    """Flag records for application of "College-v2" rules. Rule_id: 6006"""
-    return (
-        (F.col("age_at_visit") >= F.lit(16))
-        & (
-            F.col("work_status_v2").isNull()
-            | F.col("work_status_v2").isin(
-                "Employed and currently not working",
-                "Self-employed and currently not working",
-                "Looking for paid work and able to start",
-                "Not working and not looking for work",
-                "Retired",
-            )
-        )
-    ) | ((F.col("age_at_visit") >= F.lit(17)) & (F.col("age_at_visit") < F.lit(19)))
-
-
-def flag_records_for_childcare_v0_rules() -> F.Column:
-    """Flag records for application of "Childcare-V0" rules. Rule_id: 6001"""
-    return (
-        (F.col("age_at_visit") < F.lit(4))
-        & F.col("school_year").isNull()
-        & ~(
-            F.col("work_status_v0").isin(
-                "Furloughed (temporarily not working)",
-                "Not working (unemployed, retired, long-term sick etc.)",
-            )
-        )
-    )
-
-
-def flag_records_for_childcare_v1_rules() -> F.Column:
-    """Flag records for application of "Childcare-V1" rules. Rule_id: 6003"""
-    return (
-        (F.col("age_at_visit") <= F.lit(4))
-        & F.col("school_year").isNull()
-        & ~(
-            F.col("work_status_v1").isin(
-                "Child under 5y not attending child care", "Child under 5y attending child care"
-            )
-        )
-    )
-
-
-def flag_records_for_childcare_v2_b_rules() -> F.Column:
-    """Flag records for application of "Childcare-V2_b" rules. Rule_id: 6004"""
-    return (
-        (F.col("age_at_visit") <= F.lit(5))
-        & F.col("school_year").isNull()
-        & ~(
-            F.col("work_status_v2").isin(
-                "Child under 4-5y not attending child care",
-                "Child under 4-5y attending child care",
-            )
-        )
-    )
-
-
-def derive_country_code(df, column_name_to_assign: str, region_code_column: str):
-    """Derive country code from region code starting character."""
-    df = df.withColumn(
-        column_name_to_assign,
-        F.when(F.col(region_code_column).startswith("E"), "E92000001")
-        .when(F.col(region_code_column).startswith("N"), "N92000002")
-        .when(F.col(region_code_column).startswith("S"), "S92000003")
-        .when(F.col(region_code_column).startswith("W"), "W92000004")
-        .when(F.col(region_code_column).startswith("L"), "L93000001")
-        .when(F.col(region_code_column).startswith("M"), "M83000003"),
-    )
-    return df
-
-
 def clean_postcode(df: DataFrame, postcode_column: str):
     """
     update postcode variable to include only uppercase alpha numeric characters and set
@@ -2786,28 +1803,6 @@ def clean_postcode(df: DataFrame, postcode_column: str):
         postcode_column,
         F.when(F.length(outward_code) <= 4, F.concat(F.rpad(outward_code, 4, " "), inward_code)).otherwise(None),
     )
-    return df
-
-
-def household_level_populations(
-    address_lookup: DataFrame, postcode_lookup: DataFrame, lsoa_cis_lookup: DataFrame, country_lookup: DataFrame
-) -> DataFrame:
-    """
-    1. join address base extract with NSPL by postcode to get LSOA 11 and country 12
-    2. join LSOA to CIS lookup, by LSOA 11 to get CIS area 20
-    3. join country lookup by country_code to get country names
-    4. calculate household counts by CIS area and country
-
-    N.B. Expects join keys to be deduplicated.
-    """
-    address_lookup = clean_postcode(address_lookup, "postcode")
-    postcode_lookup = clean_postcode(postcode_lookup, "postcode")
-    df = address_lookup.join(F.broadcast(postcode_lookup), on="postcode", how="left")
-    df = df.join(F.broadcast(lsoa_cis_lookup), on="lower_super_output_area_code_11", how="left")
-    df = df.join(F.broadcast(country_lookup), on="country_code_12", how="left")
-    df = assign_count_by_group(df, "number_of_households_by_cis_area", ["cis_area_code_20"])
-    df = assign_count_by_group(df, "number_of_households_by_country", ["country_code_12"])
-
     return df
 
 
