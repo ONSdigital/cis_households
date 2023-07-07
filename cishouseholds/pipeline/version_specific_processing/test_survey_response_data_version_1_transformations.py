@@ -1,7 +1,3 @@
-# flake8: noqa
-from typing import Any
-from typing import Dict
-
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
@@ -10,8 +6,6 @@ from cishouseholds.derive import assign_column_value_from_multiple_column_map
 from cishouseholds.derive import assign_date_from_filename
 from cishouseholds.derive import assign_datetime_from_combined_columns
 from cishouseholds.derive import assign_raw_copies
-from cishouseholds.derive import assign_survey_completed_status
-from cishouseholds.derive import assign_window_status
 from cishouseholds.derive import map_options_to_bool_columns
 from cishouseholds.edit import add_prefix
 from cishouseholds.edit import apply_value_map_multiple_columns
@@ -22,7 +16,6 @@ from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.filter import filter_exclude_by_pattern
 from cishouseholds.pipeline.mapping import transformation_maps
-from cishouseholds.pipeline.visit_transformations import visit_transformations
 
 
 def phm_transformations(df: DataFrame) -> DataFrame:
@@ -325,14 +318,6 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
             col_to_map, F.regexp_replace(col_to_map, r", ", ";")
         )
         df = map_options_to_bool_columns(df, col_to_map, value_column_map, ";")
-
-    df = assign_survey_completed_status(
-        df=df,
-        column_name_to_assign="survey_completion_status",
-        survey_completed_datetime_column="survey_completed_datetime",
-        survey_flushed_column="survey_completion_status_flushed",
-        no_columns=["participant_first_name_confirmation", "participant_first_name_on_behalf"],
-    )
 
     # symptom column prefix all matching columns will have nulls converted to null conditionally: (column containing value that conditionally apply conversion, value in column where null conversion should be applied)
     infection_symptom_dict = {
@@ -736,12 +721,6 @@ def derive_additional_columns(df: DataFrame) -> DataFrame:
             "7 doses": 7,
             "8 doses or more": 8,
         },
-    )
-    df = assign_window_status(
-        df=df,
-        column_name_to_assign="participant_completion_window_status",
-        window_start_column="participant_completion_window_start_date",
-        window_end_column="participant_completion_window_end_date",
     )
 
     return df

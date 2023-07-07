@@ -5,14 +5,11 @@ from operator import and_
 import pyspark.sql.functions as F
 from pyspark.sql import DataFrame
 
-from cishouseholds.derive import assign_any_symptoms_around_visit
 from cishouseholds.derive import assign_column_value_from_multiple_column_map
+from cishouseholds.derive import assign_condition_around_event
 from cishouseholds.derive import assign_date_difference
-from cishouseholds.derive import assign_grouped_variable_from_days_since
-from cishouseholds.derive import assign_grouped_variable_from_days_since_contact
 from cishouseholds.derive import assign_last_non_null_value_from_col_list
 from cishouseholds.derive import assign_true_if_any
-from cishouseholds.derive import contact_known_or_suspected_covid_type
 from cishouseholds.derive import count_value_occurrences_in_column_subset_row_wise
 from cishouseholds.edit import conditionally_set_column_values
 from cishouseholds.edit import correct_date_ranges_union_dependent
@@ -181,12 +178,6 @@ def derive_new_columns(df: DataFrame) -> DataFrame:
     """
     df = assign_date_difference(df, "days_since_think_had_covid", "think_had_covid_onset_date", "visit_datetime")
 
-    df = assign_grouped_variable_from_days_since(
-        df=df,
-        binary_reference_column="think_had_covid",
-        days_since_reference_column="days_since_think_had_covid",
-        column_name_to_assign="days_since_think_had_covid_group",
-    )
     original_think_have_symptoms = [
         "think_have_covid_symptom_fever",
         "think_have_covid_symptom_muscle_ache",
@@ -268,13 +259,13 @@ def derive_new_columns(df: DataFrame) -> DataFrame:
         true_false_values=["Yes", "No"],
     )
 
-    df = assign_any_symptoms_around_visit(
+    df = assign_condition_around_event(
         df=df,
         column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
         id_column="participant_id",
-        symptoms_bool_column="think_have_covid_cghfevamn_symptom_group",
-        visit_date_column="visit_datetime",
-        visit_id_column="visit_id",
+        condition_bool_column="think_have_covid_cghfevamn_symptom_group",
+        event_date_column="visit_datetime",
+        event_id_column="visit_id",
     )
     return df
 
@@ -709,21 +700,21 @@ def clean_inconsistent_event_detail_part_2(df) -> DataFrame:
 
 
 def data_dependent_derivations(df: DataFrame) -> DataFrame:
-    df = assign_any_symptoms_around_visit(
+    df = assign_condition_around_event(
         df=df,
         column_name_to_assign="any_symptoms_around_visit",
-        symptoms_bool_column="any_think_have_covid_symptom_or_now",
+        condition_bool_column="any_think_have_covid_symptom_or_now",
         id_column="participant_id",
-        visit_date_column="visit_datetime",
-        visit_id_column="visit_id",
+        event_date_column="visit_datetime",
+        event_id_column="visit_id",
     )
-    df = assign_any_symptoms_around_visit(
+    df = assign_condition_around_event(
         df=df,
         column_name_to_assign="symptoms_around_cghfevamn_symptom_group",
-        symptoms_bool_column="think_have_covid_cghfevamn_symptom_group",
+        condition_bool_column="think_have_covid_cghfevamn_symptom_group",
         id_column="participant_id",
-        visit_date_column="visit_datetime",
-        visit_id_column="visit_id",
+        event_date_column="visit_datetime",
+        event_id_column="visit_id",
     )
     df = derive_contact_any_covid_covid_variables(df)
     df = nullify_columns_before_date(
@@ -774,28 +765,11 @@ def derive_contact_any_covid_covid_variables(df: DataFrame) -> DataFrame:
         column_list=["last_covid_contact_date", "last_suspected_covid_contact_date"],
     )
 
-    df = contact_known_or_suspected_covid_type(
-        df=df,
-        contact_known_covid_type_column="last_covid_contact_type",
-        contact_suspect_covid_type_column="last_suspected_covid_contact_type",
-        contact_any_covid_type_column="contact_known_or_suspected_covid_type",
-        contact_any_covid_date_column="contact_known_or_suspected_covid_latest_date",
-        contact_known_covid_date_column="last_covid_contact_date",
-        contact_suspect_covid_date_column="last_suspected_covid_contact_date",
-    )
-
     df = assign_date_difference(
         df,
         "contact_known_or_suspected_covid_days_since",
         "contact_known_or_suspected_covid_latest_date",
         "visit_datetime",
-    )
-
-    df = assign_grouped_variable_from_days_since_contact(
-        df=df,
-        reference_column="contact_known_or_suspected_covid",
-        days_since_reference_column="contact_known_or_suspected_covid_days_since",
-        column_name_to_assign="contact_known_or_suspected_covid_days_since_group",
     )
 
     return df

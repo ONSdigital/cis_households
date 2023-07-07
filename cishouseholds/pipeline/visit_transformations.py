@@ -2,12 +2,11 @@ from pyspark.sql import DataFrame
 
 from cishouseholds.derive import assign_column_given_proportion
 from cishouseholds.derive import assign_date_difference
-from cishouseholds.derive import assign_ever_had_long_term_health_condition_or_disabled
 from cishouseholds.derive import assign_fake_id
-from cishouseholds.derive import assign_first_visit
-from cishouseholds.derive import assign_last_visit
+from cishouseholds.derive import assign_first_occurence
+from cishouseholds.derive import assign_incremental_order
+from cishouseholds.derive import assign_last_occurence
 from cishouseholds.derive import assign_named_buckets
-from cishouseholds.derive import assign_visit_order
 
 
 def visit_transformations(df: DataFrame):
@@ -21,25 +20,24 @@ def visit_transformations(df: DataFrame):
 def visit_derivations(df: DataFrame):
 
     df = assign_fake_id(df, "ordered_household_id_new", "ons_household_id")
-    df = assign_visit_order(
+    df = assign_incremental_order(
         df=df,
         column_name_to_assign="visit_order",
-        id="participant_id",
+        id_column="participant_id",
         order_list=["visit_datetime", "visit_id"],
     )
 
-    df = assign_first_visit(
+    df = assign_first_occurence(
         df=df,
         column_name_to_assign="household_first_visit_datetime",
         id_column="ons_household_id",
-        visit_date_column="visit_datetime",
+        event_date_column="visit_datetime",
     )
-    df = assign_last_visit(
+    df = assign_last_occurence(
         df=df,
         column_name_to_assign="last_attended_visit_datetime",
         id_column="ons_household_id",
-        visit_status_column="participant_visit_status",
-        visit_date_column="visit_datetime",
+        event_date_column="visit_datetime",
     )
     df = assign_date_difference(
         df=df,
@@ -105,11 +103,5 @@ def create_ever_variable_columns(df: DataFrame) -> DataFrame:
         reference_columns=["illness_lasting_over_12_months"],
         count_if=["Yes"],
         true_false_values=["Yes", "No"],
-    )
-    df = assign_ever_had_long_term_health_condition_or_disabled(
-        df=df,
-        column_name_to_assign="ever_had_long_term_health_condition_or_disabled",
-        health_conditions_column="illness_lasting_over_12_months",
-        condition_impact_column="illness_reduces_activity_or_ability",
     )
     return df
