@@ -1,9 +1,9 @@
 from chispa import assert_df_equality
 
-from cishouseholds.derive import assign_any_symptoms_around_visit
+from cishouseholds.derive import assign_condition_around_event
 
 
-def test_assign_any_symptoms_around_visit(spark_session):
+def test_assign_condition_around_event(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             (1, "No", 1, "2020-07-20", "Yes"),
@@ -18,12 +18,12 @@ def test_assign_any_symptoms_around_visit(spark_session):
         ],
         schema="id integer, symptoms string, visit_id integer, visit_date string, result string",
     )
-    output_df = assign_any_symptoms_around_visit(
+    output_df = assign_condition_around_event(
         df=expected_df.drop("result"),
         column_name_to_assign="result",
-        symptoms_bool_column="symptoms",
+        condition_bool_column="symptoms",
         id_column="id",
-        visit_date_column="visit_date",
-        visit_id_column="visit_id",
+        event_date_column="visit_date",
+        event_id_column="visit_id",
     )
     assert_df_equality(output_df, expected_df, ignore_nullable=True, ignore_row_order=True)

@@ -4,7 +4,7 @@ from chispa import assert_df_equality
 from cishouseholds.derive import assign_date_difference
 
 
-def test_assign_any_symptoms_around_visit(spark_session):
+def test_assign_date_difference(spark_session):
     expected_df = spark_session.createDataFrame(
         data=[
             (1, "2020-07-20", "2020-07-29", 9),

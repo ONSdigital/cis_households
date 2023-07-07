@@ -1,7 +1,7 @@
 import pytest
 from chispa import assert_df_equality
 
-from cishouseholds.derive import mean_across_columns
+from cishouseholds.derive import assign_mean_across_columns
 
 
 @pytest.mark.parametrize(
@@ -17,5 +17,5 @@ from cishouseholds.derive import mean_across_columns
 def test_mean(spark_session, expected_data, expected_schema):
     expected_df = spark_session.createDataFrame([expected_data], schema=expected_schema + ", mean double")
     input_df = expected_df.drop("mean")
-    actual_df = mean_across_columns(input_df, "mean", input_df.columns)
+    actual_df = assign_mean_across_columns(input_df, "mean", input_df.columns)
     assert_df_equality(actual_df, expected_df)
