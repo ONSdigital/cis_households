@@ -16,16 +16,6 @@ def fill_nulls(column_name_to_update, fill_value: Any = 0):
     )
 
 
-def set_date_component(date_column: str, date_component: str, set_to: Any):
-    regex_lookup = {"year": r"^\d{4,4}(?=-)", "month": r"(?<=-)\d{2,2}(?=-)", "day": r"(?<=-)\d{2,2}$"}
-    datetime = F.date_format(date_column, "yyyy-MM-dd HH:mm:ss")
-    split_datetime = F.split(datetime, " ")
-    date_lookup = {key: F.regexp_extract(split_datetime.getItem(0), val, 0) for key, val in regex_lookup.items()}
-    date_lookup[date_component] = F.lit(set_to)
-    new_date = F.concat_ws("-", *list(date_lookup.values()))
-    return F.to_timestamp(F.concat_ws(" ", new_date, split_datetime.getItem(1)))
-
-
 def any_column_not_null(column_list: List[str]):
     "Expression that evaluates true if any column is not null."
     return reduce(or_, [F.col(column).isNotNull() for column in column_list])
@@ -82,7 +72,7 @@ def all_equal(column_list: List[str], equal_to: Any):
     return reduce(and_, [F.col(column).eqNullSafe(F.lit(equal_to)) for column in column_list])
 
 
-def all_equal_or_Null(column_list: List[str], equal_to: Any):
+def all_equal_or_null(column_list: List[str], equal_to: Any):
     "Expression that evaluates true if all columns are equal to the specified value OR Null."
     return reduce(
         and_, [(F.col(column).isNull() | F.col(column).eqNullSafe(F.lit(equal_to))) for column in column_list]
