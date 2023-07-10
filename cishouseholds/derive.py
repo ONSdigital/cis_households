@@ -19,7 +19,7 @@ from pyspark.sql import Window
 
 from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import all_equal
-from cishouseholds.expressions import all_equal_or_Null
+from cishouseholds.expressions import all_equal_or_null
 from cishouseholds.expressions import any_column_matches_regex
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.merge import null_safe_join
@@ -710,7 +710,7 @@ def assign_household_age_count(
         column_name_to_assign,
         F.when(
             ((F.col(condition_column) == "Yes") & (~all_equal(columns_to_count, 0)))
-            | ((F.col(condition_column) == "No") & (~all_equal_or_Null(columns_to_count, 0))),
+            | ((F.col(condition_column) == "No") & (~all_equal_or_null(columns_to_count, 0))),
             count,
         ).otherwise(0),
     )
