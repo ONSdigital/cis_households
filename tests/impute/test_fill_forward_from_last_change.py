@@ -6,7 +6,7 @@ from cishouseholds.impute import fill_forward_from_last_change
 # from cishouseholds.edit import update_travel_column
 
 
-def test_travel_column_imputation(spark_session):
+def test_fill_forward_from_last_change(spark_session):
     schema = "participant_id integer, visit_datetime string, been_outside_uk_last_country string, been_outside_uk_last_return_date string, been_outside_uk string"
     input_df = spark_session.createDataFrame(
         data=[
@@ -88,7 +88,7 @@ def test_travel_column_imputation(spark_session):
             "been_outside_uk",
         ],
         participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
+        event_datetime_column="visit_datetime",
         record_changed_column="been_outside_uk",
         record_changed_value="Yes",
     )

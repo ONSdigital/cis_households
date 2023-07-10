@@ -4,10 +4,10 @@ from cishouseholds.impute import fill_forward_target_columns
 
 schema = """
     participant_id integer,
-    visit_date string,
-    visit_id integer,
-    event_indicator string,
     event_date string,
+    event_id integer,
+    target_indicator string,
+    target_date string,
     detail string
 """
 
@@ -16,7 +16,7 @@ def test_fill_forward_target_columns_1(spark_session):
     input_data = [
         # fmt:off
             (1,"2020-01-07",1,"A","2020-01-01","some different detail"),
-            (1,"2019-12-01",2,"B","2020-01-01","some detail"), # this row is invalid as visit_date before event date
+            (1,"2019-12-01",2,"B","2020-01-01","some detail"), # this row is invalid as event_date before event date
             (1,"2020-01-05",3,"C","2020-01-01","some detail"),
             (1,"2020-01-06",4,"D",None,        "some detail"),
             (1,"2020-01-08",5,"E","2020-01-07","some different detail"),
@@ -39,13 +39,13 @@ def test_fill_forward_target_columns_1(spark_session):
 
     output_df = fill_forward_target_columns(
         df=input_df,
-        event_indicator_column="event_indicator",
-        event_date_column="event_date",
-        event_date_tolerance=0,
+        target_indicator_column="target_indicator",
+        target_date_column="target_date",
+        target_date_tolerance=0,
         detail_columns=["detail"],
         participant_id_column="participant_id",
-        visit_datetime_column="visit_date",
-        visit_id_column="visit_id",
+        event_datetime_column="event_date",
+        event_id_column="event_id",
         use_hdfs=False,
     )
 
@@ -77,13 +77,13 @@ def test_fill_forward_target_columns_2(spark_session):
 
     output_df = fill_forward_target_columns(
         df=input_df,
-        event_indicator_column="event_indicator",
-        event_date_column="event_date",
-        event_date_tolerance=7,
+        target_indicator_column="target_indicator",
+        target_date_column="target_date",
+        target_date_tolerance=7,
         detail_columns=["detail"],
         participant_id_column="participant_id",
-        visit_datetime_column="visit_date",
-        visit_id_column="visit_id",
+        event_datetime_column="event_date",
+        event_id_column="event_id",
         use_hdfs=False,
     )
 
@@ -118,13 +118,13 @@ def test_fill_forward_target_columns_3(spark_session):
 
     output_df = fill_forward_target_columns(
         df=input_df,
-        event_indicator_column="event_indicator",
-        event_date_column="event_date",
-        event_date_tolerance=7,
+        target_indicator_column="target_indicator",
+        target_date_column="target_date",
+        target_date_tolerance=7,
         detail_columns=["detail"],
         participant_id_column="participant_id",
-        visit_datetime_column="visit_date",
-        visit_id_column="visit_id",
+        event_datetime_column="event_date",
+        event_id_column="event_id",
         use_hdfs=False,
     )
 
@@ -147,7 +147,7 @@ def test_fill_forward_target_columns_4(spark_session):
         # fmt:off
             (1,"2020-06-02",1,"Yes","2020-01-02","detail2"),
             (1,"2020-06-01",2,"Yes","2020-01-02","detail2"),
-            (1,None,        3,"Yes","2020-01-03","detail3"), # nothing happens to this row as no visit_datetime
+            (1,None,        3,"Yes","2020-01-03","detail3"), # nothing happens to this row as no event_datetime
             (1,None,        4,"Yes","2020-09-01","different detail"),
             (1,"2021-01-06",5,"Yes","2020-01-02","detail2"),
             (1,"2021-01-08",6,"Yes","2020-01-02","detail2"),
@@ -160,13 +160,13 @@ def test_fill_forward_target_columns_4(spark_session):
 
     output_df = fill_forward_target_columns(
         df=input_df,
-        event_indicator_column="event_indicator",
-        event_date_column="event_date",
-        event_date_tolerance=7,
+        target_indicator_column="target_indicator",
+        target_date_column="target_date",
+        target_date_tolerance=7,
         detail_columns=["detail"],
         participant_id_column="participant_id",
-        visit_datetime_column="visit_date",
-        visit_id_column="visit_id",
+        event_datetime_column="event_date",
+        event_id_column="event_id",
         use_hdfs=False,
     )
 
@@ -204,13 +204,13 @@ def test_fill_forward_target_columns_5(spark_session):
 
     output_df = fill_forward_target_columns(
         df=input_df,
-        event_indicator_column="event_indicator",
-        event_date_column="event_date",
-        event_date_tolerance=7,
+        target_indicator_column="target_indicator",
+        target_date_column="target_date",
+        target_date_tolerance=7,
         detail_columns=["detail"],
         participant_id_column="participant_id",
-        visit_datetime_column="visit_date",
-        visit_id_column="visit_id",
+        event_datetime_column="event_date",
+        event_id_column="event_id",
         use_hdfs=False,
     )
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)

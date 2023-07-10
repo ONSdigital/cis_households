@@ -41,11 +41,6 @@ class SparkValidate:
             "duplicated": {"function": self.duplicated, "error_message": "{} should be unique"},
             "between": {"function": self.between, "error_message": "{} should be between {}{} and {}{}"},
             "null": {"function": self.not_null, "error_message": "{} should not be null"},
-            "valid_vaccination": {"function": self.valid_vaccination, "error_message": "invalid vaccination"},
-            "valid_file_date": {
-                "function": self.check_valid_file_date,
-                "error_message": "the date in {} should be before the date in {} plus two days when both {} and {} are null",  # noqa:E501
-            },
             "check_all_null_given_condition": {
                 "function": self.check_all_null_given_condition,
                 "error_message": "{} should all be null given condition {}",
@@ -358,25 +353,6 @@ class SparkValidate:
         return F.when(F.sum(F.lit(1)).over(window) == 1, True).otherwise(False), error_message
 
     @staticmethod
-    def valid_vaccination(error_message: str, survey_response_type_column: str, check_columns: List[str]):
-        """
-        Works out valid vaccination by finding "First Visit" or None
-
-        Parameters
-        ----------
-        error_message : str
-            String pattern to be added to list of errors if the check fails
-        survey_response_type_column : str
-            ???
-        check_columns : List[str]
-            List of columns to check.
-        """
-        return (
-            (F.col(survey_response_type_column) != "First Visit") | (~F.array_contains(F.array(*check_columns), None)),
-            error_message,
-        )
-
-    @staticmethod
     def check_all_null_given_condition(error_message: str, condition: Any, null_columns: List[str]):
         """
         Check all columns in list are null if they meet a specific logic condition.\
@@ -404,43 +380,5 @@ class SparkValidate:
                 ),
                 True,
             ).otherwise(False),
-            error_message,
-        )
-
-    @staticmethod
-    def check_valid_file_date(
-        error_message: str,
-        visit_datetime_column: str,
-        file_date_column: str,
-        swab_barcode_column: str,
-        blood_barcode_column: str,
-    ):
-        """
-        Ensure that the file date column is at least 2 days earlier than visit_datetime
-        and swab/blood barcodes are null.
-        # TODO: Check logic and confirm this description correct.
-
-        Parameters
-        ----------
-        error_message : str
-            String pattern to be added to list of errors if the check fails
-        visit_datetime_column : str
-           Header of visit datetime column.
-        file_date_column
-        swab_barcode_column
-        blood_barcode_column
-        """
-        error_message = error_message.format(
-            visit_datetime_column, file_date_column, swab_barcode_column, blood_barcode_column
-        )
-        return (
-            F.when(
-                (
-                    (F.col(visit_datetime_column) > ((F.col(file_date_column) + F.expr("INTERVAL 2 DAYS"))))
-                    & F.col(swab_barcode_column).isNull()
-                    & F.col(blood_barcode_column).isNull()
-                ),
-                False,
-            ).otherwise(True),
             error_message,
         )

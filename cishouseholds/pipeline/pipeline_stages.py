@@ -81,7 +81,6 @@ from cishouseholds.pipeline.version_specific_processing.test_survey_response_dat
     clean_survey_responses_version_phm,
 )
 from cishouseholds.pipeline.visit_transformations import visit_transformations
-from cishouseholds.prediction_checker_class import PredictionChecker
 from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import check_lookup_table_joined_columns_unique
 from cishouseholds.validate import normalise_schema
@@ -1277,30 +1276,6 @@ def compare(
     print(f"     {table_name_to_compare} contained {total} differences to {base_table_name}")  # functional
     update_table(counts_df, counts_df_table_name, "overwrite")
     update_table(difference_sample_df, diff_samples_table_name, "overwrite")
-
-
-@register_pipeline_stage("check_predictions")
-def check_predictions(
-    base_table_name: str,
-    table_name_to_compare: str,
-    prediction_results_table: str,
-    unique_id_column: str = "unique_participant_response_id",
-):
-    """
-    Create an output that holds information about differences between 2 tables
-
-    Parameters
-    ----------
-    base_table_name
-    table_name_to_compare
-    unique_id_column
-        column containing unique id common to base an compare dataframes
-    """
-    base_df = extract_from_table(base_table_name)
-    compare_df = extract_from_table(table_name_to_compare)
-    pc = PredictionChecker(base_df, compare_df, unique_id_column)
-    df = pc.check_predictions()
-    update_table(df, prediction_results_table, "overwrite")
 
 
 @register_pipeline_stage("generate_sample")
