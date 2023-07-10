@@ -12,7 +12,6 @@ from pyspark.sql.types import DoubleType
 from pyspark.sql.window import Window
 
 from cishouseholds.derive import assign_random_day_in_month
-from cishouseholds.edit import update_column_values_from_map
 from cishouseholds.expressions import any_column_not_null
 from cishouseholds.merge import union_multiple_tables
 from cishouseholds.pipeline.load import extract_from_table
@@ -23,295 +22,57 @@ from cishouseholds.udfs import generate_sample_proportional_to_size_udf
 sample_proportional_to_size_udf = generate_sample_proportional_to_size_udf(get_or_create_spark_session())
 
 
-def impute_outside_uk_columns(
+def fill_forward_target_columns(
     df: DataFrame,
-    outside_uk_date_column: str,
-    outside_country_column: str,
-    outside_uk_since_column: str,
-    visit_datetime_column: str,
-    id_column: str,
-):
-    """
-    Impute columns related to a survey participant being outside the UK
-
-    Parameters
-    ----------
-    df
-    outside_uk_date_column
-        The column which contains when the participant was outside the UK
-    outside_country_column
-        The column which contains the (non-UK) country the participant was in
-    outside_uk_since_column
-        The column which contains the date since the participant was outside the UK
-    visit_datetime_column
-        Survey visit datetime
-    id_column
-        The column to use to partition records
-    """
-    df = df.withColumn(
-        outside_uk_since_column,
-        F.when(F.col(outside_uk_date_column) < F.lit("2020/04/01"), "No").otherwise(F.col(outside_uk_since_column)),
-    )
-    df = df.withColumn(
-        outside_uk_date_column,
-        F.when(F.col(outside_uk_date_column) < F.lit("2020/04/01"), None).otherwise(F.col(outside_uk_date_column)),
-    )
-    df = df.withColumn(
-        outside_country_column,
-        F.when(F.col(outside_uk_date_column) < F.lit("2020/04/01"), None).otherwise(F.col(outside_country_column)),
-    )
-
-    window = (
-        Window.partitionBy(id_column)
-        .orderBy(visit_datetime_column)
-        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
-    )
-    df = df.withColumn(
-        outside_uk_since_column,
-        F.when(
-            F.col(outside_uk_since_column) != "Yes", F.last(outside_uk_since_column, ignorenulls=True).over(window)
-        ).otherwise(F.col(outside_uk_since_column)),
-    )
-    df = df.withColumn(
-        outside_uk_date_column,
-        F.when(
-            F.col(outside_uk_since_column) != "Yes", F.last(outside_uk_date_column, ignorenulls=True).over(window)
-        ).otherwise(F.col(outside_uk_date_column)),
-    )
-    df = df.withColumn(
-        outside_country_column,
-        F.when(
-            F.col(outside_uk_since_column) != "Yes", F.last(outside_country_column, ignorenulls=True).over(window)
-        ).otherwise(F.col(outside_country_column)),
-    )
-    return df
-
-
-def fill_forwards_covid_infection(
-    df: DataFrame,
-    participant_id_column: str,
-    event_date_column: str,
-    reference_date_column: str,
-    fill_forward_columns: List[str],
-    event_indicator_column: str,
-):
-    """
-    Fill forwards a group of columns.
-    Each record is updated to have the latest valid response to the group of columns - where the event date is on or
-    before the reference date (i.e. when the response occured). The event indicator column is set to "Yes" from the
-    first valid contact onwards.
-
-    """
-    # get latest covid date
-    date_exists_df = df.select(participant_id_column, event_date_column, *fill_forward_columns)
-    for col in fill_forward_columns:
-        date_exists_df = date_exists_df.withColumnRenamed(col, f"{col}_ref")
-
-    transformed_df = df.join(
-        date_exists_df.withColumnRenamed(event_date_column, f"{event_date_column}_ref"),
-        on=participant_id_column,
-        how="left",
-    )
-    transformed_df = transformed_df.withColumn(
-        f"{event_date_column}_ref",
-        F.when(
-            F.col(f"{event_date_column}_ref") <= F.col(reference_date_column), F.col(f"{event_date_column}_ref")
-        ).otherwise(None),
-    )
-
-    window = Window.partitionBy(participant_id_column, reference_date_column)
-    transformed_df = transformed_df.withColumn(event_date_column, F.max(F.col(f"{event_date_column}_ref")).over(window))
-    reference_columns = [f"{col}_ref" for col in fill_forward_columns]
-    transformed_df = (
-        transformed_df.filter(
-            (
-                F.col(f"{event_date_column}_ref").eqNullSafe(F.col(event_date_column))
-                & (F.col(event_date_column).isNotNull())
-            )
-            | (
-                F.col(event_date_column).isNull()
-                & (
-                    F.size(F.array_intersect(F.array(*fill_forward_columns), F.array(*reference_columns)))
-                    == len(fill_forward_columns)
-                )
-            )
-        )
-        .distinct()
-        .drop(f"{event_date_column}_ref")
-    )
-    for col, ref_col in zip(fill_forward_columns, reference_columns):
-        transformed_df = transformed_df.drop(col).withColumnRenamed(ref_col, col)
-    transformed_df = transformed_df.withColumn(
-        event_indicator_column, F.when(F.col(event_date_column).isNotNull(), "Yes").otherwise("No")
-    )
-    return transformed_df
-
-
-def fill_forwards_covid_contact(
-    df: DataFrame,
-    participant_id_column: str,
-    event_date_column: str,
-    reference_date_column: str,
-    event_type_column: str,
-    event_indicator_column: str,
-    hierarchy_map: dict,
-):
-    """
-    Fill forwards a group covid contact columns.
-    Each record is updated to have the latest valid response to the group of columns - where the event date is on or
-    before the reference date (i.e. when the response occured). The event indicator column is set to "Yes" from the
-    first valid contact onwards.
-
-    Records with duplicated event_date are deduplication on event_type is deduplicated using the hierarchy_map.
-    """
-    date_exists_df = df.select(participant_id_column, event_date_column)
-    transformed_df = df.join(
-        date_exists_df.withColumnRenamed(event_date_column, f"{event_date_column}_ref"),
-        on=participant_id_column,
-        how="left",
-    )
-    transformed_df = transformed_df.withColumn(
-        f"{event_date_column}_ref",
-        F.when(
-            F.col(f"{event_date_column}_ref") <= F.col(reference_date_column), F.col(f"{event_date_column}_ref")
-        ).otherwise(None),
-    )
-
-    window = Window.partitionBy(participant_id_column, reference_date_column, f"{event_date_column}_ref")
-    transformed_df = update_column_values_from_map(transformed_df, event_type_column, hierarchy_map)
-    transformed_df = transformed_df.withColumn(event_type_column, F.min(event_type_column).over(window))
-
-    reverse_map = {value: key for key, value in hierarchy_map.items()}
-
-    transformed_df = update_column_values_from_map(transformed_df, event_type_column, reverse_map)
-
-    window = Window.partitionBy(participant_id_column, reference_date_column)
-    transformed_df = transformed_df.withColumn(event_date_column, F.max(F.col(f"{event_date_column}_ref")).over(window))
-    transformed_df = (
-        transformed_df.filter(F.col(f"{event_date_column}_ref").eqNullSafe(F.col(event_date_column)))
-        .distinct()
-        .drop(f"{event_date_column}_ref")
-    )
-
-    transformed_df = transformed_df.withColumn(
-        event_indicator_column, F.when(F.col(reference_date_column) >= F.col(event_date_column), "Yes").otherwise("No")
-    )
-
-    return transformed_df
-
-
-def impute_visit_datetime(df: DataFrame, visit_datetime_column: str, sampled_datetime_column: str) -> DataFrame:
-    """Imputer visit datetime columns
-
-    Parameters
-    ----------
-    df
-        The input dataframe containing the column to impute
-    visit_datetime_column
-        The visit datetime column
-    sampled_datetime_column
-        The column to use to impute the `visit_datetime_column`
-    """
-    df = df.withColumn(
-        visit_datetime_column,
-        F.when(F.col(visit_datetime_column).isNull(), F.col(sampled_datetime_column)).otherwise(
-            F.col(visit_datetime_column)
-        ),
-    )
-    return df
-
-
-def fill_forward_from_last_change(
-    df: DataFrame,
-    fill_forward_columns: List[str],
-    participant_id_column: str,
-    visit_datetime_column: str,
-    record_changed_column: str,
-    record_changed_value: str,
-) -> DataFrame:
-    """
-    Call the fill forwards from last change function with a subset of the available rows
-    to fill forward from. This set is generated by combining rows where record has changed and
-    the first row of each participant.
-
-    Parameters
-    ----------
-    fill_forward_columns
-        list of column names to include in fill forwards
-    participant_id_column
-        column used to identify the group to fill within
-    visit_datetime_column
-        column used to order for fill forwards
-    record_changed_column
-        column that indicates a change in the current record
-    record_changed_value
-        value in `record_changed_column` that indicates a change in the current record
-    """
-    df_fill_forwards_from = generate_fill_forward_df(
-        df,
-        fill_forward_columns,
-        participant_id_column,
-        visit_datetime_column,
-        record_changed_column,
-        record_changed_value,
-    )
-
-    return fill_forward_from_last_change_process(
-        df, fill_forward_columns, participant_id_column, visit_datetime_column, df_fill_forwards_from
-    )
-
-
-def fill_forward_event(
-    df: DataFrame,
-    event_indicator_column: str,
-    event_date_column: str,
-    event_date_tolerance: int,
+    target_indicator_column: str,
+    target_date_column: str,
+    target_date_tolerance: int,
     detail_columns: List[str],
     participant_id_column: str,
-    visit_datetime_column: str,
-    visit_id_column: str,
+    event_datetime_column: str,
+    event_id_column: str,
     use_hdfs: bool = True,
 ):
     """
-    Fill forwards all columns associated with an event.
+    Fill forwards all target columns assocaited with a target event.
     Disambiguate events by earliest recorded expression of an event and
     take the latest event for each visit_datetime forward across all records.
     Parameters
     ----------
     df
-    event_indicator_column
-        column indicating if an event took place
-    event_date_column
-        date of the event
+    target_indicator_column
+        column indicating if the targetted event took place
+    target_date_column
+        date of the target event
     detail_columns
-        additional columns relating to the event
+        additional columns relating to the target event
     participant_id_column
-    visit_datetime_column
-    visit_id_column
+    event_datetime_column
+    event_id_column
     """
-    event_columns = [event_date_column, event_indicator_column, *detail_columns]
-    ordering_window = Window.partitionBy(participant_id_column).orderBy(visit_datetime_column)
-    window = Window.partitionBy(participant_id_column, visit_datetime_column, visit_id_column).orderBy("VISIT_DIFF")
+    event_columns = [target_date_column, target_indicator_column, *detail_columns]
+    ordering_window = Window.partitionBy(participant_id_column).orderBy(event_datetime_column)
+    window = Window.partitionBy(participant_id_column, event_datetime_column, event_id_column).orderBy("VISIT_DIFF")
     completed_sections = []
     events_df = None
     # ~~ Pre process dataframe to remove unworkable rows ~~ #
     filtered_df = df.filter(
-        (F.col(visit_datetime_column).isNotNull())
-        & (F.col(event_date_column).isNotNull())
-        & (F.col(event_date_column) <= F.col(visit_datetime_column))
+        (F.col(event_datetime_column).isNotNull())
+        & (F.col(target_date_column).isNotNull())
+        & (F.col(target_date_column) <= F.col(event_datetime_column))
     ).distinct()
-    null_df = df.filter(F.col(visit_datetime_column).isNull())
-    df = df.filter(F.col(visit_datetime_column).isNotNull())
+    null_df = df.filter(F.col(event_datetime_column).isNull())
+    df = df.filter(F.col(event_datetime_column).isNotNull())
     # ~~ Normalise dates ~~ #
     # create an expression for when a series of dates has been normalised
     # gets the date difference between the first row by visit datetime in the filtered dataset
     apply_logic = (
-        F.abs(F.datediff(F.first(F.col(event_date_column)).over(ordering_window), F.col(event_date_column)))
-        <= event_date_tolerance
+        F.abs(F.datediff(F.first(F.col(target_date_column)).over(ordering_window), F.col(target_date_column)))
+        <= target_date_tolerance
     )
     # optimise the filtered_df schema and cache to improve spark plan creation / runtime
     filtered_df = filtered_df.select(
-        participant_id_column, visit_datetime_column, visit_id_column, *event_columns
+        participant_id_column, event_datetime_column, event_id_column, *event_columns
     ).cache()
     # loops until there are no rows left to normalise getting the first row where that satisfies the `apply_logic` condition
     i = 0
@@ -324,7 +85,7 @@ def fill_forward_event(
             mode = "overwrite" if i == 0 else "append"
             update_table(
                 temp_df.filter(F.col("LOGIC_APPLIED") & (F.col("ROW") == 1)).drop("ROW"),
-                f"{event_indicator_column}_temp_lookup",
+                f"{target_indicator_column}_temp_lookup",
                 mode,
             )
         filtered_df = filtered_df.filter(~F.col("LOGIC_APPLIED"))
@@ -336,7 +97,7 @@ def fill_forward_event(
         elif len(completed_sections) == 1:
             events_df = completed_sections[0]
     else:
-        events_df = extract_from_table(f"{event_indicator_column}_temp_lookup", True)
+        events_df = extract_from_table(f"{target_indicator_column}_temp_lookup", True)
 
     # ~~ Construct resultant dataframe by fill forwards ~~#
 
@@ -346,7 +107,7 @@ def fill_forward_event(
         df = (
             df.drop(*event_columns)
             .join(events_df.select(participant_id_column, *event_columns), on=participant_id_column, how="left")
-            .withColumn("DROP_EVENT", (F.col(event_date_column) > F.col(visit_datetime_column)))
+            .withColumn("DROP_EVENT", (F.col(target_date_column) > F.col(event_datetime_column)))
         )
     else:
         df = df.withColumn("DROP_EVENT", F.lit(False))
@@ -355,10 +116,10 @@ def fill_forward_event(
         df = df.withColumn(col, F.when(F.col("DROP_EVENT"), None).otherwise(F.col(col)))
 
     # pick the best row to retain based upon proximity to visit date
-    df = df.withColumn(event_indicator_column, F.when(F.col(event_date_column).isNull(), "No").otherwise("Yes"))
+    df = df.withColumn(target_indicator_column, F.when(F.col(target_date_column).isNull(), "No").otherwise("Yes"))
     df = df.withColumn(
         "VISIT_DIFF",
-        F.coalesce(F.abs(F.datediff(F.col(event_date_column), F.col(visit_datetime_column))), F.lit(float("inf"))),
+        F.coalesce(F.abs(F.datediff(F.col(target_date_column), F.col(event_datetime_column))), F.lit(float("inf"))),
     )
     df = df.drop("DROP_EVENT").distinct().withColumn("ROW", F.row_number().over(window)).drop("VISIT_DIFF")
     df = df.filter(F.col("ROW") == 1).drop("ROW")
@@ -366,60 +127,11 @@ def fill_forward_event(
     return df
 
 
-def fill_forward_from_last_change_marked_subset(
-    df: DataFrame,
-    fill_forward_columns: List[str],
-    participant_id_column: str,
-    visit_datetime_column: str,
-    record_changed_column: str,
-    record_changed_value: str,
-    dateset_version_column: str = None,
-    minimum_dateset_version: int = None,
-) -> DataFrame:
-    """
-    Call the fill forwards from last change function with a subset of the available rows
-    to fill forward from along with a filtered subset of the original dataset.
-    This process fills forward only the first row and complete rows marked with changed variable
-    over the specified subset of the overall dataset with version greater than minimum dataset version.
-
-    Parameters
-    ----------
-    fill_forward_columns
-        list of column names to include in fill forwards
-    participant_id_column
-        column used to identify the group to fill within
-    visit_datetime_column
-        column used to order for fill forwards
-    record_changed_column
-        column that indicates a change in the current record
-    record_changed_value
-        value in `record_changed_column` that indicates a change in the current record
-    dateset_version_column
-        column containing dataset version number
-    minimum_dateset_version
-        minimum dataset version that should be filled from
-    """
-    filter_condition = F.col(dateset_version_column) >= minimum_dateset_version
-    df_fill_forwards_from = generate_fill_forward_df(
-        df,
-        fill_forward_columns,
-        participant_id_column,
-        visit_datetime_column,
-        record_changed_column,
-        record_changed_value,
-    )
-    df_filtered = df.filter(filter_condition)
-    df_filtered = fill_forward_from_last_change_process(
-        df_filtered, fill_forward_columns, participant_id_column, visit_datetime_column, df_fill_forwards_from
-    )
-    return df_filtered.unionByName(df.filter(~filter_condition))
-
-
 def generate_fill_forward_df(
     df: DataFrame,
     fill_forward_columns: List[str],
     participant_id_column: str,
-    visit_datetime_column: str,
+    event_datetime_column: str,
     record_changed_column: str,
     record_changed_value: str,
 ) -> DataFrame:
@@ -434,7 +146,7 @@ def generate_fill_forward_df(
         The list of columns to fill-forward
     participant_id_column
         The column to use to partition rows - typically this will be the participant id
-    visit_datetime_column
+    event_datetime_column
         The visit datetime column
     record_changed_column
         An indicator column that tells us whether a record needs to be fill-forward if it equals `record_changed_value
@@ -442,13 +154,13 @@ def generate_fill_forward_df(
         See `record_changed_column` above
 
     """
-    window = Window.partitionBy(participant_id_column).orderBy(F.col(visit_datetime_column).asc())
+    window = Window.partitionBy(participant_id_column).orderBy(F.col(event_datetime_column).asc())
     df = df.withColumn("ROW_NUMBER", F.row_number().over(window))
 
     fill_from_condition = ((F.col(record_changed_column) == record_changed_value)) | (F.col("ROW_NUMBER") == 1)
     df_fill_forwards_from = (
         df.where(fill_from_condition)
-        .select(participant_id_column, visit_datetime_column, *fill_forward_columns)
+        .select(participant_id_column, event_datetime_column, *fill_forward_columns)
         .withColumnRenamed(participant_id_column, "id_right")
         .drop("ROW_NUMBER")
     )
@@ -459,7 +171,7 @@ def fill_forward_from_last_change_process(
     df: DataFrame,
     fill_forward_columns: List[str],
     participant_id_column: str,
-    visit_datetime_column: str,
+    event_datetime_column: str,
     df_fill_forwards_from: DataFrame,
 ) -> DataFrame:
     """
@@ -469,15 +181,13 @@ def fill_forward_from_last_change_process(
     All fields in `fill_forward_columns` are carried forwards, regardless of their value
     (i.e. includes filling forward Null).
 
-    You can optionally restrict the filling to occur from on or after a specific `minimum_dateset_version`.
-
     Parameters
     ----------
     fill_forward_columns
         list of column names to include in fill forwards
     participant_id_column
         column used to identify the group to fill within
-    visit_datetime_column
+    event_datetime_column
         column used to order for fill forwards
     record_changed_column
         column that indicates a change in the current record
@@ -489,7 +199,7 @@ def fill_forward_from_last_change_process(
         minimum dataset version that should be filled from
     """
 
-    df_fill_forwards_from = df_fill_forwards_from.withColumnRenamed(visit_datetime_column, "start_datetime")
+    df_fill_forwards_from = df_fill_forwards_from.withColumnRenamed(event_datetime_column, "start_datetime")
     window_lag = Window.partitionBy("id_right").orderBy(F.col("start_datetime").asc())
 
     df_fill_forwards_from = df_fill_forwards_from.withColumn(
@@ -502,14 +212,54 @@ def fill_forward_from_last_change_process(
         how="left",
         on=(
             (df[participant_id_column] == df_fill_forwards_from["id_right"])
-            & (df[visit_datetime_column] >= df_fill_forwards_from.start_datetime)
+            & (df[event_datetime_column] >= df_fill_forwards_from.start_datetime)
             & (
-                (df[visit_datetime_column] < df_fill_forwards_from.end_datetime)
+                (df[event_datetime_column] < df_fill_forwards_from.end_datetime)
                 | (df_fill_forwards_from.end_datetime.isNull())
             )
         ),
     )
     return df.drop("id_right", "start_datetime", "end_datetime")
+
+
+def fill_forward_from_last_change(
+    df: DataFrame,
+    fill_forward_columns: List[str],
+    participant_id_column: str,
+    event_datetime_column: str,
+    record_changed_column: str,
+    record_changed_value: str,
+) -> DataFrame:
+    """
+    Call the fill forwards from last change function with a subset of the available rows
+    to fill forward from. This set is generated by combining rows where record has changed and
+    the first row of each participant.
+
+    Parameters
+    ----------
+    fill_forward_columns
+        list of column names to include in fill forwards
+    participant_id_column
+        column used to identify the group to fill within
+    event_datetime_column
+        column used to order for fill forwards
+    record_changed_column
+        column that indicates a change in the current record
+    record_changed_value
+        value in `record_changed_column` that indicates a change in the current record
+    """
+    df_fill_forwards_from = generate_fill_forward_df(
+        df,
+        fill_forward_columns,
+        participant_id_column,
+        event_datetime_column,
+        record_changed_column,
+        record_changed_value,
+    )
+
+    return fill_forward_from_last_change_process(
+        df, fill_forward_columns, participant_id_column, event_datetime_column, df_fill_forwards_from
+    )
 
 
 def fill_forward_only_to_nulls(
@@ -534,135 +284,39 @@ def fill_forward_only_to_nulls(
     return df
 
 
-def fill_forward_only_to_nulls_in_dataset_based_on_column(
+def fill_backwards_overriding_not_nulls(
     df: DataFrame,
-    id: str,
-    date: str,
-    changed: str,
-    dataset: str,
-    dataset_value: int,
-    list_fill_forward: List[str],
-    changed_positive_value: str = "Yes",
+    column_identity,
+    ordering_column: str,
+    dataset_column: str,
+    column_list: List[str],
 ) -> DataFrame:
     """
-    This function will carry forward values windowed by an id ordered by date.
-    Fills the set of columns in list_fill_forward independently, filling non-null values forwards into the row when
-    all list_fill_forward values in that row are null.
-
-    Only fills into Null values on or after specified dataset version and when changed condition is met.
-    Though this may include filling the last value from the previous dataset version.
+    Fill/impute missing values working backwards from the latest known non-null value
 
     Parameters
     ----------
     df
-        The input dataframe
-    id
-        The column to use to partition rows
-    date
-        A date column
-    changed
-        Indicator column to capture whether a  record has changed or not
-    dataset
-        The name of the source (survey) dataset for the record in question
-    dataset_value
-        Whether this is for survey data v0, v1, v2, v3 given as integers i.e., 0, 1, 2, 3
-    list_fill_forward
-        List of columns to be fill-forward
-    changed_positive_value
-        A column which captures participant's intention to change the value of their record - for example, if
-        they had changed jobs since last time they filled out the survey. This is used in conjunction with `changed` parameter above.
-    """
-    window = Window.partitionBy(id).orderBy(date)
-
-    df = df.withColumn(
-        "FLAG_fill_forward",
-        (F.col(dataset) >= dataset_value) & ((F.col(changed) != changed_positive_value) | F.col(changed).isNull()),
-    )
-
-    for fill_forward_column in list_fill_forward:
-        df = df.withColumn(
-            fill_forward_column,
-            F.coalesce(
-                F.when(
-                    F.col("FLAG_fill_forward") & F.col(fill_forward_column).isNull(),
-                    F.last(fill_forward_column, ignorenulls=True).over(window),
-                ),
-                F.col(fill_forward_column),
-            ),
-        )
-    return df.drop("FLAG_fill_forward")
-
-
-def fill_backwards_work_status_v2(
-    df: DataFrame,
-    date: str,
-    id: str,
-    fill_backward_column: str,
-    condition_column: str,
-    fill_only_backward_column_values: List[str] = [],
-    condition_column_values: List[str] = [],
-    date_range: List[str] = [],
-):
-    """
-    This function fills backwards as long as it is within upper and lower date defined by list `date_range`.
-    And requires a condition column to have specific values only apart from nulls.
-
-    Parameters
-    ----------
-    df
-        The input dataframe
-    date
-        The reference date which will be checked against the `date_range` parameter to determine
-        if a record needs to be imputed
-    id
+    column_identity
         The column to use to partition records
-    fill_backward_column
-        The column to be imputed using fill backward strategy
-    condition_column
-        The column that determines wether an imputation should occur
-    fill_only_backward_column_values
-        The list of values that can be used in fill backward imputation
-    condition_column_values
-        A list of condition values
-    date_range
-        This a list of two elements - first is the min datetime, and the second is the max datetime
+    ordering_column
+        The column to use to sort records within a partition
+    dataset_column
+        The colum that identifies which dataset we are dealing with
+    column_list
+        List of columns to impute
     """
-    df = df.withColumn("COND_value", F.lit(None))
-    df = df.withColumn("COND_not_fill", F.lit(None))
-    df = df.withColumn("COND_time", F.when(F.col(date).between(*date_range), 1))
-
-    for value in condition_column_values:
-        condition_value = (F.col(condition_column) == value) | (F.col(condition_column).isNull())
-        df = df.withColumn("COND_value", F.when(condition_value, None).otherwise(1))
-
-    df = df.withColumn("COND_value", F.sum("COND_value").over(Window.partitionBy(id)))
-
-    for value in fill_only_backward_column_values:
-        condition_value = (F.col(fill_backward_column) == value) | (F.col(fill_backward_column).isNull())
-        df = df.withColumn("COND_not_fill", F.when(condition_value, 1).otherwise(F.col("COND_not_fill")))
-
-    df = df.withColumn(
-        "FINAL_CONDITION",
-        F.when(
-            (F.col("COND_value").isNull()) & F.col("COND_not_fill").isNotNull() & F.col("COND_time").isNotNull(), None
-        ).otherwise(1),
-    )
     window = (
-        Window.partitionBy(id, "FINAL_CONDITION")
-        .orderBy(F.col(date).desc())
+        Window.partitionBy(column_identity)
+        .orderBy(F.col(dataset_column).desc(), F.col(ordering_column).desc())
         .rowsBetween(Window.unboundedPreceding, Window.currentRow)
     )
-    df = df.withColumn(
-        fill_backward_column,
-        F.coalesce(
-            F.when(
-                F.col("FINAL_CONDITION").isNull(),
-                F.last(fill_backward_column, ignorenulls=True).over(window),
-            ),
-            F.col(fill_backward_column),
-        ),
-    )
-    return df.drop("COND_value", "COND_time", "COND_not_fill", "FINAL_CONDITION")
+    for column in column_list:
+        df = df.withColumn(
+            column,
+            F.first(F.col(column), ignorenulls=True).over(window),
+        )
+    return df
 
 
 def impute_by_distribution(
@@ -866,6 +520,38 @@ def impute_by_ordered_fill_forward(
         column_name_to_assign,
         F.when(F.col(reference_column).isNull(), F.last(F.col(reference_column), ignorenulls=True).over(window)),
     )
+    return df
+
+
+def edit_multiple_columns_fill_forward(
+    df: DataFrame, id, fill_if_null: str, date: str, column_fillforward_list: List[str]
+) -> DataFrame:
+    """
+    This function does the same thing as impute_by_ordered_fill_forward() but fills forward a list of columns
+    based on fill_if_null, if fill_if_null is null will fill forwards from late observation ordered by date column.
+
+    Parameters
+    ----------
+    df
+    id
+        The column to use to partition records
+    fill_if_null
+        The column to impute if null
+    date
+        The column to order records by
+    column_fillforward_list
+        A list of column names to fill forward
+    """
+    window = Window.partitionBy(id).orderBy(date).rowsBetween(Window.unboundedPreceding, Window.currentRow)
+
+    for column_name in column_fillforward_list:
+        df = df.withColumn(
+            column_name,
+            F.when(F.col(fill_if_null).isNull(), F.last(F.col(column_name), ignorenulls=True).over(window)).otherwise(
+                F.col(column_name)
+            ),
+        )
+
     return df
 
 
@@ -1240,115 +926,6 @@ def impute_by_k_nearest_neighbours(
         raise ValueError(f"{missing_count} records still have missing '{reference_column}' after imputation.")
 
     logging.info("KNN imputation completed\n")
-    return df
-
-
-def impute_latest_date_flag(
-    df: DataFrame,
-    participant_id_column: str,
-    visit_date_column: str,
-    visit_id_column: str,
-    contact_any_covid_column: str,
-    contact_any_covid_date_column: str,
-) -> DataFrame:
-    """
-    derive a flag based on latest date and im values associated with rows where this flag is 1
-    """
-    window = Window.partitionBy(participant_id_column).orderBy(
-        F.desc(contact_any_covid_date_column),
-        F.desc(visit_date_column),
-        F.desc(visit_id_column),
-    )
-
-    df = df.withColumn(
-        "imputation_flag",
-        F.when(
-            (
-                (F.lag(contact_any_covid_column, 1).over(window) == 1)
-                & (F.col(contact_any_covid_column) == 1)
-                & (F.col(contact_any_covid_date_column).isNull())
-            )
-            | (
-                (F.col(contact_any_covid_date_column) < F.lag(contact_any_covid_date_column, 1).over(window))
-                & (F.col(visit_date_column) >= F.lag(contact_any_covid_date_column, 1).over(window))
-            ),
-            1,
-        ).otherwise(0),
-    )
-    df = df.withColumn(
-        contact_any_covid_date_column,
-        F.when(F.col("imputation_flag") == 1, F.first(contact_any_covid_date_column).over(window)).otherwise(
-            F.col(contact_any_covid_date_column)
-        ),
-    )
-
-    return df.drop("imputation_flag")
-
-
-def fill_backwards_overriding_not_nulls(
-    df: DataFrame,
-    column_identity,
-    ordering_column: str,
-    dataset_column: str,
-    column_list: List[str],
-) -> DataFrame:
-    """
-    Fill/impute missing values working backwards from the latest known non-null value
-
-    Parameters
-    ----------
-    df
-    column_identity
-        The column to use to partition records
-    ordering_column
-        The column to use to sort records within a partition
-    dataset_column
-        The colum that identifies which dataset we are dealing with
-    column_list
-        List of columns to impute
-    """
-    window = (
-        Window.partitionBy(column_identity)
-        .orderBy(F.col(dataset_column).desc(), F.col(ordering_column).desc())
-        .rowsBetween(Window.unboundedPreceding, Window.currentRow)
-    )
-    for column in column_list:
-        df = df.withColumn(
-            column,
-            F.first(F.col(column), ignorenulls=True).over(window),
-        )
-    return df
-
-
-def edit_multiple_columns_fill_forward(
-    df: DataFrame, id, fill_if_null: str, date: str, column_fillforward_list: List[str]
-) -> DataFrame:
-    """
-    This function does the same thing as impute_by_ordered_fill_forward() but fills forward a list of columns
-    based on fill_if_null, if fill_if_null is null will fill forwards from late observation ordered by date column.
-
-    Parameters
-    ----------
-    df
-    id
-        The column to use to partition records
-    fill_if_null
-        The column to impute if null
-    date
-        The column to order records by
-    column_fillforward_list
-        A list of column names to fill forward
-    """
-    window = Window.partitionBy(id).orderBy(date).rowsBetween(Window.unboundedPreceding, Window.currentRow)
-
-    for column_name in column_fillforward_list:
-        df = df.withColumn(
-            column_name,
-            F.when(F.col(fill_if_null).isNull(), F.last(F.col(column_name), ignorenulls=True).over(window)).otherwise(
-                F.col(column_name)
-            ),
-        )
-
     return df
 
 

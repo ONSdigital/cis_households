@@ -1,6 +1,6 @@
 from chispa import assert_df_equality
 
-from cishouseholds.impute import fill_forward_event
+from cishouseholds.impute import fill_forward_target_columns
 
 schema = """
     participant_id integer,
@@ -12,7 +12,7 @@ schema = """
 """
 
 
-def test_fill_forward_event_1(spark_session):
+def test_fill_forward_target_columns_1(spark_session):
     input_data = [
         # fmt:off
             (1,"2020-01-07",1,"A","2020-01-01","some different detail"),
@@ -37,7 +37,7 @@ def test_fill_forward_event_1(spark_session):
     input_df = spark_session.createDataFrame(data=input_data, schema=schema)
     expected_df = spark_session.createDataFrame(data=expected_data, schema=schema)
 
-    output_df = fill_forward_event(
+    output_df = fill_forward_target_columns(
         df=input_df,
         event_indicator_column="event_indicator",
         event_date_column="event_date",
@@ -52,7 +52,7 @@ def test_fill_forward_event_1(spark_session):
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
 
-def test_fill_forward_event_2(spark_session):
+def test_fill_forward_target_columns_2(spark_session):
     input_data = [
         # fmt:off
             (1,"2020-01-01",1,"No",None,"some detail"),
@@ -75,7 +75,7 @@ def test_fill_forward_event_2(spark_session):
     input_df = spark_session.createDataFrame(data=input_data, schema=schema)
     expected_df = spark_session.createDataFrame(data=expected_data, schema=schema)
 
-    output_df = fill_forward_event(
+    output_df = fill_forward_target_columns(
         df=input_df,
         event_indicator_column="event_indicator",
         event_date_column="event_date",
@@ -90,7 +90,7 @@ def test_fill_forward_event_2(spark_session):
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
 
-def test_fill_forward_event_3(spark_session):
+def test_fill_forward_target_columns_3(spark_session):
     input_data = [
         # fmt:off
             (1,"2020-06-01",1,"No", "2020-01-03","detail1"),
@@ -116,7 +116,7 @@ def test_fill_forward_event_3(spark_session):
     input_df = spark_session.createDataFrame(data=input_data, schema=schema)
     expected_df = spark_session.createDataFrame(data=expected_data, schema=schema)
 
-    output_df = fill_forward_event(
+    output_df = fill_forward_target_columns(
         df=input_df,
         event_indicator_column="event_indicator",
         event_date_column="event_date",
@@ -131,7 +131,7 @@ def test_fill_forward_event_3(spark_session):
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
 
-def test_fill_forward_event_4(spark_session):
+def test_fill_forward_target_columns_4(spark_session):
     input_data = [
         # fmt:off
             (1,"2020-06-02",1,"No", "2020-01-01","detail1"),
@@ -158,7 +158,7 @@ def test_fill_forward_event_4(spark_session):
     input_df = spark_session.createDataFrame(data=input_data, schema=schema)
     expected_df = spark_session.createDataFrame(data=expected_data, schema=schema)
 
-    output_df = fill_forward_event(
+    output_df = fill_forward_target_columns(
         df=input_df,
         event_indicator_column="event_indicator",
         event_date_column="event_date",
@@ -173,7 +173,7 @@ def test_fill_forward_event_4(spark_session):
     assert_df_equality(output_df, expected_df, ignore_row_order=True, ignore_column_order=True, ignore_nullable=True)
 
 
-def test_fill_forward_event_5(spark_session):
+def test_fill_forward_target_columns_5(spark_session):
     input_data = [
         # fmt:off
             (1,"2020-10-02",1,"A","2020-03-01","some different detail"),
@@ -202,7 +202,7 @@ def test_fill_forward_event_5(spark_session):
     input_df = spark_session.createDataFrame(data=input_data, schema=schema)
     expected_df = spark_session.createDataFrame(data=expected_data, schema=schema)
 
-    output_df = fill_forward_event(
+    output_df = fill_forward_target_columns(
         df=input_df,
         event_indicator_column="event_indicator",
         event_date_column="event_date",

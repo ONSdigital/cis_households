@@ -207,7 +207,7 @@ def fill_forwards_and_backwards(df: DataFrame):
             "been_outside_uk",
         ],
         participant_id_column="participant_id",
-        visit_datetime_column="visit_datetime",
+        event_datetime_column="visit_datetime",
         record_changed_column="been_outside_uk",
         record_changed_value="Yes",
     )

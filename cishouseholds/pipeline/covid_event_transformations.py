@@ -196,10 +196,10 @@ def derive_new_columns(df: DataFrame) -> DataFrame:
 
 # def fill_forward(df) -> DataFrame:
 #     """
-#     Function that contains all fill_forward_event calls required to implement STATA-based last observation carried forward logic.
+#     Function that contains all fill_forward_target_columns calls required to implement STATA-based last observation carried forward logic.
 #     """
 #     # Derive these after fill forwards and other changes to dates
-#     df = fill_forward_event(
+#     df = fill_forward_target_columns(
 #         df=df,
 #         event_indicator_column="contact_suspected_positive_covid_last_28_days",
 #         event_date_column="last_suspected_covid_contact_date",
@@ -209,7 +209,7 @@ def derive_new_columns(df: DataFrame) -> DataFrame:
 #         visit_datetime_column="visit_datetime",
 #         visit_id_column="visit_id",
 #     )
-#     df = fill_forward_event(
+#     df = fill_forward_target_columns(
 #         df=df,
 #         event_indicator_column="contact_known_positive_covid_last_28_days",
 #         event_date_column="last_covid_contact_date",
