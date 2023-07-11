@@ -125,7 +125,6 @@ def derive_work_status_columns(df: DataFrame) -> DataFrame:
 
 
 def clean_survey_responses_version_2(df: DataFrame) -> DataFrame:
-
     # Map to digital from raw V2 values, before editing them to V1 below
     df = assign_from_map(
         df,

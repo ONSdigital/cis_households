@@ -48,7 +48,6 @@ def check_conditions(stage_responses: dict, stage_config: dict):
 
 
 def check_dependencies(stages_to_run, stages_config):  # TODO: ensure check in order. look before current stage only
-
     available_tables = []
     for stage in stages_to_run:  # generate available and required tables from stage config
         required_tables = stages_config[stage].get("input_tables", {})

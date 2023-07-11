@@ -138,7 +138,6 @@ def deduplication(df: DataFrame):
 
 
 def first_second_doses(df: DataFrame):
-
     # assign first dose based on visit
     df = assign_nth_dose(
         df=df,

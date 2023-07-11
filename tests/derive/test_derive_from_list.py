@@ -4,7 +4,6 @@ from cishouseholds.derive import assign_isin_list
 
 
 def test_assign_isin_list(spark_session):
-
     column_names = "pattern string, outcome integer"
 
     expected_df = spark_session.createDataFrame(

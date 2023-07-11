@@ -570,7 +570,6 @@ def assign_datetime_from_coalesced_columns_and_log_source(
     reference_datetime_days_offset_value: int = -2,
     final_fallback_column: str = None,
 ):
-
     """
     Assign a timestamp column from coalesced list of columns with a default timestamp if timestamp missing in column
 
@@ -1943,7 +1942,6 @@ def assign_completion_status(
     df: DataFrame,
     column_name_to_assign: str,
 ) -> DataFrame:
-
     """
     Function to assign a completion status equivalent for PHM
     questionnaire responses from pre-defined variables

@@ -10,7 +10,6 @@ from cishouseholds.derive import assign_column_to_date_string
     [("1966-07-30 15:00:00", "1966-07-30"), (None, None)],
 )
 def test_convert_to_date(spark_session, expected_data):
-
     expected_schema = "time_example string, date_example string"
 
     expected_df = (

@@ -4,7 +4,6 @@ from cishouseholds.edit import cast_columns_from_string
 
 
 def test_re_cast_columns_from_string(spark_session):
-
     schema_input_df = """col_to_cast_1 string,
                          col_to_cast_2 string,
                          col_to_cast_3 string"""

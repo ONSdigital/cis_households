@@ -11,7 +11,6 @@ from cishouseholds.edit import update_to_value_if_any_not_null
 
 
 def clean_survey_responses_version_1(df: DataFrame) -> DataFrame:
-
     health_care_area_map = {
         "Primary care for example in a GP or dentist": "Primary",
         "Secondary care for example in a hospital": "Secondary",

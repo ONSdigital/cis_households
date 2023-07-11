@@ -74,6 +74,7 @@ def test_sparkvalidate(spark_session):
         "non_existent_col": {"contains": "a"},
     }
     validate_df.validate_column(operations=validation_checks_dict)
+
     # user defined function external definition
     def function_add_up_to(error_message, column_1, column_2):
         return (F.col(column_1) + F.col(column_2)) < 10, error_message
@@ -119,6 +120,7 @@ def test_sparkvalidate_multiple_column_checks(spark_session):
     )
     df_input = df_expected.drop("error")
     validate_df = SparkValidate(df_input, "error")  # initialise dataframe
+
     # user defined function external definition
     def function_add_up_to(error_message, column_1, column_2):
         return (F.col(column_1) + F.col(column_2)) < 10, error_message

@@ -6,7 +6,6 @@ from cishouseholds.derive import aggregated_output_window
 
 
 def test_aggregated_output(spark_session):
-
     input_df = spark_session.createDataFrame(
         data=[
             # fmt: off

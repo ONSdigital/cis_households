@@ -861,7 +861,6 @@ def update_vaccine_types(input_survey_table: str, output_survey_table: str, vacc
     df = extract_from_table(input_survey_table)
     lookup_df = extract_from_table(vaccine_type_lookup)
     for vaccine_number in range(0, 7):
-
         vaccine_type_other_col = "cis_covid_vaccine_type_other"
         vaccine_type_col = "cis_covid_vaccine_type"
         vaccine_date_col = "cis_covid_vaccine_date"

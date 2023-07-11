@@ -30,7 +30,6 @@ test_data = {
 
 
 def test_furloughed_identifier(prepare_regex_test_cases, spark_session):
-
     test_cases = prepare_regex_test_cases(test_data)
 
     expected_df = spark_session.createDataFrame(test_cases, schema="test_case string, furloughed boolean")

@@ -4,7 +4,6 @@ from cishouseholds.derive import translate_column_regex_replace
 
 
 def test_translate_column_regex_replace(spark_session):
-
     expected_df = spark_session.createDataFrame(
         data=[
             # fmt: off
