@@ -23,7 +23,6 @@ test_data = {
 
 
 def test_add_self_employed_identifier(prepare_regex_test_cases, spark_session):
-
     test_cases = prepare_regex_test_cases(test_data)
 
     expected_df = spark_session.createDataFrame(test_cases, schema="test_case string, is_self_employed boolean")

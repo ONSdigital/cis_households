@@ -80,7 +80,6 @@ def school_year_lookup(spark_session):
     # fmt: on
 )
 def test_assign_school_year(spark_session, expected_data, school_year_lookup):
-
     expected_schema = "visit_date string, dob string, country string, school_year integer"
 
     expected_df = (

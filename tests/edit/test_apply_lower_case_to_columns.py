@@ -4,7 +4,6 @@ from cishouseholds.edit import update_strings_to_sentence_case
 
 
 def test_update_strings_to_sentence_case(spark_session):
-
     input_df = spark_session.createDataFrame(
         data=[
             ("good MORning", "word soup"),

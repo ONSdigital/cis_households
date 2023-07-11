@@ -162,7 +162,6 @@ class CustomRandom(BaseDataProvider):
         name = "custom_random"
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-
         super().__init__(*args, **kwargs)
 
     def random_date(self, start, end, format="%d/%m/%Y"):

@@ -34,7 +34,6 @@ test_data = {
 
 
 def test_add_retired_identifier(prepare_regex_test_cases, spark_session):
-
     retired_cases = prepare_regex_test_cases(test_data)
 
     expected_df = spark_session.createDataFrame(retired_cases, schema="test_case string, is_retired boolean")

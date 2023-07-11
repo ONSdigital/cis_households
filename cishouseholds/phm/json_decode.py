@@ -21,7 +21,6 @@ def decode_phm_json(json_str: Union[str, bytes]) -> List[Tuple]:
     # table = json_dict["submission"]
     answers_list = []
     for table in json_list:
-
         meta = table.pop("survey_metadata")
         data = table.pop("data")
         meta.update(table)

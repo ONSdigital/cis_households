@@ -9,7 +9,6 @@ from cishouseholds.derive import assign_column_regex_match
     [("A1", True), ("AA", False), ("11", False), ("", False), ("?", False), (None, None)],
 )
 def test_derive_regex_match(spark_session, expected_data):
-
     expected_schema = "reference_column string, match boolean"
     expected_df = spark_session.createDataFrame([expected_data], schema=expected_schema)
 

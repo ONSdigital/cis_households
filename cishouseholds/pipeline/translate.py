@@ -53,7 +53,6 @@ def translate_welsh_survey_responses(df: DataFrame) -> DataFrame:
     translation_lookup_path_in_pipeline_config = translation_lookup_path != "inactive"
 
     if translation_settings_in_pipeline_config:
-
         translation_directory = translation_settings.get("translation_directory", None)
         translation_lookup_directory = translation_settings.get("translation_lookup_directory", None)
         translation_backup_directory = translation_settings.get("translation_backup_directory", None)

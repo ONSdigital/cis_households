@@ -4,7 +4,6 @@ from cishouseholds.prepare_for_union import prepare_for_union
 
 
 def test_prepare_for_union(spark_session):
-
     example_ref = spark_session.createDataFrame(
         data=[
             ("ABC123", 1, "ABC7673", 1, 2, 2),

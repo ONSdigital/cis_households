@@ -405,7 +405,6 @@ def validate_config_stages(pipeline_stage_functions: Dict, stages_to_run: List[s
             not in str(inspect.signature(pipeline_stage_functions[function_name]).parameters[arg])
         ]
         if not (set(function_config_other_params) == set(input_arguments_needed)):
-
             list_not_passed_arg = [x for x in input_arguments_needed if x not in function_config_other_params]
             list_of_unrecognised_arg = [
                 x

@@ -18,7 +18,6 @@ from cishouseholds.edit import convert_columns_to_timestamps
     ],
 )
 def test_convert_to_timestamp(spark_session, input_data, column_map):
-
     input_schema = "time_example string, ID string, second_time_example string"
 
     expected_schema = StructType(

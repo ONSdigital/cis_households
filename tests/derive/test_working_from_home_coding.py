@@ -38,7 +38,6 @@ test_data = {
 
 
 def test_add_work_from_home_identifier(prepare_regex_test_cases, spark_session):
-
     wfh_cases = prepare_regex_test_cases(test_data)
 
     expected_df = spark_session.createDataFrame(wfh_cases, schema="test_case string, is_working_from_home boolean")

@@ -4,7 +4,6 @@ from cishouseholds.edit import clean_job_description_string
 
 
 def test_clean_work_main_job_role(spark_session):
-
     input_df = spark_session.createDataFrame(
         data=[
             (1, "good&MORning  "),

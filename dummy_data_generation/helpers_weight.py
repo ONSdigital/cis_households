@@ -22,7 +22,6 @@ class BaseStatsDataProvider(BaseDataProvider):
         name = "base_stats"
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-
         super().__init__(*args, **kwargs)
 
         np.random.seed(self.seed)
@@ -106,7 +105,6 @@ class Distribution(BaseStatsDataProvider):
         name = "distribution"
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-
         super().__init__(*args, **kwargs)
 
     def generic_distribution(self, func: Callable, null_prop: float = 0, null_value: Any = None, **kwargs: Any) -> Any:
