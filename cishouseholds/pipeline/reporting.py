@@ -18,103 +18,6 @@ from cishouseholds.pyspark_utils import get_or_create_spark_session
 from cishouseholds.validate import validate_processed_files
 
 
-def generate_lab_report(df: DataFrame) -> DataFrame:
-    """
-    Generate lab report of latest 7 days of results
-    """
-    current_date = F.lit(df.orderBy(F.desc("file_date")).head().file_date)
-    df = df.filter(F.date_sub(current_date, 7) < F.col("survey_completed_datetime"))
-    swab_df = df.select("swab_sample_barcode", "swab_taken_datetime", "survey_completed_datetime").filter(
-        ~(
-            ((F.col("swab_taken_datetime").isNull()) & (F.col("survey_completed_datetime").isNull()))
-            | F.col("swab_sample_barcode").isNull()
-        )
-    )
-    blood_df = df.select("blood_sample_barcode", "blood_taken_datetime", "survey_completed_datetime").filter(
-        ~(
-            ((F.col("blood_taken_datetime").isNull()) & (F.col("survey_completed_datetime").isNull()))
-            | F.col("blood_sample_barcode").isNull()
-        )
-    )
-    return swab_df, blood_df
-
-
-def dfs_to_bytes_excel(sheet_df_map: Dict[str, DataFrame]) -> BytesIO:
-    """
-    Convert a dictionary of Spark DataFrames into an Excel Object.
-
-    Parameters
-    ----------
-    sheet_df_map
-        A dictionary of Spark DataFrames - keys in this dictionary become
-        names of the sheets in Excel & the values in this dictionary become
-        the content in the respective sheets
-    """
-    output = BytesIO()
-    with pd.ExcelWriter(output) as writer:
-        for sheet, df in sheet_df_map.items():
-            df.toPandas().to_excel(writer, sheet_name=sheet, index=False)
-    return output
-
-
-def multiple_visit_1_day(df: DataFrame, participant_id: str, visit_id: str, date_column: str, datetime_column: str):
-    """
-    Returns a dataframe containing participants reported to have been visited multiple times in 1 day.
-
-    Parameters
-    ----------
-    df
-        The input dataframe to process
-    participant_id
-        The column name containing participant ids
-    visit_id
-        The column name containing visit ids
-    date_column
-        The column name containing visit date
-    datetime_column
-        The column name containing visit datetime
-    """
-    window = Window.partitionBy(participant_id, date_column)  # .orderBy(date_column, datetime_column)
-
-    df = df.withColumn("FLAG", F.count(visit_id).over(window))
-    df_multiple_visit = df.filter(F.col("FLAG") > 1)  # get only multiple visit
-    df_multiple_visit = df_multiple_visit.withColumn(
-        "FLAG", F.rank().over(window.orderBy(date_column, F.desc(datetime_column)))
-    )
-    df_multiple_visit = df_multiple_visit.filter(F.col("FLAG") == 1)
-    return df_multiple_visit.drop("FLAG")
-
-
-def generate_error_table(table_name: str, error_priority_map: dict) -> DataFrame:
-    """
-    Generates tables of errors and their respective counts present in
-    current and previous pipeline run ordered by a custome priorty ranking
-    set in pipeline config.
-
-    Parameters
-    ----------
-    table_name
-        Name of a hdfs table of survey responses passing/failing validation checks
-    error_priority_map
-        Error priority dictionary
-    """
-    df = extract_from_table(table_name)
-    df_new = df.filter(F.col("run_id") == get_run_id()).groupBy("validation_check_failures").count()
-    df_previous = df.filter(F.col("run_id") == (get_run_id() - 1)).groupBy("validation_check_failures").count()
-    df = (
-        df_previous.withColumnRenamed("count", "count_previous")
-        .withColumnRenamed("run_id", "run_id_previous")
-        .join(
-            df_new.withColumnRenamed("count", "count_current").withColumnRenamed("run_id", "run_id_current"),
-            on="validation_check_failures",
-            how="fullouter",
-        )
-    )
-    df = df.withColumn("ORDER", F.col("validation_check_failures"))
-    df = update_column_values_from_map(df, "ORDER", error_priority_map, default_value=9999)
-    return df.orderBy("ORDER").drop("ORDER")
-
-
 def count_variable_option(df: DataFrame, column_inv: str, column_value: str):
     """
     Counts occurence of a specific value in a column
@@ -147,6 +50,149 @@ def count_variable_option(df: DataFrame, column_inv: str, column_value: str):
 
     output_df = get_or_create_spark_session().createDataFrame(data=count_data, schema=schema)
     return output_df
+
+
+def dfs_to_bytes_excel(sheet_df_map: Dict[str, DataFrame]) -> BytesIO:
+    """
+    Convert a dictionary of Spark DataFrames into an Excel Object.
+
+    Parameters
+    ----------
+    sheet_df_map
+        A dictionary of Spark DataFrames - keys in this dictionary become
+        names of the sheets in Excel & the values in this dictionary become
+        the content in the respective sheets
+    """
+    output = BytesIO()
+    with pd.ExcelWriter(output) as writer:
+        for sheet, df in sheet_df_map.items():
+            df.toPandas().to_excel(writer, sheet_name=sheet, index=False)
+    return output
+
+
+def generate_error_table(table_name: str, error_priority_map: dict) -> DataFrame:
+    """
+    Generates tables of errors and their respective counts present in
+    current and previous pipeline run ordered by a custom priorty ranking
+    set in pipeline config.
+
+    Parameters
+    ----------
+    table_name
+        Name of a hdfs table of survey responses passing/failing validation checks
+    error_priority_map
+        Error priority dictionary
+    """
+    df = extract_from_table(table_name)
+    df_new = df.filter(F.col("run_id") == get_run_id()).groupBy("validation_check_failures").count()
+    df_previous = df.filter(F.col("run_id") == (get_run_id() - 1)).groupBy("validation_check_failures").count()
+    df = (
+        df_previous.withColumnRenamed("count", "count_previous")
+        .withColumnRenamed("run_id", "run_id_previous")
+        .join(
+            df_new.withColumnRenamed("count", "count_current").withColumnRenamed("run_id", "run_id_current"),
+            on="validation_check_failures",
+            how="fullouter",
+        )
+    )
+    df = df.withColumn("ORDER", F.col("validation_check_failures"))
+    df = update_column_values_from_map(df, "ORDER", error_priority_map, default_value=9999)
+    return df.orderBy("ORDER").drop("ORDER")
+
+
+def generate_comparison_tables(
+    baseline_df: DataFrame, comparison_df: DataFrame, unique_id_column: str, diff_sample_size: int = 10
+) -> DataFrame:
+    """
+    Compares two dataframes, checking each column and row for each unique id in the baseline dataframe against
+    matching columns and unique ids in the comparison df.
+
+    Returns two dataframes describing the differences found.
+
+    The first, counts_df, contains the count of uniqueids in each column that are different between the two dataframes,
+    this is presented as both 'difference_count' and 'difference_count_non_null_change' which only counts instances
+    where the value for the unique id was not null in the baseline_df.
+
+    The second, diffs_df, contains diff_sample_size unique ids for each column that is not identical in both the baseline
+    and comparison dataframes.
+
+    Parameters
+    ----------
+    baseline_df : DataFrame
+        baseline dataframe to compare against, only unique ids and columns in this dataframe will be compared
+    comparison_df : DataFrame
+        comparison dataframe to compare against the baseline_df
+    unique_id_column : str
+        unique id column to use as a reference between both the baseline_df and comparison_df
+    diff_sample_size : int, optional
+        number of unique ids to return for non-identical columns in diffs_df output, by default 10
+
+    Returns
+    -------
+    counts_df : DataFrame
+        _description_
+    diffs_df : DataFrame
+
+    """
+    window = Window.partitionBy("column_name").orderBy("column_name")
+    cols_to_check = [col for col in baseline_df.columns if col in comparison_df.columns and col != unique_id_column]
+
+    for col in cols_to_check:
+        baseline_df = baseline_df.withColumnRenamed(col, f"{col}_ref")
+
+    df = baseline_df.join(comparison_df, on=unique_id_column, how="left")
+
+    diffs_df = df.select(
+        [
+            F.when(F.col(col).eqNullSafe(F.col(f"{col}_ref")), None).otherwise(F.col(unique_id_column)).alias(col)
+            for col in cols_to_check
+        ]
+    )
+    diffs_df = diffs_df.select(
+        F.explode(
+            F.array(
+                [
+                    F.struct(F.lit(col).alias("column_name"), F.col(col).alias(unique_id_column))
+                    for col in diffs_df.columns
+                ]
+            )
+        ).alias("kvs")
+    )
+    diffs_df = (
+        diffs_df.select("kvs.column_name", f"kvs.{unique_id_column}")
+        .filter(F.col(unique_id_column).isNotNull())
+        .withColumn("ROW", F.row_number().over(window))
+        .filter(F.col("ROW") < diff_sample_size)
+    ).drop("ROW")
+
+    counts_df = df.select(
+        *[
+            F.sum(F.when(F.col(c).eqNullSafe(F.col(f"{c}_ref")), 0).otherwise(1)).alias(c).cast("integer")
+            for c in cols_to_check
+        ],
+        *[
+            F.sum(F.when((~F.col(c).eqNullSafe(F.col(f"{c}_ref"))) & (F.col(f"{c}_ref").isNotNull()), 1).otherwise(0))
+            .alias(f"{c}_non_improved")
+            .cast("integer")
+            for c in cols_to_check
+        ],
+    )
+    counts_df = counts_df.select(
+        F.explode(
+            F.array(
+                [
+                    F.struct(
+                        F.lit(col).alias("column_name"),
+                        F.col(col).alias("difference_count"),
+                        F.col(f"{col}_non_improved").alias("difference_count_non_null_change"),
+                    )
+                    for col in [c for c in counts_df.columns if not c.endswith("_non_improved")]
+                ]
+            )
+        ).alias("kvs")
+    )
+    counts_df = counts_df.select("kvs.column_name", "kvs.difference_count", "kvs.difference_count_non_improved")
+    return counts_df, diffs_df
 
 
 class ExcelReport:

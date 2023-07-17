@@ -39,8 +39,6 @@ from cishouseholds.pipeline.design_weights import household_level_populations
 from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
-from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
-from cishouseholds.pipeline.high_level_transformations import get_differences
 from cishouseholds.pipeline.input_file_processing import extract_input_data
 from cishouseholds.pipeline.input_file_processing import extract_lookup_csv
 from cishouseholds.pipeline.input_file_processing import extract_validate_transform_input_data
@@ -71,8 +69,8 @@ from cishouseholds.pipeline.mapping import soc_regex_map
 from cishouseholds.pipeline.post_union_processing import post_union_processing
 from cishouseholds.pipeline.reporting import count_variable_option
 from cishouseholds.pipeline.reporting import ExcelReport
+from cishouseholds.pipeline.reporting import generate_comparison_tables
 from cishouseholds.pipeline.reporting import generate_error_table
-from cishouseholds.pipeline.reporting import generate_lab_report
 from cishouseholds.pipeline.timestamp_map import csv_datetime_maps
 from cishouseholds.pipeline.validation_calls import validation_ETL
 from cishouseholds.pipeline.validation_schema import soc_schema
@@ -913,7 +911,6 @@ def validate_survey_responses(
         string specifying id column in input_survey_table
     """
     unioned_survey_responses = extract_from_table(input_survey_table)
-    unioned_survey_responses = create_formatted_datetime_string_columns(unioned_survey_responses)
     valid_survey_responses, erroneous_survey_responses = validation_ETL(
         df=unioned_survey_responses,
         validation_check_failure_column_name=validation_failure_flag_column,
@@ -939,8 +936,6 @@ def validate_survey_responses(
         .withColumn("run_id", F.lit(get_run_id()))
         .drop(validation_failure_flag_column)
     )
-    # valid_survey_responses = fix_timestamps(valid_survey_responses)
-    # invalid_survey_responses_table = fix_timestamps(erroneous_survey_responses)
     update_table(validation_check_failures_valid_data_df, valid_validation_failures_table, write_mode="append")
     update_table(validation_check_failures_invalid_data_df, invalid_validation_failures_table, write_mode="append")
     update_table(valid_survey_responses, output_survey_table, write_mode="overwrite", archive=True, survey_table=True)
@@ -1113,15 +1108,6 @@ def phm_validation_report(
     report.write_excel_output()
 
 
-@register_pipeline_stage("lab_report")
-def lab_report(input_survey_table: str, swab_report_table: str, blood_report_table: str) -> DataFrame:
-    """Generate reports of most recent 7 days of swab and blood data"""
-    survey_responses_df = extract_from_table(input_survey_table).orderBy("file_date")
-    swab_df, blood_df = generate_lab_report(survey_responses_df)
-    update_table(swab_df, swab_report_table, "overwrite")
-    update_table(blood_df, blood_report_table, "overwrite")
-
-
 @register_pipeline_stage("filter_dataframe")
 def filter_dataframe(
     input_survey_table: str,
@@ -1271,7 +1257,7 @@ def compare(
             select_columns = [unique_id_column, *select_columns]
             compare_df = compare_df.select(*select_columns)
             base_df = base_df.select(*select_columns)
-    counts_df, difference_sample_df = get_differences(base_df, compare_df, unique_id_column, num_samples)
+    counts_df, difference_sample_df = generate_comparison_tables(base_df, compare_df, unique_id_column, num_samples)
     total = counts_df.select(F.sum(F.col("difference_count"))).collect()[0][0]
     print(f"     {table_name_to_compare} contained {total} differences to {base_table_name}")  # functional
     update_table(counts_df, counts_df_table_name, "overwrite")

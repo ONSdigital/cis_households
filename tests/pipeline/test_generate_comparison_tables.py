@@ -1,10 +1,10 @@
 import pytest
 from chispa import assert_df_equality
 
-from cishouseholds.pipeline.high_level_transformations import get_differences
+from cishouseholds.pipeline.reporting import generate_comparison_tables
 
 
-def test_get_differences(spark_session):
+def test_generate_comparison_tables(spark_session):
     input_df_base = spark_session.createDataFrame(
         data=[
             (1, "A", 1, True),
@@ -35,7 +35,7 @@ def test_get_differences(spark_session):
         data=[(2, "string"), (2, "int"), (3, "int"), (3, "bool"), (4, "bool")],
         schema="id integer, column_name string",
     )
-    output_df_counts, output_df_diffs = get_differences(input_df_base, input_df_compare, "id")
+    output_df_counts, output_df_diffs = generate_comparison_tables(input_df_base, input_df_compare, "id")
     assert_df_equality(
         counts_df, output_df_counts, ignore_nullable=True, ignore_column_order=True, ignore_row_order=True
     )

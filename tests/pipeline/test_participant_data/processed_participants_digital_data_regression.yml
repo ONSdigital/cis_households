@@ -5,11 +5,9 @@
   consent_use_of_surplus_blood_samples_yn: null
   country: Erlang is a general-purpose, concurrent, functional programming language.
   date_of_birth: '2020-02-01 00:00:00.000000'
-  date_of_birth_string: 01feb2020
   digital_communication_preference: The sequential subset of Erlang supports eager
     evaluation, single assignment, and dynamic typing.
   digital_entry_pack_sent_datetime: '2020-09-20 00:00:00.000000'
-  digital_entry_pack_sent_datetime_string: 20sep2020
   digital_entry_pack_status: Haskell is a standardized, general-purpose purely functional
     programming language, with non-strict semantics and strong static typing.
   digital_survey_mode_preference: Type classes first appeared in the Haskell programming
@@ -19,22 +17,16 @@
   ethnicity_group: null
   ethnicity_other: Where are my pants?
   existing_participant_digital_opt_in_datetime: '2020-12-04 21:47:57.000000'
-  existing_participant_digital_opt_in_datetime_string: 04dec2020 21:47:57
   existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-07 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 07jan2022
   existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-07 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 07jan2022
   existing_participant_digital_opt_in_reminder_1_status: Make me a sandwich.
   existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-09 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 09jan2022
   existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-01 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: 01jan2022
   existing_participant_digital_opt_in_reminder_2_status: Atoms are used within a program
     to denote distinguished values.
   existing_participant_digital_opt_in_status: null
   first_name: Annika
   household_digital_enrolment_invited_datetime: null
-  household_digital_enrolment_invited_datetime_string: null
   household_invited_to_digital: null
   household_members_under_2_years: 'Yes'
   infant_age_months_1: null
@@ -50,10 +42,8 @@
   middle_name: Hank
   nhs_data_share: null
   nhs_share_opt_out_date: '2022-01-03'
-  nhs_share_opt_out_date_string: 03jan2022
   ons_household_id: '602276804025'
   participant_digital_enrolment_datetime: '2020-10-14 01:01:05.000000'
-  participant_digital_enrolment_datetime_string: 14oct2020 01:01:05
   participant_enrolled_digital: null
   participant_id: DHR-016525808631
   participant_id_numeric: '2250967'
@@ -117,11 +107,9 @@
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   country: Ports are used to communicate with the external world.
   date_of_birth: '2014-12-23 00:00:00.000000'
-  date_of_birth_string: 23dec2014
   digital_communication_preference: Type classes first appeared in the Haskell programming
     language.
   digital_entry_pack_sent_datetime: '2022-04-19 00:00:00.000000'
-  digital_entry_pack_sent_datetime_string: 19apr2022
   digital_entry_pack_status: In 1989 the building was heavily damaged by fire, but
     it has since been restored.
   digital_survey_mode_preference: Type classes first appeared in the Haskell programming
@@ -131,24 +119,18 @@
   ethnicity_group: null
   ethnicity_other: It is also a garbage-collected runtime system.
   existing_participant_digital_opt_in_datetime: '2022-11-12 14:57:33.000000'
-  existing_participant_digital_opt_in_datetime_string: 12nov2022 14:57:33
   existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-09 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 09jan2022
   existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 03jan2022
   existing_participant_digital_opt_in_reminder_1_status: Ports are created with the
     built-in function open_port.
   existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 01jan2022
   existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-04 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: 04jan2022
   existing_participant_digital_opt_in_reminder_2_status: Haskell is a standardized,
     general-purpose purely functional programming language, with non-strict semantics
     and strong static typing.
   existing_participant_digital_opt_in_status: Participant Opted In
   first_name: Wilburn
   household_digital_enrolment_invited_datetime: '2022-01-02 14:34:14.000000'
-  household_digital_enrolment_invited_datetime_string: 02jan2022 14:34:14
   household_invited_to_digital: null
   household_members_under_2_years: 'No'
   infant_age_months_1: null
@@ -164,10 +146,8 @@
   middle_name: Caron
   nhs_data_share: null
   nhs_share_opt_out_date: '2022-01-09'
-  nhs_share_opt_out_date_string: 09jan2022
   ons_household_id: '571295570558'
   participant_digital_enrolment_datetime: '2020-04-08 02:21:01.000000'
-  participant_digital_enrolment_datetime_string: 08apr2020 02:21:01
   participant_enrolled_digital: null
   participant_id: DHR-190156218256
   participant_id_numeric: '10380757'
@@ -232,11 +212,9 @@
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   country: Erlang is known for its designs that are well suited for systems.
   date_of_birth: '1997-08-21 00:00:00.000000'
-  date_of_birth_string: 21aug1997
   digital_communication_preference: She spent her earliest years reading classic literature,
     and writing poetry.
   digital_entry_pack_sent_datetime: '2020-08-13 00:00:00.000000'
-  digital_entry_pack_sent_datetime_string: 13aug2020
   digital_entry_pack_status: The sequential subset of Erlang supports eager evaluation,
     single assignment, and dynamic typing.
   digital_survey_mode_preference: Where are my pants?
@@ -245,23 +223,17 @@
   ethnicity_group: null
   ethnicity_other: Tuples are containers for a fixed number of Erlang data types.
   existing_participant_digital_opt_in_datetime: '2020-11-09 22:59:43.000000'
-  existing_participant_digital_opt_in_datetime_string: 09nov2020 22:59:43
   existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 08jan2022
   existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-05 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 05jan2022
   existing_participant_digital_opt_in_reminder_1_status: He looked inquisitively at
     his keyboard and wrote another sentence.
   existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 01jan2022
   existing_participant_digital_opt_in_reminder_2_sent_datetime: null
-  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: null
   existing_participant_digital_opt_in_reminder_2_status: Type classes first appeared
     in the Haskell programming language.
   existing_participant_digital_opt_in_status: Participant Opted In
   first_name: Honey
   household_digital_enrolment_invited_datetime: '2022-01-05 20:30:21.000000'
-  household_digital_enrolment_invited_datetime_string: 05jan2022 20:30:21
   household_invited_to_digital: null
   household_members_under_2_years: 'Yes'
   infant_age_months_1: null
@@ -277,10 +249,8 @@
   middle_name: Gale
   nhs_data_share: 'Yes'
   nhs_share_opt_out_date: '2022-01-07'
-  nhs_share_opt_out_date_string: 07jan2022
   ons_household_id: '836394225258'
   participant_digital_enrolment_datetime: '2020-10-21 05:34:46.000000'
-  participant_digital_enrolment_datetime_string: 21oct2020 05:34:46
   participant_enrolled_digital: 'No'
   participant_id: DHR-329500167403
   participant_id_numeric: '13755534'
@@ -345,11 +315,9 @@
   consent_use_of_surplus_blood_samples_yn: 'No'
   country: The arguments can be primitive data types or compound data types.
   date_of_birth: '2007-10-03 00:00:00.000000'
-  date_of_birth_string: 03oct2007
   digital_communication_preference: Its main implementation is the Glasgow Haskell
     Compiler.
   digital_entry_pack_sent_datetime: '2020-05-14 00:00:00.000000'
-  digital_entry_pack_sent_datetime_string: 14may2020
   digital_entry_pack_status: '"Messages can be sent to and received from ports, but
     these messages must obey the so-called ""port protocol."""'
   digital_survey_mode_preference: The Galactic Empire is nearing completion of the
@@ -359,23 +327,17 @@
   ethnicity_group: null
   ethnicity_other: Erlang is known for its designs that are well suited for systems.
   existing_participant_digital_opt_in_datetime: '2022-05-18 00:43:46.000000'
-  existing_participant_digital_opt_in_datetime_string: 18may2022 00:43:46
   existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-06 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 06jan2022
   existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-04 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 04jan2022
   existing_participant_digital_opt_in_reminder_1_status: '"Messages can be sent to
     and received from ports, but these messages must obey the so-called ""port protocol."""'
   existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-06 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 06jan2022
   existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-05 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: 05jan2022
   existing_participant_digital_opt_in_reminder_2_status: Atoms are used within a program
     to denote distinguished values.
   existing_participant_digital_opt_in_status: Participant Opted In
   first_name: Myung
   household_digital_enrolment_invited_datetime: null
-  household_digital_enrolment_invited_datetime_string: null
   household_invited_to_digital: null
   household_members_under_2_years: null
   infant_age_months_1: null
@@ -391,10 +353,8 @@
   middle_name: Melaine
   nhs_data_share: null
   nhs_share_opt_out_date: '2022-01-03'
-  nhs_share_opt_out_date_string: 03jan2022
   ons_household_id: '425723964512'
   participant_digital_enrolment_datetime: '2022-09-25 08:49:41.000000'
-  participant_digital_enrolment_datetime_string: 25sep2022 08:49:41
   participant_enrolled_digital: 'No'
   participant_id: DHR-352206298026
   participant_id_numeric: '80125858'
@@ -458,10 +418,8 @@
   consent_use_of_surplus_blood_samples_yn: null
   country: Atoms are used within a program to denote distinguished values.
   date_of_birth: '2003-05-08 00:00:00.000000'
-  date_of_birth_string: 08may2003
   digital_communication_preference: Do you come here often?
   digital_entry_pack_sent_datetime: '2021-09-28 00:00:00.000000'
-  digital_entry_pack_sent_datetime_string: 28sep2021
   digital_entry_pack_status: It is also a garbage-collected runtime system.
   digital_survey_mode_preference: Ports are created with the built-in function open_port.
   ethnic_group: Asian or Asian British
@@ -470,24 +428,18 @@
   ethnicity_other: They are written as strings of consecutive alphanumeric characters,
     the first character being lowercase.
   existing_participant_digital_opt_in_datetime: '2020-02-24 15:52:04.000000'
-  existing_participant_digital_opt_in_datetime_string: 24feb2020 15:52:04
   existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-06 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 06jan2022
   existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-02 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 02jan2022
   existing_participant_digital_opt_in_reminder_1_status: Any element of a tuple can
     be accessed in constant time.
   existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-09 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 09jan2022
   existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-08 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: 08jan2022
   existing_participant_digital_opt_in_reminder_2_status: Haskell is a standardized,
     general-purpose purely functional programming language, with non-strict semantics
     and strong static typing.
   existing_participant_digital_opt_in_status: Participant Opted In
   first_name: My
   household_digital_enrolment_invited_datetime: '2022-01-04 15:46:39.000000'
-  household_digital_enrolment_invited_datetime_string: 04jan2022 15:46:39
   household_invited_to_digital: 'No'
   household_members_under_2_years: null
   infant_age_months_1: null
@@ -504,10 +456,8 @@
   middle_name: Yuri
   nhs_data_share: 'No'
   nhs_share_opt_out_date: '2022-01-08'
-  nhs_share_opt_out_date_string: 08jan2022
   ons_household_id: '294850989981'
   participant_digital_enrolment_datetime: '2022-03-05 21:30:35.000000'
-  participant_digital_enrolment_datetime_string: 05mar2022 21:30:35
   participant_enrolled_digital: 'No'
   participant_id: DHR-424039274499
   participant_id_numeric: '70210461'
@@ -569,11 +519,9 @@
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   country: Do you come here often?
   date_of_birth: '2015-04-22 00:00:00.000000'
-  date_of_birth_string: 22apr2015
   digital_communication_preference: '"Messages can be sent to and received from ports,
     but these messages must obey the so-called ""port protocol."""'
   digital_entry_pack_sent_datetime: '2020-11-16 00:00:00.000000'
-  digital_entry_pack_sent_datetime_string: 16nov2020
   digital_entry_pack_status: Atoms are used within a program to denote distinguished
     values.
   digital_survey_mode_preference: He looked inquisitively at his keyboard and wrote
@@ -584,22 +532,16 @@
   ethnicity_other: The sequential subset of Erlang supports eager evaluation, single
     assignment, and dynamic typing.
   existing_participant_digital_opt_in_datetime: '2020-04-27 01:51:20.000000'
-  existing_participant_digital_opt_in_datetime_string: 27apr2020 01:51:20
   existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-01 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 01jan2022
   existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-06 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 06jan2022
   existing_participant_digital_opt_in_reminder_1_status: He looked inquisitively at
     his keyboard and wrote another sentence.
   existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-03 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 03jan2022
   existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-09 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: 09jan2022
   existing_participant_digital_opt_in_reminder_2_status: I don't even care.
   existing_participant_digital_opt_in_status: Participant Opted Out
   first_name: Alan
   household_digital_enrolment_invited_datetime: '2022-01-02 23:34:01.000000'
-  household_digital_enrolment_invited_datetime_string: 02jan2022 23:34:01
   household_invited_to_digital: null
   household_members_under_2_years: null
   infant_age_months_1: null
@@ -615,10 +557,8 @@
   middle_name: Remedios
   nhs_data_share: null
   nhs_share_opt_out_date: '2022-01-03'
-  nhs_share_opt_out_date_string: 03jan2022
   ons_household_id: '959807652614'
   participant_digital_enrolment_datetime: '2021-02-07 18:56:45.000000'
-  participant_digital_enrolment_datetime_string: 07feb2021 18:56:45
   participant_enrolled_digital: 'Yes'
   participant_id: DHR-498251982661
   participant_id_numeric: '52947784'
@@ -680,11 +620,9 @@
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   country: Any element of a tuple can be accessed in constant time.
   date_of_birth: '1996-09-25 00:00:00.000000'
-  date_of_birth_string: 25sep1996
   digital_communication_preference: Atoms are used within a program to denote distinguished
     values.
   digital_entry_pack_sent_datetime: '2022-01-20 00:00:00.000000'
-  digital_entry_pack_sent_datetime_string: 20jan2022
   digital_entry_pack_status: Do you come here often?
   digital_survey_mode_preference: In 1989 the building was heavily damaged by fire,
     but it has since been restored.
@@ -693,23 +631,17 @@
   ethnicity_group: null
   ethnicity_other: I don't even care.
   existing_participant_digital_opt_in_datetime: '2022-05-27 20:32:38.000000'
-  existing_participant_digital_opt_in_datetime_string: 27may2022 20:32:38
   existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-06 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 06jan2022
   existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-07 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 07jan2022
   existing_participant_digital_opt_in_reminder_1_status: Type classes first appeared
     in the Haskell programming language.
   existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-02 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 02jan2022
   existing_participant_digital_opt_in_reminder_2_sent_datetime: null
-  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: null
   existing_participant_digital_opt_in_reminder_2_status: The syntax {D1,D2,...,Dn}
     denotes a tuple whose arguments are D1, D2, ... Dn.
   existing_participant_digital_opt_in_status: Participant Opted In
   first_name: Humberto
   household_digital_enrolment_invited_datetime: '2022-01-03 10:49:37.000000'
-  household_digital_enrolment_invited_datetime_string: 03jan2022 10:49:37
   household_invited_to_digital: 'Yes'
   household_members_under_2_years: 'Yes'
   infant_age_months_1: 6.0
@@ -725,10 +657,8 @@
   middle_name: Shaun
   nhs_data_share: null
   nhs_share_opt_out_date: '2022-01-05'
-  nhs_share_opt_out_date_string: 05jan2022
   ons_household_id: '219547810444'
   participant_digital_enrolment_datetime: '2020-06-25 05:34:49.000000'
-  participant_digital_enrolment_datetime_string: 25jun2020 05:34:49
   participant_enrolled_digital: 'No'
   participant_id: DHR-769043821442
   participant_id_numeric: '9633237'
@@ -792,12 +722,10 @@
   consent_use_of_surplus_blood_samples_yn: null
   country: Erlang is known for its designs that are well suited for systems.
   date_of_birth: '2021-12-18 00:00:00.000000'
-  date_of_birth_string: 18dec2021
   digital_communication_preference: Atoms can contain any character if they are enclosed
     within single quotes and an escape convention exists which allows any character
     to be used within an atom.
   digital_entry_pack_sent_datetime: '2020-06-28 00:00:00.000000'
-  digital_entry_pack_sent_datetime_string: 28jun2020
   digital_entry_pack_status: He looked inquisitively at his keyboard and wrote another
     sentence.
   digital_survey_mode_preference: The arguments can be primitive data types or compound
@@ -808,22 +736,16 @@
   ethnicity_other: '"Messages can be sent to and received from ports, but these messages
     must obey the so-called ""port protocol."""'
   existing_participant_digital_opt_in_datetime: '2021-01-25 05:44:27.000000'
-  existing_participant_digital_opt_in_datetime_string: 25jan2021 05:44:27
   existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-03 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 03jan2022
   existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-03 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 03jan2022
   existing_participant_digital_opt_in_reminder_1_status: Where are my pants?
   existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-01 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 01jan2022
   existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-03 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: 03jan2022
   existing_participant_digital_opt_in_reminder_2_status: He looked inquisitively at
     his keyboard and wrote another sentence.
   existing_participant_digital_opt_in_status: null
   first_name: Crystle
   household_digital_enrolment_invited_datetime: '2022-01-01 09:53:53.000000'
-  household_digital_enrolment_invited_datetime_string: 01jan2022 09:53:53
   household_invited_to_digital: 'Yes'
   household_members_under_2_years: 'Yes'
   infant_age_months_1: null
@@ -840,10 +762,8 @@
   middle_name: Reiko
   nhs_data_share: 'No'
   nhs_share_opt_out_date: '2022-01-07'
-  nhs_share_opt_out_date_string: 07jan2022
   ons_household_id: '930086875935'
   participant_digital_enrolment_datetime: null
-  participant_digital_enrolment_datetime_string: null
   participant_enrolled_digital: null
   participant_id: DHR-868570220212
   participant_id_numeric: '51961693'
@@ -911,10 +831,8 @@
     and an escape convention exists which allows any character to be used within an
     atom.
   date_of_birth: '2009-03-09 00:00:00.000000'
-  date_of_birth_string: 09mar2009
   digital_communication_preference: Where are my pants?
   digital_entry_pack_sent_datetime: '2020-02-05 00:00:00.000000'
-  digital_entry_pack_sent_datetime_string: 05feb2020
   digital_entry_pack_status: Haskell features a type system with type inference and
     lazy evaluation.
   digital_survey_mode_preference: The syntax {D1,D2,...,Dn} denotes a tuple whose
@@ -925,23 +843,17 @@
   ethnicity_other: In 1989 the building was heavily damaged by fire, but it has since
     been restored.
   existing_participant_digital_opt_in_datetime: '2022-05-24 18:27:57.000000'
-  existing_participant_digital_opt_in_datetime_string: 24may2022 18:27:57
   existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-08 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 08jan2022
   existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-09 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 09jan2022
   existing_participant_digital_opt_in_reminder_1_status: Erlang is known for its designs
     that are well suited for systems.
   existing_participant_digital_opt_in_reminder_2_due_datetime: null
-  existing_participant_digital_opt_in_reminder_2_due_datetime_string: null
   existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-08 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: 08jan2022
   existing_participant_digital_opt_in_reminder_2_status: She spent her earliest years
     reading classic literature, and writing poetry.
   existing_participant_digital_opt_in_status: Participant Opted In
   first_name: Donnell
   household_digital_enrolment_invited_datetime: '2022-01-09 23:50:42.000000'
-  household_digital_enrolment_invited_datetime_string: 09jan2022 23:50:42
   household_invited_to_digital: 'Yes'
   household_members_under_2_years: 'Yes'
   infant_age_months_1: null
@@ -958,10 +870,8 @@
   middle_name: Maple
   nhs_data_share: 'Yes'
   nhs_share_opt_out_date: '2022-01-01'
-  nhs_share_opt_out_date_string: 01jan2022
   ons_household_id: '757503098830'
   participant_digital_enrolment_datetime: '2021-06-08 04:32:31.000000'
-  participant_digital_enrolment_datetime_string: 08jun2021 04:32:31
   participant_enrolled_digital: 'No'
   participant_id: DHR-890407714528
   participant_id_numeric: '49529278'
@@ -1026,11 +936,9 @@
   consent_use_of_surplus_blood_samples_yn: 'Yes'
   country: Tuples are containers for a fixed number of Erlang data types.
   date_of_birth: '1982-12-15 00:00:00.000000'
-  date_of_birth_string: 15dec1982
   digital_communication_preference: They are written as strings of consecutive alphanumeric
     characters, the first character being lowercase.
   digital_entry_pack_sent_datetime: '2020-05-03 00:00:00.000000'
-  digital_entry_pack_sent_datetime_string: 03may2020
   digital_entry_pack_status: Type classes first appeared in the Haskell programming
     language.
   digital_survey_mode_preference: '"Messages can be sent to and received from ports,
@@ -1042,23 +950,17 @@
     quotes and an escape convention exists which allows any character to be used within
     an atom.
   existing_participant_digital_opt_in_datetime: '2020-09-10 20:39:56.000000'
-  existing_participant_digital_opt_in_datetime_string: 10sep2020 20:39:56
   existing_participant_digital_opt_in_reminder_1_due_datetime: '2022-01-06 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_due_datetime_string: 06jan2022
   existing_participant_digital_opt_in_reminder_1_sent_datetime: '2022-01-09 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_1_sent_datetime_string: 09jan2022
   existing_participant_digital_opt_in_reminder_1_status: The syntax {D1,D2,...,Dn}
     denotes a tuple whose arguments are D1, D2, ... Dn.
   existing_participant_digital_opt_in_reminder_2_due_datetime: '2022-01-04 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_2_due_datetime_string: 04jan2022
   existing_participant_digital_opt_in_reminder_2_sent_datetime: '2022-01-02 00:00:00.000000'
-  existing_participant_digital_opt_in_reminder_2_sent_datetime_string: 02jan2022
   existing_participant_digital_opt_in_reminder_2_status: Its main implementation is
     the Glasgow Haskell Compiler.
   existing_participant_digital_opt_in_status: Participant Opted In
   first_name: Clora
   household_digital_enrolment_invited_datetime: '2022-01-03 08:45:07.000000'
-  household_digital_enrolment_invited_datetime_string: 03jan2022 08:45:07
   household_invited_to_digital: 'No'
   household_members_under_2_years: null
   infant_age_months_1: null
@@ -1074,10 +976,8 @@
   middle_name: Joette
   nhs_data_share: 'No'
   nhs_share_opt_out_date: '2022-01-06'
-  nhs_share_opt_out_date_string: 06jan2022
   ons_household_id: '633229661713'
   participant_digital_enrolment_datetime: '2021-10-07 22:04:02.000000'
-  participant_digital_enrolment_datetime_string: 07oct2021 22:04:02
   participant_enrolled_digital: 'No'
   participant_id: DHR-965687203229
   participant_id_numeric: '22196475'

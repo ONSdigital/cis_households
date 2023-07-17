@@ -402,5 +402,4 @@ def geography_dependent_transformations(
         school_year_column="school_year",
         column_name_to_assign="age_group_school_year",
     )
-    # df = create_formatted_datetime_string_columns(df)
     return df

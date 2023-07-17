@@ -3,7 +3,6 @@ from pyspark.sql.dataframe import DataFrame
 
 from cishouseholds.derive import assign_column_from_mapped_list_key
 from cishouseholds.edit import apply_value_map_multiple_columns
-from cishouseholds.pipeline.high_level_transformations import create_formatted_datetime_string_columns
 
 
 def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
@@ -63,6 +62,5 @@ def transform_participant_extract_digital(df: DataFrame) -> DataFrame:
     )
 
     df = apply_value_map_multiple_columns(df, col_val_map)
-    df = create_formatted_datetime_string_columns(df)
 
     return df
