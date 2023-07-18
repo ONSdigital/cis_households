@@ -29,7 +29,7 @@ def test_generate_comparison_tables(spark_session):
             ("int", 2, 2),
             ("bool", 2, 1),
         ],
-        schema="column_name string, difference_count integer, difference_count_non_improved integer",
+        schema="column_name string, difference_count integer, difference_count_non_null_change integer",
     )
     diffs_df = spark_session.createDataFrame(
         data=[(2, "string"), (2, "int"), (3, "int"), (3, "bool"), (4, "bool")],

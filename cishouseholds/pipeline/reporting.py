@@ -172,7 +172,7 @@ def generate_comparison_tables(
         ],
         *[
             F.sum(F.when((~F.col(c).eqNullSafe(F.col(f"{c}_ref"))) & (F.col(f"{c}_ref").isNotNull()), 1).otherwise(0))
-            .alias(f"{c}_non_improved")
+            .alias(f"{c}_non_null_change")
             .cast("integer")
             for c in cols_to_check
         ],
@@ -184,14 +184,14 @@ def generate_comparison_tables(
                     F.struct(
                         F.lit(col).alias("column_name"),
                         F.col(col).alias("difference_count"),
-                        F.col(f"{col}_non_improved").alias("difference_count_non_null_change"),
+                        F.col(f"{col}_non_null_change").alias("difference_count_non_null_change"),
                     )
-                    for col in [c for c in counts_df.columns if not c.endswith("_non_improved")]
+                    for col in [c for c in counts_df.columns if not c.endswith("_non_null_change")]
                 ]
             )
         ).alias("kvs")
     )
-    counts_df = counts_df.select("kvs.column_name", "kvs.difference_count", "kvs.difference_count_non_improved")
+    counts_df = counts_df.select("kvs.column_name", "kvs.difference_count", "kvs.difference_count_non_null_change")
     return counts_df, diffs_df
 
 

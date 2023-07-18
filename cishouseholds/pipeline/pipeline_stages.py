@@ -34,8 +34,6 @@ from cishouseholds.pipeline.config import get_config
 from cishouseholds.pipeline.config import get_secondary_config
 from cishouseholds.pipeline.covid_event_transformations import covid_event_transformations
 from cishouseholds.pipeline.demographic_transformations import demographic_transformations
-from cishouseholds.pipeline.design_weights import calculate_design_weights
-from cishouseholds.pipeline.design_weights import household_level_populations
 from cishouseholds.pipeline.generate_outputs import generate_sample
 from cishouseholds.pipeline.generate_outputs import map_output_values_and_column_names
 from cishouseholds.pipeline.generate_outputs import write_csv_rename
@@ -1274,52 +1272,6 @@ def sample_df(
     generate_sample(df, sample_type, cols, cols_to_evaluate, rows_per_file, num_files, output_folder_name)
 
 
-@register_pipeline_stage("calculate_household_level_populations")
-def calculate_household_level_populations(
-    address_lookup_table,
-    postcode_lookup_table,
-    lsoa_cis_lookup_table,
-    country_lookup_table,
-    household_level_populations_table,
-):
-    """
-    Calculate counts of households by CIS area 20 and country code 12 geographical groups used in the design weight
-    calculation.
-    Combines several lookup tables to get the necessary geographies linked to households, then sums households by
-    CIS area and country code.
-
-    Parameters
-    ----------
-    address_lookup_table
-        addressbase HIVE table name
-    postcode_lookup_table
-        NSPL postcode lookup HIVE table name to join onto addressbase to get LSOA 11 and country code 12
-    lsoa_cis_lookup_table
-        LSOA 11 to CIS lookup HIVE table name to get CIS area codes
-    country_lookup_table
-        country lookup HIVE table name to get country names from country code 12
-    household_level_populations_table
-        HIVE table to write household level populations to
-    """
-    address_lookup_df = extract_from_table(address_lookup_table).select("unique_property_reference_code", "postcode")
-    postcode_lookup_df = (
-        extract_from_table(postcode_lookup_table)
-        .select("postcode", "lower_super_output_area_code_11", "country_code_12")
-        .distinct()
-    )
-    lsoa_cis_lookup_df = (
-        extract_from_table(lsoa_cis_lookup_table)
-        .select("lower_super_output_area_code_11", "cis_area_code_20")
-        .distinct()
-    )
-    country_lookup_df = extract_from_table(country_lookup_table).select("country_code_12", "country_name_12").distinct()
-
-    household_info_df = household_level_populations(
-        address_lookup_df, postcode_lookup_df, lsoa_cis_lookup_df, country_lookup_df
-    )
-    update_table(household_info_df, household_level_populations_table, write_mode="overwrite")
-
-
 @register_pipeline_stage("record_level_interface")
 def record_level_interface(
     input_survey_table: str,
@@ -1365,116 +1317,6 @@ def record_level_interface(
     edited_df = update_from_lookup_df(filtered_in_df, lookup_df, id_column=unique_id_column)
     update_table(edited_df, output_survey_table, "overwrite")
     return {"output_survey_table": output_survey_table}
-
-
-@register_pipeline_stage("sample_file_ETL")
-def sample_file_ETL(
-    household_level_populations_table: str,
-    old_sample_file: str,
-    new_sample_file: str,
-    new_sample_source_name: str,
-    postcode_lookup: str,
-    master_sample_file: str,
-    design_weight_table: str,
-    country_lookup: str,
-    lsoa_cis_lookup: str,
-    tranche_file_path: Optional[str] = None,
-    tranche_strata_columns: Optional[List[str]] = None,
-):
-    """
-    Process a new sample file, to union it with previous sample data and calculate new swab and antibody design weights.
-    Creates a table of geographies and design weights per household.
-
-    Carries out different scenarios for antibody design weight for either:
-    1. Where no tranche is provided, or no new households have been sampled
-    2. Where a tranche has been provided and new households have been sampled
-
-    ``old_sample_file`` may point to the same table as ``design_weight_table``, to reuse the values from the previous
-    sample file processing run.
-
-    To process a new sample file, the following *must* be updated:
-    - ``new_sample_file``
-    - ``new_sample_source_name``
-    - ``tranche_file_path``
-
-    The output ``design_weight_table`` is also stored as a backup table with the current datetime.
-
-    Notes
-    -----
-    Lookup tables are referenced here are used to get data that are missing on the master sample and sample
-    files, which are required to link on postcode. Once these issues are resolved, this part of the code may be
-    simplified to include only:
-    - household_level_populations_table
-    - old_sample_file
-    - new_sample_file
-    - new_sample_source_name
-    - tranche_file_path
-    - tranche_strata_columns
-
-    This is dependent on receiving the new sample file in the format expected as specified in the excel specification.
-
-    Parameters
-    ----------
-    household_level_populations_table
-        HIVE table create by household level population calculation, containing population by CIS area and country
-    old_sample_file
-        HIVE table containing the previously processed sample files, including design weights
-    new_sample_file
-        CSV file or HIVE table containing the new sample to be processed
-    new_sample_source_name
-        string constant to be stored as the sample source name for the new sample records
-    postcode_lookup
-        HIVE table containing the NSPL postcode lookup
-    master_sample_file
-        HIVE table containing the master sample
-    design_weight_table
-        HIVE table to write household geographies and design weights to
-    country_lookup
-        HIVE table containing country code 12 to country name lookup
-    lsoa_cis_lookup
-        HIVE table containing LSOA 11 to CIS area 20 lookup
-    tranche_file_path
-        path to tranche CSV file, if a tranche is required for the current sample file, otherwise leave empty in config
-    tranche_strata_columns
-        list of column names to be used as strata in tranche factor calculations
-    """
-    first_run = not check_table_exists(design_weight_table)
-
-    postcode_lookup_df = extract_from_table(postcode_lookup)
-    lsoa_cis_lookup_df = extract_from_table(lsoa_cis_lookup)
-    country_lookup_df = extract_from_table(country_lookup)
-    old_sample_df = extract_from_table(old_sample_file, break_lineage=True)
-    master_sample_df = extract_from_table(master_sample_file)
-
-    new_sample_df = extract_lookup_csv(
-        new_sample_file,
-        validation_schemas["new_sample_file_schema"],
-        column_name_maps["new_sample_file_column_map"],
-        True,
-    )
-    tranche_df = None
-    if tranche_file_path is not None:
-        if tranche_strata_columns is None:
-            raise ValueError("`tranche_strata_columns` must be provided when a `tranche_file_path` has been provided")
-        tranche_df = extract_lookup_csv(
-            tranche_file_path, validation_schemas["tranche_schema"], column_name_maps["tranche_column_map"], True
-        )
-
-    household_level_populations_df = extract_from_table(household_level_populations_table)
-    design_weights = calculate_design_weights(
-        household_level_populations_df,
-        master_sample_df,
-        old_sample_df,
-        new_sample_df,
-        new_sample_source_name,
-        tranche_df,
-        postcode_lookup_df,
-        country_lookup_df,
-        lsoa_cis_lookup_df,
-        first_run,
-        tranche_strata_columns,
-    )
-    update_table(design_weights, design_weight_table, write_mode="overwrite", archive=True)
 
 
 @register_pipeline_stage("aggregated_output")
