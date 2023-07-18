@@ -7,7 +7,6 @@ from cishouseholds.pipeline.timestamp_map import test_participant_data_datetime_
 from cishouseholds.pipeline.timestamp_map import test_survey_response_data_version_1_datetime_map
 from cishouseholds.pipeline.timestamp_map import test_survey_response_data_version_2_datetime_map
 from cishouseholds.pipeline.timestamp_map import test_swab_sample_results_datetime_map
-from cishouseholds.pipeline.translate import translate_welsh_survey_responses
 from cishouseholds.pipeline.validation_schema import validation_schemas
 from cishouseholds.pipeline.version_specific_processing.test_participant_data_transformations import (
     transform_participant_extract_digital,
@@ -50,7 +49,6 @@ test_survey_response_data_version_1_parameters = {
     "datetime_column_map": test_survey_response_data_version_1_datetime_map,
     "transformation_functions": [
         clean_survey_responses_version_phm,
-        translate_welsh_survey_responses,
         phm_transformations,
     ],
     "sep": "|",
